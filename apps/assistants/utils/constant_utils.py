@@ -30,19 +30,57 @@ class EmbeddingManagersNames:
 
 AGENT_SPEECH_LANGUAGES = [
     ("auto", "Auto (Detect)"),
-    ("en", "English"), ("es", "Spanish"), ("fr", "French"), ("de", "German"), ("it", "Italian"),
-    ("pt", "Portuguese"), ("nl", "Dutch"), ("ru", "Russian"), ("ja", "Japanese"), ("ko", "Korean"),
-    ("zh", "Chinese"), ("ar", "Arabic"), ("tr", "Turkish"), ("pl", "Polish"), ("sv", "Swedish"),
-    ("da", "Danish"), ("fi", "Finnish"), ("no", "Norwegian"), ("he", "Hebrew"), ("id", "Indonesian"),
-    ("ms", "Malay"), ("th", "Thai"), ("hi", "Hindi"), ("hu", "Hungarian"), ("cs", "Czech"),
-    ("sk", "Slovak"), ("uk", "Ukrainian"), ("ro", "Romanian"), ("bg", "Bulgarian"), ("el", "Greek"),
-    ("fi", "Finnish"), ("et", "Estonian"), ("lv", "Latvian"), ("lt", "Lithuanian"), ("hr", "Croatian"),
-    ("sr", "Serbian"), ("sl", "Slovenian"), ("mk", "Macedonian"), ("sq", "Albanian"), ("bs", "Bosnian"),
-    ("is", "Icelandic"), ("cy", "Welsh"), ("ga", "Irish"),
+    ("en", "English"),
+    ("es", "Spanish"),
+    ("fr", "French"),
+    ("de", "German"),
+    ("it", "Italian"),
+    ("pt", "Portuguese"),
+    ("nl", "Dutch"),
+    ("ru", "Russian"),
+    ("ja", "Japanese"),
+    ("ko", "Korean"),
+    ("zh", "Chinese"),
+    ("ar", "Arabic"),
+    ("tr", "Turkish"),
+    ("pl", "Polish"),
+    ("sv", "Swedish"),
+    ("da", "Danish"),
+    ("fi", "Finnish"),
+    ("no", "Norwegian"),
+    ("he", "Hebrew"),
+    ("id", "Indonesian"),
+    ("ms", "Malay"),
+    ("th", "Thai"),
+    ("hi", "Hindi"),
+    ("hu", "Hungarian"),
+    ("cs", "Czech"),
+    ("sk", "Slovak"),
+    ("uk", "Ukrainian"),
+    ("ro", "Romanian"),
+    ("bg", "Bulgarian"),
+    ("el", "Greek"),
+    ("fi", "Finnish"),
+    ("et", "Estonian"),
+    ("lv", "Latvian"),
+    ("lt", "Lithuanian"),
+    ("hr", "Croatian"),
+    ("sr", "Serbian"),
+    ("sl", "Slovenian"),
+    ("mk", "Macedonian"),
+    ("sq", "Albanian"),
+    ("bs", "Bosnian"),
+    ("is", "Icelandic"),
+    ("cy", "Welsh"),
+    ("ga", "Irish"),
 ]
 
-AGENT_SPEECH_LANGUAGES = [AGENT_SPEECH_LANGUAGES[0]] + sorted(AGENT_SPEECH_LANGUAGES[1:],
-                                                              key=lambda x: x[1])
+AGENT_SPEECH_LANGUAGES = [
+                             AGENT_SPEECH_LANGUAGES[0]
+                         ] + sorted(
+    AGENT_SPEECH_LANGUAGES[1:],
+    key=lambda x: x[1]
+)
 
 CONTEXT_MANAGEMENT_STRATEGY = [
     ("stop", "Stop Conversation"),
@@ -79,7 +117,11 @@ class MultiStepReasoningCapabilityChoicesNames:
 
     @staticmethod
     def as_dict():
-        return {"none": "None", "cost-effective": "Cost Effective", "high-performance": "High Performance"}
+        return {
+            "none": "None",
+            "cost-effective": "Cost Effective",
+            "high-performance": "High Performance"
+        }
 
 
 class MultiStepReasoningCapabilityModelNames:
@@ -149,8 +191,23 @@ AGENT_ADMIN_SEARCH_FIELDS = (
 RANDOM_SUFFIX_MINIMUM_VALUE = 1_000_000_000
 RANDOM_SUFFIX_MAXIMUM_VALUE = 9_999_999_999
 
-VECTOR_INDEX_PATH_ASSISTANT_CHAT_MESSAGES = os.path.join(BASE_DIR, 'assistant_vectors', 'context_memories')
+VECTOR_INDEX_PATH_ASSISTANT_CHAT_MESSAGES = os.path.join(
+    BASE_DIR,
+    'assistant_vectors',
+    'context_memories'
+)
 
-ASSISTANT_OLD_CHAT_MESSAGES_VECTOR_DATA_ADMIN_LIST = ['id', 'assistant_chat_message', 'created_at', 'updated_at']
-ASSISTANT_OLD_CHAT_MESSAGES_VECTOR_DATA_ADMIN_FILTER = ['assistant_chat_message', 'created_at', 'updated_at']
-ASSISTANT_OLD_CHAT_MESSAGES_VECTOR_DATA_ADMIN_SEARCH = ['assistant_chat_message__id']
+ASSISTANT_OLD_CHAT_MESSAGES_VECTOR_DATA_ADMIN_LIST = [
+    'id',
+    'assistant_chat_message',
+    'created_at',
+    'updated_at'
+]
+ASSISTANT_OLD_CHAT_MESSAGES_VECTOR_DATA_ADMIN_FILTER = [
+    'assistant_chat_message',
+    'created_at',
+    'updated_at'
+]
+ASSISTANT_OLD_CHAT_MESSAGES_VECTOR_DATA_ADMIN_SEARCH = [
+    'assistant_chat_message__id'
+]

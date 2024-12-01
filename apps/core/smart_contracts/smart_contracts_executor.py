@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import json
 import logging
 
@@ -25,16 +26,34 @@ from web3.exceptions import TimeExhausted
 
 from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
 from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
-from apps.core.smart_contracts.builders import build_smart_contract_generation_prompt, \
+
+from apps.core.smart_contracts.builders import (
+    build_smart_contract_generation_prompt,
     build_smart_contract_refinement_prompt
-from apps.core.smart_contracts.prompts import contract_natural_language_context_explanation_prompt
-from apps.core.smart_contracts.utils import DEFAULT_TRANSACTION_RECEIPT_CHECK_TIMEOUT_SECONDS, \
+)
+
+from apps.core.smart_contracts.prompts import (
+    contract_natural_language_context_explanation_prompt
+)
+
+from apps.core.smart_contracts.utils import (
+    DEFAULT_TRANSACTION_RECEIPT_CHECK_TIMEOUT_SECONDS,
     DEFAULT_TRANSACTION_RECEIPT_CHECK_POLL_LATENCY_SECONDS
+)
+
 from apps.llm_core.models import LLMCore
 from apps.llm_transaction.models import LLMTransaction
 from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
-from apps.smart_contracts.models import BlockchainSmartContract, BlockchainWalletConnection
-from apps.smart_contracts.utils import DeploymentStatusesNames, find_json_presence
+
+from apps.smart_contracts.models import (
+    BlockchainSmartContract,
+    BlockchainWalletConnection
+)
+
+from apps.smart_contracts.utils import (
+    DeploymentStatusesNames,
+    find_json_presence
+)
 
 from config import settings
 

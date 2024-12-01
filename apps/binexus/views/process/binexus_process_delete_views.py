@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
@@ -41,8 +42,10 @@ class BinexusView_ProcessDelete(LoginRequiredMixin, TemplateView):
 
         ##############################
         # PERMISSION CHECK FOR - DELETE_BINEXUS_PROCESSES
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.DELETE_BINEXUS_PROCESSES):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.DELETE_BINEXUS_PROCESSES
+        ):
             messages.error(self.request, "You do not have permission to delete Binexus Processes.")
             return redirect('binexus:process_list')
         ##############################
@@ -51,6 +54,7 @@ class BinexusView_ProcessDelete(LoginRequiredMixin, TemplateView):
             process_id = self.kwargs.get('pk')
             binexus_process = BinexusProcess.objects.get(id=process_id)
             binexus_process.delete()
+
         except Exception as e:
             logger.error(f"[BinexusView_ProcessDelete] Error deleting the Binexus Process: {e}")
             messages.error(self.request, "Error deleting the Binexus Process.")

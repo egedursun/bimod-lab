@@ -24,9 +24,18 @@ import filetype
 from PIL import Image
 
 from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
-from apps.core.media_managers.utils import FILE_EXTENSION_BIN, GENERATED_FILES_ROOT_MEDIA_PATH, \
-    GENERATED_IMAGES_ROOT_MEDIA_PATH, MEDIA_PATH_FREEFORM_SKETCH, MEDIA_PATH_EDIT_IMAGE_BASE, \
-    MEDIA_PATH_EDIT_IMAGE_MASK, ImageModes, DEFAULT_IMAGE_COMPRESSION_JPEG
+
+from apps.core.media_managers.utils import (
+    FILE_EXTENSION_BIN,
+    GENERATED_FILES_ROOT_MEDIA_PATH,
+    GENERATED_IMAGES_ROOT_MEDIA_PATH,
+    MEDIA_PATH_FREEFORM_SKETCH,
+    MEDIA_PATH_EDIT_IMAGE_BASE,
+    MEDIA_PATH_EDIT_IMAGE_MASK,
+    ImageModes,
+    DEFAULT_IMAGE_COMPRESSION_JPEG
+)
+
 from apps.llm_transaction.models import LLMTransaction
 from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
 from config import settings

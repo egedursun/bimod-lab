@@ -15,7 +15,6 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-
 import weaviate.classes as wvc
 
 WEAVIATE_INITIALIZATION_TIMEOUT = 15

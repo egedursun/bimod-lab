@@ -14,9 +14,14 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
-from apps.core.tool_calls.utils import VISUALIZATION_TOOL_ERROR_LOG, VISUALIZATION_TOOL_STANDARD_ERROR_LOG
+from apps.core.tool_calls.utils import (
+    VISUALIZATION_TOOL_ERROR_LOG,
+    VISUALIZATION_TOOL_STANDARD_ERROR_LOG
+)
+
 from apps.core.visual_client.operations import GeneratorManager
 from apps.assistants.models import Assistant
 from apps.multimodal_chat.models import MultimodalChat

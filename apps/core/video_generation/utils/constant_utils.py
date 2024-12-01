@@ -15,7 +15,6 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-
 VIDEO_GENERATOR_PROVIDER_TYPES = [
     ('luma-ai', 'Luma AI'),
 ]

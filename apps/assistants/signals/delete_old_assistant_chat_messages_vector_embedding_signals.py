@@ -29,28 +29,48 @@ from apps.multimodal_chat.models import MultimodalChatMessage
 logger = logging.getLogger(__name__)
 
 
-@receiver(pre_delete, sender=MultimodalChatMessage)
-def remove_vector_from_index_on_assistant_chat_message_delete(sender, instance, **kwargs):
+@receiver(
+    pre_delete,
+    sender=MultimodalChatMessage
+)
+def remove_vector_from_index_on_assistant_chat_message_delete(
+    sender,
+    instance,
+    **kwargs
+):
     try:
         vector_data_instances = AssistantOldChatMessagesVectorData.objects.filter(
             assistant_chat_message=instance
         ).all()
+
         if not vector_data_instances:
             print(f"No vector data found for MultimodalChatMessage with ID {instance.id}.")
             return
 
         index_path = vector_data_instances[0]._get_index_path()
+
         if os.path.exists(index_path):
             index = faiss.read_index(index_path)
-            xids = np.array([vector_data_instance.id for vector_data_instance in vector_data_instances])
+            xids = np.array(
+                [
+                    vector_data_instance.id for vector_data_instance in vector_data_instances
+                ]
+            )
+
             index.remove_ids(xids)
-            faiss.write_index(index, index_path)
+            faiss.write_index(
+                index,
+                index_path
+            )
+
             logger.info(f"Removed vector data for MultimodalChatMessage with ID {instance.id} from index.")
-            print(f"Removed vector data for MultimodalChatMessage with ID {instance.id} from index.")
+
         else:
             print(f"Index path {index_path} does not exist.")
+
         for vector_data_instance in vector_data_instances:
             vector_data_instance.delete()
+
     except AssistantOldChatMessagesVectorData.DoesNotExist:
         print(
             f"No AssistantOldChatMessagesVectorData found for MultimodalChatMessage with ID {instance.id}.")

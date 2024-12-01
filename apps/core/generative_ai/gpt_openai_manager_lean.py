@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib.auth.models import User
@@ -21,18 +22,34 @@ from openai import OpenAI
 
 from apps.core.generative_ai.auxiliary_methods.output_supply_prompts import BALANCE_OVERFLOW_LOG
 from apps.core.generative_ai.auxiliary_methods.json_operations.json_operation_prompts import embed_tool_call_in_prompt
-from apps.core.generative_ai.auxiliary_methods.errors.error_log_prompts import get_technical_error_log, \
+
+from apps.core.generative_ai.auxiliary_methods.errors.error_log_prompts import (
+    get_technical_error_log,
     get_json_decode_error_log
-from apps.core.generative_ai.utils import find_tool_call_from_json, ChatRoles, DEFAULT_ERROR_MESSAGE, \
-    GPT_DEFAULT_ENCODING_ENGINE, BIMOD_STREAMING_END_TAG, BIMOD_PROCESS_END, step_back_retry_mechanism, \
+)
+
+from apps.core.generative_ai.utils import (
+    find_tool_call_from_json,
+    ChatRoles,
+    DEFAULT_ERROR_MESSAGE,
+    GPT_DEFAULT_ENCODING_ENGINE,
+    BIMOD_STREAMING_END_TAG,
+    BIMOD_PROCESS_END,
+    step_back_retry_mechanism,
     RetryCallersNames
+)
+
 from apps.core.system_prompts.chat_history_factory_builder import HistoryBuilder
 from apps.core.system_prompts.system_prompt_factory_builder import SystemPromptFactoryBuilder
 from apps.core.tool_calls.tool_call_manager import ToolCallManager
 from apps.leanmod.models import LeanAssistant
 from apps.multimodal_chat.models import MultimodalLeanChat
-from apps.multimodal_chat.utils import calculate_billable_cost_from_raw, transmit_websocket_log, \
+
+from apps.multimodal_chat.utils import (
+    calculate_billable_cost_from_raw,
+    transmit_websocket_log,
     BIMOD_NO_TAG_PLACEHOLDER
+)
 
 logger = logging.getLogger(__name__)
 

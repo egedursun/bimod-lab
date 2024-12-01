@@ -15,7 +15,6 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-
 import asyncio
 import logging
 import time
@@ -25,9 +24,14 @@ from io import BytesIO
 from asgiref.sync import async_to_sync
 
 from apps.core.harmoniq.harmoniq_prompt_builder import build_harmoniq_system_prompt
+
 from apps.core.harmoniq.utils import (
-    DEFAULT_HARMONIQ_MODEL, DEFAULT_HARMONIQ_VOICE, DEFAULT_PCM_SAMPLING_RATE,
-    DEFAULT_PCM_BITS_PER_SAMPLE, DEFAULT_PCM_NUMBER_OF_CHANNELS)
+    DEFAULT_HARMONIQ_MODEL,
+    DEFAULT_HARMONIQ_VOICE,
+    DEFAULT_PCM_SAMPLING_RATE,
+    DEFAULT_PCM_BITS_PER_SAMPLE,
+    DEFAULT_PCM_NUMBER_OF_CHANNELS
+)
 
 import base64
 import websockets
@@ -224,7 +228,6 @@ def pcm_to_wav(
     sample_rate=DEFAULT_PCM_SAMPLING_RATE,
     bits_per_sample=DEFAULT_PCM_BITS_PER_SAMPLE
 ):
-
     logger.info("Converting PCM data to WAV format.")
     byte_depth = bits_per_sample // 8
     wav_output = BytesIO()

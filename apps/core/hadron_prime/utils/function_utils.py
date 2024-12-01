@@ -27,6 +27,7 @@ def find_tool_call_from_json(response: str, decoder=JSONDecoder()):
     response = response.replace("\n", "").replace("'", '"')
     json_objects = []
     pos = 0
+
     while True:
         match = response.find('{', pos)
         if match == -1:

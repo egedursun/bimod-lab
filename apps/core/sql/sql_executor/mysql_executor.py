@@ -14,19 +14,22 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
+
 import logging
 
 import mysql
 from mysql.connector import cursor_cext
 
 from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
-from apps.core.sql.utils import before_execute_sql_query, can_write_to_database
+
+from apps.core.sql.utils import (
+    before_execute_sql_query,
+    can_write_to_database
+)
+
 from apps.datasource_sql.models import SQLDatabaseConnection
 from apps.llm_transaction.models import LLMTransaction
 from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
-
 
 logger = logging.getLogger(__name__)
 
@@ -66,7 +69,6 @@ class MySQLExecutor:
                     cursor_class=cursor_cext.CMySQLCursorDict,
                     buffered=True
                 ) as cursor:
-
                     cursor.execute(
                         query,
                         parameters
@@ -107,7 +109,6 @@ class MySQLExecutor:
         from apps.core.generative_ai.utils import ChatRoles
 
         if not can_write_to_database(self.connection_object):
-
             return {
                 "status": False,
                 "error": "No write permission within this database connection."

@@ -15,7 +15,6 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-
 class AgentRunConditions:
     QUEUED = "queued"
     IN_PROGRESS = "in_progress"

@@ -15,9 +15,9 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-
 NOSQL_DBMS_PROVIDERS = {
     "COUCHBASE": {
-        "code": "couchbase", "name": "Couchbase"
+        "code": "couchbase",
+        "name": "Couchbase"
     },
 }

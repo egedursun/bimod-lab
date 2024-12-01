@@ -14,18 +14,33 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 import requests
 from openai import OpenAI
 
-from apps.core.generative_ai.auxiliary_methods.errors.error_log_prompts import get_image_generation_error_log, \
-    get_image_modification_error_log, get_image_variation_error_log
-from apps.core.generative_ai.utils import DEFAULT_IMAGE_GENERATION_MODEL, DefaultImageResolutionChoices, \
-    DefaultImageQualityChoices, DEFAULT_IMAGE_GENERATION_N, DEFAULT_IMAGE_MODIFICATION_MODEL, \
-    DEFAULT_IMAGE_MODIFICATION_N, DEFAULT_IMAGE_VARIATION_MODEL, DEFAULT_IMAGE_VARIATION_N
-from apps.core.generative_ai.utils import DefaultImageResolutionChoicesNames, DefaultImageQualityChoicesNames
+from apps.core.generative_ai.auxiliary_methods.errors.error_log_prompts import (
+    get_image_generation_error_log,
+    get_image_modification_error_log,
+    get_image_variation_error_log
+)
 
+from apps.core.generative_ai.utils import (
+    DEFAULT_IMAGE_GENERATION_MODEL,
+    DefaultImageResolutionChoices,
+    DefaultImageQualityChoices,
+    DEFAULT_IMAGE_GENERATION_N,
+    DEFAULT_IMAGE_MODIFICATION_MODEL,
+    DEFAULT_IMAGE_MODIFICATION_N,
+    DEFAULT_IMAGE_VARIATION_MODEL,
+    DEFAULT_IMAGE_VARIATION_N
+)
+
+from apps.core.generative_ai.utils import (
+    DefaultImageResolutionChoicesNames,
+    DefaultImageQualityChoicesNames
+)
 
 logger = logging.getLogger(__name__)
 

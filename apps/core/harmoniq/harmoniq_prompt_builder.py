@@ -14,20 +14,37 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
-from apps.core.system_prompts.harmoniq.harmoniq_guidelines_prompt import build_structured_primary_guidelines_harmoniq
-from apps.core.system_prompts.harmoniq.harmoniq_instructions_prompt import \
+from apps.core.system_prompts.harmoniq.harmoniq_guidelines_prompt import (
+    build_structured_primary_guidelines_harmoniq
+)
+
+from apps.core.system_prompts.harmoniq.harmoniq_instructions_prompt import (
     build_structured_instructions_prompt_harmoniq
-from apps.core.system_prompts.harmoniq.harmoniq_name_prompt import build_structured_name_prompt_harmoniq
-from apps.core.system_prompts.harmoniq.harmoniq_place_and_time_prompt import \
+)
+
+from apps.core.system_prompts.harmoniq.harmoniq_name_prompt import (
+    build_structured_name_prompt_harmoniq
+)
+
+from apps.core.system_prompts.harmoniq.harmoniq_place_and_time_prompt import (
     build_structured_place_and_time_prompt_harmoniq
-from apps.core.system_prompts.harmoniq.multimodality.harmoniq_multimodality_expert_network_prompt import \
+)
+
+from apps.core.system_prompts.harmoniq.multimodality.harmoniq_multimodality_expert_network_prompt import (
     build_expert_networks_multi_modality_prompt_harmoniq
-from apps.core.system_prompts.harmoniq.tools.harmoniq_tools_expert_networks_query_prompt import \
+)
+
+from apps.core.system_prompts.harmoniq.tools.harmoniq_tools_expert_networks_query_prompt import (
     build_structured_tool_prompt__expert_network_query_execution_harmoniq
-from apps.core.system_prompts.harmoniq.tools.harmoniq_tools_instructions_prompt import \
+)
+
+from apps.core.system_prompts.harmoniq.tools.harmoniq_tools_instructions_prompt import (
     build_structured_tool_usage_instructions_prompt_harmoniq
+)
+
 from apps.harmoniq.models import Harmoniq
 
 

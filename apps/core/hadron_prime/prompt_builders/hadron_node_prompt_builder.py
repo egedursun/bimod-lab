@@ -14,22 +14,36 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
-from apps.core.hadron_prime.prompts import build_core_instructions_prompt, build_optional_instructions_prompt, \
-    build_system_metadata_prompt, build_node_metadata_prompt, \
-    build_hadron_prime_structured_tool_usage_instructions_prompt, \
-    build_hadron_prime_structured_tool_prompt__expert_network_query_execution, \
+from apps.core.hadron_prime.prompts import (
+    build_core_instructions_prompt,
+    build_optional_instructions_prompt,
+    build_system_metadata_prompt,
+    build_node_metadata_prompt,
+    build_hadron_prime_structured_tool_usage_instructions_prompt,
+    build_hadron_prime_structured_tool_prompt__expert_network_query_execution,
     build_hadron_prime_expert_networks_multi_modality_prompt
-from apps.hadron_prime.models import HadronNode
+)
 
+from apps.hadron_prime.models import HadronNode
 
 logger = logging.getLogger(__name__)
 
 
-def build_hadron_prime_system_prompt(node: HadronNode, current_state: str, goal_state: str, error_calculation: str,
-                                     measurements: str, topic_messages: str, sease_logs: str,
-                                     publish_history_logs: str, analytical_data: str, action_set_data) -> str:
+def build_hadron_prime_system_prompt(
+    node: HadronNode,
+    current_state: str,
+    goal_state: str,
+    error_calculation: str,
+    measurements: str,
+    topic_messages: str,
+    sease_logs: str,
+    publish_history_logs: str,
+    analytical_data: str,
+    action_set_data
+) -> str:
     combined_system_prompt = ""
 
     combined_system_prompt += build_core_instructions_prompt()

@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 import os
 import time
@@ -23,13 +24,25 @@ import requests
 import boto3
 
 from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
-from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
+
+from apps.core.generative_ai.utils import (
+    GPT_DEFAULT_ENCODING_ENGINE,
+    ChatRoles
+)
+
 from apps.core.media_managers.utils import GENERATED_VIDEOS_ROOT_MEDIA_PATH
 from apps.llm_transaction.models import LLMTransaction
 from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
 from apps.video_generations.models import VideoGeneratorConnection
-from apps.core.video_generation.utils import VideoGeneratorFrameTypes, LumaAIGenerationStates, \
-    VIDEO_GENERATOR_PING_INTERVAL_SECONDS, UNCLASSIFIED_FILE_EXTENSION, generate_save_name
+
+from apps.core.video_generation.utils import (
+    VideoGeneratorFrameTypes,
+    LumaAIGenerationStates,
+    VIDEO_GENERATOR_PING_INTERVAL_SECONDS,
+    UNCLASSIFIED_FILE_EXTENSION,
+    generate_save_name
+)
+
 from lumaai import LumaAI
 
 from config.settings import MEDIA_URL

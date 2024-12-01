@@ -24,12 +24,23 @@ from apps.audit_logs.utils import AUDIT_LOG_ACTION_CHOICES
 
 
 class AuditLog(models.Model):
-    action = models.CharField(max_length=6, choices=AUDIT_LOG_ACTION_CHOICES)
+    action = models.CharField(
+        max_length=6,
+        choices=AUDIT_LOG_ACTION_CHOICES
+    )
     model_name = models.CharField(max_length=10000)
     object_id = models.PositiveIntegerField()
     timestamp = models.DateTimeField(default=timezone.now)
-    user = models.ForeignKey(get_user_model(), null=True, blank=True, on_delete=models.SET_NULL)
-    changes = models.JSONField(null=True, blank=True)
+    user = models.ForeignKey(
+        get_user_model(),
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL
+    )
+    changes = models.JSONField(
+        null=True,
+        blank=True
+    )
 
     class Meta:
         verbose_name = "Audit Log"
@@ -56,6 +67,13 @@ class AuditLog(models.Model):
     def save_changes(self, old_instance, new_instance):
         old_values = old_instance.__dict__
         new_values = new_instance.__dict__
-        changes = {field: {"old": old_values[field], "new": new_values[field]}
-                   for field in new_values if old_values.get(field) != new_values.get(field)}
+
+        changes = {
+            field: {
+                "old": old_values[field],
+                "new": new_values[field]
+            }
+            for field in new_values if old_values.get(field) != new_values.get(field)
+        }
+
         self.changes = changes

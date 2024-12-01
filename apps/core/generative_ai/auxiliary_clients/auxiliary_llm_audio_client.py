@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import io
 import logging
 import mimetypes
@@ -24,13 +25,24 @@ import boto3
 import requests
 from openai import OpenAI
 
-from apps.core.generative_ai.auxiliary_methods.errors.error_log_prompts import get_audio_reading_error_log, \
-    get_audio_upload_error_log, get_audio_generation_error_log, get_audio_transcription_error_log
-from apps.core.generative_ai.utils import OpenAITTSVoiceNames, generate_random_audio_filename, TTS_MODEL_NAME, \
-    TTS_RETRY_REMOVAL, DEFAULT_AUDIO_MIME_TYPE, STT_MODEL_NAME
+from apps.core.generative_ai.auxiliary_methods.errors.error_log_prompts import (
+    get_audio_reading_error_log,
+    get_audio_upload_error_log,
+    get_audio_generation_error_log,
+    get_audio_transcription_error_log
+)
+
+from apps.core.generative_ai.utils import (
+    OpenAITTSVoiceNames,
+    generate_random_audio_filename,
+    TTS_MODEL_NAME,
+    TTS_RETRY_REMOVAL,
+    DEFAULT_AUDIO_MIME_TYPE,
+    STT_MODEL_NAME
+)
+
 from apps.core.media_managers.utils import GENERATED_FILES_ROOT_MEDIA_PATH
 from config.settings import MEDIA_URL, AWS_STORAGE_BUCKET_NAME
-
 
 logger = logging.getLogger(__name__)
 

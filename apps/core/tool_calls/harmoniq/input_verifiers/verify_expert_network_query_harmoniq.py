@@ -15,9 +15,7 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-
 def verify_expert_network_query_content_harmoniq(content):
-
     if "parameters" not in content:
         return """
             The 'parameters' is missing from tool_usage_json. This field is mandatory to use Expert Network Query

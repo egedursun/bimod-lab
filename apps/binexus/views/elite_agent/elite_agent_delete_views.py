@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
@@ -37,8 +38,10 @@ class BinexusView_EliteAgentDelete(LoginRequiredMixin, View):
 
         ##############################
         # PERMISSION CHECK FOR - DELETE_BINEXUS_ELITES
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.DELETE_BINEXUS_ELITES):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.DELETE_BINEXUS_ELITES
+        ):
             messages.error(self.request, "You do not have permission to execute Binexus Elite Agents.")
             return redirect('binexus:process_detail', pk=kwargs.get('pk'))
         ##############################
@@ -46,10 +49,12 @@ class BinexusView_EliteAgentDelete(LoginRequiredMixin, View):
         agent_id = kwargs.get('pk')
         agent = BinexusEliteAgent.objects.get(id=agent_id)
         process_id = agent.binexus_process.id
+
         try:
             agent.delete()
             logger.info(f"Elite agent deleted successfully.")
             messages.success(request, "Elite agent deleted successfully.")
+
         except Exception as e:
             logger.error(f"Error deleting elite agent: {e}")
             messages.error(request, f"Error deleting elite agent: {e}")

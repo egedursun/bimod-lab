@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 import os
 from typing import List, Dict
@@ -21,17 +22,43 @@ from typing import List, Dict
 import faiss
 import numpy as np
 
-from apps.core.context_memory_manager.utils import (get_error_on_context_memory_handling_log,
-                                                    ASSISTANT_DEFAULT_SEARCH_RESULTS_OLD_CHAT_MESSAGES,
-                                                    LEANMOD_ASSISTANT_DEFAULT_SEARCH_RESULTS_OLD_CHAT_MESSAGES)
-from apps.core.semantor.utils import OPEN_AI_DEFAULT_EMBEDDING_VECTOR_DIMENSIONS, OpenAIEmbeddingModels
-from apps.core.system_prompts.chat_history_memory.build_chat_history_memory_instruction import \
-    build_chat_history_memory_handling_prompt, build_chat_history_memory_stop_communication_handler_prompt
-from apps.assistants.models import Assistant, AssistantOldChatMessagesVectorData
-from apps.assistants.utils import ContextManagementStrategyNames, VECTOR_INDEX_PATH_ASSISTANT_CHAT_MESSAGES
-from apps.leanmod.models import LeanAssistant, LeanModOldChatMessagesVectorData
+from apps.core.context_memory_manager.utils import (
+    get_error_on_context_memory_handling_log,
+    ASSISTANT_DEFAULT_SEARCH_RESULTS_OLD_CHAT_MESSAGES,
+    LEANMOD_ASSISTANT_DEFAULT_SEARCH_RESULTS_OLD_CHAT_MESSAGES
+)
+
+from apps.core.semantor.utils import (
+    OPEN_AI_DEFAULT_EMBEDDING_VECTOR_DIMENSIONS,
+    OpenAIEmbeddingModels
+)
+
+from apps.core.system_prompts.chat_history_memory.build_chat_history_memory_instruction import (
+    build_chat_history_memory_handling_prompt,
+    build_chat_history_memory_stop_communication_handler_prompt
+)
+
+from apps.assistants.models import (
+    Assistant,
+    AssistantOldChatMessagesVectorData
+)
+
+from apps.assistants.utils import (
+    ContextManagementStrategyNames,
+    VECTOR_INDEX_PATH_ASSISTANT_CHAT_MESSAGES
+)
+
+from apps.leanmod.models import (
+    LeanAssistant,
+    LeanModOldChatMessagesVectorData
+)
+
 from apps.leanmod.utils import VECTOR_INDEX_PATH_LEANMOD_CHAT_MESSAGES
-from apps.multimodal_chat.models import MultimodalChat, MultimodalLeanChat
+
+from apps.multimodal_chat.models import (
+    MultimodalChat,
+    MultimodalLeanChat
+)
 from apps.voidforger.models import VoidForger
 
 logger = logging.getLogger(__name__)

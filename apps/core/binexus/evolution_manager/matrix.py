@@ -27,7 +27,13 @@ import matplotlib.pyplot as plt
 import os
 
 from apps.binexus.models import BinexusProcess
-from apps.core.binexus.evolution_manager import PopulationManager, MutationManager, Individual
+
+from apps.core.binexus.evolution_manager import (
+    PopulationManager,
+    MutationManager,
+    Individual
+)
+
 from apps.core.binexus.evolution_manager.breeding import BreedingManager
 from apps.core.binexus.evolution_manager.fitness import FitnessEvaluationManager
 
@@ -101,7 +107,6 @@ class Matrix:
         try:
             latest_parents = self.population
             while self._current_epoch < self.maximum_epochs:
-
                 latest_parents = self.iterate_epoch(
                     is_test=is_test
                 )

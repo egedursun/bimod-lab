@@ -18,8 +18,11 @@
 from django.contrib import admin
 
 from apps.assistants.models import AssistantOldChatMessagesVectorData
-from apps.assistants.utils import ASSISTANT_OLD_CHAT_MESSAGES_VECTOR_DATA_ADMIN_SEARCH, \
-    ASSISTANT_OLD_CHAT_MESSAGES_VECTOR_DATA_ADMIN_FILTER, ASSISTANT_OLD_CHAT_MESSAGES_VECTOR_DATA_ADMIN_LIST
+from apps.assistants.utils import (
+    ASSISTANT_OLD_CHAT_MESSAGES_VECTOR_DATA_ADMIN_SEARCH,
+    ASSISTANT_OLD_CHAT_MESSAGES_VECTOR_DATA_ADMIN_FILTER,
+    ASSISTANT_OLD_CHAT_MESSAGES_VECTOR_DATA_ADMIN_LIST
+)
 
 
 @admin.register(AssistantOldChatMessagesVectorData)

@@ -18,7 +18,11 @@
 from django.contrib import admin
 
 from apps.blog_app.models import BlogSEOMeta
-from apps.blog_app.utils import BLOG_SEO_ADMIN_LIST, BLOG_SEO_ADMIN_FILTER, BLOG_SEO_ADMIN_SEARCH
+from apps.blog_app.utils import (
+    BLOG_SEO_ADMIN_LIST,
+    BLOG_SEO_ADMIN_FILTER,
+    BLOG_SEO_ADMIN_SEARCH
+)
 
 
 @admin.register(BlogSEOMeta)

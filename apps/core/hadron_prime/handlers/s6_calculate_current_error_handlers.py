@@ -19,7 +19,6 @@ import logging
 from apps.core.hadron_prime.parsers import make_request_from_curl
 from apps.hadron_prime.models import HadronNode
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -28,11 +27,15 @@ def calculate_error_data(node: HadronNode):
     error_measurement_curl = node.error_calculation_curl
 
     try:
-        response_text = make_request_from_curl(curl_command=error_measurement_curl)
+        response_text = make_request_from_curl(
+            curl_command=error_measurement_curl
+        )
+
     except Exception as e:
         logger.error(f"Error occurred while evaluating error calculation: {str(e)}")
         error = str(e)
         return error_calculation_data, error
+
     if not response_text:
         logger.error("Error calculation data could not have been received.")
         error = "Error calculation data could not have been received."

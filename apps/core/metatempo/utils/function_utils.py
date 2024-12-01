@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 from json import JSONDecoder
 
@@ -29,7 +30,6 @@ logger = logging.getLogger(__name__)
 
 
 def save_image_and_provide_full_uri(image_bytes):
-
     from apps.core.metatempo.utils import METATEMPO_IMAGES_ROOT_MEDIA_PATH
 
     guess_file_type = filetype.guess(image_bytes)
@@ -67,7 +67,13 @@ def find_tool_call_from_json_single(
     decoder=JSONDecoder()
 ):
     logger.info(f"Searching for tool call in response.")
-    response = response.replace("\n", "").replace("'", '').replace("`", "").replace('json', '')
+    response = (
+        response.replace("\n", "")
+        .replace("'", '')
+        .replace("`", "")
+        .replace('json', '')
+    )
+
     pos = 0
 
     while True:

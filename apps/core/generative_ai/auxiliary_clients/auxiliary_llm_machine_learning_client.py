@@ -14,22 +14,46 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 import requests
 from openai import OpenAI
 from openai.types.beta.threads import TextContentBlock, ImageFileContentBlock
 
-from apps.core.generative_ai.auxiliary_methods.affirmations.affirmation_instructions import GENERIC_AFFIRMATION_PROMPT, \
+from apps.core.generative_ai.auxiliary_methods.affirmations.affirmation_instructions import (
+    GENERIC_AFFIRMATION_PROMPT,
     MACHINE_LEARNING_AFFIRMATION_PROMPT
-from apps.core.generative_ai.auxiliary_methods.errors.error_log_prompts import ML_MODEL_NOT_FOUND_ERROR_LOG, \
-    ML_MODEL_LOADING_ERROR_LOG, ML_MODEL_OPENAI_UPLOAD_ERROR_LOG, ML_MODEL_AGENT_PREPARATION_ERROR_LOG, \
-    ML_MODEL_THREAD_CREATION_ERROR_LOG, ML_MODEL_RESPONSE_RETRIEVAL_ERROR_LOG, ML_MODEL_CLEANUP_ERROR_LOG
-from apps.core.generative_ai.auxiliary_methods.output_supply_prompts import EMPTY_OBJECT_PATH_LOG, AgentRunConditions
-from apps.core.generative_ai.auxiliary_methods.status_logs.status_log_prompts import \
-    get_number_of_ml_predictions_too_high_log, get_ml_prediction_status_log
+)
+
+from apps.core.generative_ai.auxiliary_methods.errors.error_log_prompts import (
+    ML_MODEL_NOT_FOUND_ERROR_LOG,
+    ML_MODEL_LOADING_ERROR_LOG,
+    ML_MODEL_OPENAI_UPLOAD_ERROR_LOG,
+    ML_MODEL_AGENT_PREPARATION_ERROR_LOG,
+    ML_MODEL_THREAD_CREATION_ERROR_LOG,
+    ML_MODEL_RESPONSE_RETRIEVAL_ERROR_LOG,
+    ML_MODEL_CLEANUP_ERROR_LOG
+)
+
+from apps.core.generative_ai.auxiliary_methods.output_supply_prompts import (
+    EMPTY_OBJECT_PATH_LOG,
+    AgentRunConditions
+)
+
+from apps.core.generative_ai.auxiliary_methods.status_logs.status_log_prompts import (
+    get_number_of_ml_predictions_too_high_log,
+    get_ml_prediction_status_log
+)
+
 from apps.core.generative_ai.auxiliary_methods.tool_helpers.tool_helper_instructions import HELPER_SYSTEM_INSTRUCTIONS
-from apps.core.generative_ai.utils import CONCRETE_LIMIT_ML_MODEL_PREDICTIONS, ChatRoles, GPT_DEFAULT_ENCODING_ENGINE
+
+from apps.core.generative_ai.utils import (
+    CONCRETE_LIMIT_ML_MODEL_PREDICTIONS,
+    ChatRoles,
+    GPT_DEFAULT_ENCODING_ENGINE
+)
+
 from apps.llm_transaction.models import LLMTransaction
 from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
 

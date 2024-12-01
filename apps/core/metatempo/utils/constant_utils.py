@@ -15,7 +15,6 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-
 METATEMPO_IMAGES_ROOT_MEDIA_PATH = "metatempo/logs/images/"
 
 MAXIMUM_OVERALL_LOG_RETRIEVAL_INTERVAL_DAYS = 90

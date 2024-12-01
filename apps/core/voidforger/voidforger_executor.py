@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 import os
 import uuid
@@ -24,18 +25,45 @@ import numpy as np
 from django.contrib.auth.models import User
 from django.utils import timezone
 
-from apps.core.generative_ai.generative_ai_decode_manager import GenerativeAIDecodeController
+from apps.core.generative_ai.generative_ai_decode_manager import (
+    GenerativeAIDecodeController
+)
+
 from apps.core.generative_ai.gpt_openai_manager import OpenAIGPTClientManager
 from apps.core.tool_calls.utils import VoidForgerModesNames
-from apps.core.voidforger.utils import VOIDFORGER_DEFAULT_SEARCH_RESULTS_OLD_CHAT_MESSAGES, \
-    VOIDFORGER_DEFAULT_SEARCH_RESULTS_ACTION_HISTORY_LOGS, VOIDFORGER_DEFAULT_SEARCH_RESULTS_AUTO_EXECUTION_LOGS
-from apps.multimodal_chat.utils import generate_chat_name, SourcesForMultimodalChatsNames
-from apps.voidforger.models import VoidForger, VoidForgerActionMemoryVectorData, VoidForgerOldChatMessagesVectorData, \
-    VoidForgerAutoExecutionMemoryVectorData, MultimodalVoidForgerChatMessage, MultimodalVoidForgerChat, \
-    VoidForgerToggleAutoExecutionLog, VoidForgerActionMemoryLog
-from apps.voidforger.utils import OpenAIEmbeddingModels, OPEN_AI_DEFAULT_EMBEDDING_VECTOR_DIMENSIONS, \
-    VECTOR_INDEX_PATH_ACTION_MEMORIES, VECTOR_INDEX_PATH_CHAT_MESSAGES, VECTOR_INDEX_PATH_AUTO_EXECUTION_MEMORIES, \
-    VoidForgerRuntimeStatusesNames, VoidForgerToggleAutoExecutionActionTypesNames, VoidForgerActionTypesNames
+
+from apps.core.voidforger.utils import (
+    VOIDFORGER_DEFAULT_SEARCH_RESULTS_OLD_CHAT_MESSAGES,
+    VOIDFORGER_DEFAULT_SEARCH_RESULTS_ACTION_HISTORY_LOGS,
+    VOIDFORGER_DEFAULT_SEARCH_RESULTS_AUTO_EXECUTION_LOGS
+)
+
+from apps.multimodal_chat.utils import (
+    generate_chat_name,
+    SourcesForMultimodalChatsNames
+)
+
+from apps.voidforger.models import (
+    VoidForger,
+    VoidForgerActionMemoryVectorData,
+    VoidForgerOldChatMessagesVectorData,
+    VoidForgerAutoExecutionMemoryVectorData,
+    MultimodalVoidForgerChatMessage,
+    MultimodalVoidForgerChat,
+    VoidForgerToggleAutoExecutionLog,
+    VoidForgerActionMemoryLog
+)
+
+from apps.voidforger.utils import (
+    OpenAIEmbeddingModels,
+    OPEN_AI_DEFAULT_EMBEDDING_VECTOR_DIMENSIONS,
+    VECTOR_INDEX_PATH_ACTION_MEMORIES,
+    VECTOR_INDEX_PATH_CHAT_MESSAGES,
+    VECTOR_INDEX_PATH_AUTO_EXECUTION_MEMORIES,
+    VoidForgerRuntimeStatusesNames,
+    VoidForgerToggleAutoExecutionActionTypesNames,
+    VoidForgerActionTypesNames
+)
 
 logger = logging.getLogger(__name__)
 

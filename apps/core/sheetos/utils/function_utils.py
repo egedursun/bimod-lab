@@ -1,4 +1,3 @@
-
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
 #  Project: Bimod.io™
@@ -19,7 +18,6 @@
 import logging
 from json import JSONDecoder
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -27,7 +25,15 @@ def find_tool_call_from_json(response: str, decoder=JSONDecoder()):
     logger.info(f"Searching for tool call in response.")
 
     response = f"""{response}"""
-    response = response.replace("\n", "").replace("'", '"').replace('```json', '').replace('```', '').replace('`', '')
+
+    response = (
+        response.replace("\n", "")
+        .replace("'", '"')
+        .replace('```json', '')
+        .replace('```', '')
+        .replace('`', '')
+    )
+
     json_objects = []
     pos = 0
 

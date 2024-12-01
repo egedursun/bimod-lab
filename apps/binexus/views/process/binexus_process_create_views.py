@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
@@ -37,16 +38,20 @@ class BinexusView_ProcessCreate(LoginRequiredMixin, TemplateView):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         user_orgs = Organization.objects.filter(users__in=[self.request.user])
         llm_models = LLMCore.objects.filter(organization__in=user_orgs)
+
         context['organizations'] = user_orgs
         context['llm_models'] = llm_models
+
         return context
 
     def post(self, request, *args, **kwargs):
 
         ##############################
         # PERMISSION CHECK FOR - CREATE_BINEXUS_PROCESSES
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.CREATE_BINEXUS_PROCESSES):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.CREATE_BINEXUS_PROCESSES
+        ):
             messages.error(self.request, "You do not have permission to create Binexus Processes.")
             return redirect('binexus:process_list')
         ##############################
@@ -64,13 +69,17 @@ class BinexusView_ProcessCreate(LoginRequiredMixin, TemplateView):
             gene_values = request.POST.getlist('additional_genes_values[]')
 
             genes_data = {}
+
             for i in range(len(gene_names)):
+
                 try:
                     gene_name = gene_names[i].strip()
                     raw_values = gene_values[i].strip()
                     values_list = [v.strip() for v in raw_values.split(',') if v.strip()]
+
                     if gene_name and values_list:
                         genes_data[gene_name] = values_list
+
                 except Exception as e:
                     logger.error(f"Error parsing gene data: {e}")
                     continue
@@ -102,6 +111,7 @@ class BinexusView_ProcessCreate(LoginRequiredMixin, TemplateView):
                 created_by_user=request.user
             )
             binexus_process.save()
+
         except Exception as e:
             logger.error(f"Error creating Binexus Process: {e}")
             messages.error(request, "Error creating Binexus Process.")

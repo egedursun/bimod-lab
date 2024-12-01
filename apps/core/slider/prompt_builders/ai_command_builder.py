@@ -17,14 +17,27 @@
 
 import logging
 
-from apps.core.slider.prompts import build_slider_agent_nickname_prompt, build_slider_internal_principles_prompt, \
-    build_slider_agent_personality_prompt, build_slider_target_audience_prompt, build_slider_user_tenant_prompt, \
-    build_slider_spatial_awareness_prompt, build_slider_technical_dictionary_prompt, \
-    build_slider_ops_instruction_prompt, build_slider_action__ai_prompt
-from apps.core.slider.prompts.slider.folder_and_document_data_prompt import \
+from apps.core.slider.prompts import (
+    build_slider_agent_nickname_prompt,
+    build_slider_internal_principles_prompt,
+    build_slider_agent_personality_prompt,
+    build_slider_target_audience_prompt,
+    build_slider_user_tenant_prompt,
+    build_slider_spatial_awareness_prompt,
+    build_slider_technical_dictionary_prompt,
+    build_slider_ops_instruction_prompt,
+    build_slider_action__ai_prompt
+)
+
+from apps.core.slider.prompts.slider.folder_and_document_data_prompt import (
     build_slider_folder_and_document_data_prompt
-from apps.core.slider.prompts.slider.whole_text_supplier_prompt import build_whole_text_supply_prompt, \
+)
+
+from apps.core.slider.prompts.slider.whole_text_supplier_prompt import (
+    build_whole_text_supply_prompt,
     build_whole_text_supply_prompt_public
+)
+
 from apps.core.slider.slider_executor import SliderExecutionManager
 from apps.core.slider.slider_executor_public import SliderExecutionManager_Public
 

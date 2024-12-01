@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from apps.semantor.models import SemantorConfiguration
@@ -26,7 +27,6 @@ def execute_semantor_search_query(
     llm_model,
     query
 ):
-
     from apps.core.semantor.semantor_executor import SemantorVectorSearchExecutionManager
     try:
         xc = SemantorVectorSearchExecutionManager(

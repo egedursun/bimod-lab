@@ -14,12 +14,13 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
+
 import logging
 
-from apps.orchestrations.models import OrchestrationQuery, Maestro
-
+from apps.orchestrations.models import (
+    OrchestrationQuery,
+    Maestro
+)
 
 logger = logging.getLogger(__name__)
 
@@ -32,7 +33,6 @@ def run_worker_tool(
     file_urls,
     image_urls
 ):
-
     from apps.core.orchestration.orchestration_executor import OrchestrationExecutor
     from apps.core.orchestration.utils import DEFAULT_WORKER_ASSISTANT_ERROR_MESSAGE
 

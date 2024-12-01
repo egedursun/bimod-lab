@@ -14,14 +14,26 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
-from apps.core.expert_networks.prompts.build_expert_network_to_assistant_instructions_prompt import \
+from apps.core.expert_networks.prompts.build_expert_network_to_assistant_instructions_prompt import (
     build_leanmod_to_expert_assistant_instructions_prompt
+)
+
 from apps.core.expert_networks.prompts.error_messages import DEFAULT_EXPERT_ASSISTANT_ERROR_MESSAGE
 from apps.assistants.models import Assistant
-from apps.leanmod.models import ExpertNetwork, ExpertNetworkAssistantReference
-from apps.multimodal_chat.models import MultimodalChat, MultimodalChatMessage
+
+from apps.leanmod.models import (
+    ExpertNetwork,
+    ExpertNetworkAssistantReference
+)
+
+from apps.multimodal_chat.models import (
+    MultimodalChat,
+    MultimodalChatMessage
+)
+
 from apps.multimodal_chat.utils import SourcesForMultimodalChatsNames
 
 logger = logging.getLogger(__name__)

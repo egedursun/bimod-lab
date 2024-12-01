@@ -14,10 +14,14 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from apps.core.codebase.utils import KNOWLEDGE_BASE_PROVIDERS
-from apps.core.vector_operations.vector_document.vector_store_executor import WeaviateExecutor
+
+from apps.core.vector_operations.vector_document.vector_store_executor import (
+    WeaviateExecutor
+)
 
 logger = logging.getLogger(__name__)
 

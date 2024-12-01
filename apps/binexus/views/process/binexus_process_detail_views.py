@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404
@@ -31,8 +32,10 @@ class BinexusView_ProcessDetail(LoginRequiredMixin, TemplateView):
 
         ##############################
         # PERMISSION CHECK FOR - LIST_BINEXUS_PROCESSES
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.LIST_BINEXUS_PROCESSES):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.LIST_BINEXUS_PROCESSES
+        ):
             messages.error(self.request, "You do not have permission to list Binexus Processes.")
             return context
         ##############################
@@ -40,9 +43,13 @@ class BinexusView_ProcessDetail(LoginRequiredMixin, TemplateView):
         try:
             process_id = self.kwargs.get('pk')
             binexus_process = get_object_or_404(BinexusProcess, id=process_id)
-            elite_agents = BinexusEliteAgent.objects.filter(binexus_process=binexus_process)
+            elite_agents = BinexusEliteAgent.objects.filter(
+                binexus_process=binexus_process
+            )
+
             context['binexus_process'] = binexus_process
             context['elite_agents'] = elite_agents
+
         except Exception as e:
             messages.error(self.request, "Error listing the Binexus Process.")
             return context

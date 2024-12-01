@@ -14,19 +14,33 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from apps.core.drafting.drafting_executor import DraftingExecutionManager
 from apps.core.drafting.drafting_executor_public import DraftingExecutionManager_Public
-from apps.core.drafting.prompts import build_drafting_agent_nickname_prompt, build_drafting_internal_principles_prompt, \
-    build_drafting_agent_personality_prompt, build_drafting_target_audience_prompt, build_drafting_user_tenant_prompt, \
-    build_drafting_spatial_awareness_prompt, build_drafting_technical_dictionary_prompt, \
-    build_drafting_ops_instruction_prompt, build_drafting_action__img_prompt, \
+
+from apps.core.drafting.prompts import (
+    build_drafting_agent_nickname_prompt,
+    build_drafting_internal_principles_prompt,
+    build_drafting_agent_personality_prompt,
+    build_drafting_target_audience_prompt,
+    build_drafting_user_tenant_prompt,
+    build_drafting_spatial_awareness_prompt,
+    build_drafting_technical_dictionary_prompt,
+    build_drafting_ops_instruction_prompt,
+    build_drafting_action__img_prompt,
     build_drafting_tool_prompt__generate_image
-from apps.core.drafting.prompts.drafting.folder_and_document_data_prompt import \
+)
+
+from apps.core.drafting.prompts.drafting.folder_and_document_data_prompt import (
     build_drafting_folder_and_document_data_prompt
-from apps.core.drafting.prompts.drafting.whole_text_supplier_prompt import build_whole_text_supply_prompt_public, \
+)
+
+from apps.core.drafting.prompts.drafting.whole_text_supplier_prompt import (
+    build_whole_text_supply_prompt_public,
     build_whole_text_supply_prompt
+)
 
 logger = logging.getLogger(__name__)
 
@@ -134,4 +148,3 @@ def build_img_command_system_prompt_public(
     combined_system_prompt += tool_execution_prompts
 
     return combined_system_prompt
-

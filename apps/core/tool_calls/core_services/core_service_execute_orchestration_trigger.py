@@ -14,13 +14,19 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib.auth.models import User
 
 from apps.core.orchestration.orchestration_executor import OrchestrationExecutor
-from apps.orchestrations.models import OrchestrationReactantAssistantConnection, OrchestrationQuery, \
+
+from apps.orchestrations.models import (
+    OrchestrationReactantAssistantConnection,
+    OrchestrationQuery,
     OrchestrationQueryLog
+)
+
 from apps.orchestrations.utils import OrchestrationQueryLogTypesNames
 
 logger = logging.getLogger(__name__)

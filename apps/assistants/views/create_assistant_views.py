@@ -33,20 +33,29 @@ from apps.user_permissions.utils import PermissionNames
 from apps.assistants.utils import MULTI_STEP_REASONING_CAPABILITY_CHOICE
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
 class AssistantView_Create(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
-        context['organizations'] = Organization.objects.filter(users__in=[self.request.user])
-        context['llm_models'] = LLMCore.objects.filter(organization__in=context['organizations'])
+        context['organizations'] = Organization.objects.filter(
+            users__in=[
+                self.request.user
+            ]
+        )
+        context['llm_models'] = LLMCore.objects.filter(
+            organization__in=context['organizations']
+        )
         context['response_languages'] = AGENT_SPEECH_LANGUAGES
         context['context_overflow_strategies'] = CONTEXT_MANAGEMENT_STRATEGY
         context['reasoning_capability_choices'] = MULTI_STEP_REASONING_CAPABILITY_CHOICE
-        context["ner_integrations"] = NERIntegration.objects.filter(organization__in=context['organizations'])
-        context["projects"] = ProjectItem.objects.filter(organization__in=context['organizations'])
+        context["ner_integrations"] = NERIntegration.objects.filter(
+            organization__in=context['organizations']
+        )
+        context["projects"] = ProjectItem.objects.filter(
+            organization__in=context['organizations']
+        )
         return context
 
     def post(self, request, *args, **kwargs):
@@ -54,7 +63,10 @@ class AssistantView_Create(LoginRequiredMixin, TemplateView):
 
         ##############################
         # PERMISSION CHECK FOR - ADD_ASSISTANTS
-        if not UserPermissionManager.is_authorized(user=context_user, operation=PermissionNames.ADD_ASSISTANTS):
+        if not UserPermissionManager.is_authorized(
+            user=context_user,
+            operation=PermissionNames.ADD_ASSISTANTS
+        ):
             messages.error(request, "You do not have permission to create agents.")
             return redirect('assistants:list')
         ##############################
@@ -63,11 +75,16 @@ class AssistantView_Create(LoginRequiredMixin, TemplateView):
             org_id = request.POST.get('organization')
             llm_id = request.POST.get('llm_model')
             ner_id = None
-            if ("ner_integration" in request.POST and request.POST.get('ner_integration')
+
+            if (
+                "ner_integration" in request.POST and
+                request.POST.get('ner_integration')
                 and request.POST.get('ner_integration') != "None"
-                and request.POST.get('ner_integration') != ""):
+                and request.POST.get('ner_integration') != ""
+            ):
                 ner_id = request.POST.get('ner_integration')
                 logger.info(f"NER Integration is defined for this agent. NER ID: {ner_id}")
+
         except Exception as e:
             logger.error(f"Error while getting the organization and LLM model information: {e}")
             messages.error(request, "Organization and LLM model information is required.")
@@ -79,20 +96,27 @@ class AssistantView_Create(LoginRequiredMixin, TemplateView):
             system_instructions = request.POST.get('instructions')
             templated_response = request.POST.get('response_template')
             target_audience = request.POST.get('audience')
+
             tool_call_max_step_back_retries = request.POST.get('max_retry_count')
             tool_call_chain_same_tool_max = request.POST.get('tool_max_attempts_per_instance')
             tool_call_chain_maximum_attempts = request.POST.get('tool_max_chains')
+
             terms = request.POST.getlist('terms[]')
             definitions = request.POST.getlist('definitions[]')
-            technical_dict = {term: definition for term, definition in zip(terms, definitions)}
+            technical_dict = {
+                term: definition for term, definition in zip(terms, definitions)
+            }
+
             intra_memory_strategy = request.POST.get('context_overflow_strategy')
             max_msgs_context = request.POST.get('max_context_messages')
             logger.info(f"Agent information is received.")
 
             if intra_memory_strategy == ContextManagementStrategyNames.FORGET:
                 pass
+
             elif intra_memory_strategy == ContextManagementStrategyNames.STOP:
                 pass
+
             elif intra_memory_strategy == ContextManagementStrategyNames.VECTORIZE:
                 pass
 
@@ -103,9 +127,19 @@ class AssistantView_Create(LoginRequiredMixin, TemplateView):
             visualization_capab = request.POST.get('image_generation_capability') == 'on'
             reasoning_capab = request.POST.get('multi_step_reasoning_capability_choice')
             agent_img = request.FILES.get('assistant_image')
-            if not (org_id and llm_id and agent_name and agent_description and system_instructions and target_audience and tone):
+
+            if not (
+                org_id and
+                llm_id and
+                agent_name and
+                agent_description and
+                system_instructions and
+                target_audience and
+                tone
+            ):
                 messages.error(request, "All fields are required.")
                 return redirect('assistants:create')
+
         except Exception as e:
             logger.error(f"Error while getting the agent information: {e}")
             messages.error(request, "Agent information is required.")
@@ -117,25 +151,40 @@ class AssistantView_Create(LoginRequiredMixin, TemplateView):
             ner_integration = None
             if ner_id:
                 ner_integration = NERIntegration.objects.get(id=ner_id)
+
             agent = Assistant.objects.create(
-                organization=org, llm_model=llm_core, name=agent_name, description=agent_description,
-                instructions=system_instructions, audience=target_audience,
+                organization=org,
+                llm_model=llm_core,
+                name=agent_name,
+                description=agent_description,
+                instructions=system_instructions,
+                audience=target_audience,
                 max_retry_count=tool_call_max_step_back_retries,
                 tool_max_attempts_per_instance=tool_call_chain_same_tool_max,
-                tool_max_chains=tool_call_chain_maximum_attempts, tone=tone, assistant_image=agent_img,
-                context_overflow_strategy=intra_memory_strategy,max_context_messages=max_msgs_context,
-                created_by_user=context_user, last_updated_by_user=context_user, response_template=templated_response,
-                response_language=communication_lang, time_awareness=spatial_capab_time,
-                place_awareness=spatial_capab_place, image_generation_capability=visualization_capab,
-                multi_step_reasoning_capability_choice=reasoning_capab, glossary=technical_dict,
+                tool_max_chains=tool_call_chain_maximum_attempts,
+                tone=tone,
+                assistant_image=agent_img,
+                context_overflow_strategy=intra_memory_strategy,
+                max_context_messages=max_msgs_context,
+                created_by_user=context_user,
+                last_updated_by_user=context_user,
+                response_template=templated_response,
+                response_language=communication_lang,
+                time_awareness=spatial_capab_time,
+                place_awareness=spatial_capab_place,
+                image_generation_capability=visualization_capab,
+                multi_step_reasoning_capability_choice=reasoning_capab,
+                glossary=technical_dict,
                 ner_integration=ner_integration
             )
+
             org.assistants.add(agent)
             org.save()
 
             project_items = request.POST.getlist('project_items[]')
             agent.project_items.set(project_items)
             agent.save()
+
         except Exception as e:
             logger.error(f"Error while creating the agent: {e}")
             messages.error(request, "Error while creating the agent.")

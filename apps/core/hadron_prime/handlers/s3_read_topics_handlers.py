@@ -14,9 +14,14 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
-from apps.hadron_prime.models import HadronNode, HadronTopicMessage, HadronTopic
+from apps.hadron_prime.models import (
+    HadronNode,
+    HadronTopicMessage,
+    HadronTopic
+)
 
 
 logger = logging.getLogger(__name__)
@@ -29,6 +34,7 @@ def structure_topic_messages(node: HadronNode):
     topic_messages_string = {}
     chunk_size = (node.topic_messages_history_lookback_memory_size // len(hadron_topics))
     logger.info("Starting to structure the topic messages for the node.")
+
     for topic in hadron_topics:
         topic: HadronTopic
         topic_messages = HadronTopicMessage.objects.filter(topic=topic).order_by('-created_at')[:chunk_size]
@@ -37,20 +43,29 @@ def structure_topic_messages(node: HadronNode):
             topic_message: HadronTopicMessage
             try:
                 if topic.topic_name not in topic_messages:
-                    topic_messages_string[topic.topic_name] = str(f"[SENDER_NODE_NAME | MESSAGE | CREATED_AT]" + "\n")
-                    topic_messages_string[topic.topic_name] = f"[{str(topic_message.sender_node.node_name)} | {str(topic_message.message)} | {str(topic_message.created_at)}]" + "\n"
+                    topic_messages_string[
+                        topic.topic_name
+                    ] = str(f"[SENDER_NODE_NAME | MESSAGE | CREATED_AT]" + "\n")
+                    topic_messages_string[
+                        topic.topic_name
+                    ] = f"[{str(topic_message.sender_node.node_name)} | {str(topic_message.message)} | {str(topic_message.created_at)}]" + "\n"
+
                 else:
                     topic_messages_string[topic.topic_name] += f"[{str(topic_message.sender_node.node_name)} | {str(topic_message.message)} | {str(topic_message.created_at)}]" + "\n"
+
             except Exception as e:
                 error = str(e)
                 logger.error(f"Error while structuring the topic messages for the node: {error}")
+
     logger.info("Finished structuring the topic messages for the node.")
 
     topic_metadata_string = str(f"[TOPIC_NAME | TOPIC_CATEGORY | TOPIC_DESCRIPTION | TOPIC_PURPOSE | CREATED_AT]" + "\n")
     logger.info("Starting to structure the topic metadata for the node.")
+
     for topic in hadron_topics:
         topic: HadronTopic
         topic_metadata_string += str(f"[{str(topic.topic_name)} | {str(topic.topic_category)} | {str(topic.topic_description)} | {str(topic.topic_purpose)} | {str(topic.created_at)}]" + "\n")
+
     logger.info("Finished structuring the topic metadata for the node.")
 
     structured_topic_messages = f"""
@@ -70,5 +85,6 @@ def structure_topic_messages(node: HadronNode):
 
         -----
     """
+
     logger.info("Structured the combined topic messages for the node.")
     return structured_topic_messages, error

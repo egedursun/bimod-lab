@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 import weaviate
@@ -21,15 +22,32 @@ import weaviate.classes as wvc
 from weaviate.config import AdditionalConfig, Timeout
 
 from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
-from apps.core.vector_operations.vector_document.handler_methods.creation_handler import \
+
+from apps.core.vector_operations.vector_document.handler_methods.creation_handler import (
     create_weaviate_classes_handler
-from apps.core.vector_operations.vector_document.handler_methods.removal_handler_context_memory import \
+)
+
+from apps.core.vector_operations.vector_document.handler_methods.removal_handler_context_memory import (
     delete_weaviate_class_handler
-from apps.core.vector_operations.vector_document.handler_methods.removal_handler_document import delete_document_helper
-from apps.core.vector_operations.vector_document.utils import WEAVIATE_INITIALIZATION_TIMEOUT, WEAVIATE_QUERY_TIMEOUT, \
+)
+
+from apps.core.vector_operations.vector_document.handler_methods.removal_handler_document import (
+    delete_document_helper
+)
+
+from apps.core.vector_operations.vector_document.utils import (
+    WEAVIATE_INITIALIZATION_TIMEOUT,
+    WEAVIATE_QUERY_TIMEOUT,
     WEAVIATE_INSERT_TIMEOUT
-from apps.datasource_knowledge_base.tasks import split_document_into_chunks, embed_document_data, \
-    embed_document_chunks, index_document_helper
+)
+
+from apps.datasource_knowledge_base.tasks import (
+    split_document_into_chunks,
+    embed_document_data,
+    embed_document_chunks,
+    index_document_helper
+)
+
 from apps.llm_transaction.models import LLMTransaction
 from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
 

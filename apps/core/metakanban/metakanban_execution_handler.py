@@ -22,13 +22,23 @@ from django.utils import timezone
 from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
 from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
 from apps.core.metakanban.builders import build_metakanban_agent_prompts
-from apps.core.metakanban.tools.metakanban_command_query_runner import run_metakanban_command_query
-from apps.core.metakanban.tools.metakanban_command_query_verifier import verify_metakanban_command_query_content
-from apps.core.metakanban.utils import find_tool_call_from_json, METAKANBAN_TOOL_COMMAND_MAXIMUM_ATTEMPTS
+
+from apps.core.metakanban.tools.metakanban_command_query_runner import (
+    run_metakanban_command_query
+)
+
+from apps.core.metakanban.tools.metakanban_command_query_verifier import (
+    verify_metakanban_command_query_content
+)
+
+from apps.core.metakanban.utils import (
+    find_tool_call_from_json,
+    METAKANBAN_TOOL_COMMAND_MAXIMUM_ATTEMPTS
+)
+
 from apps.llm_transaction.models import LLMTransaction
 from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
 from apps.metakanban.models import MetaKanbanBoard
-
 
 logger = logging.getLogger(__name__)
 
@@ -83,7 +93,8 @@ class MetaKanbanExecutionManager:
             logger.info(f"[handle_metakanban_operation_command] Created LLMTransaction for system prompt.")
 
         except Exception as e:
-            logger.error(f"[handle_metakanban_operation_command] Error creating LLMTransaction for system prompt. Error: {e}")
+            logger.error(
+                f"[handle_metakanban_operation_command] Error creating LLMTransaction for system prompt. Error: {e}")
             pass
 
         try:
@@ -105,7 +116,8 @@ class MetaKanbanExecutionManager:
             logger.info(f"[handle_metakanban_operation_command] Created LLMTransaction for user prompt.")
 
         except Exception as e:
-            logger.error(f"[handle_metakanban_operation_command] Error creating LLMTransaction for user prompt. Error: {e}")
+            logger.error(
+                f"[handle_metakanban_operation_command] Error creating LLMTransaction for user prompt. Error: {e}")
             pass
 
         try:
@@ -141,7 +153,8 @@ class MetaKanbanExecutionManager:
                     transaction_type=ChatRoles.ASSISTANT,
                     transaction_source=LLMTransactionSourcesTypesNames.METAKANBAN
                 )
-                logger.info(f"[handle_metakanban_operation_command] Created LLMTransaction for assistant response (primary).")
+                logger.info(
+                    f"[handle_metakanban_operation_command] Created LLMTransaction for assistant response (primary).")
 
             except Exception as e:
                 logger.error(
@@ -206,7 +219,8 @@ class MetaKanbanExecutionManager:
                     transaction_type=ChatRoles.ASSISTANT,
                     transaction_source=LLMTransactionSourcesTypesNames.METAKANBAN
                 )
-                logger.info(f"[handle_metakanban_operation_command] Created LLMTransaction for assistant response (backup).")
+                logger.info(
+                    f"[handle_metakanban_operation_command] Created LLMTransaction for assistant response (backup).")
 
             except Exception as e:
                 logger.error(
@@ -286,7 +300,8 @@ class MetaKanbanExecutionManager:
                         transaction_type=ChatRoles.ASSISTANT,
                         transaction_source=LLMTransactionSourcesTypesNames.METAKANBAN
                     )
-                    logger.info(f"[handle_metakanban_operation_command] Created LLMTransaction for assistant response.")
+                    logger.info(
+                        f"[handle_metakanban_operation_command] Created LLMTransaction for assistant response.")
 
                 except Exception as e:
                     logger.error(
@@ -294,13 +309,15 @@ class MetaKanbanExecutionManager:
                     pass
 
             except Exception as e:
-                logger.error(f"[handle_metakanban_operation_command] Error executing MetaKanban command: {query}. Error: {e}")
+                logger.error(
+                    f"[handle_metakanban_operation_command] Error executing MetaKanban command: {query}. Error: {e}")
                 error = f"[handle_metakanban_operation_command] Error executing MetaKanban command: {query}. Error: {e}"
                 return output, error
 
         if tool_counter == METAKANBAN_TOOL_COMMAND_MAXIMUM_ATTEMPTS:
-            error = (f"[handle_metakanban_operation_command] Error executing MetaKanban command: {query}. Error: Maximum tool call attempts "
-                     f"reached.")
+            error = (
+                f"[handle_metakanban_operation_command] Error executing MetaKanban command: {query}. Error: Maximum tool call attempts "
+                f"reached.")
 
             logger.error(error)
             return output, error
@@ -322,7 +339,8 @@ class MetaKanbanExecutionManager:
             logger.info(f"[handle_ai_command] Created LLMTransaction for MetaKanban Management by AI.")
 
         except Exception as e:
-            logger.error(f"[handle_ai_command] Error creating LLMTransaction for MetaKanban Management by AI. Error: {e}")
+            logger.error(
+                f"[handle_ai_command] Error creating LLMTransaction for MetaKanban Management by AI. Error: {e}")
             pass
 
         output = choice_message_content

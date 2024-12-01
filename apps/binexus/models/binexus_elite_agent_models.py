@@ -20,7 +20,10 @@ from django.db import models
 
 
 class BinexusEliteAgent(models.Model):
-    binexus_process = models.ForeignKey('binexus.BinexusProcess', on_delete=models.CASCADE)
+    binexus_process = models.ForeignKey(
+        'binexus.BinexusProcess',
+        on_delete=models.CASCADE
+    )
     agent_nickname = models.CharField(max_length=255)
     agent_prompt = models.TextField(null=True, blank=True)
     agent_temperature = models.FloatField(default=0.0)
@@ -39,11 +42,35 @@ class BinexusEliteAgent(models.Model):
         verbose_name_plural = 'Binexus Elite Agents'
         ordering = ['-binexus_fitness_score']
         indexes = [
-            models.Index(fields=['binexus_fitness_score'], name='binexus_fitness_score_idx'),
-            models.Index(fields=['created_at'], name='created_at_idx'),
-            models.Index(fields=['updated_at'], name='updated_at_idx'),
-            models.Index(fields=['binexus_process'], name='binexus_process_idx'),
-            models.Index(fields=['agent_nickname'], name='agent_nickname_idx'),
-            models.Index(fields=['agent_temperature'], name='agent_temperature_idx'),
-            models.Index(fields=['created_at', 'updated_at'], name='created_at_updated_at_idx'),
+            models.Index(
+                fields=['binexus_fitness_score'],
+                name='binexus_fitness_score_idx'
+            ),
+            models.Index(
+                fields=['created_at'],
+                name='created_at_idx'
+            ),
+            models.Index(
+                fields=['updated_at'],
+                name='updated_at_idx'
+            ),
+            models.Index(fields=[
+                'binexus_process'],
+                name='binexus_process_idx'
+            ),
+            models.Index(
+                fields=['agent_nickname'],
+                name='agent_nickname_idx'
+            ),
+            models.Index(
+                fields=['agent_temperature'],
+                name='agent_temperature_idx'
+            ),
+            models.Index(
+                fields=[
+                    'created_at',
+                    'updated_at'
+                ],
+                name='created_at_updated_at_idx'
+            ),
         ]

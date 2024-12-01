@@ -18,7 +18,11 @@
 from django.contrib import admin
 
 from apps.blog_app.models import BlogPost
-from apps.blog_app.utils import BLOG_POST_ADMIN_LIST, BLOG_POST_ADMIN_FILTER, BLOG_POST_ADMIN_SEARCH
+from apps.blog_app.utils import (
+    BLOG_POST_ADMIN_LIST,
+    BLOG_POST_ADMIN_FILTER,
+    BLOG_POST_ADMIN_SEARCH
+)
 
 
 @admin.register(BlogPost)

@@ -22,13 +22,28 @@ import requests
 from openai import OpenAI
 
 from apps.core.generative_ai.auxiliary_methods.affirmations.affirmation_instructions import GENERIC_AFFIRMATION_PROMPT
-from apps.core.generative_ai.auxiliary_methods.errors.error_log_prompts import \
-    IMAGE_ANALYST_RESPONSE_RETRIEVAL_ERROR_LOG, IMAGE_ANALYST_RESPONSE_PROCESSING_ERROR_LOG
+
+from apps.core.generative_ai.auxiliary_methods.errors.error_log_prompts import (
+    IMAGE_ANALYST_RESPONSE_RETRIEVAL_ERROR_LOG,
+    IMAGE_ANALYST_RESPONSE_PROCESSING_ERROR_LOG
+)
+
 from apps.core.generative_ai.auxiliary_methods.output_supply_prompts import EMPTY_OBJECT_PATH_LOG
-from apps.core.generative_ai.auxiliary_methods.status_logs.status_log_prompts import get_number_of_files_too_high_log
-from apps.core.generative_ai.auxiliary_methods.tool_helpers.tool_helper_instructions import HELPER_SYSTEM_INSTRUCTIONS
-from apps.core.generative_ai.utils import CONCRETE_LIMIT_SINGLE_FILE_INTERPRETATION, ChatRoles, \
+
+from apps.core.generative_ai.auxiliary_methods.status_logs.status_log_prompts import (
+    get_number_of_files_too_high_log
+)
+
+from apps.core.generative_ai.auxiliary_methods.tool_helpers.tool_helper_instructions import (
+    HELPER_SYSTEM_INSTRUCTIONS
+)
+
+from apps.core.generative_ai.utils import (
+    CONCRETE_LIMIT_SINGLE_FILE_INTERPRETATION,
+    ChatRoles,
     GPT_DEFAULT_ENCODING_ENGINE
+)
+
 from apps.llm_transaction.models import LLMTransaction
 from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
 

@@ -19,8 +19,11 @@
 from django.contrib import admin
 
 from apps.binexus.models import BinexusEliteAgent
-from apps.binexus.utils import BINEXUS_ELITE_AGENT_ADMIN_LIST, BINEXUS_ELITE_AGENT_ADMIN_FILTER, \
+from apps.binexus.utils import (
+    BINEXUS_ELITE_AGENT_ADMIN_LIST,
+    BINEXUS_ELITE_AGENT_ADMIN_FILTER,
     BINEXUS_ELITE_AGENT_ADMIN_SEARCH
+)
 
 
 @admin.register(BinexusEliteAgent)

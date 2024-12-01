@@ -18,7 +18,11 @@
 from django.contrib import admin
 
 from apps.audit_logs.models import AuditLog
-from apps.audit_logs.utils import AUDIT_LOG_ADMIN_LIST, AUDIT_LOG_ADMIN_SEARCH, AUDIT_LOG_ADMIN_FILTER
+from apps.audit_logs.utils import (
+    AUDIT_LOG_ADMIN_LIST,
+    AUDIT_LOG_ADMIN_SEARCH,
+    AUDIT_LOG_ADMIN_FILTER
+)
 
 
 @admin.register(AuditLog)

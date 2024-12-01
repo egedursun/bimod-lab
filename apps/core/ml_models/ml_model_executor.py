@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 from uuid import uuid4
 
@@ -21,8 +22,13 @@ import boto3
 import filetype
 
 from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
-from apps.core.ml_models.utils import GENERATED_FILES_ROOT_PATH, GENERATED_IMAGES_ROOT_PATH, \
+
+from apps.core.ml_models.utils import (
+    GENERATED_FILES_ROOT_PATH,
+    GENERATED_IMAGES_ROOT_PATH,
     UNCLASSIFIED_FILE_EXTENSION
+)
+
 from apps.datasource_ml_models.models import DataSourceMLModelItem
 from apps.llm_transaction.models import LLMTransaction
 from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames

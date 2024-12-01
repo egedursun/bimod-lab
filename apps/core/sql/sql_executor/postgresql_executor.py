@@ -14,15 +14,19 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
+
 import logging
 
 import psycopg2
 from psycopg2.extras import RealDictCursor
 
 from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
-from apps.core.sql.utils import before_execute_sql_query, can_write_to_database
+
+from apps.core.sql.utils import (
+    before_execute_sql_query,
+    can_write_to_database
+)
+
 from apps.datasource_sql.models import SQLDatabaseConnection
 from apps.llm_transaction.models import LLMTransaction
 from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames

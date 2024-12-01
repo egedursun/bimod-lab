@@ -14,9 +14,14 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
-from apps.core.code_analyst.utils import save_files_and_return_uris, save_images_and_return_uris
+from apps.core.code_analyst.utils import (
+    save_files_and_return_uris,
+    save_images_and_return_uris
+)
+
 from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
 from apps.llm_transaction.models import LLMTransaction
 from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames

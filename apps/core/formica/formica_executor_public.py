@@ -18,11 +18,20 @@
 import logging
 
 from apps.core.generative_ai.gpt_openai_manager import OpenAIGPTClientManager
-from apps.core.formica.public_handlers import (handle_ai_command_public, handle_auto_command_public,
-                                               handle_img_command_public, handle_nosql_command_public,
-                                               handle_select_command_public, handle_sql_command_public,
-                                               handle_ssh_command_public, handle_vect_command_public,
-                                               handle_web_command_public, handle_repo_command_public)
+
+from apps.core.formica.public_handlers import (
+    handle_ai_command_public,
+    handle_auto_command_public,
+    handle_img_command_public,
+    handle_nosql_command_public,
+    handle_select_command_public,
+    handle_sql_command_public,
+    handle_ssh_command_public,
+    handle_vect_command_public,
+    handle_web_command_public,
+    handle_repo_command_public
+)
+
 from apps.formica.models import FormicaGoogleAppsConnection
 
 logger = logging.getLogger(__name__)

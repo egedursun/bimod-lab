@@ -16,11 +16,39 @@
 #
 
 
-BINEXUS_ELITE_AGENT_ADMIN_LIST = ['agent_nickname', 'binexus_process', 'binexus_fitness_score', 'created_at']
-BINEXUS_ELITE_AGENT_ADMIN_FILTER = ['binexus_process', 'binexus_fitness_score', 'created_at']
-BINEXUS_ELITE_AGENT_ADMIN_SEARCH = ['agent_nickname', 'binexus_process', 'binexus_fitness_score', 'created_at']
+BINEXUS_ELITE_AGENT_ADMIN_LIST = [
+    'agent_nickname',
+    'binexus_process',
+    'binexus_fitness_score',
+    'created_at'
+]
+BINEXUS_ELITE_AGENT_ADMIN_FILTER = [
+    'binexus_process',
+    'binexus_fitness_score',
+    'created_at'
+]
+BINEXUS_ELITE_AGENT_ADMIN_SEARCH = [
+    'agent_nickname',
+    'binexus_process',
+    'binexus_fitness_score',
+    'created_at'
+]
 
-BINEXUS_PROCESS_ADMIN_LIST = ['process_name', 'organization', 'llm_model', 'created_by_user', 'created_at']
-BINEXUS_PROCESS_ADMIN_FILTER = ['organization', 'llm_model', 'created_by_user']
-BINEXUS_PROCESS_ADMIN_SEARCH = ['process_name', 'organization__name', 'llm_model__nickname',
-                                'created_by_user__username']
+BINEXUS_PROCESS_ADMIN_LIST = [
+    'process_name',
+    'organization',
+    'llm_model',
+    'created_by_user',
+    'created_at'
+]
+BINEXUS_PROCESS_ADMIN_FILTER = [
+    'organization',
+    'llm_model',
+    'created_by_user'
+]
+BINEXUS_PROCESS_ADMIN_SEARCH = [
+    'process_name',
+    'organization__name',
+    'llm_model__nickname',
+    'created_by_user__username'
+]

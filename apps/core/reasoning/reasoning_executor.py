@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 from uuid import uuid4
 
@@ -22,7 +23,12 @@ import filetype
 
 from apps.core.code_analyst.utils import BIN_FILE_FORMAT
 from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
-from apps.core.media_managers.utils import GENERATED_IMAGES_ROOT_MEDIA_PATH, GENERATED_FILES_ROOT_MEDIA_PATH
+
+from apps.core.media_managers.utils import (
+    GENERATED_IMAGES_ROOT_MEDIA_PATH,
+    GENERATED_FILES_ROOT_MEDIA_PATH
+)
+
 from apps.llm_transaction.models import LLMTransaction
 from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
 from config import settings

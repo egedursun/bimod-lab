@@ -15,7 +15,6 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-
 MAX_CHARACTERS_RETRIEVAL = 8000
 
 DEFAULT_BANNER_TIMEOUT = 200

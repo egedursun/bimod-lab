@@ -15,6 +15,4 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-
 DRAFTING_TOOL_CALL_MAXIMUM_ATTEMPTS = 3
-

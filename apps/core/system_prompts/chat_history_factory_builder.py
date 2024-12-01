@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 import uuid
 
@@ -22,7 +23,12 @@ import requests
 from apps.core.context_memory_manager.context_memory_manager import ContextMemoryManager
 from apps.core.data_security.ner.ner_executor import NERExecutor
 from apps.llm_transaction.models import LLMTransaction
-from apps.multimodal_chat.models import MultimodalChat, MultimodalLeanChat
+
+from apps.multimodal_chat.models import (
+    MultimodalChat,
+    MultimodalLeanChat
+)
+
 import base64 as b64
 
 from apps.voidforger.models import MultimodalVoidForgerChat

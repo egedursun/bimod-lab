@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
@@ -31,19 +32,28 @@ class BinexusView_ProcessList(LoginRequiredMixin, TemplateView):
 
         ##############################
         # PERMISSION CHECK FOR - LIST_BINEXUS_PROCESSES
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.LIST_BINEXUS_PROCESSES):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.LIST_BINEXUS_PROCESSES
+        ):
             messages.error(self.request, "You do not have permission to list Binexus Processes.")
             return context
         ##############################
 
         try:
-            user_orgs = Organization.objects.filter(users__in=[self.request.user])
+            user_orgs = Organization.objects.filter(
+                users__in=[self.request.user]
+            )
+
             processes_by_org = {
-                org: BinexusProcess.objects.filter(organization=org)
+                org: BinexusProcess.objects.filter(
+                    organization=org
+                )
                 for org in user_orgs
             }
+
             context['processes_by_org'] = processes_by_org
+
         except Exception as e:
             messages.error(self.request, "Error listing the Binexus Processes.")
             return context

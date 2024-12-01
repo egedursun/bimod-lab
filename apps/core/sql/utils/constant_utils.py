@@ -15,7 +15,6 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-
 SQL_DBMS_PROVIDERS = {
     "POSTGRESQL": {
         "code": "postgresql",

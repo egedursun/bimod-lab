@@ -15,19 +15,24 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-
 import json
 import logging
 
-from apps.core.orchestration.utils import get_orchestration_json_decode_error_log, \
-    validate_orchestration_main_tool_json, get_no_orchestration_tool_found_error_log
+from apps.core.orchestration.utils import (
+    get_orchestration_json_decode_error_log,
+    validate_orchestration_main_tool_json,
+    get_no_orchestration_tool_found_error_log
+)
+
 from apps.core.orchestration.runners.worker_tool_runner import run_worker_tool
-from apps.core.orchestration.validators.validate_orchestration_assistant_call import \
+
+from apps.core.orchestration.validators.validate_orchestration_assistant_call import (
     validate_orchestration_worker_assistant_call_execution_tool_json
+)
+
 from apps.core.tool_calls.utils import ToolCallDescriptorNames
 from apps.orchestrations.models import Maestro, OrchestrationQuery
 from config.settings import MEDIA_URL
-
 
 logger = logging.getLogger(__name__)
 
@@ -58,7 +63,8 @@ class OrchestrationToolManager:
             logger.info(f"[OrchestrationToolManager.use_tool] The tool usage JSON is loaded successfully.")
 
         except Exception as e:
-            logger.error(f"[OrchestrationToolManager.use_tool] An error occurred while loading the tool usage JSON:", e)
+            logger.error(f"[OrchestrationToolManager.use_tool] An error occurred while loading the tool usage JSON:",
+                         e)
 
             return get_orchestration_json_decode_error_log(
                 error_logs=str(e)

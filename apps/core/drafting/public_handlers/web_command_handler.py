@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import json
 import logging
 
@@ -26,12 +27,10 @@ from apps.core.tool_calls.input_verifiers.verify_browser_query import verify_bro
 from apps.llm_transaction.models import LLMTransaction
 from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
 
-
 logger = logging.getLogger(__name__)
 
 
 def handle_web_command_public(xc, command: str, content: str) -> str:
-
     from apps.core.drafting.drafting_executor_public import DraftingExecutionManager_Public
     from apps.core.drafting.prompt_builders import build_web_command_system_prompt_public
     xc: DraftingExecutionManager_Public
@@ -134,7 +133,8 @@ def handle_web_command_public(xc, command: str, content: str) -> str:
     tool_counter = 0
     context_messages = [structured_system_prompt]
 
-    while len(find_tool_call_from_json(choice_message_content)) > 0 and (tool_counter < DRAFTING_TOOL_CALL_MAXIMUM_ATTEMPTS):
+    while len(find_tool_call_from_json(choice_message_content)) > 0 and (
+        tool_counter < DRAFTING_TOOL_CALL_MAXIMUM_ATTEMPTS):
 
         tool_counter += 1
         tool_requests_dicts = find_tool_call_from_json(choice_message_content)
@@ -206,9 +206,8 @@ def handle_web_command_public(xc, command: str, content: str) -> str:
             return output, error
 
     if tool_counter == DRAFTING_TOOL_CALL_MAXIMUM_ATTEMPTS:
-
         logger.error(f"[handle_ai_command] Error executing WEB command: {command}. Error: Maximum tool call attempts "
-                        f"reached.")
+                     f"reached.")
         error = (f"[handle_ai_command] Error executing WEB command: {command}. Error: Maximum tool call attempts "
                  f"reached.")
         return output, error

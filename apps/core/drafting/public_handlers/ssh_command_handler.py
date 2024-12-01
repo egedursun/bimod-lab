@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import json
 import logging
 
@@ -237,7 +238,6 @@ def handle_ssh_command_public(xc, command: str, content: str) -> str:
 
 
 def _handle_tool_ssh_system(tool_usage_dict, output_tool_call):
-
     c_id = tool_usage_dict.get("parameters").get("file_system_connection_id")
     commands = tool_usage_dict.get("parameters").get("commands")
     output = run_execute_ssh_system_commands(c_id=c_id, bash_commands=commands)

@@ -14,19 +14,22 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 import weaviate.classes as wvc
 
-from apps.core.codebase.utils import REPOSITORY_WEAVIATE_FIELDS_CONFIG, REPOSITORY_CHUNK_WEAVIATE_FIELDS_CONFIG
-from apps.core.codebase.utils import DEFAULT_GENERATIVE_SEARCH_MODEL
+from apps.core.codebase.utils import (
+    REPOSITORY_WEAVIATE_FIELDS_CONFIG,
+    REPOSITORY_CHUNK_WEAVIATE_FIELDS_CONFIG
+)
 
+from apps.core.codebase.utils import DEFAULT_GENERATIVE_SEARCH_MODEL
 
 logger = logging.getLogger(__name__)
 
 
 def create_classes_helper(executor):
-
     output = {"status": True, "error": ""}
     conn = executor.connection_object
     c = executor.connect_c()

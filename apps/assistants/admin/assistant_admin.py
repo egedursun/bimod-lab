@@ -19,7 +19,11 @@
 from django.contrib import admin
 
 from apps.assistants.models import Assistant
-from apps.assistants.utils import AGENT_ADMIN_DISPLAY_FIELDS, AGENT_ADMIN_FILTER_FIELDS, AGENT_ADMIN_SEARCH_FIELDS
+from apps.assistants.utils import (
+    AGENT_ADMIN_DISPLAY_FIELDS,
+    AGENT_ADMIN_FILTER_FIELDS,
+    AGENT_ADMIN_SEARCH_FIELDS
+)
 
 
 @admin.register(Assistant)

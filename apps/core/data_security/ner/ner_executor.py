@@ -14,15 +14,17 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
+
 import logging
 from collections import defaultdict
 
-from apps.core.data_security.ner.utils import DEFAULT_MODEL, LANGUAGE_TO_MODEL_MAPPING
+from apps.core.data_security.ner.utils import (
+    DEFAULT_MODEL,
+    LANGUAGE_TO_MODEL_MAPPING
+)
+
 from apps.data_security.models import NERIntegration
 import spacy
-
 
 logger = logging.getLogger(__name__)
 
@@ -55,10 +57,10 @@ class NERExecutor:
         except Exception as e:
             logger.error(f"Error loading model: {e}")
 
-        #__________________________________________________________________________________________________#
+        # __________________________________________________________________________________________________#
         # Temporary Storage for Entity Mappings
         self.entity_mapping = defaultdict(dict)
-        #__________________________________________________________________________________________________#
+        # __________________________________________________________________________________________________#
 
     @staticmethod
     def _decode_model_from_language(language: str) -> str:

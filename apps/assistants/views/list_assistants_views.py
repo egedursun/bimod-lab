@@ -35,15 +35,21 @@ class AssistantView_List(LoginRequiredMixin, TemplateView):
 
         ##############################
         # PERMISSION CHECK FOR - LIST_ASSISTANTS
-        if not UserPermissionManager.is_authorized(user=user, operation=PermissionNames.LIST_ASSISTANTS):
+        if not UserPermissionManager.is_authorized(
+            user=user,
+            operation=PermissionNames.LIST_ASSISTANTS
+        ):
             messages.error(self.request, "You do not have permission to list agents.")
             return context
         ##############################
 
         try:
-            organizations = Organization.objects.filter(users__in=[user])
+            organizations = Organization.objects.filter(
+                users__in=[user]
+            )
             org_assistants = {org: org.assistants.all() for org in organizations}
             context['org_assistants'] = org_assistants
+
         except Exception as e:
             logger.error(f"[AssistantView_List] Error listing the assistants: {e}")
             messages.error(self.request, "Error listing the agents.")

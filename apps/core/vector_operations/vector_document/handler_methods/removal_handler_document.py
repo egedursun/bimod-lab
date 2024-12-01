@@ -22,20 +22,29 @@ from weaviate.classes.query import Filter
 logger = logging.getLogger(__name__)
 
 
-def delete_document_helper(executor, class_name: str, document_uuid):
+def delete_document_helper(
+    executor,
+    class_name: str,
+    document_uuid
+):
     logger.info(f"Deleting document: {document_uuid}")
     c = executor.connect_c()
-    output = {"status": True, "error": ""}
+
+    output = {
+        "status": True,
+        "error": ""
+    }
+
     try:
-        # Delete the document
         _ = c.collections.get(class_name).data.delete_by_id(document_uuid)
-        # Delete the chunks of document
         _ = c.collections.get(f"{class_name}Chunks").data.delete_many(
             where=Filter.by_property("document_uuid").equal(document_uuid)
         )
         logger.info(f"Deleted document: {document_uuid}")
+
     except Exception as e:
         logger.error(f"Error deleting document: {e}")
         output["status"] = False
         output["error"] = f"[document_deleter.delete_document_helper] Error deleting document: {e}"
+
     return output

@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.core.paginator import Paginator
@@ -29,10 +30,16 @@ logger = logging.getLogger(__name__)
 class BlogPostView_List(TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
-        context.update({
-            "layout": "blank", "layout_path": TemplateHelper.set_layout("layout_blank.html", context),
-            'layout_content': "compact",
-        })
+        context.update(
+            {
+                "layout": "blank",
+                "layout_path": TemplateHelper.set_layout(
+                    "layout_blank.html",
+                    context
+                ),
+                'layout_content': "compact",
+            }
+        )
 
         try:
             search_query = self.request.GET.get('search', '')
@@ -43,6 +50,7 @@ class BlogPostView_List(TemplateView):
                     Q(content__icontains=search_query) |
                     Q(tags__name__icontains=search_query),
                 ).order_by('-published_at')
+
             else:
                 posts = BlogPost.objects.filter(status='published').order_by('-published_at')
 
@@ -51,6 +59,7 @@ class BlogPostView_List(TemplateView):
             page_obj = paginator.get_page(page_number)
             context['page_obj'] = page_obj
             context['search_query'] = search_query
+
         except Exception as e:
             logger.error(f"[BlogPostView_List] Error listing the Blog Posts: {e}")
             return context

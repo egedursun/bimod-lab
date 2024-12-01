@@ -21,14 +21,49 @@ STATUS_CHOICES = (
 )
 
 
-BLOG_POST_ADMIN_LIST = ['title', 'status', 'published_at', 'created_at', 'updated_at']
-BLOG_POST_ADMIN_FILTER = ['status', 'published_at', 'created_at', 'updated_at']
-BLOG_POST_ADMIN_SEARCH = ['title', 'content']
+BLOG_POST_ADMIN_LIST = [
+    'title',
+    'status',
+    'published_at',
+    'created_at',
+    'updated_at'
+]
+BLOG_POST_ADMIN_FILTER = [
+    'status',
+    'published_at',
+    'created_at',
+    'updated_at'
+]
+BLOG_POST_ADMIN_SEARCH = [
+    'title',
+    'content'
+]
 
-BLOG_SEO_ADMIN_LIST = ['post', 'meta_title', 'meta_description', 'meta_keywords']
-BLOG_SEO_ADMIN_FILTER = ['meta_title', 'meta_description', 'meta_keywords']
-BLOG_SEO_ADMIN_SEARCH = ['post']
+BLOG_SEO_ADMIN_LIST = [
+    'post',
+    'meta_title',
+    'meta_description',
+    'meta_keywords'
+]
+BLOG_SEO_ADMIN_FILTER = [
+    'meta_title',
+    'meta_description',
+    'meta_keywords'
+]
+BLOG_SEO_ADMIN_SEARCH = [
+    'post'
+]
 
-BLOG_TAG_ADMIN_LIST = ['name', 'slug', 'created_at', 'updated_at']
-BLOG_TAG_ADMIN_FILTER = ['created_at', 'updated_at']
-BLOG_TAG_ADMIN_SEARCH = ['name']
+BLOG_TAG_ADMIN_LIST = [
+    'name',
+    'slug',
+    'created_at',
+    'updated_at'
+]
+BLOG_TAG_ADMIN_FILTER = [
+    'created_at',
+    'updated_at'
+]
+BLOG_TAG_ADMIN_SEARCH = [
+    'name'
+]

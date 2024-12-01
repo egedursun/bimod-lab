@@ -14,14 +14,24 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 import uuid
 
-from apps.core.http_client.utils import get_url_could_not_resolved_error_message, \
-    get_download_from_url_failed_error_message, get_downloaded_item_could_not_saved_error_message, \
+from apps.core.http_client.utils import (
+    get_url_could_not_resolved_error_message,
+    get_download_from_url_failed_error_message,
+    get_downloaded_item_could_not_saved_error_message,
     get_transaction_could_not_saved_error_message
+)
+
 from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
-from apps.datasource_media_storages.models import DataSourceMediaStorageConnection, DataSourceMediaStorageItem
+
+from apps.datasource_media_storages.models import (
+    DataSourceMediaStorageConnection,
+    DataSourceMediaStorageItem
+)
+
 import requests
 import filetype
 

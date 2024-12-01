@@ -14,12 +14,16 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
-from apps.core.sql.sql_executor import PostgresSQLExecutor, MySQLExecutor
+from apps.core.sql.sql_executor import (
+    PostgresSQLExecutor,
+    MySQLExecutor
+)
+
 from apps.core.sql.utils import SQL_DBMS_PROVIDERS
 from apps.datasource_sql.models import SQLDatabaseConnection
-
 
 logger = logging.getLogger(__name__)
 

@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import base64
 import logging
 import os
@@ -26,19 +27,42 @@ import requests
 from django.contrib.auth.models import User
 
 from apps.assistants.models import Assistant
-from apps.core.expert_networks.prompts.build_expert_network_to_assistant_instructions_prompt import \
+from apps.core.expert_networks.prompts.build_expert_network_to_assistant_instructions_prompt import (
     build_leanmod_to_expert_assistant_instructions_prompt
-from apps.core.expert_networks.prompts.error_messages import DEFAULT_EXPERT_ASSISTANT_ERROR_MESSAGE
+)
+
+from apps.core.expert_networks.prompts.error_messages import (
+    DEFAULT_EXPERT_ASSISTANT_ERROR_MESSAGE
+)
+
 from apps.core.generative_ai.gpt_openai_manager import OpenAIGPTClientManager
-from apps.core.generative_ai.utils import ChatRoles, DEFAULT_ERROR_MESSAGE
-from apps.core.semantor.utils import VECTOR_INDEX_PATH_ASSISTANTS, OpenAIEmbeddingModels, \
-    OPEN_AI_DEFAULT_EMBEDDING_VECTOR_DIMENSIONS, VECTOR_INDEX_PATH_INTEGRATIONS, \
-    SEMANTOR_DEFAULT_SEARCH_RESULTS_ASSISTANTS, SEMANTOR_DEFAULT_SEARCH_RESULTS_INTEGRATIONS, \
-    SEMANTOR_DEFAULT_SEARCH_RESULTS_LEANMOD_ASSISTANTS, VECTOR_INDEX_PATH_LEANMOD_ASSISTANTS
+
+from apps.core.generative_ai.utils import (
+    ChatRoles,
+    DEFAULT_ERROR_MESSAGE
+)
+
+from apps.core.semantor.utils import (
+    VECTOR_INDEX_PATH_ASSISTANTS,
+    OpenAIEmbeddingModels,
+    OPEN_AI_DEFAULT_EMBEDDING_VECTOR_DIMENSIONS,
+    VECTOR_INDEX_PATH_INTEGRATIONS,
+    SEMANTOR_DEFAULT_SEARCH_RESULTS_ASSISTANTS,
+    SEMANTOR_DEFAULT_SEARCH_RESULTS_INTEGRATIONS,
+    SEMANTOR_DEFAULT_SEARCH_RESULTS_LEANMOD_ASSISTANTS,
+    VECTOR_INDEX_PATH_LEANMOD_ASSISTANTS
+)
+
 from apps.core.system_prompts.system_prompt_factory_builder import SystemPromptFactoryBuilder
-from apps.core.system_prompts.voidforger.helpers.error_messages import DEFAULT_LEANMOD_ASSISTANT_ERROR_MESSAGE
-from apps.core.system_prompts.voidforger.tools.voidforger_to_leanmod_assistant_instructions_prompt import \
+
+from apps.core.system_prompts.voidforger.helpers.error_messages import (
+    DEFAULT_LEANMOD_ASSISTANT_ERROR_MESSAGE
+)
+
+from apps.core.system_prompts.voidforger.tools.voidforger_to_leanmod_assistant_instructions_prompt import (
     build_voidforger_to_leanmod_assistant_instructions_prompt
+)
+
 from apps.datasource_codebase.models import CodeRepositoryStorageConnection
 from apps.datasource_file_systems.models import DataSourceFileSystem
 from apps.datasource_knowledge_base.models import DocumentKnowledgeBaseConnection
@@ -53,12 +77,24 @@ from apps.metatempo.models import MetaTempoConnection
 from apps.mm_apis.models import CustomAPIReference
 from apps.mm_functions.models import CustomFunctionReference
 from apps.mm_scripts.models import CustomScriptReference
-from apps.multimodal_chat.models import MultimodalChat, MultimodalChatMessage, MultimodalLeanChat, \
+
+from apps.multimodal_chat.models import (
+    MultimodalChat,
+    MultimodalChatMessage,
+    MultimodalLeanChat,
     MultimodalLeanChatMessage
+)
+
 from apps.multimodal_chat.utils import SourcesForMultimodalChatsNames
 from apps.orchestrations.models import OrchestrationReactantAssistantConnection
 from apps.projects.models import ProjectItem
-from apps.semantor.models import AssistantVectorData, IntegrationVectorData, LeanModVectorData, SemantorConfiguration
+
+from apps.semantor.models import (
+    AssistantVectorData,
+    IntegrationVectorData,
+    LeanModVectorData,
+    SemantorConfiguration
+)
 
 logger = logging.getLogger(__name__)
 

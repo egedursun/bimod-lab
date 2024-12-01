@@ -14,18 +14,24 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from openai import OpenAI
 
-from apps.core.brainstorms.utils import build_from_scratch_brainstorms_system_prompt, find_json_presence, \
-    build_from_previous_level_brainstorms_system_prompt, build_synthesis_from_level_system_prompt, \
-    build_synthesis_from_all_levels_system_prompt, build_deepen_thought_over_idea_system_prompt
+from apps.core.brainstorms.utils import (
+    build_from_scratch_brainstorms_system_prompt,
+    find_json_presence,
+    build_from_previous_level_brainstorms_system_prompt,
+    build_synthesis_from_level_system_prompt,
+    build_synthesis_from_all_levels_system_prompt,
+    build_deepen_thought_over_idea_system_prompt
+)
+
 from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE
 from apps.brainstorms.models import BrainstormingIdea
 from apps.llm_transaction.models import LLMTransaction
 from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
-
 
 logger = logging.getLogger(__name__)
 
@@ -124,7 +130,6 @@ class BrainstormsExecutor:
             return
         logger.info(f"Idea object deepened successfully.")
         return
-
 
     def _create_idea_objects_with_llm_response(
         self,
@@ -358,4 +363,3 @@ class BrainstormsExecutor:
             return
 
         return
-

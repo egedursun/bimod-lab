@@ -23,7 +23,11 @@ from apps.datasource_knowledge_base.utils import VectorStoreDocProcessingStatusN
 logger = logging.getLogger(__name__)
 
 
-def build_document_orm_structure(document: dict, knowledge_base, path: str):
+def build_document_orm_structure(
+    document: dict,
+    knowledge_base,
+    path: str
+):
     from apps.datasource_knowledge_base.models import KnowledgeBaseDocument
     id, error = None, None
     try:
@@ -31,8 +35,8 @@ def build_document_orm_structure(document: dict, knowledge_base, path: str):
         doc_file_type = path.split(".")[-1]
         doc_file_name = path.split("/")[-1]
         doc_document_uri = path
-        doc_description = ""  # empty for now
-        doc_document_content_temporary = ""  # empty for now
+        doc_description = ""
+        doc_document_content_temporary = ""
         doc_metadata = document["metadata"]
 
         document_orm_object = KnowledgeBaseDocument.objects.create(
@@ -47,21 +51,32 @@ def build_document_orm_structure(document: dict, knowledge_base, path: str):
         document_orm_object.save()
         id = document_orm_object.id
         logger.info(f"[document_embedder.build_document_orm_structure] Document ORM object created successfully.")
+
     except Exception as e:
         logger.error(
             f"[document_embedder.build_document_orm_structure] Error building the document ORM structure: {e}")
         error = f"[document_embedder.build_document_orm_structure] Error building the document ORM structure: {e}"
+
     return id, error
 
 
-def build_document_weaviate_structure(document: dict, path: str,
-                                      number_of_chunks: int):
+def build_document_weaviate_structure(
+    document: dict,
+    path: str,
+    number_of_chunks: int
+):
     document_weaviate_object, error = None, None
     try:
         weav_document_file_name = path.split("/")[-1]
         weav_document_description = ""  # empty for now
         weav_document_type = path.split(".")[-1]
-        weav_document_metadata = json.dumps(document["metadata"], default=str, sort_keys=True)
+
+        weav_document_metadata = json.dumps(
+            document["metadata"],
+            default=str,
+            sort_keys=True
+        )
+
         weave_document_number_of_chunks = number_of_chunks
         weave_document_created_at = ""  # empty for now
 
@@ -75,15 +90,21 @@ def build_document_weaviate_structure(document: dict, path: str,
         }
         logger.info(
             f"[document_embedder.build_document_weaviate_structure] Document Weaviate object created successfully.")
+
     except Exception as e:
         logger.error(
             f"[document_embedder.build_document_weaviate_structure] Error building the document Weaviate structure: {e}")
         error = f"[document_embedder.build_document_weaviate_structure] Error building the document Weaviate structure: {e}"
+
     return document_weaviate_object, error
 
 
-def build_memory_weaviate_structure(memory_name: str, number_of_chunks: int):
+def build_memory_weaviate_structure(
+    memory_name: str,
+    number_of_chunks: int
+):
     memory_weaviate_object, error = None, None
+
     try:
         weave_memory_name = memory_name
         weave_memory_created_at = ""  # empty for now
@@ -95,48 +116,78 @@ def build_memory_weaviate_structure(memory_name: str, number_of_chunks: int):
         }
         logger.info(
             f"[document_embedder.build_memory_weaviate_structure] Memory Weaviate object created successfully.")
+
     except Exception as e:
         logger.error(
             f"[document_embedder.build_memory_weaviate_structure] Error building the memory Weaviate structure: {e}")
         error = f"[document_embedder.build_memory_weaviate_structure] Error building the memory Weaviate structure: {e}"
+
     return memory_weaviate_object, error
 
 
-def embed_document_sync(executor_params, document_id, document_weaviate_object: dict, path: str):
+def embed_document_sync(
+    executor_params,
+    document_id,
+    document_weaviate_object: dict,
+    path: str
+):
     from apps.core.vector_operations.vector_document.vector_store_decoder import KnowledgeBaseSystemDecoder
-    from apps.datasource_knowledge_base.models import (DocumentKnowledgeBaseConnection, KnowledgeBaseDocument)
-    from apps.datasource_knowledge_base.tasks import add_vector_store_doc_loaded_log
+    from apps.datasource_knowledge_base.models import (
+        DocumentKnowledgeBaseConnection,
+        KnowledgeBaseDocument
+    )
+    from apps.datasource_knowledge_base.tasks import (
+        add_vector_store_doc_loaded_log
+    )
+
     connection_id = executor_params["connection_id"]
     connection_orm_object = DocumentKnowledgeBaseConnection.objects.get(id=connection_id)
-    executor = KnowledgeBaseSystemDecoder.get(connection=connection_orm_object)
+    executor = KnowledgeBaseSystemDecoder.get(
+        connection=connection_orm_object
+    )
     c = executor.connect_c()
+
     if not c:
         logger.error(f"[document_embedder.embed_document_sync] Error while connecting to Weaviate")
     logger.info(f"[document_embedder.embed_document_sync] Document ORM object created.")
 
     error, uuid = None, None
     try:
-        # Save the object to Weaviate
         collection = c.collections.get(executor.connection_object.class_name)
-        uuid = collection.data.insert(properties=document_weaviate_object)
+        uuid = collection.data.insert(
+            properties=document_weaviate_object
+        )
+
         if not uuid:
             logger.error("[document_embedder.embed_document_sync] Error inserting the document into Weaviate")
             error = "[document_embedder.embed_document_sync] Error inserting the document into Weaviate"
-        add_vector_store_doc_loaded_log(document_full_uri=path,
-                                        log_name=VectorStoreDocProcessingStatusNames.EMBEDDED_DOCUMENT)
 
-        document_orm_object = KnowledgeBaseDocument.objects.get(id=document_id)
+        add_vector_store_doc_loaded_log(
+            document_full_uri=path,
+            log_name=VectorStoreDocProcessingStatusNames.EMBEDDED_DOCUMENT
+        )
+
+        document_orm_object = KnowledgeBaseDocument.objects.get(
+            id=document_id
+        )
         document_orm_object.knowledge_base_uuid = str(uuid)
+
         try:
             document_orm_object.save()
+
         except Exception as e:
             logger.error(f"[document_embedder.embed_document_sync] Error saving the document ORM object into DB: {e}")
             error = f"[document_embedder.embed_document_sync] Error saving the document ORM object into DB: {e}"
-        add_vector_store_doc_loaded_log(document_full_uri=path,
-                                        log_name=VectorStoreDocProcessingStatusNames.SAVED_DOCUMENT)
+
+        add_vector_store_doc_loaded_log(
+            document_full_uri=path,
+            log_name=VectorStoreDocProcessingStatusNames.SAVED_DOCUMENT
+        )
+
     except Exception as e:
         logger.error(f"[document_embedder.embed_document_sync] Error embedding the document: {e}")
         error = f"[document_embedder.embed_document_sync] Error embedding the document: {e}"
+
     logger.info(f"[document_embedder.embed_document_sync] Document embedded successfully.")
     return uuid, error
 

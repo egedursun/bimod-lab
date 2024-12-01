@@ -15,14 +15,21 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-from apps.core.metakanban.prompts import (get_generic_instructions_metakanban,
-                                          get_metakanban_project_metadata_prompt, get_board_metadata_prompt,
-                                          get_metakanban_last_n_action_logs_prompt,
-                                          get_board_existing_tasks_metadata_prompt, get_board_labels_metadata_prompt,
-                                          get_tool_prompt_metakanban_command_execution,
-                                          get_latest_meeting_transcriptions_prompt)
-from apps.core.system_prompts.tool_call_prompts.generic_instructions_tool_call import \
+from apps.core.metakanban.prompts import (
+    get_generic_instructions_metakanban,
+    get_metakanban_project_metadata_prompt,
+    get_board_metadata_prompt,
+    get_metakanban_last_n_action_logs_prompt,
+    get_board_existing_tasks_metadata_prompt,
+    get_board_labels_metadata_prompt,
+    get_tool_prompt_metakanban_command_execution,
+    get_latest_meeting_transcriptions_prompt
+)
+
+from apps.core.system_prompts.tool_call_prompts.generic_instructions_tool_call import (
     build_lean_structured_tool_usage_instructions_prompt
+)
+
 from apps.metakanban.models import MetaKanbanBoard
 
 

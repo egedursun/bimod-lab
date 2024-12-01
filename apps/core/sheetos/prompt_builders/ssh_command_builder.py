@@ -16,15 +16,29 @@
 #
 import logging
 
-from apps.core.sheetos.prompts import build_sheetos_agent_nickname_prompt, build_sheetos_internal_principles_prompt, \
-    build_sheetos_agent_personality_prompt, build_sheetos_target_audience_prompt, build_sheetos_user_tenant_prompt, \
-    build_sheetos_spatial_awareness_prompt, build_sheetos_technical_dictionary_prompt, \
-    build_sheetos_ops_instruction_prompt, build_sheetos_action__ssh_prompt, \
-    build_sheetos_file_system_data_source_prompt, build_sheetos_tool_prompt__execute_ssh_file_system_command
-from apps.core.sheetos.prompts.sheetos.folder_and_document_data_prompt import \
+from apps.core.sheetos.prompts import (
+    build_sheetos_agent_nickname_prompt,
+    build_sheetos_internal_principles_prompt,
+    build_sheetos_agent_personality_prompt,
+    build_sheetos_target_audience_prompt,
+    build_sheetos_user_tenant_prompt,
+    build_sheetos_spatial_awareness_prompt,
+    build_sheetos_technical_dictionary_prompt,
+    build_sheetos_ops_instruction_prompt,
+    build_sheetos_action__ssh_prompt,
+    build_sheetos_file_system_data_source_prompt,
+    build_sheetos_tool_prompt__execute_ssh_file_system_command
+)
+
+from apps.core.sheetos.prompts.sheetos.folder_and_document_data_prompt import (
     build_sheetos_folder_and_document_data_prompt
-from apps.core.sheetos.prompts.sheetos.whole_text_supplier_prompt import build_whole_text_supply_prompt, \
+)
+
+from apps.core.sheetos.prompts.sheetos.whole_text_supplier_prompt import (
+    build_whole_text_supply_prompt,
     build_whole_text_supply_prompt_public
+)
+
 from apps.core.sheetos.sheetos_executor import SheetosExecutionManager
 from apps.core.sheetos.sheetos_executor_public import SheetosExecutionManager_Public
 

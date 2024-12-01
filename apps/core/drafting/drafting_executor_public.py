@@ -19,11 +19,19 @@ import logging
 
 from apps.core.generative_ai.gpt_openai_manager import OpenAIGPTClientManager
 from apps.drafting.models import DraftingGoogleAppsConnection
-from apps.core.drafting.public_handlers import (handle_ai_command_public, handle_auto_command_public,
-                                                handle_img_command_public, handle_nosql_command_public,
-                                                handle_select_command_public, handle_sql_command_public,
-                                                handle_ssh_command_public, handle_vect_command_public,
-                                                handle_web_command_public, handle_repo_command_public)
+
+from apps.core.drafting.public_handlers import (
+    handle_ai_command_public,
+    handle_auto_command_public,
+    handle_img_command_public,
+    handle_nosql_command_public,
+    handle_select_command_public,
+    handle_sql_command_public,
+    handle_ssh_command_public,
+    handle_vect_command_public,
+    handle_web_command_public,
+    handle_repo_command_public
+)
 
 logger = logging.getLogger(__name__)
 
@@ -57,7 +65,8 @@ class DraftingExecutionManager_Public:
                 command=command,
                 content=self.content
             )
-            logger.info(f"[DraftingExecutionManager.handle_ai_command_public] AI command executed successfully: {command}")
+            logger.info(
+                f"[DraftingExecutionManager.handle_ai_command_public] AI command executed successfully: {command}")
 
         except Exception as e:
             logger.error(
@@ -84,7 +93,8 @@ class DraftingExecutionManager_Public:
             logger.info(f"[DraftingExecutionManager.handle_auto_command_public] AUTO command executed successfully.")
 
         except Exception as e:
-            logger.error(f"[DraftingExecutionManager.handle_auto_command_public] Error executing AUTO command. Error: {e}")
+            logger.error(
+                f"[DraftingExecutionManager.handle_auto_command_public] Error executing AUTO command. Error: {e}")
             error = f"[DraftingExecutionManager.handle_auto_command_public] Error executing AUTO command. Error: {e}"
 
         response['output'] = output
@@ -105,7 +115,8 @@ class DraftingExecutionManager_Public:
                 command=command,
                 content=self.content
             )
-            logger.info(f"[DraftingExecutionManager.handle_img_command_public] IMG command executed successfully: {command}")
+            logger.info(
+                f"[DraftingExecutionManager.handle_img_command_public] IMG command executed successfully: {command}")
 
         except Exception as e:
             logger.error(

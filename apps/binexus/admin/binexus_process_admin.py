@@ -19,7 +19,11 @@
 from django.contrib import admin
 
 from apps.binexus.models import BinexusProcess
-from apps.binexus.utils import BINEXUS_PROCESS_ADMIN_LIST, BINEXUS_PROCESS_ADMIN_FILTER, BINEXUS_PROCESS_ADMIN_SEARCH
+from apps.binexus.utils import (
+    BINEXUS_PROCESS_ADMIN_LIST,
+    BINEXUS_PROCESS_ADMIN_FILTER,
+    BINEXUS_PROCESS_ADMIN_SEARCH
+)
 
 
 @admin.register(BinexusProcess)

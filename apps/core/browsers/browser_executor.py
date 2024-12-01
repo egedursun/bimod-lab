@@ -25,8 +25,16 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from lxml.html.clean import Cleaner
 
-from apps.core.browsers.utils import IMPLICIT_WAIT_SECONDS, SearchEnginesNames, BrowserURLs, FindByTypes, \
-    BrowserActionsNames, BrowsingModes, BrowsingExecutorOptions
+from apps.core.browsers.utils import (
+    IMPLICIT_WAIT_SECONDS,
+    SearchEnginesNames,
+    BrowserURLs,
+    FindByTypes,
+    BrowserActionsNames,
+    BrowsingModes,
+    BrowsingExecutorOptions
+)
+
 from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
 from apps.datasource_browsers.utils import BrowsingReadingAbilitiesNames
 from apps.llm_transaction.models import LLMTransaction

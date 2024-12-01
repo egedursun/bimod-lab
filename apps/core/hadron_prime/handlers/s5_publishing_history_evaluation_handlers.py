@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from apps.hadron_prime.models import HadronNode, HadronTopicMessage
@@ -28,10 +29,13 @@ def retrieve_publish_history_logs(node: HadronNode):
     publish_history_log_objects = node.publishing_history_logs.all().order_by('-created_at')[:memory_size]
 
     logger.info("Retrieving publishing history logs.")
+
     publish_history_string = "[TOPIC_NAME | TOPIC_CATEGORY | MESSAGE | CREATED_AT]\n"
+
     for publish_history_log in publish_history_log_objects:
         publish_history_log: HadronTopicMessage
         publish_history_string += f"[{publish_history_log.topic.topic_name} | {publish_history_log.topic.topic_category} | {publish_history_log.message} | {publish_history_log.created_at}]\n"
+
     logger.info("Publishing history logs have been retrieved.")
 
     publish_history_logs = f"""
@@ -40,5 +44,6 @@ def retrieve_publish_history_logs(node: HadronNode):
             {publish_history_string}
             '''
         """
+
     logger.info("Publishing history logs have been embedded.")
     return publish_history_logs, error

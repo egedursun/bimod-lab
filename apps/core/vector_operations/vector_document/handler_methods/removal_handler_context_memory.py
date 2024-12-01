@@ -23,11 +23,18 @@ logger = logging.getLogger(__name__)
 def delete_weaviate_class_handler(executor, class_name):
     logger.info(f"Deleting class: {class_name}")
     c = executor.connect_c()
-    output = {"status": True, "error": ""}
+
+    output = {
+        "status": True,
+        "error": ""
+    }
+
     try:
         _ = c.collections.delete(class_name)
         _ = c.collections.delete(f"{class_name}Chunks")
+
     except Exception as e:
         output["status"] = False
         output["error"] = f"Error removing classes: {e}"
+
     return output

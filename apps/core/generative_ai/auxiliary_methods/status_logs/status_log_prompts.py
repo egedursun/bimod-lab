@@ -15,7 +15,6 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-
 def get_number_of_files_too_high_log(max):
     return f"""
         **SYSTEM MESSAGE:**

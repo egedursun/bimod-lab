@@ -14,11 +14,14 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 from json import JSONDecoder
 
-from apps.brainstorms.models import BrainstormingSession, BrainstormingIdea
-
+from apps.brainstorms.models import (
+    BrainstormingSession,
+    BrainstormingIdea
+)
 
 logger = logging.getLogger(__name__)
 
@@ -263,7 +266,6 @@ def build_synthesis_from_level_system_prompt(
     session: BrainstormingSession,
     bookmarked_ideas: list
 ):
-
     logger.info(f"Building synthesis prompt for session: {session.id}")
     topic_definition = session.topic_definition
     constraints = session.constraints
@@ -393,7 +395,6 @@ def build_synthesis_from_all_levels_system_prompt(
     session: BrainstormingSession,
     bookmarked_ideas: list
 ):
-
     logger.info(f"Building synthesis prompt for session: {session.id}")
     topic_definition = session.topic_definition
     constraints = session.constraints
@@ -522,7 +523,6 @@ def build_synthesis_from_all_levels_system_prompt(
 def build_deepen_thought_over_idea_system_prompt(
     idea: BrainstormingIdea
 ):
-
     logger.info(f"Building deepen thought over idea prompt for idea: {idea.id}")
     topic_definition = idea.brainstorming_session.topic_definition
     constraints = idea.brainstorming_session.constraints
@@ -652,7 +652,6 @@ def find_json_presence(
     response: str,
     decoder=JSONDecoder()
 ):
-
     logger.info(f"Finding JSON presence in response: {response}")
 
     response = f"""{response}"""

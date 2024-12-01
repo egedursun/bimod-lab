@@ -1,4 +1,3 @@
-
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
 #  Project: Bimod.io™
@@ -19,9 +18,19 @@
 import logging
 
 from apps.core.generative_ai.gpt_openai_manager import OpenAIGPTClientManager
-from apps.core.sheetos.handlers import handle_ai_command, handle_auto_command, handle_nosql_command, \
-    handle_select_command, handle_sql_command, handle_ssh_command, handle_vect_command, handle_web_command, \
+
+from apps.core.sheetos.handlers import (
+    handle_ai_command,
+    handle_auto_command,
+    handle_nosql_command,
+    handle_select_command,
+    handle_sql_command,
+    handle_ssh_command,
+    handle_vect_command,
+    handle_web_command,
     handle_repo_command
+)
+
 from apps.sheetos.models import SheetosDocument
 
 logger = logging.getLogger(__name__)
@@ -51,7 +60,8 @@ class SheetosExecutionManager:
             logger.info(f"[SheetosExecutionManager.execute_ai_command] AI command executed successfully: {command}")
 
         except Exception as e:
-            logger.error(f"[SheetosExecutionManager.execute_ai_command] Error executing AI command: {command}. Error: {e}")
+            logger.error(
+                f"[SheetosExecutionManager.execute_ai_command] Error executing AI command: {command}. Error: {e}")
             error = f"[SheetosExecutionManager.execute_ai_command] Error executing AI command: {command}. Error: {e}"
 
         response['output'] = output
@@ -86,10 +96,12 @@ class SheetosExecutionManager:
 
         try:
             output, error = handle_nosql_command(xc=self, command=command)
-            logger.info(f"[SheetosExecutionManager.execute_nosql_command] NOSQL command executed successfully: {command}")
+            logger.info(
+                f"[SheetosExecutionManager.execute_nosql_command] NOSQL command executed successfully: {command}")
 
         except Exception as e:
-            logger.error(f"[SheetosExecutionManager.execute_nosql_command] Error executing NOSQL command: {command}. Error: {e}")
+            logger.error(
+                f"[SheetosExecutionManager.execute_nosql_command] Error executing NOSQL command: {command}. Error: {e}")
             error = f"[SheetosExecutionManager.execute_nosql_command] Error executing NOSQL command: {command}. Error: {e}"
 
         response['output'] = output
@@ -109,10 +121,12 @@ class SheetosExecutionManager:
                 selected_data=selected_data,
                 command=command
             )
-            logger.info(f"[SheetosExecutionManager.execute_select_command] SELECT command executed successfully: {command}")
+            logger.info(
+                f"[SheetosExecutionManager.execute_select_command] SELECT command executed successfully: {command}")
 
         except Exception as e:
-            logger.error(f"[SheetosExecutionManager.execute_select_command] Error executing SELECT command: {command}. Error: {e}")
+            logger.error(
+                f"[SheetosExecutionManager.execute_select_command] Error executing SELECT command: {command}. Error: {e}")
             error = f"[SheetosExecutionManager.execute_select_command] Error executing SELECT command: {command}. Error: {e}"
 
         response['output'] = output
@@ -131,7 +145,8 @@ class SheetosExecutionManager:
             logger.info(f"[SheetosExecutionManager.execute_sql_command] SQL command executed successfully: {command}")
 
         except Exception as e:
-            logger.error(f"[SheetosExecutionManager.execute_sql_command] Error executing SQL command: {command}. Error: {e}")
+            logger.error(
+                f"[SheetosExecutionManager.execute_sql_command] Error executing SQL command: {command}. Error: {e}")
             error = f"[SheetosExecutionManager.execute_sql_command] Error executing SQL command: {command}. Error: {e}"
 
         response['output'] = output
@@ -150,7 +165,8 @@ class SheetosExecutionManager:
             logger.info(f"[SheetosExecutionManager.execute_ssh_command] SSH command executed successfully: {command}")
 
         except Exception as e:
-            logger.error(f"[SheetosExecutionManager.execute_ssh_command] Error executing SSH command: {command}. Error: {e}")
+            logger.error(
+                f"[SheetosExecutionManager.execute_ssh_command] Error executing SSH command: {command}. Error: {e}")
             error = f"[SheetosExecutionManager.execute_ssh_command] Error executing SSH command: {command}. Error: {e}"
 
         response['output'] = output
@@ -166,10 +182,12 @@ class SheetosExecutionManager:
 
         try:
             output, error = handle_vect_command(xc=self, command=command)
-            logger.info(f"[SheetosExecutionManager.execute_vect_command] VECT command executed successfully: {command}")
+            logger.info(
+                f"[SheetosExecutionManager.execute_vect_command] VECT command executed successfully: {command}")
 
         except Exception as e:
-            logger.error(f"[SheetosExecutionManager.execute_vect_command] Error executing VECT command: {command}. Error: {e}")
+            logger.error(
+                f"[SheetosExecutionManager.execute_vect_command] Error executing VECT command: {command}. Error: {e}")
             error = f"[SheetosExecutionManager.execute_vect_command] Error executing VECT command: {command}. Error: {e}"
 
         response['output'] = output
@@ -188,7 +206,8 @@ class SheetosExecutionManager:
             logger.info(f"[SheetosExecutionManager.execute_web_command] WEB command executed successfully: {command}")
 
         except Exception as e:
-            logger.error(f"[SheetosExecutionManager.execute_web_command] Error executing WEB command: {command}. Error: {e}")
+            logger.error(
+                f"[SheetosExecutionManager.execute_web_command] Error executing WEB command: {command}. Error: {e}")
             error = f"[SheetosExecutionManager.execute_web_command] Error executing WEB command: {command}. Error: {e}"
 
         response['output'] = output
@@ -204,10 +223,12 @@ class SheetosExecutionManager:
 
         try:
             output, error = handle_repo_command(xc=self, command=command)
-            logger.info(f"[SheetosExecutionManager.execute_repo_command] REPO command executed successfully: {command}")
+            logger.info(
+                f"[SheetosExecutionManager.execute_repo_command] REPO command executed successfully: {command}")
 
         except Exception as e:
-            logger.error(f"[SheetosExecutionManager.execute_repo_command] Error executing REPO command: {command}. Error: {e}")
+            logger.error(
+                f"[SheetosExecutionManager.execute_repo_command] Error executing REPO command: {command}. Error: {e}")
             error = f"[SheetosExecutionManager.execute_repo_command] Error executing REPO command: {command}. Error: {e}"
 
         response['output'] = output

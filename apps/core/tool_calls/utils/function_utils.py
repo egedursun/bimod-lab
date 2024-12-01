@@ -14,8 +14,6 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-
-
 def get_no_connection_vector_store_error_message(
     assistant_name,
     chat_name

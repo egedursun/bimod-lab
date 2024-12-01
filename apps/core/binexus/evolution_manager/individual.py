@@ -19,10 +19,12 @@ import uuid
 
 from apps.binexus.models import BinexusProcess, BinexusEliteAgent
 from apps.core.binexus.evolution_manager import Chromosome
-from apps.core.binexus.prompt_builders.binexus_individual_assignment_prompt_builders import \
+from apps.core.binexus.prompt_builders.binexus_individual_assignment_prompt_builders import (
     build_binexus_individual_assignment_prompt
-from apps.core.binexus.prompts.binexus_individual_assignment_prompt import \
+)
+from apps.core.binexus.prompts.binexus_individual_assignment_prompt import (
     binexus_individual_assignment_prompt_redacted
+)
 from apps.core.binexus.utils import generate_random_elite_agent_name
 from apps.core.generative_ai.gpt_openai_manager import OpenAIGPTClientManager
 from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
@@ -137,7 +139,8 @@ class Individual:
                 transaction_source=LLMTransactionSourcesTypesNames.BINEXUS
             )
             tx.save()
-            logger.info(f"[_create_assignment] Created response (system) prompt LLM Transaction for Binexus Assignment Creation.")
+            logger.info(
+                f"[_create_assignment] Created response (system) prompt LLM Transaction for Binexus Assignment Creation.")
 
         except Exception as e:
             final_response = f"""

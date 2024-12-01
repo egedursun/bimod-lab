@@ -20,11 +20,21 @@ import logging
 
 from apps.core.generative_ai.auxiliary_methods.errors.error_log_prompts import get_statistics_analysis_error_log
 from apps.core.generative_ai.gpt_openai_manager import OpenAIGPTClientManager
-from apps.core.generative_ai.utils import DEFAULT_STATISTICS_ASSISTANT_NAME_PLACEHOLDER, \
-    DEFAULT_STATISTICS_ASSISTANT_AUDIENCE, DEFAULT_STATISTICS_ASSISTANT_TONE, DEFAULT_STATISTICS_ASSISTANT_CHAT_NAME, \
-    DEFAULT_STATISTICS_TEMPERATURE, DEFAULT_STATISTICS_ANALYSIS_MAX_TOKENS
+
+from apps.core.generative_ai.utils import (
+    DEFAULT_STATISTICS_ASSISTANT_NAME_PLACEHOLDER,
+    DEFAULT_STATISTICS_ASSISTANT_AUDIENCE,
+    DEFAULT_STATISTICS_ASSISTANT_TONE,
+    DEFAULT_STATISTICS_ASSISTANT_CHAT_NAME,
+    DEFAULT_STATISTICS_TEMPERATURE,
+    DEFAULT_STATISTICS_ANALYSIS_MAX_TOKENS
+)
+
 from apps.core.system_prompts.system_prompt_factory_builder import SystemPromptFactoryBuilder
-from apps.core.system_prompts.dashboard_analysis.dashboard_statistics_prompt import build_dashboard_statistics_prompt
+
+from apps.core.system_prompts.dashboard_analysis.dashboard_statistics_prompt import (
+    build_dashboard_statistics_prompt
+)
 
 logger = logging.getLogger(__name__)
 

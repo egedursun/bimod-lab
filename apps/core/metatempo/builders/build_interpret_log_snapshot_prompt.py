@@ -15,9 +15,16 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-from apps.core.metatempo.prompts import get_generic_member_log_snapshot_prompt, get_board_metadata_prompt, \
-    get_board_labels_metadata_prompt, get_board_existing_tasks_metadata_prompt, \
-    get_metakanban_last_n_action_logs_prompt, get_metakanban_project_metadata_prompt, get_connection_metadata_prompt
+from apps.core.metatempo.prompts import (
+    get_generic_member_log_snapshot_prompt,
+    get_board_metadata_prompt,
+    get_board_labels_metadata_prompt,
+    get_board_existing_tasks_metadata_prompt,
+    get_metakanban_last_n_action_logs_prompt,
+    get_metakanban_project_metadata_prompt,
+    get_connection_metadata_prompt
+)
+
 from apps.metatempo.models import MetaTempoConnection
 
 

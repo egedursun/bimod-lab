@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from apps.core.hadron_prime.parsers import make_request_from_curl
@@ -29,10 +30,12 @@ def evaluate_state(node: HadronNode):
     current_state_curl = node.current_state_curl
     try:
         response_text_current = make_request_from_curl(curl_command=current_state_curl)
+
     except Exception as e:
         error = str(e)
         logger.error(f"Error occurred while evaluating state: {e}")
         return current_state_data, goal_state_data, error
+
     if not response_text_current:
         logger.error("Current state data could not have been received.")
         error = "Current state data could not have been received."
@@ -49,12 +52,15 @@ def evaluate_state(node: HadronNode):
     logger.info("Current state data has been evaluated.")
 
     goal_state_curl = node.goal_state_curl
+
     try:
         response_text_goal = make_request_from_curl(curl_command=goal_state_curl)
+
     except Exception as e:
         error = str(e)
         logger.error(f"Error occurred while evaluating goal state: {error}")
         return current_state_data, goal_state_data, error
+
     if not response_text_goal:
         logger.error("Goal state data could not have been received.")
         error = "Goal state data could not have been received."

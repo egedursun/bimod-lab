@@ -20,7 +20,11 @@ from slugify import slugify
 
 
 class BlogTag(models.Model):
-    blog_posts = models.ManyToManyField('BlogPost', related_name='tags', blank=True)
+    blog_posts = models.ManyToManyField(
+        'BlogPost',
+        related_name='tags',
+        blank=True
+    )
     name = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, unique=True)
 
@@ -30,6 +34,7 @@ class BlogTag(models.Model):
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.name)
+
         super().save(*args, **kwargs)
 
     def __str__(self):

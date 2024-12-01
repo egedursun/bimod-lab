@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 import shlex
 import requests
@@ -33,25 +34,38 @@ def parse_curl(curl_command):
     i = 0
     while i < len(tokens):
         token = tokens[i]
+
         if token == 'curl':
             i += 1
             continue
-        if token.startswith(CURLHttpOptions.StartsWith.REQUEST) or token == CURLHttpOptions.Equals.REQUEST:
+
+        if (
+            token.startswith(CURLHttpOptions.StartsWith.REQUEST) or
+            token == CURLHttpOptions.Equals.REQUEST
+        ):
             method = tokens[i + 1]
             i += 2
             continue
-        if token.startswith(CURLHttpOptions.StartsWith.HEADER) or token == CURLHttpOptions.Equals.HEADER:
+
+        if (
+            token.startswith(CURLHttpOptions.StartsWith.HEADER) or
+            token == CURLHttpOptions.Equals.HEADER
+        ):
             header = tokens[i + 1]
             key, value = header.split(': ', 1)
             headers[key] = value
             i += 2
             continue
-        if (token.startswith(CURLHttpOptions.StartsWith.DATA) or
+
+        if (
+            token.startswith(CURLHttpOptions.StartsWith.DATA) or
             token == CURLHttpOptions.Equals.DATA or
-            token == CURLHttpOptions.Equals.DATA_RAW):
+            token == CURLHttpOptions.Equals.DATA_RAW
+        ):
             data = tokens[i + 1]
             i += 2
             continue
+
         if token.startswith(CURLHttpOptions.StartsWith.URL):
             url = token
             i += 1
@@ -61,6 +75,7 @@ def parse_curl(curl_command):
     if data:
         try:
             data = eval(data)
+
         except Exception as e:
             logger.error(f"Failed to parse data: {data}")
             pass
@@ -70,16 +85,22 @@ def parse_curl(curl_command):
 
 def make_request_from_curl(curl_command):
     method, url, headers, data = parse_curl(curl_command)
+
     if method == CURLHttpMethods.GET:
         response = requests.get(url, headers=headers)
+
     elif method == CURLHttpMethods.POST:
         response = requests.post(url, headers=headers, data=data)
+
     elif method == CURLHttpMethods.PUT:
         response = requests.put(url, headers=headers, data=data)
+
     elif method == CURLHttpMethods.PATCH:
         response = requests.patch(url, headers=headers, data=data)
+
     elif method == CURLHttpMethods.DELETE:
         response = requests.delete(url, headers=headers)
+
     else:
         logger.error(f"Unsupported HTTP method: {method}")
         raise ValueError(f"Unsupported HTTP method: {method}")
@@ -87,6 +108,7 @@ def make_request_from_curl(curl_command):
     try:
         return response.text
         logger.info("Response is a valid JSON. Returning parsed response.")
+
     except ValueError:
         logger.warning("Response is not a valid JSON. Returning raw response.")
         return response.text

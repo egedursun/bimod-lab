@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from apps.core.hadron_prime.parsers import make_request_from_curl
@@ -26,12 +27,15 @@ logger = logging.getLogger(__name__)
 def evaluate_measurements(node: HadronNode):
     measurement_data, error = "N/A", None
     measurement_curl = node.measurements_curl
+
     try:
         response_text = make_request_from_curl(curl_command=measurement_curl)
+
     except Exception as e:
         logger.error(f"Error occurred while evaluating measurements: {str(e)}")
         error = str(e)
         return measurement_data, error
+
     if not response_text:
         logger.error("State data could not have been received.")
         error = "State data could not have been received."

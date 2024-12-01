@@ -20,9 +20,18 @@ import logging
 from apps.core.slider.handlers.repo_command_handler import handle_repo_command
 from apps.core.generative_ai.gpt_openai_manager import OpenAIGPTClientManager
 from apps.slider.models import SliderDocument
-from apps.core.slider.handlers import (handle_ai_command, handle_auto_command, handle_img_command,
-                                       handle_nosql_command, handle_select_command, handle_sql_command,
-                                       handle_ssh_command, handle_vect_command, handle_web_command)
+
+from apps.core.slider.handlers import (
+    handle_ai_command,
+    handle_auto_command,
+    handle_img_command,
+    handle_nosql_command,
+    handle_select_command,
+    handle_sql_command,
+    handle_ssh_command,
+    handle_vect_command,
+    handle_web_command
+)
 
 logger = logging.getLogger(__name__)
 

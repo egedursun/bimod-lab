@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
@@ -38,26 +39,35 @@ class BinexusView_ProcessExecute(LoginRequiredMixin, View):
 
         ##############################
         # PERMISSION CHECK FOR - EXECUTE_BINEXUS_PROCESSES
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.EXECUTE_BINEXUS_PROCESSES):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.EXECUTE_BINEXUS_PROCESSES
+        ):
             messages.error(self.request, "You do not have permission to execute Binexus Processes.")
             return redirect('binexus:process_detail', pk=kwargs.get('pk'))
         ##############################
 
         process_id = kwargs.get('pk')
         process_object: BinexusProcess = BinexusProcess.objects.get(id=process_id)
+
         try:
-            xc = BinexusExecutionManager(binexus_process=process_object)
+            xc = BinexusExecutionManager(
+                binexus_process=process_object
+            )
+
         except Exception as e:
             messages.error(request, f"Error occurred while executing the process: {e}")
             return redirect('binexus:process_detail', pk=kwargs.get('pk'))
 
         try:
+
             success, error = xc.execute_binexus()
+
             if error is not None:
                 logger.error(f"Error occurred while executing the process: {error}")
                 messages.error(request, f"Error occurred while executing the process: {error}")
                 return redirect('binexus:process_detail', pk=kwargs.get('pk'))
+
         except Exception as e:
             logger.error(f"Error occurred while executing the process: {e}")
             messages.error(request, f"Error occurred while executing the process: {e}")

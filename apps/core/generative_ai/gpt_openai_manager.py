@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from openai import OpenAI
@@ -21,12 +22,18 @@ from openai import OpenAI
 import apps.core.generative_ai.utils.constant_utils
 from apps.core.data_security.ner.ner_executor import NERExecutor
 from apps.core.generative_ai.auxiliary_methods.output_supply_prompts import BALANCE_OVERFLOW_LOG
-from apps.core.generative_ai.auxiliary_methods.json_operations.json_operation_prompts import \
-    get_maximum_tool_chains_reached_log, get_maximum_tool_attempts_reached_log, embed_tool_call_in_prompt
+
+from apps.core.generative_ai.auxiliary_methods.json_operations.json_operation_prompts import (
+    get_maximum_tool_chains_reached_log,
+    get_maximum_tool_attempts_reached_log,
+    embed_tool_call_in_prompt
+)
+
 from apps.core.generative_ai.auxiliary_methods.errors.error_log_prompts import (
     get_technical_error_log,
     get_json_decode_error_log
 )
+
 from apps.core.generative_ai.utils import (
     find_tool_call_from_json,
     ChatRoles,
@@ -37,6 +44,7 @@ from apps.core.generative_ai.utils import (
     RetryCallersNames,
     step_back_retry_mechanism
 )
+
 from apps.core.system_prompts.chat_history_factory_builder import HistoryBuilder
 from apps.core.system_prompts.system_prompt_factory_builder import SystemPromptFactoryBuilder
 from apps.core.tool_calls.tool_call_manager import ToolCallManager

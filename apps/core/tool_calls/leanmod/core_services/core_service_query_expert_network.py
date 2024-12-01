@@ -14,13 +14,14 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
+
 import logging
 
-from apps.core.expert_networks.expert_network_executor import ExpertNetworkExecutor
-from apps.leanmod.models import ExpertNetworkAssistantReference
+from apps.core.expert_networks.expert_network_executor import (
+    ExpertNetworkExecutor
+)
 
+from apps.leanmod.models import ExpertNetworkAssistantReference
 
 logger = logging.getLogger(__name__)
 
@@ -31,13 +32,12 @@ def execute_expert_network_query(
     img_uris,
     f_uris
 ):
-
     ref = ExpertNetworkAssistantReference.objects.filter(
         id=agent_id
     ).first()
 
     if not ref:
-        logger .error("The assistant-network reference with the given ID does not exist.")
+        logger.error("The assistant-network reference with the given ID does not exist.")
         return "The assistant-network reference with the given ID does not exist."
     nx_obj = ref.network
 

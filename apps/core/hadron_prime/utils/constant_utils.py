@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 from apps.hadron_prime.models import HadronNode
 
 
@@ -243,8 +244,12 @@ class CURLHttpOptions:
 
         @staticmethod
         def as_list():
-            return [CURLHttpOptions.StartsWith.URL, CURLHttpOptions.StartsWith.HEADER, CURLHttpOptions.StartsWith.DATA,
-                    CURLHttpOptions.StartsWith.REQUEST]
+            return [
+                CURLHttpOptions.StartsWith.URL,
+                CURLHttpOptions.StartsWith.HEADER,
+                CURLHttpOptions.StartsWith.DATA,
+                CURLHttpOptions.StartsWith.REQUEST
+            ]
 
     class Equals:
         REQUEST = '--request'
@@ -254,8 +259,12 @@ class CURLHttpOptions:
 
         @staticmethod
         def as_list():
-            return [CURLHttpOptions.Equals.REQUEST, CURLHttpOptions.Equals.HEADER, CURLHttpOptions.Equals.DATA,
-                    CURLHttpOptions.Equals.DATA_RAW]
+            return [
+                CURLHttpOptions.Equals.REQUEST,
+                CURLHttpOptions.Equals.HEADER,
+                CURLHttpOptions.Equals.DATA,
+                CURLHttpOptions.Equals.DATA_RAW
+            ]
 
 
 class CURLHttpMethods:
@@ -267,8 +276,13 @@ class CURLHttpMethods:
 
     @staticmethod
     def as_list():
-        return [CURLHttpMethods.GET, CURLHttpMethods.POST, CURLHttpMethods.PUT, CURLHttpMethods.PATCH,
-                CURLHttpMethods.DELETE]
+        return [
+            CURLHttpMethods.GET,
+            CURLHttpMethods.POST,
+            CURLHttpMethods.PUT,
+            CURLHttpMethods.PATCH,
+            CURLHttpMethods.DELETE
+        ]
 
 
 HADRON_PRIME_TOOL_CALL_MAXIMUM_ATTEMPTS = 3

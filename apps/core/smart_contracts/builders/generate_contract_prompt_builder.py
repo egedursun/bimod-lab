@@ -14,11 +14,20 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-from apps.core.smart_contracts.prompts import contract_primary_instructions_prompt, contract_user_prompt_supply, \
-    contract_template_solidity_file_prompt, contract_offchain_seed_prompt, contract_metadata_prompt, \
-    contract_previous_mistakes_prompt, contract_refinement_primary_instructions, \
-    contract_syntactic_check_primary_instructions, contract_cost_effectiveness_primary_instructions, \
+
+from apps.core.smart_contracts.prompts import (
+    contract_primary_instructions_prompt,
+    contract_user_prompt_supply,
+    contract_template_solidity_file_prompt,
+    contract_offchain_seed_prompt,
+    contract_metadata_prompt,
+    contract_previous_mistakes_prompt,
+    contract_refinement_primary_instructions,
+    contract_syntactic_check_primary_instructions,
+    contract_cost_effectiveness_primary_instructions,
     contract_final_evaluation_primary_instructions
+)
+
 from apps.smart_contracts.models import BlockchainSmartContract
 
 

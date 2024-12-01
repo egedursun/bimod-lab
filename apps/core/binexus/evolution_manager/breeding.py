@@ -14,8 +14,13 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 from apps.binexus.models import BinexusProcess
-from apps.core.binexus.evolution_manager import PopulationManager, Individual
+
+from apps.core.binexus.evolution_manager import (
+    PopulationManager,
+    Individual
+)
 
 import random
 

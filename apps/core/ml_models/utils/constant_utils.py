@@ -15,7 +15,6 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-
 GENERATED_FILES_ROOT_PATH = "generated/files/"
 GENERATED_IMAGES_ROOT_PATH = "generated/images/"
 UNCLASSIFIED_FILE_EXTENSION = ".bin"

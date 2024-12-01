@@ -14,12 +14,17 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 import requests
 
 from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
-from apps.core.visual_client.utils import dream_save_images_and_return_uris
+
+from apps.core.visual_client.utils import (
+    dream_save_images_and_return_uris
+)
+
 from apps.llm_transaction.models import LLMTransaction
 from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
 

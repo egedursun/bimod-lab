@@ -32,18 +32,29 @@ def perform_actuation(node: HadronNode, determined_action: str):
     try:
         method, url, headers, data = parse_curl(curl_command=actuation_data_curl)
         data = determined_action_json
+
         import requests
-        response = requests.request(method, url, headers=headers, data=json.dumps(data))
+        response = requests.request(
+            method,
+            url,
+            headers=headers,
+            data=json.dumps(data)
+        )
+
         response_status = response.status_code
+
         if str(response_status).startswith("2"):
             return success, error
+
         else:
             error = f"Actuation failed with status code: {response_status}"
             return False, error
+
     except Exception as e:
         logger.error(f"Error occurred while triggering actuation: {str(e)}")
         error = str(e)
         return False, error
+
     if not response_text:
         logger.error("Actuation could not have been triggered.")
         error = "Actuation could not have been triggered."

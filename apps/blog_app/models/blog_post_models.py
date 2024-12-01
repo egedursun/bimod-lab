@@ -24,14 +24,35 @@ from apps.blog_app.utils import STATUS_CHOICES
 
 class BlogPost(models.Model):
     title = models.CharField(max_length=255)
-    slug = models.SlugField(max_length=255, unique=True, blank=True)
-    author = models.ForeignKey('auth.User', on_delete=models.CASCADE, null=True, blank=True)
+
+    slug = models.SlugField(
+        max_length=255,
+        unique=True,
+        blank=True
+    )
+    author = models.ForeignKey(
+        'auth.User',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True
+    )
+
     content = models.TextField()
-    thumbnail_image = models.ImageField(upload_to='blog_post_images/%Y/%m/%d/', blank=True, null=True)
+    thumbnail_image = models.ImageField(
+        upload_to='blog_post_images/%Y/%m/%d/',
+        blank=True,
+        null=True
+    )
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     published_at = models.DateTimeField(default=timezone.now)
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='draft')
+
+    status = models.CharField(
+        max_length=10,
+        choices=STATUS_CHOICES,
+        default='draft'
+    )
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -46,14 +67,77 @@ class BlogPost(models.Model):
         verbose_name = 'Blog Post'
         verbose_name_plural = 'Blog Posts'
         indexes = [
-            models.Index(fields=['title', 'slug']),
-            models.Index(fields=['title', 'status']),
-            models.Index(fields=['title', 'status', 'published_at']),
-            models.Index(fields=['title', 'status', 'created_at']),
-            models.Index(fields=['title', 'status', 'updated_at']),
-            models.Index(fields=['title', 'status', 'published_at', 'created_at']),
-            models.Index(fields=['title', 'status', 'published_at', 'updated_at']),
-            models.Index(fields=['title', 'status', 'created_at', 'updated_at']),
-            models.Index(fields=['title', 'status', 'created_at', 'published_at']),
-            models.Index(fields=['title', 'status', 'updated_at', 'published_at']),
+            models.Index(
+                fields=[
+                    'title',
+                    'slug'
+                ]
+            ),
+            models.Index(
+                fields=[
+                    'title',
+                    'status'
+                ]
+            ),
+            models.Index(
+                fields=[
+                    'title',
+                    'status',
+                    'published_at'
+                ]
+            ),
+            models.Index(
+                fields=[
+                    'title',
+                    'status',
+                    'created_at'
+                ]
+            ),
+            models.Index(
+                fields=[
+                    'title',
+                    'status',
+                    'updated_at'
+                ]
+            ),
+            models.Index(
+                fields=[
+                    'title',
+                    'status',
+                    'published_at',
+                    'created_at'
+                ]
+            ),
+            models.Index(
+                fields=[
+                    'title',
+                    'status',
+                    'published_at',
+                    'updated_at'
+                ]
+            ),
+            models.Index(
+                fields=[
+                    'title',
+                    'status',
+                    'created_at',
+                    'updated_at'
+                ]
+            ),
+            models.Index(
+                fields=[
+                    'title',
+                    'status',
+                    'created_at',
+                    'published_at'
+                ]
+            ),
+            models.Index(
+                fields=[
+                    'title',
+                    'status',
+                    'updated_at',
+                    'published_at'
+                ]
+            ),
         ]

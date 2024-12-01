@@ -15,7 +15,6 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-
 HELPER_SYSTEM_INSTRUCTIONS = {
     "code_interpreter": {
         "name": "Code Interpreter Assistant",

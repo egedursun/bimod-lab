@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 from json import JSONDecoder
 
@@ -26,14 +27,18 @@ def find_tool_call_from_json(response: str, decoder=JSONDecoder()):
     response = response.replace("\n", "").replace("'", '"')
     json_objects = []
     pos = 0
+
     while True:
         match = response.find('{', pos)
         if match == -1:
             break
+
         try:
             result, index = decoder.raw_decode(response[match:])
             json_objects.append(result)
             pos = match + index
+
         except ValueError:
             pos = match + 1
+
     return json_objects

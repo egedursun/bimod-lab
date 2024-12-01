@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 import requests
@@ -21,15 +22,29 @@ from openai import OpenAI
 from openai.types.beta.threads import TextContentBlock, ImageFileContentBlock
 
 from apps.core.generative_ai.auxiliary_methods.affirmations.affirmation_instructions import GENERIC_AFFIRMATION_PROMPT
-from apps.core.generative_ai.auxiliary_methods.errors.error_log_prompts import ANALYST_PREPARATION_ERROR_LOG, \
-    ANALYST_THREAD_CREATION_ERROR_LOG, ANALYST_RESPONSE_RETRIEVAL_ERROR_LOG, \
+
+from apps.core.generative_ai.auxiliary_methods.errors.error_log_prompts import (
+    ANALYST_PREPARATION_ERROR_LOG,
+    ANALYST_THREAD_CREATION_ERROR_LOG,
+    ANALYST_RESPONSE_RETRIEVAL_ERROR_LOG,
     MEDIA_MANAGER_CLEANUP_ERROR_LOG
+)
+
 from apps.core.generative_ai.auxiliary_methods.output_supply_prompts import EMPTY_OBJECT_PATH_LOG, AgentRunConditions
-from apps.core.generative_ai.auxiliary_methods.status_logs.status_log_prompts import get_number_of_files_too_high_log, \
+
+from apps.core.generative_ai.auxiliary_methods.status_logs.status_log_prompts import (
+    get_number_of_files_too_high_log,
     get_file_interpreter_status_log
+)
+
 from apps.core.generative_ai.auxiliary_methods.tool_helpers.tool_helper_instructions import HELPER_SYSTEM_INSTRUCTIONS
-from apps.core.generative_ai.utils import CONCRETE_LIMIT_SINGLE_FILE_INTERPRETATION, ChatRoles, \
+
+from apps.core.generative_ai.utils import (
+    CONCRETE_LIMIT_SINGLE_FILE_INTERPRETATION,
+    ChatRoles,
     GPT_DEFAULT_ENCODING_ENGINE
+)
+
 from apps.llm_transaction.models import LLMTransaction
 from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
 

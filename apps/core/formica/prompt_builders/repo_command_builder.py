@@ -1,4 +1,3 @@
-
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
 #  Project: Bimod.io™
@@ -19,11 +18,21 @@
 import logging
 
 from apps.core.formica.formica_executor_public import FormicaExecutionManager_Public
-from apps.core.formica.prompts import build_formica_agent_nickname_prompt, build_formica_internal_principles_prompt, \
-    build_formica_agent_personality_prompt, build_formica_target_audience_prompt, build_formica_user_tenant_prompt, \
-    build_formica_spatial_awareness_prompt, build_formica_technical_dictionary_prompt, \
-    build_formica_ops_instruction_prompt, build_formica_action__repo_prompt, \
-    build_formica_code_base_data_source_prompt, build_formica_tool_prompt__execute_codebase_query
+
+from apps.core.formica.prompts import (
+    build_formica_agent_nickname_prompt,
+    build_formica_internal_principles_prompt,
+    build_formica_agent_personality_prompt,
+    build_formica_target_audience_prompt,
+    build_formica_user_tenant_prompt,
+    build_formica_spatial_awareness_prompt,
+    build_formica_technical_dictionary_prompt,
+    build_formica_ops_instruction_prompt,
+    build_formica_action__repo_prompt,
+    build_formica_code_base_data_source_prompt,
+    build_formica_tool_prompt__execute_codebase_query
+)
+
 from apps.core.formica.prompts.formica.whole_text_supplier_prompt import build_whole_text_supply_prompt_public
 
 logger = logging.getLogger(__name__)
@@ -34,7 +43,6 @@ def build_repo_command_system_prompt_public(
     user_query: str,
     content: str
 ):
-
     logger.info(f"Building REPO command system prompt for user query: {user_query}")
 
     combined_system_prompt = ""

@@ -18,7 +18,11 @@
 from django.contrib import admin
 
 from apps.blog_app.models import BlogTag
-from apps.blog_app.utils import BLOG_TAG_ADMIN_LIST, BLOG_TAG_ADMIN_FILTER, BLOG_TAG_ADMIN_SEARCH
+from apps.blog_app.utils import (
+    BLOG_TAG_ADMIN_LIST,
+    BLOG_TAG_ADMIN_FILTER,
+    BLOG_TAG_ADMIN_SEARCH
+)
 
 
 @admin.register(BlogTag)

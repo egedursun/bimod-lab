@@ -14,24 +14,49 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 import websockets
 
 from apps.core.generative_ai.utils import find_tool_call_from_json, ChatRoles
 from apps.core.orchestration.orchestration_tool_manager import OrchestrationToolManager
-from apps.core.orchestration.prompts.calls.build_maestro_to_assistant_instructions import \
+
+from apps.core.orchestration.prompts.calls.build_maestro_to_assistant_instructions import (
     build_maestro_to_assistant_instructions_prompt
-from apps.core.orchestration.prompts.orchestration_history_builder import OrchestrationHistoryBuilder
-from apps.core.orchestration.prompts.orchestration_prompt_builder import OrchestrationPromptBuilder
-from apps.core.orchestration.utils import send_orchestration_message, embed_orchestration_tool_call_in_prompt, \
-    DEFAULT_ORCHESTRATION_ERROR_MESSAGE, DEFAULT_WORKER_ASSISTANT_ERROR_MESSAGE, \
+)
+
+from apps.core.orchestration.prompts.orchestration_history_builder import (
+    OrchestrationHistoryBuilder
+)
+
+from apps.core.orchestration.prompts.orchestration_prompt_builder import (
+    OrchestrationPromptBuilder
+)
+
+from apps.core.orchestration.utils import (
+    send_orchestration_message,
+    embed_orchestration_tool_call_in_prompt,
+    DEFAULT_ORCHESTRATION_ERROR_MESSAGE,
+    DEFAULT_WORKER_ASSISTANT_ERROR_MESSAGE,
     get_orchestration_json_decode_error_log
+)
+
 from apps.assistants.models import Assistant
 from apps.multimodal_chat.models import MultimodalChat, MultimodalChatMessage
-from apps.multimodal_chat.utils import BIMOD_NO_TAG_PLACEHOLDER, BIMOD_STREAMING_END_TAG, BIMOD_PROCESS_END, \
+
+from apps.multimodal_chat.utils import (
+    BIMOD_NO_TAG_PLACEHOLDER,
+    BIMOD_STREAMING_END_TAG,
+    BIMOD_PROCESS_END,
     SourcesForMultimodalChatsNames
-from apps.orchestrations.models import OrchestrationQuery, OrchestrationQueryLog
+)
+
+from apps.orchestrations.models import (
+    OrchestrationQuery,
+    OrchestrationQueryLog
+)
+
 from apps.orchestrations.utils import OrchestrationQueryLogTypesNames
 
 logger = logging.getLogger(__name__)

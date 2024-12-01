@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
@@ -36,8 +37,14 @@ class BinexusView_ProcessUpdate(LoginRequiredMixin, TemplateView):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         process_id = self.kwargs.get('pk')
         binexus_process = BinexusProcess.objects.get(id=process_id)
-        user_orgs = Organization.objects.filter(users__in=[self.request.user])
-        llm_models = LLMCore.objects.filter(organization__in=user_orgs)
+
+        user_orgs = Organization.objects.filter(
+            users__in=[self.request.user]
+        )
+        llm_models = LLMCore.objects.filter(
+            organization__in=user_orgs
+        )
+
         context['organizations'] = user_orgs
         context['llm_models'] = llm_models
         context['binexus_process'] = binexus_process
@@ -46,15 +53,20 @@ class BinexusView_ProcessUpdate(LoginRequiredMixin, TemplateView):
     def post(self, request, *args, **kwargs):
         ##############################
         # PERMISSION CHECK FOR - UPDATE_BINEXUS_PROCESSES
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.UPDATE_BINEXUS_PROCESSES):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.UPDATE_BINEXUS_PROCESSES
+        ):
             messages.error(self.request, "You do not have permission to update Binexus Processes.")
             return redirect('binexus:process_list')
         ##############################
 
         process_id = self.kwargs.get('pk')
         try:
-            binexus_process = BinexusProcess.objects.get(id=process_id)
+            binexus_process = BinexusProcess.objects.get(
+                id=process_id
+            )
+
             binexus_process.organization_id = request.POST.get('organization')
             binexus_process.llm_model_id = request.POST.get('llm_model')
             binexus_process.process_name = request.POST.get('process_name')
@@ -67,13 +79,18 @@ class BinexusView_ProcessUpdate(LoginRequiredMixin, TemplateView):
             gene_values = request.POST.getlist('additional_genes_values[]')
 
             genes_data = {}
+
             for i in range(len(gene_names)):
                 try:
                     gene_name = gene_names[i].strip()
                     raw_values = gene_values[i].strip()
-                    values_list = [v.strip() for v in raw_values.split(',') if v.strip()]
+                    values_list = [
+                        v.strip() for v in raw_values.split(',') if v.strip()
+                    ]
+
                     if gene_name and values_list:
                         genes_data[gene_name] = values_list
+
                 except Exception as e:
                     logger.error(f"Error parsing gene data: {e}")
                     continue
@@ -82,14 +99,19 @@ class BinexusView_ProcessUpdate(LoginRequiredMixin, TemplateView):
             binexus_process.optimization_generations = request.POST.get('optimization_generations')
             binexus_process.optimization_population_size = request.POST.get('optimization_population_size')
             binexus_process.optimization_breeding_pool_rate = request.POST.get('optimization_breeding_pool_rate')
+
             binexus_process.optimization_mutation_rate_per_individual = request.POST.get(
-                'optimization_mutation_rate_per_individual')
+                'optimization_mutation_rate_per_individual'
+            )
             binexus_process.optimization_mutation_rate_per_gene = request.POST.get(
-                'optimization_mutation_rate_per_gene')
+                'optimization_mutation_rate_per_gene'
+            )
+
             binexus_process.optimization_crossover_rate = request.POST.get('optimization_crossover_rate')
             binexus_process.self_breeding_possible = request.POST.get('self_breeding_possible') == 'on'
             binexus_process.additional_genes = genes_data
             binexus_process.save()
+
         except Exception as e:
             logger.error(f"Error updating Binexus Process: {e}")
             messages.error(request, f"Error updating Binexus Process: {e}")

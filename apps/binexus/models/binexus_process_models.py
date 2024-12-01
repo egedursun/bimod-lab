@@ -20,8 +20,14 @@ from django.db import models
 
 
 class BinexusProcess(models.Model):
-    organization = models.ForeignKey('organization.Organization', on_delete=models.CASCADE)
-    llm_model = models.ForeignKey('llm_core.LLMCore', on_delete=models.CASCADE)
+    organization = models.ForeignKey(
+        'organization.Organization',
+        on_delete=models.CASCADE
+    )
+    llm_model = models.ForeignKey(
+        'llm_core.LLMCore',
+        on_delete=models.CASCADE
+    )
 
     process_name = models.CharField(max_length=255)
     process_description = models.TextField()
@@ -41,15 +47,46 @@ class BinexusProcess(models.Model):
     self_breeding_possible = models.BooleanField(default=True)
 
     # Post-Processing History Logs
-    post_processing_history_average_fitness_per_epoch = models.JSONField(default=list, blank=True, null=True)
-    post_processing_history_best_fitness_per_epoch = models.JSONField(default=list, blank=True, null=True)
-    post_processing_history_worst_fitness_per_epoch = models.JSONField(default=list, blank=True, null=True)
-    post_processing_history_average_of_average_fitnesses = models.FloatField(default=0.0, blank=True, null=True)
-    post_processing_history_average_of_best_fitnesses = models.FloatField(default=0.0, blank=True, null=True)
-    post_processing_history_average_of_worst_fitnesses = models.FloatField(default=0.0, blank=True, null=True)
-    post_processing_history_visual_chart = models.ImageField(upload_to='binexus_process_visual_charts/%Y/%m/%d/', blank=True, null=True)
+    post_processing_history_average_fitness_per_epoch = models.JSONField(
+        default=list,
+        blank=True,
+        null=True
+    )
+    post_processing_history_best_fitness_per_epoch = models.JSONField(
+        default=list,
+        blank=True,
+        null=True
+    )
+    post_processing_history_worst_fitness_per_epoch = models.JSONField(
+        default=list,
+        blank=True,
+        null=True
+    )
+    post_processing_history_average_of_average_fitnesses = models.FloatField(
+        default=0.0,
+        blank=True,
+        null=True
+    )
+    post_processing_history_average_of_best_fitnesses = models.FloatField(
+        default=0.0,
+        blank=True,
+        null=True
+    )
+    post_processing_history_average_of_worst_fitnesses = models.FloatField(
+        default=0.0,
+        blank=True,
+        null=True
+    )
+    post_processing_history_visual_chart = models.ImageField(
+        upload_to='binexus_process_visual_charts/%Y/%m/%d/',
+        blank=True,
+        null=True
+    )
 
-    created_by_user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    created_by_user = models.ForeignKey(
+        'auth.User',
+        on_delete=models.CASCADE
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -63,7 +100,25 @@ class BinexusProcess(models.Model):
         ordering = ['-created_at']
         indexes = [
             models.Index(fields=['organization']),
-            models.Index(fields=['organization', 'llm_model']),
-            models.Index(fields=['organization', 'llm_model', 'created_by_user']),
-            models.Index(fields=['organization', 'llm_model', 'created_by_user', 'created_at']),
+            models.Index(
+                fields=[
+                    'organization',
+                    'llm_model'
+                ]
+            ),
+            models.Index(
+                fields=[
+                    'organization',
+                    'llm_model',
+                    'created_by_user'
+                ]
+            ),
+            models.Index(
+                fields=[
+                    'organization',
+                    'llm_model',
+                    'created_by_user',
+                    'created_at'
+                ]
+            ),
         ]

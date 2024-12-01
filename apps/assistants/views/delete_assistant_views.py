@@ -44,7 +44,10 @@ class AssistantView_Delete(LoginRequiredMixin, DeleteView):
 
         ##############################
         # PERMISSION CHECK FOR - DELETE_ASSISTANTS
-        if not UserPermissionManager.is_authorized(user=context_user, operation=PermissionNames.DELETE_ASSISTANTS):
+        if not UserPermissionManager.is_authorized(
+            user=context_user,
+            operation=PermissionNames.DELETE_ASSISTANTS
+        ):
             messages.error(self.request, "You do not have permission to delete agents.")
             return redirect('assistants:list')
         ##############################
@@ -54,6 +57,7 @@ class AssistantView_Delete(LoginRequiredMixin, DeleteView):
             agent.delete()
             logger.info(f"Assistant has been deleted. ")
             messages.success(self.request, "Assistant has been deleted.")
+
         except Exception as e:
             logger.error(f"[AssistantView_Delete] Error deleting the assistant: {e}")
             messages.error(self.request, "Error deleting the assistant.")
@@ -62,4 +66,8 @@ class AssistantView_Delete(LoginRequiredMixin, DeleteView):
 
     def get_queryset(self):
         context_user = self.request.user
-        return Assistant.objects.filter(organization__users__in=[context_user])
+        return Assistant.objects.filter(
+            organization__users__in=[
+                context_user
+            ]
+        )

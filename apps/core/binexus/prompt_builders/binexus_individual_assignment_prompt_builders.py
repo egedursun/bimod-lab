@@ -14,9 +14,13 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 from apps.binexus.models import BinexusProcess
-from apps.core.binexus.prompts.binexus_individual_assignment_prompt import binexus_individual_assignment_prompt, \
+
+from apps.core.binexus.prompts.binexus_individual_assignment_prompt import (
+    binexus_individual_assignment_prompt,
     binexus_individual_assignment_prompt_redacted
+)
 
 
 def build_binexus_individual_assignment_prompt(

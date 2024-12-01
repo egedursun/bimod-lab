@@ -24,8 +24,14 @@ import faiss
 import numpy as np
 from django.db import models
 
-from apps.assistants.utils import VECTOR_INDEX_PATH_ASSISTANT_CHAT_MESSAGES, ContextManagementStrategyNames
-from apps.core.semantor.utils import OpenAIEmbeddingModels, OPEN_AI_DEFAULT_EMBEDDING_VECTOR_DIMENSIONS
+from apps.assistants.utils import (
+    VECTOR_INDEX_PATH_ASSISTANT_CHAT_MESSAGES,
+    ContextManagementStrategyNames
+)
+from apps.core.semantor.utils import (
+    OpenAIEmbeddingModels,
+    OPEN_AI_DEFAULT_EMBEDDING_VECTOR_DIMENSIONS
+)
 
 logger = logging.getLogger(__name__)
 
@@ -127,7 +133,9 @@ class AssistantOldChatMessagesVectorData(models.Model):
         c = OpenAIGPTClientManager.get_naked_client(
             llm_model=self.assistant_chat_message.multimodal_chat.assistant.llm_model
         )
+
         raw_data_text = json.dumps(raw_data, indent=2)
+
         try:
             response = c.embeddings.create(
                 input=raw_data_text,
@@ -135,6 +143,7 @@ class AssistantOldChatMessagesVectorData(models.Model):
             )
             embedding_vector = response.data[0].embedding
             self.vector_data = embedding_vector
+
         except Exception as e:
             logger.error(f"Error in generating embedding: {e}")
             self.vector_data = []
@@ -147,13 +156,20 @@ class AssistantOldChatMessagesVectorData(models.Model):
             )
             xids = np.array([self.id], dtype=np.int64)
             index_path = self._get_index_path()
+
             if not os.path.exists(index_path):
-                index = faiss.IndexIDMap(faiss.IndexFlatL2(OPEN_AI_DEFAULT_EMBEDDING_VECTOR_DIMENSIONS))
+                index = faiss.IndexIDMap(
+                    faiss.IndexFlatL2(
+                        OPEN_AI_DEFAULT_EMBEDDING_VECTOR_DIMENSIONS
+                    )
+                )
+
             else:
                 index = faiss.read_index(index_path)
                 if not isinstance(index, faiss.IndexIDMap):
                     index = faiss.IndexIDMap(index)
                 index.remove_ids(xids)
+
 
             index.add_with_ids(x, xids)
             faiss.write_index(index, index_path)
@@ -161,7 +177,9 @@ class AssistantOldChatMessagesVectorData(models.Model):
     def has_raw_data_changed(self):
         raw_data_str = json.dumps(self.raw_data, sort_keys=True)
         new_raw_data_hash = hashlib.sha256(raw_data_str.encode('utf-8')).hexdigest()
+
         if self.raw_data_hash == new_raw_data_hash:
             return False
+
         self.raw_data_hash = new_raw_data_hash
         return True

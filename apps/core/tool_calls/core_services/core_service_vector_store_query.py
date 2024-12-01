@@ -14,11 +14,14 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
-from apps.core.vector_operations.vector_document.vector_store_decoder import KnowledgeBaseSystemDecoder
-from apps.datasource_knowledge_base.models import DocumentKnowledgeBaseConnection
+from apps.core.vector_operations.vector_document.vector_store_decoder import (
+    KnowledgeBaseSystemDecoder
+)
 
+from apps.datasource_knowledge_base.models import DocumentKnowledgeBaseConnection
 
 logger = logging.getLogger(__name__)
 
@@ -28,7 +31,6 @@ def run_query_vector_store(
     vector_store_query: str,
     semantic_alpha: float
 ):
-
     conn = DocumentKnowledgeBaseConnection.objects.get(
         id=c_id
     )

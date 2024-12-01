@@ -14,12 +14,16 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import io
 import json
 import logging
 import wave
 
-from vosk import Model, KaldiRecognizer
+from vosk import (
+    Model,
+    KaldiRecognizer
+)
 
 from config.settings import VOSK_MODEL_PATH
 
@@ -66,7 +70,6 @@ class TranscriberExecutionManager:
                         break
 
                     if recognizer.AcceptWaveform(data):
-
                         result = recognizer.Result()
                         transcription.append(json.loads(result).get("text", ""))
 

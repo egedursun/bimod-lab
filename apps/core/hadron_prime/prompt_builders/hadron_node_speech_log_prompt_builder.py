@@ -14,17 +14,28 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
-from apps.core.hadron_prime.handlers import structure_topic_messages, retrieve_publish_history_logs, \
+from apps.core.hadron_prime.handlers import (
+    structure_topic_messages,
+    retrieve_publish_history_logs,
     retrieve_sease_logs
-from apps.core.hadron_prime.prompts import build_optional_instructions_prompt, build_system_metadata_prompt, \
-    build_node_metadata_prompt
-from apps.core.hadron_prime.prompts.hadron_node_speech_generation_instructions_prompt import \
-    hadron_node_speech_generation_core_instructions_prompt, hadron_node_speech_logs_prompt, \
-    hadron_node_execution_logs_prompt
-from apps.hadron_prime.models import HadronNode
+)
 
+from apps.core.hadron_prime.prompts import (
+    build_optional_instructions_prompt,
+    build_system_metadata_prompt,
+    build_node_metadata_prompt
+)
+
+from apps.core.hadron_prime.prompts.hadron_node_speech_generation_instructions_prompt import (
+    hadron_node_speech_generation_core_instructions_prompt,
+    hadron_node_speech_logs_prompt,
+    hadron_node_execution_logs_prompt
+)
+
+from apps.hadron_prime.models import HadronNode
 
 logger = logging.getLogger(__name__)
 

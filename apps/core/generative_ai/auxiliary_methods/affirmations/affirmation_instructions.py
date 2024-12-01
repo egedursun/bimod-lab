@@ -15,7 +15,6 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-
 GENERIC_AFFIRMATION_PROMPT = f"""
 
     **Affirmation Prompt**

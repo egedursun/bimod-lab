@@ -29,6 +29,7 @@ def retrieve_sease_logs(node: HadronNode):
 
     logger.info("Retrieving SEASE logs.")
     sease_logs_string = "[OLD_STATE & OLD_ERROR] -> [ACTION] -> [NEW_STATE & NEW_ERROR]\n"
+
     for sease_log in sease_log_objects:
         sease_log: HadronStateErrorActionStateErrorLog
         sease_logs_string += f"[S(t-1): {sease_log.old_state} & E(t-1): {sease_log.old_error}] -> [A(t): {sease_log.action}] -> [S(t): {sease_log.new_state} & E(t): {sease_log.new_error}]\n"

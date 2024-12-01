@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import base64
 import json
 import logging
@@ -25,14 +26,29 @@ from django.utils import timezone
 
 from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
 from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
-from apps.core.metatempo.builders import (build_log_snapshot_interpretation_prompt,
-                                          build_daily_logs_interpretation_prompt, build_overall_interpretation_prompt,
-                                          build_user_loq_question_interpretation_prompt)
-from apps.core.metatempo.utils import MAXIMUM_OVERALL_LOG_RETRIEVAL_INTERVAL_DAYS, find_tool_call_from_json_single
+
+from apps.core.metatempo.builders import (
+    build_log_snapshot_interpretation_prompt,
+    build_daily_logs_interpretation_prompt,
+    build_overall_interpretation_prompt,
+    build_user_loq_question_interpretation_prompt
+)
+
+from apps.core.metatempo.utils import (
+    MAXIMUM_OVERALL_LOG_RETRIEVAL_INTERVAL_DAYS,
+    find_tool_call_from_json_single
+)
+
 from apps.llm_transaction.models import LLMTransaction
 from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
-from apps.metatempo.models import MetaTempoConnection, MetaTempoMemberLog, MetaTempoMemberLogDaily, \
+
+from apps.metatempo.models import (
+    MetaTempoConnection,
+    MetaTempoMemberLog,
+    MetaTempoMemberLogDaily,
     MetaTempoProjectOverallLog
+)
+
 from apps.metatempo.utils import MetaTempoOverallLogIntervalsNames
 
 logger = logging.getLogger(__name__)

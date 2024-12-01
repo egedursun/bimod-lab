@@ -14,9 +14,14 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
-from apps.core.video_generation.utils import VideoGeneratorFrameTypes, VideoGenerationActionTypes
+from apps.core.video_generation.utils import (
+    VideoGeneratorFrameTypes,
+    VideoGenerationActionTypes
+)
+
 from apps.core.video_generation.video_generation_executor import VideoGenerationExecutor
 from apps.core.video_generation.video_generator_decoder import VideoGeneratorDecoder
 

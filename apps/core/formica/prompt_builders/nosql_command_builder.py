@@ -18,11 +18,21 @@
 import logging
 
 from apps.core.formica.formica_executor_public import FormicaExecutionManager_Public
-from apps.core.formica.prompts import build_formica_agent_nickname_prompt, build_formica_internal_principles_prompt, \
-    build_formica_agent_personality_prompt, build_formica_target_audience_prompt, build_formica_user_tenant_prompt, \
-    build_formica_spatial_awareness_prompt, build_formica_technical_dictionary_prompt, \
-    build_formica_ops_instruction_prompt, build_formica_action__nosql_prompt, build_formica_nosql_data_source_prompt, \
+
+from apps.core.formica.prompts import (
+    build_formica_agent_nickname_prompt,
+    build_formica_internal_principles_prompt,
+    build_formica_agent_personality_prompt,
+    build_formica_target_audience_prompt,
+    build_formica_user_tenant_prompt,
+    build_formica_spatial_awareness_prompt,
+    build_formica_technical_dictionary_prompt,
+    build_formica_ops_instruction_prompt,
+    build_formica_action__nosql_prompt,
+    build_formica_nosql_data_source_prompt,
     build_formica_tool_prompt__execute_nosql_query
+)
+
 from apps.core.formica.prompts.formica.whole_text_supplier_prompt import build_whole_text_supply_prompt_public
 
 logger = logging.getLogger(__name__)

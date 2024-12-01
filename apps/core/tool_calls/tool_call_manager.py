@@ -15,7 +15,6 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-
 import json
 import logging
 
@@ -23,94 +22,283 @@ from django.contrib.auth.models import User
 
 from apps.core.browsers.utils import BrowserActionsNames
 from apps.core.generative_ai.auxiliary_methods.errors.error_log_prompts import get_json_decode_error_log
-from apps.core.tool_calls.core_services.core_service_dashboard_statistics_query import run_query_dashboard_statistics
-from apps.core.tool_calls.core_services.core_service_execute_metakanban_query import run_query_execute_metakanban
-from apps.core.tool_calls.core_services.core_service_execute_metatempo_query import run_query_execute_metatempo
-from apps.core.tool_calls.core_services.core_service_execute_orchestration_trigger import \
+
+from apps.core.tool_calls.core_services.core_service_dashboard_statistics_query import (
+    run_query_dashboard_statistics
+)
+
+from apps.core.tool_calls.core_services.core_service_execute_metakanban_query import (
+    run_query_execute_metakanban
+)
+
+from apps.core.tool_calls.core_services.core_service_execute_metatempo_query import (
+    run_query_execute_metatempo
+)
+
+from apps.core.tool_calls.core_services.core_service_execute_orchestration_trigger import (
     run_query_trigger_orchestration
-from apps.core.tool_calls.core_services.core_service_execute_scheduled_job_logs_query import \
+)
+
+from apps.core.tool_calls.core_services.core_service_execute_scheduled_job_logs_query import (
     run_query_execute_scheduled_job_logs
-from apps.core.tool_calls.core_services.core_service_execute_smart_contract_query import \
+)
+
+from apps.core.tool_calls.core_services.core_service_execute_smart_contract_query import (
     run_query_execute_smart_contract_generation_query
-from apps.core.tool_calls.core_services.core_service_execute_triggered_job_logs_query import \
+)
+
+from apps.core.tool_calls.core_services.core_service_execute_triggered_job_logs_query import (
     run_query_execute_triggered_job_logs
-from apps.core.tool_calls.core_services.core_service_hadron_node_query import run_query_execute_hadron_node
-from apps.core.tool_calls.core_services.core_service_process_reasoning import run_process_reasoning
-from apps.core.tool_calls.core_services.core_service_generate_video import run_generate_video
-from apps.core.tool_calls.input_verifiers.verify_dashboard_statistics_query import \
+)
+
+from apps.core.tool_calls.core_services.core_service_hadron_node_query import (
+    run_query_execute_hadron_node
+)
+
+from apps.core.tool_calls.core_services.core_service_process_reasoning import (
+    run_process_reasoning
+)
+
+from apps.core.tool_calls.core_services.core_service_generate_video import (
+    run_generate_video
+)
+
+from apps.core.tool_calls.input_verifiers.verify_dashboard_statistics_query import (
     verify_dashboard_statistics_query_content
-from apps.core.tool_calls.input_verifiers.verify_hadron_node_query import verify_hadron_node_query_content
-from apps.core.tool_calls.input_verifiers.verify_metakanban_query import verify_metakanban_query_content
-from apps.core.tool_calls.input_verifiers.verify_metatempo_query import verify_metatempo_query_content
-from apps.core.tool_calls.input_verifiers.verify_orchestration_trigger import verify_orchestration_trigger_content
-from apps.core.tool_calls.input_verifiers.verify_scheduled_job_logs_query import \
+)
+
+from apps.core.tool_calls.input_verifiers.verify_hadron_node_query import (
+    verify_hadron_node_query_content
+)
+
+from apps.core.tool_calls.input_verifiers.verify_metakanban_query import (
+    verify_metakanban_query_content
+)
+
+from apps.core.tool_calls.input_verifiers.verify_metatempo_query import (
+    verify_metatempo_query_content
+)
+
+from apps.core.tool_calls.input_verifiers.verify_orchestration_trigger import (
+    verify_orchestration_trigger_content
+)
+
+from apps.core.tool_calls.input_verifiers.verify_scheduled_job_logs_query import (
     verify_scheduled_job_logs_query_content
-from apps.core.tool_calls.input_verifiers.verify_smart_contract_query import \
+)
+
+from apps.core.tool_calls.input_verifiers.verify_smart_contract_query import (
     verify_smart_contract_generation_query_content
-from apps.core.tool_calls.input_verifiers.verify_triggered_job_logs_query import \
+)
+
+from apps.core.tool_calls.input_verifiers.verify_triggered_job_logs_query import (
     verify_triggered_job_logs_query_content
-from apps.core.tool_calls.leanmod.core_services.core_service_consultation_semantor import \
+)
+
+from apps.core.tool_calls.leanmod.core_services.core_service_consultation_semantor import (
     execute_semantor_consultation_query
-from apps.core.tool_calls.leanmod.core_services.core_service_leanmod_memory_query import run_query_leanmod_memory
-from apps.core.tool_calls.leanmod.core_services.core_service_query_semantor import execute_semantor_search_query
-from apps.core.tool_calls.leanmod.input_verifiers.verify_query_leanmod_memory import \
+)
+
+from apps.core.tool_calls.leanmod.core_services.core_service_leanmod_memory_query import (
+    run_query_leanmod_memory
+)
+
+from apps.core.tool_calls.leanmod.core_services.core_service_query_semantor import (
+    execute_semantor_search_query
+)
+
+from apps.core.tool_calls.leanmod.input_verifiers.verify_query_leanmod_memory import (
     verify_leanmod_memory_query_content
-from apps.core.tool_calls.leanmod.input_verifiers.verify_semantor_consultation_query import \
+)
+
+from apps.core.tool_calls.leanmod.input_verifiers.verify_semantor_consultation_query import (
     verify_semantor_consultation_query_content
-from apps.core.tool_calls.leanmod.input_verifiers.verify_semantor_query import verify_semantor_search_query_content
-from apps.core.tool_calls.input_verifiers.verify_analyze_code import verify_analyze_code_content
-from apps.core.tool_calls.input_verifiers.verify_audio_processing_query import verify_audio_processing_query
-from apps.core.tool_calls.input_verifiers.verify_browser_query import verify_browser_query_content
-from apps.core.tool_calls.input_verifiers.verify_dream_image import verify_dream_image_content
-from apps.core.tool_calls.input_verifiers.verify_edit_image import verify_edit_image_content
-from apps.core.tool_calls.input_verifiers.verify_generate_image import verify_generate_image_content
-from apps.core.tool_calls.input_verifiers.verify_generate_video import verify_generate_video_content
-from apps.core.tool_calls.input_verifiers.verify_http_retrieval_query import verify_http_retrieval_query_content
-from apps.core.tool_calls.input_verifiers.verify_infer_ml_query import verify_infer_ml_query_content
-from apps.core.tool_calls.input_verifiers.verify_main_query_or_run_call import verify_main_call_or_query_content
-from apps.core.tool_calls.input_verifiers.verify_media_manager_query import verify_media_manager_query_content
-from apps.core.tool_calls.input_verifiers.verify_process_reasoning_query import verify_process_reasoning_query_content
-from apps.core.tool_calls.input_verifiers.verify_query_code_base import verify_code_base_query_content
-from apps.core.tool_calls.input_verifiers.verify_query_intra_memory import verify_intra_memory_query_content
-from apps.core.tool_calls.input_verifiers.verify_run_custom_api import verify_run_custom_api_content
-from apps.core.tool_calls.input_verifiers.verify_run_custom_function import verify_run_custom_function_content
-from apps.core.tool_calls.input_verifiers.verify_run_custom_script import verify_run_custom_script_content
-from apps.core.tool_calls.input_verifiers.verify_run_nosql_query import verify_run_nosql_query_content
-from apps.core.tool_calls.input_verifiers.verify_run_sql_query import verify_run_sql_query_content
-from apps.core.tool_calls.input_verifiers.verify_ssh_system_command import verify_ssh_system_command_content
-from apps.core.tool_calls.input_verifiers.verify_vector_store_query import verify_vector_store_query_content
-from apps.core.tool_calls.leanmod.input_verifiers.verify_expert_network_query import \
+)
+
+from apps.core.tool_calls.leanmod.input_verifiers.verify_semantor_query import (
+    verify_semantor_search_query_content
+)
+
+from apps.core.tool_calls.input_verifiers.verify_analyze_code import (
+    verify_analyze_code_content
+)
+from apps.core.tool_calls.input_verifiers.verify_audio_processing_query import (
+    verify_audio_processing_query
+)
+
+from apps.core.tool_calls.input_verifiers.verify_browser_query import (
+    verify_browser_query_content
+)
+
+from apps.core.tool_calls.input_verifiers.verify_dream_image import (
+    verify_dream_image_content
+)
+
+from apps.core.tool_calls.input_verifiers.verify_edit_image import (
+    verify_edit_image_content
+)
+
+from apps.core.tool_calls.input_verifiers.verify_generate_image import (
+    verify_generate_image_content
+)
+
+from apps.core.tool_calls.input_verifiers.verify_generate_video import (
+    verify_generate_video_content
+)
+
+from apps.core.tool_calls.input_verifiers.verify_http_retrieval_query import (
+    verify_http_retrieval_query_content
+)
+
+from apps.core.tool_calls.input_verifiers.verify_infer_ml_query import (
+    verify_infer_ml_query_content
+)
+
+from apps.core.tool_calls.input_verifiers.verify_main_query_or_run_call import (
+    verify_main_call_or_query_content
+)
+
+from apps.core.tool_calls.input_verifiers.verify_media_manager_query import (
+    verify_media_manager_query_content
+)
+
+from apps.core.tool_calls.input_verifiers.verify_process_reasoning_query import (
+    verify_process_reasoning_query_content
+)
+
+from apps.core.tool_calls.input_verifiers.verify_query_code_base import (
+    verify_code_base_query_content
+)
+
+from apps.core.tool_calls.input_verifiers.verify_query_intra_memory import (
+    verify_intra_memory_query_content
+)
+
+from apps.core.tool_calls.input_verifiers.verify_run_custom_api import (
+    verify_run_custom_api_content
+)
+
+from apps.core.tool_calls.input_verifiers.verify_run_custom_function import (
+    verify_run_custom_function_content
+)
+
+from apps.core.tool_calls.input_verifiers.verify_run_custom_script import (
+    verify_run_custom_script_content)
+
+from apps.core.tool_calls.input_verifiers.verify_run_nosql_query import (
+    verify_run_nosql_query_content)
+
+from apps.core.tool_calls.input_verifiers.verify_run_sql_query import (
+    verify_run_sql_query_content
+)
+
+from apps.core.tool_calls.input_verifiers.verify_ssh_system_command import (
+    verify_ssh_system_command_content
+)
+
+from apps.core.tool_calls.input_verifiers.verify_vector_store_query import (
+    verify_vector_store_query_content
+)
+
+from apps.core.tool_calls.leanmod.input_verifiers.verify_expert_network_query import (
     verify_expert_network_query_content
-from apps.core.tool_calls.utils import ToolCallDescriptorNames, \
-    get_no_tool_found_error_log, IMAGE_GENERATION_AFFIRMATION_PROMPT
-from apps.core.tool_calls.core_services.core_service_process_audio import \
+)
+
+from apps.core.tool_calls.utils import (
+    ToolCallDescriptorNames,
+    get_no_tool_found_error_log,
+    IMAGE_GENERATION_AFFIRMATION_PROMPT
+)
+
+from apps.core.tool_calls.core_services.core_service_process_audio import (
     run_process_audio
-from apps.core.tool_calls.core_services.core_service_execute_browser import run_execute_browsing
-from apps.core.tool_calls.core_services.core_service_code_base_query import run_query_code_base
-from apps.core.tool_calls.core_services.core_service_analyze_code import run_analyze_code
-from apps.core.tool_calls.core_services.core_service_execute_custom_api import run_execute_custom_api
-from apps.core.tool_calls.core_services.core_service_execute_custom_function import run_execute_custom_code
-from apps.core.tool_calls.core_services.core_service_execute_custom_script import run_execute_custom_script
-from apps.core.tool_calls.core_services.core_service_execute_ssh_system_command import run_execute_ssh_system_commands
-from apps.core.tool_calls.core_services.core_service_generate_image import run_generate_image
-from apps.core.tool_calls.core_services.core_service_edit_image import run_edit_image
-from apps.core.tool_calls.core_services.core_service_dream_image import run_dream_image
-from apps.core.tool_calls.core_services.core_service_vector_store_query import run_query_vector_store
-from apps.core.tool_calls.core_services.core_service_intra_memory_query import run_query_intra_memory
-from apps.core.tool_calls.core_services.core_service_infer_with_ml import run_predict_with_ml
-from apps.core.tool_calls.core_services.core_service_sql_query import run_sql_query
-from apps.core.tool_calls.core_services.core_service_nosql_query import run_nosql_query
-from apps.core.tool_calls.core_services.core_service_http_retrieval import run_http_retrieval
-from apps.core.tool_calls.leanmod.core_services.core_service_query_expert_network import \
+)
+
+from apps.core.tool_calls.core_services.core_service_execute_browser import (
+    run_execute_browsing
+)
+
+from apps.core.tool_calls.core_services.core_service_code_base_query import (
+    run_query_code_base
+)
+
+from apps.core.tool_calls.core_services.core_service_analyze_code import (
+    run_analyze_code)
+
+from apps.core.tool_calls.core_services.core_service_execute_custom_api import (
+    run_execute_custom_api
+)
+
+from apps.core.tool_calls.core_services.core_service_execute_custom_function import (
+    run_execute_custom_code
+)
+
+from apps.core.tool_calls.core_services.core_service_execute_custom_script import (
+    run_execute_custom_script
+)
+
+from apps.core.tool_calls.core_services.core_service_execute_ssh_system_command import (
+    run_execute_ssh_system_commands
+)
+
+from apps.core.tool_calls.core_services.core_service_generate_image import (
+    run_generate_image
+)
+
+from apps.core.tool_calls.core_services.core_service_edit_image import (
+    run_edit_image
+)
+
+from apps.core.tool_calls.core_services.core_service_dream_image import (
+    run_dream_image
+)
+
+from apps.core.tool_calls.core_services.core_service_vector_store_query import (
+    run_query_vector_store
+)
+
+from apps.core.tool_calls.core_services.core_service_intra_memory_query import (
+    run_query_intra_memory
+)
+
+from apps.core.tool_calls.core_services.core_service_infer_with_ml import (
+    run_predict_with_ml
+)
+
+from apps.core.tool_calls.core_services.core_service_sql_query import (
+    run_sql_query
+)
+
+from apps.core.tool_calls.core_services.core_service_nosql_query import (
+    run_nosql_query
+)
+
+from apps.core.tool_calls.core_services.core_service_http_retrieval import (
+    run_http_retrieval
+)
+
+from apps.core.tool_calls.leanmod.core_services.core_service_query_expert_network import (
     execute_expert_network_query
+)
+
 from apps.assistants.models import Assistant
-from apps.core.tool_calls.voidforger.core_services import execute_voidforger_old_message_search_query, \
-    execute_voidforger_action_history_log_search_query, execute_voidforger_auto_execution_log_search_query, \
-    execute_voidforger_leanmod_oracle_search_query, execute_voidforger_leanmod_oracle_command_order
-from apps.core.tool_calls.voidforger.input_verifiers import verify_voidforger_old_message_search_query_content, \
-    verify_voidforger_action_history_log_search_query_content, \
-    verify_voidforger_auto_execution_log_search_query_content, verify_voidforger_leanmod_oracle_search_query_content, \
+
+from apps.core.tool_calls.voidforger.core_services import (
+    execute_voidforger_old_message_search_query,
+    execute_voidforger_action_history_log_search_query,
+    execute_voidforger_auto_execution_log_search_query,
+    execute_voidforger_leanmod_oracle_search_query,
+    execute_voidforger_leanmod_oracle_command_order
+)
+
+from apps.core.tool_calls.voidforger.input_verifiers import (
+    verify_voidforger_old_message_search_query_content,
+    verify_voidforger_action_history_log_search_query_content,
+    verify_voidforger_auto_execution_log_search_query_content,
+    verify_voidforger_leanmod_oracle_search_query_content,
     verify_voidforger_leanmod_oracle_command_order_content
+)
+
 from apps.multimodal_chat.models import MultimodalChat
 from apps.multimodal_chat.utils import transmit_websocket_log
 from apps.video_generations.models import GeneratedVideo, VideoGeneratorConnection

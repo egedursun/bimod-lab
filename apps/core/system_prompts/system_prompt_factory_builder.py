@@ -14,184 +14,373 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import json
 import logging
 
 from django.contrib.auth.models import User
 
-from apps.core.system_prompts.agent_configuration.agent_related_project_items_prompt_manager import \
+from apps.core.system_prompts.agent_configuration.agent_related_project_items_prompt_manager import (
     build_agent_related_project_items_prompt
-from apps.core.system_prompts.agent_configuration.target_audience_prompt_manager import build_target_audience_prompt
-from apps.core.system_prompts.agent_configuration.intra_context_memory_prompt_manager import \
+)
+
+from apps.core.system_prompts.agent_configuration.target_audience_prompt_manager import (
+    build_target_audience_prompt
+)
+
+from apps.core.system_prompts.agent_configuration.intra_context_memory_prompt_manager import (
     build_intra_context_memory_prompt
-from apps.core.system_prompts.agent_configuration.technical_dictionary_prompt_manager import \
+)
+
+from apps.core.system_prompts.agent_configuration.technical_dictionary_prompt_manager import (
     build_technical_dictionary_prompt
-from apps.core.system_prompts.agent_configuration.system_internal_instructions_prompt_manager import \
+)
+
+from apps.core.system_prompts.agent_configuration.system_internal_instructions_prompt_manager import (
     build_system_internal_instructions_prompt
-from apps.core.system_prompts.agent_configuration.standard_memory_prompt_manager import build_standard_memory_prompt
-from apps.core.system_prompts.agent_configuration.agent_nickname_prompt_manager import build_agent_nickname_prompt
-from apps.core.system_prompts.agent_configuration.spatial_awareness_prompt_manager import \
+)
+
+from apps.core.system_prompts.agent_configuration.standard_memory_prompt_manager import (
+    build_standard_memory_prompt
+)
+
+from apps.core.system_prompts.agent_configuration.agent_nickname_prompt_manager import (
+    build_agent_nickname_prompt
+)
+
+from apps.core.system_prompts.agent_configuration.spatial_awareness_prompt_manager import (
     build_spatial_awareness_prompt
-from apps.core.system_prompts.agent_configuration.internal_principles_prompt_manager import \
+)
+
+from apps.core.system_prompts.agent_configuration.internal_principles_prompt_manager import (
     build_internal_principles_prompt
-from apps.core.system_prompts.agent_configuration.communication_language_prompt_manager import \
+)
+
+from apps.core.system_prompts.agent_configuration.communication_language_prompt_manager import (
     build_communication_language_prompt
-from apps.core.system_prompts.agent_configuration.templated_response_prompt_manager import \
+)
+
+from apps.core.system_prompts.agent_configuration.templated_response_prompt_manager import (
     build_templated_response_prompt
-from apps.core.system_prompts.agent_configuration.agent_personality_prompt_manager import \
+)
+
+from apps.core.system_prompts.agent_configuration.agent_personality_prompt_manager import (
     build_agent_personality_prompt
-from apps.core.system_prompts.agent_configuration.communication_user_tenant_prompt_manager import \
+)
+
+from apps.core.system_prompts.agent_configuration.communication_user_tenant_prompt_manager import (
     build_user_tenant_prompt
-from apps.core.system_prompts.information_feeds.browser.build_browser_data_source_prompt import \
-    build_browsing_data_source_prompt, build_lean_browsing_data_source_prompt, \
+)
+
+from apps.core.system_prompts.information_feeds.browser.build_browser_data_source_prompt import (
+    build_browsing_data_source_prompt,
+    build_lean_browsing_data_source_prompt,
     build_semantor_browsing_data_source_prompt
-from apps.core.system_prompts.information_feeds.code_base.build_code_base_data_source_prompt import \
-    build_code_base_data_source_prompt, build_lean_code_base_data_source_prompt, \
+)
+
+from apps.core.system_prompts.information_feeds.code_base.build_code_base_data_source_prompt import (
+    build_code_base_data_source_prompt,
+    build_lean_code_base_data_source_prompt,
     build_semantor_code_base_data_source_prompt
-from apps.core.system_prompts.information_feeds.hadron_prime_node_to_assistant.build_hadron_prime_node_to_assistant_data_source_prompt import \
-    build_hadron_prime_node_to_assistant_data_source_prompt, \
-    build_lean_hadron_prime_node_to_assistant_data_source_prompt, \
+)
+
+from apps.core.system_prompts.information_feeds.hadron_prime_node_to_assistant.build_hadron_prime_node_to_assistant_data_source_prompt import (
+    build_hadron_prime_node_to_assistant_data_source_prompt,
+    build_lean_hadron_prime_node_to_assistant_data_source_prompt,
     build_semantor_hadron_prime_node_to_assistant_data_source_prompt
-from apps.core.system_prompts.information_feeds.media_manager.build_media_manager_data_source_prompt import \
-    build_media_manager_data_source_prompt, build_lean_media_manager_data_source_prompt, \
+)
+
+from apps.core.system_prompts.information_feeds.media_manager.build_media_manager_data_source_prompt import (
+    build_media_manager_data_source_prompt,
+    build_lean_media_manager_data_source_prompt,
     build_semantor_media_manager_data_source_prompt
-from apps.core.system_prompts.information_feeds.metakanban_to_assistant.build_metakanban_to_assistant_data_source_prompt import \
-    build_metakanban_to_assistant_data_source_prompt, build_lean_metakanban_to_assistant_data_source_prompt, \
+)
+
+from apps.core.system_prompts.information_feeds.metakanban_to_assistant.build_metakanban_to_assistant_data_source_prompt import (
+    build_metakanban_to_assistant_data_source_prompt,
+    build_lean_metakanban_to_assistant_data_source_prompt,
     build_semantor_metakanban_to_assistant_data_source_prompt
-from apps.core.system_prompts.information_feeds.metatempo_to_asisstant.build_metatempo_to_assistant_data_source_prompt import \
-    build_metatempo_to_assistant_data_source_prompt, build_lean_metatempo_to_assistant_data_source_prompt, \
+)
+
+from apps.core.system_prompts.information_feeds.metatempo_to_asisstant.build_metatempo_to_assistant_data_source_prompt import (
+    build_metatempo_to_assistant_data_source_prompt,
+    build_lean_metatempo_to_assistant_data_source_prompt,
     build_semantor_metatempo_to_assistant_data_source_prompt
-from apps.core.system_prompts.information_feeds.ml_manager.build_ml_models_data_source_prompt import \
-    build_ml_models_data_source_prompt, build_lean_ml_models_data_source_prompt, \
+)
+
+from apps.core.system_prompts.information_feeds.ml_manager.build_ml_models_data_source_prompt import (
+    build_ml_models_data_source_prompt,
+    build_lean_ml_models_data_source_prompt,
     build_semantor_ml_models_data_source_prompt
-from apps.core.system_prompts.information_feeds.nosql.build_nosql_data_source_prompt import \
-    build_nosql_data_source_prompt, build_lean_nosql_data_source_prompt, build_semantor_nosql_data_source_prompt
-from apps.core.system_prompts.information_feeds.orchestration_to_assistant.build_orchestration_to_assistant_data_source_prompt import \
-    build_orchestration_to_assistant_data_source_prompt, build_lean_orchestration_to_assistant_data_source_prompt, \
+)
+
+from apps.core.system_prompts.information_feeds.nosql.build_nosql_data_source_prompt import (
+    build_nosql_data_source_prompt,
+    build_lean_nosql_data_source_prompt,
+    build_semantor_nosql_data_source_prompt
+)
+
+from apps.core.system_prompts.information_feeds.orchestration_to_assistant.build_orchestration_to_assistant_data_source_prompt import (
+    build_orchestration_to_assistant_data_source_prompt,
+    build_lean_orchestration_to_assistant_data_source_prompt,
     build_semantor_orchestration_to_assistant_data_source_prompt
-from apps.core.system_prompts.information_feeds.smart_contracts.build_smart_contracts_data_source_prompt import \
-    build_lean_smart_contracts_data_source_prompt, build_smart_contracts_data_source_prompt
-from apps.core.system_prompts.information_feeds.sql.build_sql_data_source_prompt import build_sql_data_source_prompt, \
-    build_lean_sql_data_source_prompt, build_semantor_sql_data_source_prompt
-from apps.core.system_prompts.information_feeds.ssh_file_system.build_file_system_data_source_prompt import \
-    build_file_system_data_source_prompt, build_lean_file_system_data_source_prompt, \
+)
+
+from apps.core.system_prompts.information_feeds.smart_contracts.build_smart_contracts_data_source_prompt import (
+    build_lean_smart_contracts_data_source_prompt,
+    build_smart_contracts_data_source_prompt
+)
+
+from apps.core.system_prompts.information_feeds.sql.build_sql_data_source_prompt import (
+    build_sql_data_source_prompt,
+    build_lean_sql_data_source_prompt,
+    build_semantor_sql_data_source_prompt
+)
+
+from apps.core.system_prompts.information_feeds.ssh_file_system.build_file_system_data_source_prompt import (
+    build_file_system_data_source_prompt,
+    build_lean_file_system_data_source_prompt,
     build_semantor_file_system_data_source_prompt
-from apps.core.system_prompts.information_feeds.vector_store.build_vector_store_data_source_prompt import \
-    build_vector_store_data_source_prompt, build_lean_vector_store_data_source_prompt, \
+)
+
+from apps.core.system_prompts.information_feeds.vector_store.build_vector_store_data_source_prompt import (
+    build_vector_store_data_source_prompt,
+    build_lean_vector_store_data_source_prompt,
     build_semantor_vector_store_data_source_prompt
-from apps.core.system_prompts.leanmod.leanmod_guidelines_prompt import build_structured_primary_guidelines_leanmod
-from apps.core.system_prompts.leanmod.leanmod_instructions_prompt import build_structured_instructions_prompt_leanmod
-from apps.core.system_prompts.leanmod.leanmod_name_prompt import build_structured_name_prompt_leanmod
-from apps.core.system_prompts.leanmod.leanmod_place_and_time_prompt import \
+)
+
+from apps.core.system_prompts.leanmod.leanmod_guidelines_prompt import (
+    build_structured_primary_guidelines_leanmod
+)
+
+from apps.core.system_prompts.leanmod.leanmod_instructions_prompt import (
+    build_structured_instructions_prompt_leanmod
+)
+
+from apps.core.system_prompts.leanmod.leanmod_name_prompt import (
+    build_structured_name_prompt_leanmod
+)
+
+from apps.core.system_prompts.leanmod.leanmod_place_and_time_prompt import (
     build_structured_place_and_time_prompt_leanmod
-from apps.core.system_prompts.leanmod.leanmod_user_information_prompt import \
+)
+
+from apps.core.system_prompts.leanmod.leanmod_user_information_prompt import (
     build_structured_user_information_prompt_leanmod
-from apps.core.system_prompts.leanmod.multimodality.leanmod_multimodality_expert_network_prompt import \
+)
+
+from apps.core.system_prompts.leanmod.multimodality.leanmod_multimodality_expert_network_prompt import (
     build_expert_networks_multi_modality_prompt_leanmod
-from apps.core.system_prompts.leanmod.tools.execute_query_leanmod_context_memory_tool_prompt import \
+)
+
+from apps.core.system_prompts.leanmod.tools.execute_query_leanmod_context_memory_tool_prompt import (
     build_tool_prompt__leanmod_context_memory
-from apps.core.system_prompts.leanmod.tools.leanmod_semantor_execution_prompt import \
+)
+
+from apps.core.system_prompts.leanmod.tools.leanmod_semantor_execution_prompt import (
     build_structured_tool_prompt__semantor_consultation_execution_leanmod
-from apps.core.system_prompts.leanmod.tools.leanmod_semantor_query_search_prompt import \
+)
+
+from apps.core.system_prompts.leanmod.tools.leanmod_semantor_query_search_prompt import (
     build_structured_tool_prompt__semantor_search_execution_leanmod
-from apps.core.system_prompts.leanmod.tools.leanmod_tools_expert_networks_query_prompt import \
+)
+
+from apps.core.system_prompts.leanmod.tools.leanmod_tools_expert_networks_query_prompt import (
     build_structured_tool_prompt__expert_network_query_execution_leanmod
-from apps.core.system_prompts.leanmod.tools.leanmod_tools_instructions_prompt import \
+)
+
+from apps.core.system_prompts.leanmod.tools.leanmod_tools_instructions_prompt import (
     build_structured_tool_usage_instructions_prompt_leanmod
-from apps.core.system_prompts.flexible_modalities.restful_api_modality_instructions import \
-    build_apis_multi_modality_prompt, \
-    build_lean_apis_multi_modality_prompt, build_semantor_apis_multi_modality_prompt
-from apps.core.system_prompts.flexible_modalities.py_function_modality_instructions import \
-    build_functions_multi_modality_prompt, build_lean_functions_multi_modality_prompt, \
+)
+
+from apps.core.system_prompts.flexible_modalities.restful_api_modality_instructions import (
+    build_apis_multi_modality_prompt,
+    build_lean_apis_multi_modality_prompt,
+    build_semantor_apis_multi_modality_prompt
+)
+
+from apps.core.system_prompts.flexible_modalities.py_function_modality_instructions import (
+    build_functions_multi_modality_prompt,
+    build_lean_functions_multi_modality_prompt,
     build_semantor_functions_multi_modality_prompt
-from apps.core.system_prompts.flexible_modalities.bash_script_modality_instructions import \
-    build_scripts_multi_modality_prompt, \
-    build_lean_scripts_multi_modality_prompt, build_semantor_scripts_multi_modality_prompt
-from apps.core.system_prompts.tool_call_prompts.generic_instructions_tool_call import \
-    build_generic_instructions_tool_call_prompt, build_lean_structured_tool_usage_instructions_prompt
-from apps.core.system_prompts.tool_call_prompts.per_tool.execute_audio_tool_prompt import \
+)
+
+from apps.core.system_prompts.flexible_modalities.bash_script_modality_instructions import (
+    build_scripts_multi_modality_prompt,
+    build_lean_scripts_multi_modality_prompt,
+    build_semantor_scripts_multi_modality_prompt
+)
+
+from apps.core.system_prompts.tool_call_prompts.generic_instructions_tool_call import (
+    build_generic_instructions_tool_call_prompt,
+    build_lean_structured_tool_usage_instructions_prompt
+)
+
+from apps.core.system_prompts.tool_call_prompts.per_tool.execute_audio_tool_prompt import (
     build_tool_prompt__execute_audio
-from apps.core.system_prompts.tool_call_prompts.per_tool.execute_browsing_tool_prompt import \
+)
+
+from apps.core.system_prompts.tool_call_prompts.per_tool.execute_browsing_tool_prompt import (
     build_tool_prompt__browsing
-from apps.core.system_prompts.tool_call_prompts.per_tool.execute_codebase_query_tool_prompt import \
+)
+
+from apps.core.system_prompts.tool_call_prompts.per_tool.execute_codebase_query_tool_prompt import (
     build_tool_prompt__execute_codebase_query
-from apps.core.system_prompts.tool_call_prompts.per_tool.execute_code_analysis_tool_prompt import \
+)
+
+from apps.core.system_prompts.tool_call_prompts.per_tool.execute_code_analysis_tool_prompt import (
     build_tool_prompt__analyze_code
-from apps.core.system_prompts.tool_call_prompts.per_tool.execute_dashboard_statistics_query_tool_prompt import \
+)
+
+from apps.core.system_prompts.tool_call_prompts.per_tool.execute_dashboard_statistics_query_tool_prompt import (
     build_tool_prompt__execute_dashboard_statistics_query
-from apps.core.system_prompts.tool_call_prompts.per_tool.execute_hadron_prime_node_query_tool_prompt import \
+)
+
+from apps.core.system_prompts.tool_call_prompts.per_tool.execute_hadron_prime_node_query_tool_prompt import (
     build_tool_prompt__execute_hadron_prime_node_query
-from apps.core.system_prompts.tool_call_prompts.per_tool.execute_metakanban_query_tool_prompt import \
+)
+
+from apps.core.system_prompts.tool_call_prompts.per_tool.execute_metakanban_query_tool_prompt import (
     build_tool_prompt__execute_metakanban_query
-from apps.core.system_prompts.tool_call_prompts.per_tool.execute_metatempo_query_tool_prompt import \
+)
+
+from apps.core.system_prompts.tool_call_prompts.per_tool.execute_metatempo_query_tool_prompt import (
     build_tool_prompt__execute_metatempo_query
-from apps.core.system_prompts.tool_call_prompts.per_tool.execute_nosql_query_tool_prompt import \
+)
+
+from apps.core.system_prompts.tool_call_prompts.per_tool.execute_nosql_query_tool_prompt import (
     build_tool_prompt__execute_nosql_query
-from apps.core.system_prompts.tool_call_prompts.per_tool.execute_orchestration_trigger_tool_prompt import \
+)
+
+from apps.core.system_prompts.tool_call_prompts.per_tool.execute_orchestration_trigger_tool_prompt import (
     build_tool_prompt__execute_orchestration_trigger
-from apps.core.system_prompts.tool_call_prompts.per_tool.execute_restful_api_tool_prompt import \
+)
+
+from apps.core.system_prompts.tool_call_prompts.per_tool.execute_restful_api_tool_prompt import (
     build_tool_prompt__execute_restful_api
-from apps.core.system_prompts.tool_call_prompts.per_tool.execute_code_tool_prompt import \
+)
+
+from apps.core.system_prompts.tool_call_prompts.per_tool.execute_code_tool_prompt import (
     build_tool_prompt__execute_code
-from apps.core.system_prompts.tool_call_prompts.per_tool.execute_bash_script_tool_prompt import \
+)
+
+from apps.core.system_prompts.tool_call_prompts.per_tool.execute_bash_script_tool_prompt import (
     build_tool_prompt__execute_bash_script
-from apps.core.system_prompts.tool_call_prompts.per_tool.execute_scheduled_job_logs_query_tool_prompt import \
+)
+
+from apps.core.system_prompts.tool_call_prompts.per_tool.execute_scheduled_job_logs_query_tool_prompt import (
     build_tool_prompt__execute_scheduled_job_logs_query
-from apps.core.system_prompts.tool_call_prompts.per_tool.execute_smart_contract_function_call_prompt import \
+)
+
+from apps.core.system_prompts.tool_call_prompts.per_tool.execute_smart_contract_function_call_prompt import (
     build_tool_prompt__smart_contract_function_call
-from apps.core.system_prompts.tool_call_prompts.per_tool.execute_smart_contract_query_tool_prompt import \
+)
+
+from apps.core.system_prompts.tool_call_prompts.per_tool.execute_smart_contract_query_tool_prompt import (
     build_tool_prompt__execute_smart_contract_generation_query
-from apps.core.system_prompts.tool_call_prompts.per_tool.execute_ssh_file_system_command_tool_prompt import \
+)
+
+from apps.core.system_prompts.tool_call_prompts.per_tool.execute_ssh_file_system_command_tool_prompt import (
     build_tool_prompt__execute_ssh_file_system_command
-from apps.core.system_prompts.tool_call_prompts.per_tool.execute_triggered_job_logs_query_tool_prompt import \
+)
+
+from apps.core.system_prompts.tool_call_prompts.per_tool.execute_triggered_job_logs_query_tool_prompt import (
     build_tool_prompt__execute_triggered_job_logs_query
-from apps.core.system_prompts.tool_call_prompts.per_tool.generate_image_tool_prompt import \
+)
+
+from apps.core.system_prompts.tool_call_prompts.per_tool.generate_image_tool_prompt import (
     build_tool_prompt__generate_image
-from apps.core.system_prompts.tool_call_prompts.per_tool.edit_image_tool_prompt import \
+)
+
+from apps.core.system_prompts.tool_call_prompts.per_tool.edit_image_tool_prompt import (
     build_tool_prompt__edit_image
-from apps.core.system_prompts.tool_call_prompts.per_tool.dream_image_tool_prompt import \
+)
+
+from apps.core.system_prompts.tool_call_prompts.per_tool.dream_image_tool_prompt import (
     build_tool_prompt__dream_image
-from apps.core.system_prompts.tool_call_prompts.per_tool.execute_vector_store_query_tool_prompt import \
+)
+
+from apps.core.system_prompts.tool_call_prompts.per_tool.execute_vector_store_query_tool_prompt import (
     build_tool_prompt__query_vector_store
-from apps.core.system_prompts.tool_call_prompts.per_tool.infer_with_machine_learning_tool_prompt import \
+)
+
+from apps.core.system_prompts.tool_call_prompts.per_tool.infer_with_machine_learning_tool_prompt import (
     build_tool_prompt__infer_with_machine_learning
-from apps.core.system_prompts.tool_call_prompts.per_tool.reasoning_tool_prompt import \
+)
+
+from apps.core.system_prompts.tool_call_prompts.per_tool.reasoning_tool_prompt import (
     build_tool_prompt__reasoning
-from apps.core.system_prompts.tool_call_prompts.per_tool.execute_sql_query_tool_prompt import \
+)
+
+from apps.core.system_prompts.tool_call_prompts.per_tool.execute_sql_query_tool_prompt import (
     build_tool_prompt__execute_sql_query
-from apps.core.system_prompts.tool_call_prompts.per_tool.execute_media_manager_query_tool_prompt import \
+)
+
+from apps.core.system_prompts.tool_call_prompts.per_tool.execute_media_manager_query_tool_prompt import (
     build_tool_prompt__media_manager_query
-from apps.core.system_prompts.tool_call_prompts.per_tool.retrieval_via_http_client_tool_prompt import \
+)
+
+from apps.core.system_prompts.tool_call_prompts.per_tool.retrieval_via_http_client_tool_prompt import (
     build_tool_prompt__retrieval_via_http_client
-from apps.core.system_prompts.tool_call_prompts.per_tool.execute_query_intra_context_memory_tool_prompt import \
+)
+
+from apps.core.system_prompts.tool_call_prompts.per_tool.execute_query_intra_context_memory_tool_prompt import (
     build_tool_prompt__intra_context_memory
-from apps.core.system_prompts.tool_call_prompts.per_tool.generate_video_tool_prompt import \
-    build_tool_prompt__generate_video, build_lean_tool_prompt__generate_video
+)
+
+from apps.core.system_prompts.tool_call_prompts.per_tool.generate_video_tool_prompt import (
+    build_tool_prompt__generate_video,
+    build_lean_tool_prompt__generate_video
+)
+
 from apps.assistants.models import Assistant
-from apps.core.system_prompts.voidforger.build_voidforger_communication_language_prompt import \
+
+from apps.core.system_prompts.voidforger.build_voidforger_communication_language_prompt import (
     build_communication_language_prompt_voidforger
-from apps.core.system_prompts.voidforger.tools.voidforger_action_history_log_search_prompt import \
+)
+
+from apps.core.system_prompts.voidforger.tools.voidforger_action_history_log_search_prompt import (
     build_structured_tool_prompt__action_history_log_search_voidforger
-from apps.core.system_prompts.voidforger.tools.voidforger_auto_execution_log_search_prompt import \
+)
+
+from apps.core.system_prompts.voidforger.tools.voidforger_auto_execution_log_search_prompt import (
     build_structured_tool_prompt__auto_execution_log_search_voidforger
-from apps.core.system_prompts.voidforger.tools.voidforger_leanmod_oracle_command_order_prompt import \
+)
+
+from apps.core.system_prompts.voidforger.tools.voidforger_leanmod_oracle_command_order_prompt import (
     build_structured_tool_prompt__leanmod_oracle_command_order_voidforger
-from apps.core.system_prompts.voidforger.tools.voidforger_leanmod_oracle_search_prompt import \
+)
+
+from apps.core.system_prompts.voidforger.tools.voidforger_leanmod_oracle_search_prompt import (
     build_structured_tool_prompt__leanmod_oracle_search_voidforger
-from apps.core.system_prompts.voidforger.tools.voidforger_old_message_search_prompt import \
+)
+
+from apps.core.system_prompts.voidforger.tools.voidforger_old_message_search_prompt import (
     build_structured_tool_prompt__old_message_search_execution_voidforger
+)
+
 from apps.core.system_prompts.voidforger.tools.voidforger_tools_instructions_prompt import \
     build_structured_tool_usage_instructions_prompt_voidforger
-from apps.core.system_prompts.voidforger.voidforger_agent_personality_prompt import \
+from apps.core.system_prompts.voidforger.voidforger_agent_personality_prompt import (
     build_agent_personality_prompt_voidforger
-from apps.core.system_prompts.voidforger.voidforger_guidelines_prompt import \
+)
+
+from apps.core.system_prompts.voidforger.voidforger_guidelines_prompt import (
     build_structured_primary_guidelines_voidforger
-from apps.core.system_prompts.voidforger.voidforger_instructions_prompt import \
+)
+
+from apps.core.system_prompts.voidforger.voidforger_instructions_prompt import (
     build_structured_instructions_prompt_voidforger
-from apps.core.system_prompts.voidforger.voidforger_place_and_time_prompt import \
+)
+
+from apps.core.system_prompts.voidforger.voidforger_place_and_time_prompt import (
     build_structured_place_and_time_prompt_voidforger
-from apps.core.system_prompts.voidforger.voidforger_user_information_prompt import \
+)
+
+from apps.core.system_prompts.voidforger.voidforger_user_information_prompt import (
     build_structured_user_information_prompt_voidforger
+)
+
 from apps.leanmod.models import LeanAssistant
 from apps.llm_transaction.models import LLMTransaction
 from apps.multimodal_chat.models import MultimodalChat, MultimodalLeanChat

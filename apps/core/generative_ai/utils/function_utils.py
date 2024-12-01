@@ -14,15 +14,13 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
+
 import logging
 import re
 import uuid
 from json import JSONDecoder
 
 import apps.core
-
 
 logger = logging.getLogger(__name__)
 
@@ -33,7 +31,14 @@ def find_tool_call_from_json(
 ):
     logger.info("Finding tool call from JSON response.")
     response = f"""{response}"""
-    response = response.replace("\n", "").replace("'", '').replace('```json', '').replace('```', '').replace('`', '')
+    response = (
+        response.replace("\n", "")
+        .replace("'", '')
+        .replace('```json', '')
+        .replace('```', '')
+        .replace('`', '')
+    )
+
     json_objects = []
     pos = 0
 
@@ -56,7 +61,6 @@ def find_tool_call_from_json(
 def extract_image_uri(
     response_str
 ):
-
     logger.info("Extracting image URI from response.")
     pattern = r'"image_uri":\s*"([^"]+)"'
     match = re.search(pattern, response_str)
@@ -66,7 +70,6 @@ def extract_image_uri(
 def extract_file_uri(
     response_str
 ):
-
     logger.info("Extracting file URI from response.")
     pattern = r'"file_uri":\s*"([^"]+)"'
     match = re.search(pattern, response_str)
@@ -76,7 +79,6 @@ def extract_file_uri(
 def generate_random_audio_filename(
     extension="mp3"
 ):
-
     uuid1 = str(uuid.uuid4())
     uuid2 = str(uuid.uuid4())
     filename = f"generated_audio_{uuid1}_{uuid2}.{extension}"
@@ -88,7 +90,6 @@ def step_back_retry_mechanism(
     latest_message,
     caller="respond"
 ):
-
     logger.info("Step back retry mechanism.")
     from apps.core.generative_ai.utils import RetryCallersNames, DEFAULT_ERROR_MESSAGE
 

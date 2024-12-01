@@ -14,16 +14,27 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from openai import OpenAI
 
-from apps.assistants.utils import MultiStepReasoningCapabilityChoicesNames, MultiStepReasoningCapabilityModelNames
-from apps.core.generative_ai.auxiliary_methods.errors.error_log_prompts import get_no_reasoning_capability_error_log, \
+from apps.assistants.utils import (
+    MultiStepReasoningCapabilityChoicesNames,
+    MultiStepReasoningCapabilityModelNames
+)
+
+from apps.core.generative_ai.auxiliary_methods.errors.error_log_prompts import (
+    get_no_reasoning_capability_error_log,
     get_default_reasoning_error_log
+)
+
 from apps.core.generative_ai.gpt_openai_manager import OpenAIGPTClientManager
 from apps.core.generative_ai.utils import ChatRoles
-from apps.core.system_prompts.reasoning.reasoning_prompt import build_reasoning_system_prompt
+
+from apps.core.system_prompts.reasoning.reasoning_prompt import (
+    build_reasoning_system_prompt
+)
 
 logger = logging.getLogger(__name__)
 

@@ -18,11 +18,21 @@
 import logging
 
 from apps.core.formica.formica_executor_public import FormicaExecutionManager_Public
-from apps.core.formica.prompts import build_formica_agent_nickname_prompt, build_formica_internal_principles_prompt, \
-    build_formica_agent_personality_prompt, build_formica_target_audience_prompt, build_formica_user_tenant_prompt, \
-    build_formica_spatial_awareness_prompt, build_formica_technical_dictionary_prompt, \
-    build_formica_ops_instruction_prompt, build_formica_action__vect_prompt, \
-    build_formica_vector_store_data_source_prompt, build_formica_tool_prompt__query_vector_store
+
+from apps.core.formica.prompts import (
+    build_formica_agent_nickname_prompt,
+    build_formica_internal_principles_prompt,
+    build_formica_agent_personality_prompt,
+    build_formica_target_audience_prompt,
+    build_formica_user_tenant_prompt,
+    build_formica_spatial_awareness_prompt,
+    build_formica_technical_dictionary_prompt,
+    build_formica_ops_instruction_prompt,
+    build_formica_action__vect_prompt,
+    build_formica_vector_store_data_source_prompt,
+    build_formica_tool_prompt__query_vector_store
+)
+
 from apps.core.formica.prompts.formica.whole_text_supplier_prompt import build_whole_text_supply_prompt_public
 
 logger = logging.getLogger(__name__)
@@ -33,7 +43,6 @@ def build_vect_command_system_prompt_public(
     user_query: str,
     content: str
 ):
-
     logger.info(f"Building VECT command system prompt for user query: {user_query}")
 
     combined_system_prompt = ""

@@ -14,14 +14,25 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.db import transaction, models
 
 from apps.core.metakanban.utils import MetaKanbanCommandTypes
-from apps.metakanban.models import MetaKanbanTaskLabel, MetaKanbanStatusColumn, MetaKanbanTask, MetaKanbanChangeLog, \
+
+from apps.metakanban.models import (
+    MetaKanbanTaskLabel,
+    MetaKanbanStatusColumn,
+    MetaKanbanTask,
+    MetaKanbanChangeLog,
     MetaKanbanBoard
-from apps.metakanban.utils import MetaKanbanChangeLogActionTypes, MetaKanbanTaskPrioritiesNames
+)
+
+from apps.metakanban.utils import (
+    MetaKanbanChangeLogActionTypes,
+    MetaKanbanTaskPrioritiesNames
+)
 
 logger = logging.getLogger(__name__)
 

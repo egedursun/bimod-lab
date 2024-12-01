@@ -14,13 +14,13 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 logger = logging.getLogger(__name__)
 
 
 def get_error_on_context_memory_handling_log(error_log: str):
-
     logger.error(
         f"[ChatContextManager.forget_oldest_chat_messages] An error occurred while creating the system prompt "
         f"for the operation: {str(error_log)}")

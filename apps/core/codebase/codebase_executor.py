@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 import os
 from uuid import uuid4
@@ -25,11 +26,21 @@ from weaviate.config import AdditionalConfig, Timeout
 from apps.core.codebase.handler_methods.creation_handler import create_classes_helper
 from apps.core.codebase.handler_methods.removal_handler import delete_weaviate_class_helper
 from apps.core.codebase.handler_methods.removal_handler_repo import delete_repository_helper
-from apps.core.codebase.utils import WEAVIATE_INITIALIZATION_TIMEOUT, WEAVIATE_QUERY_TIMEOUT, \
+from apps.core.codebase.utils import (
+    WEAVIATE_INITIALIZATION_TIMEOUT,
+    WEAVIATE_QUERY_TIMEOUT,
     WEAVIATE_INSERT_TIMEOUT
+)
+
 from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
-from apps.datasource_codebase.tasks import embed_repository_chunks, embed_repository_data, \
-    split_repository_into_chunks, index_repository_helper
+
+from apps.datasource_codebase.tasks import (
+    embed_repository_chunks,
+    embed_repository_data,
+    split_repository_into_chunks,
+    index_repository_helper
+)
+
 from apps.llm_transaction.models import LLMTransaction
 from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
 

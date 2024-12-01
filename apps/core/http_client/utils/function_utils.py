@@ -15,7 +15,6 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-
 def get_url_could_not_resolved_error_message(url: str) -> str:
     return (f"[function_utils.get_url_could_not_resolved_error_message] Could not guess the file extension for "
             f"the file from url: {url}")

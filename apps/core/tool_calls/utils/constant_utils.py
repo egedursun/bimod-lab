@@ -15,7 +15,6 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-
 class AnalysisToolCallExecutionTypesNames:
     FILE_INTERPRETATION = "file_interpretation"
     IMAGE_INTERPRETATION = "image_interpretation"

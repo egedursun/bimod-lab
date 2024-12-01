@@ -39,14 +39,21 @@ class AssistantView_Update(LoginRequiredMixin, TemplateView):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         agent_id = self.kwargs.get('pk')
         agent = get_object_or_404(Assistant, id=agent_id)
-        context['organizations'] = Organization.objects.filter(users__in=[self.request.user])
-        context['llm_models'] = LLMCore.objects.filter(organization__in=context['organizations'])
+
+        context['organizations'] = Organization.objects.filter(
+            users__in=[self.request.user]
+        )
+        context['llm_models'] = LLMCore.objects.filter(
+            organization__in=context['organizations']
+        )
+
         context['assistant'] = agent
         context['response_languages'] = AGENT_SPEECH_LANGUAGES
         context['context_overflow_strategies'] = CONTEXT_MANAGEMENT_STRATEGY
         context['reasoning_capability_choices'] = MULTI_STEP_REASONING_CAPABILITY_CHOICE
         context["assistant_current_strategy"] = ContextManagementStrategyNames.as_dict()[
             agent.context_overflow_strategy]
+
         context["ner_integrations"] = NERIntegration.objects.filter(organization__in=context['organizations'])
         context["projects"] = ProjectItem.objects.filter(organization__in=context['organizations'])
         return context
@@ -56,7 +63,10 @@ class AssistantView_Update(LoginRequiredMixin, TemplateView):
 
         ##############################
         # PERMISSION CHECK FOR - UPDATE_ASSISTANTS
-        if not UserPermissionManager.is_authorized(user=context_user, operation=PermissionNames.UPDATE_ASSISTANTS):
+        if not UserPermissionManager.is_authorized(
+            user=context_user,
+            operation=PermissionNames.UPDATE_ASSISTANTS
+        ):
             messages.error(self.request, "You do not have permission to update assistants.")
             return redirect('assistants:list')
         ##############################
@@ -73,6 +83,7 @@ class AssistantView_Update(LoginRequiredMixin, TemplateView):
             agent.tool_max_chains = request.POST.get('tool_max_chains')
 
             ner_id = None
+
             if ("ner_integration" in request.POST and request.POST.get('ner_integration')
                 and request.POST.get('ner_integration') != "None"
                 and request.POST.get('ner_integration') != ""):
@@ -81,21 +92,27 @@ class AssistantView_Update(LoginRequiredMixin, TemplateView):
 
             if ner_id:
                 agent.ner_integration = NERIntegration.objects.get(id=ner_id)
+
             else:
                 agent.ner_integration = None
 
             terms = request.POST.getlist('terms[]')
             definitions = request.POST.getlist('definitions[]')
             updated_technical_dict = {}
+
             for term, definition in zip(terms, definitions):
                 updated_technical_dict[term] = definition
+
             agent.glossary = updated_technical_dict
             agent.context_overflow_strategy = request.POST.get('context_overflow_strategy')
             agent.max_context_messages = request.POST.get('max_context_messages')
+
             if agent.context_overflow_strategy == ContextManagementStrategyNames.FORGET:
                 pass
+
             elif agent.context_overflow_strategy == ContextManagementStrategyNames.STOP:
                 pass
+
             elif agent.context_overflow_strategy == ContextManagementStrategyNames.VECTORIZE:
                 pass
 
@@ -105,16 +122,20 @@ class AssistantView_Update(LoginRequiredMixin, TemplateView):
             agent.response_language = request.POST.get('response_language')
             agent.time_awareness = request.POST.get('time_awareness') == 'on'
             agent.place_awareness = request.POST.get('place_awareness') == 'on'
+
             agent.image_generation_capability = request.POST.get('image_generation_capability') == 'on'
             agent.multi_step_reasoning_capability_choice = request.POST.get('multi_step_reasoning_capability_choice')
             agent.last_updated_by_user = request.user
+
             if 'assistant_image' in request.FILES:
                 agent.assistant_image = request.FILES['assistant_image']
+
             agent.save()
 
             project_items = request.POST.getlist('project_items[]')
             agent.project_items.set(project_items)
             agent.save()
+
         except Exception as e:
             logger.error(f"Error while updating the agent information: {e}")
             messages.error(request, "Agent information is required.")

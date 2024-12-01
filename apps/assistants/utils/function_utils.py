@@ -24,8 +24,19 @@ from apps.assistants.utils import RANDOM_SUFFIX_MAXIMUM_VALUE, RANDOM_SUFFIX_MIN
 
 
 def generate_random_string(length=16):
-    return ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(length))
+    return ''.join(
+        random.choice(
+            string.ascii_letters + string.digits
+        ) for _ in range(
+            length
+        )
+    )
 
 
 def generate_random_name_suffix():
-    return f"{str(random.randint(RANDOM_SUFFIX_MINIMUM_VALUE, RANDOM_SUFFIX_MAXIMUM_VALUE))}"
+    return f"{str(
+        random.randint(
+            RANDOM_SUFFIX_MINIMUM_VALUE,
+            RANDOM_SUFFIX_MAXIMUM_VALUE
+        )
+    )}"

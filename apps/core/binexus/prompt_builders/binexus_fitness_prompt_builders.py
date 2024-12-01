@@ -14,9 +14,15 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 from apps.binexus.models import BinexusProcess
-from apps.core.binexus.prompts import binexus_generic_instructions_prompt, binexus_process_metadata_prompt, \
-    binexus_output_format_prompt, binexus_evaluation_individual_prompt
+
+from apps.core.binexus.prompts import (
+    binexus_generic_instructions_prompt,
+    binexus_process_metadata_prompt,
+    binexus_output_format_prompt,
+    binexus_evaluation_individual_prompt
+)
 
 
 def build_binexus_fitness_evaluation_prompt(

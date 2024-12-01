@@ -19,7 +19,11 @@ from django.db import models
 
 
 class BlogSEOMeta(models.Model):
-    post = models.OneToOneField("BlogPost", on_delete=models.CASCADE, related_name='seo_meta')
+    post = models.OneToOneField(
+        "BlogPost",
+        on_delete=models.CASCADE,
+        related_name='seo_meta'
+    )
     meta_title = models.CharField(max_length=300, blank=True)
     meta_description = models.CharField(max_length=1000, blank=True)
     meta_keywords = models.CharField(max_length=300, blank=True)

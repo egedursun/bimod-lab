@@ -15,7 +15,6 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-
 class ChatRoles:
     SYSTEM = "system"
     USER = "user"
@@ -33,20 +32,25 @@ DEFAULT_ERROR_MESSAGE = """
 """
 
 GPT_DEFAULT_ENCODING_ENGINE = "cl100k_base"
+
 CONCRETE_LIMIT_SINGLE_FILE_INTERPRETATION = 20
+
 CONCRETE_LIMIT_ML_MODEL_PREDICTIONS = 10
+
 DEFAULT_IMAGE_GENERATION_MODEL = "dall-e-3"
 DEFAULT_IMAGE_MODIFICATION_MODEL = "dall-e-2"
 DEFAULT_IMAGE_VARIATION_MODEL = "dall-e-2"
 DEFAULT_IMAGE_GENERATION_N = 1
 DEFAULT_IMAGE_MODIFICATION_N = 1
 DEFAULT_IMAGE_VARIATION_N = 1
+
 DEFAULT_STATISTICS_ANALYSIS_MAX_TOKENS = 4000
 DEFAULT_STATISTICS_TEMPERATURE = 0.50
 DEFAULT_STATISTICS_ASSISTANT_NAME_PLACEHOLDER = "BimodLab Platform Usage Statistics Assistant"
 DEFAULT_STATISTICS_ASSISTANT_AUDIENCE = "Standard / BimodLab Application Users"
 DEFAULT_STATISTICS_ASSISTANT_TONE = "Formal & Descriptive"
 DEFAULT_STATISTICS_ASSISTANT_CHAT_NAME = "Statistics Analysis & Evaluation"
+
 BIMOD_STREAMING_END_TAG = "<[bimod_streaming_end]>"
 BIMOD_PROCESS_END = "<[bimod_process_end]>"
 
@@ -91,9 +95,11 @@ class OpenAITTSVoiceNames:
 DEFAULT_MULTISTEP_REASONING_MAXIMUM_TOKENS = 4000
 
 LLM_CORE_PROVIDERS = {
-    "OPENAI": {"code": "OA", "name": "OpenAI-GPT"},
+    "OPENAI": {
+        "code": "OA",
+        "name": "OpenAI-GPT"
+    },
 }
-
 
 TTS_MODEL_NAME = "tts-1"
 STT_MODEL_NAME = "whisper-1"

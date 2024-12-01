@@ -14,12 +14,18 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 
-from apps.multimodal_chat.utils import BIMOD_STREAMING_END_TAG, BIMOD_PROCESS_END, BIMOD_NO_TAG_PLACEHOLDER
+from apps.multimodal_chat.utils import (
+    BIMOD_STREAMING_END_TAG,
+    BIMOD_PROCESS_END,
+    BIMOD_NO_TAG_PLACEHOLDER
+)
+
 from apps.orchestrations.models import OrchestrationQuery
 
 logger = logging.getLogger(__name__)
