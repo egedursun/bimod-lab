@@ -14,8 +14,6 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
 
 import random
 import string
@@ -34,9 +32,4 @@ def generate_random_string(length=16):
 
 
 def generate_random_name_suffix():
-    return f"{str(
-        random.randint(
-            RANDOM_SUFFIX_MINIMUM_VALUE,
-            RANDOM_SUFFIX_MAXIMUM_VALUE
-        )
-    )}"
+    return f"{str(random.randint(RANDOM_SUFFIX_MINIMUM_VALUE, RANDOM_SUFFIX_MAXIMUM_VALUE))}"
