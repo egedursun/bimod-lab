@@ -239,6 +239,8 @@ from apps.core.system_prompts.tool_call_prompts.per_tool.execute_dashboard_stati
 from apps.core.system_prompts.tool_call_prompts.per_tool.execute_hadron_prime_node_query_tool_prompt import (
     build_tool_prompt__execute_hadron_prime_node_query
 )
+from apps.core.system_prompts.tool_call_prompts.per_tool.execute_media_item_search_tool_prompt import \
+    build_tool_prompt__media_item_search
 
 from apps.core.system_prompts.tool_call_prompts.per_tool.execute_metakanban_query_tool_prompt import (
     build_tool_prompt__execute_metakanban_query
@@ -478,6 +480,7 @@ class SystemPromptFactoryBuilder:
             execute_reasoning,
             execute_sql_query,
             execute_nosql_query,
+            execute_media_item_search,
             execute_media_manager,
             generic_tool_calls,
             execute_http_retrieval,
@@ -541,6 +544,7 @@ class SystemPromptFactoryBuilder:
             do_sql_query=execute_sql_query,
             nosql_feed=nosql_feed,
             do_nosql_query=execute_nosql_query,
+            do_media_item_search=execute_media_item_search,
             do_media_manager=execute_media_manager,
             tone=tone,
             do_instructions=generic_tool_calls,
@@ -628,6 +632,7 @@ class SystemPromptFactoryBuilder:
         do_sql_query,
         nosql_feed,
         do_nosql_query,
+        do_media_item_search,
         do_media_manager,
         tone,
         do_instructions,
@@ -688,6 +693,7 @@ class SystemPromptFactoryBuilder:
         combined_system_instructions += do_codebase
         combined_system_instructions += do_intra_memory
         combined_system_instructions += do_ssh_command
+        combined_system_instructions += do_media_item_search
         combined_system_instructions += do_media_manager
         combined_system_instructions += do_http_retrieval
         combined_system_instructions += do_ml_model
@@ -729,6 +735,7 @@ class SystemPromptFactoryBuilder:
         codebase = build_tool_prompt__execute_codebase_query()
         intra_memory = build_tool_prompt__intra_context_memory()
         ssh_file_system = build_tool_prompt__execute_ssh_file_system_command()
+        media_item_search = build_tool_prompt__media_item_search()
         media_manager = build_tool_prompt__media_manager_query()
         http_retrieval = build_tool_prompt__retrieval_via_http_client()
         infer_ml = build_tool_prompt__infer_with_machine_learning()
@@ -772,6 +779,7 @@ class SystemPromptFactoryBuilder:
             reasoning,
             sql,
             nosql,
+            media_item_search,
             media_manager,
             instructions,
             http_retrieval,

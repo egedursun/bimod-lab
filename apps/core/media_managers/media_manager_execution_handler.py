@@ -17,12 +17,17 @@
 
 import io
 import logging
+import os
+from typing import List, Dict
 from uuid import uuid4
 
 import boto3
+import faiss
 import filetype
+import numpy as np
 from PIL import Image
 
+from apps.core.generative_ai.gpt_openai_manager import OpenAIGPTClientManager
 from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
 
 from apps.core.media_managers.utils import (
@@ -33,8 +38,10 @@ from apps.core.media_managers.utils import (
     MEDIA_PATH_EDIT_IMAGE_BASE,
     MEDIA_PATH_EDIT_IMAGE_MASK,
     ImageModes,
-    DEFAULT_IMAGE_COMPRESSION_JPEG
+    DEFAULT_IMAGE_COMPRESSION_JPEG, DEFAULT_SEARCH_RESULTS_MEDIA_ITEMS, OpenAIEmbeddingModels,
+    VECTOR_INDEX_PATH_MEDIA_ITEMS, OPEN_AI_DEFAULT_EMBEDDING_VECTOR_DIMENSIONS
 )
+from apps.datasource_media_storages.models import MediaItemVectorData
 
 from apps.llm_transaction.models import LLMTransaction
 from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
@@ -49,11 +56,55 @@ class MediaManager:
         self.connection_object = connection
         self.chat = chat
 
+        self.media_items_index_path = os.path.join(
+            VECTOR_INDEX_PATH_MEDIA_ITEMS, f'media_items_index_{self.connection_object.id}.index')
+
+        if os.path.exists(self.media_items_index_path):
+            self.media_items_index = faiss.read_index(self.media_items_index_path)
+
+        else:
+            self.media_items_index = faiss.IndexIDMap(faiss.IndexFlatL2(OPEN_AI_DEFAULT_EMBEDDING_VECTOR_DIMENSIONS))
+            faiss.write_index(self.media_items_index, self.media_items_index_path)
+
     @staticmethod
     def file_name_generator(file_format):
         uuid_1 = str(uuid4())
         uuid_2 = str(uuid4())
         return f"{uuid_1}_{uuid_2}.{file_format}"
+
+    def _generate_query_embedding(self, query: str) -> List[float]:
+        c = OpenAIGPTClientManager.get_naked_client(llm_model=self.connection_object.assistant.llm_model)
+        response = c.embeddings.create(input=query, model=OpenAIEmbeddingModels.TEXT_EMBEDDING_3_LARGE)
+        return response.data[0].embedding
+
+    def search_media_items(
+        self,
+        query: str,
+        n_results: int = DEFAULT_SEARCH_RESULTS_MEDIA_ITEMS
+    ) -> List[Dict]:
+        query_vector = np.array([self._generate_query_embedding(query)], dtype=np.float32)
+        if self.media_items_index is None:
+            raise ValueError("[search_media_items] FAISS index not initialized or loaded properly.")
+
+        distances, ids = self.media_items_index.search(query_vector, n_results)
+        results = []
+
+        for item_id, distance in zip(ids[0], distances[0]):
+            if item_id == -1:
+                continue
+            try:
+                instance = MediaItemVectorData.objects.get(id=item_id)
+                results.append({
+                    "id": instance.id,
+                    "data": instance.raw_data,
+                    "distance": distance,
+                })
+
+            except MediaItemVectorData.DoesNotExist:
+                print(f"Warning: Media Item Instance with ID {item_id} not found in the vector database.")
+                logger.error(f"Media Item Instance with ID {item_id} not found in the vector database.")
+
+        return results
 
     @staticmethod
     def save_file_and_return_uri(data, remote):

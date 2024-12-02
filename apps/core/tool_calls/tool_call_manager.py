@@ -70,6 +70,7 @@ from apps.core.tool_calls.input_verifiers.verify_dashboard_statistics_query impo
 from apps.core.tool_calls.input_verifiers.verify_hadron_node_query import (
     verify_hadron_node_query_content
 )
+from apps.core.tool_calls.input_verifiers.verify_media_item_search import verify_media_item_search_content
 
 from apps.core.tool_calls.input_verifiers.verify_metakanban_query import (
     verify_metakanban_query_content
@@ -432,6 +433,16 @@ class ToolCallManager:
                 return error, None, None, None
 
             f_uris, img_uris, output_tool_call = self._handle_tool_media_manager_query(f_uris, img_uris,
+                                                                                       output_tool_call)
+
+        elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_MEDIA_ITEM_SEARCH_QUERY:
+            error = verify_media_item_search_content(content=self.tool_usage_dict)
+
+            if error:
+                logger.error(f"Error occurred while verifying the media manager query content: {error}")
+                return error, None, None, None
+
+            f_uris, img_uris, output_tool_call = self._handle_tool_media_item_search(f_uris, img_uris,
                                                                                        output_tool_call)
 
         elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_HTTP_RETRIEVAL:
@@ -1071,6 +1082,35 @@ class ToolCallManager:
         output_tool_call += output_str
         logger.info(f"HTTP client retrieval response retrieved.")
         return output_tool_call
+
+    def _handle_tool_media_item_search(
+        self,
+        f_uris,
+        img_uris,
+        output_tool_call
+    ):
+        from apps.core.tool_calls.core_services.core_service_media_item_search import run_query_search_media_items
+
+        logger.info("Executing the media item search process.")
+        c_id = self.tool_usage_dict.get("parameters").get("connection_id")
+        query = self.tool_usage_dict.get("parameters").get("query")
+
+        output = run_query_search_media_items(
+            connection_id=c_id,
+            chat=self.chat,
+            query=query
+        )
+
+        output_str = json.dumps(
+            output,
+            sort_keys=True,
+            default=str
+        )
+
+        output_tool_call += output_str
+        logger.info(f"Media item search query response retrieved.")
+        return f_uris, img_uris, output_tool_call
+
 
     def _handle_tool_media_manager_query(
         self,

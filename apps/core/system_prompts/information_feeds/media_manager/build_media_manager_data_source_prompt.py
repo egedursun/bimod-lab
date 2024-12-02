@@ -35,20 +35,28 @@ def build_media_manager_data_source_prompt(assistant: Assistant):
                     Storage Description: {media_storage_data_source.description or "N/A"}
                     File Category: {media_storage_data_source.media_category}
 
-                    #### *Names and Descriptions of the Media Items:*
-                """
-        media_items = media_storage_data_source.items.all()
-        for j, media_item in enumerate(media_items):
-            response_prompt += f"""
-                    - [Media Item ID: {media_item.id}]
-                        File Name: {media_item.media_file_name}
-                        Description: {media_item.description or "N/A"}
-                        Size: {media_item.media_file_size or "N/A"}
-                        File Type: {media_item.media_file_type}
-                        File Path: {media_item.full_file_path}
-                        Created At: {media_item.created_at}
+                    #### *Format of the Results when you search for Media Items in a Storage:*
+                    - [media_item_id: <id of the item> ]
+                        media_file_name: <file name of the media item>
+                        media_file_description: <description of the media file item>
+                        media_file_size: <size of the media file item>
+                        media_file_type: <type (format) of the media file item
+                        media_file_path: <the file path of the item (you can use to download the item if required)>
+                        media_file_created_at: <the items creation date>
+
+                   ##### YOUR MEDIA ITEM SEARCH TOOL:
+
+                   - You can use your media item search tool to search for media items in a media storage, and then using
+                   the retrieved information, you can download the media items, analyze them, and use them in your
+                   response generation processes (such as if the user requires you to analyze a specific CSV file, or
+                   asks for you to unzip a compressed file, or provides an image file and asks what is in the image,
+                   etc.)
+
+                   - Further instructions about how you must use the media item search tool is provided to you in the
+                   further sections of this prompt.
 
                 """
+
     response_prompt += """
             '''
 
@@ -86,25 +94,33 @@ def build_semantor_media_manager_data_source_prompt(temporary_sources: dict):
 
     for i, media_storage_data_source in enumerate(media_manager_data_sources):
         response_prompt += f"""
-                [Media Storage Data Source ID: {media_storage_data_source.id}]
-                    Storage Name: {media_storage_data_source.name}
-                    Storage Description: {media_storage_data_source.description or "N/A"}
-                    File Category: {media_storage_data_source.media_category}
+            [Media Storage Data Source ID: {media_storage_data_source.id}]
+                Storage Name: {media_storage_data_source.name}
+                Storage Description: {media_storage_data_source.description or "N/A"}
+                File Category: {media_storage_data_source.media_category}
 
-                    #### *Names and Descriptions of the Media Items:*
-                """
-        media_items = media_storage_data_source.items.all()
-        for j, media_item in enumerate(media_items):
-            response_prompt += f"""
-                    - [Media Item ID: {media_item.id}]
-                        File Name: {media_item.media_file_name}
-                        Description: {media_item.description or "N/A"}
-                        Size: {media_item.media_file_size or "N/A"}
-                        File Type: {media_item.media_file_type}
-                        File Path: {media_item.full_file_path}
-                        Created At: {media_item.created_at}
+               #### *Format of the Results when you search for Media Items in a Storage:*
+                - [media_item_id: <id of the item> ]
+                    media_file_name: <file name of the media item>
+                    media_file_description: <description of the media file item>
+                    media_file_size: <size of the media file item>
+                    media_file_type: <type (format) of the media file item
+                    media_file_path: <the file path of the item (you can use to download the item if required)>
+                    media_file_created_at: <the items creation date>
 
-                """
+               ##### YOUR MEDIA ITEM SEARCH TOOL:
+
+               - You can use your media item search tool to search for media items in a media storage, and then using
+               the retrieved information, you can download the media items, analyze them, and use them in your
+               response generation processes (such as if the user requires you to analyze a specific CSV file, or
+               asks for you to unzip a compressed file, or provides an image file and asks what is in the image,
+               etc.)
+
+               - Further instructions about how you must use the media item search tool is provided to you in the
+               further sections of this prompt.
+
+        """
+
     response_prompt += """
             '''
 

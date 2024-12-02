@@ -27,6 +27,7 @@ class ToolCallDescriptorNames:
     EXECUTE_CODE_BASE_QUERY = 'Code Base Query Execution'
     EXECUTE_INTRA_MEMORY_QUERY = 'Vector Chat History Query Execution'
     EXECUTE_SSH_SYSTEM_QUERY = 'File System Command Execution'
+    EXECUTE_MEDIA_ITEM_SEARCH_QUERY = 'Media Item Search Query Execution'
     EXECUTE_MEDIA_MANAGER_QUERY = 'Media Storage Query Execution'
     EXECUTE_BROWSING = 'Browsing'
     EXECUTE_HTTP_DELIVERY = 'URL File Uploader'

@@ -109,6 +109,7 @@ class SemantorVectorSearchExecutionManager:
         self.user: User = user
         self.llm_model: LLMCore = llm_model
         self.vector_dim = vector_dim
+
         self.assistants_index_path = os.path.join(
             VECTOR_INDEX_PATH_ASSISTANTS, f'assistants_index_{self.llm_model.organization.id}.index')
         self.leanmod_assistants_index_path = os.path.join(

@@ -217,6 +217,7 @@ media/generated/images/*
 /voidforger_vectors/action_memories/*
 /voidforger_vectors/auto_execution_memories/*
 /voidforger_vectors/chat_messages/*
+/media_item_vectors/media_items/*
 
 # Allow __init__.py files in all subdirectories of assistants and integrations
 !/assistant_vectors/context_memories/**/__init__.py
@@ -227,3 +228,4 @@ media/generated/images/*
 !/voidforger_vectors/action_memories/**/__init__.py
 !/voidforger_vectors/auto_execution_memories/**/__init__.py
 !/voidforger_vectors/chat_messages/**/__init__.py
+!/media_item_vectors/media_items/**/__init__.py

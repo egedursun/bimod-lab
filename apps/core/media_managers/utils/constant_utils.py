@@ -16,6 +16,9 @@
 #
 #
 #
+import os
+
+from config.settings import BASE_DIR
 
 FILE_EXTENSION_BIN = ".bin"
 
@@ -36,3 +39,20 @@ class ImageModes:
 
 
 DEFAULT_IMAGE_COMPRESSION_JPEG = 80
+
+DEFAULT_SEARCH_RESULTS_MEDIA_ITEMS = 10
+
+
+class OpenAIEmbeddingModels:
+    TEXT_EMBEDDING_3_LARGE = "text-embedding-3-large"
+    TEXT_EMBEDDING_3_SMALL = "text-embedding-3-small"
+    TEXT_EMBEDDING_ADA_V2 = "text-embedding-ada-002"
+
+
+OPEN_AI_DEFAULT_EMBEDDING_VECTOR_DIMENSIONS = 3072
+
+VECTOR_INDEX_PATH_MEDIA_ITEMS = os.path.join(
+    BASE_DIR,
+    'media_item_vectors',
+    'media_items'
+)

@@ -180,3 +180,16 @@ MEDIA_STORE_ADMIN_SEARCH_FIELDS = ['assistant', 'name', 'directory_full_path']
 UNIT_BYTES_THOUSAND = 1024
 
 AI_GENERATED_DESCRIPTION_SPECIFIER = 'generated_description'
+MEDIA_ITEM_VECTOR_DATA_ADMIN_LIST = (
+    'media_item',
+    'created_at',
+    'updated_at',
+)
+MEDIA_ITEM_VECTOR_DATA_ADMIN_FILTER = (
+    'created_at',
+    'updated_at',
+)
+MEDIA_ITEM_VECTOR_DATA_ADMIN_SEARCH = (
+    'media_item__media_file_name',
+    'media_item__storage_base__name',
+)

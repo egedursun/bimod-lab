@@ -14,9 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from .media_item_admin import *
 from .media_storage_admin import *
+from .media_item_vector_admin import *

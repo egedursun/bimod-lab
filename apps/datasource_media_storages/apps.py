@@ -24,3 +24,12 @@ from django.apps import AppConfig
 class DatasourceMediaStoragesConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'apps.datasource_media_storages'
+
+    def ready(self):
+        from apps.datasource_media_storages.signals.delete_old_media_item_vector_embedding_signals import (
+            remove_vector_from_index_on_media_item_delete
+        )
+
+        from apps.datasource_media_storages.signals.update_old_media_item_vector_embedding_signals import (
+            update_media_item_vector_embedding_after_save
+        )
