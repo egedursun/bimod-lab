@@ -26,6 +26,7 @@ from apps.assistants.models import Assistant
 from apps.datasource_knowledge_base.forms import DocumentKnowledgeBaseForm
 from apps.datasource_knowledge_base.utils import VECTORSTORE_SYSTEMS, EMBEDDING_VECTORIZER_MODELS
 from apps.user_permissions.utils import PermissionNames
+from config.settings import MAX_KNOWLEDGE_BASES_PER_ASSISTANT
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -63,6 +64,16 @@ class VectorStoreView_Create(LoginRequiredMixin, TemplateView):
         ##############################
 
         if form.is_valid():
+
+            assistant = form.cleaned_data['assistant']
+
+            # check the number of knowledge base connections assistant has
+            n_knowledge_bases = assistant.documentknowledgebaseconnection_set.count()
+            if n_knowledge_bases > MAX_KNOWLEDGE_BASES_PER_ASSISTANT:
+                messages.error(request,
+                               f'Assistant has reached the maximum number of knowledge base connections ({MAX_KNOWLEDGE_BASES_PER_ASSISTANT}).')
+                return redirect('datasource_knowledge_base:create')
+
             form.save()
             logger.info(f"[views.create_knowledge_base] Knowledge Base created successfully.")
             messages.success(request, "Knowledge Base created successfully.")

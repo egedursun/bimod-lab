@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
@@ -27,6 +28,7 @@ from apps.datasource_sql.forms import SQLDatabaseConnectionForm
 from apps.datasource_sql.utils import DBMS_CHOICES
 from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
+from config.settings import MAX_SQL_DBS_PER_ASSISTANT
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -62,13 +64,27 @@ class SQLDatabaseView_ManagerCreate(TemplateView, LoginRequiredMixin):
         ##############################
 
         if form.is_valid():
+
+            assistant = form.cleaned_data['assistant']
+
+            # check the number of SQL database connections assistant has
+            n_sql_dbs = assistant.sql_database_connections.count()
+
+            if n_sql_dbs > MAX_SQL_DBS_PER_ASSISTANT:
+                messages.error(request,
+                               f'Assistant has reached the maximum number of SQL database connections ({MAX_SQL_DBS_PER_ASSISTANT}).')
+                return redirect('datasource_sql:list')
+
             form.save()
+
             logger.info("SQL Data Source created.")
             messages.success(request, "SQL Data Source created successfully.")
             return redirect('datasource_sql:create')
+
         else:
             logger.error("Error creating SQL Data Source.")
             messages.error(request, "Error creating SQL Data Source.")
+
             context = self.get_context_data(**kwargs)
             context['form'] = form
             return self.render_to_response(context)

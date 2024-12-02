@@ -24,6 +24,7 @@ from django.views.generic import TemplateView
 
 from apps.organization.models import Organization
 from apps.projects.models import ProjectItem, ProjectTeamItem
+from config.settings import MAX_TEAMS_PER_PROJECT
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -49,6 +50,7 @@ class ProjectsView_TeamCreate(LoginRequiredMixin, TemplateView):
         description = request.POST.get("team_description")
         team_lead_id = request.POST.get("team_lead")
         members = request.POST.getlist("team_members")  # Capture selected members
+
         if not team_name or not project_id or not team_lead_id:
             messages.error(request, "Team name, project, and team lead are required fields.")
             return redirect("projects:team_create")
@@ -56,6 +58,14 @@ class ProjectsView_TeamCreate(LoginRequiredMixin, TemplateView):
         try:
             project = ProjectItem.objects.get(id=project_id)
             team_lead = User.objects.get(id=team_lead_id)
+
+            # check the number of project teams the project has
+            n_project_teams = project.project_teams.count()
+            if n_project_teams > MAX_TEAMS_PER_PROJECT:
+                messages.error(request,
+                               f'Assistant has reached the maximum number of teams per project ({MAX_TEAMS_PER_PROJECT}).')
+                return redirect('projects:team_create')
+
             team = ProjectTeamItem.objects.create(
                 team_name=team_name,
                 project=project,
@@ -64,6 +74,7 @@ class ProjectsView_TeamCreate(LoginRequiredMixin, TemplateView):
                 created_by_user=request.user
             )
             team.team_members.set(User.objects.filter(id__in=members))
+
         except Exception as e:
             messages.error(request, f"An error occurred while creating the team: {str(e)}")
             return redirect("projects:team_create")

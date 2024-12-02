@@ -27,8 +27,8 @@ from apps.mm_triggered_jobs.forms import TriggeredJobForm
 from apps.mm_triggered_jobs.models import TriggeredJob
 from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
+from config.settings import MAX_TRIGGERED_JOBS_PER_ASSISTANT
 from web_project import TemplateLayout
-
 
 logger = logging.getLogger(__name__)
 
@@ -54,17 +54,29 @@ class TriggeredJobView_Create(LoginRequiredMixin, TemplateView):
         ##############################
 
         if form.is_valid():
-            triggered_job:TriggeredJob = form.save(commit=False)
+
+            triggered_job: TriggeredJob = form.save(commit=False)
             assistant_id = request.POST.get('trigger_assistant')
             trigger_assistant = Assistant.objects.get(id=assistant_id)
+
+            # check the number of triggered jobs assistant has
+            n_triggered_jobs = trigger_assistant.triggered_jobs.count()
+            if n_triggered_jobs > MAX_TRIGGERED_JOBS_PER_ASSISTANT:
+                messages.error(request,
+                               f'Assistant has reached the maximum number of connected triggered jobs ({MAX_TRIGGERED_JOBS_PER_ASSISTANT}).')
+                return redirect('mm_triggered_jobs:list')
+
             triggered_job.created_by_user = request.user
             step_guide = request.POST.getlist('step_guide[]')
+
             triggered_job.step_guide = step_guide
             triggered_job.trigger_assistant = trigger_assistant
             triggered_job.save()
+
             logger.info(f"Triggered Job was created by User: {self.request.user.id}.")
             messages.success(request, "Triggered Job created successfully!")
             return redirect('mm_triggered_jobs:list')
+
         else:
             logger.error(f"Error creating triggered job: {form.errors}")
             messages.error(request, "There was an error creating the triggered job.")

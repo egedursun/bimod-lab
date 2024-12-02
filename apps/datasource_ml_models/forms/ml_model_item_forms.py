@@ -24,7 +24,14 @@ from apps.datasource_ml_models.models import DataSourceMLModelItem
 
 
 class DataSourceMLModelItemForm(forms.ModelForm):
-    file = forms.FileField(required=True, widget=forms.FileInput(attrs={'class': 'form-control'}))
+    file = forms.FileField(
+        required=True,
+        widget=forms.FileInput(
+            attrs={
+                'class': 'form-control'
+            }
+        )
+    )
 
     class Meta:
         model = DataSourceMLModelItem

@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
@@ -27,6 +28,7 @@ from apps.datasource_media_storages.models import DataSourceMediaStorageConnecti
 from apps.datasource_media_storages.utils import MEDIA_MANAGER_ITEM_TYPES
 from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
+from config.settings import MAX_MEDIA_STORAGES_PER_ASSISTANT
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -65,6 +67,14 @@ class MediaView_ManagerCreate(LoginRequiredMixin, TemplateView):
         agent_id = request.POST.get('assistant')
         try:
             agent = Assistant.objects.get(id=agent_id)
+
+            # check the number of browser connections assistant has
+            n_media_storages = agent.datasourcemediastorageconnection_set.count()
+            if n_media_storages > MAX_MEDIA_STORAGES_PER_ASSISTANT:
+                messages.error(request,
+                               f'Assistant has reached the maximum number of media storage connections ({MAX_MEDIA_STORAGES_PER_ASSISTANT}).')
+                return redirect('datasource_media_storages:create')
+
             media_manager = DataSourceMediaStorageConnection.objects.create(
                 name=name, description=desc, media_category=item_category, assistant=agent
             )

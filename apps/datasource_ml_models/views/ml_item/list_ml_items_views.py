@@ -91,12 +91,15 @@ class MLModelView_ItemList(LoginRequiredMixin, TemplateView):
         mgr_id = request.POST.get('storage_id')
         chosen_insts = request.POST.getlist('selected_items')
         chosen_insts = [item for item in chosen_insts if item]
+
         if DELETE_ALL_ML_ITEMS_SPECIFIER in request.POST:
             DataSourceMLModelItem.objects.filter(ml_model_base__id=mgr_id).delete()
             logger.info(f"All ML models in the selected connection have been deleted.")
             messages.success(request, 'All ML models in the selected connection have been deleted.')
+
         elif chosen_insts:
             DataSourceMLModelItem.objects.filter(id__in=chosen_insts).delete()
             logger.info(f"Selected ML models have been deleted.")
             messages.success(request, 'Selected ML models have been deleted.')
+
         return redirect('datasource_ml_models:item_list')

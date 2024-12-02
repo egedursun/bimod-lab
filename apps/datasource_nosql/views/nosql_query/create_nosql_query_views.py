@@ -27,6 +27,7 @@ from apps.datasource_nosql.forms import CustomNoSQLQueryForm
 from apps.datasource_nosql.models import NoSQLDatabaseConnection
 from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
+from config.settings import MAX_NOSQL_QUERIES_PER_DB
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -62,13 +63,26 @@ class NoSQLDatabaseView_QueryCreate(TemplateView, LoginRequiredMixin):
         ##############################
 
         if form.is_valid():
+
+            # check the number of NOSQL database connections assistant has
+            database_connection = form.cleaned_data['database_connection']
+
+            n_nosql_queries = database_connection.custom_queries.count()
+            if n_nosql_queries > MAX_NOSQL_QUERIES_PER_DB:
+                messages.error(request,
+                               f'Assistant has reached the maximum number of NOSQL queries per database connection ({MAX_NOSQL_QUERIES_PER_DB}).')
+                return redirect('datasource_nosql:list_queries')
+
             form.save()
+
             logger.info("NoSQL Query created.")
             messages.success(request, "NoSQL Query created successfully.")
             return redirect('datasource_nosql:create_query')
+
         else:
             logger.error("Error creating NoSQL Query.")
             messages.error(request, "Error creating NoSQL Query.")
+
             context = self.get_context_data(**kwargs)
             context['form'] = form
             return self.render_to_response(context)

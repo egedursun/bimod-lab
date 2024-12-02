@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
@@ -26,6 +27,7 @@ from apps.assistants.models import Assistant
 from apps.datasource_file_systems.models import DataSourceFileSystem
 from apps.datasource_file_systems.utils import DATASOURCE_FILE_SYSTEMS_OS_TYPES
 from apps.user_permissions.utils import PermissionNames
+from config.settings import MAX_FILE_SYSTEMS_PER_ASSISTANT
 from web_project import TemplateLayout
 
 
@@ -66,19 +68,38 @@ class FileSystemView_Create(LoginRequiredMixin, TemplateView):
 
         try:
             agent = Assistant.objects.get(id=agent_id)
+
+            # check the number of browser connections assistant has
+            n_file_systems = agent.data_source_file_systems.count()
+            if n_file_systems > MAX_FILE_SYSTEMS_PER_ASSISTANT:
+                messages.error(request,
+                               f'Assistant has reached the maximum number of file system connections ({MAX_FILE_SYSTEMS_PER_ASSISTANT}).')
+                return redirect('datasource_file_systems:create')
+
             conn = DataSourceFileSystem.objects.create(
-                name=name, description=description, os_type=os_type, assistant=agent, host_url=host_url,
-                port=port, username=username, password=password, os_read_limit_tokens=os_read_limit_tokens,
-                is_read_only=is_read_only, created_by_user=created_by_user
+                name=name, description=description,
+                os_type=os_type,
+                assistant=agent,
+                host_url=host_url,
+                port=port,
+                username=username,
+                password=password,
+                os_read_limit_tokens=os_read_limit_tokens,
+                is_read_only=is_read_only,
+                created_by_user=created_by_user
             )
+
             conn.save()
+
             logger.info(f"Data Source File System created successfully.")
             messages.success(request, 'Data Source File System created successfully.')
             return redirect('datasource_file_systems:list')
+
         except Assistant.DoesNotExist:
             logger.error(f'Invalid assistant selected.')
             messages.error(request, 'Invalid assistant selected.')
             return redirect('datasource_file_systems:create')
+
         except Exception as e:
             logger.error(f'Error creating Data Source File System: {e}')
             messages.error(request, f'Error creating Data Source File System: {e}')

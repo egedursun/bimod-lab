@@ -27,6 +27,7 @@ from apps.assistants.models import Assistant
 from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from apps.video_generations.models import VideoGeneratorConnection
+from config.settings import MAX_VIDEO_GENERATORS_PER_ASSISTANT
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -58,16 +59,22 @@ class VideoGeneratorView_Create(LoginRequiredMixin, TemplateView):
         provider = request.POST.get('provider')
         provider_api_key = request.POST.get('provider_api_key')
         errors = {}
+
         if not org_id:
             errors['organization'] = 'Organization is required.'
+
         if not agent_id:
             errors['assistant'] = 'Assistant is required.'
+
         if not name:
             errors['name'] = 'Name is required.'
+
         if not description:
             errors['description'] = 'Description is required.'
+
         if not provider:
             errors['provider'] = 'Provider is required.'
+
         if not provider_api_key:
             errors['provider_api_key'] = 'Provider API Key is required.'
 
@@ -81,14 +88,18 @@ class VideoGeneratorView_Create(LoginRequiredMixin, TemplateView):
         agent = None
         try:
             orgg = Organization.objects.get(id=org_id)
+
         except Organization.DoesNotExist:
             logger.error(f"Organization with ID {org_id} does not exist.")
             errors['organization'] = 'Selected organization does not exist.'
+
         try:
             agent = Assistant.objects.get(id=agent_id)
+
         except Assistant.DoesNotExist:
             logger.error(f"Assistant with ID {agent_id} does not exist.")
             errors['assistant'] = 'Selected assistant does not exist.'
+
         if errors:
             context = self.get_context_data()
             context['error_messages'] = errors
@@ -97,8 +108,10 @@ class VideoGeneratorView_Create(LoginRequiredMixin, TemplateView):
 
         if orgg is None:
             errors['organization'] = 'Selected organization does not exist.'
+
         if agent is None:
             errors['assistant'] = 'Selected assistant does not exist.'
+
         if errors:
             context = self.get_context_data()
             context['error_messages'] = errors
@@ -106,10 +119,26 @@ class VideoGeneratorView_Create(LoginRequiredMixin, TemplateView):
             return render(request, self.template_name, context)
 
         try:
+
+            # check the number of video generator connections assistant has
+            n_video_generators = agent.videogeneratorconnection_set.count()
+
+            if n_video_generators > MAX_VIDEO_GENERATORS_PER_ASSISTANT:
+                messages.error(request,
+                               f'Assistant has reached the maximum number of video generator connections ({MAX_VIDEO_GENERATORS_PER_ASSISTANT}).')
+                return redirect('video_generations:create')
+
             video_generator_connection = VideoGeneratorConnection(
-                organization=orgg, assistant=agent, created_by_user=request.user, name=name, description=description,
-                provider=provider, provider_api_key=provider_api_key)
+                organization=orgg,
+                assistant=agent,
+                created_by_user=request.user,
+                name=name,
+                description=description,
+                provider=provider,
+                provider_api_key=provider_api_key
+            )
             video_generator_connection.save()
+
         except Exception as e:
             logger.error(f"Error creating the Video Generator Connection. Error: {e}")
             messages.error(request, 'Error creating the Video Generator Connection.')

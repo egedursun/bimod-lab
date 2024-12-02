@@ -27,6 +27,7 @@ from apps.assistants.models import Assistant
 from apps.datasource_codebase.forms import CodeRepositoryStorageForm
 from apps.datasource_codebase.utils import KNOWLEDGE_BASE_SYSTEMS, VECTORIZERS
 from apps.user_permissions.utils import PermissionNames
+from config.settings import MAX_CODE_BASES_PER_ASSISTANT
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -45,6 +46,7 @@ class CodeBaseView_StorageCreate(LoginRequiredMixin, TemplateView):
             agents_of_orgs = Assistant.objects.filter(organization__in=user_orgs)
             context['assistants'] = agents_of_orgs
             context['form'] = CodeRepositoryStorageForm()
+
         except Exception as e:
             logger.error(f"User: {context_user} - Code Base Storage - Create Error: {e}")
             messages.error(self.request, 'An error occurred while creating Code Base Storage.')
@@ -64,13 +66,25 @@ class CodeBaseView_StorageCreate(LoginRequiredMixin, TemplateView):
         ##############################
 
         if form.is_valid():
+            assistant = form.cleaned_data['assistant']
+
+            # check the number of code base connections assistant has
+            n_code_bases = assistant.coderepositorystorageconnection_set.count()
+            if n_code_bases > MAX_CODE_BASES_PER_ASSISTANT:
+                messages.error(request,
+                               f'Assistant has reached the maximum number of code base connections ({MAX_CODE_BASES_PER_ASSISTANT}).')
+                return redirect('datasource_codebase:create')
+
             form.save()
+
             logger.info(f"Code Base Storage created successfully.")
             messages.success(request, "Code Base Storage created successfully.")
             return redirect('datasource_codebase:list')
+
         else:
             logger.error(f"Error creating Code Base Storage. Please check the form for errors.")
             messages.error(request, "Error creating Code Base Storage. Please check the form for errors.")
+
             context = self.get_context_data(**kwargs)
             context['form'] = form
             return self.render_to_response(context)

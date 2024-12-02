@@ -27,6 +27,7 @@ from apps.datasource_nosql.forms import NoSQLDatabaseConnectionForm
 from apps.datasource_nosql.utils import NOSQL_DATABASE_CHOICES
 from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
+from config.settings import MAX_NOSQL_DBS_PER_ASSISTANT
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -56,19 +57,34 @@ class NoSQLDatabaseView_ManagerCreate(TemplateView, LoginRequiredMixin):
         ##############################
         # PERMISSION CHECK FOR - ADD_NOSQL_DATABASES
         if not UserPermissionManager.is_authorized(
-            user=self.request.user, operation=PermissionNames.ADD_NOSQL_DATABASES):
+            user=self.request.user,
+            operation=PermissionNames.ADD_NOSQL_DATABASES
+        ):
             messages.error(self.request, "You do not have permission to create NoSQL Data Sources.")
             return redirect('datasource_nosql:list')
         ##############################
 
         if form.is_valid():
+
+            assistant = form.cleaned_data['assistant']
+
+            # check the number of NOSQL database connections assistant has
+            n_nosql_dbs = assistant.nosql_database_connections.count()
+            if n_nosql_dbs > MAX_NOSQL_DBS_PER_ASSISTANT:
+                messages.error(request,
+                               f'Assistant has reached the maximum number of NOSQL database connections ({MAX_NOSQL_DBS_PER_ASSISTANT}).')
+                return redirect('datasource_nosql:list')
+
             form.save()
+
             logger.info("NoSQL Data Source created.")
             messages.success(request, "NoSQL Data Source created successfully.")
             return redirect('datasource_nosql:create')
+
         else:
             logger.error("Error creating NoSQL Data Source.")
             messages.error(request, "Error creating NoSQL Data Source.")
+
             context = self.get_context_data(**kwargs)
             context['form'] = form
             return self.render_to_response(context)

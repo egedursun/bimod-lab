@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
@@ -26,6 +27,7 @@ from apps.assistants.models import Assistant
 from apps.mm_apis.models import CustomAPI, CustomAPIReference
 from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
+from config.settings import MAX_APIS_PER_ASSISTANT
 from web_project import TemplateLayout
 
 
@@ -79,11 +81,27 @@ class CustomAPIView_Connections(LoginRequiredMixin, TemplateView):
             return redirect('mm_apis:connect')
         try:
             agent = Assistant.objects.get(id=agent_id)
+
             if action == 'add' and api_id:
+
+                # check the number of API connections assistant has
+                n_mm_api_refs = agent.customapireference_set.count()
+                if n_mm_api_refs > MAX_APIS_PER_ASSISTANT:
+                    messages.error(request,
+                                   f'Assistant has reached the maximum number of connected APIs ({MAX_APIS_PER_ASSISTANT}).')
+                    return redirect('mm_apis:connect')
+
                 custom_api = CustomAPI.objects.get(id=api_id)
-                CustomAPIReference.objects.create(assistant=agent, custom_api=custom_api, created_by_user=request.user)
+
+                CustomAPIReference.objects.create(
+                    assistant=agent,
+                    custom_api=custom_api,
+                    created_by_user=request.user
+                )
+
                 logger.info(f"API '{custom_api.name}' assigned to assistant '{agent.name}'.")
                 messages.success(request, f"API '{custom_api.name}' assigned to assistant '{agent.name}'.")
+
             elif action == 'remove':
                 ref_id = request.POST.get('reference_id')
                 if ref_id:
@@ -91,9 +109,11 @@ class CustomAPIView_Connections(LoginRequiredMixin, TemplateView):
                     reff.delete()
                     logger.info(f"API reference removed from assistant '{agent.name}'.")
                     messages.success(request, f"API reference removed from assistant '{agent.name}'.")
+
         except Assistant.DoesNotExist:
             logger.error(f"Assistant not found.")
             messages.error(request, "Assistant not found.")
+
         except CustomAPI.DoesNotExist:
             logger.error(f"Custom API not found.")
             messages.error(request, "Custom API not found.")

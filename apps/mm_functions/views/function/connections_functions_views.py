@@ -26,6 +26,7 @@ from apps.assistants.models import Assistant
 from apps.mm_functions.models import CustomFunction, CustomFunctionReference
 from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
+from config.settings import MAX_FUNCTIONS_PER_ASSISTANT
 from web_project import TemplateLayout
 
 
@@ -76,10 +77,24 @@ class CustomFunctionView_Connections(LoginRequiredMixin, TemplateView):
 
         try:
             agent = Assistant.objects.get(id=agent_id)
+
             if action == 'add' and function_id:
+
+                # check the number of function connections assistant has
+                n_mm_function_refs = agent.customfunctionreference_set.count()
+                if n_mm_function_refs > MAX_FUNCTIONS_PER_ASSISTANT:
+                    messages.error(request,
+                                   f'Assistant has reached the maximum number of connected functions ({MAX_FUNCTIONS_PER_ASSISTANT}).')
+                    return redirect('mm_functions:connect')
+
                 custom_function = CustomFunction.objects.get(id=function_id)
+
                 CustomFunctionReference.objects.create(
-                    assistant=agent, custom_function=custom_function, created_by_user=request.user)
+                    assistant=agent,
+                    custom_function=custom_function,
+                    created_by_user=request.user
+                )
+
                 logger.info(f"Function '{custom_function.name}' assigned to assistant '{agent.name}'.")
                 messages.success(request,
                                  f"Function '{custom_function.name}' assigned to assistant '{agent.name}'.")

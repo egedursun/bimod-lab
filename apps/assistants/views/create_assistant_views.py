@@ -31,6 +31,7 @@ from apps.organization.models import Organization
 from apps.projects.models import ProjectItem
 from apps.user_permissions.utils import PermissionNames
 from apps.assistants.utils import MULTI_STEP_REASONING_CAPABILITY_CHOICE
+from config.settings import MAX_PROJECTS_PER_ASSISTANT
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -181,7 +182,12 @@ class AssistantView_Create(LoginRequiredMixin, TemplateView):
             org.assistants.add(agent)
             org.save()
 
-            project_items = request.POST.getlist('project_items[]')
+            project_items = request.POST.getlist('project_items[]', [])
+            if project_items and len(project_items) > MAX_PROJECTS_PER_ASSISTANT:
+                messages.error(request,
+                               f"Maximum related project count is {MAX_PROJECTS_PER_ASSISTANT} per assistant.")
+                project_items = project_items[:MAX_PROJECTS_PER_ASSISTANT]
+
             agent.project_items.set(project_items)
             agent.save()
 

@@ -26,6 +26,7 @@ from apps.mm_scheduled_jobs.forms.orchestration_scheduled_job_forms import Orche
 from apps.orchestrations.models import Maestro
 from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
+from config.settings import MAX_SCHEDULED_JOBS_PER_MAESTRO
 from web_project import TemplateLayout
 
 
@@ -53,9 +54,19 @@ class ScheduledJobView_OrchestrationCreate(LoginRequiredMixin, TemplateView):
         ##############################
 
         form = OrchestrationScheduledJobForm(request.POST)
+
         maestro_id = request.POST.get('maestro')
         maestro = Maestro.objects.get(id=maestro_id)
+
         if form.is_valid():
+
+            # check the number of scheduled jobs orchestration maestro has
+            n_scheduled_jobs = maestro.scheduled_jobs.count()
+            if n_scheduled_jobs > MAX_SCHEDULED_JOBS_PER_MAESTRO:
+                messages.error(request,
+                               f'Orchestration maestro has reached the maximum number of connected scheduled jobs ({MAX_SCHEDULED_JOBS_PER_MAESTRO}).')
+                return redirect('mm_scheduled_jobs:orchestration_list')
+
             scheduled_job = form.save(commit=False)
             scheduled_job.maestro = maestro
             scheduled_job.created_by_user = request.user

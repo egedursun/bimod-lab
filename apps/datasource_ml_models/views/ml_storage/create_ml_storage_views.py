@@ -24,6 +24,7 @@ from django.views.generic import TemplateView
 from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.datasource_ml_models.forms import DataSourceMLModelConnectionForm
 from apps.user_permissions.utils import PermissionNames
+from config.settings import MAX_ML_STORAGES_PER_ASSISTANT
 from web_project import TemplateLayout
 
 
@@ -49,6 +50,16 @@ class MLModelView_ManagerCreate(LoginRequiredMixin, TemplateView):
         ##############################
 
         if form.is_valid():
+
+            assistant = form.cleaned_data['assistant']
+
+            # check the number of ML model storage connections assistant has
+            n_ml_storages = assistant.datasourcemlmodelconnection_set.count()
+            if n_ml_storages > MAX_ML_STORAGES_PER_ASSISTANT:
+                messages.error(request,
+                               f'Assistant has reached the maximum number of ML storage connections ({MAX_ML_STORAGES_PER_ASSISTANT}).')
+                return redirect('datasource_ml_models:list')
+
             conn = form.save(commit=False)
             conn.created_by_user = request.user
             conn.save()

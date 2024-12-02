@@ -29,6 +29,7 @@ from apps.assistants.models import Assistant
 from apps.datasource_browsers.models import DataSourceBrowserConnection
 from apps.datasource_browsers.utils import BROWSER_TYPES
 from apps.user_permissions.utils import PermissionNames
+from config.settings import MAX_BROWSERS_PER_ASSISTANT
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -97,28 +98,53 @@ class BrowserView_BrowserCreate(LoginRequiredMixin, TemplateView):
         ra_remove_tags = request.POST.get('ra_remove_tags') == 'on'
 
         capabilities = {
-            "javascript": ra_javascript, "style": ra_style, "inline_style": ra_inline_style, "comments": ra_comments,
-            "links": ra_links, "meta": ra_meta, "page_structure": ra_page_structure,
-            "processing_instructions": ra_processing_instructions, "embedded": ra_embedded, "frames": ra_frames,
-            "forms": ra_forms, "remove_tags": ra_remove_tags
+            "javascript": ra_javascript,
+            "style": ra_style,
+            "inline_style": ra_inline_style,
+            "comments": ra_comments,
+            "links": ra_links,
+            "meta": ra_meta,
+            "page_structure": ra_page_structure,
+            "processing_instructions": ra_processing_instructions,
+            "embedded": ra_embedded,
+            "frames": ra_frames,
+            "forms": ra_forms,
+            "remove_tags": ra_remove_tags
         }
+
         created_by_user = request.user
+
         try:
             assistant = Assistant.objects.get(id=agent_id)
+
+            # check the number of browser connections assistant has
+            n_browsers = assistant.datasourcebrowserconnection_set.count()
+            if n_browsers > MAX_BROWSERS_PER_ASSISTANT:
+                messages.error(request, f'Assistant has reached the maximum number of browser connections ({MAX_BROWSERS_PER_ASSISTANT}).')
+                return redirect('datasource_browsers:create')
+
             info_feed = DataSourceBrowserConnection.objects.create(
-                name=browser_name, description=description, browser_type=browser_type, assistant=assistant,
-                data_selectivity=browser_selectivity, minimum_investigation_sites=min_investigation_websites,
-                whitelisted_extensions=whitelisted_exts, blacklisted_extensions=blacklisted_exts,
-                reading_abilities=capabilities, created_by_user=created_by_user
+                name=browser_name, description=description,
+                browser_type=browser_type,
+                assistant=assistant,
+                data_selectivity=browser_selectivity,
+                minimum_investigation_sites=min_investigation_websites,
+                whitelisted_extensions=whitelisted_exts,
+                blacklisted_extensions=blacklisted_exts,
+                reading_abilities=capabilities,
+                created_by_user=created_by_user
             )
             info_feed.save()
+
             logger.info(f"User: {request.user} - Data Source Browser Connection: {info_feed.name} - Created.")
             messages.success(request, 'Data Source Browser Connection created successfully.')
             return redirect('datasource_browsers:list')
+
         except Assistant.DoesNotExist:
             logger.error('Invalid assistant selected.')
             messages.error(request, 'Invalid assistant selected.')
             return redirect('datasource_browsers:create')
+
         except Exception as e:
             logger.error(f'Error creating Data Source Browser Connection: {e}')
             messages.error(request, f'Error creating Data Source Browser Connection: {e}')
