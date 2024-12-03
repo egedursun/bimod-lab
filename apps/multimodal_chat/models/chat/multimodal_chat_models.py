@@ -22,20 +22,49 @@ from apps.multimodal_chat.utils import SOURCES_FOR_MULTIMODAL_CHATS
 
 
 class MultimodalChat(models.Model):
-    organization = models.ForeignKey('organization.Organization', on_delete=models.CASCADE)
-    assistant = models.ForeignKey('assistants.Assistant', on_delete=models.CASCADE,
-                                  related_name='multimodal_chats', null=True)
-    user = models.ForeignKey('auth.User', on_delete=models.CASCADE, related_name='multimodal_chats', null=True)
+    organization = models.ForeignKey(
+        'organization.Organization',
+        on_delete=models.CASCADE
+    )
+
+    assistant = models.ForeignKey(
+        'assistants.Assistant',
+        on_delete=models.CASCADE,
+        related_name='multimodal_chats',
+        null=True
+    )
+
+    user = models.ForeignKey(
+        'auth.User',
+        on_delete=models.CASCADE,
+        related_name='multimodal_chats',
+        null=True
+    )
+
     chat_name = models.CharField(max_length=255)
-    created_by_user = models.ForeignKey('auth.User', on_delete=models.CASCADE,
-                                        related_name='multimodal_chats_created_by_user')
+
+    created_by_user = models.ForeignKey(
+        'auth.User',
+        on_delete=models.CASCADE,
+        related_name='multimodal_chats_created_by_user'
+    )
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    transactions = models.ManyToManyField('llm_transaction.LLMTransaction', related_name='multimodal_chats',
-                                          blank=True)
+    transactions = models.ManyToManyField(
+        'llm_transaction.LLMTransaction',
+        related_name='multimodal_chats',
+        blank=True
+    )
+
     is_archived = models.BooleanField(default=False)
-    chat_source = models.CharField(max_length=100, choices=SOURCES_FOR_MULTIMODAL_CHATS, default="app")
+
+    chat_source = models.CharField(
+        max_length=100,
+        choices=SOURCES_FOR_MULTIMODAL_CHATS,
+        default="app"
+    )
 
     def __str__(self):
         return self.chat_name + " - " + self.assistant.name + " - " + self.user.username

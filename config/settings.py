@@ -165,6 +165,7 @@ INSTALLED_APPS = [
     "apps.voidforger",
     "apps.quick_setup_helper",
     "apps.mobile_client",
+    "apps.beamguard",
 
     ########################################
     # SUPPORT

@@ -56,33 +56,113 @@ CHAT_MESSAGE_ROLE_SENDER_TYPES = [
     ("TOOL", "Tool"),
 ]
 
-MULTIMODAL_CHAT_ADMIN_LIST = ['organization', 'assistant', 'user', 'chat_name', 'created_by_user', 'created_at',
-                              'updated_at']
-MULTIMODAL_CHAT_ADMIN_FILTER = ['organization', 'assistant', 'user', 'created_by_user', 'created_at', 'updated_at']
-MULTIMODAL_CHAT_ADMIN_SEARCH = ['organization', 'assistant', 'user', 'chat_name', 'created_by_user', 'created_at',
-                                'updated_at']
+MULTIMODAL_CHAT_ADMIN_LIST = [
+    'organization',
+    'assistant',
+    'user',
+    'chat_name',
+    'created_by_user',
+    'created_at',
+    'updated_at'
+]
+MULTIMODAL_CHAT_ADMIN_FILTER = [
+    'organization',
+    'assistant',
+    'user',
+    'created_by_user',
+    'created_at',
+    'updated_at'
+]
+MULTIMODAL_CHAT_ADMIN_SEARCH = [
+    'organization',
+    'assistant',
+    'user',
+    'chat_name',
+    'created_by_user',
+    'created_at',
+    'updated_at'
+]
 
-MULTIMODAL_MESSAGE_ADMIN_LIST = ['multimodal_chat', 'sender_type', 'sent_at']
-MULTIMODAL_MESSAGE_ADMIN_FILTER = ['multimodal_chat', 'sender_type', 'sent_at']
-MULTIMODAL_MESSAGE_ADMIN_SEARCH = ['multimodal_chat', 'sender_type', 'sent_at']
+MULTIMODAL_MESSAGE_ADMIN_LIST = [
+    'multimodal_chat',
+    'sender_type',
+    'sent_at'
+]
+MULTIMODAL_MESSAGE_ADMIN_FILTER = [
+    'multimodal_chat',
+    'sender_type',
+    'sent_at'
+]
+MULTIMODAL_MESSAGE_ADMIN_SEARCH = [
+    'multimodal_chat',
+    'sender_type',
+    'sent_at'
+]
 
-CHAT_CREATION_LOG_ADMIN_LIST = ["organization", 'created_at']
-CHAT_CREATION_LOG_ADMIN_FILTER = ['created_at']
-CHAT_CREATION_LOG_ADMIN_SEARCH = ['created_at']
+CHAT_CREATION_LOG_ADMIN_LIST = [
+    "organization",
+    'created_at'
+]
+CHAT_CREATION_LOG_ADMIN_FILTER = [
+    'created_at'
+]
+CHAT_CREATION_LOG_ADMIN_SEARCH = [
+    'created_at'
+]
 
-CHAT_MESSAGE_CREATION_LOG_ADMIN_LIST = ["organization", 'created_at']
-CHAT_MESSAGE_CREATION_LOG_ADMIN_FILTER = ['created_at']
-CHAT_MESSAGE_CREATION_LOG_ADMIN_SEARCH = ['created_at']
+CHAT_MESSAGE_CREATION_LOG_ADMIN_LIST = [
+    "organization",
+    'created_at'
+]
+CHAT_MESSAGE_CREATION_LOG_ADMIN_FILTER = [
+    'created_at'
+]
+CHAT_MESSAGE_CREATION_LOG_ADMIN_SEARCH = [
+    'created_at'
+]
 
-LEAN_CHAT_ADMIN_LIST = ['organization', 'lean_assistant', 'user', 'chat_name', 'created_by_user', 'created_at',
-                        'updated_at']
-LEAN_CHAT_ADMIN_FILTER = ['organization', 'lean_assistant', 'user', 'created_by_user', 'created_at', 'updated_at']
-LEAN_CHAT_ADMIN_SEARCH = ['organization', 'lean_assistant', 'user', 'chat_name', 'created_by_user', 'created_at',
-                          'updated_at']
+LEAN_CHAT_ADMIN_LIST = [
+    'organization',
+    'lean_assistant',
+    'user',
+    'chat_name',
+    'created_by_user',
+    'created_at',
+    'updated_at'
+]
+LEAN_CHAT_ADMIN_FILTER = [
+    'organization',
+    'lean_assistant',
+    'user',
+    'created_by_user',
+    'created_at',
+    'updated_at'
+]
+LEAN_CHAT_ADMIN_SEARCH = [
+    'organization',
+    'lean_assistant',
+    'user',
+    'chat_name',
+    'created_by_user',
+    'created_at',
+    'updated_at'
+]
 
-MULTIMODAL_LEAN_CHAT_MESSAGE_ADMIN_LIST = ['multimodal_lean_chat', 'sender_type', 'sent_at']
-MULTIMODAL_LEAN_CHAT_MESSAGE_ADMIN_FILTER = ['multimodal_lean_chat', 'sender_type', 'sent_at']
-MULTIMODAL_LEAN_CHAT_MESSAGE_ADMIN_SEARCH = ['multimodal_lean_chat', 'sender_type', 'sent_at']
+MULTIMODAL_LEAN_CHAT_MESSAGE_ADMIN_LIST = [
+    'multimodal_lean_chat',
+    'sender_type',
+    'sent_at'
+]
+MULTIMODAL_LEAN_CHAT_MESSAGE_ADMIN_FILTER = [
+    'multimodal_lean_chat',
+    'sender_type',
+    'sent_at'
+]
+MULTIMODAL_LEAN_CHAT_MESSAGE_ADMIN_SEARCH = [
+    'multimodal_lean_chat',
+    'sender_type',
+    'sent_at'
+]
 
 
 class ChatPostActionSpecifiers:

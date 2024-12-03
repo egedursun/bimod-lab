@@ -1,0 +1,658 @@
+{% extends layout_path %}
+
+{% block title %}BeamGuard™ Artifacts{% endblock %}
+
+{% block vendor_css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}"/>
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/sweetalert2/sweetalert2.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block page_js %}
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll('.btn-danger').forEach(function (button) {
+        button.addEventListener('click', function (event) {
+          event.preventDefault();
+          const form = button.closest('a').getAttribute('href');
+
+          Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this action.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            customClass: {
+              confirmButton: 'btn btn-danger me-2 waves-effect waves-light',
+              cancelButton: 'btn btn-label-secondary waves-effect waves-light'
+            },
+            buttonsStyling: false
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.href = form;
+            }
+          });
+        });
+      });
+  });
+</script>
+{% endblock page_js %}
+
+{% block content %}
+<div class="row g-6 mb-6 mt-4">
+    <div class="col-sm-6 col-xl-6">
+        <h3 class="mb-0"><strong>
+          <i class="fa fa-shield-alt me-2"></i>
+          BeamGuard™ Artifacts
+        </strong></h3>
+    </div>
+</div>
+
+<div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+    <img src="{% static 'img/custom-illustrations-v2/i2-69.png' %}" width="25%" style="border-radius: 25px;"
+         class="justify-content-end me-8" alt="Illustration for tip">
+    <span class="alert-icon rounded">
+    <i class="ti ti-bookmark"></i>
+  </span>
+    <div class="d-flex flex-column ps-1">
+      <h5 class="alert-heading mb-2">Tip</h5>
+      <p class="mb-0">
+        In this page, you can view and manage all the artifacts that have been submitted by the assistants in your organization.
+        You can confirm, discard, or reject the artifacts as needed. An artifact is a piece of operation that has been captured
+        by the BeamGuard™ data protection assistant during the operations of your BimodLab assistants. The data capturing process
+        is generally done by queries that have been interpreted as risky by the BeamGuard™ assistant. The artifacts are then
+        transferred to this page for users to determine what will happen to them, as well as being available in the chat window
+        of the associated assistants.
+      </p>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  </div>
+
+  {% if messages %}
+    {% for message in messages %}
+      <div
+        class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
+        role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+<hr>
+
+<div class="row">
+  <a href="{% url 'beamguard:purge' %}" class="btn btn-danger rounded p-2 w-25 ms-4">
+      <i class="fa fa-skull-crossbones me-2"></i>
+      <strong>Purge All Artifacts</strong>
+  </a>
+</div>
+
+<hr>
+
+<div class="row w-100">
+  <ul class="nav nav-tabs mb-4 w-100 d-flex justify-content-between" id="artifactTabs" role="tablist">
+      <li class="nav-item flex-fill p-2">
+          <button class="nav-link active w-100 text-center btn-outline-primary rounded text-dark border border-primary border-2 rounded" id="sql-tab" data-bs-toggle="tab" data-bs-target="#sql" type="button" role="tab"
+                  aria-controls="sql" aria-selected="true">
+            <strong>
+              <i class="fa fa-database me-2"></i>
+              SQL Data Sources
+            </strong>
+          </button>
+      </li>
+      <li class="nav-item flex-fill p-2">
+          <button class="nav-link w-100 text-center btn-outline-primary rounded text-dark border border-primary border-2 rounded" id="nosql-tab" data-bs-toggle="tab" data-bs-target="#nosql" type="button" role="tab"
+                  aria-controls="nosql" aria-selected="false">
+            <i class="fa fa-database me-2"></i>
+            <strong>NoSQL Data Sources</strong>
+          </button>
+      </li>
+      <li class="nav-item flex-fill p-2">
+          <button class="nav-link w-100 text-center btn-outline-primary rounded text-dark border border-primary border-2 rounded" id="filesystem-tab" data-bs-toggle="tab" data-bs-target="#filesystem" type="button" role="tab"
+                  aria-controls="filesystem" aria-selected="false">
+            <i class="fa fa-folder-open me-2"></i>
+            <strong>File System Connections</strong>
+          </button>
+      </li>
+  </ul>
+</div>
+
+<hr>
+
+<div class="tab-content">
+    <!-- SQL Tab -->
+    <div class="tab-pane fade show active" id="sql" role="tabpanel" aria-labelledby="sql-tab">
+        {% for org_id, org_data in data_object__sql.items %}
+        <div class="card mb-6">
+            <div class="card-header d-flex">
+                <img src="
+              {% if organization.organization_image %}{{ organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+                 width="60" class="rounded me-4" alt="Organization image">
+                <h4 class="">
+                  <strong>
+                    <i class="fa fa-building me-2"></i>
+                    {{ org_data.organization_data.name }}
+                  </strong>
+                </h4>
+            </div>
+            <hr>
+            <div class="card-body">
+                {% for assistant_id, assistant_data in org_data.assistants.items %}
+                  <div class="bg-body p-4 border border-primary-subtle border-2 rounded mb-4">
+                    <div class="d-flex">
+                      <img src="
+                {% if assistant.assistant_image %}{{ assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+                   width="80" class="rounded me-4" alt="Assistant image">
+                      <h5>
+                        <strong>
+                          <i class="fa fa-robot me-2"></i>
+                          {{ assistant_data.assistant_data.name }}
+                        </strong>
+                      </h5>
+                    </div>
+                    <hr>
+                    <div class="row mt-4 d-flex align-items-stretch">
+                        <div class="col-md-4 p-2 d-flex flex-column h-100">
+                          <div class="bg-card border border-primary-subtle border-2 rounded p-4">
+                            <h6>
+                              <strong>
+                                <i class="fa fa-hourglass-half text-warning me-2"></i>
+                                Pending Artifacts
+                              </strong>
+                            </h6>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Metadata</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for artifact in assistant_data.beamguard_artifacts.pending %}
+                                    <tr>
+                                        <td>{{ artifact.id }}</td>
+                                        <td>
+                                          <textarea class="form-control">
+                                            {{ artifact.metadata|linebreaksbr }}
+                                          </textarea>
+                                        </td>
+                                        <td>
+                                            <a href="{% url 'beamguard:absolve' pk=artifact.id %}" class="btn btn-success btn-md w-100">
+                                              <strong><i class="fa fa-check"></i></strong>
+                                            </a>
+                                            <a href="{% url 'beamguard:discard' pk=artifact.id %}" class="btn btn-danger btn-md w-100">
+                                              <strong><i class="fa fa-times"></i></strong>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    {% empty %}
+                                    <tr>
+                                        <td colspan="3">
+                                          <div class="alert alert-dark mt-2 border border-1 border-dark rounded" role="alert">
+                                            <strong>
+                                              <i class="fa fa-info-circle me-2"></i>
+                                              No artifacts found.
+                                            </strong>
+                                          </div>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        </div>
+                        <div class="col-md-4 p-2 d-flex flex-column h-100">
+                          <div class="bg-card border border-primary-subtle border-2 rounded p-4">
+                            <h6>
+                              <strong>
+                                <i class="fa fa-check-circle text-success me-2"></i>
+                                Confirmed &amp; Commited Artifacts
+                              </strong>
+                            </h6>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Metadata</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for artifact in assistant_data.beamguard_artifacts.confirmed %}
+                                    <tr>
+                                        <td>{{ artifact.id }}</td>
+                                        <td>
+                                          <textarea class="form-control">
+                                            {{ artifact.metadata|linebreaksbr }}
+                                          </textarea>
+                                        </td>
+                                    </tr>
+                                    {% empty %}
+                                    <tr>
+                                        <td colspan="2">
+                                          <div class="alert alert-dark mt-2 border border-1 border-dark rounded" role="alert">
+                                            <strong>
+                                              <i class="fa fa-info-circle me-2"></i>
+                                              No artifacts found.
+                                            </strong>
+                                          </div>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        </div>
+                        <div class="col-md-4 p-2 d-flex flex-column h-100">
+                          <div class="bg-card border border-primary-subtle border-2 rounded p-4">
+                            <h6>
+                              <strong>
+                                <i class="fa fa-times-circle text-danger me-2"></i>
+                                Rejected &amp; Discarded Artifacts
+                              </strong>
+                            </h6>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Metadata</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for artifact in assistant_data.beamguard_artifacts.rejected %}
+                                    <tr>
+                                        <td>{{ artifact.id }}</td>
+                                        <td>
+                                          <textarea class="form-control">
+                                            {{ artifact.metadata|linebreaksbr }}
+                                          </textarea>
+                                        </td>
+                                    </tr>
+                                    {% empty %}
+                                    <tr>
+                                        <td colspan="2">
+                                          <div class="alert alert-dark mt-2 border border-1 border-dark rounded" role="alert">
+                                            <strong>
+                                              <i class="fa fa-info-circle me-2"></i>
+                                              No artifacts found.
+                                            </strong>
+                                          </div>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        </div>
+                    </div>
+                  </div>
+                {% empty %}
+                  <div class="alert alert-warning p-8 m-4 border border-warning border-1 rounded" role="alert">
+                    <div class="">
+                      <i class="fa fa-exclamation-triangle me-4"></i>
+                      <strong>No assistants have been defined for this organization (yet).</strong>
+                    </div>
+                  </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- NoSQL Tab -->
+    <div class="tab-pane fade" id="nosql" role="tabpanel" aria-labelledby="nosql-tab">
+        {% for org_id, org_data in data_object__nosql.items %}
+        <div class="card mb-6">
+            <div class="card-header d-flex">
+                <img src="
+              {% if organization.organization_image %}{{ organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+                 width="60" class="rounded me-4" alt="Organization image">
+                <h4>
+                  <strong>
+                    <i class="fa fa-building me-2"></i>
+                    {{ org_data.organization_data.name }}
+                  </strong>
+                </h4>
+            </div>
+
+            <hr>
+
+            <div class="card-body">
+                {% for assistant_id, assistant_data in org_data.assistants.items %}
+                <div class="bg-body p-4 border border-primary-subtle border-2 rounded mb-4">
+                  <div class="d-flex">
+                    <img src="
+                {% if assistant.assistant_image %}{{ assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+                   width="80" class="rounded me-4" alt="Assistant image">
+                    <h5>
+                      <strong>
+                        <i class="fa fa-robot me-2"></i>
+                        {{ assistant_data.assistant_data.name }}
+                      </strong>
+                    </h5>
+                  </div>
+                  <hr>
+                      <div class="row mt-4 d-flex align-items-stretch">
+                      <div class="col-md-4 p-2 d-flex flex-column h-100">
+                        <div class="bg-card border border-primary-subtle border-2 rounded p-4">
+                          <h6>
+                            <strong>
+                              <i class="fa fa-hourglass-half text-warning me-2"></i>
+                              Pending Artifacts
+                            </strong>
+                          </h6>
+                          <table class="table table-bordered">
+                              <thead>
+                                  <tr>
+                                      <th>ID</th>
+                                      <th>Metadata</th>
+                                      <th>Actions</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                  {% for artifact in assistant_data.beamguard_artifacts.pending %}
+                                  <tr>
+                                      <td>{{ artifact.id }}</td>
+                                      <td>
+                                        <textarea class="form-control">
+                                          {{ artifact.metadata|linebreaksbr }}
+                                        </textarea>
+                                      </td>
+                                      <td>
+                                          <a href="{% url 'beamguard:absolve' pk=artifact.id %}" class="btn btn-success btn-md w-100">
+                                            <strong><i class="fa fa-check"></i></strong>
+                                          </a>
+                                          <a href="{% url 'beamguard:discard' pk=artifact.id %}" class="btn btn-danger btn-md w-100">
+                                            <strong><i class="fa fa-times"></i></strong>
+                                          </a>
+                                      </td>
+                                  </tr>
+                                  {% empty %}
+                                  <tr>
+                                      <td colspan="3">
+                                        <div class="alert alert-dark mt-2 border border-1 border-dark rounded" role="alert">
+                                            <strong>
+                                              <i class="fa fa-info-circle me-2"></i>
+                                              No artifacts found.
+                                            </strong>
+                                          </div>
+                                      </td>
+                                  </tr>
+                                  {% endfor %}
+                              </tbody>
+                          </table>
+                        </div>
+                      </div>
+                      <div class="col-md-4 p-2 d-flex flex-column h-100">
+                        <div class="bg-card border border-primary-subtle border-2 rounded p-4">
+                          <h6>
+                            <i class="fa fa-check-circle text-success me-2"></i>
+                            <strong>Confirmed &amp; Commited Artifacts</strong>
+                          </h6>
+                          <table class="table table-bordered">
+                              <thead>
+                                  <tr>
+                                      <th>ID</th>
+                                      <th>Metadata</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                  {% for artifact in assistant_data.beamguard_artifacts.confirmed %}
+                                  <tr>
+                                      <td>{{ artifact.id }}</td>
+                                      <td>
+                                        <textarea class="form-control">
+                                          {{ artifact.metadata|linebreaksbr }}
+                                        </textarea>
+                                      </td>
+                                  </tr>
+                                  {% empty %}
+                                  <tr>
+                                      <td colspan="2">
+                                        <div class="alert alert-dark mt-2 border border-1 border-dark rounded" role="alert">
+                                          <strong>
+                                            <i class="fa fa-info-circle me-2"></i>
+                                            No artifacts found.
+                                          </strong>
+                                        </div>
+                                      </td>
+                                  </tr>
+                                  {% endfor %}
+                              </tbody>
+                          </table>
+                        </div>
+                      </div>
+                      <div class="col-md-4 p-2 d-flex flex-column h-100">
+                        <div class="bg-card border border-primary-subtle border-2 rounded p-4">
+                          <h6>
+                            <i class="fa fa-times-circle text-danger me-2"></i>
+                            <strong>Rejected &amp; Discarded Artifacts</strong>
+                          </h6>
+                          <table class="table table-bordered">
+                              <thead>
+                                  <tr>
+                                      <th>ID</th>
+                                      <th>Metadata</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                  {% for artifact in assistant_data.beamguard_artifacts.rejected %}
+                                  <tr>
+                                      <td>{{ artifact.id }}</td>
+                                      <td>
+                                        <textarea class="form-control">
+                                          {{ artifact.metadata|linebreaksbr }}
+                                        </textarea>
+                                      </td>
+                                  </tr>
+                                  {% empty %}
+                                  <tr>
+                                      <td colspan="2">
+                                        <div class="alert alert-dark mt-2 border border-1 border-dark rounded" role="alert">
+                                          <strong>
+                                            <i class="fa fa-info-circle me-2"></i>
+                                            No artifacts found.
+                                          </strong>
+                                        </div>
+                                      </td>
+                                  </tr>
+                                  {% endfor %}
+                              </tbody>
+                          </table>
+                        </div>
+                      </div>
+                  </div>
+                </div>
+                {% empty %}
+                  <div class="alert alert-warning p-8 m-4 border border-warning border-1 rounded" role="alert">
+                    <div class="">
+                      <i class="fa fa-exclamation-triangle me-4"></i>
+                      <strong>No assistants have been defined for this organization (yet).</strong>
+                    </div>
+                  </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- File System Tab -->
+    <div class="tab-pane fade" id="filesystem" role="tabpanel" aria-labelledby="filesystem-tab">
+        {% for org_id, org_data in data_object__file_system.items %}
+        <div class="card mb-6">
+            <div class="card-header d-flex">
+                <img src="
+              {% if organization.organization_image %}{{ organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+                 width="60" class="rounded me-4" alt="Organization image">
+                <h4>
+                  <strong>
+                    <i class="fa fa-building me-2"></i>
+                    {{ org_data.organization_data.name }}
+                  </strong>
+                </h4>
+            </div>
+
+            <hr>
+
+            <div class="card-body">
+                {% for assistant_id, assistant_data in org_data.assistants.items %}
+              <div class="bg-body p-4 border border-primary-subtle border-2 rounded mb-4">
+                <div class="d-flex">
+                  <img src="
+                {% if assistant.assistant_image %}{{ assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+                   width="80" class="rounded me-4" alt="Assistant image">
+                  <h5>
+                    <strong>
+                      <i class="fa fa-robot me-2"></i>
+                      {{ assistant_data.assistant_data.name }}
+                    </strong>
+                  </h5>
+                </div>
+                <hr>
+                  <div class="row mt-4 d-flex align-items-stretch">
+                      <div class="col-md-4 p-2 d-flex flex-column h-100">
+                        <div class="bg-card border border-primary-subtle border-2 rounded p-4">
+                          <h6>
+                            <i class="fa fa-hourglass-half text-warning me-2"></i>
+                            <strong>Pending Artifacts</strong>
+                          </h6>
+                          <table class="table table-bordered">
+                              <thead>
+                                  <tr>
+                                      <th>ID</th>
+                                      <th>Metadata</th>
+                                      <th>Actions</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                  {% for artifact in assistant_data.beamguard_artifacts.pending %}
+                                  <tr>
+                                      <td>{{ artifact.id }}</td>
+                                      <td>
+                                          <textarea class="form-control">
+                                            {{ artifact.metadata|linebreaksbr }}
+                                          </textarea>
+                                      </td>
+                                      <td>
+                                          <a href="{% url 'beamguard:absolve' pk=artifact.id %}" class="btn btn-success btn-md w-100">
+                                            <strong><i class="fa fa-check"></i></strong>
+                                          </a>
+                                          <a href="{% url 'beamguard:discard' pk=artifact.id %}" class="btn btn-danger btn-md w-100">
+                                            <strong><i class="fa fa-times"></i></strong>
+                                          </a>
+                                      </td>
+                                  </tr>
+                                  {% empty %}
+                                  <tr>
+                                      <td colspan="3">
+                                        <div class="alert alert-dark mt-2 border border-1 border-dark rounded" role="alert">
+                                              <strong>
+                                                <i class="fa fa-info-circle me-2"></i>
+                                                No artifacts found.
+                                              </strong>
+                                            </div>
+                                      </td>
+                                  </tr>
+                                  {% endfor %}
+                              </tbody>
+                          </table>
+                        </div>
+                      </div>
+                      <div class="col-md-4 p-2 d-flex flex-column h-100">
+                        <div class="bg-card border border-primary-subtle border-2 rounded p-4">
+                          <h6>
+                            <i class="fa fa-check-circle text-success me-2"></i>
+                            <strong>Confirmed &amp; Commited Artifacts</strong>
+                          </h6>
+                          <table class="table table-bordered">
+                              <thead>
+                                  <tr>
+                                      <th>ID</th>
+                                      <th>Metadata</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                  {% for artifact in assistant_data.beamguard_artifacts.confirmed %}
+                                  <tr>
+                                      <td>{{ artifact.id }}</td>
+                                      <td>
+                                        <textarea class="form-control">
+                                            {{ artifact.metadata|linebreaksbr }}
+                                          </textarea>
+                                      </td>
+                                  </tr>
+                                  {% empty %}
+                                  <tr>
+                                      <td colspan="2">
+                                        <div class="alert alert-dark mt-2 border border-1 border-dark rounded" role="alert">
+                                            <strong>
+                                              <i class="fa fa-info-circle me-2"></i>
+                                              No artifacts found.
+                                            </strong>
+                                          </div>
+                                      </td>
+                                  </tr>
+                                  {% endfor %}
+                              </tbody>
+                          </table>
+                        </div>
+                      </div>
+                      <div class="col-md-4 p-2 d-flex flex-column h-100">
+                        <div class="bg-card border border-primary-subtle border-2 rounded p-4">
+                          <h6>
+                            <i class="fa fa-times-circle text-danger me-2"></i>
+                            <strong>Rejected &amp; Discarded Artifacts</strong>
+                          </h6>
+                          <table class="table table-bordered">
+                              <thead>
+                                  <tr>
+                                      <th>ID</th>
+                                      <th>Metadata</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                  {% for artifact in assistant_data.beamguard_artifacts.rejected %}
+                                  <tr>
+                                      <td>{{ artifact.id }}</td>
+                                      <td>
+                                        <textarea class="form-control">
+                                            {{ artifact.metadata|linebreaksbr }}
+                                          </textarea>
+                                      </td>
+                                  </tr>
+                                  {% empty %}
+                                  <tr>
+                                      <td colspan="2">
+                                        <div class="alert alert-dark mt-2 border border-1 border-dark rounded" role="alert">
+                                            <strong>
+                                              <i class="fa fa-info-circle me-2"></i>
+                                              No artifacts found.
+                                            </strong>
+                                          </div>
+                                      </td>
+                                  </tr>
+                                  {% endfor %}
+                              </tbody>
+                          </table>
+                        </div>
+                      </div>
+                  </div>
+              </div>
+              {% empty %}
+                <div class="alert alert-warning p-8 m-4 border border-warning border-1 rounded" role="alert">
+                    <div class="">
+                      <i class="fa fa-exclamation-triangle me-4"></i>
+                      <strong>No assistants have been defined for this organization (yet).</strong>
+                    </div>
+                  </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -15,12 +15,15 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-
 from django.contrib import admin
 
 from apps.multimodal_chat.models import MultimodalLeanChatMessage
-from apps.multimodal_chat.utils import MULTIMODAL_LEAN_CHAT_MESSAGE_ADMIN_LIST, \
-    MULTIMODAL_LEAN_CHAT_MESSAGE_ADMIN_FILTER, MULTIMODAL_LEAN_CHAT_MESSAGE_ADMIN_SEARCH
+
+from apps.multimodal_chat.utils import (
+    MULTIMODAL_LEAN_CHAT_MESSAGE_ADMIN_LIST,
+    MULTIMODAL_LEAN_CHAT_MESSAGE_ADMIN_FILTER,
+    MULTIMODAL_LEAN_CHAT_MESSAGE_ADMIN_SEARCH
+)
 
 
 @admin.register(MultimodalLeanChatMessage)

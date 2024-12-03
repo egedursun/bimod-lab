@@ -245,6 +245,10 @@ class PermissionNames:
     LIST_DATA_SECURITY = 'list_data_security'
     DELETE_DATA_SECURITY = 'delete_data_security'
 
+    LIST_BEAMGUARD_ARTIFACTS = 'list_beamguard_artifacts'
+    INTEGRATE_BEAMGUARD_ARTIFACTS = 'integrate_beamguard_artifacts'
+    DISCARD_BEAMGUARD_ARTIFACTS = 'discard_beamguard_artifacts'
+
     ADD_CODE_BASE = 'add_code_base'
     UPDATE_CODE_BASE = 'update_code_base'
     LIST_CODE_BASE = 'list_code_base'
@@ -675,6 +679,10 @@ PERMISSION_TYPES = [
     ('list_data_security', 'List Data Security'),
     ('delete_data_security', 'Delete Data Security'),
 
+    ('list_beamguard_artifacts', 'List BeamGuard Artifacts'),
+    ('integrate_beamguard_artifacts', 'Integrate BeamGuard Artifacts'),
+    ('discard_beamguard_artifacts', 'Discard BeamGuard Artifacts'),
+
     ('add_code_base', 'Add Code Base'),
     ('update_code_base', 'Update Code Base'),
     ('list_code_base', 'List Code Base'),
@@ -946,6 +954,7 @@ class PredefinedRolePackages__Functional:
                 ('add_starred_messages', 'Add Starred Messages'),
                 ('add_template_messages', 'Add Template Messages'),
                 ('add_data_security', 'Add Data Security'),
+                ('integrate_beamguard_artifacts', 'Integrate BeamGuard Artifacts'),
                 ('add_code_base', 'Add Code Base'),
                 ('add_code_repository', 'Add Code Repository'),
                 ('add_knowledge_base_docs', 'Add Knowledge Base Docs'),
@@ -956,6 +965,7 @@ class PredefinedRolePackages__Functional:
                 ('add_export_leanmod', 'Add Export LeanMod'),
                 ('add_expert_networks', 'Add Expert Networks'),
                 ('add_export_orchestration', 'Add Export Orchestration'),
+                ('add_export_voidforger', 'Add Export VoidForger'),
                 ('add_finetuning_model', 'Add Finetuning Model'),
                 ('add_lean_assistant', 'Add Lean Assistant'),
                 ('archive_chats', 'Archive Chats'),
@@ -1061,6 +1071,8 @@ class PredefinedRolePackages__Functional:
                 ('add_starred_messages', 'Add Starred Messages'),
                 ('update_template_messages', 'Update Template Messages'),
                 ('update_data_security', 'Update Data Security'),
+                ('integrate_beamguard_artifacts', 'Integrate BeamGuard Artifacts'),
+                ('discard_beamguard_artifacts', 'Discard BeamGuard Artifacts'),
                 ('update_code_base', 'Update Code Base'),
                 ('update_code_repository', 'Update Code Repository'),
                 ('update_knowledge_base_docs', 'Update Knowledge Base Docs'),
@@ -1071,6 +1083,7 @@ class PredefinedRolePackages__Functional:
                 ('update_export_leanmod', 'Update Export LeanMod'),
                 ('update_expert_networks', 'Update Expert Networks'),
                 ('update_export_orchestration', 'Update Export Orchestration'),
+                ('update_export_voidforger', 'Update Export VoidForger'),
                 ('update_finetuning_model', 'Update Finetuning Model'),
                 ('update_lean_assistant', 'Update Lean Assistant'),
                 ('archive_chats', 'Archive Chats'),
@@ -1167,6 +1180,7 @@ class PredefinedRolePackages__Functional:
                 ('list_starred_messages', 'List Starred Messages'),
                 ('list_template_messages', 'List Template Messages'),
                 ('list_data_security', 'List Data Security'),
+                ('list_beamguard_artifacts', 'List BeamGuard Artifacts'),
                 ('list_code_base', 'List Code Base'),
                 ('list_code_repository', 'List Code Repository'),
                 ('list_knowledge_base_docs', 'List Knowledge Base Docs'),
@@ -1177,6 +1191,7 @@ class PredefinedRolePackages__Functional:
                 ('list_export_leanmod', 'List Export LeanMod'),
                 ('list_expert_networks', 'List Expert Networks'),
                 ('list_export_orchestration', 'List Export Orchestration'),
+                ('list_export_voidforger', 'List Export VoidForger'),
                 ('list_finetuning_model', 'List Finetuning Model'),
                 ('list_lean_assistant', 'List Lean Assistant'),
                 ('archive_chats', 'Archive Chats'),
@@ -1258,6 +1273,7 @@ class PredefinedRolePackages__Functional:
                 ('remove_starred_messages', 'Remove Starred Messages'),
                 ('remove_template_messages', 'Remove Template Messages'),
                 ('delete_data_security', 'Delete Data Security'),
+                ('discard_beamguard_artifacts', 'Discard BeamGuard Artifacts'),
                 ('delete_code_base', 'Delete Code Base'),
                 ('delete_code_repository', 'Delete Code Repository'),
                 ('delete_knowledge_base_docs', 'Delete Knowledge Base Docs'),
@@ -1267,6 +1283,7 @@ class PredefinedRolePackages__Functional:
                 ('delete_export_leanmod', 'Delete Export LeanMod'),
                 ('delete_expert_networks', 'Delete Expert Networks'),
                 ('delete_export_orchestration', 'Delete Export Orchestration'),
+                ('delete_export_voidforger', 'Delete Export VoidForger'),
                 ('delete_finetuning_model', 'Delete Finetuning Model'),
                 ('delete_lean_assistant', 'Delete Lean Assistant'),
                 ('remove_lean_chats', 'Remove Lean Chats'),
@@ -1449,6 +1466,10 @@ class PredefinedRolePackages__Contextual:
                 ('update_export_orchestration', 'Update Export Orchestration'),
                 ('list_export_orchestration', 'List Export Orchestration'),
                 ('delete_export_orchestration', 'Delete Export Orchestration'),
+                ('add_export_voidforger', 'Add Export VoidForger'),
+                ('update_export_voidforger', 'Update Export VoidForger'),
+                ('list_export_voidforger', 'List Export VoidForger'),
+                ('delete_export_voidforger', 'Delete Export VoidForger'),
                 ('add_finetuning_model', 'Add Finetuning Model'),
                 ('update_finetuning_model', 'Update Finetuning Model'),
                 ('list_finetuning_model', 'List Finetuning Model'),
@@ -1648,6 +1669,10 @@ class PredefinedRolePackages__Contextual:
                 ('update_export_orchestration', 'Update Export Orchestration'),
                 ('list_export_orchestration', 'List Export Orchestration'),
                 ('delete_export_orchestration', 'Delete Export Orchestration'),
+                ('add_export_voidforger', 'Add Export VoidForger'),
+                ('update_export_voidforger', 'Update Export VoidForger'),
+                ('list_export_voidforger', 'List Export VoidForger'),
+                ('delete_export_voidforger', 'Delete Export VoidForger'),
             ]
 
     class SecurityAdmin:
@@ -1658,6 +1683,9 @@ class PredefinedRolePackages__Contextual:
                 ('update_data_security', 'Update Data Security'),
                 ('list_data_security', 'List Data Security'),
                 ('delete_data_security', 'Delete Data Security'),
+                ('list_beamguard_artifacts', 'List BeamGuard Artifacts'),
+                ('integrate_beamguard_artifacts', 'Integrate BeamGuard Artifacts'),
+                ('discard_beamguard_artifacts', 'Discard BeamGuard Artifacts'),
                 ('create_data_backups', 'Create Data Backups'),
                 ('list_data_backups', 'List Data Backups'),
                 ('delete_data_backups', 'Delete Data Backups'),

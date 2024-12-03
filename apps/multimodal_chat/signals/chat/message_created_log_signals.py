@@ -15,14 +15,18 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 
-from apps.multimodal_chat.models import MultimodalChatMessage, ChatMessageCreationLog
+from apps.multimodal_chat.models import (
+    MultimodalChatMessage,
+    ChatMessageCreationLog
+)
 
 
 @receiver(post_save, sender=MultimodalChatMessage)
 def create_chat_message_created_log(sender, instance, created, **kwargs):
     if created:
-        ChatMessageCreationLog.objects.create(organization=instance.multimodal_chat.assistant.organization)
+        ChatMessageCreationLog.objects.create(
+            organization=instance.multimodal_chat.assistant.organization
+        )

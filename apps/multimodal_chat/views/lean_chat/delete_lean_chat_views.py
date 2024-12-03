@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
@@ -26,7 +27,6 @@ from apps.multimodal_chat.models import MultimodalLeanChat
 from apps.multimodal_chat.utils import SourcesForMultimodalChatsNames
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
-
 
 logger = logging.getLogger(__name__)
 
@@ -42,18 +42,24 @@ class ChatView_LeanChatDelete(LoginRequiredMixin, DeleteView):
         return context
 
     def get_queryset(self):
-        return MultimodalLeanChat.objects.filter(user=self.request.user, chat_source=SourcesForMultimodalChatsNames.APP)
+        return MultimodalLeanChat.objects.filter(
+            user=self.request.user,
+            chat_source=SourcesForMultimodalChatsNames.APP
+        )
 
     def post(self, request, *args, **kwargs):
         ##############################
         # PERMISSION CHECK FOR - REMOVE_LEAN_CHATS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.REMOVE_LEAN_CHATS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.REMOVE_LEAN_CHATS
+        ):
             messages.error(self.request, "You do not have permission to remove LeanMod chats.")
             return redirect('multimodal_chat:lean_chat')
         ##############################
 
         chat = get_object_or_404(MultimodalLeanChat, id=self.kwargs['pk'], user=self.request.user)
         chat.delete()
+
         logger.info(f"LeanMod chat was deleted by User: {self.request.user.id}.")
         return redirect('multimodal_chat:lean_chat')

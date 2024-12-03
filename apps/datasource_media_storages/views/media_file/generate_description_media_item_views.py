@@ -106,21 +106,27 @@ class MediaView_ItemAIDescription(LoginRequiredMixin, TemplateView):
             return redirect('datasource_media_storages:list_items')
 
         kwargs['pk'] = item_id
+
         if xc_type == AnalysisToolCallExecutionTypesNames.IMAGE_INTERPRETATION:
             gen_desc = txts
             media_item.description = gen_desc
             media_item.save()
+
         elif xc_type == AnalysisToolCallExecutionTypesNames.FILE_INTERPRETATION:
             try:
                 output = txts["response"]
                 gen_desc = ""
+
                 if output:
                     gen_desc = output[0]
+
                 gen_desc = self.normalize_whitespace(gen_desc)
                 media_item.description = gen_desc
                 media_item.save()
                 logger.info(f"[views.update_media_item] Media item updated successfully.")
+
             except Exception as e:
                 logger.error(f"Error while updating media item description: {e}")
                 pass
+
         return redirect('datasource_media_storages:item_detail', **kwargs)

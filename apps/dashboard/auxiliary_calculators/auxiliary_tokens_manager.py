@@ -57,7 +57,7 @@ class AuxiliaryTokensManager:
             for tx in txs_f:
                 total += tx.number_of_tokens if tx.number_of_tokens else 0
             if total > 0:
-                result[usr.profile.username] = total
+                result[usr.username] = total
         return result
 
     @staticmethod

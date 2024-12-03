@@ -161,8 +161,8 @@
                 <label class="form-label" for="tone">Tone</label>
                 <input type="text" class="form-control" id="tone" name="tone" placeholder="Enter tone"/>
               </div>
-              <div class="mb-6 col-3">
-                <label class="form-label" for="time_awareness">Time &amp; Location Awareness</label>
+              <div class="mb-6 col-2">
+                <label class="form-label" for="time_awareness">Time &amp; Spatial Existence Awareness</label>
                 <br>
                 <label class="switch switch-square switch-lg mt-2">
                   <input type="checkbox" class="switch-input" id="awarenessCheckbox" checked>
@@ -175,13 +175,28 @@
                   </span>
                 </label>
               </div>
-              <div class="mb-6 col-3">
+              <div class="mb-6 col-2">
                 <label class="form-label" for="image_generation_capability">Image Generation &amp; Manipulation</label>
                 <br>
                 <label class="switch switch-square switch-lg mt-2">
                   <input type="checkbox" class="switch-input" id="imageGenerationCapabilityCheckbox" checked>
                   <span class="switch-toggle-slider">
                     <input type="hidden" name="image_generation_capability" id="image_generation_capability" value="on">
+                    <span class="switch-on"><i class="ti ti-check"></i></span>
+                    <span class="switch-off"><i class="ti ti-x"></i></span>
+                  </span>
+                </label>
+              </div>
+              <div class="mb-6 col-2">
+                <label class="form-label" for="is_beamguard_active">
+                  <i class="fa fa-shield-alt text-success me-2"></i>
+                  BeamGuard Data Protection Active
+                </label>
+                <br>
+                <label class="switch switch-success switch-square switch-lg mt-2">
+                  <input type="checkbox" class="switch-input" id="beamGuardActivityCheckbox" checked>
+                  <span class="switch-toggle-slider">
+                    <input type="hidden" name="is_beamguard_active" id="is_beamguard_active" value="on">
                     <span class="switch-on"><i class="ti ti-check"></i></span>
                     <span class="switch-off"><i class="ti ti-x"></i></span>
                   </span>
@@ -351,6 +366,21 @@
           imageGenerationCapabilityField.value = 'on';
         } else {
           imageGenerationCapabilityField.value = 'off';
+        }
+      });
+    });
+  </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const checkbox = document.getElementById('beamGuardActivityCheckbox');
+      const isBeamGuardActiveField = document.getElementById('is_beamguard_active');
+
+      checkbox.addEventListener('change', function () {
+        if (checkbox.checked) {
+          isBeamGuardActiveField.value = 'on';
+        } else {
+          isBeamGuardActiveField.value = 'off';
         }
       });
     });

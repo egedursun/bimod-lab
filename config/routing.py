@@ -22,7 +22,7 @@ from config.consumers import (
     OrchestrationGenericLogConsumer,
     LeanModLogConsumer,
     WorkspaceLogConsumer,
-    FermionLogConsumer
+    FermionLogConsumer,
 )
 
 websocket_urlpatterns = [

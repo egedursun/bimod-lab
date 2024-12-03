@@ -127,6 +127,7 @@ class AssistantView_Create(LoginRequiredMixin, TemplateView):
             spatial_capab_place = request.POST.get('place_awareness') == 'on'
             visualization_capab = request.POST.get('image_generation_capability') == 'on'
             reasoning_capab = request.POST.get('multi_step_reasoning_capability_choice')
+            is_beamguard_active = request.POST.get('is_beamguard_active') == 'on'
             agent_img = request.FILES.get('assistant_image')
 
             if not (
@@ -176,7 +177,8 @@ class AssistantView_Create(LoginRequiredMixin, TemplateView):
                 image_generation_capability=visualization_capab,
                 multi_step_reasoning_capability_choice=reasoning_capab,
                 glossary=technical_dict,
-                ner_integration=ner_integration
+                ner_integration=ner_integration,
+                is_beamguard_active=is_beamguard_active
             )
 
             org.assistants.add(agent)

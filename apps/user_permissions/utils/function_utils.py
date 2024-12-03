@@ -109,6 +109,11 @@ def get_permissions_grouped():
             ('list_data_security', 'List Data Security'),
             ('delete_data_security', 'Delete Data Security'),
         ],
+        "BeamGuard Artifacts": [
+            ('list_beamguard_artifacts', 'List BeamGuard Artifacts'),
+            ('integrate_beamguard_artifacts', 'Integrate BeamGuard Artifacts'),
+            ('discard_beamguard_artifacts', 'Discard BeamGuard Artifacts'),
+        ],
         "Data Backups Permissions": [
             ('create_data_backups', 'Create Data Backups'),
             ('list_data_backups', 'List Data Backups'),

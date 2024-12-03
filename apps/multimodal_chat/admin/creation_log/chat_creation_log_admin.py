@@ -19,8 +19,12 @@
 from django.contrib import admin
 
 from apps.multimodal_chat.models import ChatCreationLog
-from apps.multimodal_chat.utils import CHAT_CREATION_LOG_ADMIN_LIST, CHAT_CREATION_LOG_ADMIN_FILTER, \
+
+from apps.multimodal_chat.utils import (
+    CHAT_CREATION_LOG_ADMIN_LIST,
+    CHAT_CREATION_LOG_ADMIN_FILTER,
     CHAT_CREATION_LOG_ADMIN_SEARCH
+)
 
 
 @admin.register(ChatCreationLog)

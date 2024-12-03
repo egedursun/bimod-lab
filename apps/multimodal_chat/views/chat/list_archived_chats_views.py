@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
@@ -31,7 +32,6 @@ from apps.user_permissions.utils import PermissionNames
 from config.settings import MEDIA_URL
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -43,17 +43,24 @@ class ChatView_ListArchivedChats(LoginRequiredMixin, TemplateView):
 
         ##############################
         # PERMISSION CHECK FOR - CREATE_AND_USE_CHATS
-        if not UserPermissionManager.is_authorized(user=context_user,
-                                                   operation=PermissionNames.CREATE_AND_USE_CHATS):
+        if not UserPermissionManager.is_authorized(
+            user=context_user,
+            operation=PermissionNames.CREATE_AND_USE_CHATS
+        ):
             messages.error(self.request, "You do not have permission to create and use chats.")
             return context
         ##############################
 
         if 'chat_id' in self.request.GET:
-            active_chat = get_object_or_404(MultimodalChat, id=self.request.GET['chat_id'], user=self.request.user)
+            active_chat = get_object_or_404(
+                MultimodalChat,
+                id=self.request.GET['chat_id'],
+                user=self.request.user
+            )
 
         chats = MultimodalChat.objects.filter(
-            user=self.request.user, chat_source=SourcesForMultimodalChatsNames.APP,
+            user=self.request.user,
+            chat_source=SourcesForMultimodalChatsNames.APP,
             is_archived=True
         )
 
@@ -63,13 +70,33 @@ class ChatView_ListArchivedChats(LoginRequiredMixin, TemplateView):
             if len(chats) > 0:
                 active_chat = chats[0]
 
-        agents = Assistant.objects.filter(organization__users=self.request.user)
-        orgs = Organization.objects.filter(assistants__in=agents)
-        msg_templates = MessageTemplate.objects.filter(user=context_user, organization__in=orgs)
+        agents = Assistant.objects.filter(
+            organization__users=self.request.user
+        )
+
+        orgs = Organization.objects.filter(
+            assistants__in=agents
+        )
+
+        msg_templates = MessageTemplate.objects.filter(
+            user=context_user,
+            organization__in=orgs
+        )
+
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+
         active_chat_msgs = active_chat.chat_messages.all().order_by('sent_at') if active_chat else None
-        context.update({"chats": chats, "assistants": agents, "active_chat": active_chat,
-                        "chat_messages": active_chat_msgs, "message_templates": msg_templates,
-                        "base_url": MEDIA_URL})
+
+        context.update(
+            {
+                "chats": chats,
+                "assistants": agents,
+                "active_chat": active_chat,
+                "chat_messages": active_chat_msgs,
+                "message_templates": msg_templates,
+                "base_url": MEDIA_URL
+            }
+        )
+
         logger.info(f"Archived Chats were listed by User: {self.request.user.id}.")
         return context

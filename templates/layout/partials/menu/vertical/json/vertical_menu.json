@@ -360,6 +360,12 @@
       ]
     },
     {
+      "name": "BeamGuard™ Watch",
+      "icon": "menu-icon tf-icons ti ti-shield",
+      "slug": "beamguard-watch",
+      "url": "beamguard:list"
+    },
+    {
       "menu_header": "Interaction"
     },
     {

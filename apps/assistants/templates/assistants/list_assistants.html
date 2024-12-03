@@ -140,6 +140,7 @@
             <th style="min-width: 150px; max-width: 150px;">Audience</th>
             <th style="min-width: 150px; max-width: 150px;">Tone</th>
             <th style="min-width: 200px; max-width: 200px;">LLM Model</th>
+            <th style="min-width: 250px; max-width: 250px;">BeamGuard</th>
             <th style="min-width: 150px; max-width: 150px;">Data Security</th>
             <th></th>
             <th></th>
@@ -167,6 +168,19 @@
               <td style="min-width:200px;"><strong>{{ assistant.audience }}</strong></td>
               <td style="min-width:200px;">{{ assistant.tone }}</td>
               <td style="min-width:200px;"><strong>{{ assistant.llm_model.nickname }}</strong></td>
+              <td style="min-width: 250px;">
+                {% if assistant.is_beamguard_active %}
+                  <div class="bg-label-success text-bg-dark border border-2 border-success rounded p-2 w-100">
+                    <i class="fa fa-shield-alt me-2"></i>
+                    <strong>BeamGuard Data Protection Enabled</strong>
+                  </div>
+                {% else %}
+                  <div class="bg-label-danger text-bg-dark border border-danger border-2 rounded p-2 w-100">
+                    <i class="fa fa-shield-virus me-2"></i>
+                    <strong>BeamGuard Data Protection Disabled</strong>
+                  </div>
+                {% endif %}
+              </td>
               <td style="min-width:200px;">
                 {% if assistant.ner_integration %}
                   <div class="bg-success text-bg-dark rounded p-2 w-100">

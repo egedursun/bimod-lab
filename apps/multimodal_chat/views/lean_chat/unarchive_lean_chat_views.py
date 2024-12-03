@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
@@ -25,7 +26,6 @@ from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.multimodal_chat.models import MultimodalLeanChat
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
-
 
 logger = logging.getLogger(__name__)
 
@@ -40,15 +40,24 @@ class ChatView_LeanChatUnarchive(LoginRequiredMixin, TemplateView):
 
         ##############################
         # PERMISSION CHECK FOR - UNARCHIVE_LEAN_CHATS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.UNARCHIVE_LEAN_CHATS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.UNARCHIVE_LEAN_CHATS
+        ):
             messages.error(self.request, "You do not have permission to archive LeanMod chats.")
             return self.render_to_response(context)
         ##############################
 
         pk = kwargs.get('pk')
-        chat = get_object_or_404(MultimodalLeanChat, id=pk, user=self.request.user)
+
+        chat = get_object_or_404(
+            MultimodalLeanChat,
+            id=pk,
+            user=self.request.user
+        )
+
         chat.is_archived = False
         chat.save()
+
         logger.info(f"LeanMod chat was unarchived by User: {self.request.user.id}.")
         return redirect('multimodal_chat:lean_chat')

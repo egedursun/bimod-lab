@@ -19,8 +19,12 @@
 from django.contrib import admin
 
 from apps.multimodal_chat.models import MultimodalChatMessage
-from apps.multimodal_chat.utils import MULTIMODAL_MESSAGE_ADMIN_LIST, MULTIMODAL_MESSAGE_ADMIN_FILTER, \
+
+from apps.multimodal_chat.utils import (
+    MULTIMODAL_MESSAGE_ADMIN_LIST,
+    MULTIMODAL_MESSAGE_ADMIN_FILTER,
     MULTIMODAL_MESSAGE_ADMIN_SEARCH
+)
 
 
 @admin.register(MultimodalChatMessage)

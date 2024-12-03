@@ -15,12 +15,16 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-
 from django.db import models
 
 
 class ChatMessageCreationLog(models.Model):
-    organization = models.ForeignKey('organization.Organization', on_delete=models.CASCADE, null=True)
+    organization = models.ForeignKey(
+        'organization.Organization',
+        on_delete=models.CASCADE,
+        null=True
+    )
+
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -31,5 +35,9 @@ class ChatMessageCreationLog(models.Model):
         verbose_name_plural = "Chat Message Creation Logs"
         ordering = ["-created_at"]
         indexes = [
-            models.Index(fields=['created_at']),
+            models.Index(
+                fields=[
+                    'created_at'
+                ]
+            ),
         ]

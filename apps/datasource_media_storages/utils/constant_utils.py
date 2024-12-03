@@ -193,3 +193,4 @@ MEDIA_ITEM_VECTOR_DATA_ADMIN_SEARCH = (
     'media_item__media_file_name',
     'media_item__storage_base__name',
 )
+SUPPORTED_ARCHIVE_TYPES = ['.zip', '.tar', '.tar.gz', '.rar']

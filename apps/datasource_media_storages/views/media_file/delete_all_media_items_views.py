@@ -42,14 +42,17 @@ class MediaView_ItemDeleteAll(LoginRequiredMixin, TemplateView):
     def post(self, request, *args, **kwargs):
         ##############################
         # PERMISSION CHECK FOR - DELETE_STORAGE_FILES
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.DELETE_STORAGE_FILES):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.DELETE_STORAGE_FILES
+        ):
             messages.error(self.request, "You do not have permission to delete media files.")
             return redirect('datasource_media_storages:list_items')
         ##############################
 
         mm_id = kwargs.get('id')
         complete_items_set = DataSourceMediaStorageItem.objects.filter(storage_base_id=mm_id)
+
         for item in complete_items_set:
             if item.full_file_path is not None:
                 try:

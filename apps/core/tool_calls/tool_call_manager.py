@@ -20,6 +20,7 @@ import logging
 
 from django.contrib.auth.models import User
 
+from apps.core.beamguard.beamguard_executor import BeamGuardExecutionManager
 from apps.core.browsers.utils import BrowserActionsNames
 from apps.core.generative_ai.auxiliary_methods.errors.error_log_prompts import get_json_decode_error_log
 
@@ -1152,6 +1153,33 @@ class ToolCallManager:
         c_id = self.tool_usage_dict.get("parameters").get("file_system_connection_id")
         commands = self.tool_usage_dict.get("parameters").get("commands")
 
+        if self.assistant.is_beamguard_active is True:
+            try:
+                xc_beamguard = BeamGuardExecutionManager(
+                    assistant=self.assistant,
+                    chat=self.chat
+                )
+                artifact = xc_beamguard.guard_file_system_modifications(
+                    connection_id=c_id,
+                    raw_query=str(commands)
+                )
+
+                if artifact is not None:
+                    return "BeamGuard File System command protection mechanism executed, user intervention is required to confirm the query execution.", None, None, None
+
+                else:
+                    logger.info(
+                        "BeamGuard File System command protection mechanism detected no issues with the query, proceeding with the execution.")
+                    pass
+
+            except Exception as e:
+                logger.error(f"Error occurred while executing the BeamGuard File System command modifications: {e}")
+                return "Error occurred while executing the BeamGuard File System command protection mechanism.", None, None, None
+
+        else:
+            logger.info("BeamGuard is not active. Skipping the BeamGuard File System command protection mechanism.")
+            pass
+
         output = run_execute_ssh_system_commands(
             c_id=c_id,
             bash_commands=commands
@@ -1240,6 +1268,32 @@ class ToolCallManager:
         query_type = self.tool_usage_dict.get("parameters").get("type")
         sql_query = self.tool_usage_dict.get("parameters").get("sql_query")
 
+        if self.assistant.is_beamguard_active is True:
+            try:
+                xc_beamguard = BeamGuardExecutionManager(
+                    assistant=self.assistant,
+                    chat=self.chat
+                )
+                artifact = xc_beamguard.guard_sql_modifications(
+                    connection_id=c_id,
+                    raw_query=sql_query
+                )
+
+                if artifact is not None:
+                    return "BeamGuard SQL query protection mechanism executed, user intervention is required to confirm the query execution.", None, None, None
+
+                else:
+                    logger.info("BeamGuard SQL query protection mechanism detected no issues with the query, proceeding with the execution.")
+                    pass
+
+            except Exception as e:
+                logger.error(f"Error occurred while executing the BeamGuard SQL query modifications: {e}")
+                return "Error occurred while executing the BeamGuard SQL query protection mechanism.", None, None, None
+
+        else:
+            logger.info("BeamGuard is not active. Skipping the BeamGuard SQL query protection mechanism.")
+            pass
+
         output = run_sql_query(
             c_id=c_id,
             sql_query_type=query_type,
@@ -1262,6 +1316,33 @@ class ToolCallManager:
         c_id = self.tool_usage_dict.get("parameters").get("database_connection_id")
         query_type = self.tool_usage_dict.get("parameters").get("type")
         nosql_query = self.tool_usage_dict.get("parameters").get("nosql_query")
+
+        if self.assistant.is_beamguard_active is True:
+            try:
+                xc_beamguard = BeamGuardExecutionManager(
+                    assistant=self.assistant,
+                    chat=self.chat
+                )
+                artifact = xc_beamguard.guard_nosql_modifications(
+                    connection_id=c_id,
+                    raw_query=nosql_query
+                )
+
+                if artifact is not None:
+                    return "BeamGuard NoSQL query protection mechanism executed, user intervention is required to confirm the query execution.", None, None, None
+
+                else:
+                    logger.info(
+                        "BeamGuard NoSQL query protection mechanism detected no issues with the query, proceeding with the execution.")
+                    pass
+
+            except Exception as e:
+                logger.error(f"Error occurred while executing the BeamGuard NoSQL query modifications: {e}")
+                return "Error occurred while executing the BeamGuard NoSQL query protection mechanism.", None, None, None
+
+        else:
+            logger.info("BeamGuard is not active. Skipping the BeamGuard NoSQL query protection mechanism.")
+            pass
 
         output = run_nosql_query(
             c_id=c_id,

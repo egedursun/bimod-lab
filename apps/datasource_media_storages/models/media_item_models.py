@@ -57,15 +57,22 @@ class DataSourceMediaStorageItem(models.Model):
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
         self.media_file_name = slugify(self.media_file_name)
         file_type = self.media_file_type
+
         if file_type not in [ft[0] for ft in MEDIA_FILE_TYPES]:
             return False
+
         if not self.full_file_path:
             base_dir = self.storage_base.directory_full_path
             file_name = self.media_file_name
             unique_suffix = str(random.randint(1_000_000, 9_999_999))
             relative_path = f"{base_dir.split(MEDIA_URL)[1]}/{file_name.split('.')[0]}_{unique_suffix}.{file_type}"
             self.full_file_path = f"{MEDIA_URL}{relative_path}"
-            upload_file_to_storage.delay(file_bytes=self.file_bytes, full_path=relative_path,
-                                         media_category=self.storage_base.media_category)
+
+            upload_file_to_storage.delay(
+                file_bytes=self.file_bytes,
+                full_path=relative_path,
+                media_category=self.storage_base.media_category
+            )
+
         self.file_bytes = None
         super().save(force_insert, force_update, using, update_fields)

@@ -17,12 +17,20 @@
 
 from django.urls import path
 
-from apps.datasource_media_storages.views import MediaView_ManagerCreate, \
-    MediaView_ManagerList, MediaView_ManagerUpdate, \
-    MediaView_ManagerDelete, MediaView_ItemCreate, \
-    MediaView_ItemList, MediaView_ItemDeleteAll, \
-    MediaView_ItemUpdate, MediaView_ItemAIDescription, \
-    MediaView_ItemHTTPRetrieval, MediaView_Generated
+from apps.datasource_media_storages.views import (
+    MediaView_ManagerCreate,
+    MediaView_ManagerList,
+    MediaView_ManagerUpdate,
+    MediaView_ManagerDelete,
+    MediaView_ItemCreate,
+    MediaView_ItemList,
+    MediaView_ItemDeleteAll,
+    MediaView_ItemUpdate,
+    MediaView_ItemAIDescription,
+    MediaView_ItemHTTPRetrieval,
+    MediaView_Generated,
+    MediaView_ItemArchiveRetrieval,
+)
 
 app_name = "datasource_media_storages"
 
@@ -50,4 +58,12 @@ urlpatterns = [
          name='fetch_file_from_url'),
     path('items/list_generated/', MediaView_Generated.as_view(
         template_name="datasource_media_storages/generated/list_generated_media.html"), name='list_generated_items'),
+
+    path(
+        'items/upload_archive/',
+        MediaView_ItemArchiveRetrieval.as_view(
+
+        ),
+        name='upload_archive'
+    ),
 ]

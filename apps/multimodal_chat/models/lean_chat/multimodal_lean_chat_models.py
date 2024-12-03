@@ -15,26 +15,55 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-
 from django.db import models
 
 from apps.multimodal_chat.utils import SOURCES_FOR_MULTIMODAL_CHATS
 
 
 class MultimodalLeanChat(models.Model):
-    organization = models.ForeignKey('organization.Organization', on_delete=models.CASCADE)
-    lean_assistant = models.ForeignKey('leanmod.LeanAssistant', on_delete=models.CASCADE,
-                                       related_name='multimodal_lean_chats', null=True)
-    user = models.ForeignKey('auth.User', on_delete=models.CASCADE, related_name='multimodal_lean_chats', default=1)
+    organization = models.ForeignKey(
+        'organization.Organization',
+        on_delete=models.CASCADE
+    )
+
+    lean_assistant = models.ForeignKey(
+        'leanmod.LeanAssistant',
+        on_delete=models.CASCADE,
+        related_name='multimodal_lean_chats',
+        null=True
+    )
+
+    user = models.ForeignKey(
+        'auth.User',
+        on_delete=models.CASCADE,
+        related_name='multimodal_lean_chats',
+        default=1
+    )
+
     chat_name = models.CharField(max_length=255)
-    created_by_user = models.ForeignKey('auth.User', on_delete=models.CASCADE,
-                                        related_name='multimodal_lean_chats_created_by_user')
+
+    created_by_user = models.ForeignKey(
+        'auth.User',
+        on_delete=models.CASCADE,
+        related_name='multimodal_lean_chats_created_by_user'
+    )
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    transactions = models.ManyToManyField('llm_transaction.LLMTransaction', related_name='multimodal_lean_chats',
-                                          blank=True)
+
+    transactions = models.ManyToManyField(
+        'llm_transaction.LLMTransaction',
+        related_name='multimodal_lean_chats',
+        blank=True
+    )
+
     is_archived = models.BooleanField(default=False)
-    chat_source = models.CharField(max_length=100, choices=SOURCES_FOR_MULTIMODAL_CHATS, default="app")
+
+    chat_source = models.CharField(
+        max_length=100,
+        choices=SOURCES_FOR_MULTIMODAL_CHATS,
+        default="app"
+    )
 
     def __str__(self):
         return self.chat_name + " - " + self.lean_assistant.name + " - " + self.user.username

@@ -126,6 +126,8 @@ class AssistantView_Update(LoginRequiredMixin, TemplateView):
 
             agent.image_generation_capability = request.POST.get('image_generation_capability') == 'on'
             agent.multi_step_reasoning_capability_choice = request.POST.get('multi_step_reasoning_capability_choice')
+            agent.is_beamguard_active = request.POST.get('is_beamguard_active') == 'on'
+
             agent.last_updated_by_user = request.user
 
             if 'assistant_image' in request.FILES:

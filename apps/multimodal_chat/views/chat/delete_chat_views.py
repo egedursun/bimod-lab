@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
@@ -27,7 +28,6 @@ from apps.multimodal_chat.utils import SourcesForMultimodalChatsNames
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -38,22 +38,34 @@ class ChatView_ChatDelete(LoginRequiredMixin, DeleteView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         chat = self.get_object()
+
         context['chat'] = chat
         return context
 
     def get_queryset(self):
-        return MultimodalChat.objects.filter(user=self.request.user, chat_source=SourcesForMultimodalChatsNames.APP)
+        return MultimodalChat.objects.filter(
+            user=self.request.user,
+            chat_source=SourcesForMultimodalChatsNames.APP
+        )
 
     def post(self, request, *args, **kwargs):
         ##############################
         # PERMISSION CHECK FOR - REMOVE_CHATS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.REMOVE_CHATS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.REMOVE_CHATS
+        ):
             messages.error(self.request, "You do not have permission to remove chats.")
             return redirect('multimodal_chat:chat')
         ##############################
 
-        chat = get_object_or_404(MultimodalChat, id=self.kwargs['pk'], user=self.request.user)
+        chat = get_object_or_404(
+            MultimodalChat,
+            id=self.kwargs['pk'],
+            user=self.request.user
+        )
+
         chat.delete()
+
         logger.info(f"Chat was deleted by User: {self.request.user.id}.")
         return redirect('multimodal_chat:chat')

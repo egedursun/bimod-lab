@@ -121,6 +121,8 @@ class Assistant(models.Model):
         blank=True
     )
 
+    is_beamguard_active = models.BooleanField(default=True)
+
     def __str__(self):
         return self.name
 

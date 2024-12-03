@@ -151,6 +151,55 @@
       });
     });
   </script>
+  <script>
+    function triggerArchiveUpload(storageId) {
+        const fileInput = document.getElementById(`archive-file-${storageId}`);
+        fileInput.click();
+
+        fileInput.addEventListener('change', function () {
+            if (this.files && this.files.length > 0) {
+                const file = this.files[0];
+                const supportedExtensions = ['zip', 'tar', 'tar.gz', 'rar'];
+                const fileExtension = file.name.split('.').pop().toLowerCase();
+
+                if (!supportedExtensions.includes(fileExtension)) {
+                    Swal.fire({
+                        title: 'Unsupported File',
+                        text: `The uploaded file type is not supported. Please upload a file with one of the following extensions: ${supportedExtensions.join(', ')}`,
+                        icon: 'error',
+                        confirmButtonText: 'OK',
+                        customClass: {
+                            confirmButton: 'btn btn-danger fw-bolder waves-effect waves-light'
+                        },
+                        buttonsStyling: false
+                    });
+                    fileInput.value = '';
+                    return;
+                }
+
+                Swal.fire({
+                    title: 'Confirm Upload',
+                    text: `You are about to upload an archive file (${file.name}). Do you wish to proceed?`,
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, upload it',
+                    cancelButtonText: 'Cancel',
+                    customClass: {
+                        confirmButton: 'btn btn-primary me-2 fw-bolder waves-effect waves-light',
+                        cancelButton: 'btn btn-label-secondary fw-bolder waves-effect waves-light'
+                    },
+                    buttonsStyling: false
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        document.getElementById(`upload-archive-form-${storageId}`).submit();
+                    } else {
+                        fileInput.value = '';
+                    }
+                });
+            }
+        });
+    }
+</script>
 {% endblock page_js %}
 
 {% block content %}
@@ -214,7 +263,7 @@
                     <a href="{% url 'datasource_media_storages:create_item' %}">
                       <button class="btn btn-info mt-4 mb-8 me-4">
                         <i class="fa fa-file-upload me-4"></i>
-                        <strong> Add New Media Item</strong>
+                        <strong> Add New Media Item(s)</strong>
                       </button>
                     </a>
                     <a href="{% url 'datasource_media_storages:create' %}">
@@ -250,7 +299,7 @@
                       <div class="card mb-4">
                         <div class="card-header">
                           <h5 class="mb-0"><strong>{{ storage_data.storage.name }}</strong></h5>
-                          <p class="bg-label-info rounded p-1 mt-4 mb-4 w-20">
+                          <p class="btn-instagram rounded p-2 mt-4 mb-4 w-20">
                             {% if storage_data.storage.media_category == "image" %}
                               <i class="fa fa-image me-4"></i>
                             {% elif storage_data.storage.media_category == "audio" %}
@@ -271,19 +320,33 @@
                               <i class="fa fa-info-circle me-4"></i>
                               {{ storage_data.storage.description }}
                             </strong></small>
-                          <form method="post" action="{% url 'datasource_media_storages:fetch_file_from_url' %}"
-                                class="mt-4">
-                            {% csrf_token %}
-                            <input type="text" name="download_url" class="form-control w-50 d-inline"
-                                   placeholder="Enter URL to fetch media file">
-                            <input type="hidden" name="storage_id" value="{{ storage_data.storage.id }}">
-                            <button type="submit" class="btn btn-success btn-sm w-10 ms-4 d-inline-block"
-                                    style="height: 38px;">
-                              <strong>
-                                <i class="fa fa-plus me-4"> </i>Fetch from URL
-                              </strong>
-                            </button>
-                          </form>
+                          <div class="row d-flex justify-content-between mt-4">
+                            <div class="col-9">
+                              <form method="post" action="{% url 'datasource_media_storages:fetch_file_from_url' %}" class="d-flex align-items-center">
+                                {% csrf_token %}
+                                <input type="text" name="download_url" class="form-control w-100" placeholder="Enter URL to fetch media file">
+                                <input type="hidden" name="storage_id" value="{{ storage_data.storage.id }}">
+                                <button type="submit" class="btn btn-success btn-sm w-50 ms-4" style="height: 38px;">
+                                  <i class="fa fa-plus me-4"> </i>
+                                  <strong>
+                                    Fetch from URL
+                                  </strong>
+                                </button>
+                              </form>
+                            </div>
+                            <div class="col-3">
+                              <form id="upload-archive-form-{{ storage_data.storage.id }}" method="post" enctype="multipart/form-data" action="{% url 'datasource_media_storages:upload_archive' %}">
+                                  {% csrf_token %}
+                                  <input type="hidden" name="storage_id" value="{{ storage_data.storage.id }}">
+                                  <input type="file" name="archive_file" id="archive-file-{{ storage_data.storage.id }}" class="d-none" accept=".zip">
+                                  <button type="button" class="btn btn-primary btn-sm w-100 ms-0 pe-4" style="height: 38px;" onclick="triggerArchiveUpload('{{ storage_data.storage.id }}')">
+                                      <strong>
+                                        <i class="fa fa-file-zipper me-4"></i> Upload Archive
+                                      </strong>
+                                  </button>
+                              </form>
+                            </div>
+                          </div>
                         </div>
                         <div id="collapse-storage-{{ storage_data.storage.id }}" class="card-body collapse show">
                           <div class="table-responsive">

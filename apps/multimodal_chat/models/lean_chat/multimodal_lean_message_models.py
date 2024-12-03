@@ -15,22 +15,45 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-
 from django.db import models
-
 
 from apps.multimodal_chat.utils import CHAT_MESSAGE_ROLE_SENDER_TYPES
 
 
 class MultimodalLeanChatMessage(models.Model):
-    multimodal_lean_chat = models.ForeignKey('MultimodalLeanChat', on_delete=models.CASCADE,
-                                             related_name='lean_chat_messages')
+    multimodal_lean_chat = models.ForeignKey(
+        'MultimodalLeanChat',
+        on_delete=models.CASCADE,
+        related_name='lean_chat_messages'
+    )
+
     sender_type = models.CharField(max_length=10, choices=CHAT_MESSAGE_ROLE_SENDER_TYPES)
+
     message_text_content = models.TextField()
-    message_json_content = models.JSONField(default=dict, blank=True, null=True)  # Not used for now
-    message_image_contents = models.JSONField(default=list, blank=True, null=True)
-    message_file_contents = models.JSONField(default=list, blank=True, null=True)
-    message_audio = models.URLField(max_length=10000, blank=True, null=True)
+
+    message_json_content = models.JSONField(
+        default=dict,
+        blank=True,
+        null=True
+    )
+    message_image_contents = models.JSONField(
+        default=list,
+        blank=True,
+        null=True
+    )
+
+    message_file_contents = models.JSONField(
+        default=list,
+        blank=True,
+        null=True
+    )
+
+    message_audio = models.URLField(
+        max_length=10000,
+        blank=True,
+        null=True
+    )
+
     starred = models.BooleanField(default=False)
     sent_at = models.DateTimeField(auto_now_add=True)
 
@@ -67,5 +90,6 @@ class MultimodalLeanChatMessage(models.Model):
 
     def save(self, *args, **kwargs):
         from apps.multimodal_chat.models import MultimodalLeanChat
+
         super().save(*args, **kwargs)
         MultimodalLeanChat.objects.get(id=self.multimodal_lean_chat.id).lean_chat_messages.add(self)

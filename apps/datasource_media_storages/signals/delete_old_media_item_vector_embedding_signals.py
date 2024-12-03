@@ -1,10 +1,10 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
 #  Project: Bimod.io™
-#  File: delete_old_leanmod_chat_messages_vector_embedding_signals.py
-#  Last Modified: 2024-11-17 22:32:08
+#  File: delete_old_media_item_vector_embedding_signals.py
+#  Last Modified: 2024-12-01 23:31:56
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-#  Created: 2024-12-01 23:01:07
+#  Created: 2024-12-02 00:27:28
 #
 #  This software is proprietary and confidential. Unauthorized copying,
 #  distribution, modification, or use of this software, whether for
@@ -35,7 +35,7 @@ logger = logging.getLogger(__name__)
 def remove_vector_from_index_on_media_item_delete(sender, instance, **kwargs):
     try:
         vector_data_instances = MediaItemVectorData.objects.filter(
-            leanmod_chat_message=instance
+            media_item=instance
         ).all()
         if not vector_data_instances:
             print(f"No vector data found for DataSourceMediaStorageItem with ID {instance.id}.")

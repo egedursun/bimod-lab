@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 import tiktoken
@@ -21,9 +22,17 @@ import wonderwords
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 
-from apps.llm_transaction.utils import LLMCostsPerMillionTokens, INTERNAL_PROFIT_MARGIN_FOR_LLM, \
+from apps.llm_transaction.utils import (
+    LLMCostsPerMillionTokens,
+    INTERNAL_PROFIT_MARGIN_FOR_LLM,
     VALUE_ADDED_TAX_PERCENTAGE
-from apps.multimodal_chat.utils import BIMOD_STREAMING_END_TAG, BIMOD_PROCESS_END, BIMOD_NO_TAG_PLACEHOLDER
+)
+
+from apps.multimodal_chat.utils import (
+    BIMOD_STREAMING_END_TAG,
+    BIMOD_PROCESS_END,
+    BIMOD_NO_TAG_PLACEHOLDER
+)
 
 import warnings
 
@@ -55,6 +64,7 @@ def transmit_websocket_log(
     )
 
     if stop_tag == BIMOD_STREAMING_END_TAG:
+
         async_to_sync(channel_layer.group_send)(
             group_name,
             {
@@ -64,6 +74,7 @@ def transmit_websocket_log(
         )
 
     elif stop_tag == BIMOD_PROCESS_END:
+
         async_to_sync(channel_layer.group_send)(
             group_name,
             {
@@ -88,9 +99,9 @@ def transmit_websocket_log(
                 }
             )
 
-    #############################################
-    # FERMION MOBILE COPILOT: Check if interaction is Fermion supervised
-    #############################################
+    ######################################################################
+    # FERMION MOBILE COPILOT: Check if interaction is Fermion supervised.
+    ######################################################################
 
     if fermion__is_fermion_supervised is True:
 
@@ -105,6 +116,7 @@ def transmit_websocket_log(
         )
 
         if stop_tag == BIMOD_STREAMING_END_TAG:
+
             async_to_sync(channel_layer.group_send)(
                 fermion_group_name,
                 {
@@ -114,6 +126,7 @@ def transmit_websocket_log(
             )
 
         elif stop_tag == BIMOD_PROCESS_END:
+
             async_to_sync(channel_layer.group_send)(
                 fermion_group_name,
                 {
@@ -125,6 +138,7 @@ def transmit_websocket_log(
         else:
 
             if stop_tag is None or stop_tag == "" or stop_tag == BIMOD_NO_TAG_PLACEHOLDER:
+
                 logger.info("No stop tag provided.")
                 pass
 
@@ -148,6 +162,7 @@ def calculate_number_of_tokens(
 ):
     encoding = tiktoken.get_encoding(encoding_engine)
     tokens = encoding.encode(str(text))
+
     return len(tokens)
 
 
@@ -180,18 +195,23 @@ def calculate_billable_cost(internal_service_cost, tax_cost):
 
 def calculate_billable_cost_from_raw(encoding_engine, model, text):
     number_of_tokens = calculate_number_of_tokens(encoding_engine, text)
+
     llm_cost = calculate_llm_cost(model, number_of_tokens)
     internal_service_cost = calculate_internal_service_cost(llm_cost)
+
     tax_cost = calculate_tax_cost(internal_service_cost)
     return calculate_billable_cost(internal_service_cost, tax_cost)
 
 
 def generate_chat_name():
     logger.info("Generating chat name.")
+
     chat_name_1 = wonderwords.RandomWord().word(word_max_length=8, include_categories=["verb"])
     chat_name_2 = wonderwords.RandomWord().word(word_max_length=8, include_categories=["adjective"])
     chat_name_3 = wonderwords.RandomWord().word(word_max_length=8, include_categories=["noun"])
+
     chat_name_1 = chat_name_1.capitalize()
     chat_name_2 = chat_name_2.capitalize()
     chat_name_3 = chat_name_3.capitalize()
+
     return " ".join([chat_name_1, chat_name_2, chat_name_3])
