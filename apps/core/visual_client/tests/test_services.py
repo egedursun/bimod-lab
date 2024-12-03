@@ -14,8 +14,6 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
 
 def test_init_image_generation_test_services():
     assert True

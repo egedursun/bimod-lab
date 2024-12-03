@@ -15,7 +15,6 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-
 from .brainstorming_idea_models import *
 from .brainstorming_session_models import *
 from .brainstorming_complete_synthesis_models import *

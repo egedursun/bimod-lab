@@ -21,7 +21,9 @@ from uuid import uuid4
 import boto3
 import filetype
 
-from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
+from apps.core.internal_cost_manager.costs_map import (
+    InternalServiceCosts
+)
 
 from apps.core.ml_models.utils import (
     GENERATED_FILES_ROOT_PATH,

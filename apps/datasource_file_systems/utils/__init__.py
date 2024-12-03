@@ -12,10 +12,7 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@Bimod.io.
-#
-#
-#
+#   For permission inquiries, please contact: admin@Bimod.io
 #
 
 from .constant_utils import *

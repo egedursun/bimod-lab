@@ -14,23 +14,38 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from apps.core.vector_operations.vector_document.handler_methods.embedding_handler_chunk import (
-    factory_embed_document_chunks_handler)
+    factory_embed_document_chunks_handler
+)
 
 
 logger = logging.getLogger(__name__)
 
 
-def embed_document_chunks(executor_params, chunks, path, document_id, document_uuid):
+def embed_document_chunks(
+    executor_params,
+    chunks,
+    path,
+    document_id,
+    document_uuid
+):
+
     try:
         error = factory_embed_document_chunks_handler(
-            executor_params=executor_params, chunks=chunks, path=path, document_id=document_id,
+            executor_params=executor_params,
+            chunks=chunks,
+            path=path,
+            document_id=document_id,
             document_uuid=document_uuid
         )
+
         logger.info(f"[tasks.embed_document_chunks] Document chunks embedded successfully.")
+
     except Exception as e:
         logger.error(f"[tasks.embed_document_chunks] Error embedding the document chunks: {e}")
         error = f"[tasks.embed_document_chunks] Error embedding the document chunks: {e}"
+
     return error

@@ -17,21 +17,54 @@
 
 from django.db import models
 
-from apps.datasource_knowledge_base.utils import UPLOAD_FILES_SUPPORTED_FORMATS
+from apps.datasource_knowledge_base.utils import (
+    UPLOAD_FILES_SUPPORTED_FORMATS
+)
 
 
 class KnowledgeBaseDocumentChunk(models.Model):
-    knowledge_base = models.ForeignKey("DocumentKnowledgeBaseConnection", on_delete=models.CASCADE)
-    document = models.ForeignKey("KnowledgeBaseDocument", on_delete=models.CASCADE, related_name='document_chunks')
-    chunk_document_type = models.CharField(max_length=100, choices=UPLOAD_FILES_SUPPORTED_FORMATS, blank=True, null=True)
+    knowledge_base = models.ForeignKey(
+        "DocumentKnowledgeBaseConnection",
+        on_delete=models.CASCADE
+    )
+
+    document = models.ForeignKey(
+        "KnowledgeBaseDocument",
+        on_delete=models.CASCADE,
+        related_name='document_chunks'
+    )
+
+    chunk_document_type = models.CharField(
+        max_length=100,
+        choices=UPLOAD_FILES_SUPPORTED_FORMATS,
+        blank=True,
+        null=True
+    )
+
     chunk_number = models.IntegerField()
     chunk_content = models.TextField()
     chunk_metadata = models.TextField()
-    chunk_document_uri = models.CharField(max_length=1000, null=True, blank=True)
+
+    chunk_document_uri = models.CharField(
+        max_length=1000,
+        null=True,
+        blank=True
+    )
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    knowledge_base_uuid = models.CharField(max_length=1000, null=True, blank=True)
-    document_uuid = models.CharField(max_length=1000, null=True, blank=True)
+
+    knowledge_base_uuid = models.CharField(
+        max_length=1000,
+        null=True,
+        blank=True
+    )
+
+    document_uuid = models.CharField(
+        max_length=1000,
+        null=True,
+        blank=True
+    )
 
     def __str__(self):
         return str(
@@ -40,12 +73,37 @@ class KnowledgeBaseDocumentChunk(models.Model):
     class Meta:
         verbose_name = "Knowledge Base Document Chunk"
         verbose_name_plural = "Knowledge Base Document Chunks"
+
         ordering = ["-created_at"]
+
         indexes = [
-            models.Index(fields=["knowledge_base", "document", "chunk_number"]),
-            models.Index(fields=["knowledge_base", "document", "created_at"]),
-            models.Index(fields=["knowledge_base", "document", "updated_at"]),
+            models.Index(fields=[
+                "knowledge_base",
+                "document",
+                "chunk_number"
+            ]),
+            models.Index(fields=[
+                "knowledge_base",
+                "document",
+                "created_at"
+            ]),
+            models.Index(fields=[
+                "knowledge_base",
+                "document",
+                "updated_at"
+            ]),
         ]
 
-    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
-        super().save(force_insert, force_update, using, update_fields)
+    def save(
+        self,
+        force_insert=False,
+        force_update=False,
+        using=None,
+        update_fields=None
+    ):
+        super().save(
+            force_insert,
+            force_update,
+            using,
+            update_fields
+        )

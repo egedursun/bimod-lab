@@ -17,13 +17,24 @@
 
 import logging
 
-from apps.core.generative_ai.gpt_openai_manager import OpenAIGPTClientManager
+from apps.core.generative_ai.gpt_openai_manager import (
+    OpenAIGPTClientManager
+)
+
 from apps.slider.models import SliderGoogleAppsConnection
-from apps.core.slider.public_handlers import (handle_ai_command_public, handle_auto_command_public,
-                                              handle_img_command_public, handle_nosql_command_public,
-                                              handle_select_command_public, handle_sql_command_public,
-                                              handle_ssh_command_public, handle_vect_command_public,
-                                              handle_web_command_public, handle_repo_command_public)
+
+from apps.core.slider.public_handlers import (
+    handle_ai_command_public,
+    handle_auto_command_public,
+    handle_img_command_public,
+    handle_nosql_command_public,
+    handle_select_command_public,
+    handle_sql_command_public,
+    handle_ssh_command_public,
+    handle_vect_command_public,
+    handle_web_command_public,
+    handle_repo_command_public
+)
 
 logger = logging.getLogger(__name__)
 
@@ -40,6 +51,7 @@ class SliderExecutionManager_Public:
         self.content = text_content
         self.copilot = slider_google_apps_connection.slider_assistant
         self.copilot_llm = slider_google_apps_connection.slider_assistant.llm_model
+
         self.naked_c = OpenAIGPTClientManager.get_naked_client(
             llm_model=self.copilot_llm
         )

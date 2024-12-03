@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import os
 
 from apps.smart_contracts.models import BlockchainSmartContract

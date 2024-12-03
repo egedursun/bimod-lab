@@ -14,22 +14,53 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
 
 from apps.core.tool_calls.utils import ToolCallDescriptorNames
 from apps.orchestrations.models import Maestro
 from config.settings import MEDIA_URL
 from apps.assistants.models import Assistant
-from apps.datasource_sql.models import SQLDatabaseConnection, CustomSQLQuery
-from apps.datasource_media_storages.models import DataSourceMediaStorageConnection, DataSourceMediaStorageItem
-from apps.datasource_knowledge_base.models import DocumentKnowledgeBaseConnection
-from apps.datasource_file_systems.models import DataSourceFileSystem
-from apps.datasource_ml_models.models import DataSourceMLModelConnection, DataSourceMLModelItem
-from apps.datasource_browsers.models import DataSourceBrowserConnection
-from apps.mm_functions.models import CustomFunctionReference, CustomFunction
-from apps.mm_apis.models import CustomAPIReference, CustomAPI
-from apps.mm_scripts.models import CustomScriptReference, CustomScript
+
+from apps.datasource_sql.models import (
+    SQLDatabaseConnection,
+    CustomSQLQuery
+)
+
+from apps.datasource_media_storages.models import (
+    DataSourceMediaStorageConnection,
+    DataSourceMediaStorageItem
+)
+
+from apps.datasource_knowledge_base.models import (
+    DocumentKnowledgeBaseConnection
+)
+
+from apps.datasource_file_systems.models import (
+    DataSourceFileSystem
+)
+
+from apps.datasource_ml_models.models import (
+    DataSourceMLModelConnection,
+    DataSourceMLModelItem
+)
+
+from apps.datasource_browsers.models import (
+    DataSourceBrowserConnection
+)
+
+from apps.mm_functions.models import (
+    CustomFunctionReference,
+    CustomFunction
+)
+
+from apps.mm_apis.models import (
+    CustomAPIReference,
+    CustomAPI
+)
+
+from apps.mm_scripts.models import (
+    CustomScriptReference,
+    CustomScript
+)
 
 
 def build_orchestration_structured_tool_usage_instructions_prompt(maestro):

@@ -17,7 +17,9 @@
 
 import logging
 
-from apps.core.generative_ai.gpt_openai_manager import OpenAIGPTClientManager
+from apps.core.generative_ai.gpt_openai_manager import (
+    OpenAIGPTClientManager
+)
 
 from apps.core.sheetos.handlers import (
     handle_ai_command,

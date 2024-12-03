@@ -193,6 +193,7 @@ RANDOM_SUFFIX_MAXIMUM_VALUE = 9_999_999_999
 
 VECTOR_INDEX_PATH_ASSISTANT_CHAT_MESSAGES = os.path.join(
     BASE_DIR,
+    "vectors",
     'assistant_vectors',
     'context_memories'
 )

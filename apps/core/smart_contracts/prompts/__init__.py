@@ -15,7 +15,6 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-
 from .s3_syntax import *
 from .s5_evaluation import *
 from .s2_refinement import *

@@ -18,7 +18,9 @@
 import json
 import logging
 
-from apps.datasource_knowledge_base.utils import VectorStoreDocProcessingStatusNames
+from apps.datasource_knowledge_base.utils import (
+    VectorStoreDocProcessingStatusNames
+)
 
 logger = logging.getLogger(__name__)
 

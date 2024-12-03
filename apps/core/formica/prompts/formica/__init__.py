@@ -15,5 +15,4 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-
 from .formica_prompt import *

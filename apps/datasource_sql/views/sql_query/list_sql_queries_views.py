@@ -14,16 +14,31 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.views.generic import TemplateView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
 from apps.assistants.models import Assistant
-from apps.datasource_sql.models import CustomSQLQuery
-from apps.user_permissions.utils import PermissionNames
+
+from apps.datasource_sql.models import (
+    CustomSQLQuery
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -35,8 +50,10 @@ class SQLDatabaseView_QueryList(TemplateView, LoginRequiredMixin):
 
         ##############################
         # PERMISSION CHECK FOR - LIST_CUSTOM_SQL_QUERIES
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.LIST_CUSTOM_SQL_QUERIES):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.LIST_CUSTOM_SQL_QUERIES
+        ):
             messages.error(self.request, "You do not have permission to list custom SQL queries.")
             return context
         ##############################
@@ -46,23 +63,34 @@ class SQLDatabaseView_QueryList(TemplateView, LoginRequiredMixin):
         try:
             queries = CustomSQLQuery.objects.filter(
                 database_connection__assistant__in=Assistant.objects.filter(
-                    organization__in=context_user.organizations.all())
-            ).select_related('database_connection__assistant', 'database_connection__assistant__organization')
+                    organization__in=context_user.organizations.all()
+                )
+            ).select_related(
+                'database_connection__assistant',
+                'database_connection__assistant__organization'
+            )
 
             queries_by_orgs = {}
+
             for qu in queries:
                 org = qu.database_connection.assistant.organization
                 agent = qu.database_connection.assistant
+
                 if org not in queries_by_orgs:
                     queries_by_orgs[org] = {}
+
                 if agent not in queries_by_orgs[org]:
                     queries_by_orgs[org][agent] = []
+
                 queries_by_orgs[org][agent].append(qu)
+
         except Exception as e:
             logger.error(f"User: {context_user} - SQL Query - List Error: {e}")
             messages.error(self.request, 'An error occurred while listing SQL Queries.')
+
             return context
 
         context['queries_by_organization'] = queries_by_orgs
         logger.info(f"SQL Queries were listed.")
+
         return context

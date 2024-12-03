@@ -14,16 +14,23 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 logger = logging.getLogger(__name__)
 
 
-def add_repository_upload_log(document_full_uri, log_name):
+def add_repository_upload_log(
+    document_full_uri,
+    log_name
+):
+
     from apps.datasource_codebase.models import RepositoryProcessingLog
+
     RepositoryProcessingLog.objects.create(
         repository_full_uri=document_full_uri,
         log_message=log_name
     )
+
     logger.info(f"Repository Upload Log Created: {document_full_uri} - {log_name}")
     return

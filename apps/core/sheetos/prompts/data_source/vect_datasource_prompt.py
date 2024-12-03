@@ -14,12 +14,19 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 from apps.assistants.models import Assistant
-from apps.datasource_knowledge_base.models import DocumentKnowledgeBaseConnection
+
+from apps.datasource_knowledge_base.models import (
+    DocumentKnowledgeBaseConnection
+)
 
 
 def build_sheetos_vector_store_data_source_prompt(assistant: Assistant):
-    knowledge_base_data_sources = DocumentKnowledgeBaseConnection.objects.filter(assistant=assistant)
+    knowledge_base_data_sources = DocumentKnowledgeBaseConnection.objects.filter(
+        assistant=assistant
+    )
+
     response_prompt = """
             ### **KNOWLEDGE BASE CONNECTIONS:**
 
@@ -67,6 +74,3 @@ def build_sheetos_vector_store_data_source_prompt(assistant: Assistant):
             """
 
     return response_prompt
-
-
-

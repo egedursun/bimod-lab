@@ -14,9 +14,12 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
-from langchain_community.document_loaders import UnstructuredXMLLoader
+from langchain_community.document_loaders import (
+    UnstructuredXMLLoader
+)
 
 
 logger = logging.getLogger(__name__)
@@ -25,19 +28,25 @@ logger = logging.getLogger(__name__)
 def load_xml_content(path: str):
     loader = UnstructuredXMLLoader(file_path=path)
     docs = loader.load()
+
     clean_doc = {
         "page_content": "",
         "metadata": {}
     }
+
     if docs:
         for doc in docs:
+
             try:
                 pg_content = doc.page_content
                 meta = doc.metadata
+
                 clean_doc["page_content"] += pg_content
                 clean_doc["metadata"] = meta
+
             except Exception as e:
                 logger.error(f"[tasks.load_xml_content] Error loading the XML content: {e}")
                 continue
+
     logger.info(f"[tasks.load_xml_content] XML content loaded successfully.")
     return clean_doc

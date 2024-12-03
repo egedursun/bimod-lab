@@ -21,9 +21,16 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
 from apps.assistants.models import Assistant
-from apps.datasource_browsers.models import DataSourceBrowserConnection
+
+from apps.datasource_browsers.models import (
+    DataSourceBrowserConnection
+)
+
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
@@ -37,8 +44,10 @@ class BrowserView_BrowserList(LoginRequiredMixin, TemplateView):
 
         ##############################
         # PERMISSION CHECK FOR - LIST_WEB_BROWSERS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.LIST_WEB_BROWSERS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.LIST_WEB_BROWSERS
+        ):
             messages.error(self.request, "You do not have permission to list web browsers.")
             return context
         ##############################
@@ -46,22 +55,34 @@ class BrowserView_BrowserList(LoginRequiredMixin, TemplateView):
         try:
             cs_by_orgs = {}
             agents = Assistant.objects.filter(
-                organization__in=context_user.organizations.filter(users__in=[context_user]))
+                organization__in=context_user.organizations.filter(
+                    users__in=[context_user]
+                )
+            )
+
             for agent in agents:
                 org = agent.organization
+
                 if org not in cs_by_orgs:
                     cs_by_orgs[org] = {}
+
                 if agent not in cs_by_orgs[org]:
                     cs_by_orgs[org][agent] = []
 
-                cs = DataSourceBrowserConnection.objects.filter(assistant=agent)
+                cs = DataSourceBrowserConnection.objects.filter(
+                    assistant=agent
+                )
+
                 cs_by_orgs[org][agent].extend(cs)
+
         except Exception as e:
             logger.error(f"User: {context_user} - Browser Connections - List Error: {e}")
             messages.error(self.request, 'An error occurred while listing Browser Connections.')
+
             return context
 
         logger.info(f"Browser Connections were listed.")
         context['connections_by_organization'] = cs_by_orgs
         context['user'] = context_user
+
         return context

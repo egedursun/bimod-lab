@@ -47,7 +47,7 @@ LEAN_ASSISTANT_ADMIN_SEARCH = (
 RANDOM_NAME_SUFFIX_MIN_VALUE = 1_000_000_000
 RANDOM_NAME_SUFFIX_MAX_VALUE = 9_999_999_999
 
-VECTOR_INDEX_PATH_LEANMOD_CHAT_MESSAGES = os.path.join("assistant_vectors", "leanmod_context_memories")
+VECTOR_INDEX_PATH_LEANMOD_CHAT_MESSAGES = os.path.join("vectors", "assistant_vectors", "leanmod_context_memories")
 
 LEANMOD_OLD_CHAT_MESSAGES_VECTOR_DATA_ADMIN_LIST = ['id', 'leanmod_chat_message', 'created_at', 'updated_at']
 LEANMOD_OLD_CHAT_MESSAGES_VECTOR_DATA_ADMIN_FILTER = ['leanmod_chat_message', 'created_at', 'updated_at']

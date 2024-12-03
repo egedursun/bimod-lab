@@ -15,5 +15,4 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-
 from .contract_cost_effectiveness_prompts import *

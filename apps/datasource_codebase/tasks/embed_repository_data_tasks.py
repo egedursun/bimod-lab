@@ -14,15 +14,25 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
-from apps.core.codebase.handler_methods.embedding_handler_repo import embed_repository_helper
+from apps.core.codebase.handler_methods.embedding_handler_repo import (
+    embed_repository_helper
+)
 
 logger = logging.getLogger(__name__)
 
 
-def embed_repository_data(executor_params, document, path, number_of_chunks):
+def embed_repository_data(
+    executor_params,
+    document,
+    path,
+    number_of_chunks
+):
+
     doc_id, doc_uuid = None, None
+
     try:
         doc_id, doc_uuid, error = embed_repository_helper(
             executor_params=executor_params,
@@ -30,8 +40,10 @@ def embed_repository_data(executor_params, document, path, number_of_chunks):
             path=path,
             number_of_chunks=number_of_chunks
         )
+
     except Exception as e:
         logger.error(f"[tasks.embed_repository_data] Error embedding the repository: {e}")
         error = f"[tasks.embed_repository_data] Error embedding the repository: {e}"
+
     logger.info(f"[tasks.embed_repository_data] Repository embedded successfully.")
     return doc_id, doc_uuid, error

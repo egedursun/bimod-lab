@@ -14,10 +14,19 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
-from apps.core.hadron_prime.utils import SPEECH_LOGS_MAXIMUM_LOOKBACK, EXECUTION_LOGS_MAXIMUM_LOOKBACK
-from apps.hadron_prime.models import HadronNode, HadronNodeSpeechLog, HadronNodeExecutionLog
+from apps.core.hadron_prime.utils import (
+    SPEECH_LOGS_MAXIMUM_LOOKBACK,
+    EXECUTION_LOGS_MAXIMUM_LOOKBACK
+)
+
+from apps.hadron_prime.models import (
+    HadronNode,
+    HadronNodeSpeechLog,
+    HadronNodeExecutionLog
+)
 
 logger = logging.getLogger(__name__)
 

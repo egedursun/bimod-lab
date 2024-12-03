@@ -31,6 +31,10 @@ class RepositoryProcessingLog(models.Model):
         verbose_name_plural = "Repository Processing Logs"
         ordering = ["-created_at"]
         indexes = [
-            models.Index(fields=["repository_full_uri"]),
-            models.Index(fields=["created_at"]),
+            models.Index(fields=[
+                "repository_full_uri"
+            ]),
+            models.Index(fields=[
+                "created_at"
+            ]),
         ]

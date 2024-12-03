@@ -21,7 +21,10 @@ from openai import OpenAI
 
 import apps.core.generative_ai.utils.constant_utils
 from apps.core.data_security.ner.ner_executor import NERExecutor
-from apps.core.generative_ai.auxiliary_methods.output_supply_prompts import BALANCE_OVERFLOW_LOG
+
+from apps.core.generative_ai.auxiliary_methods.output_supply_prompts import (
+    BALANCE_OVERFLOW_LOG
+)
 
 from apps.core.generative_ai.auxiliary_methods.json_operations.json_operation_prompts import (
     get_maximum_tool_chains_reached_log,
@@ -45,8 +48,14 @@ from apps.core.generative_ai.utils import (
     step_back_retry_mechanism
 )
 
-from apps.core.system_prompts.chat_history_factory_builder import HistoryBuilder
-from apps.core.system_prompts.system_prompt_factory_builder import SystemPromptFactoryBuilder
+from apps.core.system_prompts.chat_history_factory_builder import (
+    HistoryBuilder
+)
+
+from apps.core.system_prompts.system_prompt_factory_builder import (
+    SystemPromptFactoryBuilder
+)
+
 from apps.core.tool_calls.tool_call_manager import ToolCallManager
 from apps.multimodal_chat.utils import (
     calculate_billable_cost_from_raw,

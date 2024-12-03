@@ -15,5 +15,4 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-
 from .metakanban_tool_execution_instructions_prompt import *

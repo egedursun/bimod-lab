@@ -14,12 +14,17 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 from apps.assistants.models import Assistant
 from apps.datasource_file_systems.models import DataSourceFileSystem
 
 
 def build_sheetos_file_system_data_source_prompt(assistant: Assistant):
-    file_system_data_sources = DataSourceFileSystem.objects.filter(assistant=assistant)
+
+    file_system_data_sources = DataSourceFileSystem.objects.filter(
+        assistant=assistant
+    )
+
     response_prompt = """
             ### **FILE SYSTEM CONNECTIONS (via SSH):**
 

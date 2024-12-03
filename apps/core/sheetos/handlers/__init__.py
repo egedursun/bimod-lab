@@ -15,7 +15,6 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-
 from .ai_command_handler import *
 from .sql_command_handler import *
 from .select_command_handler import *

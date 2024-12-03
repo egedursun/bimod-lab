@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
@@ -22,11 +23,25 @@ from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
 from apps.core.codebase.codebase_decoder import CodeBaseDecoder
-from apps.core.user_permissions.permission_manager import UserPermissionManager
+
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
 from apps.assistants.models import Assistant
-from apps.datasource_codebase.models import CodeRepositoryStorageConnection
-from apps.datasource_codebase.tasks import add_repository_upload_log
-from apps.datasource_codebase.utils import RepositoryUploadStatusNames
+
+from apps.datasource_codebase.models import (
+    CodeRepositoryStorageConnection
+)
+
+from apps.datasource_codebase.tasks import (
+    add_repository_upload_log
+)
+
+from apps.datasource_codebase.utils import (
+    RepositoryUploadStatusNames
+)
+
 from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
@@ -37,16 +52,45 @@ logger = logging.getLogger(__name__)
 class CodeBaseView_RepositoryCreate(LoginRequiredMixin, TemplateView):
     def get(self, request, *args, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+
         try:
-            user_agents = Assistant.objects.filter(organization__users__in=[request.user])
-            vector_stores = CodeRepositoryStorageConnection.objects.filter(assistant__in=user_agents)
-            orgs = Organization.objects.filter(users__in=[request.user])
-            context['organizations'] = list(orgs.values('id', 'name'))
-            context['assistants'] = list(user_agents.values('id', 'name', 'organization_id'))
-            context['knowledge_bases'] = list(vector_stores.values('id', 'name', 'assistant_id'))
+            user_agents = Assistant.objects.filter(
+                organization__users__in=[request.user]
+            )
+
+            vector_stores = CodeRepositoryStorageConnection.objects.filter(
+                assistant__in=user_agents
+            )
+
+            orgs = Organization.objects.filter(
+                users__in=[request.user]
+            )
+
+            context['organizations'] = list(
+                orgs.values(
+                    'id',
+                    'name'
+                )
+            )
+            context['assistants'] = list(
+                user_agents.values(
+                    'id',
+                    'name',
+                    'organization_id'
+                )
+            )
+            context['knowledge_bases'] = list(
+                vector_stores.values(
+                    'id',
+                    'name',
+                    'assistant_id'
+                )
+            )
+
         except Exception as e:
             logger.error(f"User: {request.user} - Code Repository - Create Error: {e}")
             messages.error(request, 'An error occurred while creating Code Repository.')
+
             return self.render_to_response(context)
 
         return self.render_to_response(context)
@@ -56,8 +100,10 @@ class CodeBaseView_RepositoryCreate(LoginRequiredMixin, TemplateView):
 
         ##############################
         # PERMISSION CHECK FOR - ADD_CODE_REPOSITORY
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.ADD_CODE_REPOSITORY):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.ADD_CODE_REPOSITORY
+        ):
             messages.error(self.request, "You do not have permission to add code repositories.")
             return redirect('datasource_codebase:list_repositories')
         ##############################
@@ -65,17 +111,36 @@ class CodeBaseView_RepositoryCreate(LoginRequiredMixin, TemplateView):
         if not vs_id:
             logger.error(f"Please select a knowledge base.")
             messages.error(request, 'Please select a knowledge base.')
+
             return redirect('datasource_knowledge_base:create_documents')
+
         vector_store = CodeRepositoryStorageConnection.objects.get(pk=vs_id)
         repo_url = request.POST.get('repository_url')
+
         if vs_id and repo_url:
-            add_repository_upload_log(document_full_uri=repo_url, log_name=RepositoryUploadStatusNames.STAGED)
-            add_repository_upload_log(document_full_uri=repo_url, log_name=RepositoryUploadStatusNames.UPLOADED)
-            CodeBaseDecoder.get(vector_store).index_repositories(document_paths=[repo_url])
+            add_repository_upload_log(
+                document_full_uri=repo_url,
+                log_name=RepositoryUploadStatusNames.STAGED
+            )
+
+            add_repository_upload_log(
+                document_full_uri=repo_url,
+                log_name=RepositoryUploadStatusNames.UPLOADED
+            )
+
+            CodeBaseDecoder.get(
+                vector_store
+            ).index_repositories(
+                document_paths=[repo_url]
+            )
+
             logger.info(f"Repositories uploaded successfully.")
             messages.success(request, 'Repositories uploaded successfully.')
+
             return redirect('datasource_codebase:list_repositories')
+
         else:
             logger.error(f"Please select a knowledge base and add repositories.")
             messages.error(request, 'Please select a knowledge base and add repositories.')
+
         return redirect('datasource_codebase:create_repositories')

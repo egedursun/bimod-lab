@@ -15,5 +15,4 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-
 from .perform_complete_synthesis_views import *

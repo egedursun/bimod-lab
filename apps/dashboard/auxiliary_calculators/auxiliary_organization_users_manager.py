@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 from django.utils import timezone
 
 
@@ -21,15 +22,27 @@ class AuxiliaryOrganizationUsersManager:
 
     @staticmethod
     def calculate_total_users_per_organizations(orgs):
+
         org_users = {}
+
         for org in orgs:
             org_users[org.name] = org.users.count()
+
         return org_users
 
     @staticmethod
-    def calculate_latest_registered_users_per_organizations(orgs, n_days):
+    def calculate_latest_registered_users_per_organizations(
+        orgs,
+        n_days
+    ):
+
         org_users = {}
+
         for org in orgs:
             org_users[org.name] = org.users.filter(
-                date_joined__gte=timezone.now() - timezone.timedelta(days=n_days)).count()
+                date_joined__gte=timezone.now() - timezone.timedelta(
+                    days=n_days
+                )
+            ).count()
+
         return org_users

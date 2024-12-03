@@ -22,8 +22,13 @@ from apps.core.video_generation.utils import (
     VideoGenerationActionTypes
 )
 
-from apps.core.video_generation.video_generation_executor import VideoGenerationExecutor
-from apps.core.video_generation.video_generator_decoder import VideoGeneratorDecoder
+from apps.core.video_generation.video_generation_executor import (
+    VideoGenerationExecutor
+)
+
+from apps.core.video_generation.video_generator_decoder import (
+    VideoGeneratorDecoder
+)
 
 logger = logging.getLogger(__name__)
 

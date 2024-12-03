@@ -14,9 +14,6 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from django import forms
 
@@ -27,20 +24,30 @@ class MultipleFileInput(forms.ClearableFileInput):
 
 class MultipleFileField(forms.FileField):
     def __init__(self, *args, **kwargs):
+
         kwargs.setdefault("widget", MultipleFileInput())
         super().__init__(*args, **kwargs)
 
     def clean(self, data, initial=None):
+
         single_file_clean = super().clean
+
         if isinstance(data, (list, tuple)):
-            result = [single_file_clean(d, initial) for d in data]
+            result = [
+                single_file_clean(d, initial) for d in data
+            ]
+
         else:
             result = single_file_clean(data, initial)
+
         return result
 
 
 class DocumentUploadForm(forms.Form):
-    document_files = MultipleFileField(label='Select Documents to Upload', required=True)
+    document_files = MultipleFileField(
+        label='Select Documents to Upload',
+        required=True
+    )
 
     class Meta:
         pass

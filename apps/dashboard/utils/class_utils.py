@@ -14,31 +14,74 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.utils import timezone
 
 from apps.assistants.models import Assistant
-from apps.dashboard.auxiliary_calculators.auxiliary_analyze_code_manager import AuxiliaryAnalyzeCodeManager
-from apps.dashboard.auxiliary_calculators.auxiliary_api_calls_manager import AuxiliaryAPICallsManager
-from apps.dashboard.auxiliary_calculators.auxiliary_calculate_ml_manager import AuxiliaryCalculateMLManager
-from apps.dashboard.auxiliary_calculators.auxiliary_costs_manager import AuxiliaryCostsManager
-from apps.dashboard.auxiliary_calculators.auxiliary_function_calls_manager import AuxiliaryFunctionCallsManager
-from apps.dashboard.auxiliary_calculators.auxiliary_information_feeds_manager import AuxiliaryInformationFeedsManager
-from apps.dashboard.auxiliary_calculators.auxiliary_interactions_manager import AuxiliaryInteractionsManager
-from apps.dashboard.auxiliary_calculators.auxiliary_media_manager import AuxiliaryMediaManager
-from apps.dashboard.auxiliary_calculators.auxiliary_memory_manager import AuxiliaryMemoryManager
-from apps.dashboard.auxiliary_calculators.auxiliary_organization_users_manager import AuxiliaryOrganizationUsersManager
-from apps.dashboard.auxiliary_calculators.auxiliary_script_calls_manager import AuxiliaryScriptCallsManager
-from apps.dashboard.auxiliary_calculators.auxiliary_tasks_manager import AuxiliaryTasksManager
-from apps.dashboard.auxiliary_calculators.auxiliary_tokens_manager import AuxiliaryTokensManager
-from apps.dashboard.auxiliary_calculators.auxiliary_vector_store_manager import AuxiliaryVectorStoreManager
+
+from apps.dashboard.auxiliary_calculators.auxiliary_analyze_code_manager import (
+    AuxiliaryAnalyzeCodeManager
+)
+
+from apps.dashboard.auxiliary_calculators.auxiliary_api_calls_manager import (
+    AuxiliaryAPICallsManager
+)
+
+from apps.dashboard.auxiliary_calculators.auxiliary_calculate_ml_manager import (
+    AuxiliaryCalculateMLManager
+)
+
+from apps.dashboard.auxiliary_calculators.auxiliary_costs_manager import (
+    AuxiliaryCostsManager
+)
+
+from apps.dashboard.auxiliary_calculators.auxiliary_function_calls_manager import (
+    AuxiliaryFunctionCallsManager
+)
+
+from apps.dashboard.auxiliary_calculators.auxiliary_information_feeds_manager import (
+    AuxiliaryInformationFeedsManager
+)
+
+from apps.dashboard.auxiliary_calculators.auxiliary_interactions_manager import (
+    AuxiliaryInteractionsManager
+)
+
+from apps.dashboard.auxiliary_calculators.auxiliary_media_manager import (
+    AuxiliaryMediaManager
+)
+
+from apps.dashboard.auxiliary_calculators.auxiliary_memory_manager import (
+    AuxiliaryMemoryManager
+)
+
+from apps.dashboard.auxiliary_calculators.auxiliary_organization_users_manager import (
+    AuxiliaryOrganizationUsersManager
+)
+
+from apps.dashboard.auxiliary_calculators.auxiliary_script_calls_manager import (
+    AuxiliaryScriptCallsManager
+)
+
+from apps.dashboard.auxiliary_calculators.auxiliary_tasks_manager import (
+    AuxiliaryTasksManager
+)
+
+from apps.dashboard.auxiliary_calculators.auxiliary_tokens_manager import (
+    AuxiliaryTokensManager
+)
+
+from apps.dashboard.auxiliary_calculators.auxiliary_vector_store_manager import (
+    AuxiliaryVectorStoreManager
+)
+
 from apps.export_assistants.models import ExportAssistantAPI
 from apps.llm_transaction.models import LLMTransaction
 from apps.mm_scheduled_jobs.models import ScheduledJob
 from apps.mm_triggered_jobs.models import TriggeredJob
 from apps.organization.models import Organization
-
 
 logger = logging.getLogger(__name__)
 
@@ -47,19 +90,39 @@ class TransactionStatisticsManager:
     def __init__(self, user, last_days=30):
         self.user = user
         self.last_days = last_days
-        self.organizations = Organization.objects.filter(users__in=[self.user])
+
+        self.organizations = Organization.objects.filter(
+            users__in=[self.user]
+        )
+
         self.organization_users = []
         for organization in self.organizations:
             self.organization_users += organization.users.all()
         self.organization_users = list(set(self.organization_users))
-        self.assistants = Assistant.objects.filter(organization__in=self.organizations)
+
+        self.assistants = Assistant.objects.filter(
+            organization__in=self.organizations
+        )
+
         self.transactions = LLMTransaction.objects.filter(
             organization__in=self.organizations,
-            created_at__gte=timezone.now() - timezone.timedelta(days=self.last_days)
+            created_at__gte=timezone.now() - timezone.timedelta(
+                days=self.last_days
+            )
         )
-        self.export_assistants = ExportAssistantAPI.objects.filter(assistant__in=self.assistants)
-        self.scheduled_jobs = ScheduledJob.objects.filter(assistant__in=self.assistants)
-        self.triggered_jobs = TriggeredJob.objects.filter(trigger_assistant__in=self.assistants)
+
+        self.export_assistants = ExportAssistantAPI.objects.filter(
+            assistant__in=self.assistants
+        )
+
+        self.scheduled_jobs = ScheduledJob.objects.filter(
+            assistant__in=self.assistants
+        )
+
+        self.triggered_jobs = TriggeredJob.objects.filter(
+            trigger_assistant__in=self.assistants
+        )
+
         self.statistics = {
             "costs": {},
             "tokens": {},
@@ -342,209 +405,327 @@ class TransactionStatisticsManager:
 
     def _calculate_costs_per_organizations(self):
         o = AuxiliaryCostsManager.calculate_costs_per_organizations(
-            orgs=self.organizations, txs=self.transactions, n_days=self.last_days)
+            orgs=self.organizations,
+            txs=self.transactions,
+            n_days=self.last_days
+        )
         return o
 
     def _calculate_cost_per_assistants(self):
         o = AuxiliaryCostsManager.calculate_cost_per_assistants(
-            agents=self.assistants, txs=self.transactions, n_days=self.last_days)
+            agents=self.assistants,
+            txs=self.transactions,
+            n_days=self.last_days
+        )
         return o
 
     def _calculate_cost_per_users(self):
         o = AuxiliaryCostsManager.calculate_cost_per_users(
-            org_users=self.organization_users, txs=self.transactions, n_days=self.last_days)
+            org_users=self.organization_users,
+            txs=self.transactions,
+            n_days=self.last_days
+        )
         return o
 
     def _calculate_cost_per_sources(self):
-        o = AuxiliaryCostsManager.calculate_cost_per_sources(txs=self.transactions, n_days=self.last_days)
+        o = AuxiliaryCostsManager.calculate_cost_per_sources(
+            txs=self.transactions,
+            n_days=self.last_days
+        )
         return o
 
     def _calculate_balance_snapshot_per_organizations(self):
         o = AuxiliaryCostsManager.calculate_balance_snapshot_per_organizations(
-            orgs=self.organizations, n_days=self.last_days)
+            orgs=self.organizations,
+            n_days=self.last_days
+        )
         return o
 
     def _calculate_tokens_per_organizations(self):
         o = AuxiliaryTokensManager.calculate_tokens_per_organizations(
-            orgs=self.organizations, txs=self.transactions, n_days=self.last_days)
+            orgs=self.organizations,
+            txs=self.transactions,
+            n_days=self.last_days
+        )
         return o
 
     def _calculate_tokens_per_assistants(self):
         o = AuxiliaryTokensManager.calculate_tokens_per_assistants(
-            agents=self.assistants, txs=self.transactions, n_days=self.last_days)
+            agents=self.assistants,
+            txs=self.transactions,
+            n_days=self.last_days
+        )
         return o
 
     def _calculate_tokens_per_users(self):
         o = AuxiliaryTokensManager.calculate_tokens_per_users(
-            org_users=self.organization_users, txs=self.transactions, n_days=self.last_days)
+            org_users=self.organization_users,
+            txs=self.transactions,
+            n_days=self.last_days
+        )
         return o
 
     def _calculate_tokens_per_sources(self):
         o = AuxiliaryTokensManager.calculate_tokens_per_sources(
-            txs=self.transactions, n_days=self.last_days)
+            txs=self.transactions,
+            n_days=self.last_days
+        )
         return o
 
     def _calculate_total_chats_per_organizations(self):
         o = AuxiliaryInteractionsManager.calculate_total_chats_per_organizations(
-            orgs=self.organizations, n_days=self.last_days)
+            orgs=self.organizations,
+            n_days=self.last_days
+        )
         return o
 
     def _calculate_total_messages_per_organizations(self):
         o = AuxiliaryInteractionsManager.calculate_total_messages_per_organizations(
-            orgs=self.organizations, n_days=self.last_days)
+            orgs=self.organizations,
+            n_days=self.last_days
+        )
         return o
 
     def _calculate_total_request_count_per_exported_assistants(self):
         o = AuxiliaryInteractionsManager.calculate_total_request_count_per_exported_assistants(
-            exp_agents=self.export_assistants, n_days=self.last_days)
+            exp_agents=self.export_assistants,
+            n_days=self.last_days
+        )
         return o
 
     def _calculate_total_sql_read_queries_per_assistants(self):
         o = AuxiliaryInformationFeedsManager.calculate_total_sql_read_queries_per_assistants(
-            agents=self.assistants, txs=self.transactions, n_days=self.last_days)
+            agents=self.assistants,
+            txs=self.transactions,
+            n_days=self.last_days
+        )
         return o
 
     def _calculate_total_sql_write_queries_per_assistants(self):
         o = AuxiliaryInformationFeedsManager.calculate_total_sql_write_queries_per_assistants(
-                agents=self.assistants, txs=self.transactions, n_days=self.last_days)
+            agents=self.assistants,
+            txs=self.transactions,
+            n_days=self.last_days
+        )
         return o
 
     def _calculate_total_sql_queries_per_assistants(self):
         o = AuxiliaryInformationFeedsManager.calculate_total_sql_queries_per_assistants(
-            agents=self.assistants, txs=self.transactions, n_days=self.last_days)
+            agents=self.assistants,
+            txs=self.transactions,
+            n_days=self.last_days
+        )
         return o
 
     def _calculate_total_nosql_read_queries_per_assistants(self):
         o = AuxiliaryInformationFeedsManager.calculate_total_nosql_read_queries_per_assistants(
-            agents=self.assistants, txs=self.transactions, n_days=self.last_days)
+            agents=self.assistants,
+            txs=self.transactions,
+            n_days=self.last_days
+        )
         return o
 
     def _calculate_total_nosql_write_queries_per_assistants(self):
         o = AuxiliaryInformationFeedsManager.calculate_total_nosql_write_queries_per_assistants(
-                agents=self.assistants, txs=self.transactions, n_days=self.last_days)
+            agents=self.assistants,
+            txs=self.transactions,
+            n_days=self.last_days
+        )
         return o
 
     def _calculate_total_nosql_queries_per_assistants(self):
         o = AuxiliaryInformationFeedsManager.calculate_total_nosql_queries_per_assistants(
-            agents=self.assistants, txs=self.transactions, n_days=self.last_days)
+            agents=self.assistants,
+            txs=self.transactions,
+            n_days=self.last_days
+        )
         return o
 
     def _calculate_total_ssh_file_system_access_per_assistants(self):
         o = AuxiliaryInformationFeedsManager.calculate_total_ssh_file_system_access_per_assistants(
-                agents=self.assistants, txs=self.transactions, n_days=self.last_days)
+            agents=self.assistants,
+            txs=self.transactions,
+            n_days=self.last_days
+        )
         return o
 
     def _calculate_total_web_queries_per_assistants(self):
         o = AuxiliaryInformationFeedsManager.calculate_total_web_queries_per_assistants(
-            agents=self.assistants, txs=self.transactions, n_days=self.last_days)
+            agents=self.assistants,
+            txs=self.transactions,
+            n_days=self.last_days
+        )
         return o
 
     def _calculate_total_document_interpretations_per_assistants(self):
         o = AuxiliaryAnalyzeCodeManager.calculate_total_document_interpretations_per_assistants(
-                agents=self.assistants, txs=self.transactions, n_days=self.last_days)
+            agents=self.assistants,
+            txs=self.transactions,
+            n_days=self.last_days
+        )
         return o
 
     def _calculate_total_image_interpretations_per_assistants(self):
         o = AuxiliaryAnalyzeCodeManager.calculate_total_image_interpretations_per_assistants(
-                agents=self.assistants, txs=self.transactions, n_days=self.last_days)
+            agents=self.assistants,
+            txs=self.transactions,
+            n_days=self.last_days
+        )
         return o
 
     def _calculate_total_code_interpretations_per_assistants(self):
         o = AuxiliaryAnalyzeCodeManager.calculate_total_code_interpretations_per_assistants(
-            agents=self.assistants, txs=self.transactions, n_days=self.last_days)
+            agents=self.assistants,
+            txs=self.transactions,
+            n_days=self.last_days
+        )
         return o
 
     def _calculate_total_file_downloads_per_assistants(self):
         o = AuxiliaryMediaManager.calculate_total_file_downloads_per_assistants(
-            agents=self.assistants, txs=self.transactions, n_days=self.last_days)
+            agents=self.assistants,
+            txs=self.transactions,
+            n_days=self.last_days
+        )
         return o
 
     def _calculate_total_multimedia_generations_per_assistants(self):
         o = AuxiliaryMediaManager.calculate_total_multimedia_generations_per_assistants(
-            agents=self.assistants, txs=self.transactions, n_days=self.last_days)
+            agents=self.assistants,
+            txs=self.transactions,
+            n_days=self.last_days
+        )
         return o
 
     def _calculate_total_knowledge_base_searches_per_assistants(self):
         o = AuxiliaryVectorStoreManager.calculate_total_knowledge_base_searches_per_assistants(
-                agents=self.assistants, txs=self.transactions, n_days=self.last_days)
+            agents=self.assistants,
+            txs=self.transactions,
+            n_days=self.last_days
+        )
         return o
 
     def _calculate_total_memory_saves_per_assistants(self):
         o = AuxiliaryMemoryManager.calculate_total_memory_saves_per_assistants(
-            agents=self.assistants, txs=self.transactions, n_days=self.last_days)
+            agents=self.assistants,
+            txs=self.transactions,
+            n_days=self.last_days
+        )
         return o
 
     def _calculate_total_memory_retrievals_per_assistants(self):
         o = AuxiliaryMemoryManager.calculate_total_memory_retrievals_per_assistants(
-            agents=self.assistants, txs=self.transactions, n_days=self.last_days)
+            agents=self.assistants,
+            txs=self.transactions,
+            n_days=self.last_days
+        )
         return o
 
     def _calculate_total_internal_function_calls_per_assistants(self):
         o = AuxiliaryFunctionCallsManager.calculate_total_internal_function_calls_per_assistants(
-                agents=self.assistants, txs=self.transactions, n_days=self.last_days)
+            agents=self.assistants,
+            txs=self.transactions,
+            n_days=self.last_days
+        )
         return o
 
     def _calculate_total_external_function_calls_per_assistants(self):
         o = AuxiliaryFunctionCallsManager.calculate_total_external_function_calls_per_assistants(
-                agents=self.assistants, txs=self.transactions, n_days=self.last_days)
+            agents=self.assistants,
+            txs=self.transactions,
+            n_days=self.last_days
+        )
         return o
 
     def _calculate_total_function_calls_per_assistants(self):
         o = AuxiliaryFunctionCallsManager.calculate_total_function_calls_per_assistants(
-            agents=self.assistants, txs=self.transactions, n_days=self.last_days)
+            agents=self.assistants,
+            txs=self.transactions,
+            n_days=self.last_days
+        )
         return o
 
     def _calculate_total_internal_api_calls_per_assistants(self):
         o = AuxiliaryAPICallsManager.calculate_total_internal_api_calls_per_assistants(
-                agents=self.assistants, txs=self.transactions, n_days=self.last_days)
+            agents=self.assistants,
+            txs=self.transactions,
+            n_days=self.last_days
+        )
         return o
 
     def _calculate_total_external_api_calls_per_assistants(self):
         o = AuxiliaryAPICallsManager.calculate_total_external_api_calls_per_assistants(
-                agents=self.assistants, txs=self.transactions, n_days=self.last_days)
+            agents=self.assistants,
+            txs=self.transactions,
+            n_days=self.last_days
+        )
         return o
 
     def _calculate_total_api_calls_per_assistants(self):
         o = AuxiliaryAPICallsManager.calculate_total_api_calls_per_assistants(
-            agents=self.assistants, txs=self.transactions, n_days=self.last_days)
+            agents=self.assistants,
+            txs=self.transactions,
+            n_days=self.last_days
+        )
         return o
 
     def _calculate_total_internal_script_calls_per_assistants(self):
         o = AuxiliaryScriptCallsManager.calculate_total_internal_script_calls_per_assistants(
-            agents=self.assistants, txs=self.transactions, n_days=self.last_days)
+            agents=self.assistants,
+            txs=self.transactions,
+            n_days=self.last_days
+        )
         return o
 
     def _calculate_total_external_script_calls_per_assistants(self):
         o = AuxiliaryScriptCallsManager.calculate_total_external_script_calls_per_assistants(
-            agents=self.assistants, txs=self.transactions, n_days=self.last_days)
+            agents=self.assistants,
+            txs=self.transactions,
+            n_days=self.last_days
+        )
         return o
 
     def _calculate_total_script_calls_per_assistants(self):
         o = AuxiliaryScriptCallsManager.calculate_total_script_calls_per_assistants(
-            agents=self.assistants, txs=self.transactions, n_days=self.last_days)
+            agents=self.assistants,
+            txs=self.transactions,
+            n_days=self.last_days
+        )
         return o
 
     def _calculate_total_scheduled_jobs_per_assistants(self):
         o = AuxiliaryTasksManager.calculate_total_scheduled_jobs_per_assistants(
-            agents=self.assistants, sched_jobs=self.scheduled_jobs, n_days=self.last_days)
+            agents=self.assistants,
+            sched_jobs=self.scheduled_jobs,
+            n_days=self.last_days
+        )
         return o
 
     def _calculate_total_triggered_jobs_per_assistants(self):
         o = AuxiliaryTasksManager.calculate_total_triggered_jobs_per_assistants(
-            agents=self.assistants, trg_jobs=self.triggered_jobs, n_days=self.last_days)
+            agents=self.assistants,
+            trg_jobs=self.triggered_jobs,
+            n_days=self.last_days
+        )
         return o
 
     def _calculate_total_users_per_organizations(self):
         o = AuxiliaryOrganizationUsersManager.calculate_total_users_per_organizations(
-            orgs=self.organizations)
+            orgs=self.organizations
+        )
         return o
 
     def _calculate_latest_registered_users_per_organizations(self):
         o = AuxiliaryOrganizationUsersManager.calculate_latest_registered_users_per_organizations(
-            orgs=self.organizations, n_days=self.last_days)
+            orgs=self.organizations,
+            n_days=self.last_days
+        )
         return o
 
     def _calculate_total_ml_predictions_per_assistants(self):
         o = AuxiliaryCalculateMLManager.calculate_total_ml_predictions_per_assistants(
-            agents=self.assistants, txs=self.transactions, n_days=self.last_days)
+            agents=self.assistants,
+            txs=self.transactions,
+            n_days=self.last_days
+        )
         return o

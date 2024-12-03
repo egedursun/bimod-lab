@@ -14,7 +14,10 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-from apps.core.sheetos.sheetos_executor import SheetosExecutionManager
+
+from apps.core.sheetos.sheetos_executor import (
+    SheetosExecutionManager
+)
 
 
 def build_whole_text_supply_prompt(xc: SheetosExecutionManager):

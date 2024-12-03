@@ -18,7 +18,11 @@
 import logging
 
 from apps.assistants.models import Assistant
-from apps.core.smart_contracts.smart_contracts_executor import SmartContractsExecutionManager
+
+from apps.core.smart_contracts.smart_contracts_executor import (
+    SmartContractsExecutionManager
+)
+
 from apps.smart_contracts.models import BlockchainSmartContract
 
 logger = logging.getLogger(__name__)

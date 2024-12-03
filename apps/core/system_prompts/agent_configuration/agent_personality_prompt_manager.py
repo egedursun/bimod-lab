@@ -14,8 +14,6 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
 
 def build_agent_personality_prompt(tone: str):
     return f"""

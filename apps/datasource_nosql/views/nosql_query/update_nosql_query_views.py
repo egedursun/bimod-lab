@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
@@ -22,11 +23,26 @@ from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import TemplateView
 
 from apps.assistants.models import Assistant
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.datasource_nosql.forms import CustomNoSQLQueryForm
-from apps.datasource_nosql.models import CustomNoSQLQuery, NoSQLDatabaseConnection
+
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
+from apps.datasource_nosql.forms import (
+    CustomNoSQLQueryForm
+)
+
+from apps.datasource_nosql.models import (
+    CustomNoSQLQuery,
+    NoSQLDatabaseConnection
+)
+
 from apps.organization.models import Organization
-from apps.user_permissions.utils import PermissionNames
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -38,16 +54,33 @@ class NoSQLDatabaseView_QueryUpdate(TemplateView, LoginRequiredMixin):
         context_user = self.request.user
 
         try:
-            query = get_object_or_404(CustomNoSQLQuery, id=kwargs['pk'])
-            user_orgs = Organization.objects.filter(users__in=[context_user])
+            query = get_object_or_404(
+                CustomNoSQLQuery,
+                id=kwargs['pk']
+            )
+
+            user_orgs = Organization.objects.filter(
+                users__in=[context_user]
+            )
+
             db_c = NoSQLDatabaseConnection.objects.filter(
-                assistant__in=Assistant.objects.filter(organization__in=user_orgs))
+                assistant__in=Assistant.objects.filter(
+                    organization__in=user_orgs
+                )
+            )
+
             context['database_connections'] = db_c
-            context['form'] = CustomNoSQLQueryForm(instance=query)
+
+            context['form'] = CustomNoSQLQueryForm(
+                instance=query
+            )
+
             context['query'] = query
+
         except Exception as e:
             logger.error(f"User: {context_user} - NoSQL Query - Update Error: {e}")
             messages.error(self.request, 'An error occurred while updating NoSQL Query.')
+
             return context
 
         return context
@@ -64,16 +97,28 @@ class NoSQLDatabaseView_QueryUpdate(TemplateView, LoginRequiredMixin):
             return redirect('datasource_nosql:list_queries')
         ##############################
 
-        query = get_object_or_404(CustomNoSQLQuery, id=kwargs['pk'])
-        form = CustomNoSQLQueryForm(request.POST, instance=query)
+        query = get_object_or_404(
+            CustomNoSQLQuery,
+            id=kwargs['pk']
+        )
+
+        form = CustomNoSQLQueryForm(
+            request.POST,
+            instance=query
+        )
+
         if form.is_valid():
             form.save()
             logger.info("NoSQL Query updated.")
             messages.success(request, "NoSQL Query updated successfully.")
+
             return redirect('datasource_nosql:list_queries')
+
         else:
             logger.error("Error updating NoSQL Query: " + str(form.errors))
             messages.error(request, "Error updating NoSQL Query: " + str(form.errors))
+
             context = self.get_context_data(**kwargs)
             context['form'] = form
+
             return self.render_to_response(context)

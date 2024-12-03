@@ -15,10 +15,17 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
+from apps.core.metakanban.utils import (
+    MetaKanbanCommandTypes
+)
 
-from apps.core.metakanban.utils import MetaKanbanCommandTypes
 from apps.core.tool_calls.utils import ToolCallDescriptorNames
-from apps.metakanban.utils import MetaKanbanTaskLabelColorChoiceNames, MetaKanbanTaskPrioritiesNames
+
+from apps.metakanban.utils import (
+    MetaKanbanTaskLabelColorChoiceNames,
+    MetaKanbanTaskPrioritiesNames
+)
+
 from config.settings import MEDIA_URL
 
 

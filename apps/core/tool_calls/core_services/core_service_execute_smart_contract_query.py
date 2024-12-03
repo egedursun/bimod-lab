@@ -19,7 +19,10 @@ import logging
 
 from django.contrib.auth.models import User
 
-from apps.core.smart_contracts.smart_contracts_executor import SmartContractsExecutionManager
+from apps.core.smart_contracts.smart_contracts_executor import (
+    SmartContractsExecutionManager
+)
+
 from apps.llm_core.models import LLMCore
 
 from apps.smart_contracts.models import (

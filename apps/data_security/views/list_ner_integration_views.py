@@ -14,12 +14,16 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
 from django.views.generic import TemplateView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
 from apps.data_security.models import NERIntegration
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
@@ -33,8 +37,10 @@ class NERView_IntegrationList(TemplateView):
 
         ##############################
         # PERMISSION CHECK FOR - ADD_DATA_SECURITY
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.LIST_DATA_SECURITY):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.LIST_DATA_SECURITY
+        ):
             messages.error(self.request, "You do not have permission to list data security layers.")
             return context
         ##############################
@@ -43,10 +49,13 @@ class NERView_IntegrationList(TemplateView):
             context['ner_integrations'] = NERIntegration.objects.select_related('organization').filter(
                 organization__users__in=[self.request.user]
             )
+
         except Exception as e:
             logger.error(f"User: {self.request.user} - NER Integrations - List Error: {e}")
             messages.error(self.request, 'An error occurred while listing NER Integrations.')
+
             return context
 
         logger.info(f"NER Integrations were listed.")
+
         return context

@@ -14,36 +14,67 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 from django.utils import timezone
 
-from apps.mm_scheduled_jobs.models import ScheduledJobInstance
-from apps.mm_triggered_jobs.models import TriggeredJobInstance
+from apps.mm_scheduled_jobs.models import (
+    ScheduledJobInstance
+)
+
+from apps.mm_triggered_jobs.models import (
+    TriggeredJobInstance
+)
 
 
 class AuxiliaryTasksManager:
 
     @staticmethod
-    def calculate_total_triggered_jobs_per_assistants(agents, trg_jobs, n_days):
+    def calculate_total_triggered_jobs_per_assistants(
+        agents,
+        trg_jobs,
+        n_days
+    ):
+
         result = {}
+
         for a in agents:
             a_jobs = 0
             for jb in trg_jobs:
                 trg_insts = TriggeredJobInstance.objects.filter(
-                    triggered_job=jb, started_at__gte=timezone.now() - timezone.timedelta(days=n_days)
+                    triggered_job=jb,
+                    started_at__gte=timezone.now() - timezone.timedelta(
+                        days=n_days
+                    )
                 )
                 a_jobs += trg_insts.count()
+
             result[a.name] = a_jobs
+
         return result
 
     @staticmethod
-    def calculate_total_scheduled_jobs_per_assistants(agents, sched_jobs, n_days):
+    def calculate_total_scheduled_jobs_per_assistants(
+        agents,
+        sched_jobs,
+        n_days
+    ):
+
         result = {}
+
         for a in agents:
+
             a_jobs = 0
+
             for jb in sched_jobs:
                 sched_insts = ScheduledJobInstance.objects.filter(
-                    scheduled_job=jb, started_at__gte=timezone.now() - timezone.timedelta(days=n_days)
+                    scheduled_job=jb,
+                    started_at__gte=timezone.now() - timezone.timedelta(
+                        days=n_days
+                    )
                 )
+
                 a_jobs += sched_insts.count()
+
             result[a.name] = a_jobs
+
         return result

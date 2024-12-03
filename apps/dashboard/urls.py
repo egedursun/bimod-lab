@@ -16,16 +16,36 @@
 #
 
 from django.urls import path
-from .views import DashboardView_Main, DashboardView_Refresh, DashboardView_ChangeStatisticsInterval
+
+from .views import (
+    DashboardView_Main,
+    DashboardView_Refresh,
+    DashboardView_ChangeStatisticsInterval
+)
 
 app_name = "dashboard"
 
 urlpatterns = [
-    path("", DashboardView_Main.as_view(template_name="dashboard/dashboard_main.html"), name="main-dashboard"),
-    path("refresh/<str:days>/", DashboardView_Refresh.as_view(
-        template_name="dashboard/dashboard_main.html"
-    ), name="refresh"),
-    path("adjust_interval/<int:days>/", DashboardView_ChangeStatisticsInterval.as_view(
-        template_name="dashboard/dashboard_main.html"
-    ), name="adjust-interval"),
+    path(
+        "",
+        DashboardView_Main.as_view(
+            template_name="dashboard/dashboard_main.html"),
+        name="main-dashboard"
+    ),
+
+    path(
+        "refresh/<str:days>/",
+        DashboardView_Refresh.as_view(
+            template_name="dashboard/dashboard_main.html"
+        ),
+        name="refresh"
+    ),
+
+    path(
+        "adjust_interval/<int:days>/",
+        DashboardView_ChangeStatisticsInterval.as_view(
+            template_name="dashboard/dashboard_main.html"
+        ),
+        name="adjust-interval"
+    ),
 ]

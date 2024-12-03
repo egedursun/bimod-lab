@@ -21,9 +21,20 @@ import logging
 from apps.core.browsers.utils import BrowserActionsNames
 from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
 from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
-from apps.core.sheetos.utils import find_tool_call_from_json, SHEETOS_TOOL_CALL_MAXIMUM_ATTEMPTS
-from apps.core.tool_calls.core_services.core_service_execute_browser import run_execute_browsing
-from apps.core.tool_calls.input_verifiers.verify_browser_query import verify_browser_query_content
+
+from apps.core.sheetos.utils import (
+    find_tool_call_from_json,
+    SHEETOS_TOOL_CALL_MAXIMUM_ATTEMPTS
+)
+
+from apps.core.tool_calls.core_services.core_service_execute_browser import (
+    run_execute_browsing
+)
+
+from apps.core.tool_calls.input_verifiers.verify_browser_query import (
+    verify_browser_query_content
+)
+
 from apps.llm_transaction.models import LLMTransaction
 from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
 
@@ -31,8 +42,12 @@ logger = logging.getLogger(__name__)
 
 
 def handle_web_command(xc, command: str) -> str:
-    from apps.core.sheetos.prompt_builders import build_web_command_system_prompt
+    from apps.core.sheetos.prompt_builders import (
+        build_web_command_system_prompt
+    )
+
     from apps.core.sheetos.sheetos_executor import SheetosExecutionManager
+
     xc: SheetosExecutionManager
 
     try:

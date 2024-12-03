@@ -17,8 +17,14 @@
 
 import logging
 
-from apps.core.audio_processing.audio_processing_executor import AudioProcessingExecutor
-from apps.core.audio_processing.utils import RunAudioProcessingActionTypesNames
+from apps.core.audio_processing.audio_processing_executor import (
+    AudioProcessingExecutor
+)
+
+from apps.core.audio_processing.utils import (
+    RunAudioProcessingActionTypesNames
+)
+
 from apps.assistants.models import Assistant
 from apps.multimodal_chat.models import MultimodalChat
 

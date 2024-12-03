@@ -14,8 +14,6 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
 
 import weaviate.classes as wvc
 

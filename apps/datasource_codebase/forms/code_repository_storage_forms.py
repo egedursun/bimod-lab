@@ -14,13 +14,12 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from django import forms
 
-from apps.datasource_codebase.models import CodeRepositoryStorageConnection
+from apps.datasource_codebase.models import (
+    CodeRepositoryStorageConnection
+)
 
 
 class CodeRepositoryStorageForm(forms.ModelForm):
@@ -39,4 +38,10 @@ class CodeRepositoryStorageForm(forms.ModelForm):
             'embedding_chunk_overlap',
             'search_instance_retrieval_limit'
         ]
-        widgets = {'description': forms.Textarea(attrs={'rows': 3})}
+        widgets = {
+            'description': forms.Textarea(
+                attrs={
+                    'rows': 3
+                }
+            )
+        }

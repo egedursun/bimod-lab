@@ -19,8 +19,14 @@ import logging
 
 from django.utils import timezone
 
-from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
-from apps.core.hadron_prime.prompt_builders import build_hadron_node_speech_log_prompt
+from apps.core.generative_ai.utils import (
+    GPT_DEFAULT_ENCODING_ENGINE,
+    ChatRoles
+)
+
+from apps.core.hadron_prime.prompt_builders import (
+    build_hadron_node_speech_log_prompt
+)
 
 from apps.hadron_prime.models import (
     HadronNode,

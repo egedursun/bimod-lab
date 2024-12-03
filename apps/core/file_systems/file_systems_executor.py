@@ -177,6 +177,7 @@ class FileSystemsExecutor:
         from apps.core.generative_ai.utils import ChatRoles
 
         client = self.connect_c()
+
         results = {
             "status": True,
             "stdins": [],
@@ -224,6 +225,7 @@ class FileSystemsExecutor:
                 transaction_source=LLMTransactionSourcesTypesNames.FILE_SYSTEM_COMMANDS,
                 is_tool_cost=True
             )
+
             tx.save()
             logger.info(f"Created a new LLM transaction for the file system command execution: {tx}")
 

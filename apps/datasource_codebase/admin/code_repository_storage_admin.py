@@ -14,16 +14,21 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from django.contrib import admin
 
 from apps.core.codebase.codebase_decoder import CodeBaseDecoder
-from apps.datasource_codebase.models import CodeRepositoryStorageConnection
-from apps.datasource_codebase.utils import build_weaviate_class_name_with_random, CODE_REPOSITORY_STORAGE_ADMIN_LIST, \
-    CODE_REPOSITORY_STORAGE_ADMIN_FILTER, CODE_REPOSITORY_STORAGE_ADMIN_SEARCH
+
+from apps.datasource_codebase.models import (
+    CodeRepositoryStorageConnection
+)
+
+from apps.datasource_codebase.utils import (
+    build_weaviate_class_name_with_random,
+    CODE_REPOSITORY_STORAGE_ADMIN_LIST,
+    CODE_REPOSITORY_STORAGE_ADMIN_FILTER,
+    CODE_REPOSITORY_STORAGE_ADMIN_SEARCH
+)
 
 
 @admin.register(CodeRepositoryStorageConnection)
@@ -31,29 +36,55 @@ class CodeRepositoryStorageConnectionAdmin(admin.ModelAdmin):
     list_display = CODE_REPOSITORY_STORAGE_ADMIN_LIST
     list_filter = CODE_REPOSITORY_STORAGE_ADMIN_FILTER
     search_fields = CODE_REPOSITORY_STORAGE_ADMIN_SEARCH
-    readonly_fields = ['created_at', 'updated_at']
+
+    readonly_fields = [
+        'created_at',
+        'updated_at'
+    ]
 
     list_per_page = 20
     list_max_show_all = 100
 
-    def save_model(self, request, obj, form, change):
+    def save_model(
+        self,
+        request,
+        obj,
+        form,
+        change
+    ):
+
         if obj.vectorizer is None:
             obj.vectorizer = "text2vec-openai"
+
         if obj.class_name is None:
             obj.class_name = build_weaviate_class_name_with_random(obj)
 
         client = CodeBaseDecoder.get(obj)
+
         if client is not None:
             result = client.create_weaviate_classes()
             if not result["status"]:
                 pass
+
         obj.schema_json = client.retrieve_schema()
-        super().save_model(request, obj, form, change)
+
+        super().save_model(
+            request,
+            obj,
+            form,
+            change
+        )
 
     def delete_model(self, request, obj):
+
         client = CodeBaseDecoder.get(obj)
+
         if client is not None:
-            result = client.delete_weaviate_classes(class_name=obj.class_name)
+            result = client.delete_weaviate_classes(
+                class_name=obj.class_name
+            )
+
             if not result["status"]:
                 pass
+
         super().delete_model(request, obj)

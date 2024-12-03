@@ -209,23 +209,29 @@ media/generated/images/*
 # */*/*/migrations/*.pyc
 
 # Ignore everything in the assistants and integrations directories
-/assistant_vectors/context_memories/*
-/assistant_vectors/leanmod_context_memories/*
-/semantor_vectors/assistants/*
-/semantor_vectors/leanmod_assistants/*
-/semantor_vectors/integrations/*
-/voidforger_vectors/action_memories/*
-/voidforger_vectors/auto_execution_memories/*
-/voidforger_vectors/chat_messages/*
-/media_item_vectors/media_items/*
+/vectors/assistant_vectors/context_memories/*
+/vectors/assistant_vectors/leanmod_context_memories/*
+/vectors/semantor_vectors/assistants/*
+/vectors/semantor_vectors/leanmod_assistants/*
+/vectors/semantor_vectors/integrations/*
+/vectors/voidforger_vectors/action_memories/*
+/vectors/voidforger_vectors/auto_execution_memories/*
+/vectors/voidforger_vectors/chat_messages/*
+/vectors/media_item_vectors/media_items/*
+/vectors/sql_schema_vectors/sql_schemas/*
+/vectors/nosql_schema_vectors/nosql_schemas/*
+/vectors/file_system_schema_vectors/file_system_schemas/*
 
 # Allow __init__.py files in all subdirectories of assistants and integrations
-!/assistant_vectors/context_memories/**/__init__.py
-!/assistant_vectors/leanmod_context_memories/**/__init__.py
-!/semantor_vectors/assistants/**/__init__.py
-!/semantor_vectors/leanmod_assistants/**/__init__.py
-!/semantor_vectors/integrations/**/__init__.py
-!/voidforger_vectors/action_memories/**/__init__.py
-!/voidforger_vectors/auto_execution_memories/**/__init__.py
-!/voidforger_vectors/chat_messages/**/__init__.py
-!/media_item_vectors/media_items/**/__init__.py
+!/vectors/assistant_vectors/context_memories/**/__init__.py
+!/vectors/assistant_vectors/leanmod_context_memories/**/__init__.py
+!/vectors/semantor_vectors/assistants/**/__init__.py
+!/vectors/semantor_vectors/leanmod_assistants/**/__init__.py
+!/vectors/semantor_vectors/integrations/**/__init__.py
+!/vectors/voidforger_vectors/action_memories/**/__init__.py
+!/vectors/voidforger_vectors/auto_execution_memories/**/__init__.py
+!/vectors/voidforger_vectors/chat_messages/**/__init__.py
+!/vectors/media_item_vectors/media_items/**/__init__.py
+!/vectors/sql_schema_vectors/sql_schemas/**/__init__.py
+!/vectors/nosql_schema_vectors/nosql_schemas/**/__init__.py
+!/vectors/file_system_schema_vectors/file_system_schemas/**/__init__.py

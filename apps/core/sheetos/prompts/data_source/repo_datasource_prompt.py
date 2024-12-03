@@ -14,12 +14,17 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 from apps.assistants.models import Assistant
 from apps.datasource_codebase.models import CodeRepositoryStorageConnection
 
 
 def build_sheetos_code_base_data_source_prompt(assistant: Assistant):
-    code_base_data_sources = CodeRepositoryStorageConnection.objects.filter(assistant=assistant)
+
+    code_base_data_sources = CodeRepositoryStorageConnection.objects.filter(
+        assistant=assistant
+    )
+
     response_prompt = """
             ### **CODE BASE STORAGE CONNECTIONS:**
 

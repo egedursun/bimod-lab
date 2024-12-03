@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
@@ -21,11 +22,16 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
 from django.views import View
 
-from apps.core.data_backups.data_backup_executor import DataBackupExecutor
-from apps.core.user_permissions.permission_manager import UserPermissionManager
+from apps.core.data_backups.data_backup_executor import (
+    DataBackupExecutor
+)
+
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
 from apps.data_backups.models import DataBackup
 from apps.user_permissions.utils import PermissionNames
-
 
 logger = logging.getLogger(__name__)
 
@@ -35,23 +41,36 @@ class DataBackupView_ReloadBackup(LoginRequiredMixin, View):
 
         ##############################
         # PERMISSION CHECK FOR - RESTORE_DATA_BACKUPS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.RESTORE_DATA_BACKUPS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.RESTORE_DATA_BACKUPS
+        ):
             messages.error(self.request, "You do not have permission to restore backups.")
             return redirect('data_backups:manage')
         ##############################
 
-        backup = get_object_or_404(DataBackup, id=backup_id)
+        backup = get_object_or_404(
+            DataBackup,
+            id=backup_id
+        )
+
         password = request.POST.get('backup_password')
         try:
-            result = DataBackupExecutor.restore(backup_object=backup, password=password)
+            result = DataBackupExecutor.restore(
+                backup_object=backup,
+                password=password
+            )
+
             if result is None:
                 logger.info(f"User: {request.user} - Backup: {backup.backup_name} - Reloaded.")
                 messages.success(request, f"Backup '{backup.backup_name}' has been successfully reloaded.")
+
             else:
                 logger.error(f"User: {request.user} - Backup: {backup.backup_name} - Reload failed.")
                 messages.error(request, result)
+
         except Exception as e:
             logger.error(f"User: {request.user} - Backup: {backup.backup_name} - Reload failed.")
             messages.error(request, f"An error occurred while trying to reload the backup: {str(e)}")
+
         return redirect('data_backups:manage')

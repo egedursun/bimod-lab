@@ -14,8 +14,6 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
 
 def test_init_drafting_test_services():
     assert True

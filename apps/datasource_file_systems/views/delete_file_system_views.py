@@ -22,8 +22,14 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import TemplateView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.datasource_file_systems.models import DataSourceFileSystem
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
+from apps.datasource_file_systems.models import (
+    DataSourceFileSystem
+)
+
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
@@ -42,16 +48,22 @@ class FileSystemView_Delete(LoginRequiredMixin, TemplateView):
 
         ##############################
         # PERMISSION CHECK FOR - DELETE_FILE_SYSTEMS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.DELETE_FILE_SYSTEMS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.DELETE_FILE_SYSTEMS
+        ):
             messages.error(self.request, "You do not have permission to delete file system connections.")
             return redirect('datasource_file_systems:list')
         ##############################
 
-        conn = get_object_or_404(DataSourceFileSystem, pk=kwargs['pk'])
+        conn = get_object_or_404(
+            DataSourceFileSystem,
+            pk=kwargs['pk']
+        )
 
         try:
             conn.delete()
+
         except Exception as e:
             logger.error(f"User: {request.user} - File System - Delete Error: {e}")
             messages.error(request, 'An error occurred while deleting the file system connection.')

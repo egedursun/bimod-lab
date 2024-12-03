@@ -36,18 +36,49 @@ class NoSQLDatabaseChoicesNames:
         ]
 
 
-NOSQL_DATABASE_ADMIN_LIST = ('id', 'assistant', 'nosql_db_type', 'name', 'bucket_name', 'is_read_only', 'created_at')
-NOSQL_DATABASE_ADMIN_FILTER = ('nosql_db_type', 'created_at')
-NOSQL_DATABASE_ADMIN_SEARCH = ('name', 'bucket_name', 'is_read_only')
+NOSQL_DATABASE_ADMIN_LIST = (
+    'id',
+    'assistant',
+    'nosql_db_type',
+    'name',
+    'bucket_name',
+    'is_read_only',
+    'created_at'
+)
+NOSQL_DATABASE_ADMIN_FILTER = (
+    'nosql_db_type',
+    'created_at'
+)
+NOSQL_DATABASE_ADMIN_SEARCH = (
+    'name',
+    'bucket_name',
+    'is_read_only'
+)
 
-NOSQL_QUERY_ADMIN_LIST = ('id', 'database_connection', 'name', 'description', 'created_at', 'updated_at')
-NOSQL_QUERY_ADMIN_FILTER = ('created_at', 'updated_at')
-NOSQL_QUERY_ADMIN_SEARCH = ('name', 'description')
+NOSQL_QUERY_ADMIN_LIST = (
+    'id',
+    'database_connection',
+    'name',
+    'description',
+    'created_at',
+    'updated_at'
+)
+NOSQL_QUERY_ADMIN_FILTER = (
+    'created_at',
+    'updated_at'
+)
+NOSQL_QUERY_ADMIN_SEARCH = (
+    'name',
+    'description'
+)
+
 RETRIEVE_NOSQL_SCHEMA_MAX_VALUE_CHARACTERS_ALLOWED = 1000
 VALUE_TRUNCATION_PREFIX_LENGTH = RETRIEVE_NOSQL_SCHEMA_MAX_VALUE_CHARACTERS_ALLOWED // 2
 VALUE_TRUNCATION_SUFFIX_LENGTH = RETRIEVE_NOSQL_SCHEMA_MAX_VALUE_CHARACTERS_ALLOWED // 2
+
 RETRIEVE_NOSQL_SCHEMA_MAX_DEPTH_ALLOWED = 10
 DEFAULT_SCHEMA_SAMPLING_LIMIT = 100
+
 NOSQL_KV_TIMOUT_CONSTANT = 30  # seconds
 NOSQL_CONNECT_TIMOUT_CONSTANT = 30  # seconds
 NOSQL_QUERY_TIMOUT_CONSTANT = 30  # seconds

@@ -14,9 +14,6 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 INTRA_MEMORY_INITIAL_CHUNK_SIZE = 1000
 INTRA_MEMORY_INITIAL_CHUNK_OVERLAP = 200
@@ -100,43 +97,162 @@ class VectorStoreDocProcessingStatusNames:
     PARTIALLY_FAILED = 'partially_failed'
 
 
-INTRA_MEMORY_ADMIN_LIST = ['class_name', 'vectorizer', 'vectorizer_api_key', 'created_at', 'updated_at']
-INTRA_MEMORY_ADMIN_FILTER = ['class_name', 'vectorizer']
-INTRA_MEMORY_ADMIN_SEARCH = ['class_name', 'vectorizer']
+INTRA_MEMORY_ADMIN_LIST = [
+    'class_name',
+    'vectorizer',
+    'vectorizer_api_key',
+    'created_at',
+    'updated_at'
+]
+INTRA_MEMORY_ADMIN_FILTER = [
+    'class_name',
+    'vectorizer'
+]
+INTRA_MEMORY_ADMIN_SEARCH = [
+    'class_name',
+    'vectorizer'
+]
 
-INTRA_MEMORY_MEMORY_ADMIN_LIST = ["knowledge_base_memory_uuid", "knowledge_base_memory_uuid", "created_at",
-                                  "updated_at"]
-INTRA_MEMORY_MEMORY_ADMIN_FILTER = ["knowledge_base_memory_uuid", "knowledge_base_memory_uuid", "created_at",
-                                    "updated_at"]
-INTRA_MEMORY_MEMORY_ADMIN_SEARCH = ["knowledge_base_memory_uuid", "knowledge_base_memory_uuid", "created_at",
-                                    "updated_at"]
+INTRA_MEMORY_MEMORY_ADMIN_LIST = [
+    "knowledge_base_memory_uuid",
+    "knowledge_base_memory_uuid",
+    "created_at",
+    "updated_at"
+]
+INTRA_MEMORY_MEMORY_ADMIN_FILTER = [
+    "knowledge_base_memory_uuid",
+    "knowledge_base_memory_uuid",
+    "created_at",
+    "updated_at"
+]
+INTRA_MEMORY_MEMORY_ADMIN_SEARCH = [
+    "knowledge_base_memory_uuid",
+    "knowledge_base_memory_uuid",
+    "created_at",
+    "updated_at"
+]
 
-INTRA_MEMORY_MEMORY_CHUNK_ADMIN_LIST = ["chunk_number", "chunk_content", "knowledge_base_memory_uuid", "chunk_uuid",
-                                        "created_at"]
-INTRA_MEMORY_MEMORY_CHUNK_ADMIN_FILTER = ["chunk_number", "chunk_content", "knowledge_base_memory_uuid", "chunk_uuid"]
-INTRA_MEMORY_MEMORY_CHUNK_ADMIN_SEARCH = ["chunk_number", "chunk_content", "knowledge_base_memory_uuid", "chunk_uuid",
-                                          "created_at"]
+INTRA_MEMORY_MEMORY_CHUNK_ADMIN_LIST = [
+    "chunk_number",
+    "chunk_content",
+    "knowledge_base_memory_uuid",
+    "chunk_uuid",
+    "created_at"
+]
+INTRA_MEMORY_MEMORY_CHUNK_ADMIN_FILTER = [
+    "chunk_number",
+    "chunk_content",
+    "knowledge_base_memory_uuid",
+    "chunk_uuid"
+]
+INTRA_MEMORY_MEMORY_CHUNK_ADMIN_SEARCH = [
+    "chunk_number",
+    "chunk_content",
+    "knowledge_base_memory_uuid",
+    "chunk_uuid",
+    "created_at"
+]
 
-DOCUMENT_ADMIN_LIST = ['knowledge_base', 'document_type', 'document_file_name', 'document_description',
-                       'document_metadata', 'document_uri', 'created_at', 'updated_at']
-DOCUMENT_ADMIN_FILTER = ['knowledge_base', 'document_type', 'document_file_name', 'document_description',
-                         'document_metadata', 'document_uri', 'created_at', 'updated_at']
-DOCUMENT_ADMIN_SEARCH = ['knowledge_base', 'document_type', 'document_file_name', 'document_description',
-                         'document_metadata', 'document_uri', 'created_at', 'updated_at']
+DOCUMENT_ADMIN_LIST = [
+    'knowledge_base',
+    'document_type',
+    'document_file_name',
+    'document_description',
+    'document_metadata',
+    'document_uri',
+    'created_at',
+    'updated_at'
+]
+DOCUMENT_ADMIN_FILTER = [
+    'knowledge_base',
+    'document_type',
+    'document_file_name',
+    'document_description',
+    'document_metadata',
+    'document_uri',
+    'created_at',
+    'updated_at'
+]
+DOCUMENT_ADMIN_SEARCH = [
+    'knowledge_base',
+    'document_type',
+    'document_file_name',
+    'document_description',
+    'document_metadata',
+    'document_uri',
+    'created_at',
+    'updated_at'
+]
 
-DOCUMENT_CHUNK_ADMIN_LIST = ['knowledge_base', 'document', 'chunk_document_type', 'chunk_document_uri',
-                             'knowledge_base_uuid', 'document_uuid', 'created_at']
-DOCUMENT_CHUNK_ADMIN_FILTER = ['document', 'chunk_document_type', 'knowledge_base_uuid', 'document_uuid', 'created_at']
-DOCUMENT_CHUNK_ADMIN_SEARCH = ['document', 'chunk_document_type', 'chunk_content', 'chunk_metadata',
-                               'chunk_document_uri', 'knowledge_base_uuid', 'created_at']
+DOCUMENT_CHUNK_ADMIN_LIST = [
+    'knowledge_base',
+    'document',
+    'chunk_document_type',
+    'chunk_document_uri',
+    'knowledge_base_uuid',
+    'document_uuid',
+    'created_at'
+]
+DOCUMENT_CHUNK_ADMIN_FILTER = [
+    'document',
+    'chunk_document_type',
+    'knowledge_base_uuid',
+    'document_uuid',
+    'created_at'
+]
+DOCUMENT_CHUNK_ADMIN_SEARCH = [
+    'document',
+    'chunk_document_type',
+    'chunk_content',
+    'chunk_metadata',
+    'chunk_document_uri',
+    'knowledge_base_uuid',
+    'created_at'
+]
 
-DOCUMENT_PROCESSING_LOG_ADMIN_LIST = ['document_full_uri', 'log_message', 'created_at']
-DOCUMENT_PROCESSING_LOG_ADMIN_FILTER = ['document_full_uri', 'log_message', 'created_at']
-DOCUMENT_PROCESSING_LOG_ADMIN_SEARCH = ['document_full_uri', 'log_message']
+DOCUMENT_PROCESSING_LOG_ADMIN_LIST = [
+    'document_full_uri',
+    'log_message',
+    'created_at'
+]
+DOCUMENT_PROCESSING_LOG_ADMIN_FILTER = [
+    'document_full_uri',
+    'log_message',
+    'created_at'
+]
+DOCUMENT_PROCESSING_LOG_ADMIN_SEARCH = [
+    'document_full_uri',
+    'log_message'
+]
 
-DOCUMENT_VECTOR_STORE_CONNECTION_ADMIN_LIST = ['provider', 'host_url', 'assistant', 'name', 'class_name',
-                                               'vectorizer', 'created_at', 'updated_at']
-DOCUMENT_VECTOR_STORE_CONNECTION_ADMIN_FILTER = ['provider', 'host_url', 'assistant', 'name', 'class_name',
-                                                 'vectorizer', 'created_at', 'updated_at']
-DOCUMENT_VECTOR_STORE_CONNECTION_ADMIN_SEARCH = ['provider', 'host_url', 'assistant', 'name', 'class_name',
-                                                 'description', 'vectorizer', 'created_at', 'updated_at']
+DOCUMENT_VECTOR_STORE_CONNECTION_ADMIN_LIST = [
+    'provider',
+    'host_url',
+    'assistant',
+    'name',
+    'class_name',
+    'vectorizer',
+    'created_at',
+    'updated_at'
+]
+DOCUMENT_VECTOR_STORE_CONNECTION_ADMIN_FILTER = [
+    'provider',
+    'host_url',
+    'assistant',
+    'name',
+    'class_name',
+    'vectorizer',
+    'created_at',
+    'updated_at'
+]
+DOCUMENT_VECTOR_STORE_CONNECTION_ADMIN_SEARCH = [
+    'provider',
+    'host_url',
+    'assistant',
+    'name',
+    'class_name',
+    'description',
+    'vectorizer',
+    'created_at',
+    'updated_at'
+]

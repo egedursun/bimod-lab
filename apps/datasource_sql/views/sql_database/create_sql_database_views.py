@@ -22,13 +22,27 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
 from apps.assistants.models import Assistant
-from apps.datasource_sql.forms import SQLDatabaseConnectionForm
+
+from apps.datasource_sql.forms import (
+    SQLDatabaseConnectionForm
+)
+
 from apps.datasource_sql.utils import DBMS_CHOICES
 from apps.organization.models import Organization
-from apps.user_permissions.utils import PermissionNames
-from config.settings import MAX_SQL_DBS_PER_ASSISTANT
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
+from config.settings import (
+    MAX_SQL_DBS_PER_ASSISTANT
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -40,14 +54,22 @@ class SQLDatabaseView_ManagerCreate(TemplateView, LoginRequiredMixin):
         context_user = self.request.user
 
         try:
-            user_orgs = Organization.objects.filter(users__in=[context_user])
-            agents = Assistant.objects.filter(organization__in=user_orgs)
+            user_orgs = Organization.objects.filter(
+                users__in=[context_user]
+            )
+
+            agents = Assistant.objects.filter(
+                organization__in=user_orgs
+            )
+
             context['dbms_choices'] = DBMS_CHOICES
             context['form'] = SQLDatabaseConnectionForm()
             context['assistants'] = agents
+
         except Exception as e:
             logger.error(f"User: {context_user} - SQL Data Source - Create Error: {e}")
             messages.error(self.request, 'An error occurred while creating SQL Data Source.')
+
             return context
 
         return context
@@ -57,8 +79,10 @@ class SQLDatabaseView_ManagerCreate(TemplateView, LoginRequiredMixin):
 
         ##############################
         # PERMISSION CHECK FOR - ADD_SQL_DATABASES
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.ADD_SQL_DATABASES):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.ADD_SQL_DATABASES
+        ):
             messages.error(self.request, "You do not have permission to create SQL Data Sources.")
             return redirect('datasource_sql:list')
         ##############################
@@ -66,19 +90,19 @@ class SQLDatabaseView_ManagerCreate(TemplateView, LoginRequiredMixin):
         if form.is_valid():
 
             assistant = form.cleaned_data['assistant']
-
-            # check the number of SQL database connections assistant has
             n_sql_dbs = assistant.sql_database_connections.count()
 
             if n_sql_dbs > MAX_SQL_DBS_PER_ASSISTANT:
                 messages.error(request,
                                f'Assistant has reached the maximum number of SQL database connections ({MAX_SQL_DBS_PER_ASSISTANT}).')
+
                 return redirect('datasource_sql:list')
 
             form.save()
 
             logger.info("SQL Data Source created.")
             messages.success(request, "SQL Data Source created successfully.")
+
             return redirect('datasource_sql:create')
 
         else:
@@ -87,4 +111,5 @@ class SQLDatabaseView_ManagerCreate(TemplateView, LoginRequiredMixin):
 
             context = self.get_context_data(**kwargs)
             context['form'] = form
+
             return self.render_to_response(context)

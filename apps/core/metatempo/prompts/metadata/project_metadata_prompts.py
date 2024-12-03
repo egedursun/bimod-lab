@@ -17,10 +17,22 @@
 
 from django.contrib.auth.models import User
 
-from apps.metakanban.models import MetaKanbanBoard, MetaKanbanTaskLabel, MetaKanbanTask, MetaKanbanChangeLog, \
+from apps.metakanban.models import (
+    MetaKanbanBoard,
+    MetaKanbanTaskLabel,
+    MetaKanbanTask,
+    MetaKanbanChangeLog,
     MetaKanbanStatusColumn
-from apps.projects.models import ProjectItem, ProjectTeamItem
-from apps.core.metakanban.utils import METAKANBAN_DEFAULT_LAST_N_ACTION_LOGS_LOOKBACK
+)
+
+from apps.projects.models import (
+    ProjectItem,
+    ProjectTeamItem
+)
+
+from apps.core.metakanban.utils import (
+    METAKANBAN_DEFAULT_LAST_N_ACTION_LOGS_LOOKBACK
+)
 
 
 def get_board_metadata_prompt(board: MetaKanbanBoard):

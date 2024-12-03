@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
@@ -22,12 +23,29 @@ from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
 from apps.assistants.models import Assistant
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.datasource_nosql.forms import NoSQLDatabaseConnectionForm
-from apps.datasource_nosql.utils import NOSQL_DATABASE_CHOICES
+
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
+from apps.datasource_nosql.forms import (
+    NoSQLDatabaseConnectionForm
+)
+
+from apps.datasource_nosql.utils import (
+    NOSQL_DATABASE_CHOICES
+)
+
 from apps.organization.models import Organization
-from apps.user_permissions.utils import PermissionNames
-from config.settings import MAX_NOSQL_DBS_PER_ASSISTANT
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
+from config.settings import (
+    MAX_NOSQL_DBS_PER_ASSISTANT
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -39,11 +57,18 @@ class NoSQLDatabaseView_ManagerCreate(TemplateView, LoginRequiredMixin):
         context_user = self.request.user
 
         try:
-            user_orgs = Organization.objects.filter(users__in=[context_user])
-            agents = Assistant.objects.filter(organization__in=user_orgs)
+            user_orgs = Organization.objects.filter(
+                users__in=[context_user]
+            )
+
+            agents = Assistant.objects.filter(
+                organization__in=user_orgs
+            )
+
             context['dbms_choices'] = NOSQL_DATABASE_CHOICES
             context['form'] = NoSQLDatabaseConnectionForm()
             context['assistants'] = agents
+
         except Exception as e:
             logger.error(f"User: {context_user} - NoSQL Data Source - Create Error: {e}")
             messages.error(self.request, 'An error occurred while creating NoSQL Data Source.')
@@ -68,8 +93,8 @@ class NoSQLDatabaseView_ManagerCreate(TemplateView, LoginRequiredMixin):
 
             assistant = form.cleaned_data['assistant']
 
-            # check the number of NOSQL database connections assistant has
             n_nosql_dbs = assistant.nosql_database_connections.count()
+
             if n_nosql_dbs > MAX_NOSQL_DBS_PER_ASSISTANT:
                 messages.error(request,
                                f'Assistant has reached the maximum number of NOSQL database connections ({MAX_NOSQL_DBS_PER_ASSISTANT}).')
@@ -79,6 +104,7 @@ class NoSQLDatabaseView_ManagerCreate(TemplateView, LoginRequiredMixin):
 
             logger.info("NoSQL Data Source created.")
             messages.success(request, "NoSQL Data Source created successfully.")
+
             return redirect('datasource_nosql:create')
 
         else:

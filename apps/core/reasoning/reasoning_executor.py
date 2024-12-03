@@ -22,7 +22,10 @@ import boto3
 import filetype
 
 from apps.core.code_analyst.utils import BIN_FILE_FORMAT
-from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
+
+from apps.core.internal_cost_manager.costs_map import (
+    InternalServiceCosts
+)
 
 from apps.core.media_managers.utils import (
     GENERATED_IMAGES_ROOT_MEDIA_PATH,
@@ -30,7 +33,11 @@ from apps.core.media_managers.utils import (
 )
 
 from apps.llm_transaction.models import LLMTransaction
-from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
+
+from apps.llm_transaction.utils import (
+    LLMTransactionSourcesTypesNames
+)
+
 from config import settings
 from config.settings import MEDIA_URL
 
@@ -53,7 +60,10 @@ class ReasoningExecutor:
         query_string: str
     ):
 
-        from apps.core.generative_ai.auxiliary_clients.auxiliary_reasoning_client import ReasoningAuxiliaryLLMManager
+        from apps.core.generative_ai.auxiliary_clients.auxiliary_reasoning_client import (
+            ReasoningAuxiliaryLLMManager
+        )
+
         from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE
         from apps.core.generative_ai.utils import ChatRoles
 
@@ -66,16 +76,22 @@ class ReasoningExecutor:
 
         except Exception as e:
             logger.error(f"[ReasoningExecutor.execute_process_reasoning] Failed to create the OpenAI client.")
+
             return f"Failed to create the OpenAI client. The cause of the error is as follows: {str(e)}"
 
         try:
             texts = llm_c.process_reasoning(
                 query=query_string
             )
-            logger.info(f"[ReasoningExecutor.execute_process_reasoning] Reasoning processed successfully.")
+            logger.info(
+                f"[ReasoningExecutor.execute_process_reasoning] Reasoning processed successfully."
+            )
 
         except Exception as e:
-            logger.error(f"[ReasoningExecutor.execute_process_reasoning] Failed to process the reasoning. ")
+            logger.error(
+                f"[ReasoningExecutor.execute_process_reasoning] Failed to process the reasoning. "
+            )
+
             return f"Failed to process the reasoning. The cause of the error is as follows: {str(e)}"
 
         response = texts
@@ -92,10 +108,15 @@ class ReasoningExecutor:
                 is_tool_cost=True
             )
             tx.save()
-            logger.info(f"[ReasoningExecutor.execute_process_reasoning] User transaction saved successfully.")
+            logger.info(
+                f"[ReasoningExecutor.execute_process_reasoning] User transaction saved successfully."
+            )
 
         except Exception as e:
-            logger.error(f"[ReasoningExecutor.execute_process_reasoning] Failed to save the user transaction. ")
+            logger.error(
+                f"[ReasoningExecutor.execute_process_reasoning] Failed to save the user transaction. "
+            )
+
             return f"Failed to save the user transaction. The cause of the error is as follows: {str(e)}"
 
         return response
@@ -143,10 +164,15 @@ class ReasoningExecutor:
                 Key=s3_path,
                 Body=file_bytes
             )
-            logger.info(f"[ReasoningExecutor.save_file_and_provide_full_uri] File saved to S3 with URI: {full_uri}")
+            logger.info(
+                f"[ReasoningExecutor.save_file_and_provide_full_uri] File saved to S3 with URI: {full_uri}"
+            )
 
         except Exception as e:
-            logger.error(f"[ReasoningExecutor.save_file_and_provide_full_uri] Error occurred while saving the file to S3: {e}")
+            logger.error(
+                f"[ReasoningExecutor.save_file_and_provide_full_uri] Error occurred while saving the file to S3: {e}"
+            )
+
             return None
 
         return full_uri
@@ -173,10 +199,15 @@ class ReasoningExecutor:
                 Key=s3_path,
                 Body=image_bytes
             )
-            logger.info(f"[ReasoningExecutor.save_image_and_provide_full_uri] Image saved to S3 with URI: {full_uri}")
+            logger.info(
+                f"[ReasoningExecutor.save_image_and_provide_full_uri] Image saved to S3 with URI: {full_uri}"
+            )
 
         except Exception as e:
-            logger.error(f"[ReasoningExecutor.save_image_and_provide_full_uri] Error occurred while saving the image to S3: {e}")
+            logger.error(
+                f"[ReasoningExecutor.save_image_and_provide_full_uri] Error occurred while saving the image to S3: {e}"
+            )
+
             return None
 
         return full_uri
@@ -193,10 +224,14 @@ class ReasoningExecutor:
                 f_uri = ReasoningExecutor.save_file_and_provide_full_uri(f_bytes, remote)
                 if f_uri is not None:
                     f_uris.append(f_uri)
-                logger.info(f"[ReasoningExecutor.save_files_and_provide_full_uris] File saved successfully.")
+                logger.info(
+                    f"[ReasoningExecutor.save_files_and_provide_full_uris] File saved successfully."
+                )
 
             except Exception as e:
-                logger.error(f"[ReasoningExecutor.save_files_and_provide_full_uris] Error occurred while saving the file: {e}")
+                logger.error(
+                    f"[ReasoningExecutor.save_files_and_provide_full_uris] Error occurred while saving the file: {e}"
+                )
                 pass
 
         return f_uris
@@ -214,10 +249,14 @@ class ReasoningExecutor:
                 if f_uri is not None:
                     f_uris.append(f_uri)
 
-                logger.info(f"[ReasoningExecutor.save_images_and_provide_full_uris] Image saved successfully.")
+                logger.info(
+                    f"[ReasoningExecutor.save_images_and_provide_full_uris] Image saved successfully."
+                )
 
             except Exception as e:
-                logger.error(f"[ReasoningExecutor.save_images_and_provide_full_uris] Error occurred while saving the image: {e}")
+                logger.error(
+                    f"[ReasoningExecutor.save_images_and_provide_full_uris] Error occurred while saving the image: {e}"
+                )
                 pass
 
         return f_uris

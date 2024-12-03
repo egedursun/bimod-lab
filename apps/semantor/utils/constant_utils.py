@@ -25,9 +25,9 @@ class OpenAIEmbeddingModels:
     TEXT_EMBEDDING_ADA_V2 = "text-embedding-ada-002"
 
 
-VECTOR_INDEX_PATH_ASSISTANTS = os.path.join(BASE_DIR, 'semantor_vectors', 'assistants')
-VECTOR_INDEX_PATH_LEANMOD_ASSISTANTS = os.path.join(BASE_DIR, 'semantor_vectors', 'leanmod_assistants')
-VECTOR_INDEX_PATH_INTEGRATIONS = os.path.join(BASE_DIR, 'semantor_vectors', 'integrations')
+VECTOR_INDEX_PATH_ASSISTANTS = os.path.join(BASE_DIR, 'vectors', 'semantor_vectors', 'assistants')
+VECTOR_INDEX_PATH_LEANMOD_ASSISTANTS = os.path.join(BASE_DIR, 'vectors', 'semantor_vectors', 'leanmod_assistants')
+VECTOR_INDEX_PATH_INTEGRATIONS = os.path.join(BASE_DIR, 'vectors', 'semantor_vectors', 'integrations')
 
 ANNOY_DEFAULT_NUMBER_OF_TREES = 10
 

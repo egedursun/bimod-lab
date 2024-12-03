@@ -14,9 +14,6 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 SSH_CONNECTION_DEFAULT_BANNER_TIMEOUT = 200
 
@@ -31,6 +28,23 @@ class DataSourceFileSystemsOsTypeNames:
     MACOS = 'macos'
 
 
-FILE_SYSTEM_ADMIN_LIST = ('name', 'os_type', 'host_url', 'port', 'username', 'is_read_only')
-FILE_SYSTEM_ADMIN_FILTER = ('os_type', 'is_read_only')
-FILE_SYSTEM_ADMIN_SEARCH = ('name', 'host_url', 'username', 'ssh_connection_uri')
+FILE_SYSTEM_ADMIN_LIST = (
+    'name',
+    'os_type',
+    'host_url',
+    'port',
+    'username',
+    'is_read_only'
+)
+
+FILE_SYSTEM_ADMIN_FILTER = (
+    'os_type',
+    'is_read_only'
+)
+
+FILE_SYSTEM_ADMIN_SEARCH = (
+    'name',
+    'host_url',
+    'username',
+    'ssh_connection_uri'
+)

@@ -14,9 +14,6 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from .list_ner_integration_views import *
 from .create_ner_integration_views import *

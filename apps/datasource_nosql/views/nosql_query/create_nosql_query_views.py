@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
@@ -22,11 +23,25 @@ from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
 from apps.assistants.models import Assistant
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.datasource_nosql.forms import CustomNoSQLQueryForm
-from apps.datasource_nosql.models import NoSQLDatabaseConnection
+
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
+from apps.datasource_nosql.forms import (
+    CustomNoSQLQueryForm
+)
+
+from apps.datasource_nosql.models import (
+    NoSQLDatabaseConnection
+)
+
 from apps.organization.models import Organization
-from apps.user_permissions.utils import PermissionNames
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from config.settings import MAX_NOSQL_QUERIES_PER_DB
 from web_project import TemplateLayout
 
@@ -39,14 +54,23 @@ class NoSQLDatabaseView_QueryCreate(TemplateView, LoginRequiredMixin):
         context_user = self.request.user
 
         try:
-            user_orgs = Organization.objects.filter(users__in=[context_user])
+            user_orgs = Organization.objects.filter(
+                users__in=[context_user]
+            )
+
             db_c = NoSQLDatabaseConnection.objects.filter(
-                assistant__in=Assistant.objects.filter(organization__in=user_orgs))
+                assistant__in=Assistant.objects.filter(
+                    organization__in=user_orgs
+                )
+            )
+
             context['database_connections'] = db_c
             context['form'] = CustomNoSQLQueryForm()
+
         except Exception as e:
             logger.error(f"User: {context_user} - NoSQL Query - Create Error: {e}")
             messages.error(self.request, 'An error occurred while creating NoSQL Query.')
+
             return context
 
         return context
@@ -56,18 +80,19 @@ class NoSQLDatabaseView_QueryCreate(TemplateView, LoginRequiredMixin):
 
         ##############################
         # PERMISSION CHECK FOR - ADD_CUSTOM_NOSQL_QUERIES
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.ADD_CUSTOM_NOSQL_QUERIES):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.ADD_CUSTOM_NOSQL_QUERIES
+        ):
             messages.error(self.request, "You do not have permission to create custom NoSQL queries.")
             return redirect('datasource_nosql:list_queries')
         ##############################
 
         if form.is_valid():
 
-            # check the number of NOSQL database connections assistant has
             database_connection = form.cleaned_data['database_connection']
-
             n_nosql_queries = database_connection.custom_queries.count()
+
             if n_nosql_queries > MAX_NOSQL_QUERIES_PER_DB:
                 messages.error(request,
                                f'Assistant has reached the maximum number of NOSQL queries per database connection ({MAX_NOSQL_QUERIES_PER_DB}).')
@@ -77,6 +102,7 @@ class NoSQLDatabaseView_QueryCreate(TemplateView, LoginRequiredMixin):
 
             logger.info("NoSQL Query created.")
             messages.success(request, "NoSQL Query created successfully.")
+
             return redirect('datasource_nosql:create_query')
 
         else:
@@ -85,4 +111,5 @@ class NoSQLDatabaseView_QueryCreate(TemplateView, LoginRequiredMixin):
 
             context = self.get_context_data(**kwargs)
             context['form'] = form
+
             return self.render_to_response(context)

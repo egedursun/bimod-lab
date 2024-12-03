@@ -15,7 +15,11 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-from apps.leanmod.models import LeanAssistant, ExpertNetwork, ExpertNetworkAssistantReference
+from apps.leanmod.models import (
+    LeanAssistant,
+    ExpertNetwork,
+    ExpertNetworkAssistantReference
+)
 
 
 def build_expert_networks_multi_modality_prompt_leanmod(lean_assistant: LeanAssistant):

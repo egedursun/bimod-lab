@@ -17,7 +17,9 @@
 
 import logging
 
-from apps.core.video_generation.utils import VideoGeneratorProviderTypesNames
+from apps.core.video_generation.utils import (
+    VideoGeneratorProviderTypesNames
+)
 
 from apps.core.video_generation.video_generation_executor import (
     VideoGenerationExecutor

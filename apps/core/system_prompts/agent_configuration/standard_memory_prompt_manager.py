@@ -14,8 +14,6 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
 
 from django.contrib.auth.models import User
 
@@ -23,11 +21,23 @@ from apps.assistants.models import Assistant
 
 
 def build_standard_memory_prompt(assistant: Assistant, user: User):
+
     organization_memories = assistant.memories.filter(
-        memory_type="organization-specific", organization=assistant.organization)
-    assistant_memories = assistant.memories.filter(memory_type="assistant-specific")
-    user_memories = assistant.memories.filter(memory_type="user-specific", user=user)
+        memory_type="organization-specific",
+        organization=assistant.organization
+    )
+
+    assistant_memories = assistant.memories.filter(
+        memory_type="assistant-specific"
+    )
+
+    user_memories = assistant.memories.filter(
+        memory_type="user-specific",
+        user=user
+    )
+
     memories = list(organization_memories) + list(assistant_memories) + list(user_memories)
+
     response_prompt = """
         ### **MEMORIES:**
 

@@ -19,8 +19,12 @@ from django.db import models
 
 
 class CustomNoSQLQuery(models.Model):
-    database_connection = models.ForeignKey('datasource_nosql.NoSQLDatabaseConnection', on_delete=models.CASCADE,
-                                            related_name='custom_queries')
+    database_connection = models.ForeignKey(
+        'datasource_nosql.NoSQLDatabaseConnection',
+        on_delete=models.CASCADE,
+        related_name='custom_queries'
+    )
+
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
 
@@ -33,21 +37,65 @@ class CustomNoSQLQuery(models.Model):
     def __str__(self):
         return self.name + ' - ' + self.database_connection.name + ' - ' + self.database_connection.nosql_db_type
 
-    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
-        super().save(force_insert, force_update, using, update_fields)
+    def save(
+        self,
+        force_insert=False,
+        force_update=False,
+        using=None,
+        update_fields=None
+    ):
+        super().save(
+            force_insert,
+            force_update,
+            using,
+            update_fields
+        )
+
         self.database_connection.custom_queries.add(self)
 
     class Meta:
         ordering = ['-created_at']
         verbose_name_plural = 'Custom NoSQL Queries'
         verbose_name = 'Custom NoSQL Query'
+
         unique_together = [
-            ['database_connection', 'name'],
+            [
+                'database_connection',
+                'name'
+            ],
         ]
+
         indexes = [
-            models.Index(fields=['database_connection', 'name']),
-            models.Index(fields=['database_connection', 'created_at']),
-            models.Index(fields=['database_connection', 'updated_at']),
-            models.Index(fields=['database_connection', 'name', 'created_at']),
-            models.Index(fields=['database_connection', 'name', 'updated_at']),
+            models.Index(
+                fields=[
+                    'database_connection',
+                    'name'
+                ]
+            ),
+            models.Index(
+                fields=[
+                    'database_connection',
+                    'created_at'
+                ]
+            ),
+            models.Index(
+                fields=[
+                    'database_connection',
+                    'updated_at'
+                ]
+            ),
+            models.Index(
+                fields=[
+                    'database_connection',
+                    'name',
+                    'created_at'
+                ]
+            ),
+            models.Index(
+                fields=[
+                    'database_connection',
+                    'name',
+                    'updated_at'
+                ]
+            ),
         ]

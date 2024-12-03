@@ -14,8 +14,6 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
 
 def build_technical_dictionary_prompt(glossary: str):
     return f"""

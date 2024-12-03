@@ -22,8 +22,14 @@ from uuid import uuid4
 import boto3
 from filetype import filetype
 
-from apps.core.media_managers.utils import GENERATED_IMAGES_ROOT_MEDIA_PATH
-from apps.core.visual_client.utils import FILE_FORMAT_BIN
+from apps.core.media_managers.utils import (
+    GENERATED_IMAGES_ROOT_MEDIA_PATH
+)
+
+from apps.core.visual_client.utils import (
+    FILE_FORMAT_BIN
+)
+
 from config import settings
 from config.settings import MEDIA_URL
 

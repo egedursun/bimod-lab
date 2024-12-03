@@ -14,14 +14,24 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
-from apps.core.codebase.handler_methods.embedding_handler_repo_chunk import embed_repository_chunks_helper
+from apps.core.codebase.handler_methods.embedding_handler_repo_chunk import (
+    embed_repository_chunks_helper
+)
 
 logger = logging.getLogger(__name__)
 
 
-def embed_repository_chunks(executor_params, chunks, path, document_id, document_uuid):
+def embed_repository_chunks(
+    executor_params,
+    chunks,
+    path,
+    document_id,
+    document_uuid
+):
+
     try:
         error = embed_repository_chunks_helper(
             executor_params=executor_params,
@@ -30,8 +40,10 @@ def embed_repository_chunks(executor_params, chunks, path, document_id, document
             document_id=document_id,
             document_uuid=document_uuid
         )
+
     except Exception as e:
         logger.error(f"[tasks.embed_repository_chunks] Error embedding the repository chunks: {e}")
         error = f"[tasks.embed_repository_chunks] Error embedding the repository chunks: {e}"
+
     logger.info(f"[tasks.embed_repository_chunks] Repository chunks embedded successfully.")
     return error

@@ -14,7 +14,11 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-from apps.metatempo.models import MetaTempoConnection, MetaTempoMemberLogDaily
+
+from apps.metatempo.models import (
+    MetaTempoConnection,
+    MetaTempoMemberLogDaily
+)
 
 
 def get_daily_logs_datasource_prompt(connection: MetaTempoConnection, batched_logs: list):

@@ -14,14 +14,16 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from django.contrib import admin
 
 from apps.datasource_browsers.models import DataSourceBrowserConnection
-from apps.datasource_browsers.utils import BROWSER_ADMIN_LIST, BROWSER_ADMIN_SEARCH, BROWSER_ADMIN_FILTER
+
+from apps.datasource_browsers.utils import (
+    BROWSER_ADMIN_LIST,
+    BROWSER_ADMIN_SEARCH,
+    BROWSER_ADMIN_FILTER
+)
 
 
 @admin.register(DataSourceBrowserConnection)

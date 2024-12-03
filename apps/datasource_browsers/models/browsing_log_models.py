@@ -17,17 +17,36 @@
 
 from django.db import models
 
-from apps.datasource_browsers.models.browser_connection_models import DataSourceBrowserConnection
+from apps.datasource_browsers.models.browser_connection_models import (
+    DataSourceBrowserConnection
+)
 
 
 class DataSourceBrowserBrowsingLog(models.Model):
-    connection = models.ForeignKey(DataSourceBrowserConnection, on_delete=models.CASCADE, related_name="logs")
+    connection = models.ForeignKey(
+        DataSourceBrowserConnection,
+        on_delete=models.CASCADE,
+        related_name="logs"
+    )
+
     action = models.CharField(max_length=1000)
-    context_url = models.CharField(max_length=1000, blank=True, null=True)
+
+    context_url = models.CharField(
+        max_length=1000,
+        blank=True,
+        null=True
+    )
+
     html_content = models.TextField(blank=True, null=True)
     context_content = models.TextField(blank=True, null=True)
     log_content = models.TextField(blank=True, null=True)
-    screenshot = models.ImageField(upload_to="datasource_browser_screenshots/%Y/%m/%d", blank=True, null=True)
+
+    screenshot = models.ImageField(
+        upload_to="datasource_browser_screenshots/%Y/%m/%d",
+        blank=True,
+        null=True
+    )
+
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

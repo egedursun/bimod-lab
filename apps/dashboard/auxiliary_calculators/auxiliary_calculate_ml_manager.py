@@ -22,16 +22,30 @@ from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
 class AuxiliaryCalculateMLManager:
 
     @staticmethod
-    def calculate_total_ml_predictions_per_assistants(agents, txs, n_days):
+    def calculate_total_ml_predictions_per_assistants(
+        agents,
+        txs,
+        n_days
+    ):
+
         result = {}
+
         for a in agents:
             txs_f = txs.filter(
                 responsible_assistant=a,
-                created_at__gte=timezone.now() - timezone.timedelta(days=n_days)
+                created_at__gte=timezone.now() - timezone.timedelta(
+                    days=n_days
+                )
             )
+
             total = 0
+
             for tx in txs_f:
-                if tx.transaction_source in [LLMTransactionSourcesTypesNames.ML_MODEL_PREDICTION]:
+                if tx.transaction_source in [
+                    LLMTransactionSourcesTypesNames.ML_MODEL_PREDICTION
+                ]:
                     total += 1
+
             result[a.name] = total
+
         return result

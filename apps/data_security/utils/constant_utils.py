@@ -14,14 +14,25 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 NER_LANGUAGES = [
     ('en', 'English'),
 ]
 
-NER_INTEGRATION_ADMIN_LIST = ('name', 'organization', 'language', 'created_by_user', 'created_at', 'updated_at')
-NER_INTEGRATION_ADMIN_SEARCH = ('name', 'description')
-NER_INTEGRATION_ADMIN_FILTER = ('organization', 'language', 'created_by_user')
+NER_INTEGRATION_ADMIN_LIST = (
+    'name',
+    'organization',
+    'language',
+    'created_by_user',
+    'created_at',
+    'updated_at'
+)
+NER_INTEGRATION_ADMIN_SEARCH = (
+    'name',
+    'description'
+)
+NER_INTEGRATION_ADMIN_FILTER = (
+    'organization',
+    'language',
+    'created_by_user'
+)

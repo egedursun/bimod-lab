@@ -17,7 +17,10 @@
 
 import logging
 
-from apps.core.flexible_modalities.custom_script_executor import CustomScriptsContentRetriever
+from apps.core.flexible_modalities.custom_script_executor import (
+    CustomScriptsContentRetriever
+)
+
 from apps.mm_scripts.models import CustomScriptReference
 
 logger = logging.getLogger(__name__)

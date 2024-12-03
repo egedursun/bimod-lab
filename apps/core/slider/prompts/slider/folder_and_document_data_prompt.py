@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 from apps.slider.models import SliderFolder, SliderDocument
 
 

@@ -22,10 +22,18 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
 from apps.assistants.models import Assistant
 from apps.datasource_codebase.forms import CodeRepositoryStorageForm
-from apps.datasource_codebase.utils import KNOWLEDGE_BASE_SYSTEMS, VECTORIZERS
+
+from apps.datasource_codebase.utils import (
+    KNOWLEDGE_BASE_SYSTEMS,
+    VECTORIZERS
+)
+
 from apps.user_permissions.utils import PermissionNames
 from config.settings import MAX_CODE_BASES_PER_ASSISTANT
 from web_project import TemplateLayout
@@ -36,6 +44,7 @@ logger = logging.getLogger(__name__)
 class CodeBaseView_StorageCreate(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+
         context_user = self.request.user
         context['user'] = context_user
 
@@ -43,13 +52,18 @@ class CodeBaseView_StorageCreate(LoginRequiredMixin, TemplateView):
             context['knowledge_base_systems'] = KNOWLEDGE_BASE_SYSTEMS
             context['vectorizers'] = VECTORIZERS
             user_orgs = context_user.organizations.all()
-            agents_of_orgs = Assistant.objects.filter(organization__in=user_orgs)
+
+            agents_of_orgs = Assistant.objects.filter(
+                organization__in=user_orgs
+            )
+
             context['assistants'] = agents_of_orgs
             context['form'] = CodeRepositoryStorageForm()
 
         except Exception as e:
             logger.error(f"User: {context_user} - Code Base Storage - Create Error: {e}")
             messages.error(self.request, 'An error occurred while creating Code Base Storage.')
+
             return context
 
         return context
@@ -59,26 +73,30 @@ class CodeBaseView_StorageCreate(LoginRequiredMixin, TemplateView):
 
         ##############################
         # PERMISSION CHECK FOR - ADD_CODE_BASE
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.ADD_CODE_BASE):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.ADD_CODE_BASE
+        ):
             messages.error(self.request, "You do not have permission to add code base storages.")
             return redirect('datasource_codebase:list')
         ##############################
 
         if form.is_valid():
-            assistant = form.cleaned_data['assistant']
 
-            # check the number of code base connections assistant has
+            assistant = form.cleaned_data['assistant']
             n_code_bases = assistant.coderepositorystorageconnection_set.count()
+
             if n_code_bases > MAX_CODE_BASES_PER_ASSISTANT:
                 messages.error(request,
                                f'Assistant has reached the maximum number of code base connections ({MAX_CODE_BASES_PER_ASSISTANT}).')
+
                 return redirect('datasource_codebase:create')
 
             form.save()
 
             logger.info(f"Code Base Storage created successfully.")
             messages.success(request, "Code Base Storage created successfully.")
+
             return redirect('datasource_codebase:list')
 
         else:
@@ -87,4 +105,5 @@ class CodeBaseView_StorageCreate(LoginRequiredMixin, TemplateView):
 
             context = self.get_context_data(**kwargs)
             context['form'] = form
+
             return self.render_to_response(context)

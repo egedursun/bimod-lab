@@ -14,15 +14,18 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from django.contrib import admin
 
-from apps.datasource_knowledge_base.models import KnowledgeBaseDocumentChunk
-from apps.datasource_knowledge_base.utils import DOCUMENT_CHUNK_ADMIN_LIST, DOCUMENT_CHUNK_ADMIN_FILTER, \
+from apps.datasource_knowledge_base.models import (
+    KnowledgeBaseDocumentChunk
+)
+
+from apps.datasource_knowledge_base.utils import (
+    DOCUMENT_CHUNK_ADMIN_LIST,
+    DOCUMENT_CHUNK_ADMIN_FILTER,
     DOCUMENT_CHUNK_ADMIN_SEARCH
+)
 
 
 @admin.register(KnowledgeBaseDocumentChunk)
@@ -30,4 +33,5 @@ class KnowledgeBaseDocumentChunkAdmin(admin.ModelAdmin):
     list_display = DOCUMENT_CHUNK_ADMIN_LIST
     list_filter = DOCUMENT_CHUNK_ADMIN_FILTER
     search_fields = DOCUMENT_CHUNK_ADMIN_SEARCH
+
     readonly_fields = ['created_at']

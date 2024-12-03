@@ -21,8 +21,14 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.datasource_codebase.models import CodeRepositoryStorageConnection
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
+from apps.datasource_codebase.models import (
+    CodeRepositoryStorageConnection
+)
+
 from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
@@ -37,8 +43,10 @@ class CodeBaseView_StorageList(LoginRequiredMixin, TemplateView):
 
         ##############################
         # PERMISSION CHECK FOR - LIST_CODE_BASE
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.LIST_CODE_BASE):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.LIST_CODE_BASE
+        ):
             messages.error(self.request, "You do not have permission to list code base storages.")
             return context
         ##############################
@@ -48,21 +56,31 @@ class CodeBaseView_StorageList(LoginRequiredMixin, TemplateView):
             user_orgs = Organization.objects.filter(users__in=[context_user])
 
             conns_by_orgs = {}
+
             for org in user_orgs:
                 agents = org.assistants.all()
                 agent_conns = {}
+
                 for agent in agents:
-                    conns = CodeRepositoryStorageConnection.objects.filter(assistant=agent)
+                    conns = CodeRepositoryStorageConnection.objects.filter(
+                        assistant=agent
+                    )
+
                     if conns.exists():
                         agent_conns[agent] = conns
+
                 if agent_conns:
                     conns_by_orgs[org] = agent_conns
+
         except Exception as e:
             logger.error(f"User: {context_user} - Code Base Storage - List Error: {e}")
             messages.error(self.request, 'An error occurred while listing Code Base Storages.')
+
             return context
 
         context['connections_by_organization'] = conns_by_orgs
         context['user'] = context_user
+
         logger.info(f"[CodeBaseView_StorageList] User: {context_user} listed code base storages.")
+
         return context

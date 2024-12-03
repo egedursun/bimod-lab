@@ -24,8 +24,15 @@ class CustomNoSQLQueryForm(forms.ModelForm):
     class Meta:
         model = CustomNoSQLQuery
         fields = [
-            'database_connection', 'name', 'description', 'nosql_query',
+            'database_connection',
+            'name',
+            'description',
+            'nosql_query',
         ]
         widgets = {
-            'nosql_query': forms.Textarea(attrs={'rows': 10}),
+            'nosql_query': forms.Textarea(
+                attrs={
+                    'rows': 10
+                }
+            ),
         }

@@ -14,14 +14,16 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from django.contrib import admin
 
 from apps.datasource_sql.models import CustomSQLQuery
-from apps.datasource_sql.utils import SQL_QUERY_ADMIN_LIST, SQL_QUERY_ADMIN_FILTER, SQL_QUERY_ADMIN_SEARCH
+
+from apps.datasource_sql.utils import (
+    SQL_QUERY_ADMIN_LIST,
+    SQL_QUERY_ADMIN_FILTER,
+    SQL_QUERY_ADMIN_SEARCH
+)
 
 
 @admin.register(CustomSQLQuery)
@@ -29,5 +31,10 @@ class CustomSQLQueryAdmin(admin.ModelAdmin):
     list_display = SQL_QUERY_ADMIN_LIST
     list_filter = SQL_QUERY_ADMIN_FILTER
     search_fields = SQL_QUERY_ADMIN_SEARCH
+
     ordering = ('-created_at',)
-    readonly_fields = ('created_at', 'updated_at')
+
+    readonly_fields = (
+        'created_at',
+        'updated_at'
+    )

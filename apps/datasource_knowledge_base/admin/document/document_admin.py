@@ -14,17 +14,24 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from django.contrib import admin
 
-from apps.core.vector_operations.vector_document.vector_store_decoder import KnowledgeBaseSystemDecoder
-from apps.datasource_knowledge_base.models import KnowledgeBaseDocument
+from apps.core.vector_operations.vector_document.vector_store_decoder import (
+    KnowledgeBaseSystemDecoder
+)
+
+from apps.datasource_knowledge_base.models import (
+    KnowledgeBaseDocument
+)
+
 from django.contrib.admin.actions import delete_selected as django_delete_selected
 
-from apps.datasource_knowledge_base.utils import DOCUMENT_ADMIN_LIST, DOCUMENT_ADMIN_FILTER, DOCUMENT_ADMIN_SEARCH
+from apps.datasource_knowledge_base.utils import (
+    DOCUMENT_ADMIN_LIST,
+    DOCUMENT_ADMIN_FILTER,
+    DOCUMENT_ADMIN_SEARCH
+)
 
 
 @admin.register(KnowledgeBaseDocument)
@@ -32,15 +39,27 @@ class KnowledgeBaseDocumentAdmin(admin.ModelAdmin):
     list_display = DOCUMENT_ADMIN_LIST
     list_filter = DOCUMENT_ADMIN_FILTER
     search_fields = DOCUMENT_ADMIN_SEARCH
-    readonly_fields = ['created_at', 'updated_at']
+
+    readonly_fields = [
+        'created_at',
+        'updated_at'
+    ]
 
     def delete_selected(self, request, queryset):
         for obj in queryset:
             c = KnowledgeBaseSystemDecoder.get(obj.knowledge_base)
+
             if c is not None:
                 o = c.delete_weaviate_document(
                     class_name=obj.knowledge_base.class_name,
-                    document_uuid=obj.document_uuid)
+                    document_uuid=obj.document_uuid
+                )
+
                 if not o["status"]:
                     pass
-        return django_delete_selected(self, request, queryset)
+
+        return django_delete_selected(
+            self,
+            request,
+            queryset
+        )

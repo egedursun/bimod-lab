@@ -15,6 +15,5 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-
 from .academy_courses_list_views import *
 from .academy_courses_detail_views import *

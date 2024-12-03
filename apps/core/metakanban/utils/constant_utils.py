@@ -14,7 +14,11 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-from apps.metakanban.utils import MetaKanbanTaskLabelColorChoiceNames, MetaKanbanTaskPrioritiesNames
+
+from apps.metakanban.utils import (
+    MetaKanbanTaskLabelColorChoiceNames,
+    MetaKanbanTaskPrioritiesNames
+)
 
 METAKANBAN_TOOL_COMMAND_MAXIMUM_ATTEMPTS = 10
 

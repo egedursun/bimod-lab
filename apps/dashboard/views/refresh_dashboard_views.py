@@ -14,13 +14,18 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils import timezone
 from django.views.generic import TemplateView
 
-from apps.dashboard.utils import TransactionStatisticsManager, build_statistics_for_graph
+from apps.dashboard.utils import (
+    TransactionStatisticsManager,
+    build_statistics_for_graph
+)
+
 from apps.llm_core.models import LLMCore
 from apps.organization.models import Organization
 from web_project import TemplateLayout
@@ -38,21 +43,38 @@ class DashboardView_Refresh(LoginRequiredMixin, TemplateView):
         user = self.request.user
 
         try:
-            orgs = Organization.objects.filter(users__in=[user])
-            ai_models = LLMCore.objects.filter(organization__in=orgs)
+            orgs = Organization.objects.filter(
+                users__in=[user]
+            )
+
+            ai_models = LLMCore.objects.filter(
+                organization__in=orgs
+            )
+
             context["llm_models"] = ai_models
             last_n_days = self.kwargs.get("days")
+
             if last_n_days == "all":
                 last_n_days = 10_000
                 context["days"] = "all"
             else:
                 context["days"] = last_n_days
 
-            manager = TransactionStatisticsManager(user=self.request.user, last_days=int(last_n_days))
+            manager = TransactionStatisticsManager(
+                user=self.request.user,
+                last_days=int(last_n_days)
+            )
+
             data_statistics = manager.statistics
             last_update_datetime = timezone.now().strftime("%Y-%m-%d %H:%M:%S")
+
             context["last_update_datetime"] = last_update_datetime
-            context = build_statistics_for_graph(statistics=data_statistics, context=context)
+
+            context = build_statistics_for_graph(
+                statistics=data_statistics,
+                context=context
+            )
+
         except Exception as e:
             logger.error(f"Error getting main dashboard context data: {e}")
             return context

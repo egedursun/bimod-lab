@@ -17,7 +17,10 @@
 
 import logging
 
-from apps.core.http_client.http_client_download_manager import HTTPClientDownloadExecutor
+from apps.core.http_client.http_client_download_manager import (
+    HTTPClientDownloadExecutor
+)
+
 from config.settings import MEDIA_URL
 
 logger = logging.getLogger(__name__)

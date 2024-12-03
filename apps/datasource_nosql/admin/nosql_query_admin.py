@@ -18,7 +18,12 @@
 from django.contrib import admin
 
 from apps.datasource_nosql.models import CustomNoSQLQuery
-from apps.datasource_nosql.utils import NOSQL_QUERY_ADMIN_LIST, NOSQL_QUERY_ADMIN_FILTER, NOSQL_QUERY_ADMIN_SEARCH
+
+from apps.datasource_nosql.utils import (
+    NOSQL_QUERY_ADMIN_LIST,
+    NOSQL_QUERY_ADMIN_FILTER,
+    NOSQL_QUERY_ADMIN_SEARCH
+)
 
 
 @admin.register(CustomNoSQLQuery)
@@ -26,4 +31,5 @@ class CustomNoSQLQueryAdmin(admin.ModelAdmin):
     list_display = NOSQL_QUERY_ADMIN_LIST
     list_filter = NOSQL_QUERY_ADMIN_FILTER
     search_fields = NOSQL_QUERY_ADMIN_SEARCH
+
     ordering = ('-created_at',)

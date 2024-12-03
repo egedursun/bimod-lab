@@ -17,7 +17,9 @@
 
 import logging
 
-from apps.core.context_memory_manager.context_memory_manager import ContextMemoryManager
+from apps.core.context_memory_manager.context_memory_manager import (
+    ContextMemoryManager
+)
 
 
 logger = logging.getLogger(__name__)

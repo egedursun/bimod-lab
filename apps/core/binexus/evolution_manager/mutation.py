@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import random
 
 from apps.core.binexus.evolution_manager import Individual, Chromosome

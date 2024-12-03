@@ -629,7 +629,7 @@ INTERNAL_OPENAI_API_KEY = os.environ.get("INTERNAL_OPENAI_API_KEY", default="")
 # ATTEMPT FIXTURE DEPLOYMENT
 #####################################################################################################################
 
-ATTEMPT_FIXTURE_DEPLOYMENT = False
+ATTEMPT_FIXTURE_DEPLOYMENT = True
 SKIP_FIXTURE_EMBEDDINGS = True
 
 if ATTEMPT_FIXTURE_DEPLOYMENT is True:

@@ -14,12 +14,19 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 from apps.assistants.models import Assistant
-from apps.datasource_browsers.models import DataSourceBrowserConnection
+
+from apps.datasource_browsers.models import (
+    DataSourceBrowserConnection
+)
 
 
 def build_sheetos_browsing_data_source_prompt(assistant: Assistant):
-    browsing_data_sources = DataSourceBrowserConnection.objects.filter(assistant=assistant)
+    browsing_data_sources = DataSourceBrowserConnection.objects.filter(
+        assistant=assistant
+    )
+
     response_prompt = """
             ### **BROWSING CONNECTIONS:**
 

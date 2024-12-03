@@ -18,7 +18,11 @@
 import logging
 
 from apps.core.ml_models.ml_model_executor import MLModelExecutor
-from apps.datasource_ml_models.models import DataSourceMLModelConnection
+
+from apps.datasource_ml_models.models import (
+    DataSourceMLModelConnection
+)
+
 from apps.multimodal_chat.models import MultimodalChat
 
 logger = logging.getLogger(__name__)

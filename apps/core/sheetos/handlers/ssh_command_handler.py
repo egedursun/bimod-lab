@@ -20,9 +20,20 @@ import logging
 
 from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
 from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
-from apps.core.sheetos.utils import find_tool_call_from_json, SHEETOS_TOOL_CALL_MAXIMUM_ATTEMPTS
-from apps.core.tool_calls.core_services.core_service_execute_ssh_system_command import run_execute_ssh_system_commands
-from apps.core.tool_calls.input_verifiers.verify_ssh_system_command import verify_ssh_system_command_content
+
+from apps.core.sheetos.utils import (
+    find_tool_call_from_json,
+    SHEETOS_TOOL_CALL_MAXIMUM_ATTEMPTS
+)
+
+from apps.core.tool_calls.core_services.core_service_execute_ssh_system_command import (
+    run_execute_ssh_system_commands
+)
+
+from apps.core.tool_calls.input_verifiers.verify_ssh_system_command import (
+    verify_ssh_system_command_content
+)
+
 from apps.llm_transaction.models import LLMTransaction
 from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
 
@@ -32,6 +43,7 @@ logger = logging.getLogger(__name__)
 def handle_ssh_command(xc, command: str) -> str:
     from apps.core.sheetos.sheetos_executor import SheetosExecutionManager
     from apps.core.sheetos.prompt_builders import build_ssh_command_system_prompt
+
     xc: SheetosExecutionManager
 
     try:

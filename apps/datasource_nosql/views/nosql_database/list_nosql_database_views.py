@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
@@ -21,9 +22,19 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 
 from apps.assistants.models import Assistant
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.datasource_nosql.models import NoSQLDatabaseConnection
-from apps.user_permissions.utils import PermissionNames
+
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
+from apps.datasource_nosql.models import (
+    NoSQLDatabaseConnection
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -35,8 +46,10 @@ class NoSQLDatabaseView_ManagerList(TemplateView, LoginRequiredMixin):
 
         ##############################
         # PERMISSION CHECK FOR - LIST_NOSQL_DATABASES
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.LIST_NOSQL_DATABASES):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.LIST_NOSQL_DATABASES
+        ):
             messages.error(self.request, "You do not have permission to list NoSQL Data Sources.")
             return context
         ##############################
@@ -44,22 +57,33 @@ class NoSQLDatabaseView_ManagerList(TemplateView, LoginRequiredMixin):
         context_user = self.request.user
 
         try:
-            c = NoSQLDatabaseConnection.objects.filter(assistant__in=Assistant.objects.filter(
-                organization__in=context_user.organizations.all())).select_related('assistant__organization')
+            c = NoSQLDatabaseConnection.objects.filter(
+                assistant__in=Assistant.objects.filter(
+                    organization__in=context_user.organizations.all()
+                )
+            ).select_related('assistant__organization')
+
             c_by_orgs = {}
+
             for connection in c:
                 orgs = connection.assistant.organization
                 agent = connection.assistant
+
                 if orgs not in c_by_orgs:
                     c_by_orgs[orgs] = {}
+
                 if agent not in c_by_orgs[orgs]:
                     c_by_orgs[orgs][agent] = []
+
                 c_by_orgs[orgs][agent].append(connection)
+
         except Exception as e:
             logger.error(f"User: {context_user} - NoSQL Data Source - List Error: {e}")
             messages.error(self.request, 'An error occurred while listing NoSQL Data Sources.')
+
             return context
 
         context['connections_by_organization'] = c_by_orgs
         logger.info(f"NoSQL Database Connections were listed.")
+
         return context

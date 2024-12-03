@@ -14,12 +14,17 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 from apps.assistants.models import Assistant
 from apps.datasource_sql.models import SQLDatabaseConnection
 
 
 def build_sheetos_sql_data_source_prompt(assistant: Assistant):
-    sql_data_sources = SQLDatabaseConnection.objects.filter(assistant=assistant)
+
+    sql_data_sources = SQLDatabaseConnection.objects.filter(
+        assistant=assistant
+    )
+
     response_prompt = """
         ### **SQL DATABASE CONNECTIONS:**
 

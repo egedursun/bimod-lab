@@ -15,7 +15,10 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-from apps.smart_contracts.utils import SmartContractCategoriesNames, SmartContractTemplateNames
+from apps.smart_contracts.utils import (
+    SmartContractCategoriesNames,
+    SmartContractTemplateNames
+)
 
 
 def verify_smart_contract_generation_query_content(content: dict):

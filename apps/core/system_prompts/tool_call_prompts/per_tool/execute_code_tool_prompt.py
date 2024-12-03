@@ -14,8 +14,6 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
 
 from apps.core.tool_calls.utils import ToolCallDescriptorNames
 

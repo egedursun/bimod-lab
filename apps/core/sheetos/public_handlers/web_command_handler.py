@@ -21,9 +21,20 @@ import logging
 from apps.core.browsers.utils import BrowserActionsNames
 from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
 from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
-from apps.core.sheetos.utils import SHEETOS_TOOL_CALL_MAXIMUM_ATTEMPTS, find_tool_call_from_json
-from apps.core.tool_calls.core_services.core_service_execute_browser import run_execute_browsing
-from apps.core.tool_calls.input_verifiers.verify_browser_query import verify_browser_query_content
+
+from apps.core.sheetos.utils import (
+    SHEETOS_TOOL_CALL_MAXIMUM_ATTEMPTS,
+    find_tool_call_from_json
+)
+
+from apps.core.tool_calls.core_services.core_service_execute_browser import (
+    run_execute_browsing
+)
+
+from apps.core.tool_calls.input_verifiers.verify_browser_query import (
+    verify_browser_query_content
+)
+
 from apps.llm_transaction.models import LLMTransaction
 from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
 

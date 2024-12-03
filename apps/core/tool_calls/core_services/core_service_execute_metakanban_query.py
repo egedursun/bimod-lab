@@ -17,7 +17,10 @@
 
 import logging
 
-from apps.core.metakanban.metakanban_execution_handler import MetaKanbanExecutionManager
+from apps.core.metakanban.metakanban_execution_handler import (
+    MetaKanbanExecutionManager
+)
+
 from apps.metakanban.models import MetaKanbanAssistantConnection
 
 logger = logging.getLogger(__name__)

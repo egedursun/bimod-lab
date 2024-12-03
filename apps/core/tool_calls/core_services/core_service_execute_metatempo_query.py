@@ -17,7 +17,10 @@
 
 import logging
 
-from apps.core.metatempo.metatempo_execution_handler import MetaTempoExecutionManager
+from apps.core.metatempo.metatempo_execution_handler import (
+    MetaTempoExecutionManager
+)
+
 from apps.metatempo.models import MetaTempoAssistantConnection
 
 logger = logging.getLogger(__name__)

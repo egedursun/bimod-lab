@@ -14,9 +14,6 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 
 KNOWLEDGE_BASE_SYSTEMS = [
@@ -267,31 +264,115 @@ class RepositoryUploadStatusNames:
     PARTIALLY_FAILED = 'partially_failed'
 
 
-CODEBASE_REPOSITORY_ADMIN_LIST = ['knowledge_base', 'repository_name', 'repository_description',
-                                    'repository_metadata', 'repository_uri', 'created_at', 'updated_at']
-CODEBASE_REPOSITORY_ADMIN_FILTER = ['knowledge_base', 'repository_name', 'repository_description',
-                                    'repository_metadata', 'repository_uri', 'created_at', 'updated_at']
-CODEBASE_REPOSITORY_ADMIN_SEARCH = ['knowledge_base', 'repository_name', 'repository_description',
-                                    'repository_metadata', 'repository_uri', 'created_at', 'updated_at']
+CODEBASE_REPOSITORY_ADMIN_LIST = [
+    'knowledge_base',
+    'repository_name',
+    'repository_description',
+    'repository_metadata',
+    'repository_uri',
+    'created_at',
+    'updated_at'
+]
+CODEBASE_REPOSITORY_ADMIN_FILTER = [
+    'knowledge_base',
+    'repository_name',
+    'repository_description',
+    'repository_metadata',
+    'repository_uri',
+    'created_at',
+    'updated_at'
+]
+CODEBASE_REPOSITORY_ADMIN_SEARCH = [
+    'knowledge_base',
+    'repository_name',
+    'repository_description',
+    'repository_metadata',
+    'repository_uri',
+    'created_at',
+    'updated_at'
+]
 
-CODE_REPOSITORY_CHUNK_ADMIN_LIST = ['knowledge_base', 'repository', 'chunk_repository_uri', 'knowledge_base_uuid',
-                                    'repository_uuid', 'created_at']
-CODE_REPOSITORY_CHUNK_ADMIN_FILTER = ['repository', 'knowledge_base_uuid', 'repository_uuid', 'created_at']
-CODE_REPOSITORY_CHUNK_ADMIN_SEARCH = ['repository', 'chunk_content', 'chunk_metadata', 'chunk_repository_uri',
-                                      'knowledge_base_uuid', 'created_at']
+CODE_REPOSITORY_CHUNK_ADMIN_LIST = [
+    'knowledge_base',
+    'repository',
+    'chunk_repository_uri',
+    'knowledge_base_uuid',
+    'repository_uuid',
+    'created_at'
+]
+CODE_REPOSITORY_CHUNK_ADMIN_FILTER = [
+    'repository',
+    'knowledge_base_uuid',
+    'repository_uuid',
+    'created_at'
+]
+CODE_REPOSITORY_CHUNK_ADMIN_SEARCH = [
+    'repository',
+    'chunk_content',
+    'chunk_metadata',
+    'chunk_repository_uri',
+    'knowledge_base_uuid',
+    'created_at'
+]
 
-CODE_REPOSITORY_LOG_ADMIN_LIST = ['repository_full_uri', 'log_message', 'created_at']
-CODE_REPOSITORY_LOG_ADMIN_FILTER = ['repository_full_uri', 'log_message', 'created_at']
-CODE_REPOSITORY_LOG_ADMIN_SEARCH = ['repository_full_uri', 'log_message']
+CODE_REPOSITORY_LOG_ADMIN_LIST = [
+    'repository_full_uri',
+    'log_message',
+    'created_at'
+]
+CODE_REPOSITORY_LOG_ADMIN_FILTER = [
+    'repository_full_uri',
+    'log_message',
+    'created_at'
+]
+CODE_REPOSITORY_LOG_ADMIN_SEARCH = [
+    'repository_full_uri',
+    'log_message'
+]
 
-CODE_REPOSITORY_STORAGE_ADMIN_LIST = ['provider', 'host_url', 'provider_api_key', 'assistant', 'name', 'class_name',
-                                      'description', 'vectorizer', 'vectorizer_api_key', 'embedding_chunk_size',
-                                      'embedding_chunk_overlap', 'search_instance_retrieval_limit',
-                                      'created_at', 'updated_at']
-CODE_REPOSITORY_STORAGE_ADMIN_FILTER = ['provider', 'host_url', 'provider_api_key', 'assistant', 'name', 'class_name',
-                                        'description', 'vectorizer', 'vectorizer_api_key', 'embedding_chunk_size',
-                                        'embedding_chunk_overlap', 'created_at', 'updated_at']
-CODE_REPOSITORY_STORAGE_ADMIN_SEARCH = ['provider', 'host_url', 'provider_api_key', 'assistant', 'name', 'class_name',
-                                        'description', 'vectorizer', 'vectorizer_api_key', 'embedding_chunk_size',
-                                        'embedding_chunk_overlap', 'search_instance_retrieval_limit', 'created_at',
-                                        'updated_at']
+CODE_REPOSITORY_STORAGE_ADMIN_LIST = [
+    'provider', 'host_url',
+    'provider_api_key',
+    'assistant',
+    'name',
+    'class_name',
+    'description',
+    'vectorizer',
+    'vectorizer_api_key',
+    'embedding_chunk_size',
+    'embedding_chunk_overlap',
+    'search_instance_retrieval_limit',
+    'created_at',
+    'updated_at'
+]
+CODE_REPOSITORY_STORAGE_ADMIN_FILTER = [
+    'provider',
+    'host_url',
+    'provider_api_key',
+    'assistant',
+    'name',
+    'class_name',
+    'description',
+    'vectorizer',
+    'vectorizer_api_key',
+    'embedding_chunk_size',
+    'embedding_chunk_overlap',
+    'created_at',
+    'updated_at'
+]
+CODE_REPOSITORY_STORAGE_ADMIN_SEARCH = [
+    'provider',
+    'host_url',
+    'provider_api_key',
+    'assistant',
+    'name',
+    'class_name',
+    'description',
+    'vectorizer',
+    'vectorizer_api_key',
+    'embedding_chunk_size',
+    'embedding_chunk_overlap',
+    'search_instance_retrieval_limit',
+    'created_at',
+    'updated_at'
+]

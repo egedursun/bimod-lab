@@ -23,28 +23,90 @@ import wonderwords
 
 def build_random_word_string():
     chat_name_1 = wonderwords.RandomWord().word(
-        word_min_length=4, word_max_length=32, include_categories=["noun"], regex=r"^[a-zA-Z]+$"
+        word_min_length=4,
+        word_max_length=32,
+        include_categories=["noun"],
+        regex=r"^[a-zA-Z]+$"
     )
+
     chat_name_2 = wonderwords.RandomWord().word(
-        word_min_length=4, word_max_length=32, include_categories=["noun"], regex=r"^[a-zA-Z]+$"
+        word_min_length=4,
+        word_max_length=32,
+        include_categories=["noun"],
+        regex=r"^[a-zA-Z]+$"
     )
+
     chat_name_3 = wonderwords.RandomWord().word(
-        word_min_length=4, word_max_length=32, include_categories=["noun"], regex=r"^[a-zA-Z]+$"
+        word_min_length=4,
+        word_max_length=32,
+        include_categories=["noun"],
+        regex=r"^[a-zA-Z]+$"
     )
+
     chat_name_1 = chat_name_1.capitalize()
     chat_name_2 = chat_name_2.capitalize()
     chat_name_3 = chat_name_3.capitalize()
+
     random_digit_string = str(random.randint(1_000_000, 9_999_999))
-    return "".join([chat_name_1, chat_name_2, chat_name_3, random_digit_string])
+
+    return "".join([
+        chat_name_1,
+        chat_name_2,
+        chat_name_3,
+        random_digit_string
+    ])
 
 
 def convert_given_name_to_class_name(given_name: str):
     o = ""
     for char in given_name:
-        if char.isalnum() and char not in [" ", "_", "-", ".", ":", ";", ",", "'", '"', "!", "@", "#", "$", "%", "^",
-                                           "&", "*", "(", ")", "+", "=", "{", "}", "[", "]", "<", ">", "?", "/", "\\",
-                                           "|", "`", "~", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"]:
+        if char.isalnum() and char not in [
+            " ",
+            "_",
+            "-",
+            ".",
+            ":",
+            ";",
+            ",",
+            "'",
+            '"',
+            "!",
+            "@",
+            "#",
+            "$",
+            "%",
+            "^",
+            "&",
+            "*",
+            "(",
+            ")",
+            "+",
+            "=",
+            "{",
+            "}",
+            "[",
+            "]",
+            "<",
+            ">",
+            "?",
+            "/",
+            "\\",
+            "|",
+            "`",
+            "~",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "0"
+        ]:
             o += char
+
     given_name_alnum_list = o.lower().capitalize()
     return given_name_alnum_list
 

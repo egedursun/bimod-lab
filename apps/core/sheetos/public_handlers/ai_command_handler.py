@@ -17,8 +17,15 @@
 
 import logging
 
-from apps.core.generative_ai.utils import ChatRoles, GPT_DEFAULT_ENCODING_ENGINE
-from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
+from apps.core.generative_ai.utils import (
+    ChatRoles,
+    GPT_DEFAULT_ENCODING_ENGINE
+)
+
+from apps.core.internal_cost_manager.costs_map import (
+    InternalServiceCosts
+)
+
 from apps.llm_transaction.models import LLMTransaction
 from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
 
@@ -30,8 +37,14 @@ def handle_ai_command_public(
     content: str,
     command: str
 ) -> str:
-    from apps.core.sheetos.sheetos_executor_public import SheetosExecutionManager_Public
-    from apps.core.sheetos.prompt_builders import build_ai_command_system_prompt_public
+    from apps.core.sheetos.sheetos_executor_public import (
+        SheetosExecutionManager_Public
+    )
+
+    from apps.core.sheetos.prompt_builders import (
+        build_ai_command_system_prompt_public
+    )
+
     xc: SheetosExecutionManager_Public
 
     try:

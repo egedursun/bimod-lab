@@ -14,8 +14,6 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
 
 from .create_assistant_views import *
 from .delete_assistant_views import *

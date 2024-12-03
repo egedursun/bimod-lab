@@ -20,9 +20,20 @@ import logging
 
 from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
 from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
-from apps.core.sheetos.utils import find_tool_call_from_json, SHEETOS_TOOL_CALL_MAXIMUM_ATTEMPTS
-from apps.core.tool_calls.core_services.core_service_sql_query import run_sql_query
-from apps.core.tool_calls.input_verifiers.verify_run_sql_query import verify_run_sql_query_content
+
+from apps.core.sheetos.utils import (
+    find_tool_call_from_json,
+    SHEETOS_TOOL_CALL_MAXIMUM_ATTEMPTS
+)
+
+from apps.core.tool_calls.core_services.core_service_sql_query import (
+    run_sql_query
+)
+
+from apps.core.tool_calls.input_verifiers.verify_run_sql_query import (
+    verify_run_sql_query_content
+)
+
 from apps.llm_transaction.models import LLMTransaction
 from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
 
@@ -32,6 +43,7 @@ logger = logging.getLogger(__name__)
 def handle_sql_command(xc, command: str) -> str:
     from apps.core.sheetos.prompt_builders import build_sql_command_system_prompt
     from apps.core.sheetos.sheetos_executor import SheetosExecutionManager
+
     xc: SheetosExecutionManager
 
     try:

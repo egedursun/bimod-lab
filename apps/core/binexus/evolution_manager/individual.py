@@ -14,20 +14,25 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 import uuid
 
 from apps.binexus.models import BinexusProcess, BinexusEliteAgent
 from apps.core.binexus.evolution_manager import Chromosome
+
 from apps.core.binexus.prompt_builders.binexus_individual_assignment_prompt_builders import (
     build_binexus_individual_assignment_prompt
 )
+
 from apps.core.binexus.prompts.binexus_individual_assignment_prompt import (
     binexus_individual_assignment_prompt_redacted
 )
+
 from apps.core.binexus.utils import generate_random_elite_agent_name
 from apps.core.generative_ai.gpt_openai_manager import OpenAIGPTClientManager
 from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
+
 from apps.llm_core.models import LLMCore
 from apps.llm_transaction.models import LLMTransaction
 from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames

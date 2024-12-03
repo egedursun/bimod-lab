@@ -14,15 +14,25 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 import requests
 
-from apps.core.system_prompts.chat_history_factory_builder import HistoryBuilder
-from apps.orchestrations.models import OrchestrationQuery, OrchestrationQueryLog
+from apps.core.system_prompts.chat_history_factory_builder import (
+    HistoryBuilder
+)
+
+from apps.orchestrations.models import (
+    OrchestrationQuery,
+    OrchestrationQueryLog
+)
+
 import base64 as b64
 
-from apps.orchestrations.utils import OrchestrationQueryLogTypesNames
+from apps.orchestrations.utils import (
+    OrchestrationQueryLogTypesNames
+)
 
 
 logger = logging.getLogger(__name__)

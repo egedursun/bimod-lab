@@ -15,7 +15,6 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-
 from .ai_command_prompts import *
 from .img_command_prompts import *
 from .sql_command_prompts import *

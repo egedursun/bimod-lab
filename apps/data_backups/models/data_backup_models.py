@@ -34,8 +34,20 @@ class DataBackup(models.Model):
         blank=True
     )
     backup_name = models.CharField(max_length=255)
-    backup_type = models.CharField(max_length=255, choices=BACKUP_TYPES, null=True, blank=True)
-    backup_uuid = models.CharField(max_length=255, null=True, blank=True)
+
+    backup_type = models.CharField(
+        max_length=255,
+        choices=BACKUP_TYPES,
+        null=True,
+        blank=True
+    )
+
+    backup_uuid = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True
+    )
+
     created_at = models.DateTimeField(auto_now_add=True)
     serialized_data = models.TextField(null=True, blank=True)
     encryption_password = models.CharField(max_length=255)
@@ -47,27 +59,99 @@ class DataBackup(models.Model):
         verbose_name = 'Data Backup'
         verbose_name_plural = 'Data Backups'
         ordering = ['-created_at']
+
         unique_together = [
-            ['organization', 'backup_name', 'backup_type','created_at'],
+            [
+                'organization',
+                'backup_name',
+                'backup_type',
+                'created_at'
+            ],
         ]
+
         indexes = [
-            models.Index(fields=['organization']),
-            models.Index(fields=['responsible_user']),
-            models.Index(fields=['backup_name']),
-            models.Index(fields=['backup_type']),
-            models.Index(fields=['created_at']),
-            models.Index(fields=['responsible_user', 'created_at']),
-            models.Index(fields=['backup_name', 'created_at']),
-            models.Index(fields=['organization', 'responsible_user']),
-            models.Index(fields=['organization', 'backup_name']),
-            models.Index(fields=['organization', 'backup_type']),
-            models.Index(fields=['organization', 'created_at']),
-            models.Index(fields=['responsible_user', 'backup_name', 'created_at']),
-            models.Index(fields=['responsible_user', 'backup_type', 'created_at']),
-            models.Index(fields=['organization', 'responsible_user', 'created_at']),
-            models.Index(fields=['organization', 'backup_name', 'created_at']),
-            models.Index(fields=['organization', 'responsible_user', 'backup_name', 'created_at']),
-            models.Index(fields=['organization', 'responsible_user', 'backup_type', 'created_at']),
-            models.Index(fields=['organization', 'backup_name', 'backup_type', 'created_at']),
-            models.Index(fields=['organization', 'responsible_user', 'backup_name', 'backup_type', 'created_at']),
+            models.Index(fields=[
+                'organization'
+            ]),
+            models.Index(fields=[
+                'responsible_user'
+            ]),
+            models.Index(fields=[
+                'backup_name'
+            ]),
+            models.Index(fields=[
+                'backup_type'
+            ]),
+            models.Index(fields=[
+                'created_at'
+            ]),
+            models.Index(fields=[
+                'responsible_user',
+                'created_at'
+            ]),
+            models.Index(fields=[
+                'backup_name',
+                'created_at'
+            ]),
+            models.Index(fields=[
+                'organization',
+                'responsible_user'
+            ]),
+            models.Index(fields=[
+                'organization',
+                'backup_name'
+            ]),
+            models.Index(fields=[
+                'organization',
+                'backup_type'
+            ]),
+            models.Index(fields=[
+                'organization',
+                'created_at'
+            ]),
+            models.Index(fields=[
+                'responsible_user',
+                'backup_name',
+                'created_at'
+            ]),
+            models.Index(fields=[
+                'responsible_user',
+                'backup_type',
+                'created_at'
+            ]),
+            models.Index(fields=[
+                'organization',
+                'responsible_user',
+                'created_at'
+            ]),
+            models.Index(fields=[
+                'organization',
+                'backup_name',
+                'created_at'
+            ]),
+            models.Index(fields=[
+                'organization',
+                'responsible_user',
+                'backup_name',
+                'created_at'
+            ]),
+            models.Index(fields=[
+                'organization',
+                'responsible_user',
+                'backup_type',
+                'created_at'
+            ]),
+            models.Index(fields=[
+                'organization',
+                'backup_name',
+                'backup_type',
+                'created_at'
+            ]),
+            models.Index(fields=[
+                'organization',
+                'responsible_user',
+                'backup_name',
+                'backup_type',
+                'created_at'
+            ]),
         ]

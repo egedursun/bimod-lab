@@ -21,7 +21,9 @@ from apps.core.vector_operations.vector_document.vector_store_decoder import (
     KnowledgeBaseSystemDecoder
 )
 
-from apps.datasource_knowledge_base.models import DocumentKnowledgeBaseConnection
+from apps.datasource_knowledge_base.models import (
+    DocumentKnowledgeBaseConnection
+)
 
 logger = logging.getLogger(__name__)
 

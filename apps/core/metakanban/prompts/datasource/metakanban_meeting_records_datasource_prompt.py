@@ -14,9 +14,13 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
-from apps.metakanban.models import MetaKanbanBoard, MetaKanbanMeetingTranscription
+from apps.metakanban.models import (
+    MetaKanbanBoard,
+    MetaKanbanMeetingTranscription
+)
 
 logger = logging.getLogger(__name__)
 

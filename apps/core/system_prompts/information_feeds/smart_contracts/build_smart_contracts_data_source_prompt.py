@@ -16,7 +16,11 @@
 #
 
 from apps.assistants.models import Assistant
-from apps.smart_contracts.models import BlockchainSmartContract, BlockchainWalletConnection
+
+from apps.smart_contracts.models import (
+    BlockchainSmartContract,
+    BlockchainWalletConnection
+)
 
 
 def build_smart_contracts_data_source_prompt(assistant: Assistant):

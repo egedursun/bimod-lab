@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 from apps.assistants.models import Assistant
 from apps.metakanban.models import MetaKanbanAssistantConnection
 

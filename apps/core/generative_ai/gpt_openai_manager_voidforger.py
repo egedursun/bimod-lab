@@ -20,8 +20,13 @@ import logging
 from django.contrib.auth.models import User
 from openai import OpenAI
 
-from apps.core.generative_ai.auxiliary_methods.output_supply_prompts import BALANCE_OVERFLOW_LOG
-from apps.core.generative_ai.auxiliary_methods.json_operations.json_operation_prompts import embed_tool_call_in_prompt
+from apps.core.generative_ai.auxiliary_methods.output_supply_prompts import (
+    BALANCE_OVERFLOW_LOG
+)
+
+from apps.core.generative_ai.auxiliary_methods.json_operations.json_operation_prompts import (
+    embed_tool_call_in_prompt
+)
 
 from apps.core.generative_ai.auxiliary_methods.errors.error_log_prompts import (
     get_technical_error_log,
@@ -39,8 +44,14 @@ from apps.core.generative_ai.utils import (
     RetryCallersNames
 )
 
-from apps.core.system_prompts.chat_history_factory_builder import HistoryBuilder
-from apps.core.system_prompts.system_prompt_factory_builder import SystemPromptFactoryBuilder
+from apps.core.system_prompts.chat_history_factory_builder import (
+    HistoryBuilder
+)
+
+from apps.core.system_prompts.system_prompt_factory_builder import (
+    SystemPromptFactoryBuilder
+)
+
 from apps.core.tool_calls.tool_call_manager import ToolCallManager
 from apps.core.tool_calls.utils import VoidForgerModesNames
 

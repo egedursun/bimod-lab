@@ -19,11 +19,24 @@ import logging
 
 from django.contrib.auth.models import User
 
-from apps.core.generative_ai.gpt_openai_manager import OpenAIGPTClientManager
-from apps.core.generative_ai.gpt_openai_manager_lean import OpenAIGPTLeanClientManager
+from apps.core.generative_ai.gpt_openai_manager import (
+    OpenAIGPTClientManager
+)
+
+from apps.core.generative_ai.gpt_openai_manager_lean import (
+    OpenAIGPTLeanClientManager
+)
+
 from apps.assistants.models import Assistant
-from apps.core.generative_ai.gpt_openai_manager_voidforger import OpenAIGPTVoidForgerClientManager
-from apps.core.generative_ai.statistical_analysis_manager import provide_analysis
+
+from apps.core.generative_ai.gpt_openai_manager_voidforger import (
+    OpenAIGPTVoidForgerClientManager
+)
+
+from apps.core.generative_ai.statistical_analysis_manager import (
+    provide_analysis
+)
+
 from apps.core.generative_ai.utils import LLM_CORE_PROVIDERS
 from apps.multimodal_chat.models import MultimodalChat
 from apps.voidforger.models import VoidForger, MultimodalVoidForgerChat

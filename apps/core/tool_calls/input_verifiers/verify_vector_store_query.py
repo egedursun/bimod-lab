@@ -16,7 +16,9 @@
 #
 
 
-from apps.datasource_knowledge_base.models import DocumentKnowledgeBaseConnection
+from apps.datasource_knowledge_base.models import (
+    DocumentKnowledgeBaseConnection
+)
 
 
 def verify_vector_store_query_content(content: dict):

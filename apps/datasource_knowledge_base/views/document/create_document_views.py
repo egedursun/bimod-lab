@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 import boto3
@@ -23,31 +24,71 @@ from django.shortcuts import redirect
 from django.views.generic import TemplateView
 from slugify import slugify
 
-from apps.core.vector_operations.vector_document.vector_store_decoder import KnowledgeBaseSystemDecoder
-from apps.core.user_permissions.permission_manager import UserPermissionManager
+from apps.core.vector_operations.vector_document.vector_store_decoder import (
+    KnowledgeBaseSystemDecoder
+)
+
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
 from apps.assistants.models import Assistant
-from apps.datasource_knowledge_base.models import DocumentKnowledgeBaseConnection
-from apps.datasource_knowledge_base.tasks import add_vector_store_doc_loaded_log
-from apps.datasource_knowledge_base.utils import generate_document_uri, VectorStoreDocProcessingStatusNames
+
+from apps.datasource_knowledge_base.models import (
+    DocumentKnowledgeBaseConnection
+)
+
+from apps.datasource_knowledge_base.tasks import (
+    add_vector_store_doc_loaded_log
+)
+
+from apps.datasource_knowledge_base.utils import (
+    generate_document_uri,
+    VectorStoreDocProcessingStatusNames
+)
+
 from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from config import settings
 from config.settings import MEDIA_URL
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
 class DocumentView_Create(LoginRequiredMixin, TemplateView):
     def get(self, request, *args, **kwargs):
-        user_agents = Assistant.objects.filter(organization__users__in=[request.user])
-        vector_stores = DocumentKnowledgeBaseConnection.objects.filter(assistant__in=user_agents)
-        orgs = Organization.objects.filter(users__in=[request.user])
+        user_agents = Assistant.objects.filter(
+            organization__users__in=[request.user]
+        )
+
+        vector_stores = DocumentKnowledgeBaseConnection.objects.filter(
+            assistant__in=user_agents
+        )
+
+        orgs = Organization.objects.filter(
+            users__in=[request.user]
+        )
+
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
-        context['organizations'] = list(orgs.values('id', 'name'))
-        context['assistants'] = list(user_agents.values('id', 'name', 'organization_id'))
-        context['knowledge_bases'] = list(vector_stores.values('id', 'name', 'assistant_id'))
+
+        context['organizations'] = list(orgs.values(
+            'id',
+            'name'
+        ))
+
+        context['assistants'] = list(user_agents.values(
+            'id',
+            'name',
+            'organization_id'
+        ))
+
+        context['knowledge_bases'] = list(vector_stores.values(
+            'id',
+            'name',
+            'assistant_id'
+        ))
+
         return self.render_to_response(context)
 
     def post(self, request, *args, **kwargs):
@@ -55,8 +96,10 @@ class DocumentView_Create(LoginRequiredMixin, TemplateView):
 
         ##############################
         # PERMISSION CHECK FOR - ADD_KNOWLEDGE_BASE_DOCS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.ADD_KNOWLEDGE_BASE_DOCS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.ADD_KNOWLEDGE_BASE_DOCS
+        ):
             messages.error(self.request, "You do not have permission to add Knowledge Base documents.")
             return redirect('datasource_knowledge_base:list_documents')
         ##############################
@@ -64,30 +107,62 @@ class DocumentView_Create(LoginRequiredMixin, TemplateView):
         if not vs_id:
             logger.error('Please select a knowledge base.')
             messages.error(request, 'Please select a knowledge base.')
+
             return redirect('datasource_knowledge_base:create_documents')
 
-        vector_store = DocumentKnowledgeBaseConnection.objects.get(pk=vs_id)
+        vector_store = DocumentKnowledgeBaseConnection.objects.get(
+            pk=vs_id
+        )
+
         fs = request.FILES.getlist('document_files')
+
         if vs_id and fs:
             agent_base_dir = vector_store.assistant.document_base_directory
             f_paths = []
+
             for file in fs:
                 file_type = file.name.split('.')[-1]
                 structured_file_name = slugify(file.name)
-                doc_uri = generate_document_uri(agent_base_dir, structured_file_name, file_type)
+
+                doc_uri = generate_document_uri(
+                    agent_base_dir,
+                    structured_file_name,
+                    file_type
+                )
+
                 f_paths.append(doc_uri)
-                add_vector_store_doc_loaded_log(document_full_uri=doc_uri, log_name=VectorStoreDocProcessingStatusNames.STAGED)
+                add_vector_store_doc_loaded_log(
+                    document_full_uri=doc_uri,
+                    log_name=VectorStoreDocProcessingStatusNames.STAGED
+                )
+
                 s3c = boto3.client('s3')
+
                 bucket = settings.AWS_STORAGE_BUCKET_NAME
                 bucket_path = f"{doc_uri.split(MEDIA_URL)[1]}"
-                s3c.put_object(Bucket=bucket, Key=bucket_path, Body=file)
-                add_vector_store_doc_loaded_log(document_full_uri=doc_uri, log_name=VectorStoreDocProcessingStatusNames.UPLOADED)
 
-            KnowledgeBaseSystemDecoder.get(vector_store).index_documents(document_paths=f_paths)
+                s3c.put_object(
+                    Bucket=bucket,
+                    Key=bucket_path,
+                    Body=file
+                )
+
+                add_vector_store_doc_loaded_log(
+                    document_full_uri=doc_uri,
+                    log_name=VectorStoreDocProcessingStatusNames.UPLOADED
+                )
+
+            KnowledgeBaseSystemDecoder.get(vector_store).index_documents(
+                document_paths=f_paths
+            )
+
             logger.info('Documents uploaded successfully.')
             messages.success(request, 'Documents uploaded successfully.')
+
             return redirect('datasource_knowledge_base:list_documents')
+
         else:
             logger.error('Please select a knowledge base and upload documents.')
             messages.error(request, 'Please select a knowledge base and upload documents.')
+
         return redirect('datasource_knowledge_base:create_documents')

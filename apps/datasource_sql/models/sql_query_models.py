@@ -19,12 +19,18 @@ from django.db import models
 
 
 class CustomSQLQuery(models.Model):
-    database_connection = models.ForeignKey('datasource_sql.SQLDatabaseConnection', on_delete=models.CASCADE,
-                                            related_name='custom_queries')
+    database_connection = models.ForeignKey(
+        'datasource_sql.SQLDatabaseConnection',
+        on_delete=models.CASCADE,
+        related_name='custom_queries'
+    )
+
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
     sql_query = models.TextField()
-    parameters = models.JSONField(blank=True, null=True)  # Optional: Use if you need to handle query parameters
+
+    parameters = models.JSONField(blank=True, null=True)
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -32,22 +38,61 @@ class CustomSQLQuery(models.Model):
         return self.name + ' - ' + self.database_connection.name + ' - ' + self.database_connection.dbms_type
 
     def save(
-        self, force_insert=False, force_update=False, using=None, update_fields=None
+        self,
+        force_insert=False,
+        force_update=False,
+        using=None,
+        update_fields=None
     ):
-        super().save(force_insert, force_update, using, update_fields)
+        super().save(
+            force_insert,
+            force_update,
+            using,
+            update_fields
+        )
+
         self.database_connection.custom_queries.add(self)
 
     class Meta:
         ordering = ['-created_at']
         verbose_name_plural = 'Custom SQL Queries'
         verbose_name = 'Custom SQL Query'
+
         unique_together = [
-            ['database_connection', 'name'],
+            [
+                'database_connection',
+                'name'
+            ],
         ]
+
         indexes = [
-            models.Index(fields=['database_connection', 'name']),
-            models.Index(fields=['database_connection', 'created_at']),
-            models.Index(fields=['database_connection', 'updated_at']),
-            models.Index(fields=['database_connection', 'name', 'created_at']),
-            models.Index(fields=['database_connection', 'name', 'updated_at']),
+            models.Index(
+                fields=[
+                    'database_connection',
+                    'name'
+                ]
+            ),
+            models.Index(
+                fields=[
+                    'database_connection',
+                    'created_at']
+            ),
+            models.Index(
+                fields=[
+                    'database_connection',
+                    'updated_at']
+            ),
+            models.Index(
+                fields=[
+                    'database_connection',
+                    'name',
+                    'created_at']
+            ),
+            models.Index(
+                fields=[
+                    'database_connection',
+                    'name',
+                    'updated_at'
+                ]
+            ),
         ]

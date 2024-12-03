@@ -14,15 +14,18 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from django.contrib import admin
 
-from apps.datasource_knowledge_base.models import DocumentProcessingLog
-from apps.datasource_knowledge_base.utils import DOCUMENT_PROCESSING_LOG_ADMIN_LIST, \
-    DOCUMENT_PROCESSING_LOG_ADMIN_FILTER, DOCUMENT_PROCESSING_LOG_ADMIN_SEARCH
+from apps.datasource_knowledge_base.models import (
+    DocumentProcessingLog
+)
+
+from apps.datasource_knowledge_base.utils import (
+    DOCUMENT_PROCESSING_LOG_ADMIN_LIST,
+    DOCUMENT_PROCESSING_LOG_ADMIN_FILTER,
+    DOCUMENT_PROCESSING_LOG_ADMIN_SEARCH
+)
 
 
 @admin.register(DocumentProcessingLog)
@@ -30,4 +33,5 @@ class DocumentProcessingLogAdmin(admin.ModelAdmin):
     list_display = DOCUMENT_PROCESSING_LOG_ADMIN_LIST
     list_filter = DOCUMENT_PROCESSING_LOG_ADMIN_FILTER
     search_fields = DOCUMENT_PROCESSING_LOG_ADMIN_SEARCH
+
     readonly_fields = ['created_at']

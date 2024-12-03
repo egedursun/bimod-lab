@@ -53,6 +53,7 @@ OPEN_AI_DEFAULT_EMBEDDING_VECTOR_DIMENSIONS = 3072
 
 VECTOR_INDEX_PATH_MEDIA_ITEMS = os.path.join(
     BASE_DIR,
+    'vectors',
     'media_item_vectors',
     'media_items'
 )

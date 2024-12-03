@@ -14,8 +14,13 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 from apps.hadron_prime.models import HadronNode
-from apps.leanmod.models import ExpertNetworkAssistantReference, ExpertNetwork
+
+from apps.leanmod.models import (
+    ExpertNetworkAssistantReference,
+    ExpertNetwork
+)
 
 
 def build_hadron_prime_expert_networks_multi_modality_prompt(node: HadronNode):

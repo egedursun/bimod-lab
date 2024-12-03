@@ -14,15 +14,16 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from django.contrib import admin
 
 from apps.datasource_codebase.models import CodeBaseRepositoryChunk
-from apps.datasource_codebase.utils import CODE_REPOSITORY_CHUNK_ADMIN_LIST, CODE_REPOSITORY_CHUNK_ADMIN_FILTER, \
+
+from apps.datasource_codebase.utils import (
+    CODE_REPOSITORY_CHUNK_ADMIN_LIST,
+    CODE_REPOSITORY_CHUNK_ADMIN_FILTER,
     CODE_REPOSITORY_CHUNK_ADMIN_SEARCH
+)
 
 
 @admin.register(CodeBaseRepositoryChunk)
@@ -30,6 +31,7 @@ class CodeBaseRepositoryChunkAdmin(admin.ModelAdmin):
     list_display = CODE_REPOSITORY_CHUNK_ADMIN_LIST
     list_filter = CODE_REPOSITORY_CHUNK_ADMIN_FILTER
     search_fields = CODE_REPOSITORY_CHUNK_ADMIN_SEARCH
+
     readonly_fields = ['created_at']
 
     list_per_page = 20

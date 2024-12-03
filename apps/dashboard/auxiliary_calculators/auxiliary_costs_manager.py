@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 from django.utils import timezone
 
 from apps.llm_transaction.models import OrganizationBalanceSnapshot
@@ -23,73 +24,149 @@ from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
 class AuxiliaryCostsManager:
 
     @staticmethod
-    def calculate_costs_per_organizations(orgs, txs, n_days):
+    def calculate_costs_per_organizations(
+        orgs,
+        txs,
+        n_days
+    ):
+
         result = {}
+
         for org in orgs:
             txs_f = txs.filter(
-                organization=org, created_at__gte=timezone.now() - timezone.timedelta(days=n_days)
+                organization=org,
+                created_at__gte=timezone.now() - timezone.timedelta(
+                    days=n_days
+                )
             )
+
             total = 0
+
             for tx in txs_f:
                 total += float(tx.total_billable_cost)
+
             if total > 0:
                 result[org.name] = total
+
         return result
 
     @staticmethod
-    def calculate_cost_per_assistants(agents, txs, n_days):
+    def calculate_cost_per_assistants(
+        agents,
+        txs,
+        n_days
+    ):
+
         result = {}
+
         for a in agents:
             txs_f = txs.filter(
-                responsible_assistant=a, created_at__gte=timezone.now() - timezone.timedelta(days=n_days)
+                responsible_assistant=a,
+                created_at__gte=timezone.now() - timezone.timedelta(
+                    days=n_days
+                )
             )
+
             total = 0
+
             for tx in txs_f:
                 total += float(tx.total_billable_cost)
+
             if total > 0:
                 result[a.name] = total
+
         return result
 
     @staticmethod
-    def calculate_cost_per_users(org_users, txs, n_days):
+    def calculate_cost_per_users(
+        org_users,
+        txs,
+        n_days
+    ):
+
         result = {}
+
         for usr in org_users:
             txs_f = txs.filter(
-                responsible_user=usr, created_at__gte=timezone.now() - timezone.timedelta(days=n_days)
+                responsible_user=usr,
+                created_at__gte=timezone.now() - timezone.timedelta(
+                    days=n_days
+                )
             )
+
             total = 0
+
             for tx in txs_f:
                 total += float(tx.total_billable_cost)
+
             if total > 0:
                 result[usr.username] = total
+
         return result
 
     @staticmethod
-    def calculate_cost_per_sources(txs, n_days):
-        result = {"main": {}, "tool": {}}
+    def calculate_cost_per_sources(
+        txs,
+        n_days
+    ):
+
+        result = {
+            "main": {},
+            "tool": {}
+        }
+
         for src in LLMTransactionSourcesTypesNames.as_list():
+
             txs_f = txs.filter(
-                transaction_source=src, created_at__gte=timezone.now() - timezone.timedelta(days=n_days)
+                transaction_source=src,
+                created_at__gte=timezone.now() - timezone.timedelta(
+                    days=n_days
+                )
             )
+
             total = 0
+
             for tx in txs_f:
                 total += float(tx.total_billable_cost)
+
             if total > 0:
-                if src == LLMTransactionSourcesTypesNames.APP or src == LLMTransactionSourcesTypesNames.API:
+                if (
+                    src == LLMTransactionSourcesTypesNames.APP or
+                    src == LLMTransactionSourcesTypesNames.API
+                ):
                     result["main"][src] = total
+
                 else:
                     result["tool"][src] = total
+
         return result
 
     @staticmethod
-    def calculate_balance_snapshot_per_organizations(orgs, n_days):
+    def calculate_balance_snapshot_per_organizations(
+        orgs,
+        n_days
+    ):
+
         result = {}
+
         for org in orgs:
             balance_sss = OrganizationBalanceSnapshot.objects.filter(
-                organization=org, created_at__gte=timezone.now() - timezone.timedelta(days=n_days)
+                organization=org,
+                created_at__gte=timezone.now() - timezone.timedelta(
+                    days=n_days
+                )
             )
+
             snapshots = []
+
             for ss in balance_sss:
-                snapshots.append({"balance": float(ss.balance), "created_at": ss.created_at})
+                snapshots.append(
+                    {
+                        "balance": float(ss.balance),
+                        "created_at": ss.created_at
+                    }
+                )
+
             result[org.name] = snapshots
+
         return result

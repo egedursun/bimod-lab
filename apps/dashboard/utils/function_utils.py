@@ -14,150 +14,382 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 logger = logging.getLogger(__name__)
 
 
 def build_statistics_for_graph(statistics, context):
-    org_costs = statistics.get("costs", {}).get("costs_per_organizations", {})
-    agent_costs = statistics.get("costs", {}).get("costs_per_assistants", {})
-    user_costs = statistics.get("costs", {}).get("costs_per_users", {})
-    src_costs = statistics.get("costs", {}).get("costs_per_sources", {})
-    src_costs_generic = src_costs.get("main", {})
-    src_costs_tool_calls = src_costs.get("tool", {})
-    org_tokens = statistics.get("tokens", {}).get("tokens_per_organizations", {})
-    agent_tokens = statistics.get("tokens", {}).get("tokens_per_assistants", {})
-    user_tokens = statistics.get("tokens", {}).get("tokens_per_users", {})
-    src_tokens = statistics.get("tokens", {}).get("tokens_per_sources", {})
-    src_tokens_generic = src_tokens.get("main", {})
-    src_tokens_tool_calls = src_tokens.get("tool", {})
-    org_chats = statistics.get("communication").get("total_chats_per_organizations", {})
-    org_msgs = statistics.get("communication").get("total_messages_per_organizations", {})
-    agent_req_counts = statistics.get("exports").get(
-        "total_request_count_per_exported_assistants", {})
-    sql_reads = statistics.get("sql").get("total_sql_read_queries_per_assistants", {})
-    sql_writes = statistics.get("sql").get("total_sql_write_queries_per_assistants", {})
-    sql_total = statistics.get("sql").get("total_sql_queries_per_assistants", {})
-    nosql_reads = statistics.get("nosql").get("total_nosql_read_queries_per_assistants", {})
-    nosql_writes = statistics.get("nosql").get("total_nosql_write_queries_per_assistants", {})
-    nosql_total = statistics.get("nosql").get("total_nosql_queries_per_assistants", {})
-    agent_ssh_calls = statistics.get("file_system").get(
-        "total_ssh_file_system_access_per_assistants", {})
-    agent_browsing_calls = statistics.get("browsing").get("total_web_queries_per_assistants", {})
-    agent_ml_ops = statistics.get("ml").get("total_ml_predictions_per_assistants", {})
-    agent_doc_analysis = statistics.get("knowledge_base").get(
-        "total_documents_interpretations_per_assistants", {})
-    agent_image_analysis = statistics.get("knowledge_base").get(
-        "total_image_interpretations_per_assistants", {})
-    agent_code_analysis = statistics.get("knowledge_base").get(
-        "total_code_interpretations_per_assistants", {})
-    agent_http_retrievals = statistics.get("knowledge_base").get("total_file_downloads_per_assistants", {})
-    agent_generate_medias = statistics.get("knowledge_base").get("total_multimedia_generations_per_assistants", {})
-    agent_vector_store_queries = statistics.get("knowledge_base").get("total_knowledge_base_searches_per_assistants",
-                                                                      {})
-    agent_intra_memory_deliveries = statistics.get("knowledge_base").get("total_memory_saves_per_assistants", {})
-    agent_intra_memory_retrievals = statistics.get("knowledge_base").get("total_memory_retrievals_per_assistants", {})
-    function_call_internal = statistics.get("functions").get("total_internal_function_calls_per_assistants", {})
-    function_call_external = statistics.get("functions").get("total_external_function_calls_per_assistants", {})
-    function_call_total = statistics.get("functions").get("total_function_calls_per_assistants", {})
-    api_call_internal = statistics.get("apis").get("total_internal_third_party_api_calls_per_assistants", {})
-    api_call_external = statistics.get("apis").get("total_external_third_party_api_calls_per_assistants", {})
-    api_call_total = statistics.get("apis").get("total_third_party_api_calls_per_assistants", {})
-    script_call_internal = statistics.get("scripts").get("total_internal_script_executions_per_assistants", {})
-    script_call_external = statistics.get("scripts").get("total_external_script_executions_per_assistants", {})
-    script_call_total = statistics.get("scripts").get("total_script_executions_per_assistants", {})
-    agent_sched_jobs = statistics.get("crons").get("total_scheduled_task_executions_per_assistants", {})
-    agent_trg_jobs = statistics.get("triggers").get("total_triggered_task_executions_per_assistants", {})
-    org_users_total = statistics.get("users").get("total_users_per_organizations", {})
-    org_latest_registers = statistics.get("users").get("latest_registered_users_per_organizations", {})
+    org_costs = statistics.get(
+        "costs", {}
+    ).get(
+        "costs_per_organizations", {}
+    )
+
+    agent_costs = statistics.get(
+        "costs", {}
+    ).get(
+        "costs_per_assistants", {}
+    )
+
+    user_costs = statistics.get(
+        "costs", {}
+    ).get(
+        "costs_per_users", {}
+    )
+
+    src_costs = statistics.get(
+        "costs", {}
+    ).get(
+        "costs_per_sources", {}
+    )
+
+    src_costs_generic = src_costs.get(
+        "main", {}
+    )
+
+    src_costs_tool_calls = src_costs.get(
+        "tool", {}
+    )
+
+    org_tokens = statistics.get(
+        "tokens", {}
+    ).get(
+        "tokens_per_organizations", {}
+    )
+    agent_tokens = statistics.get(
+        "tokens", {}
+    ).get(
+        "tokens_per_assistants", {}
+    )
+
+    user_tokens = statistics.get(
+        "tokens", {}
+    ).get(
+        "tokens_per_users", {}
+    )
+
+    src_tokens = statistics.get(
+        "tokens", {}
+    ).get(
+        "tokens_per_sources", {}
+    )
+
+    src_tokens_generic = src_tokens.get(
+        "main", {}
+    )
+
+    src_tokens_tool_calls = src_tokens.get(
+        "tool", {}
+    )
+
+    org_chats = statistics.get(
+        "communication"
+    ).get(
+        "total_chats_per_organizations", {}
+    )
+
+    org_msgs = statistics.get(
+        "communication"
+    ).get(
+        "total_messages_per_organizations", {}
+    )
+
+    agent_req_counts = statistics.get(
+        "exports"
+    ).get(
+        "total_request_count_per_exported_assistants", {}
+    )
+
+    sql_reads = statistics.get(
+        "sql"
+    ).get(
+        "total_sql_read_queries_per_assistants", {}
+    )
+
+    sql_writes = statistics.get(
+        "sql"
+    ).get(
+        "total_sql_write_queries_per_assistants", {}
+    )
+
+    sql_total = statistics.get(
+        "sql"
+    ).get(
+        "total_sql_queries_per_assistants", {}
+    )
+
+    nosql_reads = statistics.get(
+        "nosql"
+    ).get(
+        "total_nosql_read_queries_per_assistants", {}
+    )
+
+    nosql_writes = statistics.get(
+        "nosql"
+    ).get(
+        "total_nosql_write_queries_per_assistants", {}
+    )
+
+    nosql_total = statistics.get(
+        "nosql"
+    ).get(
+        "total_nosql_queries_per_assistants", {}
+    )
+
+    agent_ssh_calls = statistics.get(
+        "file_system"
+    ).get(
+        "total_ssh_file_system_access_per_assistants", {}
+    )
+
+    agent_browsing_calls = statistics.get(
+        "browsing"
+    ).get(
+        "total_web_queries_per_assistants", {}
+    )
+
+    agent_ml_ops = statistics.get(
+        "ml"
+    ).get(
+        "total_ml_predictions_per_assistants", {}
+    )
+
+    agent_doc_analysis = statistics.get(
+        "knowledge_base"
+    ).get(
+        "total_documents_interpretations_per_assistants", {}
+    )
+
+    agent_image_analysis = statistics.get(
+        "knowledge_base"
+    ).get(
+        "total_image_interpretations_per_assistants", {}
+    )
+
+    agent_code_analysis = statistics.get(
+        "knowledge_base"
+    ).get(
+        "total_code_interpretations_per_assistants", {}
+    )
+
+    agent_http_retrievals = statistics.get(
+        "knowledge_base"
+    ).get(
+        "total_file_downloads_per_assistants", {}
+    )
+
+    agent_generate_medias = statistics.get(
+        "knowledge_base"
+    ).get(
+        "total_multimedia_generations_per_assistants", {}
+    )
+
+    agent_vector_store_queries = statistics.get(
+        "knowledge_base"
+    ).get(
+        "total_knowledge_base_searches_per_assistants", {}
+    )
+
+    agent_intra_memory_deliveries = statistics.get(
+        "knowledge_base"
+    ).get(
+        "total_memory_saves_per_assistants", {}
+    )
+
+    agent_intra_memory_retrievals = statistics.get(
+        "knowledge_base"
+    ).get(
+        "total_memory_retrievals_per_assistants", {}
+    )
+
+    function_call_internal = statistics.get(
+        "functions"
+    ).get(
+        "total_internal_function_calls_per_assistants", {}
+    )
+
+    function_call_external = statistics.get(
+        "functions"
+    ).get(
+        "total_external_function_calls_per_assistants", {}
+    )
+
+    function_call_total = statistics.get(
+        "functions"
+    ).get(
+        "total_function_calls_per_assistants", {}
+    )
+
+    api_call_internal = statistics.get(
+        "apis"
+    ).get(
+        "total_internal_third_party_api_calls_per_assistants", {}
+    )
+
+    api_call_external = statistics.get(
+        "apis"
+    ).get(
+        "total_external_third_party_api_calls_per_assistants", {}
+    )
+
+    api_call_total = statistics.get(
+        "apis"
+    ).get(
+        "total_third_party_api_calls_per_assistants", {}
+    )
+
+    script_call_internal = statistics.get(
+        "scripts"
+    ).get(
+        "total_internal_script_executions_per_assistants", {}
+    )
+
+    script_call_external = statistics.get(
+        "scripts"
+    ).get(
+        "total_external_script_executions_per_assistants", {}
+    )
+
+    script_call_total = statistics.get(
+        "scripts"
+    ).get(
+        "total_script_executions_per_assistants", {}
+    )
+
+    agent_sched_jobs = statistics.get(
+        "crons"
+    ).get(
+        "total_scheduled_task_executions_per_assistants", {}
+    )
+
+    agent_trg_jobs = statistics.get(
+        "triggers"
+    ).get(
+        "total_triggered_task_executions_per_assistants", {}
+    )
+
+    org_users_total = statistics.get(
+        "users"
+    ).get(
+        "total_users_per_organizations", {}
+    )
+
+    org_latest_registers = statistics.get(
+        "users"
+    ).get(
+        "latest_registered_users_per_organizations", {}
+    )
+
     logger.info("Building statistics for graph...")
 
     context["costs_per_organizations_labels"] = list(org_costs.keys())
     context["costs_per_assistants_labels"] = list(agent_costs.keys())
     context["costs_per_users_labels"] = list(user_costs.keys())
     context["costs_per_sources_main_labels"] = list(src_costs_generic.keys())
+
     context["costs_per_sources_tools_labels"] = list(src_costs_tool_calls.keys())
     context["costs_per_organizations_values"] = list(org_costs.values())
     context["costs_per_assistants_values"] = list(agent_costs.values())
     context["costs_per_users_values"] = list(user_costs.values())
+
     context["costs_per_sources_main_values"] = list(src_costs_generic.values())
     context["costs_per_sources_tools_values"] = list(src_costs_tool_calls.values())
     context["tokens_per_organizations_labels"] = list(org_tokens.keys())
     context["tokens_per_assistants_labels"] = list(agent_tokens.keys())
+
     context["tokens_per_users_labels"] = list(user_tokens.keys())
     context["tokens_per_sources_main_labels"] = list(src_tokens_generic.keys())
     context["tokens_per_sources_tools_labels"] = list(src_tokens_tool_calls.keys())
     context["tokens_per_organizations_values"] = list(org_tokens.values())
+
     context["tokens_per_assistants_values"] = list(agent_tokens.values())
     context["tokens_per_users_values"] = list(user_tokens.values())
     context["tokens_per_sources_main_values"] = list(src_tokens_generic.values())
     context["tokens_per_sources_tools_values"] = list(src_tokens_tool_calls.values())
+
     context["total_chats_per_organizations_labels"] = list(org_chats.keys())
     context["total_chat_messages_per_organizations_labels"] = list(org_msgs.keys())
     context["total_request_count_per_exported_assistants_labels"] = list(agent_req_counts.keys())
     context["total_chats_per_organizations_values"] = list(org_chats.values())
+
     context["total_chat_messages_per_organizations_values"] = list(org_msgs.values())
     context["total_request_count_per_exported_assistants_values"] = list(agent_req_counts.values())
     context["total_sql_read_queries_per_assistants_labels"] = list(sql_reads.keys())
     context["total_sql_write_queries_per_assistants_labels"] = list(sql_writes.keys())
+
     context["total_sql_queries_per_assistants_labels"] = list(sql_total.keys())
     context["total_sql_read_queries_per_assistants_values"] = list(sql_reads.values())
     context["total_sql_write_queries_per_assistants_values"] = list(sql_writes.values())
     context["total_sql_queries_per_assistants_values"] = list(sql_total.values())
+
     context["total_nosql_read_queries_per_assistants_labels"] = list(nosql_reads.keys())
     context["total_nosql_write_queries_per_assistants_labels"] = list(nosql_writes.keys())
     context["total_nosql_queries_per_assistants_labels"] = list(nosql_total.keys())
     context["total_nosql_read_queries_per_assistants_values"] = list(nosql_reads.values())
+
     context["total_nosql_write_queries_per_assistants_values"] = list(nosql_writes.values())
     context["total_nosql_queries_per_assistants_values"] = list(nosql_total.values())
     context["total_ssh_file_system_access_per_assistants_labels"] = list(agent_ssh_calls.keys())
     context["total_ssh_file_system_access_per_assistants_values"] = list(agent_ssh_calls.values())
+
     context["total_web_queries_per_assistants_labels"] = list(agent_browsing_calls.keys())
     context["total_web_queries_per_assistants_values"] = list(agent_browsing_calls.values())
     context["total_ml_predictions_per_assistants_labels"] = list(agent_ml_ops.keys())
     context["total_ml_predictions_per_assistants_values"] = list(agent_ml_ops.values())
+
     context["total_documents_interpretations_per_assistants_labels"] = list(agent_doc_analysis.keys())
     context["total_image_interpretations_per_assistants_labels"] = list(agent_image_analysis.keys())
     context["total_code_interpretations_per_assistants_labels"] = list(agent_code_analysis.keys())
     context["total_file_downloads_per_assistants_labels"] = list(agent_http_retrievals.keys())
+
     context["total_multimedia_generations_per_assistants_labels"] = list(agent_generate_medias.keys())
     context["total_documents_interpretations_per_assistants_values"] = list(agent_doc_analysis.values())
     context["total_image_interpretations_per_assistants_values"] = list(agent_image_analysis.values())
     context["total_code_interpretations_per_assistants_values"] = list(agent_code_analysis.values())
+
     context["total_file_downloads_per_assistants_values"] = list(agent_http_retrievals.values())
     context["total_multimedia_generations_per_assistants_values"] = list(agent_generate_medias.values())
     context["total_knowledge_base_searches_per_assistants_labels"] = list(agent_vector_store_queries.keys())
     context["total_knowledge_base_searches_per_assistants_values"] = list(agent_vector_store_queries.values())
+
     context["total_memory_saves_per_assistants_labels"] = list(agent_intra_memory_deliveries.keys())
     context["total_memory_retrievals_per_assistants_labels"] = list(agent_intra_memory_retrievals.keys())
     context["total_memory_saves_per_assistants_values"] = list(agent_intra_memory_deliveries.values())
     context["total_memory_retrievals_per_assistants_values"] = list(agent_intra_memory_retrievals.values())
+
     context["total_internal_function_calls_per_assistants_labels"] = list(function_call_internal.keys())
     context["total_external_function_calls_per_assistants_labels"] = list(function_call_external.keys())
     context["total_function_calls_per_assistants_labels"] = list(function_call_total.keys())
     context["total_internal_function_calls_per_assistants_values"] = list(function_call_internal.values())
+
     context["total_external_function_calls_per_assistants_values"] = list(function_call_external.values())
     context["total_function_calls_per_assistants_values"] = list(function_call_total.values())
     context["total_internal_third_party_api_calls_per_assistants_labels"] = list(api_call_internal.keys())
     context["total_external_third_party_api_calls_per_assistants_labels"] = list(api_call_external.keys())
+
     context["total_third_party_api_calls_per_assistants_labels"] = list(api_call_total.keys())
     context["total_internal_third_party_api_calls_per_assistants_values"] = list(api_call_internal.values())
     context["total_external_third_party_api_calls_per_assistants_values"] = list(api_call_external.values())
     context["total_third_party_api_calls_per_assistants_values"] = list(api_call_total.values())
+
     context["total_internal_script_executions_per_assistants_labels"] = list(script_call_internal.keys())
     context["total_external_script_executions_per_assistants_labels"] = list(script_call_external.keys())
     context["total_script_executions_per_assistants_labels"] = list(script_call_total.keys())
     context["total_internal_script_executions_per_assistants_values"] = list(script_call_internal.values())
+
     context["total_external_script_executions_per_assistants_values"] = list(script_call_external.values())
     context["total_script_executions_per_assistants_values"] = list(script_call_total.values())
     context["total_scheduled_task_executions_per_assistants_labels"] = list(agent_sched_jobs.keys())
     context["total_triggered_task_executions_per_assistants_labels"] = list(agent_trg_jobs.keys())
+
     context["total_scheduled_task_executions_per_assistants_values"] = list(agent_sched_jobs.values())
     context["total_triggered_task_executions_per_assistants_values"] = list(agent_trg_jobs.values())
     context["total_users_per_organizations_labels"] = list(org_users_total.keys())
     context["latest_registered_users_per_organizations_labels"] = list(org_latest_registers.keys())
     context["total_users_per_organizations_values"] = list(org_users_total.values())
     context["latest_registered_users_per_organizations_values"] = list(org_latest_registers.values())
+
     logger.info("Statistics for graph built successfully.")
     return context

@@ -31,6 +31,10 @@ class DocumentProcessingLog(models.Model):
         verbose_name_plural = "Document Processing Logs"
         ordering = ["-created_at"]
         indexes = [
-            models.Index(fields=["document_full_uri"]),
-            models.Index(fields=["created_at"]),
+            models.Index(fields=[
+                "document_full_uri"
+            ]),
+            models.Index(fields=[
+                "created_at"
+            ]),
         ]

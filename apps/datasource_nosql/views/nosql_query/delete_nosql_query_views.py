@@ -22,7 +22,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.views.generic import DeleteView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
 from apps.datasource_nosql.models import CustomNoSQLQuery
 from apps.user_permissions.utils import PermissionNames
 
@@ -39,8 +42,10 @@ class NoSQLDatabaseView_QueryDelete(LoginRequiredMixin, DeleteView):
     def post(self, request, *args, **kwargs):
         ##############################
         # PERMISSION CHECK FOR - DELETE_CUSTOM_NOSQL_QUERIES
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.DELETE_CUSTOM_NOSQL_QUERIES):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.DELETE_CUSTOM_NOSQL_QUERIES
+        ):
             messages.error(self.request, "You do not have permission to delete custom NoSQL queries.")
             return redirect('datasource_nosql:list_queries')
         ##############################
@@ -48,6 +53,7 @@ class NoSQLDatabaseView_QueryDelete(LoginRequiredMixin, DeleteView):
         try:
             self.object = self.get_object()
             self.object.delete()
+
         except Exception as e:
             logger.error(f"Error deleting NoSQL Query: {e}")
             messages.error(self.request, 'An error occurred while deleting NoSQL Query.')
@@ -55,4 +61,5 @@ class NoSQLDatabaseView_QueryDelete(LoginRequiredMixin, DeleteView):
 
         logger.info(f"NoSQL Query {self.object.name} was deleted.")
         messages.success(request, f'NoSQL Query {self.object.name} was deleted successfully.')
+
         return redirect(self.success_url)

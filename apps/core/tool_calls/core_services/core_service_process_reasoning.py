@@ -17,7 +17,10 @@
 
 import logging
 
-from apps.core.reasoning.reasoning_executor import ReasoningExecutor
+from apps.core.reasoning.reasoning_executor import (
+    ReasoningExecutor
+)
+
 from apps.assistants.models import Assistant
 from apps.multimodal_chat.models import MultimodalChat
 

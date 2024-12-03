@@ -1,5 +1,12 @@
 ## TODO LIST
 
+**FAST:**
+
+- [ ] Vectorize the SQL schema and create the tool for the assistants to search. Remove limitations for schema deepness.
+- [ ] Vectorize the NoSQL schema and create the tool for the assistants to search. Remove limitations for schema
+  deepness.
+- [ ] Vectorize the File System (SSH) schema and create the tool for the assistants to search. Remove limitations for
+  schema deepness.
 
 **DAILY:**
 
@@ -182,7 +189,7 @@
   - Comment Lines: 4,200,000
   - Blank Lines: 2,700,000
   - TOTAL: 21,100,000 (2.9% CoData Rate) / ??
-  - TOTAL RAW CALCULATION: 750,000,000 /  ??
+  - TOTAL RAW CALCULATION: 750,000,000 / ??
 
 ---
 

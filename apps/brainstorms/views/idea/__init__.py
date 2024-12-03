@@ -15,7 +15,6 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-
 from .delete_idea_views import *
 from .bookmark_idea_views import *
 from .produce_ideas_views import *

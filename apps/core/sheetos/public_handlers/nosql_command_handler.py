@@ -15,15 +15,29 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-
 import json
 import logging
 
-from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
+from apps.core.generative_ai.utils import (
+    GPT_DEFAULT_ENCODING_ENGINE,
+    ChatRoles
+)
+
 from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
-from apps.core.sheetos.utils import find_tool_call_from_json, SHEETOS_TOOL_CALL_MAXIMUM_ATTEMPTS
-from apps.core.tool_calls.core_services.core_service_nosql_query import run_nosql_query
-from apps.core.tool_calls.input_verifiers.verify_run_nosql_query import verify_run_nosql_query_content
+
+from apps.core.sheetos.utils import (
+    find_tool_call_from_json,
+    SHEETOS_TOOL_CALL_MAXIMUM_ATTEMPTS
+)
+
+from apps.core.tool_calls.core_services.core_service_nosql_query import (
+    run_nosql_query
+)
+
+from apps.core.tool_calls.input_verifiers.verify_run_nosql_query import (
+    verify_run_nosql_query_content
+)
+
 from apps.llm_transaction.models import LLMTransaction
 from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
 
@@ -35,8 +49,14 @@ def handle_nosql_command_public(
     command: str,
     content: str
 ) -> str:
-    from apps.core.sheetos.prompt_builders import build_nosql_command_system_prompt_public
-    from apps.core.sheetos.sheetos_executor_public import SheetosExecutionManager_Public
+    from apps.core.sheetos.prompt_builders import (
+        build_nosql_command_system_prompt_public
+    )
+
+    from apps.core.sheetos.sheetos_executor_public import (
+        SheetosExecutionManager_Public
+    )
+
     xc: SheetosExecutionManager_Public
 
     try:

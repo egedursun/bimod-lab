@@ -14,15 +14,26 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 logger = logging.getLogger(__name__)
 
 
-def add_vector_store_doc_loaded_log(document_full_uri, log_name):
-    from apps.datasource_knowledge_base.models import DocumentProcessingLog
-    DocumentProcessingLog.objects.create(
-        document_full_uri=document_full_uri, log_message=log_name
+def add_vector_store_doc_loaded_log(
+    document_full_uri,
+    log_name
+):
+
+    from apps.datasource_knowledge_base.models import (
+        DocumentProcessingLog
     )
+
+    DocumentProcessingLog.objects.create(
+        document_full_uri=document_full_uri,
+        log_message=log_name
+    )
+
     logger.info(f"[add_vector_store_doc_loaded_log] Document Processing Log Created: {document_full_uri} - {log_name}")
+
     return

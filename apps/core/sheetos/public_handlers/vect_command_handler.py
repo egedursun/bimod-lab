@@ -20,9 +20,20 @@ import logging
 
 from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
 from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
-from apps.core.sheetos.utils import SHEETOS_TOOL_CALL_MAXIMUM_ATTEMPTS, find_tool_call_from_json
-from apps.core.tool_calls.core_services.core_service_vector_store_query import run_query_vector_store
-from apps.core.tool_calls.input_verifiers.verify_vector_store_query import verify_vector_store_query_content
+
+from apps.core.sheetos.utils import (
+    SHEETOS_TOOL_CALL_MAXIMUM_ATTEMPTS,
+    find_tool_call_from_json
+)
+
+from apps.core.tool_calls.core_services.core_service_vector_store_query import (
+    run_query_vector_store
+)
+
+from apps.core.tool_calls.input_verifiers.verify_vector_store_query import (
+    verify_vector_store_query_content
+)
+
 from apps.llm_transaction.models import LLMTransaction
 from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
 

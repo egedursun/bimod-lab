@@ -14,9 +14,6 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from .update_browser_connection_views import *
 from .list_browser_connections_views import *

@@ -17,9 +17,18 @@
 
 import logging
 
-from apps.core.media_managers.media_manager_execution_handler import MediaManager
-from apps.core.tool_calls.utils import AnalysisToolCallExecutionTypesNames
-from apps.datasource_media_storages.models import DataSourceMediaStorageConnection
+from apps.core.media_managers.media_manager_execution_handler import (
+    MediaManager
+)
+
+from apps.core.tool_calls.utils import (
+    AnalysisToolCallExecutionTypesNames
+)
+
+from apps.datasource_media_storages.models import (
+    DataSourceMediaStorageConnection
+)
+
 from apps.multimodal_chat.models import MultimodalChat
 
 

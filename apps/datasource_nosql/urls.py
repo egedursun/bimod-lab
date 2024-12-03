@@ -17,27 +17,84 @@
 
 from django.urls import path
 
-from apps.datasource_nosql.views.nosql_database import NoSQLDatabaseView_ManagerCreate, NoSQLDatabaseView_ManagerList, \
-    NoSQLDatabaseView_ManagerUpdate, NoSQLDatabaseView_ManagerDelete
-from apps.datasource_nosql.views.nosql_query import NoSQLDatabaseView_QueryCreate, NoSQLDatabaseView_QueryList, \
-    NoSQLDatabaseView_QueryUpdate, NoSQLDatabaseView_QueryDelete
+from apps.datasource_nosql.views.nosql_database import (
+    NoSQLDatabaseView_ManagerCreate,
+    NoSQLDatabaseView_ManagerList,
+    NoSQLDatabaseView_ManagerUpdate,
+    NoSQLDatabaseView_ManagerDelete
+)
+
+from apps.datasource_nosql.views.nosql_query import (
+    NoSQLDatabaseView_QueryCreate,
+    NoSQLDatabaseView_QueryList,
+    NoSQLDatabaseView_QueryUpdate,
+    NoSQLDatabaseView_QueryDelete
+)
 
 app_name = "datasource_nosql"
 
-
 urlpatterns = [
-    path("create/", NoSQLDatabaseView_ManagerCreate.as_view(
-        template_name="datasource_nosql/connections/create_nosql_datasources.html"), name="create"),
-    path("list/", NoSQLDatabaseView_ManagerList.as_view(
-        template_name="datasource_nosql/connections/list_nosql_datasources.html"), name="list"),
-    path("update/<int:pk>/", NoSQLDatabaseView_ManagerUpdate.as_view(
-        template_name="datasource_nosql/connections/update_nosql_datasources.html"), name="update"),
-    path("delete/<int:pk>/", NoSQLDatabaseView_ManagerDelete.as_view(), name="delete"),
-    path("create_query/", NoSQLDatabaseView_QueryCreate.as_view(
-        template_name="datasource_nosql/queries/create_nosql_query.html"), name="create_query"),
-    path("list_queries/", NoSQLDatabaseView_QueryList.as_view(
-        template_name="datasource_nosql/queries/list_nosql_queries.html"), name="list_queries"),
-    path("update_query/<int:pk>/", NoSQLDatabaseView_QueryUpdate.as_view(
-        template_name="datasource_nosql/queries/update_nosql_query.html"), name="update_query"),
-    path("delete_query/<int:pk>/", NoSQLDatabaseView_QueryDelete.as_view(), name="delete_query"),
+    path(
+        "create/",
+        NoSQLDatabaseView_ManagerCreate.as_view(
+            template_name="datasource_nosql/connections/create_nosql_datasources.html"
+        ),
+        name="create"
+    ),
+
+    path(
+        "list/",
+        NoSQLDatabaseView_ManagerList.as_view(
+            template_name="datasource_nosql/connections/list_nosql_datasources.html"
+        ),
+        name="list"
+    ),
+
+    path(
+        "update/<int:pk>/",
+        NoSQLDatabaseView_ManagerUpdate.as_view(
+            template_name="datasource_nosql/connections/update_nosql_datasources.html"
+        ),
+        name="update"
+    ),
+
+    path(
+        "delete/<int:pk>/",
+        NoSQLDatabaseView_ManagerDelete.as_view(
+
+        ),
+        name="delete"
+    ),
+
+    path(
+        "create_query/",
+        NoSQLDatabaseView_QueryCreate.as_view(
+            template_name="datasource_nosql/queries/create_nosql_query.html"
+        ),
+        name="create_query"
+    ),
+
+    path(
+        "list_queries/",
+        NoSQLDatabaseView_QueryList.as_view(
+            template_name="datasource_nosql/queries/list_nosql_queries.html"
+        ),
+        name="list_queries"
+    ),
+
+    path(
+        "update_query/<int:pk>/",
+        NoSQLDatabaseView_QueryUpdate.as_view(
+            template_name="datasource_nosql/queries/update_nosql_query.html"
+        ),
+        name="update_query"
+    ),
+
+    path(
+        "delete_query/<int:pk>/",
+        NoSQLDatabaseView_QueryDelete.as_view(
+
+        ),
+        name="delete_query"
+    ),
 ]

@@ -14,9 +14,6 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from .embed_document_data_tasks import *
 from .embed_document_chunks_tasks import *

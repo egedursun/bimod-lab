@@ -14,11 +14,14 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 from apps.binexus.models import BinexusProcess
+
 from apps.core.binexus.evolution_manager import (
     Individual,
     Chromosome
 )
+
 from apps.llm_core.models import LLMCore
 
 

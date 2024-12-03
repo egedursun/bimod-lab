@@ -17,7 +17,10 @@
 
 import logging
 
-from apps.core.hadron_prime.hadron_prime_executor import HadronPrimeExecutor
+from apps.core.hadron_prime.hadron_prime_executor import (
+    HadronPrimeExecutor
+)
+
 from apps.hadron_prime.models import HadronNodeAssistantConnection
 
 logger = logging.getLogger(__name__)

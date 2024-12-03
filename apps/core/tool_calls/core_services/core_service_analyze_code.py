@@ -17,7 +17,10 @@
 
 import logging
 
-from apps.core.code_analyst.code_interpreter_executor import CodeAnalystExecutionManager
+from apps.core.code_analyst.code_interpreter_executor import (
+    CodeAnalystExecutionManager
+)
+
 from apps.assistants.models import Assistant
 from apps.multimodal_chat.models import MultimodalChat
 

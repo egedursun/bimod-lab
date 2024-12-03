@@ -15,7 +15,6 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-
 app_name = 'audit_logs'
 
 urlpatterns = []

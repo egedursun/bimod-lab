@@ -29,7 +29,10 @@ from apps.core.generative_ai.generative_ai_decode_manager import (
     GenerativeAIDecodeController
 )
 
-from apps.core.generative_ai.gpt_openai_manager import OpenAIGPTClientManager
+from apps.core.generative_ai.gpt_openai_manager import (
+    OpenAIGPTClientManager
+)
+
 from apps.core.tool_calls.utils import VoidForgerModesNames
 
 from apps.core.voidforger.utils import (

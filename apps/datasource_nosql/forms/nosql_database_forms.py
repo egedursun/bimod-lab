@@ -24,9 +24,24 @@ class NoSQLDatabaseConnectionForm(forms.ModelForm):
     class Meta:
         model = NoSQLDatabaseConnection
         fields = [
-            'assistant', 'nosql_db_type', 'name', 'description', 'host', 'bucket_name', 'username',
-            'password', 'is_read_only', 'created_by_user', 'one_time_retrieval_instance_limit',
+            'assistant',
+            'nosql_db_type',
+            'name',
+            'description',
+            'host',
+            'bucket_name',
+            'username',
+            'password',
+            'is_read_only',
+            'created_by_user',
+            'one_time_retrieval_instance_limit',
             'one_time_retrieval_token_limit',
         ]
-        widgets = {'password': forms.PasswordInput()}
-        exclude = ['schema_data_json']
+
+        widgets = {
+            'password': forms.PasswordInput()
+        }
+
+        exclude = [
+            'schema_data_json'
+        ]

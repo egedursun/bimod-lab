@@ -15,7 +15,6 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-
 from .binexus_process_list_views import *
 from .binexus_process_execute_views import *
 from .binexus_process_create_views import *

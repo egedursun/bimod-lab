@@ -16,7 +16,11 @@
 #
 
 from apps.assistants.models import Assistant
-from apps.datasource_nosql.models import NoSQLDatabaseConnection, CustomNoSQLQuery
+
+from apps.datasource_nosql.models import (
+    NoSQLDatabaseConnection,
+    CustomNoSQLQuery
+)
 
 
 def build_sheetos_nosql_data_source_prompt(assistant: Assistant):

@@ -23,8 +23,10 @@ logger = logging.getLogger(__name__)
 
 def find_tool_call_from_json(response: str, decoder=JSONDecoder()):
     logger.info("Finding tool call from JSON response.")
+
     response = f"""{response}"""
     response = response.replace("\n", "").replace("'", '"')
+
     json_objects = []
     pos = 0
 

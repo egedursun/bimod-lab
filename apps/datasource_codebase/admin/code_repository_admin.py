@@ -14,20 +14,21 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
+
 import logging
 
 from django.contrib import admin
 
 from apps.core.codebase.codebase_decoder import CodeBaseDecoder
 from apps.datasource_codebase.models import CodeBaseRepository
+
 from django.contrib.admin.actions import delete_selected as django_delete_selected
 
-from apps.datasource_codebase.utils import CODEBASE_REPOSITORY_ADMIN_LIST, CODEBASE_REPOSITORY_ADMIN_FILTER, \
+from apps.datasource_codebase.utils import (
+    CODEBASE_REPOSITORY_ADMIN_LIST,
+    CODEBASE_REPOSITORY_ADMIN_FILTER,
     CODEBASE_REPOSITORY_ADMIN_SEARCH
-
+)
 
 logger = logging.getLogger(__name__)
 
@@ -37,18 +38,35 @@ class CodeBaseRepositoryAdmin(admin.ModelAdmin):
     list_display = CODEBASE_REPOSITORY_ADMIN_LIST
     list_filter = CODEBASE_REPOSITORY_ADMIN_FILTER
     search_fields = CODEBASE_REPOSITORY_ADMIN_SEARCH
-    readonly_fields = ['created_at', 'updated_at']
+
+    readonly_fields = [
+        'created_at',
+        'updated_at'
+    ]
 
     list_per_page = 20
     list_max_show_all = 100
 
-    def delete_selected(self, request, queryset):
+    def delete_selected(
+        self,
+        request,
+        queryset
+    ):
         for obj in queryset:
+
             client = CodeBaseDecoder.get(obj.knowledge_base)
+
             if client is not None:
                 result = client.delete_weaviate_document(
                     class_name=obj.knowledge_base.class_name,
-                    document_uuid=obj.document_uuid)
+                    document_uuid=obj.document_uuid
+                )
+
                 if not result["status"]:
                     logger.error(f"Failed to delete document from Weaviate.")
-        return django_delete_selected(self, request, queryset)
+
+        return django_delete_selected(
+            self,
+            request,
+            queryset
+        )

@@ -14,31 +14,45 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
-from langchain_community.document_loaders import UnstructuredCSVLoader
+from langchain_community.document_loaders import (
+    UnstructuredCSVLoader
+)
 
 
 logger = logging.getLogger(__name__)
 
 
 def load_csv_content(uri: str):
-    loader = UnstructuredCSVLoader(file_path=uri, mode="single")
+    loader = UnstructuredCSVLoader(
+        file_path=uri,
+        mode="single"
+    )
+
     docs = loader.load()
+
     clean_doc = {
         "page_content": "",
         "metadata": {}
     }
+
     if docs:
         for doc in docs:
             try:
                 pg_content = doc.page_content
                 meta = doc.metadata
+
                 clean_doc["page_content"] += pg_content
                 clean_doc["metadata"] = meta
+
                 return clean_doc
+
             except Exception as e:
                 logger.error(f"[tasks.load_csv_content] Error loading the CSV content: {e}")
                 continue
+
     logger.info(f"[tasks.load_csv_content] CSV content loaded successfully.")
+
     return clean_doc

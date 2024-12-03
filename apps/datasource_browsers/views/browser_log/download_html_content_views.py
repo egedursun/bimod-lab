@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -21,17 +22,35 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.views import View
 
-from apps.datasource_browsers.models import DataSourceBrowserBrowsingLog
-
+from apps.datasource_browsers.models import (
+    DataSourceBrowserBrowsingLog
+)
 
 logger = logging.getLogger(__name__)
 
 
 class BrowserView_BrowserLogDownloadHTML(LoginRequiredMixin, View):
-    def get(self, request, pk, *args, **kwargs):
-        log = get_object_or_404(DataSourceBrowserBrowsingLog, pk=pk)
-        response = HttpResponse(log.html_content, content_type='text/html')
+    def get(
+        self,
+        request,
+        pk,
+        *args,
+        **kwargs
+    ):
+        log = get_object_or_404(
+            DataSourceBrowserBrowsingLog,
+            pk=pk
+        )
+
+        response = HttpResponse(
+            log.html_content,
+            content_type='text/html'
+        )
+
         response[
-            'Content-Disposition'] = f'attachment; filename="{log.connection.name}_html_content_{log.created_at.strftime("%Y%m%d%H%M%S")}.html"'
+            'Content-Disposition'
+        ] = f'attachment; filename="{log.connection.name}_html_content_{log.created_at.strftime("%Y%m%d%H%M%S")}.html"'
+
         logger.info(f"User: {request.user} - Browser Log HTML Content: {log.connection.name} - Downloaded.")
+
         return response

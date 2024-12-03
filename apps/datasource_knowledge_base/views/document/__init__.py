@@ -15,9 +15,6 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from .delete_all_documents_views import *
 from .list_documents_views import *

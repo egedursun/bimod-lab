@@ -14,15 +14,16 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from django.contrib import admin
 
 from apps.data_security.models import NERIntegration
-from apps.data_security.utils import NER_INTEGRATION_ADMIN_LIST, NER_INTEGRATION_ADMIN_SEARCH, \
+
+from apps.data_security.utils import (
+    NER_INTEGRATION_ADMIN_LIST,
+    NER_INTEGRATION_ADMIN_SEARCH,
     NER_INTEGRATION_ADMIN_FILTER
+)
 
 
 @admin.register(NERIntegration)
@@ -30,4 +31,8 @@ class NERIntegrationAdmin(admin.ModelAdmin):
     list_display = NER_INTEGRATION_ADMIN_LIST
     list_filter = NER_INTEGRATION_ADMIN_FILTER
     search_fields = NER_INTEGRATION_ADMIN_SEARCH
-    readonly_fields = ('created_at', 'updated_at')
+
+    readonly_fields = (
+        'created_at',
+        'updated_at'
+    )

@@ -14,10 +14,17 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-from apps.sheetos.models import SheetosFolder, SheetosDocument
+
+from apps.sheetos.models import (
+    SheetosFolder,
+    SheetosDocument
+)
 
 
-def build_sheetos_folder_and_document_data_prompt(folder: SheetosFolder, doc: SheetosDocument):
+def build_sheetos_folder_and_document_data_prompt(
+    folder: SheetosFolder,
+    doc: SheetosDocument
+):
     return f"""
         ### **FOLDER INFORMATION:**
 

@@ -21,11 +21,19 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils import timezone
 from django.views.generic import TemplateView
 
-from apps.core.beamguard.beamguard_executor import BeamGuardExecutionManager
-from apps.core.generative_ai.generative_ai_decode_manager import GenerativeAIDecodeController
-from apps.dashboard.utils import INITIAL_STATISTICS_N_DAYS_BACK, build_statistics_for_graph
-from apps.dashboard.utils.class_utils import TransactionStatisticsManager
-from apps.datasource_sql.models import SQLDatabaseConnection
+from apps.core.generative_ai.generative_ai_decode_manager import (
+    GenerativeAIDecodeController
+)
+
+from apps.dashboard.utils import (
+    INITIAL_STATISTICS_N_DAYS_BACK,
+    build_statistics_for_graph
+)
+
+from apps.dashboard.utils.class_utils import (
+    TransactionStatisticsManager
+)
+
 from apps.llm_core.models import LLMCore
 from apps.organization.models import Organization
 from web_project import TemplateLayout
@@ -42,16 +50,29 @@ class DashboardView_Main(LoginRequiredMixin, TemplateView):
         user = self.request.user
 
         try:
-            orgs = Organization.objects.filter(users__in=[user])
+            orgs = Organization.objects.filter(
+                users__in=[user]
+            )
+
             manager = TransactionStatisticsManager(user=user)
+
             data_statistics = manager.statistics
             last_n_days = INITIAL_STATISTICS_N_DAYS_BACK
             context["days"] = last_n_days
-            ai_models = LLMCore.objects.filter(organization__in=orgs)
+
+            ai_models = LLMCore.objects.filter(
+                organization__in=orgs
+            )
+
             context["llm_models"] = ai_models
             last_update_datetime = timezone.now().strftime("%Y-%m-%d %H:%M:%S")
             context["last_update_datetime"] = last_update_datetime
-            context = build_statistics_for_graph(statistics=data_statistics, context=context)
+
+            context = build_statistics_for_graph(
+                statistics=data_statistics,
+                context=context
+            )
+
         except Exception as e:
             logger.error(f"Error getting main dashboard context data: {e}")
             return context
@@ -59,17 +80,31 @@ class DashboardView_Main(LoginRequiredMixin, TemplateView):
         logger.info(f"User: {user} - Statistics: {data_statistics}")
         return context
 
-    def post(self, request, *args, **kwargs):
+    def post(
+        self,
+        request,
+        *args,
+        **kwargs
+    ):
+
         context = self.get_context_data()
         context_user = request.user
 
         try:
             ai_model = request.POST.get("llm_model")
+
             llm_core = LLMCore.objects.get(id=ai_model)
             manager = TransactionStatisticsManager(user=context_user)
+
             data_statistics = manager.statistics
-            response = GenerativeAIDecodeController.provide_analysis(llm_model=llm_core, statistics=data_statistics)
+
+            response = GenerativeAIDecodeController.provide_analysis(
+                llm_model=llm_core,
+                statistics=data_statistics
+            )
+
             context.update(response=response)
+
         except Exception as e:
             logger.error(f"Error getting main dashboard context data: {e}")
             return context

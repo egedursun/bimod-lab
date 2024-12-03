@@ -17,7 +17,10 @@
 
 import logging
 
-from apps.core.expert_networks.expert_network_executor import ExpertNetworkExecutor
+from apps.core.expert_networks.expert_network_executor import (
+    ExpertNetworkExecutor
+)
+
 from apps.leanmod.models import ExpertNetworkAssistantReference
 
 

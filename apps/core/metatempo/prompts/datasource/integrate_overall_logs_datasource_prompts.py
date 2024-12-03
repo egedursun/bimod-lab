@@ -14,7 +14,11 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-from apps.metatempo.models import MetaTempoConnection, MetaTempoProjectOverallLog
+
+from apps.metatempo.models import (
+    MetaTempoConnection,
+    MetaTempoProjectOverallLog
+)
 
 
 def get_overall_logs_datasource_prompt(connection: MetaTempoConnection, batched_logs: list):

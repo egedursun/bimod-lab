@@ -23,8 +23,14 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.datasource_codebase.models import CodeBaseRepository
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
+from apps.datasource_codebase.models import (
+    CodeBaseRepository
+)
+
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
@@ -46,20 +52,28 @@ class CodeBaseView_RepositoryDeleteAll(LoginRequiredMixin, TemplateView):
 
         ##############################
         # PERMISSION CHECK FOR - DELETE_CODE_REPOSITORY
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.DELETE_CODE_REPOSITORY):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.DELETE_CODE_REPOSITORY
+        ):
             messages.error(self.request, "You do not have permission to delete code repositories.")
             return redirect('datasource_codebase:list_repositories')
         ##############################
 
         try:
-            CodeBaseRepository.objects.filter(knowledge_base_id=vs_id).delete()
+            CodeBaseRepository.objects.filter(
+                knowledge_base_id=vs_id
+            ).delete()
+
         except Exception as e:
             logger.error(f"User: {request.user} - Code Repository - Delete All Error: {e}")
             messages.error(request, 'An error occurred while deleting all repositories.')
+
             return redirect('datasource_codebase:list_repositories')
 
         logger.info(
             f"[CodeBaseView_RepositoryDeleteAll] All repositories in the selected knowledge base have been deleted.")
+
         messages.success(request, 'All repositories in the selected knowledge base have been deleted successfully.')
+
         return redirect('datasource_codebase:list_repositories')

@@ -14,7 +14,11 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-from apps.hadron_prime.models import HadronNode, HadronSystem
+
+from apps.hadron_prime.models import (
+    HadronNode,
+    HadronSystem
+)
 
 
 def build_core_instructions_prompt():

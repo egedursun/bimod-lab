@@ -20,9 +20,15 @@ import logging
 
 from django.contrib.auth.models import User
 
-from apps.core.beamguard.beamguard_executor import BeamGuardExecutionManager
+from apps.core.beamguard.beamguard_executor import (
+    BeamGuardExecutionManager
+)
+
 from apps.core.browsers.utils import BrowserActionsNames
-from apps.core.generative_ai.auxiliary_methods.errors.error_log_prompts import get_json_decode_error_log
+
+from apps.core.generative_ai.auxiliary_methods.errors.error_log_prompts import (
+    get_json_decode_error_log
+)
 
 from apps.core.tool_calls.core_services.core_service_dashboard_statistics_query import (
     run_query_dashboard_statistics

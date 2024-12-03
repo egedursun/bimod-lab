@@ -14,15 +14,23 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
 from apps.assistants.models import Assistant
-from apps.datasource_file_systems.models import DataSourceFileSystem
+
+from apps.datasource_file_systems.models import (
+    DataSourceFileSystem
+)
+
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
@@ -35,8 +43,10 @@ class FileSystemView_List(LoginRequiredMixin, TemplateView):
 
         ##############################
         # PERMISSION CHECK FOR - LIST_FILE_SYSTEMS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.LIST_FILE_SYSTEMS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.LIST_FILE_SYSTEMS
+        ):
             messages.error(self.request, "You do not have permission to list file system connections.")
             return context
         ##############################
@@ -44,18 +54,31 @@ class FileSystemView_List(LoginRequiredMixin, TemplateView):
         try:
             context_user = self.request.user
             conns_by_orgs = {}
+
             agents = Assistant.objects.filter(
-                organization__in=context_user.organizations.filter(users__in=[context_user]))
+                organization__in=context_user.organizations.filter(
+                    users__in=[context_user]
+                )
+            )
+
             for agent in agents:
                 org = agent.organization
+
                 if org not in conns_by_orgs:
                     conns_by_orgs[org] = {}
+
                 if agent not in conns_by_orgs[org]:
                     conns_by_orgs[org][agent] = []
-                conns = DataSourceFileSystem.objects.filter(assistant=agent)
+
+                conns = DataSourceFileSystem.objects.filter(
+                    assistant=agent
+                )
+
                 conns_by_orgs[org][agent].extend(conns)
+
             context['connections_by_organization'] = conns_by_orgs
             context['user'] = context_user
+
         except Exception as e:
             logger.error(f"User: {self.request.user} - File System - List Error: {e}")
             messages.error(self.request, 'An error occurred while listing file system connections.')

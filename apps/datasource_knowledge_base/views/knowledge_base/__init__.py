@@ -15,9 +15,6 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from .update_knowledge_base_views import *
 from .list_knowledge_bases_views import *

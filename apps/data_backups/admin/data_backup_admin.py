@@ -19,7 +19,12 @@
 from django.contrib import admin
 
 from apps.data_backups.models import DataBackup
-from apps.data_backups.utils import DATA_BACKUP_ADMIN_LIST, DATA_BACKUP_ADMIN_SEARCH, DATA_BACKUP_ADMIN_FILTER
+
+from apps.data_backups.utils import (
+    DATA_BACKUP_ADMIN_LIST,
+    DATA_BACKUP_ADMIN_SEARCH,
+    DATA_BACKUP_ADMIN_FILTER
+)
 
 
 @admin.register(DataBackup)
@@ -27,6 +32,7 @@ class DataBackupAdmin(admin.ModelAdmin):
     list_display = DATA_BACKUP_ADMIN_LIST
     list_filter = DATA_BACKUP_ADMIN_FILTER
     search_fields = DATA_BACKUP_ADMIN_SEARCH
+
     readonly_fields = ['created_at']
     ordering = ['-created_at']
     actions = ['delete_selected']
