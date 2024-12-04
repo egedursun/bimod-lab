@@ -22,7 +22,7 @@ from django.conf import settings
 
 class TemplateLayout:
     # Initialize the bootstrap files and page layout
-    def init(self, context):
+    def init(self, context: object) -> object:
         # Init the Template Context using TEMPLATE_CONFIG
         context = TemplateHelper.init_context(context)
         # Set a default layout globally using settings.py. Can be set in the page level view file as well.

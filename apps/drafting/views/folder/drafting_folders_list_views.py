@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
@@ -31,36 +32,48 @@ logger = logging.getLogger(__name__)
 
 
 class DraftingView_FolderList(LoginRequiredMixin, TemplateView):
+
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
 
         ##############################
         # PERMISSION CHECK FOR - LIST_DRAFTING_FOLDERS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.LIST_DRAFTING_FOLDERS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.LIST_DRAFTING_FOLDERS
+        ):
             messages.error(self.request, "You do not have permission to list Drafting Folders.")
             return context
         ##############################
 
         # Get organizations and paginate folders for each
-
         try:
-            user_orgs = Organization.objects.filter(users__in=[self.request.user])
+            user_orgs = Organization.objects.filter(
+                users__in=[self.request.user]
+            )
+
             org_folders = []
+
             for org in user_orgs:
                 folders = DraftingFolder.objects.filter(organization=org)
                 paginator = Paginator(folders, 10)
                 page_number = self.request.GET.get(f'page_{org.id}', 1)
                 page_obj = paginator.get_page(page_number)
-                org_folders.append({
-                    'organization': org,
-                    'page_obj': page_obj,
-                })
+
+                org_folders.append(
+                    {
+                        'organization': org,
+                        'page_obj': page_obj,
+                    }
+                )
+
             context['org_folders'] = org_folders
             context['organizations'] = user_orgs
+
         except Exception as e:
             logger.error(f"Error listing Drafting Folders: {e}")
             messages.error(self.request, 'An error occurred while listing Drafting Folders.')
+
             return context
 
         logger.info(f"Drafting Folders were listed for User: {self.request.user.id}.")

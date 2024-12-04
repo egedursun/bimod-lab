@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
@@ -22,8 +23,14 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.views import View
 
-from apps.core.drafting.drafting_executor import DraftingExecutionManager
-from apps.core.user_permissions.permission_manager import UserPermissionManager
+from apps.core.drafting.drafting_executor import (
+    DraftingExecutionManager
+)
+
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
 from apps.drafting.models import DraftingDocument
 from apps.user_permissions.utils import PermissionNames
 
@@ -41,8 +48,10 @@ class DraftingView_GenerateViaAICommand(LoginRequiredMixin, View):
 
         ##############################
         # PERMISSION CHECK FOR - UPDATE_DRAFTING_DOCUMENTS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.UPDATE_DRAFTING_DOCUMENTS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.UPDATE_DRAFTING_DOCUMENTS
+        ):
             messages.error(self.request, "You do not have permission to update Drafting Documents.")
             return redirect('drafting:documents_detail',
                             folder_id=document.document_folder.id, document_id=document_id)
@@ -52,11 +61,16 @@ class DraftingView_GenerateViaAICommand(LoginRequiredMixin, View):
             command = request.POST.get('command')
             xc = DraftingExecutionManager(drafting_document=document)
             response_json = xc.execute_ai_command(command=command)
+
         except Exception as e:
             logger.error(f"Error executing AI Command for Drafting Document: {e}")
             messages.error(self.request, 'An error occurred while executing AI Command.')
-            return redirect('drafting:documents_detail',
-                            folder_id=document.document_folder.id, document_id=document_id)
+
+            return redirect(
+                'drafting:documents_detail',
+                folder_id=document.document_folder.id,
+                document_id=document_id
+            )
 
         logger.info(f"AI Command was executed for Drafting Document: {document.id}.")
         return JsonResponse(response_json)

@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
@@ -34,8 +35,10 @@ class DraftingView_FolderCreate(LoginRequiredMixin, View):
 
         ##############################
         # PERMISSION CHECK FOR - ADD_DRAFTING_FOLDERS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.ADD_DRAFTING_FOLDERS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.ADD_DRAFTING_FOLDERS
+        ):
             messages.error(self.request, "You do not have permission to add Drafting Folders.")
             return redirect('drafting:folders_list')
         ##############################
@@ -49,13 +52,19 @@ class DraftingView_FolderCreate(LoginRequiredMixin, View):
             if organization_id and folder_name:
                 organization = Organization.objects.get(id=organization_id)
                 DraftingFolder.objects.create(
-                    organization=organization, name=folder_name, description=description,
-                    meta_context_instructions=meta_context_instructions, created_by_user=request.user
+                    organization=organization,
+                    name=folder_name,
+                    description=description,
+                    meta_context_instructions=meta_context_instructions,
+                    created_by_user=request.user
                 )
+
         except Exception as e:
             logger.error(f"Error creating Drafting Folder: {e}")
             messages.error(self.request, 'An error occurred while creating Drafting Folder.')
+
             return redirect('drafting:folders_list')
 
         logger.info(f"Drafting Folder was created by User: {request.user.id}.")
+
         return redirect('drafting:folders_list')

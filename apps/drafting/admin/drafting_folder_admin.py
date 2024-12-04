@@ -18,7 +18,12 @@
 from django.contrib import admin
 
 from apps.drafting.models import DraftingFolder
-from apps.drafting.utils import DRAFTING_FOLDER_ADMIN_LIST, DRAFTING_FOLDER_ADMIN_FILTER, DRAFTING_FOLDER_ADMIN_SEARCH
+
+from apps.drafting.utils import (
+    DRAFTING_FOLDER_ADMIN_LIST,
+    DRAFTING_FOLDER_ADMIN_FILTER,
+    DRAFTING_FOLDER_ADMIN_SEARCH
+)
 
 
 @admin.register(DraftingFolder)

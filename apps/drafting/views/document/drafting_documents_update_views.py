@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
@@ -22,8 +23,16 @@ from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import TemplateView
 
 from apps.assistants.models import Assistant
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.drafting.models import DraftingFolder, DraftingDocument
+
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
+from apps.drafting.models import (
+    DraftingFolder,
+    DraftingDocument
+)
+
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
@@ -37,14 +46,30 @@ class DraftingView_DocumentUpdate(LoginRequiredMixin, TemplateView):
         document_id = self.kwargs['document_id']
 
         try:
-            folder = get_object_or_404(DraftingFolder, id=folder_id)
-            document = get_object_or_404(DraftingDocument, id=document_id, document_folder=folder)
-            available_folders = DraftingFolder.objects.filter(organization=folder.organization)
-            assistants = Assistant.objects.filter(organization=folder.organization)
+            folder = get_object_or_404(
+                DraftingFolder,
+                id=folder_id
+            )
+
+            document = get_object_or_404(
+                DraftingDocument,
+                id=document_id,
+                document_folder=folder
+            )
+
+            available_folders = DraftingFolder.objects.filter(
+                organization=folder.organization
+            )
+
+            assistants = Assistant.objects.filter(
+                organization=folder.organization
+            )
+
             context['folder'] = folder
             context['document'] = document
             context['available_folders'] = available_folders
             context['assistants'] = assistants
+
         except Exception as e:
             logger.error(f"Error getting Drafting Document: {e}")
             messages.error(self.request, 'An error occurred while getting Drafting Document.')
@@ -56,8 +81,10 @@ class DraftingView_DocumentUpdate(LoginRequiredMixin, TemplateView):
 
         ##############################
         # PERMISSION CHECK FOR - UPDATE_DRAFTING_DOCUMENTS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.UPDATE_DRAFTING_DOCUMENTS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.UPDATE_DRAFTING_DOCUMENTS
+        ):
             messages.error(self.request, "You do not have permission to update Drafting Documents.")
             return redirect('drafting:documents_list', folder_id=self.kwargs['folder_id'])
         ##############################
@@ -66,20 +93,40 @@ class DraftingView_DocumentUpdate(LoginRequiredMixin, TemplateView):
         document_id = self.kwargs['document_id']
 
         try:
-            folder = get_object_or_404(DraftingFolder, id=folder_id)
-            document = get_object_or_404(DraftingDocument, id=document_id, document_folder=folder)
+            folder = get_object_or_404(
+                DraftingFolder,
+                id=folder_id
+            )
+
+            document = get_object_or_404(
+                DraftingDocument,
+                id=document_id,
+                document_folder=folder
+            )
+
             document.document_title = request.POST.get('document_title')
             document.copilot_assistant_id = request.POST.get('copilot_assistant')
             document.document_folder_id = request.POST.get('document_folder')
+
             document.context_instructions = request.POST.get('context_instructions', '')
             document.target_audience = request.POST.get('target_audience', '')
             document.tone = request.POST.get('tone', '')
             document.last_updated_by_user = request.user
+
             document.save()
+
         except Exception as e:
             logger.error(f"Error updating Drafting Document: {e}")
             messages.error(self.request, 'An error occurred while updating Drafting Document.')
-            return redirect('drafting:documents_list', folder_id=folder_id)
+
+            return redirect(
+                'drafting:documents_list',
+                folder_id=folder_id
+            )
 
         logger.info(f"Drafting Document {document.document_title} was updated.")
-        return redirect('drafting:documents_list', folder_id=folder_id)
+
+        return redirect(
+            'drafting:documents_list',
+            folder_id=folder_id
+        )

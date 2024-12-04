@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
@@ -34,15 +35,19 @@ class DraftingView_DocumentCreate(LoginRequiredMixin, View):
 
         ##############################
         # PERMISSION CHECK FOR - ADD_DRAFTING_DOCUMENTS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.ADD_DRAFTING_DOCUMENTS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.ADD_DRAFTING_DOCUMENTS
+        ):
             messages.error(self.request, "You do not have permission to add Drafting Documents.")
             return redirect('drafting:documents_list', folder_id=self.kwargs['folder_id'])
         ##############################
 
         folder_id = self.kwargs['folder_id']
+
         try:
             folder = get_object_or_404(DraftingFolder, id=folder_id)
+
             document = DraftingDocument.objects.create(
                 organization=folder.organization,
                 document_folder=folder,
@@ -54,10 +59,13 @@ class DraftingView_DocumentCreate(LoginRequiredMixin, View):
                 created_by_user=request.user,
                 last_updated_by_user=request.user
             )
+
         except Exception as e:
             logger.error(f"Error creating Drafting Document: {e}")
             messages.error(self.request, 'An error occurred while creating Drafting Document.')
+
             return redirect('drafting:documents_list', folder_id=folder_id)
 
         logger.info(f"Drafting Document {document.document_title} was created.")
+
         return redirect('drafting:documents_detail', folder_id=folder.id, document_id=document.id)

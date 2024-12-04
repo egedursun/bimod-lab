@@ -18,8 +18,12 @@
 from django.contrib import admin
 
 from apps.drafting.models import DraftingDocument
-from apps.drafting.utils import DRAFTING_DOCUMENT_ADMIN_LIST, DRAFTING_DOCUMENT_ADMIN_LIST_FILTER, \
+
+from apps.drafting.utils import (
+    DRAFTING_DOCUMENT_ADMIN_LIST,
+    DRAFTING_DOCUMENT_ADMIN_LIST_FILTER,
     DRAFTING_DOCUMENT_ADMIN_SEARCH
+)
 
 
 @admin.register(DraftingDocument)

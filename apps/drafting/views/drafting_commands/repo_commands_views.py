@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
@@ -41,22 +42,33 @@ class DraftingView_GenerateViaRepoCommand(LoginRequiredMixin, View):
 
         ##############################
         # PERMISSION CHECK FOR - UPDATE_DRAFTING_DOCUMENTS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.UPDATE_DRAFTING_DOCUMENTS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.UPDATE_DRAFTING_DOCUMENTS
+        ):
             messages.error(self.request, "You do not have permission to update Drafting Documents.")
-            return redirect('drafting:documents_detail',
-                            folder_id=document.document_folder.id, document_id=document_id)
+
+            return redirect(
+                'drafting:documents_detail',
+                folder_id=document.document_folder.id,
+                document_id=document_id
+            )
         ##############################
 
         try:
             command = request.POST.get('command')
             xc = DraftingExecutionManager(drafting_document=document)
             response_json = xc.execute_repo_command(command=command)
+
         except Exception as e:
             logger.error(f"Error executing Repo Command for Drafting Document: {e}")
             messages.error(self.request, 'An error occurred while executing Repo Command.')
-            return redirect('drafting:documents_detail',
-                            folder_id=document.document_folder.id, document_id=document_id)
+
+            return redirect(
+                'drafting:documents_detail',
+                folder_id=document.document_folder.id,
+                document_id=document_id
+            )
 
         logger.info(f"Repo Command was executed for Drafting Document: {document.id}.")
         return JsonResponse(response_json)

@@ -15,7 +15,6 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-
 from .ai_commands_views import *
 from .img_commands_views import *
 from .sql_commands_views import *

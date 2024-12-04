@@ -15,7 +15,6 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-
 from .drafting_folders_list_views import *
 from .drafting_folders_create_views import *
 from .drafting_folders_delete_views import *

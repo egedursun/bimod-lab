@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
@@ -34,6 +35,7 @@ class DraftingView_FolderDelete(LoginRequiredMixin, TemplateView):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         folder_id = self.kwargs['folder_id']
         folder = get_object_or_404(DraftingFolder, id=folder_id)
+
         context['folder'] = folder
         return context
 
@@ -41,8 +43,10 @@ class DraftingView_FolderDelete(LoginRequiredMixin, TemplateView):
 
         ##############################
         # PERMISSION CHECK FOR - DELETE_DRAFTING_FOLDERS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.DELETE_DRAFTING_FOLDERS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.DELETE_DRAFTING_FOLDERS
+        ):
             messages.error(self.request, "You do not have permission to delete Drafting Folders.")
             return redirect('drafting:folders_list')
         ##############################
@@ -52,6 +56,7 @@ class DraftingView_FolderDelete(LoginRequiredMixin, TemplateView):
 
         try:
             folder.delete()
+
         except Exception as e:
             logger.error(f"Error deleting Drafting Folder: {e}")
             messages.error(self.request, 'An error occurred while deleting Drafting Folder.')

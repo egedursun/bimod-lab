@@ -37,9 +37,14 @@ class DraftingView_FolderUpdate(LoginRequiredMixin, TemplateView):
 
         try:
             folder = get_object_or_404(DraftingFolder, id=folder_id)
-            organizations = Organization.objects.filter(users__in=[self.request.user])
+
+            organizations = Organization.objects.filter(
+                users__in=[self.request.user]
+            )
+
             context['folder'] = folder
             context['organizations'] = organizations
+
         except Exception as e:
             logger.error(f"Error getting Drafting Folder: {e}")
             messages.error(self.request, 'An error occurred while getting Drafting Folder.')
@@ -51,8 +56,10 @@ class DraftingView_FolderUpdate(LoginRequiredMixin, TemplateView):
 
         ##############################
         # PERMISSION CHECK FOR - UPDATE_DRAFTING_FOLDERS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.UPDATE_DRAFTING_FOLDERS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.UPDATE_DRAFTING_FOLDERS
+        ):
             messages.error(self.request, "You do not have permission to update Drafting Folders.")
             return redirect('drafting:folders_list')
         ##############################
@@ -65,9 +72,12 @@ class DraftingView_FolderUpdate(LoginRequiredMixin, TemplateView):
             folder.description = request.POST.get('description', '')
             folder.meta_context_instructions = request.POST.get('meta_context_instructions', '')
             organization_id = request.POST.get('organization')
+
             if organization_id:
                 folder.organization_id = organization_id
+
             folder.save()
+
         except Exception as e:
             logger.error(f"Error updating Drafting Folder: {e}")
             messages.error(self.request, 'An error occurred while updating Drafting Folder.')

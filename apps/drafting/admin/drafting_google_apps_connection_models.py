@@ -19,8 +19,12 @@
 from django.contrib import admin
 
 from apps.drafting.models import DraftingGoogleAppsConnection
-from apps.drafting.utils import DRAFTING_GOOGLE_APPS_CONNECTION_ADMIN_LIST, \
-    DRAFTING_GOOGLE_APPS_CONNECTION_ADMIN_FILTER, DRAFTING_GOOGLE_APPS_CONNECTION_ADMIN_SEARCH
+
+from apps.drafting.utils import (
+    DRAFTING_GOOGLE_APPS_CONNECTION_ADMIN_LIST,
+    DRAFTING_GOOGLE_APPS_CONNECTION_ADMIN_FILTER,
+    DRAFTING_GOOGLE_APPS_CONNECTION_ADMIN_SEARCH
+)
 
 
 @admin.register(DraftingGoogleAppsConnection)

@@ -20,7 +20,11 @@ from django.db import models
 
 
 class DraftingFolder(models.Model):
-    organization = models.ForeignKey('organization.Organization', on_delete=models.CASCADE)
+    organization = models.ForeignKey(
+        'organization.Organization',
+        on_delete=models.CASCADE
+    )
+
     name = models.CharField(max_length=1000)
     description = models.TextField(blank=True, null=True)
     meta_context_instructions = models.TextField(blank=True, null=True)
@@ -35,9 +39,17 @@ class DraftingFolder(models.Model):
         verbose_name = 'Drafting Folder'
         verbose_name_plural = 'Drafting Folders'
         indexes = [
-            models.Index(fields=['organization']),
-            models.Index(fields=['organization', 'name']),
+            models.Index(fields=[
+                'organization'
+            ]),
+            models.Index(fields=[
+                'organization',
+                'name'
+            ]),
         ]
         unique_together = [
-            ['organization', 'name'],
+            [
+                'organization',
+                'name'
+            ],
         ]

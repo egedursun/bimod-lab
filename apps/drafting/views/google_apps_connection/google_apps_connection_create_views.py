@@ -35,8 +35,10 @@ class DraftingView_GoogleAppsConnectionCreate(LoginRequiredMixin, View):
 
         ##############################
         # PERMISSION CHECK FOR - ADD_DRAFTING_GOOGLE_APPS_CONNECTIONS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.ADD_DRAFTING_GOOGLE_APPS_CONNECTIONS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.ADD_DRAFTING_GOOGLE_APPS_CONNECTIONS
+        ):
             messages.error(self.request, "You do not have permission to add Drafting Google Apps Connections.")
             return redirect('drafting:google_apps_connections_list')
         ##############################
@@ -50,16 +52,21 @@ class DraftingView_GoogleAppsConnectionCreate(LoginRequiredMixin, View):
             assistant = get_object_or_404(Assistant, id=assistant_id)
 
             connection, created = DraftingGoogleAppsConnection.objects.get_or_create(
-                owner_user=request.user, drafting_assistant=assistant,
-                defaults={'connection_api_key': generate_google_apps_connection_api_key()}
+                owner_user=request.user,
+                drafting_assistant=assistant,
+                defaults={
+                    'connection_api_key': generate_google_apps_connection_api_key()
+                }
             )
 
             if not created:
                 messages.warning(request, "A connection for this model already exists. Please renew if necessary.")
             else:
                 messages.success(request, "Connection successfully created.")
+
         except Exception as e:
             messages.error(request, "An error occurred while creating connection: " + str(e))
+
             return redirect('drafting:google_apps_connections_list')
 
         return redirect('drafting:google_apps_connections_list')

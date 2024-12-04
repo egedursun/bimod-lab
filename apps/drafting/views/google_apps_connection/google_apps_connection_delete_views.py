@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
@@ -33,19 +34,28 @@ class DraftingView_GoogleAppsConnectionDelete(LoginRequiredMixin, View):
 
         ##############################
         # PERMISSION CHECK FOR - DELETE_DRAFTING_GOOGLE_APPS_CONNECTIONS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.DELETE_DRAFTING_GOOGLE_APPS_CONNECTIONS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.DELETE_DRAFTING_GOOGLE_APPS_CONNECTIONS
+        ):
             messages.error(self.request, "You do not have permission to delete Drafting Google Apps Connections.")
             return redirect('drafting:google_apps_connections_list')
         ##############################
 
-        connection = get_object_or_404(DraftingGoogleAppsConnection, id=connection_id, owner_user=request.user)
+        connection = get_object_or_404(
+            DraftingGoogleAppsConnection,
+            id=connection_id,
+            owner_user=request.user
+        )
 
         try:
             connection.delete()
+
         except Exception as e:
             messages.error(request, "An error occurred while deleting the connection.")
+
             return redirect('drafting:google_apps_connections_list')
 
         messages.success(request, "Connection successfully deleted.")
+
         return redirect('drafting:google_apps_connections_list')

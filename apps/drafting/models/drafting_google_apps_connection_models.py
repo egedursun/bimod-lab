@@ -20,8 +20,18 @@ from django.db import models
 
 
 class DraftingGoogleAppsConnection(models.Model):
-    drafting_assistant = models.ForeignKey('assistants.Assistant', on_delete=models.CASCADE, null=True, blank=True)
-    owner_user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    drafting_assistant = models.ForeignKey(
+        'assistants.Assistant',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True
+    )
+
+    owner_user = models.ForeignKey(
+        'auth.User',
+        on_delete=models.CASCADE
+    )
+
     connection_api_key = models.CharField(max_length=4000)
 
     created_at = models.DateTimeField(auto_now_add=True)
@@ -34,10 +44,20 @@ class DraftingGoogleAppsConnection(models.Model):
         verbose_name = 'Drafting Google Apps Connection'
         verbose_name_plural = 'Drafting Google Apps Connections'
         indexes = [
-            models.Index(fields=['drafting_assistant']),
-            models.Index(fields=['owner_user']),
-            models.Index(fields=['drafting_assistant', 'owner_user']),
+            models.Index(fields=[
+                'drafting_assistant'
+            ]),
+            models.Index(fields=[
+                'owner_user'
+            ]),
+            models.Index(fields=[
+                'drafting_assistant',
+                'owner_user'
+            ]),
         ]
         unique_together = [
-            ['drafting_assistant', 'owner_user'],
+            [
+                'drafting_assistant',
+                'owner_user'
+            ],
         ]
