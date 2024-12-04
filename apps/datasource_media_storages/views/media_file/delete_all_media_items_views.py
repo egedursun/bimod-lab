@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 import os
 
@@ -22,8 +23,14 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.datasource_media_storages.models import DataSourceMediaStorageItem
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
+from apps.datasource_media_storages.models import (
+    DataSourceMediaStorageItem
+)
+
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
@@ -51,7 +58,9 @@ class MediaView_ItemDeleteAll(LoginRequiredMixin, TemplateView):
         ##############################
 
         mm_id = kwargs.get('id')
-        complete_items_set = DataSourceMediaStorageItem.objects.filter(storage_base_id=mm_id)
+        complete_items_set = DataSourceMediaStorageItem.objects.filter(
+            storage_base_id=mm_id
+        )
 
         for item in complete_items_set:
             if item.full_file_path is not None:
@@ -62,7 +71,10 @@ class MediaView_ItemDeleteAll(LoginRequiredMixin, TemplateView):
                     pass
 
         try:
-            DataSourceMediaStorageItem.objects.filter(storage_base_id=mm_id).delete()
+            DataSourceMediaStorageItem.objects.filter(
+                storage_base_id=mm_id
+            ).delete()
+
         except Exception as e:
             logger.error(f"User: {request.user} - Media Item - Delete All Error: {e}")
             messages.error(request, 'An error occurred while deleting all media files.')

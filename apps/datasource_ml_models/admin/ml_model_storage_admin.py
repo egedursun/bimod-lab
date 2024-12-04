@@ -14,15 +14,16 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from django.contrib import admin
 
 from apps.datasource_ml_models.models import DataSourceMLModelConnection
-from apps.datasource_ml_models.utils import ML_MODEL_MANAGER_ADMIN_LIST, ML_MODEL_MANAGER_ADMIN_FILTER, \
+
+from apps.datasource_ml_models.utils import (
+    ML_MODEL_MANAGER_ADMIN_LIST,
+    ML_MODEL_MANAGER_ADMIN_FILTER,
     ML_MODEL_MANAGER_ADMIN_SEARCH
+)
 
 
 @admin.register(DataSourceMLModelConnection)

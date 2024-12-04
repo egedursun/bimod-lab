@@ -20,9 +20,10 @@ import logging
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-from apps.datasource_media_storages.models import DataSourceMediaStorageItem, MediaItemVectorData
-from apps.leanmod.models import LeanModOldChatMessagesVectorData
-from apps.multimodal_chat.models import MultimodalLeanChatMessage
+from apps.datasource_media_storages.models import (
+    DataSourceMediaStorageItem,
+    MediaItemVectorData
+)
 
 logger = logging.getLogger(__name__)
 
@@ -38,10 +39,13 @@ def update_media_item_vector_embedding_after_save(
         item, success = MediaItemVectorData.objects.get_or_create(
             media_item=instance
         )
+
         if success:
             logger.info("MediaItemVectorData created for DataSourceMediaStorageItem.")
+
         else:
             logger.info("MediaItemVectorData already exists; updating.")
             item.save()
+
     except Exception as e:
         logger.error(f"Error in post-save embedding update: {e}")

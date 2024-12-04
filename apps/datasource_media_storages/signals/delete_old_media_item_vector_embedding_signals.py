@@ -37,6 +37,7 @@ def remove_vector_from_index_on_media_item_delete(sender, instance, **kwargs):
         vector_data_instances = MediaItemVectorData.objects.filter(
             media_item=instance
         ).all()
+
         if not vector_data_instances:
             print(f"No vector data found for DataSourceMediaStorageItem with ID {instance.id}.")
             return
@@ -45,9 +46,15 @@ def remove_vector_from_index_on_media_item_delete(sender, instance, **kwargs):
 
         if os.path.exists(index_path):
             index = faiss.read_index(index_path)
-            xids = np.array([vector_data_instance.id for vector_data_instance in vector_data_instances])
+
+            xids = np.array([
+                vector_data_instance.id for vector_data_instance in vector_data_instances
+            ])
+
             index.remove_ids(xids)
+
             faiss.write_index(index, index_path)
+
             logger.info(f"Removed vector data for DataSourceMediaStorageItem with ID {instance.id} from index.")
             print(f"Removed vector data for DataSourceMediaStorageItem with ID {instance.id} from index.")
 

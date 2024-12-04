@@ -20,18 +20,33 @@ import random
 from django.db import models
 from slugify import slugify
 
-from apps.datasource_ml_models.tasks import upload_model_to_ml_model_base
-from apps.datasource_ml_models.utils import ML_MODEL_ITEM_CATEGORIES
+from apps.datasource_ml_models.tasks import (
+    upload_model_to_ml_model_base
+)
+
+from apps.datasource_ml_models.utils import (
+    ML_MODEL_ITEM_CATEGORIES
+)
 
 
 class DataSourceMLModelItem(models.Model):
-    ml_model_base = models.ForeignKey('datasource_ml_models.DataSourceMLModelConnection',
-                                      on_delete=models.CASCADE, related_name='items')
+    ml_model_base = models.ForeignKey(
+        'datasource_ml_models.DataSourceMLModelConnection',
+        on_delete=models.CASCADE,
+        related_name='items'
+    )
+
     ml_model_name = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
     ml_model_size = models.BigIntegerField(null=True, blank=True)
     interpretation_temperature = models.FloatField(default=0.25)
-    full_file_path = models.CharField(max_length=1000, blank=True, null=True)
+
+    full_file_path = models.CharField(
+        max_length=1000,
+        blank=True,
+        null=True
+    )
+
     file_bytes = models.BinaryField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -43,24 +58,59 @@ class DataSourceMLModelItem(models.Model):
     class Meta:
         verbose_name = 'Data Source ML Model Item'
         verbose_name_plural = 'Data Source ML Model Items'
+
         unique_together = [
-            ['ml_model_base', 'ml_model_name'],
-        ]
-        ordering = ['-created_at']
-        indexes = [
-            models.Index(fields=['ml_model_base', 'ml_model_name']),
-            models.Index(fields=['ml_model_base', 'description']),
-            models.Index(fields=['ml_model_base', 'created_at']),
-            models.Index(fields=['ml_model_base', 'updated_at']),
+            [
+                'ml_model_base',
+                'ml_model_name'
+            ],
         ]
 
-    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+        ordering = ['-created_at']
+
+        indexes = [
+            models.Index(fields=[
+                'ml_model_base',
+                'ml_model_name'
+            ]),
+            models.Index(fields=[
+                'ml_model_base',
+                'description'
+            ]),
+            models.Index(fields=[
+                'ml_model_base',
+                'created_at'
+            ]),
+            models.Index(fields=[
+                'ml_model_base',
+                'updated_at'
+            ]),
+        ]
+
+    def save(
+        self,
+        force_insert=False,
+        force_update=False,
+        using=None,
+        update_fields=None
+    ):
         self.ml_model_name = slugify(self.ml_model_name)
-        file_type = ML_MODEL_ITEM_CATEGORIES[0][0]  # hardcoded for now
+        file_type = ML_MODEL_ITEM_CATEGORIES[0][0]
+
         if not self.full_file_path:
             base_dir = self.ml_model_base.directory_full_path
             f_name = self.ml_model_name
             f_uri = f"{base_dir}{f_name.split('.')[0]}_{str(random.randint(1_000_000, 9_999_999))}.{file_type}"
             self.full_file_path = f_uri
-        super().save(force_insert, force_update, using, update_fields)
-        upload_model_to_ml_model_base.delay(file_bytes=self.file_bytes, full_path=self.full_file_path)
+
+        super().save(
+            force_insert,
+            force_update,
+            using,
+            update_fields
+        )
+
+        upload_model_to_ml_model_base.delay(
+            file_bytes=self.file_bytes,
+            full_path=self.full_file_path
+        )

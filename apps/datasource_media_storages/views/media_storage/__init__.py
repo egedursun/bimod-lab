@@ -15,9 +15,6 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from .list_media_storages_views import *
 from .create_media_storage_views import *

@@ -26,13 +26,27 @@ from config.settings import MEDIA_URL
 
 
 class DataSourceMediaStorageItem(models.Model):
-    storage_base = models.ForeignKey('datasource_media_storages.DataSourceMediaStorageConnection',
-                                     on_delete=models.CASCADE, related_name='items')
+    storage_base = models.ForeignKey(
+        'datasource_media_storages.DataSourceMediaStorageConnection',
+        on_delete=models.CASCADE,
+        related_name='items'
+    )
+
     media_file_name = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
     media_file_size = models.BigIntegerField(null=True, blank=True)
-    media_file_type = models.CharField(max_length=10, choices=MEDIA_FILE_TYPES)
-    full_file_path = models.CharField(max_length=1000, blank=True, null=True)
+
+    media_file_type = models.CharField(
+        max_length=10,
+        choices=MEDIA_FILE_TYPES
+    )
+
+    full_file_path = models.CharField(
+        max_length=1000,
+        blank=True,
+        null=True
+    )
+
     file_bytes = models.BinaryField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -46,15 +60,40 @@ class DataSourceMediaStorageItem(models.Model):
         verbose_name_plural = 'Data Source Media Storage Items'
         ordering = ['-created_at']
         indexes = [
-            models.Index(fields=['storage_base', 'media_file_name']),
-            models.Index(fields=['storage_base', 'media_file_type']),
-            models.Index(fields=['storage_base', 'media_file_size']),
-            models.Index(fields=['storage_base', 'full_file_path']),
-            models.Index(fields=['storage_base', 'description']),
-            models.Index(fields=['storage_base', 'created_at']),
+            models.Index(fields=[
+                'storage_base',
+                'media_file_name'
+            ]),
+            models.Index(fields=[
+                'storage_base',
+                'media_file_type'
+            ]),
+            models.Index(fields=[
+                'storage_base',
+                'media_file_size'
+            ]),
+            models.Index(fields=[
+                'storage_base',
+                'full_file_path'
+            ]),
+            models.Index(fields=[
+                'storage_base',
+                'description'
+            ]),
+            models.Index(fields=[
+                'storage_base',
+                'created_at'
+            ]),
         ]
 
-    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+    def save(
+        self,
+        force_insert=False,
+        force_update=False,
+        using=None,
+        update_fields=None
+    ):
+
         self.media_file_name = slugify(self.media_file_name)
         file_type = self.media_file_type
 
@@ -64,8 +103,10 @@ class DataSourceMediaStorageItem(models.Model):
         if not self.full_file_path:
             base_dir = self.storage_base.directory_full_path
             file_name = self.media_file_name
+
             unique_suffix = str(random.randint(1_000_000, 9_999_999))
             relative_path = f"{base_dir.split(MEDIA_URL)[1]}/{file_name.split('.')[0]}_{unique_suffix}.{file_type}"
+
             self.full_file_path = f"{MEDIA_URL}{relative_path}"
 
             upload_file_to_storage.delay(
@@ -75,4 +116,10 @@ class DataSourceMediaStorageItem(models.Model):
             )
 
         self.file_bytes = None
-        super().save(force_insert, force_update, using, update_fields)
+
+        super().save(
+            force_insert,
+            force_update,
+            using,
+            update_fields
+        )

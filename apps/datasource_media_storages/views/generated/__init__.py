@@ -14,8 +14,5 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from .generated_media_items_views import *

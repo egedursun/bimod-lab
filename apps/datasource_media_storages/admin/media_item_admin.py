@@ -18,8 +18,12 @@
 from django.contrib import admin
 
 from apps.datasource_media_storages.models import DataSourceMediaStorageItem
-from apps.datasource_media_storages.utils import MEDIA_MANAGER_ITEM_ADMIN_LIST_DISPLAY, \
-    MEDIA_MANAGER_ITEM_ADMIN_LIST_FILTER, MEDIA_MANAGER_ITEM_ADMIN_SEARCH_FIELDS
+
+from apps.datasource_media_storages.utils import (
+    MEDIA_MANAGER_ITEM_ADMIN_LIST_DISPLAY,
+    MEDIA_MANAGER_ITEM_ADMIN_LIST_FILTER,
+    MEDIA_MANAGER_ITEM_ADMIN_SEARCH_FIELDS
+)
 
 
 @admin.register(DataSourceMediaStorageItem)

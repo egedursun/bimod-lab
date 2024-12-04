@@ -14,15 +14,16 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from django.contrib import admin
 
 from apps.datasource_ml_models.models import DataSourceMLModelItem
-from apps.datasource_ml_models.utils import ML_MODEL_ITEM_ADMIN_LIST, ML_MODEL_ITEM_ADMIN_FILTER, \
+
+from apps.datasource_ml_models.utils import (
+    ML_MODEL_ITEM_ADMIN_LIST,
+    ML_MODEL_ITEM_ADMIN_FILTER,
     ML_MODEL_ITEM_ADMIN_SEARCH
+)
 
 
 @admin.register(DataSourceMLModelItem)

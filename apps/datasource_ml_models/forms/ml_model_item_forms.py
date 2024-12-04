@@ -14,9 +14,6 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from django import forms
 
@@ -35,11 +32,28 @@ class DataSourceMLModelItemForm(forms.ModelForm):
 
     class Meta:
         model = DataSourceMLModelItem
-        fields = ['ml_model_base', 'ml_model_name', 'description', 'interpretation_temperature']
+        fields = [
+            'ml_model_base',
+            'ml_model_name',
+            'description', 'interpretation_temperature'
+        ]
         widgets = {
-            'ml_model_base': forms.Select(attrs={'class': 'form-select'}),
-            'ml_model_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter ML model name'}),
-            'description': forms.Textarea(attrs={
-                'class': 'form-control', 'placeholder': 'Enter description for the ML model', 'rows': 3
-            }),
+            'ml_model_base': forms.Select(
+                attrs={
+                    'class': 'form-select'
+                }
+            ),
+            'ml_model_name': forms.TextInput(
+                attrs={
+                    'class': 'form-control',
+                    'placeholder': 'Enter ML model name'
+                }
+            ),
+            'description': forms.Textarea(
+                attrs={
+                    'class': 'form-control',
+                    'placeholder': 'Enter description for the ML model',
+                    'rows': 3
+                }
+            ),
         }

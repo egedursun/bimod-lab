@@ -14,9 +14,6 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from django import template
 
@@ -29,4 +26,5 @@ register = template.Library()
 def convert_file_size(byte_size):
     k_bytes = (byte_size / UNIT_BYTES_THOUSAND)
     str_k_bytes = f'{k_bytes:.2f} KB'
+
     return str_k_bytes

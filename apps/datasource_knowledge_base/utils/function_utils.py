@@ -141,10 +141,7 @@ def generate_document_uri(
     document_name,
     file_type
 ):
-    return f"{base_dir}{document_name.split('.')[0]}_{str(random.randint(
-        1_000_000,
-        9_999_999
-    ))}.{file_type}"
+    return f"{base_dir}{document_name.split('.')[0]}_{str(random.randint(1_000_000, 9_999_999))}.{file_type}"
 
 
 def build_random_alphanumeric_string(numeric_component=True):

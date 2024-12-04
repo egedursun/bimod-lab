@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
@@ -21,8 +22,14 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import TemplateView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.datasource_media_storages.models import DataSourceMediaStorageConnection
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
+from apps.datasource_media_storages.models import (
+    DataSourceMediaStorageConnection
+)
+
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
@@ -36,9 +43,14 @@ class MediaView_ManagerDelete(LoginRequiredMixin, TemplateView):
         context_user = self.request.user
 
         try:
-            media_manager = get_object_or_404(DataSourceMediaStorageConnection, pk=kwargs['pk'])
+            media_manager = get_object_or_404(
+                DataSourceMediaStorageConnection,
+                pk=kwargs['pk']
+            )
+
             context['user'] = context_user
             context['media_storage'] = media_manager
+
         except Exception as e:
             logger.error(f"User: {context_user} - Media Storage - Delete Error: {e}")
             messages.error(self.request, 'An error occurred while deleting media storage.')
@@ -49,21 +61,29 @@ class MediaView_ManagerDelete(LoginRequiredMixin, TemplateView):
     def post(self, request, *args, **kwargs):
         ##############################
         # PERMISSION CHECK FOR - DELETE_MEDIA_STORAGES
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.DELETE_MEDIA_STORAGES):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.DELETE_MEDIA_STORAGES
+        ):
             messages.error(self.request, "You do not have permission to delete media storages.")
             return redirect('datasource_media_storages:list')
         ##############################
 
-        media_manager = get_object_or_404(DataSourceMediaStorageConnection, pk=kwargs['pk'])
+        media_manager = get_object_or_404(
+            DataSourceMediaStorageConnection,
+            pk=kwargs['pk']
+        )
 
         try:
             media_manager.delete()
+
         except Exception as e:
             logger.error(f"Error while deleting media storage: {e}")
             messages.error(request, 'An error occurred while deleting media storage.')
+
             return redirect('datasource_media_storages:list')
 
         logger.info(f"Media Storage Connection deleted: {media_manager}")
         messages.success(request, 'Media Storage Connection deleted successfully.')
+
         return redirect('datasource_media_storages:list')

@@ -16,9 +16,6 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 def test_init_datasource_media_storages_test_forms():
     assert True
