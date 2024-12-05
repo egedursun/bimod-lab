@@ -25,7 +25,8 @@ from apps.datasource_sql.views import (
     SQLDatabaseView_ManagerDelete,
     SQLDatabaseView_QueryUpdate,
     SQLDatabaseView_QueryDelete,
-    SQLDatabaseView_QueryList
+    SQLDatabaseView_QueryList,
+    SQLDatabaseView_ManagerRefreshSchema,
 )
 
 app_name = "datasource_sql"
@@ -93,5 +94,13 @@ urlpatterns = [
 
         ),
         name="delete_query"
+    ),
+
+    path(
+        'refresh_schema/<int:pk>/',
+        SQLDatabaseView_ManagerRefreshSchema.as_view(
+
+        ),
+        name='refresh_schema'
     ),
 ]

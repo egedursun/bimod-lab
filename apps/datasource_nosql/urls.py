@@ -21,7 +21,8 @@ from apps.datasource_nosql.views.nosql_database import (
     NoSQLDatabaseView_ManagerCreate,
     NoSQLDatabaseView_ManagerList,
     NoSQLDatabaseView_ManagerUpdate,
-    NoSQLDatabaseView_ManagerDelete
+    NoSQLDatabaseView_ManagerDelete,
+    NoSQLDatabaseView_ManagerRefreshSchema,
 )
 
 from apps.datasource_nosql.views.nosql_query import (
@@ -64,6 +65,14 @@ urlpatterns = [
 
         ),
         name="delete"
+    ),
+
+    path(
+        'refresh_schema/<int:pk>/',
+        NoSQLDatabaseView_ManagerRefreshSchema.as_view(
+
+        ),
+        name='refresh_schema'
     ),
 
     path(

@@ -33,7 +33,6 @@ from django.db import models
 
 from apps.datasource_browsers.models import DataSourceBrowserConnection
 from apps.datasource_codebase.models import CodeRepositoryStorageConnection, CodeBaseRepository
-from apps.datasource_file_systems.models import DataSourceFileSystem
 from apps.datasource_knowledge_base.models import DocumentKnowledgeBaseConnection, KnowledgeBaseDocument
 from apps.datasource_media_storages.models import DataSourceMediaStorageConnection
 from apps.datasource_ml_models.models import DataSourceMLModelConnection, DataSourceMLModelItem
@@ -44,7 +43,6 @@ from apps.mm_functions.models import CustomFunctionReference
 from apps.mm_scripts.models import CustomScriptReference
 from apps.projects.models import ProjectItem, ProjectTeamItem
 from apps.video_generations.models import VideoGeneratorConnection
-
 
 logger = logging.getLogger(__name__)
 
@@ -107,6 +105,7 @@ class AssistantVectorData(models.Model):
                 "orchestration_trigger_connections": {},
             },
         }
+
         assistant_browsers = self.assistant.datasourcebrowserconnection_set.all()
         assistant_file_systems = self.assistant.data_source_file_systems.all()
         assistant_sql_dbs = self.assistant.sql_database_connections.all()  # -r Queries
@@ -148,26 +147,20 @@ class AssistantVectorData(models.Model):
         self.raw_data = raw_data
 
         ##############################
-        # Convert to Vector
-        ##############################
-
-        self._generate_embedding(raw_data)
-
-        ##############################
         # Save the Index to Vector DB
         ##############################
+
+        super().save(*args, **kwargs)
 
         self.raw_data = raw_data
         if self.has_raw_data_changed() or self.vector_data is None or self.vector_data == []:
             # print("Vector data has changed, generating new embedding...")
             self._generate_embedding(raw_data)
+            self._save_embedding()
+
         else:
             # print("Vector data has not changed, using existing embedding...")
             pass
-
-        super().save(*args, **kwargs)
-
-        self._save_embedding()
 
     def _populate_assistant_data_sources(self, assistant_browsers, assistant_codebases, assistant_file_systems,
                                          assistant_kbs, assistant_media_storages, assistant_ml_storages,
@@ -176,6 +169,8 @@ class AssistantVectorData(models.Model):
                                          assistant_metakanban_board_connections,
                                          assistant_metatempo_tracker_connections,
                                          assistant_orchestration_trigger_connections, raw_data):
+        from apps.datasource_file_systems.models import DataSourceFileSystem
+
         # Data Sources: Browsers
         for browser in assistant_browsers:
             browser: DataSourceBrowserConnection
@@ -185,6 +180,7 @@ class AssistantVectorData(models.Model):
                 "data_selectivity": browser.data_selectivity,
                 "minimum_investigation_websites": browser.minimum_investigation_sites,
             }
+
         # Data Sources: File Systems
         for file_system in assistant_file_systems:
             file_system: DataSourceFileSystem

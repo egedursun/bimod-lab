@@ -21,3 +21,12 @@ from django.apps import AppConfig
 class DatasourceFileSystemsConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'apps.datasource_file_systems'
+
+    def ready(self):
+        from apps.datasource_file_systems.signals.delete_file_system_vector_embedding_signals import (
+            remove_vector_from_index_on_file_system_delete
+        )
+
+        from apps.datasource_file_systems.signals.update_file_system_vector_embedding_signals import (
+            update_file_system_vector_embedding_after_save
+        )

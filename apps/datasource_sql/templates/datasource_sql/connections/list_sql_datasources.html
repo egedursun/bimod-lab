@@ -215,6 +215,8 @@
                       </ul>
                       <hr>
                       <div class="d-flex justify-content-center">
+                        <a href="{% url 'datasource_sql:refresh_schema' connection.id %}" class="btn btn-warning me-3"><i
+                          class="ti ti-refresh me-2"></i><strong>Refresh Schema</strong></a>
                         <a href="{% url 'datasource_sql:update' connection.id %}" class="btn btn-primary me-3"><i
                           class="ti ti-edit me-2"></i><strong>Edit Connection</strong></a>
                         <a href="{% url 'datasource_sql:delete' connection.id %}" class="btn btn-danger"><i

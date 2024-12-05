@@ -16,3 +16,4 @@
 #
 
 from .file_system_models import *
+from .file_system_vector_models import *

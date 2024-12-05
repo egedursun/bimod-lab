@@ -40,7 +40,17 @@ def build_sql_data_source_prompt(assistant: Assistant):
             Maximum Records to Retrieve / Query (LIMIT): {sql_data_source.one_time_sql_retrieval_instance_limit}
             DBMS Schema:
             '''
-            {sql_data_source.schema_data_json or "N/A"}
+                ##### YOUR SQL DATABASE SCHEMA SEARCH TOOL:
+
+                - You can use your SQL Database Schema search tool to search and understand certain structures
+                   within the database, by using your intuition at first to provide a reasonable query to search within
+                   the schema, and then using the retrieved information, you can generate SQL queries to manipulate the
+                   database, read from the database, analyze the data within a database, and use them in your response
+                   generation processes.
+
+                - Further instructions about how you can use the SQL database schema search tool is provided to you in
+                the further sections of this prompt.
+
             '''
 
             #### **Custom Queries of this Datasource:**
@@ -107,7 +117,18 @@ def build_semantor_sql_data_source_prompt(temporary_sources: dict):
             Maximum Records to Retrieve / Query (LIMIT): {sql_data_source.one_time_sql_retrieval_instance_limit}
             DBMS Schema:
             '''
-            {sql_data_source.schema_data_json or "N/A"}
+
+            ##### YOUR SQL DATABASE SCHEMA SEARCH TOOL:
+
+                - You can use your SQL Database Schema search tool to search and understand certain structures
+                   within the database, by using your intuition at first to provide a reasonable query to search within
+                   the schema, and then using the retrieved information, you can generate SQL queries to manipulate the
+                   database, read from the database, analyze the data within a database, and use them in your response
+                   generation processes.
+
+                - Further instructions about how you can use the SQL database schema search tool is provided to you in
+                the further sections of this prompt.
+
             '''
 
             #### **Custom Queries of this Datasource:**

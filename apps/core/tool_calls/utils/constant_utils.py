@@ -22,11 +22,14 @@ class AnalysisToolCallExecutionTypesNames:
 
 class ToolCallDescriptorNames:
     EXECUTE_SQL_QUERY = 'SQL Query Execution'
+    EXECUTE_SQL_DATABASE_SCHEMA_SEARCH = 'SQL Database Schema Search'
     EXECUTE_NOSQL_QUERY = 'NoSQL Query Execution'
+    EXECUTE_NOSQL_DATABASE_SCHEMA_SEARCH = 'NoSQL Database Schema Search'
     EXECUTE_VECTOR_STORE_QUERY = 'Knowledge Base Query Execution'
     EXECUTE_CODE_BASE_QUERY = 'Code Base Query Execution'
     EXECUTE_INTRA_MEMORY_QUERY = 'Vector Chat History Query Execution'
     EXECUTE_SSH_SYSTEM_QUERY = 'File System Command Execution'
+    EXECUTE_SSH_SYSTEM_DIRECTORY_SCHEMA_SEARCH = 'File System Directory Schema Search'
     EXECUTE_MEDIA_ITEM_SEARCH_QUERY = 'Media Item Search Query Execution'
     EXECUTE_MEDIA_MANAGER_QUERY = 'Media Storage Query Execution'
     EXECUTE_BROWSING = 'Browsing'

@@ -51,4 +51,12 @@ urlpatterns = [
         ),
         name='delete'
     ),
+
+    path(
+        'refresh_schema/<int:pk>/',
+        views.FileSystemView_RefreshSchema.as_view(
+
+        ),
+        name='refresh_schema'
+    ),
 ]

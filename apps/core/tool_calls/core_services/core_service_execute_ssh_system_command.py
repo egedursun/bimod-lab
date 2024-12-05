@@ -17,9 +17,6 @@
 
 import logging
 
-from apps.core.file_systems.file_systems_executor import FileSystemsExecutor
-from apps.datasource_file_systems.models import DataSourceFileSystem
-
 
 logger = logging.getLogger(__name__)
 
@@ -28,6 +25,13 @@ def run_execute_ssh_system_commands(
     c_id: int,
     bash_commands: list[str]
 ):
+    from apps.core.file_systems.file_systems_executor import (
+        FileSystemsExecutor
+    )
+
+    from apps.datasource_file_systems.models import (
+        DataSourceFileSystem
+    )
 
     conn = DataSourceFileSystem.objects.get(
         id=c_id

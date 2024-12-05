@@ -14,8 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
+
 import os
 
 from config.settings import BASE_DIR

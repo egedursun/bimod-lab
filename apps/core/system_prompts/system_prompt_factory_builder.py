@@ -235,6 +235,8 @@ from apps.core.system_prompts.tool_call_prompts.per_tool.execute_code_analysis_t
 from apps.core.system_prompts.tool_call_prompts.per_tool.execute_dashboard_statistics_query_tool_prompt import (
     build_tool_prompt__execute_dashboard_statistics_query
 )
+from apps.core.system_prompts.tool_call_prompts.per_tool.execute_file_system_directory_schema_search_tool_prompt import \
+    build_tool_prompt__file_directory_schema_search
 
 from apps.core.system_prompts.tool_call_prompts.per_tool.execute_hadron_prime_node_query_tool_prompt import (
     build_tool_prompt__execute_hadron_prime_node_query
@@ -249,6 +251,8 @@ from apps.core.system_prompts.tool_call_prompts.per_tool.execute_metakanban_quer
 from apps.core.system_prompts.tool_call_prompts.per_tool.execute_metatempo_query_tool_prompt import (
     build_tool_prompt__execute_metatempo_query
 )
+from apps.core.system_prompts.tool_call_prompts.per_tool.execute_nosql_database_schema_search_tool_prompt import \
+    build_tool_prompt__nosql_database_schema_search
 
 from apps.core.system_prompts.tool_call_prompts.per_tool.execute_nosql_query_tool_prompt import (
     build_tool_prompt__execute_nosql_query
@@ -281,6 +285,8 @@ from apps.core.system_prompts.tool_call_prompts.per_tool.execute_smart_contract_
 from apps.core.system_prompts.tool_call_prompts.per_tool.execute_smart_contract_query_tool_prompt import (
     build_tool_prompt__execute_smart_contract_generation_query
 )
+from apps.core.system_prompts.tool_call_prompts.per_tool.execute_sql_database_schema_search_tool_prompt import \
+    build_tool_prompt__sql_database_schema_search
 
 from apps.core.system_prompts.tool_call_prompts.per_tool.execute_ssh_file_system_command_tool_prompt import (
     build_tool_prompt__execute_ssh_file_system_command
@@ -472,6 +478,7 @@ class SystemPromptFactoryBuilder:
             execute_function,
             execute_script,
             execute_ssh_command,
+            search_ssh_schema,
             generate_image,
             edit_image,
             dream_image,
@@ -479,7 +486,9 @@ class SystemPromptFactoryBuilder:
             predict_with_ml,
             execute_reasoning,
             execute_sql_query,
+            search_sql_schema,
             execute_nosql_query,
+            search_nosql_schema,
             execute_media_item_search,
             execute_media_manager,
             generic_tool_calls,
@@ -520,6 +529,7 @@ class SystemPromptFactoryBuilder:
             do_function=execute_function,
             do_script=execute_script,
             do_ssh_command=execute_ssh_command,
+            do_ssh_schema_search=search_ssh_schema,
             file_systems=ssh_system_feed,
             functions_feed=custom_functions,
             technical_dictionary=technical_dict,
@@ -542,7 +552,9 @@ class SystemPromptFactoryBuilder:
             scripts_feed=bash_scripts,
             sql_feed=sql_feed,
             do_sql_query=execute_sql_query,
+            do_sql_schema_search=search_sql_schema,
             nosql_feed=nosql_feed,
+            do_nosql_schema_search=search_nosql_schema,
             do_nosql_query=execute_nosql_query,
             do_media_item_search=execute_media_item_search,
             do_media_manager=execute_media_manager,
@@ -608,6 +620,7 @@ class SystemPromptFactoryBuilder:
         do_function,
         do_script,
         do_ssh_command,
+        do_ssh_schema_search,
         file_systems,
         functions_feed,
         technical_dictionary,
@@ -630,7 +643,9 @@ class SystemPromptFactoryBuilder:
         scripts_feed,
         sql_feed,
         do_sql_query,
+        do_sql_schema_search,
         nosql_feed,
+        do_nosql_schema_search,
         do_nosql_query,
         do_media_item_search,
         do_media_manager,
@@ -688,11 +703,14 @@ class SystemPromptFactoryBuilder:
 
         combined_system_instructions += do_instructions
         combined_system_instructions += do_sql_query
+        combined_system_instructions += do_sql_schema_search
         combined_system_instructions += do_nosql_query
+        combined_system_instructions += do_nosql_schema_search
         combined_system_instructions += do_vector_store
         combined_system_instructions += do_codebase
         combined_system_instructions += do_intra_memory
         combined_system_instructions += do_ssh_command
+        combined_system_instructions += do_ssh_schema_search
         combined_system_instructions += do_media_item_search
         combined_system_instructions += do_media_manager
         combined_system_instructions += do_http_retrieval
@@ -730,11 +748,14 @@ class SystemPromptFactoryBuilder:
         )
 
         sql = (build_tool_prompt__execute_sql_query())
+        sql_schema_search = build_tool_prompt__sql_database_schema_search()
         nosql = (build_tool_prompt__execute_nosql_query())
+        nosql_schema_search = build_tool_prompt__nosql_database_schema_search()
         vector_store = build_tool_prompt__query_vector_store()
         codebase = build_tool_prompt__execute_codebase_query()
         intra_memory = build_tool_prompt__intra_context_memory()
         ssh_file_system = build_tool_prompt__execute_ssh_file_system_command()
+        ssh_schema_search = build_tool_prompt__file_directory_schema_search()
         media_item_search = build_tool_prompt__media_item_search()
         media_manager = build_tool_prompt__media_manager_query()
         http_retrieval = build_tool_prompt__retrieval_via_http_client()
@@ -771,6 +792,7 @@ class SystemPromptFactoryBuilder:
             functions,
             scripts,
             ssh_file_system,
+            ssh_schema_search,
             generate_image,
             edit_image,
             dream_image,
@@ -778,7 +800,9 @@ class SystemPromptFactoryBuilder:
             infer_ml,
             reasoning,
             sql,
+            sql_schema_search,
             nosql,
+            nosql_schema_search,
             media_item_search,
             media_manager,
             instructions,

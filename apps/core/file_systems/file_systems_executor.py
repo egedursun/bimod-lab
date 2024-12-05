@@ -17,10 +17,15 @@
 
 import json
 import logging
+import os
+from typing import List, Dict
 
+import faiss
+import numpy as np
 import paramiko
 
 from apps.core.file_systems.utils import DEFAULT_BANNER_TIMEOUT
+from apps.core.generative_ai.gpt_openai_manager import OpenAIGPTClientManager
 from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
 
 from apps.core.file_systems.internal_command_sets import (
@@ -29,6 +34,10 @@ from apps.core.file_systems.internal_command_sets import (
 )
 
 from paramiko import SSHClient
+
+from apps.datasource_file_systems.utils import FILE_SYSTEM_DIRECTORY_SCHEMA_MAX_CHARACTERS_LIMIT, \
+    FILE_SYSTEM_DIRECTORY_SCHEMA_MAX_DEPTH, DEFAULT_SEARCH_RESULTS_FILE_SYSTEM_DIRECTORY_SCHEMA, OpenAIEmbeddingModels, \
+    VECTOR_INDEX_PATH_FILE_SYSTEM_DIRECTORY_SCHEMAS, OPEN_AI_DEFAULT_EMBEDDING_VECTOR_DIMENSIONS
 from apps.llm_transaction.models import LLMTransaction
 from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
 
@@ -41,6 +50,18 @@ class FileSystemsExecutor:
         self.client = None
         self.connect_c()
         self.schema_str = self.retrieve_file_tree_schema()
+
+        self.file_system_schemas_index_path = os.path.join(
+            VECTOR_INDEX_PATH_FILE_SYSTEM_DIRECTORY_SCHEMAS,
+            f'file_system_directory_schemas_index_{self.connection.id}.index')
+
+        if os.path.exists(self.file_system_schemas_index_path):
+            self.file_system_schemas_index = faiss.read_index(self.file_system_schemas_index_path)
+
+        else:
+            self.file_system_schemas_index = faiss.IndexIDMap(
+                faiss.IndexFlatL2(OPEN_AI_DEFAULT_EMBEDDING_VECTOR_DIMENSIONS))
+            faiss.write_index(self.file_system_schemas_index, self.file_system_schemas_index_path)
 
     def connect_c(self):
         try:
@@ -81,10 +102,25 @@ class FileSystemsExecutor:
 
         return
 
+    def parse_ls_r_output_readable(
+        self,
+        output
+    ):
+        schema = ""
+
+        try:
+            schema = output
+
+        except Exception as e:
+            logger.error(f"Failed to parse the file tree schema: {e}")
+            return {}
+
+        return schema
+
     def parse_ls_r_output(
         self,
         output,
-        max_depth=3
+        max_depth=FILE_SYSTEM_DIRECTORY_SCHEMA_MAX_DEPTH
     ):
         try:
             lines = output.strip().split('\n')
@@ -149,24 +185,25 @@ class FileSystemsExecutor:
 
         try:
             query = INTERNAL_COMMAND_SETS[LIST_DIRECTORY_RECURSIVE][self.connection.os_type]
+
             stdin, stdout, stderr = client.exec_command(query)
-            file_directory_tree = stdout.read().decode()
 
-            directory_dict = json.dumps(
-                self.parse_ls_r_output(
-                    file_directory_tree
-                ),
-                default=str
-            )
+            raw_output = stdout.read().decode().strip()
+            directories = raw_output.split("\n")
 
-            directory_dict = directory_dict[:int(self.connection.os_read_limit_tokens)] if (
-                len(directory_dict) > int(self.connection.os_read_limit_tokens)) else directory_dict
+            # Structure the directories into a dictionary for readability
+            directory_dict = {
+                "directories": directories
+            }
+
+            directory_dict = directory_dict[:int(FILE_SYSTEM_DIRECTORY_SCHEMA_MAX_CHARACTERS_LIMIT)] if (
+                len(directory_dict) > int(FILE_SYSTEM_DIRECTORY_SCHEMA_MAX_CHARACTERS_LIMIT)) else directory_dict
 
             logger.info(f"Retrieved the file tree schema: {directory_dict}")
 
         except Exception as e:
             logger.error(f"Failed to retrieve the file tree schema: {e}")
-            directory_dict = "{}"
+            directory_dict = {}
 
         self.close_c()
         return directory_dict
@@ -232,5 +269,48 @@ class FileSystemsExecutor:
         except Exception as e:
             logger.error(f"Failed to create a new LLM transaction for the file system command execution: {e}")
             pass
+
+        return results
+
+    def _generate_query_embedding(self, query: str) -> List[float]:
+        c = OpenAIGPTClientManager.get_naked_client(llm_model=self.connection.assistant.llm_model)
+        response = c.embeddings.create(input=query, model=OpenAIEmbeddingModels.TEXT_EMBEDDING_3_LARGE)
+        return response.data[0].embedding
+
+    def search_file_system_directory_schema(
+        self,
+        query: str,
+        n_results: int = DEFAULT_SEARCH_RESULTS_FILE_SYSTEM_DIRECTORY_SCHEMA
+    ) -> List[Dict]:
+
+        from apps.datasource_file_systems.models import (
+            FileSystemDirectorySchemaChunkVectorData
+        )
+
+        query_vector = np.array([self._generate_query_embedding(query)], dtype=np.float32)
+        if self.file_system_schemas_index is None:
+            raise ValueError("[search_file_system_directory_schemas] FAISS index not initialized or loaded properly.")
+
+        distances, ids = self.file_system_schemas_index.search(query_vector, n_results)
+        results = []
+
+        for item_id, distance in zip(ids[0], distances[0]):
+            if item_id == -1:
+                continue
+            try:
+                instance = FileSystemDirectorySchemaChunkVectorData.objects.get(id=item_id)
+                results.append({
+                    "id": instance.id,
+                    "data": instance.raw_data,
+                    "distance": distance,
+                })
+
+            except FileSystemDirectorySchemaChunkVectorData.DoesNotExist:
+                print(
+                    f"Warning: File System Directory Schema Chunk Instance with ID {item_id} not found in the vector database."
+                )
+                logger.error(
+                    f"File System Directory Schema Chunk Instance with ID {item_id} not found in the vector database."
+                )
 
         return results

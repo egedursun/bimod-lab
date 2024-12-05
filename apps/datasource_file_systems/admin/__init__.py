@@ -16,3 +16,4 @@
 #
 
 from .file_system_admin import *
+from .file_system_vector_admin import *

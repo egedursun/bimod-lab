@@ -14,9 +14,6 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 
 MEDIA_MANAGER_ITEM_TYPES = (
@@ -46,21 +43,25 @@ MEDIA_FILE_TYPES = (
     ('svg', 'SVG'),
     ('bmp', 'BMP'),
     ('tiff', 'TIFF'),
+
     # Audio Files
     ('mp3', 'MP3'),
     ('wav', 'WAV'),
     ('flac', 'FLAC'),
     ('aac', 'AAC'),
     ('ogg', 'OGG'),
+
     # Video Files
     ('mp4', 'MP4'),
     ('avi', 'AVI'),
     ('mkv', 'MKV'),
     ('mov', 'MOV'),
+
     # Compressed Files
     ('zip', 'ZIP'),
     ('rar', 'RAR'),
     ('tar', 'TAR'),
+
     # Code Files
     ('py', 'Python'),
     ('js', 'JavaScript'),
@@ -75,6 +76,7 @@ MEDIA_FILE_TYPES = (
     ('sh', 'Shell'),
     ('go', 'Go'),
     ('dart', 'Dart'),
+
     # Data Configuration files
     ('yml', 'YML'),
     ('yaml', 'YAML'),
@@ -151,35 +153,136 @@ class MediaManagerItemFormatTypesNames:
 
 
 class MediaManagerItemFormatTypesNamesLists:
-    IMAGE = ['jpg', 'png', 'gif', 'svg', 'bmp', 'tiff']
-    AUDIO = ['mp3', 'wav', 'flac', 'aac', 'ogg']
-    VIDEO = ['mp4', 'avi', 'mkv', 'mov']
-    COMPRESSED = ['zip', 'rar', 'tar']
-    CODE = ['py', 'js', 'ts', 'php', 'css', 'html', 'java', 'c', 'cpp', 'h', 'sh', 'go', 'dart']
-    DATA = ['yml', 'yaml', 'sql', 'pkl', 'csv', 'xlsx', 'json', 'xml', 'tsv', 'docx', 'pptx', 'pdf', 'txt']
+    IMAGE = [
+        'jpg',
+        'png',
+        'gif',
+        'svg',
+        'bmp',
+        'tiff'
+    ]
+    AUDIO = [
+        'mp3',
+        'wav',
+        'flac',
+        'aac',
+        'ogg'
+    ]
+    VIDEO = [
+        'mp4',
+        'avi',
+        'mkv',
+        'mov'
+    ]
+    COMPRESSED = [
+        'zip',
+        'rar',
+        'tar'
+    ]
+    CODE = [
+        'py',
+        'js',
+        'ts',
+        'php',
+        'css',
+        'html',
+        'java',
+        'c',
+        'cpp',
+        'h',
+        'sh',
+        'go',
+        'dart'
+    ]
+    DATA = [
+        'yml',
+        'yaml',
+        'sql',
+        'pkl',
+        'csv',
+        'xlsx',
+        'json',
+        'xml',
+        'tsv',
+        'docx',
+        'pptx',
+        'pdf',
+        'txt'
+    ]
 
 
 FILE_TYPE_HIGHLIGHTING_DECODER = {
-    "py": "python", "js": "javascript", "ts": "typescript", "php": "php", "css": "css", "html": "html",
-    "java": "java", "c": "c", "cpp": "cpp", "h": "h", "sh": "shell", "go": "golang", "dart": "dart",
-    "yml": "yaml", "yaml": "yaml", "sql": "sql", "pkl": "plaintext", "csv": "plaintext",
-    "xlsx": "plaintext", "json": "json", "xml": "xml", "tsv": "plaintext", "docx": "plaintext",
-    "pptx": "plaintext", "pdf": "plaintext", "txt": "plaintext",
+    "py": "python",
+    "js": "javascript",
+    "ts": "typescript",
+    "php": "php",
+    "css": "css",
+    "html": "html",
+    "java": "java",
+    "c": "c",
+    "cpp": "cpp",
+    "h": "h",
+    "sh": "shell",
+    "go": "golang",
+    "dart": "dart",
+    "yml": "yaml",
+    "yaml": "yaml",
+    "sql": "sql",
+    "pkl": "plaintext",
+    "csv": "plaintext",
+    "xlsx": "plaintext",
+    "json": "json",
+    "xml": "xml",
+    "tsv": "plaintext",
+    "docx": "plaintext",
+    "pptx": "plaintext",
+    "pdf": "plaintext",
+    "txt": "plaintext",
 }
-MEDIA_MANAGER_ITEM_ADMIN_LIST_DISPLAY = ['storage_base', 'media_file_name', 'media_file_size', 'media_file_type',
-                                         'full_file_path', 'created_at', 'updated_at']
-MEDIA_MANAGER_ITEM_ADMIN_LIST_FILTER = ['storage_base', 'media_file_type', 'media_file_type']
-MEDIA_MANAGER_ITEM_ADMIN_SEARCH_FIELDS = ['storage_base', 'media_file_name', 'full_file_path']
 
-MEDIA_STORE_ADMIN_LIST_DISPLAY = ['assistant', 'name', 'media_category', 'directory_full_path', 'directory_schema',
-                                  'created_at', 'updated_at']
-MEDIA_STORE_ADMIN_LIST_FILTER = ['assistant', 'media_category']
-MEDIA_STORE_ADMIN_SEARCH_FIELDS = ['assistant', 'name', 'directory_full_path']
+MEDIA_MANAGER_ITEM_ADMIN_LIST_DISPLAY = [
+    'storage_base',
+    'media_file_name',
+    'media_file_size',
+    'media_file_type',
+    'full_file_path',
+    'created_at',
+    'updated_at'
+]
+MEDIA_MANAGER_ITEM_ADMIN_LIST_FILTER = [
+    'storage_base',
+    'media_file_type',
+    'media_file_type'
+]
+MEDIA_MANAGER_ITEM_ADMIN_SEARCH_FIELDS = [
+    'storage_base',
+    'media_file_name',
+    'full_file_path'
+]
 
+MEDIA_STORE_ADMIN_LIST_DISPLAY = [
+    'assistant',
+    'name',
+    'media_category',
+    'directory_full_path',
+    'directory_schema',
+    'created_at',
+    'updated_at'
+]
+MEDIA_STORE_ADMIN_LIST_FILTER = [
+    'assistant',
+    'media_category'
+]
+MEDIA_STORE_ADMIN_SEARCH_FIELDS = [
+    'assistant',
+    'name',
+    'directory_full_path'
+]
 
 UNIT_BYTES_THOUSAND = 1024
 
 AI_GENERATED_DESCRIPTION_SPECIFIER = 'generated_description'
+
 MEDIA_ITEM_VECTOR_DATA_ADMIN_LIST = (
     'media_item',
     'created_at',
@@ -193,4 +296,10 @@ MEDIA_ITEM_VECTOR_DATA_ADMIN_SEARCH = (
     'media_item__media_file_name',
     'media_item__storage_base__name',
 )
-SUPPORTED_ARCHIVE_TYPES = ['.zip', '.tar', '.tar.gz', '.rar']
+
+SUPPORTED_ARCHIVE_TYPES = [
+    '.zip',
+    '.tar',
+    '.tar.gz',
+    '.rar'
+]

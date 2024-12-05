@@ -14,6 +14,9 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+import os
+
+from config.settings import BASE_DIR
 
 
 class NoSQLOperationTypesNames:
@@ -72,13 +75,50 @@ NOSQL_QUERY_ADMIN_SEARCH = (
     'description'
 )
 
-RETRIEVE_NOSQL_SCHEMA_MAX_VALUE_CHARACTERS_ALLOWED = 1000
+RETRIEVE_NOSQL_SCHEMA_MAX_VALUE_CHARACTERS_ALLOWED = 1_000_000_000
 VALUE_TRUNCATION_PREFIX_LENGTH = RETRIEVE_NOSQL_SCHEMA_MAX_VALUE_CHARACTERS_ALLOWED // 2
 VALUE_TRUNCATION_SUFFIX_LENGTH = RETRIEVE_NOSQL_SCHEMA_MAX_VALUE_CHARACTERS_ALLOWED // 2
 
-RETRIEVE_NOSQL_SCHEMA_MAX_DEPTH_ALLOWED = 10
-DEFAULT_SCHEMA_SAMPLING_LIMIT = 100
+RETRIEVE_NOSQL_SCHEMA_MAX_DEPTH_ALLOWED = 1_000
+DEFAULT_SCHEMA_SAMPLING_LIMIT = 1_000_000
 
 NOSQL_KV_TIMOUT_CONSTANT = 30  # seconds
 NOSQL_CONNECT_TIMOUT_CONSTANT = 30  # seconds
 NOSQL_QUERY_TIMOUT_CONSTANT = 30  # seconds
+
+DEFAULT_SEARCH_RESULTS_NOSQL_SCHEMA = 10
+
+
+class OpenAIEmbeddingModels:
+    TEXT_EMBEDDING_3_LARGE = "text-embedding-3-large"
+    TEXT_EMBEDDING_3_SMALL = "text-embedding-3-small"
+    TEXT_EMBEDDING_ADA_V2 = "text-embedding-ada-002"
+
+
+OPEN_AI_DEFAULT_EMBEDDING_VECTOR_DIMENSIONS = 3072
+
+VECTOR_INDEX_PATH_NOSQL_SCHEMAS = os.path.join(
+    BASE_DIR,
+    'vectors',
+    'nosql_schema_vectors',
+    'nosql_schemas'
+)
+
+NOSQL_SCHEMA_VECTOR_CHUNK_SIZE = 2_000
+NOSQL_SCHEMA_VECTOR_CHUNK_OVERLAP = 1_000
+
+NOSQL_SCHEMA_CHUNK_VECTOR_DATA_ADMIN_LIST = (
+    'nosql_database',
+    'created_at',
+    'updated_at'
+)
+NOSQL_SCHEMA_CHUNK_VECTOR_DATA_ADMIN_FILTER = (
+    'nosql_database',
+    'created_at',
+    'updated_at'
+)
+NOSQL_SCHEMA_CHUNK_VECTOR_DATA_ADMIN_SEARCH = (
+    'nosql_database',
+    'created_at',
+    'updated_at'
+)

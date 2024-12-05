@@ -99,8 +99,6 @@ class SQLDatabaseConnection(models.Model):
     def save(self, *args, **kwargs):
         self.schema_data_json = self.retrieve_schema()
 
-        # TODO-EGE: vectorize and save the SQL schema
-
         super().save(*args, **kwargs)
 
     def retrieve_schema(self):

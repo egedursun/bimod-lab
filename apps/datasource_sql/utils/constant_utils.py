@@ -15,6 +15,10 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
+import os
+
+from config.settings import BASE_DIR
+
 
 class SQLOperationTypesNames:
     READ = 'read'
@@ -87,3 +91,38 @@ SQL_QUERY_ADMIN_SEARCH = (
     'name',
     'description'
 )
+
+DEFAULT_SEARCH_RESULTS_SQL_SCHEMA = 10
+
+
+class OpenAIEmbeddingModels:
+    TEXT_EMBEDDING_3_LARGE = "text-embedding-3-large"
+    TEXT_EMBEDDING_3_SMALL = "text-embedding-3-small"
+    TEXT_EMBEDDING_ADA_V2 = "text-embedding-ada-002"
+
+
+OPEN_AI_DEFAULT_EMBEDDING_VECTOR_DIMENSIONS = 3072
+
+VECTOR_INDEX_PATH_SQL_SCHEMAS = os.path.join(
+    BASE_DIR,
+    'vectors',
+    'sql_schema_vectors',
+    'sql_schemas'
+)
+SQL_SCHEMA_CHUNK_VECTOR_DATA_ADMIN_LIST = (
+    'sql_database',
+    'created_at',
+    'updated_at',
+)
+SQL_SCHEMA_CHUNK_VECTOR_DATA_ADMIN_SEARCH = (
+    'sql_database__database_name',
+    'sql_database__name',
+    'sql_database__host',
+)
+SQL_SCHEMA_CHUNK_VECTOR_DATA_ADMIN_FILTER = (
+    'created_at',
+    'updated_at',
+)
+
+SQL_SCHEMA_VECTOR_CHUNK_SIZE = 2_000
+SQL_SCHEMA_VECTOR_CHUNK_OVERLAP = 1_000

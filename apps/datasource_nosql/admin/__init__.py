@@ -17,3 +17,4 @@
 
 from .nosql_query_admin import *
 from .nosql_database_admin import *
+from .nosql_database_vector_admin import *

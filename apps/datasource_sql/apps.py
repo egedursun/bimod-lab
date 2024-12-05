@@ -21,3 +21,12 @@ from django.apps import AppConfig
 class DatasourceSqlConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'apps.datasource_sql'
+
+    def ready(self):
+        from apps.datasource_sql.signals.delete_sql_database_vector_embedding_signals import (
+            remove_vector_from_index_on_sql_database_delete
+        )
+
+        from apps.datasource_sql.signals.update_sql_database_vector_embedding_signals import (
+            update_sql_database_vector_embedding_after_save
+        )

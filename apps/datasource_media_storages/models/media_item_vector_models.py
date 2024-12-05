@@ -84,16 +84,12 @@ class MediaItemVectorData(models.Model):
         self.raw_data = raw_data
 
         ##############################
-        # Convert to Vector
-        ##############################
-
-        self._generate_embedding(raw_data)
-
-        ##############################
         # Save the Index to Vector DB
         ##############################
 
         self.raw_data = raw_data
+
+        super().save(*args, **kwargs)
 
         if (
             self.has_raw_data_changed() or
@@ -102,13 +98,11 @@ class MediaItemVectorData(models.Model):
         ):
             # print("Vector data has changed, generating new embedding...")
             self._generate_embedding(raw_data)
+            self._save_embedding()
 
         else:
             # print("Vector data has not changed, using existing embedding...")
             pass
-
-        super().save(*args, **kwargs)
-        self._save_embedding()
 
     def _generate_embedding(self, raw_data):
         from apps.core.generative_ai.gpt_openai_manager import OpenAIGPTClientManager

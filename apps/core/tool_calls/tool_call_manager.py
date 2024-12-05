@@ -57,10 +57,13 @@ from apps.core.tool_calls.core_services.core_service_execute_smart_contract_quer
 from apps.core.tool_calls.core_services.core_service_execute_triggered_job_logs_query import (
     run_query_execute_triggered_job_logs
 )
+from apps.core.tool_calls.core_services.core_service_file_system_schema_search import \
+    run_query_search_file_system_directory_schema
 
 from apps.core.tool_calls.core_services.core_service_hadron_node_query import (
     run_query_execute_hadron_node
 )
+from apps.core.tool_calls.core_services.core_service_nosql_schema_search import run_query_search_nosql_database_schema
 
 from apps.core.tool_calls.core_services.core_service_process_reasoning import (
     run_process_reasoning
@@ -69,10 +72,13 @@ from apps.core.tool_calls.core_services.core_service_process_reasoning import (
 from apps.core.tool_calls.core_services.core_service_generate_video import (
     run_generate_video
 )
+from apps.core.tool_calls.core_services.core_service_sql_schema_search import run_query_search_sql_database_schema
 
 from apps.core.tool_calls.input_verifiers.verify_dashboard_statistics_query import (
     verify_dashboard_statistics_query_content
 )
+from apps.core.tool_calls.input_verifiers.verify_file_system_schema_search import \
+    verify_file_system_directory_schema_search_content
 
 from apps.core.tool_calls.input_verifiers.verify_hadron_node_query import (
     verify_hadron_node_query_content
@@ -86,6 +92,7 @@ from apps.core.tool_calls.input_verifiers.verify_metakanban_query import (
 from apps.core.tool_calls.input_verifiers.verify_metatempo_query import (
     verify_metatempo_query_content
 )
+from apps.core.tool_calls.input_verifiers.verify_nosql_schema_search import verify_nosql_database_schema_search_content
 
 from apps.core.tool_calls.input_verifiers.verify_orchestration_trigger import (
     verify_orchestration_trigger_content
@@ -98,6 +105,7 @@ from apps.core.tool_calls.input_verifiers.verify_scheduled_job_logs_query import
 from apps.core.tool_calls.input_verifiers.verify_smart_contract_query import (
     verify_smart_contract_generation_query_content
 )
+from apps.core.tool_calls.input_verifiers.verify_sql_schema_search import verify_sql_database_schema_search_content
 
 from apps.core.tool_calls.input_verifiers.verify_triggered_job_logs_query import (
     verify_triggered_job_logs_query_content
@@ -377,6 +385,17 @@ class ToolCallManager:
 
             output_tool_call = self._handle_tool_sql_query(output_tool_call)
 
+        elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_SQL_DATABASE_SCHEMA_SEARCH:
+            error = verify_sql_database_schema_search_content(
+                content=self.tool_usage_dict
+            )
+
+            if error:
+                logger.error(f"Error occurred while verifying the SQL database schema search content: {error}")
+                return error, None, None, None
+
+            output_tool_call = self._handle_tool_sql_schema_search(output_tool_call)
+
         elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_NOSQL_QUERY:
             error = verify_run_nosql_query_content(
                 content=self.tool_usage_dict
@@ -387,6 +406,17 @@ class ToolCallManager:
                 return error, None, None, None
 
             output_tool_call = self._handle_tool_nosql_query(output_tool_call)
+
+        elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_NOSQL_DATABASE_SCHEMA_SEARCH:
+            error = verify_nosql_database_schema_search_content(
+                content=self.tool_usage_dict
+            )
+
+            if error:
+                logger.error(f"Error occurred while verifying the NoSQL database schema search content: {error}")
+                return error, None, None, None
+
+            output_tool_call = self._handle_tool_nosql_schema_search(output_tool_call)
 
         elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_VECTOR_STORE_QUERY:
             error = verify_vector_store_query_content(
@@ -432,6 +462,18 @@ class ToolCallManager:
 
             output_tool_call = self._handle_tool_ssh_system(output_tool_call)
 
+        elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_SSH_SYSTEM_DIRECTORY_SCHEMA_SEARCH:
+            error = verify_file_system_directory_schema_search_content(
+                content=self.tool_usage_dict
+            )
+
+            if error:
+                logger.error(
+                    f"Error occurred while verifying the SSH file system directory schema search content: {error}")
+                return error, None, None, None
+
+            output_tool_call = self._handle_tool_ssh_system_schema_search(output_tool_call)
+
         elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_MEDIA_MANAGER_QUERY:
             error = verify_media_manager_query_content(content=self.tool_usage_dict)
 
@@ -450,7 +492,7 @@ class ToolCallManager:
                 return error, None, None, None
 
             f_uris, img_uris, output_tool_call = self._handle_tool_media_item_search(f_uris, img_uris,
-                                                                                       output_tool_call)
+                                                                                     output_tool_call)
 
         elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_HTTP_RETRIEVAL:
             error = verify_http_retrieval_query_content(
@@ -1118,7 +1160,6 @@ class ToolCallManager:
         logger.info(f"Media item search query response retrieved.")
         return f_uris, img_uris, output_tool_call
 
-
     def _handle_tool_media_manager_query(
         self,
         f_uris,
@@ -1199,6 +1240,28 @@ class ToolCallManager:
 
         output_tool_call += output_str
         logger.info(f"SSH system command response retrieved.")
+        return output_tool_call
+
+    def _handle_tool_ssh_system_schema_search(self, output_tool_call):
+
+        logger.info("Executing the SSH File System Directory schema search process.")
+
+        c_id = self.tool_usage_dict.get("parameters").get("connection_id")
+        query = self.tool_usage_dict.get("parameters").get("query")
+
+        output = run_query_search_file_system_directory_schema(
+            connection_id=c_id,
+            query=query
+        )
+
+        output_str = json.dumps(
+            output,
+            sort_keys=True,
+            default=str
+        )
+
+        output_tool_call += output_str
+        logger.info(f"SSH File System Directory schema search response retrieved.")
         return output_tool_call
 
     def _handle_tool_intra_memory_query(self, output_tool_call):
@@ -1289,7 +1352,8 @@ class ToolCallManager:
                     return "BeamGuard SQL query protection mechanism executed, user intervention is required to confirm the query execution.", None, None, None
 
                 else:
-                    logger.info("BeamGuard SQL query protection mechanism detected no issues with the query, proceeding with the execution.")
+                    logger.info(
+                        "BeamGuard SQL query protection mechanism detected no issues with the query, proceeding with the execution.")
                     pass
 
             except Exception as e:
@@ -1314,6 +1378,27 @@ class ToolCallManager:
 
         output_tool_call += output_str
         logger.info(f"SQL query response retrieved.")
+        return output_tool_call
+
+    def _handle_tool_sql_schema_search(self, output_tool_call):
+
+        logger.info("Executing the SQL schema search process.")
+        c_id = self.tool_usage_dict.get("parameters").get("connection_id")
+        query = self.tool_usage_dict.get("parameters").get("query")
+
+        output = run_query_search_sql_database_schema(
+            connection_id=c_id,
+            query=query
+        )
+
+        output_str = json.dumps(
+            output,
+            sort_keys=True,
+            default=str
+        )
+
+        output_tool_call += output_str
+        logger.info(f"SQL database schema search response retrieved.")
         return output_tool_call
 
     def _handle_tool_nosql_query(self, output_tool_call):
@@ -1364,6 +1449,27 @@ class ToolCallManager:
 
         output_tool_call += output_str
         logger.info(f"NoSQL query response retrieved.")
+        return output_tool_call
+
+    def _handle_tool_nosql_schema_search(self, output_tool_call):
+
+        logger.info("Executing the NoSQL schema search process.")
+        c_id = self.tool_usage_dict.get("parameters").get("connection_id")
+        query = self.tool_usage_dict.get("parameters").get("query")
+
+        output = run_query_search_nosql_database_schema(
+            connection_id=c_id,
+            query=query
+        )
+
+        output_str = json.dumps(
+            output,
+            sort_keys=True,
+            default=str
+        )
+
+        output_tool_call += output_str
+        logger.info(f"NoSQL database schema search response retrieved.")
         return output_tool_call
 
     def _handle_tool_dashboard_statistics_query(self, output_tool_call):

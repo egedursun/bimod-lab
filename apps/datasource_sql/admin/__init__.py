@@ -14,9 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from .sql_query_admin import *
 from .sql_database_admin import *
+from .sql_database_vector_admin import *

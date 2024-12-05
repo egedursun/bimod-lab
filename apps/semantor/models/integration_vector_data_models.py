@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import hashlib
 import json
 import logging
@@ -25,8 +26,13 @@ from django.db import models
 
 from apps.integrations.models import AssistantIntegration
 from apps.meta_integrations.models import MetaIntegrationCategory
-from apps.semantor.utils.constant_utils import OpenAIEmbeddingModels, VECTOR_INDEX_PATH_INTEGRATIONS, \
+
+from apps.semantor.utils.constant_utils import (
+    OpenAIEmbeddingModels,
+    VECTOR_INDEX_PATH_INTEGRATIONS,
     OPEN_AI_DEFAULT_EMBEDDING_VECTOR_DIMENSIONS
+)
+
 from config import settings
 from data.loader import BoilerplateDataLoader
 from data.path_consts import DataPaths
@@ -86,27 +92,19 @@ class IntegrationVectorData(models.Model):
         self.raw_data = raw_data
 
         ##############################
-        # Convert to Vector
-        ##############################
-
-        self._generate_embedding(raw_data)
-
-        ##############################
         # Save the Index to Vector DB
         ##############################
 
-        self.raw_data = raw_data
-        if self.has_raw_data_changed() or self.vector_data is None or self.vector_data == []:
-            # print("Vector data has changed, generating new embedding...")
-            self._generate_embedding(raw_data)
-        else:
-            # print("Vector data has not changed, using existing embedding...")
-            pass
-
         super().save(*args, **kwargs)
 
-        if self.vector_data:
+        self.raw_data = raw_data
+        if self.has_raw_data_changed() or self.vector_data is None or self.vector_data == []:
+            print("Vector data has changed, generating new embedding...")
+            self._generate_embedding(raw_data)
             self._save_embedding()
+        else:
+            print("Vector data has not changed, using existing embedding...")
+            pass
 
     def _get_index_path(self):
         return os.path.join(VECTOR_INDEX_PATH_INTEGRATIONS, f'integrations_index.index')

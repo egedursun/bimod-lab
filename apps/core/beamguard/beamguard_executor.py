@@ -21,13 +21,16 @@ from django.utils import timezone
 
 from apps.assistants.models import Assistant
 from apps.beamguard.models import BeamGuardArtifact
-from apps.beamguard.utils import BeamGuardArtifactTypesNames, BeamGuardConfirmationStatusesNames
-from apps.core.beamguard.utils import MYSQL_GUARDED_KEYWORDS, POSTGRESQL_GUARDED_KEYWORDS, N1QL_GUARDED_KEYWORDS, \
+
+from apps.core.beamguard.utils import (
+    MYSQL_GUARDED_KEYWORDS,
+    POSTGRESQL_GUARDED_KEYWORDS,
+    N1QL_GUARDED_KEYWORDS,
     UNIX_FILE_SYSTEM_GUARDED_KEYWORDS
-from apps.core.file_systems.file_systems_executor import FileSystemsExecutor
+)
+
 from apps.core.nosql.nosql_executor import CouchbaseNoSQLExecutor
 from apps.core.sql.sql_executor import MySQLExecutor, PostgresSQLExecutor
-from apps.datasource_file_systems.models import DataSourceFileSystem
 from apps.datasource_file_systems.utils import DataSourceFileSystemsOsTypeNames
 from apps.datasource_nosql.models import NoSQLDatabaseConnection
 from apps.datasource_nosql.utils import NoSQLDatabaseChoicesNames
@@ -50,6 +53,10 @@ class BeamGuardExecutionManager:
     #####
 
     def _guard_mysql_modifications(self, connection: SQLDatabaseConnection, raw_query: str):
+        from apps.beamguard.utils import (
+            BeamGuardArtifactTypesNames, BeamGuardConfirmationStatusesNames,
+        )
+
         unauthorized_keyword_found = False
         unauthorized_keywords_list = []
 
@@ -104,6 +111,10 @@ class BeamGuardExecutionManager:
             return None
 
     def _guard_postgresql_modifications(self, connection: SQLDatabaseConnection, raw_query: str):
+        from apps.beamguard.utils import (
+            BeamGuardArtifactTypesNames, BeamGuardConfirmationStatusesNames,
+        )
+
         unauthorized_keyword_found = False
         unauthorized_keywords_list = []
 
@@ -177,6 +188,10 @@ class BeamGuardExecutionManager:
             return None
 
     def _guard_couchbase_modifications(self, connection: NoSQLDatabaseConnection, raw_query: str):
+        from apps.beamguard.utils import (
+            BeamGuardArtifactTypesNames, BeamGuardConfirmationStatusesNames,
+        )
+
         unauthorized_keyword_found = False
         unauthorized_keywords_list = []
 
@@ -245,7 +260,14 @@ class BeamGuardExecutionManager:
         else:
             return None
 
-    def _guard_unix_file_system_modifications(self, connection: DataSourceFileSystem, raw_query: str):
+    def _guard_unix_file_system_modifications(self, connection, raw_query: str):
+        from apps.datasource_file_systems.models import DataSourceFileSystem
+        from apps.beamguard.utils import (
+            BeamGuardArtifactTypesNames, BeamGuardConfirmationStatusesNames,
+        )
+
+        connection: DataSourceFileSystem
+
         unauthorized_keyword_found = False
         unauthorized_keywords_list = []
 
@@ -381,6 +403,8 @@ class BeamGuardExecutionManager:
 
     @staticmethod
     def _authorize_and_absolve_file_system_artifact(artifact: BeamGuardArtifact):
+        from apps.core.file_systems.file_systems_executor import FileSystemsExecutor
+
         if (
             artifact.file_system_connection_object.os_type == DataSourceFileSystemsOsTypeNames.LINUX or
             artifact.file_system_connection_object.os_type == DataSourceFileSystemsOsTypeNames.MACOS
@@ -406,6 +430,9 @@ class BeamGuardExecutionManager:
 
     @staticmethod
     def reject_and_discard_artifact(artifact_id: int):
+        from apps.beamguard.utils import (
+            BeamGuardConfirmationStatusesNames,
+        )
 
         artifact = BeamGuardArtifact.objects.get(id=artifact_id)
         if not artifact:
@@ -427,9 +454,11 @@ class BeamGuardExecutionManager:
         logger.info(f"BeamGuard artifact has been rejected and discarded: {artifact_id}")
         return True
 
-
     @staticmethod
     def authorize_and_absolve_artifact(artifact_id: int):
+        from apps.beamguard.utils import (
+            BeamGuardConfirmationStatusesNames,
+        )
 
         artifact = BeamGuardArtifact.objects.get(id=artifact_id)
         if not artifact:

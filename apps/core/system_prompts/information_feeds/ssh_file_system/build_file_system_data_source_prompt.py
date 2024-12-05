@@ -17,10 +17,11 @@
 
 
 from apps.assistants.models import Assistant
-from apps.datasource_file_systems.models import DataSourceFileSystem
 
 
 def build_file_system_data_source_prompt(assistant: Assistant):
+    from apps.datasource_file_systems.models import DataSourceFileSystem
+
     file_system_data_sources = DataSourceFileSystem.objects.filter(assistant=assistant)
     response_prompt = """
             ### **FILE SYSTEM CONNECTIONS (via SSH):**
@@ -39,7 +40,21 @@ def build_file_system_data_source_prompt(assistant: Assistant):
                     Username: {file_system_data_source.username}
                     Maximum Records to Retrieve / Query (LIMIT): {file_system_data_source.os_read_limit_tokens}
                     Is Read Only: {file_system_data_source.is_read_only}
-                    Schema of System: {file_system_data_source.file_directory_tree}
+                    Schema of System:
+                    '''
+
+                        ##### YOUR FILE SYSTEM DIRECTORY SCHEMA SEARCH TOOL:
+
+                            - You can use your SSH File System Directory Schema search tool to search and understand certain structures
+                               within the database, by using your intuition at first to provide a reasonable query to search within
+                               the schema, and then using the retrieved information, you can generate console commands/scripts to
+                               manipulate the file system, read from the file system, analyze the data within a file system, and
+                               use the data there in your response generation processes, as any operations requested by the user.
+
+                            - Further instructions about how you can use the SSH File System directory schema search tool is
+                            provided to you in the further sections of this prompt.
+
+                    '''
                 """
 
     response_prompt += """
@@ -94,7 +109,21 @@ def build_semantor_file_system_data_source_prompt(temporary_sources: dict):
                     Username: {file_system_data_source.username}
                     Maximum Records to Retrieve / Query (LIMIT): {file_system_data_source.os_read_limit_tokens}
                     Is Read Only: {file_system_data_source.is_read_only}
-                    Schema of System: {file_system_data_source.file_directory_tree}
+                    Schema of System:
+                    '''
+
+                    ##### YOUR FILE SYSTEM DIRECTORY SCHEMA SEARCH TOOL:
+
+                            - You can use your SSH File System Directory Schema search tool to search and understand certain structures
+                               within the database, by using your intuition at first to provide a reasonable query to search within
+                               the schema, and then using the retrieved information, you can generate console commands/scripts to
+                               manipulate the file system, read from the file system, analyze the data within a file system, and
+                               use the data there in your response generation processes, as any operations requested by the user.
+
+                            - Further instructions about how you can use the SSH File System directory schema search tool is
+                            provided to you in the further sections of this prompt.
+
+                    '''
                 """
 
     response_prompt += """

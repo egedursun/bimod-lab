@@ -17,3 +17,4 @@
 
 from .nosql_query_models import *
 from .nosql_database_models import *
+from .nosql_database_vector_models import *

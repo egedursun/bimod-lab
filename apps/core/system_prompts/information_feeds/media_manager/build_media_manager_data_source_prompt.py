@@ -17,7 +17,10 @@
 
 
 from apps.assistants.models import Assistant
-from apps.datasource_media_storages.models import DataSourceMediaStorageConnection
+
+from apps.datasource_media_storages.models import (
+    DataSourceMediaStorageConnection
+)
 
 
 def build_media_manager_data_source_prompt(assistant: Assistant):

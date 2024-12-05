@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import hashlib
 import json
 import logging
@@ -23,15 +24,25 @@ import faiss
 import numpy as np
 from django.db import models
 
-from apps.leanmod.models import ExpertNetworkAssistantReference, ExpertNetwork
-from apps.semantor.utils.constant_utils import VECTOR_INDEX_PATH_LEANMOD_ASSISTANTS, OpenAIEmbeddingModels, \
+from apps.leanmod.models import (
+    ExpertNetworkAssistantReference,
+    ExpertNetwork
+)
+
+from apps.semantor.utils.constant_utils import (
+    VECTOR_INDEX_PATH_LEANMOD_ASSISTANTS,
+    OpenAIEmbeddingModels,
     OPEN_AI_DEFAULT_EMBEDDING_VECTOR_DIMENSIONS
+)
 
 logger = logging.getLogger(__name__)
 
 
 class LeanModVectorData(models.Model):
-    leanmod_assistant = models.ForeignKey('leanmod.LeanAssistant', on_delete=models.CASCADE)
+    leanmod_assistant = models.ForeignKey(
+        'leanmod.LeanAssistant',
+        on_delete=models.CASCADE
+    )
 
     raw_data = models.JSONField(blank=True, null=True)
     raw_data_hash = models.CharField(max_length=255, blank=True, null=True)
@@ -89,25 +100,21 @@ class LeanModVectorData(models.Model):
         self.raw_data = raw_data
 
         ##############################
-        # Convert to Vector
-        ##############################
-
-        self._generate_embedding(raw_data)
-
-        ##############################
         # Save the Index to Vector DB
         ##############################
 
+        super().save(*args, **kwargs)
+
         self.raw_data = raw_data
+
         if self.has_raw_data_changed() or self.vector_data is None or self.vector_data == []:
             # print("Vector data has changed, generating new embedding...")
             self._generate_embedding(raw_data)
+            self._save_embedding()
+
         else:
             # print("Vector data has not changed, using existing embedding...")
             pass
-
-        super().save(*args, **kwargs)
-        self._save_embedding()
 
     def _generate_embedding(self, raw_data):
         from apps.core.generative_ai.gpt_openai_manager import OpenAIGPTClientManager

@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+import logging
 
 from django.db import models
 
@@ -24,6 +25,8 @@ from apps.core.file_systems.file_systems_executor import (
 from apps.datasource_file_systems.utils import (
     DATASOURCE_FILE_SYSTEMS_OS_TYPES
 )
+
+logger = logging.getLogger(__name__)
 
 
 class DataSourceFileSystem(models.Model):
@@ -51,7 +54,7 @@ class DataSourceFileSystem(models.Model):
     username = models.CharField(max_length=255)
     password = models.CharField(max_length=255)
 
-    file_directory_tree = models.TextField(
+    file_directory_tree = models.JSONField(
         blank=True,
         null=True
     )
@@ -132,10 +135,7 @@ class DataSourceFileSystem(models.Model):
         update_fields=None
     ):
         self.ssh_connection_uri = f"{self.username}@{self.host_url}"
-        schema_str = FileSystemsExecutor(self).schema_str
-        self.file_directory_tree = schema_str
-
-        # TODO-EGE: vectorize and save the File System schema (remove the limitations for depth and tokens)
+        print(self.ssh_connection_uri)
 
         super().save(
             force_insert,

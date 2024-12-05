@@ -34,10 +34,6 @@ from apps.datasource_knowledge_base.models import (
     DocumentKnowledgeBaseConnection
 )
 
-from apps.datasource_file_systems.models import (
-    DataSourceFileSystem
-)
-
 from apps.datasource_ml_models.models import (
     DataSourceMLModelConnection,
     DataSourceMLModelItem
@@ -261,6 +257,10 @@ def build_orchestration_workers_multi_modality_prompt(maestro):
         """
 
         for fs_source in worker.data_source_file_systems.all():
+            from apps.datasource_file_systems.models import (
+                DataSourceFileSystem
+            )
+
             fs_source: DataSourceFileSystem
             response_prompt += f"""
                         [[[[File System Data Source ID: {fs_source.id}]]]]

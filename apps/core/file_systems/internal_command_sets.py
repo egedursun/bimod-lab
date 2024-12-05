@@ -25,7 +25,40 @@ LIST_DIRECTORY_RECURSIVE = 'list_directory_recursive'
 INTERNAL_COMMAND_SETS = {
     LIST_DIRECTORY_RECURSIVE: {
         'description': 'List directory contents recursively',
-        DataSourceFileSystemsOsTypeNames.LINUX: 'ls -R ../',
-        DataSourceFileSystemsOsTypeNames.MACOS: 'ls -R ../',
+        DataSourceFileSystemsOsTypeNames.LINUX: """
+        find / -type d \( \
+        ! -path "/proc*" -a ! -path "/sys*" -a ! -path "/dev*" -a ! -path "/run*" -a \
+        ! -path "/tmp*" -a ! -path "/lib*" -a ! -path "/usr/lib*" -a ! -path "/usr/local*" -a \
+        ! -path "/usr/src*" -a ! -path "/usr/share*" -a ! -path "/usr/include*" -a \
+        ! -path "/usr/portage*" -a ! -path "/opt*" -a ! -path "/boot*" -a ! -path "/snap*" -a \
+        ! -path "/mnt*" -a ! -path "/media*" -a ! -path "/var/cache*" -a ! -path "/var/lib/docker*" -a \
+        ! -path "/var/lib/containers*" -a ! -path "/var/lib/rpm*" -a ! -path "/var/lib/dpkg*" -a \
+        ! -path "/var/snap*" -a ! -path "/var/backups*" -a ! -path "/var/tmp*" -a ! -path "/var/log*" -a \
+        ! -path "/sys/kernel/debug*" -a ! -path "/sys/fs/cgroup*" -a ! -path "/srv*" -a \
+        ! -path "/home/*/.cache*" -a ! -path "/home/*/.local*" -a \
+        ! -path "/home/*/.npm*" -a ! -path "/home/*/.yarn*" -a ! -path "/home/*/.gem*" -a \
+        ! -path "*/node_modules*" -a ! -path "*/.git*" -a ! -path "*/.svn*" -a ! -path "*/.hg*" -a \
+        ! -path "*/venv*" -a ! -path "*/env*" -a ! -path "*/__pycache__*" -a \
+        ! -path "*/.maven*" -a ! -path "*/.gradle*" -a ! -path "*/.cache*" -a \
+        ! -path "*/target*" -a ! -path "*/build*" -a ! -path "*/dist*" -a ! -path "*/.*" \)
+        """,
+
+        DataSourceFileSystemsOsTypeNames.MACOS: """
+        find / -type d \( \
+        ! -path "/proc*" -a ! -path "/sys*" -a ! -path "/dev*" -a ! -path "/run*" -a \
+        ! -path "/tmp*" -a ! -path "/lib*" -a ! -path "/usr/lib*" -a ! -path "/usr/local*" -a \
+        ! -path "/usr/src*" -a ! -path "/usr/share*" -a ! -path "/usr/include*" -a \
+        ! -path "/usr/portage*" -a ! -path "/opt*" -a ! -path "/boot*" -a ! -path "/snap*" -a \
+        ! -path "/mnt*" -a ! -path "/media*" -a ! -path "/var/cache*" -a ! -path "/var/lib/docker*" -a \
+        ! -path "/var/lib/containers*" -a ! -path "/var/lib/rpm*" -a ! -path "/var/lib/dpkg*" -a \
+        ! -path "/var/snap*" -a ! -path "/var/backups*" -a ! -path "/var/tmp*" -a ! -path "/var/log*" -a \
+        ! -path "/sys/kernel/debug*" -a ! -path "/sys/fs/cgroup*" -a ! -path "/srv*" -a \
+        ! -path "/home/*/.cache*" -a ! -path "/home/*/.local*" -a \
+        ! -path "/home/*/.npm*" -a ! -path "/home/*/.yarn*" -a ! -path "/home/*/.gem*" -a \
+        ! -path "*/node_modules*" -a ! -path "*/.git*" -a ! -path "*/.svn*" -a ! -path "*/.hg*" -a \
+        ! -path "*/venv*" -a ! -path "*/env*" -a ! -path "*/__pycache__*" -a \
+        ! -path "*/.maven*" -a ! -path "*/.gradle*" -a ! -path "*/.cache*" -a \
+        ! -path "*/target*" -a ! -path "*/build*" -a ! -path "*/dist*" -a ! -path "*/.*" \)
+        """,
     }
 }

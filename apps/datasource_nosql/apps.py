@@ -21,3 +21,12 @@ from django.apps import AppConfig
 class DatasourceNosqlConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'apps.datasource_nosql'
+
+    def ready(self):
+        from apps.datasource_nosql.signals.update_nosql_database_vector_embedding_signals import (
+            update_nosql_database_vector_embedding_after_save
+        )
+
+        from apps.datasource_nosql.signals.delete_nosql_database_vector_embedding_signals import (
+            remove_vector_from_index_on_nosql_database_delete
+        )

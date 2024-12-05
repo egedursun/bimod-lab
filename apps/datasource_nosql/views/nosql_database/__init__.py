@@ -19,3 +19,4 @@ from .list_nosql_database_views import *
 from .create_nosql_database_views import *
 from .delete_nosql_database_views import *
 from .update_nosql_database_views import *
+from .refresh_nosql_schema_views import *

@@ -153,8 +153,6 @@ class NoSQLDatabaseConnection(models.Model):
             logger.error(f"Unable to retrieve schema for NoSQL database connection. Error: {e}")
             pass
 
-        # TODO-EGE: vectorize and save the NoSQL schema (remove the limitations for depth and tokens)
-
         super().save(*args, **kwargs)
 
     def retrieve_schema(self):
@@ -192,7 +190,7 @@ class NoSQLDatabaseConnection(models.Model):
                 )
 
         except KeyspaceNotFoundException as ke:
-            logger.error(f"[_infer_collection_schema] Error: {ke}")
+            logger.warning(f"[_infer_collection_schema] Error: {ke}")
             pass
 
         except CouchbaseException as e:
