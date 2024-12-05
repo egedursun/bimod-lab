@@ -14,9 +14,8 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
-import random
-import uuid
 
 import boto3
 

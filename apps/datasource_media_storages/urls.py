@@ -32,6 +32,7 @@ from apps.datasource_media_storages.views import (
     MediaView_ItemArchiveRetrieval,
     MediaView_ThirdPartyConnectionMain,
     MediaView_ThirdPartyConnection_AWSS3Bucket,
+    MediaView_ThirdPartyConnection_GCPStorageBucket,
 )
 
 app_name = "datasource_media_storages"
@@ -146,5 +147,13 @@ urlpatterns = [
             template_name="datasource_media_storages/third_party_connection/third_party_connections_aws_s3.html"
         ),
         name='connect_aws_s3'
+    ),
+
+    path(
+        'third_party_connections/gcp_storage_bucket/',
+        MediaView_ThirdPartyConnection_GCPStorageBucket.as_view(
+            template_name="datasource_media_storages/third_party_connection/third_party_connections_gcp_bucket.html"
+        ),
+        name='connect_gcp_bucket'
     ),
 ]

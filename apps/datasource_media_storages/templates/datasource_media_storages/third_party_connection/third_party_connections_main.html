@@ -75,7 +75,7 @@
     </div>
     <!-- Google Cloud Platform Storage Buckets -->
     <div class="col-md-6 category-card">
-      <a href="#" class="card-link">
+      <a href="{% url 'datasource_media_storages:connect_gcp_bucket' %}" class="card-link">
         <div class="card p-2 h-100 shadow">
           <div class="card-body text-center">
             <img src="{% static 'img/media_storages/gcp-banner.png' %}" alt="GCP Icon" class="img-fluid mb-4">
@@ -85,9 +85,9 @@
               Google Cloud Platform, Storage Buckets
             </strong></h4>
             <hr>
-            <div class="bg-label-warning p-4 mt-4 rounded border border-primary border-2 rounded">
-              <i class="fa fa-lg fa-times-circle text-warning me-2"></i>
-              <strong class="text-dark">Coming Soon</strong>
+            <div class="bg-label-success p-4 mt-4 rounded border border-primary border-2 rounded">
+              <i class="fa fa-lg fa-check-circle text-success me-2"></i>
+              <strong class="text-dark">Available for Integration</strong>
             </div>
           </div>
         </div>

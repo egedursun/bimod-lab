@@ -941,13 +941,14 @@
           "name": "Manage Files",
           "slug": "multimedia-files",
           "url": "datasource_media_storages:list_items"
-        },
-        {
-          "name": "External Storages",
-          "slug": "multimedia-files",
-          "url": "datasource_media_storages:third_party_main"
         }
       ]
+    },
+    {
+      "name": "External Storages",
+      "icon": "menu-icon tf-icons ti ti-cloud",
+      "slug": "multimedia-files",
+      "url": "datasource_media_storages:third_party_main"
     },
     {
       "menu_header": "Custom Multi-Modalities"

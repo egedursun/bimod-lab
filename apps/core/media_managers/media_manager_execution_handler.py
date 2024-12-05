@@ -29,7 +29,7 @@ from PIL import Image
 
 from apps.core.generative_ai.gpt_openai_manager import OpenAIGPTClientManager
 from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
-from apps.core.media_managers.helpers import MediaStorageCopyClient__AWSS3Bucket
+from apps.core.media_managers.helpers import MediaStorageCopyClient__AWSS3Bucket, MediaStorageCopyClient__GCSBucket
 
 from apps.core.media_managers.utils import (
     FILE_EXTENSION_BIN,
@@ -414,6 +414,10 @@ class MediaManager:
 
         return response
 
+    ##############################################################################################################
+    # MEDIA STORAGE COPY METHODS
+    ##############################################################################################################
+
     @staticmethod
     def copy_aws_s3_bucket_into_storage(
         media_storage_id,
@@ -449,8 +453,36 @@ class MediaManager:
         logger.info("AWS S3 bucket copied into the storage successfully.")
         return True
 
-    def copy_gcp_bucket_into_storage(self):
-        pass
+    @staticmethod
+    def copy_gcp_bucket_into_storage(
+        media_storage_id,
+        service_account_info_json,
+        bucket_name,
+        prefix
+    ):
+
+        try:
+
+            xc_helper = MediaStorageCopyClient__GCSBucket(
+                service_account_info=service_account_info_json,
+                media_storage_id=media_storage_id,
+            )
+
+            success = xc_helper.execute_copy_process(
+                bucket_name=bucket_name,
+                prefix=prefix
+            )
+
+            if success is False:
+                logger.error("Error occurred while copying GCP bucket into the storage.")
+                return False
+
+        except Exception as e:
+            logger.error(f"Error occurred while copying GCP bucket into the storage: {e}")
+            return False
+
+        logger.info("GCP bucket copied into the storage successfully.")
+        return True
 
     def copy_azure_bucket_into_storage(self):
         pass

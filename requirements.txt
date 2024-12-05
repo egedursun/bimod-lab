@@ -99,3 +99,5 @@ pdfminer.six==20231228
 pdfplumber~=0.11.2
 PyMuPDF~=1.24.13
 rarfile~=4.2
+google-cloud-storage~=2.19.0
+google-cloud~=0.34.0
