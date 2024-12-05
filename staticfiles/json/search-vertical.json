@@ -259,6 +259,12 @@
       "url": "/app/data_security/ner/list"
     },
     {
+      "name": "BeamGuard Watch Center",
+      "icon": "menu-icon tf-icons ti ti-shield",
+      "slug": "data-security",
+      "url": "/app/beamguard/artifacts/list/"
+    },
+    {
       "name": "Chats",
       "icon": "menu-icon tf-icons ti ti-messages",
       "slug": "chats",
@@ -659,6 +665,12 @@
       "icon": "menu-icon tf-icons ti ti-camera",
       "slug": "media-files",
       "url": "/app/datasource_media_storages/list_items"
+    },
+    {
+      "name": "Connect External Storage",
+      "icon": "menu-icon tf-icons ti ti-cloud",
+      "slug": "media-files",
+      "url": "/app/datasource_media_storages/third_party_connections/main"
     },
     {
       "name": "Connect Video Generator",

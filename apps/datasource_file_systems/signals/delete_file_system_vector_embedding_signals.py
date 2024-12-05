@@ -42,7 +42,9 @@ from apps.datasource_file_systems.models import (
     DataSourceFileSystem,
     FileSystemDirectorySchemaChunkVectorData,
 )
-from apps.datasource_file_systems.utils import VECTOR_INDEX_PATH_FILE_SYSTEM_DIRECTORY_SCHEMAS
+from apps.datasource_file_systems.utils import (
+    VECTOR_INDEX_PATH_FILE_SYSTEM_DIRECTORY_SCHEMAS
+)
 
 logger = logging.getLogger(__name__)
 

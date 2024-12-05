@@ -941,6 +941,11 @@
           "name": "Manage Files",
           "slug": "multimedia-files",
           "url": "datasource_media_storages:list_items"
+        },
+        {
+          "name": "External Storages",
+          "slug": "multimedia-files",
+          "url": "datasource_media_storages:third_party_main"
         }
       ]
     },

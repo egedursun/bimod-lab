@@ -1,10 +1,10 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
 #  Project: Bimod.io™
-#  File: __init__.py
-#  Last Modified: 2024-10-05 01:39:48
+#  File: third_party_connection_main_views.py
+#  Last Modified: 2024-12-04 23:55:42
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-#  Created: 2024-10-05 14:42:48
+#  Created: 2024-12-04 23:55:42
 #
 #  This software is proprietary and confidential. Unauthorized copying,
 #  distribution, modification, or use of this software, whether for
@@ -15,7 +15,14 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-from .media_file import *
-from .media_storage import *
-from .generated import *
-from .third_party_connection import *
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import TemplateView
+
+from web_project import TemplateLayout
+
+
+class MediaView_ThirdPartyConnectionMain(LoginRequiredMixin, TemplateView):
+
+    def get_context_data(self, **kwargs):
+        context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+        return context

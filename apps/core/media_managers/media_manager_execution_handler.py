@@ -29,6 +29,7 @@ from PIL import Image
 
 from apps.core.generative_ai.gpt_openai_manager import OpenAIGPTClientManager
 from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
+from apps.core.media_managers.helpers import MediaStorageCopyClient__AWSS3Bucket
 
 from apps.core.media_managers.utils import (
     FILE_EXTENSION_BIN,
@@ -38,9 +39,13 @@ from apps.core.media_managers.utils import (
     MEDIA_PATH_EDIT_IMAGE_BASE,
     MEDIA_PATH_EDIT_IMAGE_MASK,
     ImageModes,
-    DEFAULT_IMAGE_COMPRESSION_JPEG, DEFAULT_SEARCH_RESULTS_MEDIA_ITEMS, OpenAIEmbeddingModels,
-    VECTOR_INDEX_PATH_MEDIA_ITEMS, OPEN_AI_DEFAULT_EMBEDDING_VECTOR_DIMENSIONS
+    DEFAULT_IMAGE_COMPRESSION_JPEG,
+    DEFAULT_SEARCH_RESULTS_MEDIA_ITEMS,
+    OpenAIEmbeddingModels,
+    VECTOR_INDEX_PATH_MEDIA_ITEMS,
+    OPEN_AI_DEFAULT_EMBEDDING_VECTOR_DIMENSIONS
 )
+
 from apps.datasource_media_storages.models import MediaItemVectorData
 
 from apps.llm_transaction.models import LLMTransaction
@@ -57,13 +62,21 @@ class MediaManager:
         self.chat = chat
 
         self.media_items_index_path = os.path.join(
-            VECTOR_INDEX_PATH_MEDIA_ITEMS, f'media_items_index_{self.connection_object.id}.index')
+            VECTOR_INDEX_PATH_MEDIA_ITEMS,
+            f'media_items_index_{self.connection_object.id}.index'
+        )
 
         if os.path.exists(self.media_items_index_path):
-            self.media_items_index = faiss.read_index(self.media_items_index_path)
+            self.media_items_index = faiss.read_index(
+                self.media_items_index_path
+            )
 
         else:
-            self.media_items_index = faiss.IndexIDMap(faiss.IndexFlatL2(OPEN_AI_DEFAULT_EMBEDDING_VECTOR_DIMENSIONS))
+            self.media_items_index = faiss.IndexIDMap(
+                faiss.IndexFlatL2(
+                    OPEN_AI_DEFAULT_EMBEDDING_VECTOR_DIMENSIONS
+                )
+            )
             faiss.write_index(self.media_items_index, self.media_items_index_path)
 
     @staticmethod
@@ -73,8 +86,15 @@ class MediaManager:
         return f"{uuid_1}_{uuid_2}.{file_format}"
 
     def _generate_query_embedding(self, query: str) -> List[float]:
-        c = OpenAIGPTClientManager.get_naked_client(llm_model=self.connection_object.assistant.llm_model)
-        response = c.embeddings.create(input=query, model=OpenAIEmbeddingModels.TEXT_EMBEDDING_3_LARGE)
+        c = OpenAIGPTClientManager.get_naked_client(
+            llm_model=self.connection_object.assistant.llm_model
+        )
+
+        response = c.embeddings.create(
+            input=query,
+            model=OpenAIEmbeddingModels.TEXT_EMBEDDING_3_LARGE
+        )
+
         return response.data[0].embedding
 
     def search_media_items(
@@ -82,7 +102,13 @@ class MediaManager:
         query: str,
         n_results: int = DEFAULT_SEARCH_RESULTS_MEDIA_ITEMS
     ) -> List[Dict]:
-        query_vector = np.array([self._generate_query_embedding(query)], dtype=np.float32)
+
+        query_vector = np.array([
+            self._generate_query_embedding(query)
+        ],
+            dtype=np.float32
+        )
+
         if self.media_items_index is None:
             raise ValueError("[search_media_items] FAISS index not initialized or loaded properly.")
 
@@ -111,25 +137,30 @@ class MediaManager:
 
         if not remote:
             estimate_format = filetype.guess(data)
+
             if estimate_format is None:
                 estimate_format = FILE_EXTENSION_BIN
+
             file_format = estimate_format.extension
 
         else:
             file_format = remote.split(".")[-1]
 
         file_name = MediaManager.file_name_generator(file_format=file_format)
+
         bucket_path = f"{GENERATED_FILES_ROOT_MEDIA_PATH}{file_name}"
         uri = f"{MEDIA_URL}{bucket_path}"
 
         try:
             s3c = boto3.client('s3')
             bucket = settings.AWS_STORAGE_BUCKET_NAME
+
             s3c.put_object(
                 Bucket=bucket,
                 Key=bucket_path,
                 Body=data
             )
+
             logger.info(f"File saved to the storage with uri: {uri}")
 
         except Exception as e:
@@ -180,6 +211,7 @@ class MediaManager:
     def save_edit_image_and_masked_image(edit_img_map):
         data = edit_img_map.get("edit_image")
         data_mask = edit_img_map.get("edit_image_mask")
+
         estimate_format = filetype.guess(data)
         estimate_format_mask = filetype.guess(data_mask)
 
@@ -193,6 +225,7 @@ class MediaManager:
         format_edit_mask = estimate_format_mask.extension
         file_name_edit = MEDIA_PATH_EDIT_IMAGE_BASE + str(uuid4()) + "." + format_edit
         file_name_edit_mask = MEDIA_PATH_EDIT_IMAGE_MASK + str(uuid4()) + "." + format_edit_mask
+
         s3_path_edit = f"{GENERATED_IMAGES_ROOT_MEDIA_PATH}{file_name_edit}"
         s3_path_edit_mask = f"{GENERATED_IMAGES_ROOT_MEDIA_PATH}{file_name_edit_mask}"
         uri_edit = f"{MEDIA_URL}{s3_path_edit}"
@@ -207,6 +240,7 @@ class MediaManager:
                 Key=s3_path_edit,
                 Body=data
             )
+
             s3c.put_object(
                 Bucket=bucket,
                 Key=s3_path_edit_mask,
@@ -231,6 +265,7 @@ class MediaManager:
 
         file_format = estimate_format.extension
         file_name = MediaManager.file_name_generator(file_format=file_format)
+
         s3_uri = f"{GENERATED_IMAGES_ROOT_MEDIA_PATH}{file_name}"
         direct_uri = f"{MEDIA_URL}{s3_uri}"
 
@@ -284,7 +319,9 @@ class MediaManager:
         query_string: str
     ):
 
-        from apps.core.generative_ai.auxiliary_clients.auxiliary_llm_analyst_client import AuxiliaryLLMAnalystClient
+        from apps.core.generative_ai.auxiliary_clients.auxiliary_llm_analyst_client import (
+            AuxiliaryLLMAnalystClient
+        )
         from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE
         from apps.core.generative_ai.utils import ChatRoles
 
@@ -307,7 +344,13 @@ class MediaManager:
 
         f_uris = self.save_files_and_return_uris(fs)
         img_uris = self.save_images_and_return_uris(imgs)
-        final_output = {"response": txt, "file_uris": f_uris, "image_uris": img_uris}
+
+        final_output = {
+            "response": txt,
+            "file_uris": f_uris,
+            "image_uris": img_uris
+        }
+
         logger.info("Interpretation completed.")
 
         tx = LLMTransaction(
@@ -331,7 +374,10 @@ class MediaManager:
         full_image_paths: list,
         query_string: str
     ):
-        from apps.core.generative_ai.auxiliary_clients.auxiliary_llm_vision_client import AuxiliaryLLMVisionClient
+        from apps.core.generative_ai.auxiliary_clients.auxiliary_llm_vision_client import (
+            AuxiliaryLLMVisionClient
+        )
+
         from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE
         from apps.core.generative_ai.utils import ChatRoles
 
@@ -365,4 +411,55 @@ class MediaManager:
         tx.save()
 
         logger.info(f"Transaction saved successfully: {tx.id}")
+
         return response
+
+    @staticmethod
+    def copy_aws_s3_bucket_into_storage(
+        media_storage_id,
+        aws_access_key_id,
+        aws_secret_access_key,
+        region_name,
+        bucket_name,
+        prefix
+    ):
+
+        try:
+
+            xc_helper = MediaStorageCopyClient__AWSS3Bucket(
+                media_storage_id=media_storage_id,
+                aws_access_key_id=aws_access_key_id,
+                aws_secret_access_key=aws_secret_access_key,
+                region_name=region_name
+            )
+
+            success = xc_helper.execute_copy_process(
+                bucket_name=bucket_name,
+                prefix=prefix
+            )
+
+            if success is False:
+                logger.error("Error occurred while copying AWS S3 bucket into the storage.")
+                return False
+
+        except Exception as e:
+            logger.error(f"Error occurred while copying AWS S3 bucket into the storage: {e}")
+            return False
+
+        logger.info("AWS S3 bucket copied into the storage successfully.")
+        return True
+
+    def copy_gcp_bucket_into_storage(self):
+        pass
+
+    def copy_azure_bucket_into_storage(self):
+        pass
+
+    def copy_google_drive_folder_items_into_storage(self):
+        pass
+
+    def copy_dropbox_folder_items_into_storage(self):
+        pass
+
+    def copy_onedrive_folder_items_into_storage(self):
+        pass

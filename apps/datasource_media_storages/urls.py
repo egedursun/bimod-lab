@@ -30,6 +30,8 @@ from apps.datasource_media_storages.views import (
     MediaView_ItemHTTPRetrieval,
     MediaView_Generated,
     MediaView_ItemArchiveRetrieval,
+    MediaView_ThirdPartyConnectionMain,
+    MediaView_ThirdPartyConnection_AWSS3Bucket,
 )
 
 app_name = "datasource_media_storages"
@@ -128,5 +130,21 @@ urlpatterns = [
 
         ),
         name='upload_archive'
+    ),
+
+    path(
+        'third_party_connections/main/',
+        MediaView_ThirdPartyConnectionMain.as_view(
+            template_name="datasource_media_storages/third_party_connection/third_party_connections_main.html"
+        ),
+        name='third_party_main'
+    ),
+
+    path(
+        'third_party_connections/aws_s3_bucket/',
+        MediaView_ThirdPartyConnection_AWSS3Bucket.as_view(
+            template_name="datasource_media_storages/third_party_connection/third_party_connections_aws_s3.html"
+        ),
+        name='connect_aws_s3'
     ),
 ]

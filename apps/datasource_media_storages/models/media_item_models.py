@@ -15,6 +15,7 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
+import logging
 import random
 
 from django.db import models
@@ -23,6 +24,8 @@ from slugify import slugify
 from apps.datasource_media_storages.tasks import upload_file_to_storage
 from apps.datasource_media_storages.utils import MEDIA_FILE_TYPES
 from config.settings import MEDIA_URL
+
+logger = logging.getLogger(__name__)
 
 
 class DataSourceMediaStorageItem(models.Model):
@@ -98,6 +101,7 @@ class DataSourceMediaStorageItem(models.Model):
         file_type = self.media_file_type
 
         if file_type not in [ft[0] for ft in MEDIA_FILE_TYPES]:
+            logger.error(f"Unsupported file type: {file_type}")
             return False
 
         if not self.full_file_path:

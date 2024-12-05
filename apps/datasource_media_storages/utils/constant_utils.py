@@ -16,6 +16,47 @@
 #
 
 
+THIRD_PARTY_CONNECTION_SUPPORTED_PROVIDERS = [
+    ('aws_s3', 'AWS S3'),
+    ('google_cloud_buckets', 'Google Cloud Buckets'),
+    ('azure_buckets', 'Azure Buckets'),
+    ('dropbox', 'Dropbox'),
+    ('google_drive', 'Google Drive'),
+    ('onedrive', 'OneDrive'),
+]
+
+
+class ThirdPartyConnectionSupportedProvidersNames:
+    AWS_S3 = 'aws_s3'
+    GOOGLE_CLOUD_BUCKETS = 'google_cloud_buckets'
+    AZURE_BUCKETS = 'azure_buckets'
+    DROPBOX = 'dropbox'
+    GOOGLE_DRIVE = 'google_drive'
+    ONEDRIVE = 'onedrive'
+
+    @staticmethod
+    def as_readable_list():
+        return [
+            ('aws_s3', 'AWS S3 Buckets'),
+            ('google_cloud_buckets', 'Google Cloud Buckets'),
+            ('azure_buckets', 'Azure Buckets'),
+            ('dropbox', 'Dropbox'),
+            ('google_drive', 'Google Drive'),
+            ('onedrive', 'OneDrive'),
+        ]
+
+    @staticmethod
+    def as_list():
+        return [
+            ThirdPartyConnectionSupportedProvidersNames.AWS_S3,
+            ThirdPartyConnectionSupportedProvidersNames.GOOGLE_CLOUD_BUCKETS,
+            ThirdPartyConnectionSupportedProvidersNames.AZURE_BUCKETS,
+            ThirdPartyConnectionSupportedProvidersNames.DROPBOX,
+            ThirdPartyConnectionSupportedProvidersNames.GOOGLE_DRIVE,
+            ThirdPartyConnectionSupportedProvidersNames.ONEDRIVE,
+        ]
+
+
 MEDIA_MANAGER_ITEM_TYPES = (
     ('image', 'Image'),
     ('audio', 'Audio'),

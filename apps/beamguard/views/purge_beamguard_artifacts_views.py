@@ -72,4 +72,5 @@ class BeamGuardView_PurgeAllArtifacts(LoginRequiredMixin, View):
             messages.error(request, 'Failed to purge all artifacts during the operation.')
 
         logger.info(f"BeamGuardView_PurgeAllArtifacts: All artifacts have been purged successfully.")
+        messages.success(request, 'All artifacts have been purged successfully.')
         return redirect("beamguard:list")

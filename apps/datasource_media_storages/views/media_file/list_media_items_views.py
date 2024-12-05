@@ -119,8 +119,7 @@ class MediaView_ItemList(LoginRequiredMixin, TemplateView):
         except Exception as e:
             logger.error(f"User: {self.request.user} - Media Item - List Error: {e}")
             messages.error(self.request, 'An error occurred while listing media items.')
-
-        return context
+            return context
 
         context['data'] = data
         return context
