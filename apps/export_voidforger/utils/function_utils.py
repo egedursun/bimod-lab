@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import hashlib
 import logging
 import random
@@ -42,17 +43,23 @@ def generate_voidforger_custom_api_key(voidforger: VoidForger):
     llm_model_temperature = voidforger.llm_model.temperature
     llm_model_max_tokens = voidforger.llm_model.maximum_tokens
     llm_temperature = voidforger.llm_model.temperature
+
     salt = settings.ENCRYPTION_SALT
-    randomness_constraint = [random.choice(string.ascii_lowercase + string.digits + string.ascii_uppercase)
-                             for _ in range(64)]
+
+    randomness_constraint = [
+        random.choice(string.ascii_lowercase + string.digits + string.ascii_uppercase)
+        for _ in range(64)
+    ]
 
     # merge the strings
     merged_string = (f"{llm_model_name}"
                      f"{llm_model_temperature}{llm_model_max_tokens}{llm_temperature}{salt}{randomness_constraint}")
+
     # encrypt the merged string with SHA-256
     encrypted_string = ("bimod/" +
                         f"{str(organization_id)}/" +
                         f"{''.join(ch for ch in organization_name if ch.isalnum())}/" +
                         f"{''.join(ch for ch in llm_model_name if ch.isalnum())}/" +
                         hashlib.sha256(merged_string.encode()).hexdigest())
+
     return str(encrypted_string)

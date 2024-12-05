@@ -22,7 +22,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import TemplateView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
 from apps.export_voidforger.models import ExportVoidForgerAPI
 from apps.user_permissions.utils import PermissionNames
 from apps.voidforger.models import VoidForger
@@ -51,11 +54,13 @@ class ExportVoidForgerView_Create(TemplateView, LoginRequiredMixin):
 
                 if not llm_cores:
                     messages.error(self.request, "No LLM Cores found for the organization, you need to add one for your VoidForger instance to be created.")
+
                     return redirect('export_voidforger:list')
 
             except Exception as e:
                 logger.error(f"Error getting LLM Cores for User: {user_context.id}.")
                 messages.error(self.request, f"Error getting LLM Cores: {str(e)}")
+
                 return redirect('export_voidforger:list')
 
             VoidForger.objects.create(
@@ -72,6 +77,7 @@ class ExportVoidForgerView_Create(TemplateView, LoginRequiredMixin):
 
         context["user"] = user_context
         context["assistants"] = agents
+
         return context
 
     def post(self, request, *args, **kwargs):
@@ -108,6 +114,7 @@ class ExportVoidForgerView_Create(TemplateView, LoginRequiredMixin):
         if not agent_id or not req_limit_hourly:
             logger.error(f"User: {request.user.id} tried to create Export VoidForger API without required fields.")
             messages.error(request, "VoidForger Assistant ID and Request Limit Per Hour are required.")
+
             return self.render_to_response(self.get_context_data())
 
         try:
@@ -134,9 +141,11 @@ class ExportVoidForgerView_Create(TemplateView, LoginRequiredMixin):
 
             logger.info(f"Export VoidForger API was created by User: {request.user.id}.")
             messages.success(request, "Export VoidForger API created successfully!")
+
             return redirect("export_voidforger:list")
 
         except Exception as e:
             logger.error(f"Error creating Export VoidForger API by User: {request.user.id}.")
             messages.error(request, f"Error creating Export VoidForger API: {str(e)}")
+
             return self.render_to_response(self.get_context_data())

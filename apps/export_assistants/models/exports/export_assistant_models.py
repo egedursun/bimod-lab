@@ -19,7 +19,12 @@ from django.db import models
 from django.utils import timezone
 
 from apps.export_assistants.models import RequestLog
-from apps.export_assistants.utils import generate_assistant_custom_api_key, generate_endpoint
+
+from apps.export_assistants.utils import (
+    generate_assistant_custom_api_key,
+    generate_endpoint
+)
+
 from config.settings import BASE_URL, EXPORT_API_BASE_URL
 
 
@@ -32,27 +37,33 @@ class ExportAssistantAPI(models.Model):
         null=True,
         blank=True
     )
+
     assistant = models.ForeignKey(
         'assistants.Assistant',
         on_delete=models.CASCADE,
         related_name='exported_assistants'
     )
+
     is_public = models.BooleanField(default=False)
     request_limit_per_hour = models.IntegerField(default=1000)
     is_online = models.BooleanField(default=True)
+
     custom_api_key = models.CharField(
         max_length=1000,
         blank=True,
         null=True,
         unique=True
     )
+
     endpoint = models.CharField(
         max_length=1000,
         blank=True,
         null=True
     )
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
     created_by_user = models.ForeignKey(
         "auth.User",
         on_delete=models.CASCADE,
@@ -81,10 +92,12 @@ class ExportAssistantAPI(models.Model):
                 self.assistant,
                 self.id
             )
+
             self.save()
 
         if not self.custom_api_key and (not self.is_public):
             self.custom_api_key = generate_assistant_custom_api_key(self.assistant)
+
             self.save()
 
     def requests_in_last_hour(self):
@@ -104,9 +117,15 @@ class ExportAssistantAPI(models.Model):
         verbose_name = "Export Assistant API"
         verbose_name_plural = "Export Assistant APIs"
         ordering = ['-created_at']
+
         unique_together = [
-            ["organization", "assistant", "is_public"],
+            [
+                "organization",
+                "assistant",
+                "is_public"
+            ],
         ]
+
         indexes = [
             models.Index(fields=[
                 'assistant'

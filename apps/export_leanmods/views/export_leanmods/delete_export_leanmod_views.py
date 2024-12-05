@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
@@ -21,7 +22,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import DeleteView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
 from apps.export_leanmods.models import ExportLeanmodAssistantAPI
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
@@ -57,8 +61,10 @@ class ExportLeanModView_Delete(LoginRequiredMixin, DeleteView):
         success_message = "Export LeanMod Assistant deleted successfully."
         org = exp_leanmod.lean_assistant.organization
         org.exported_leanmods.remove(exp_leanmod)
+
         org.save()
 
         logger.info(f"Export LeanMod Assistant was deleted by User: {request.user.id}.")
         messages.success(request, success_message)
+
         return redirect(self.success_url)

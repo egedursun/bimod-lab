@@ -14,13 +14,17 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
 from apps.export_leanmods.models import ExportLeanmodAssistantAPI
 from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
@@ -69,14 +73,19 @@ class ExportLeanModView_List(TemplateView, LoginRequiredMixin):
                     }
                 )
 
-            exp_agents = ExportLeanmodAssistantAPI.objects.filter(created_by_user=user_context)
+            exp_agents = ExportLeanmodAssistantAPI.objects.filter(
+                created_by_user=user_context
+            )
+
             context["user"] = user_context
             context["organization_data"] = org_data
             context["export_assistants"] = exp_agents
 
         except Exception as e:
             messages.error(self.request, f"An error occurred: {str(e)}")
+
             return context
 
         logger.info(f"User: {user_context.id} listed Export LeanMod Assistant APIs.")
+
         return context

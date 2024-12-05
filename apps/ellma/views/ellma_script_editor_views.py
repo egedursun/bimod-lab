@@ -20,7 +20,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import TemplateView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
 from apps.ellma.models import EllmaScript
 from apps.ellma.utils import ELLMA_TRANSCRIPTION_LANGUAGES
 from apps.user_permissions.utils import PermissionNames
@@ -31,8 +34,10 @@ class EllmaScriptView_ScriptEditor(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         script_id = self.kwargs.get('pk')
+
         context['ellma_script'] = get_object_or_404(EllmaScript, id=script_id)
         context["ELLMA_TRANSCRIPTION_LANGUAGES"] = ELLMA_TRANSCRIPTION_LANGUAGES
+
         return context
 
     def post(self, request, *args, **kwargs):
@@ -41,13 +46,16 @@ class EllmaScriptView_ScriptEditor(LoginRequiredMixin, TemplateView):
 
         ##############################
         # PERMISSION CHECK FOR - UPDATE_ELLMA_SCRIPTS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.UPDATE_ELLMA_SCRIPTS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.UPDATE_ELLMA_SCRIPTS
+        ):
             messages.error(self.request, "You do not have permission to update eLLMa scripts.")
             return redirect('ellma:script-editor', pk=script_id)
         ##############################
 
         ellma_script = get_object_or_404(EllmaScript, id=script_id)
+
         script_name = request.POST.get('script_name')
         script_content = request.POST.get('script_content')
         transcription_language = request.POST.get('transcription_language')
@@ -60,7 +68,9 @@ class EllmaScriptView_ScriptEditor(LoginRequiredMixin, TemplateView):
             ellma_script.script_name = script_name
             ellma_script.ellma_script_content = script_content
             ellma_script.ellma_transcription_language = transcription_language
+
             ellma_script.save()
+
         except Exception as e:
             messages.error(request, f"Error updating script: {e}")
             return redirect('ellma:script-editor', pk=script_id)

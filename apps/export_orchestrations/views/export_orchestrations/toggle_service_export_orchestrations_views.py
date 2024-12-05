@@ -22,7 +22,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, get_object_or_404
 from django.views import View
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
 from apps.export_orchestrations.models import ExportOrchestrationAPI
 from apps.user_permissions.utils import PermissionNames
 
@@ -43,9 +46,11 @@ class ExportOrchestrationView_ToggleService(LoginRequiredMixin, View):
 
         exp_agent = get_object_or_404(ExportOrchestrationAPI, pk=self.kwargs['pk'])
         exp_agent.is_online = not exp_agent.is_online
+
         exp_agent.save()
 
         logger.info(f"Export Orchestration was toggled by User: {request.user.id}.")
+
         return redirect('export_orchestrations:list')
 
     def get(self, request, *args, **kwargs):

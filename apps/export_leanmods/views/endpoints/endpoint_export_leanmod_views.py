@@ -24,11 +24,27 @@ from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 
-from apps.core.generative_ai.generative_ai_decode_manager import GenerativeAIDecodeController
-from apps.export_leanmods.models import ExportLeanmodAssistantAPI, LeanmodRequestLog
+from apps.core.generative_ai.generative_ai_decode_manager import (
+    GenerativeAIDecodeController
+)
+
+from apps.export_leanmods.models import (
+    ExportLeanmodAssistantAPI,
+    LeanmodRequestLog
+)
+
 from apps.export_leanmods.utils import LeanModAssistantStatusCodes
-from apps.multimodal_chat.models import MultimodalLeanChat, MultimodalLeanChatMessage
-from apps.multimodal_chat.utils import generate_chat_name, SourcesForMultimodalChatsNames
+
+from apps.multimodal_chat.models import (
+    MultimodalLeanChat,
+    MultimodalLeanChatMessage
+)
+
+from apps.multimodal_chat.utils import (
+    generate_chat_name,
+    SourcesForMultimodalChatsNames
+)
+
 from config.consumers import APIExportTypesNames
 
 logger = logging.getLogger(__name__)
@@ -39,6 +55,7 @@ class ExportLeanmodAssistantAPIHealthCheckView(View):
     def post(self, request, *args, **kwargs):
 
         endpoint = request.path
+
         pattern = r'^/app/export_leanmods/health/leanmod_assistants/(?P<organization_id>\d+)/(?P<assistant_id>\d+)/(?P<export_id>\d+)/$'
         match = re.match(pattern, endpoint)
 
@@ -99,6 +116,7 @@ class ExportLeanmodAssistantAPIHealthCheckView(View):
 class ExportLeanmodAssistantAPIView(View):
     def post(self, request, *args, **kwargs):
         endpoint = request.path
+
         pattern = r'^/app/export_leanmods/exported/leanmod_assistants/(?P<organization_id>\d+)/(?P<assistant_id>\d+)/(?P<export_id>\d+)/$'
         match = re.match(pattern, endpoint)
 
@@ -306,6 +324,7 @@ class ExportLeanmodAssistantAPIView(View):
         }
 
         logger.info(f"Leanmod Assistant API response generated for endpoint: {endpoint}")
+
         return JsonResponse(
             response_data,
             status=LeanModAssistantStatusCodes.OK

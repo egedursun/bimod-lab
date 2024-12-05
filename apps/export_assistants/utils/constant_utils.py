@@ -14,9 +14,6 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 class ExportAPIStatusCodes:
     OK = 200
@@ -27,13 +24,40 @@ class ExportAPIStatusCodes:
     INTERNAL_SERVER_ERROR = 500
 
 
-EXPORT_ASSISTANT_API_ADMIN_LIST = ("assistant", "is_public", "request_limit_per_hour", "created_by_user",
-                                   "is_online", "created_at")
-EXPORT_ASSISTANT_API_ADMIN_FILTER = ("assistant", "is_public", "request_limit_per_hour", "created_by_user",
-                                     "is_online", "created_at")
-EXPORT_ASSISTANT_API_ADMIN_SEARCH = ("assistant", "is_public", "request_limit_per_hour", "created_by_user",
-                                     "is_online", "created_at")
+EXPORT_ASSISTANT_API_ADMIN_LIST = (
+    "assistant",
+    "is_public",
+    "request_limit_per_hour",
+    "created_by_user",
+    "is_online",
+    "created_at"
+)
+EXPORT_ASSISTANT_API_ADMIN_FILTER = (
+    "assistant",
+    "is_public",
+    "request_limit_per_hour",
+    "created_by_user",
+    "is_online",
+    "created_at"
+)
+EXPORT_ASSISTANT_API_ADMIN_SEARCH = (
+    "assistant",
+    "is_public",
+    "request_limit_per_hour",
+    "created_by_user",
+    "is_online",
+    "created_at"
+)
 
-EXPORT_ASSISTANT_LOG_ADMIN_LIST = ("export_assistant", "timestamp")
-EXPORT_ASSISTANT_LOG_ADMIN_FILTER = ("export_assistant", "timestamp")
-EXPORT_ASSISTANT_LOG_ADMIN_SEARCH = ("export_assistant", "timestamp")
+EXPORT_ASSISTANT_LOG_ADMIN_LIST = (
+    "export_assistant",
+    "timestamp"
+)
+EXPORT_ASSISTANT_LOG_ADMIN_FILTER = (
+    "export_assistant",
+    "timestamp"
+)
+EXPORT_ASSISTANT_LOG_ADMIN_SEARCH = (
+    "export_assistant",
+    "timestamp"
+)

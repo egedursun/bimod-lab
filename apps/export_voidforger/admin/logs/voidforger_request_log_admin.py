@@ -18,8 +18,12 @@
 from django.contrib import admin
 
 from apps.export_voidforger.models import VoidForgerRequestLog
-from apps.export_voidforger.utils import EXPORT_VOIDFORGER_LOG_ADMIN_LIST, EXPORT_VOIDFORGER_LOG_ADMIN_FILTER, \
+
+from apps.export_voidforger.utils import (
+    EXPORT_VOIDFORGER_LOG_ADMIN_LIST,
+    EXPORT_VOIDFORGER_LOG_ADMIN_FILTER,
     EXPORT_VOIDFORGER_LOG_ADMIN_SEARCH
+)
 
 
 @admin.register(VoidForgerRequestLog)
@@ -27,5 +31,6 @@ class VoidForgerRequestLogAdmin(admin.ModelAdmin):
     list_display = EXPORT_VOIDFORGER_LOG_ADMIN_LIST
     list_filter = EXPORT_VOIDFORGER_LOG_ADMIN_FILTER
     search_fields = EXPORT_VOIDFORGER_LOG_ADMIN_SEARCH
+
     date_hierarchy = "timestamp"
     ordering = ["-timestamp"]

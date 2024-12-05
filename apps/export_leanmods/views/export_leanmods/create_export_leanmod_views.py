@@ -35,11 +35,13 @@ class ExportLeanModView_Create(TemplateView, LoginRequiredMixin):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         user_context = self.request.user
+
         agents = LeanAssistant.objects.filter(
             organization__users__in=[
                 user_context
             ]
         )
+
         context["user"] = user_context
         context["assistants"] = agents
         return context
@@ -86,6 +88,7 @@ class ExportLeanModView_Create(TemplateView, LoginRequiredMixin):
             )
 
             org = agent.organization
+
             if not org.exported_leanmods:
                 org.exported_leanmods.set([new_exp_leanmod])
 
@@ -102,4 +105,5 @@ class ExportLeanModView_Create(TemplateView, LoginRequiredMixin):
             logger.error(f"Error creating Export LeanMod Assistant API by User: {request.user.id}.")
 
             messages.error(request, f"Error creating Export LeanMod Assistant API: {str(e)}")
+
             return self.render_to_response(self.get_context_data())

@@ -24,13 +24,43 @@ class LeanModAssistantStatusCodes:
     INTERNAL_SERVER_ERROR = 500
 
 
-EXPORT_LEANMOD_ASSISTANTS_API_ADMIN_LIST = ("lean_assistant", "is_public", "request_limit_per_hour",
-                                            "created_by_user", "is_online", "created_at", "updated_at")
-EXPORT_LEANMOD_ASSISTANTS_API_ADMIN_FILTER = ("lean_assistant", "is_public", "request_limit_per_hour",
-                                              "created_by_user", "is_online", "created_at", "updated_at")
-EXPORT_LEANMOD_ASSISTANTS_API_ADMIN_SEARCH = ("lean_assistant", "is_public", "request_limit_per_hour",
-                                              "created_by_user", "is_online", "created_at", "updated_at")
+EXPORT_LEANMOD_ASSISTANTS_API_ADMIN_LIST = (
+    "lean_assistant",
+    "is_public",
+    "request_limit_per_hour",
+    "created_by_user",
+    "is_online",
+    "created_at",
+    "updated_at"
+)
+EXPORT_LEANMOD_ASSISTANTS_API_ADMIN_FILTER = (
+    "lean_assistant",
+    "is_public",
+    "request_limit_per_hour",
+    "created_by_user",
+    "is_online",
+    "created_at",
+    "updated_at"
+)
+EXPORT_LEANMOD_ASSISTANTS_API_ADMIN_SEARCH = (
+    "lean_assistant",
+    "is_public",
+    "request_limit_per_hour",
+    "created_by_user",
+    "is_online",
+    "created_at",
+    "updated_at"
+)
 
-EXPORT_LEANMOD_REQUEST_LOG_ADMIN_LIST = ("export_lean_assistant", "timestamp")
-EXPORT_LEANMOD_REQUEST_LOG_ADMIN_FILTER = ("export_lean_assistant", "timestamp")
-EXPORT_LEANMOD_REQUEST_LOG_ADMIN_SEARCH = ("export_lean_assistant", "timestamp")
+EXPORT_LEANMOD_REQUEST_LOG_ADMIN_LIST = (
+    "export_lean_assistant",
+    "timestamp"
+)
+EXPORT_LEANMOD_REQUEST_LOG_ADMIN_FILTER = (
+    "export_lean_assistant",
+    "timestamp"
+)
+EXPORT_LEANMOD_REQUEST_LOG_ADMIN_SEARCH = (
+    "export_lean_assistant",
+    "timestamp"
+)

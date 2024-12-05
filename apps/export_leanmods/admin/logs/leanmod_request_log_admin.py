@@ -14,15 +14,16 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from django.contrib import admin
 
 from apps.export_leanmods.models import LeanmodRequestLog
-from apps.export_leanmods.utils import EXPORT_LEANMOD_REQUEST_LOG_ADMIN_LIST, EXPORT_LEANMOD_REQUEST_LOG_ADMIN_FILTER, \
+
+from apps.export_leanmods.utils import (
+    EXPORT_LEANMOD_REQUEST_LOG_ADMIN_LIST,
+    EXPORT_LEANMOD_REQUEST_LOG_ADMIN_FILTER,
     EXPORT_LEANMOD_REQUEST_LOG_ADMIN_SEARCH
+)
 
 
 @admin.register(LeanmodRequestLog)

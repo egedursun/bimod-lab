@@ -15,24 +15,49 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-
 from django.db import models
 
-from apps.ellma.utils import ELLMA_TRANSCRIPTION_LANGUAGES
+from apps.ellma.utils import (
+    ELLMA_TRANSCRIPTION_LANGUAGES
+)
 
 
 class EllmaScript(models.Model):
-    organization = models.ForeignKey('organization.Organization', on_delete=models.CASCADE,
-                                     related_name='ellma_scripts')
-    script_name = models.CharField(max_length=255, null=False, blank=False)
-    llm_model = models.ForeignKey('llm_core.LLMCore', on_delete=models.CASCADE, related_name='ellma_scripts')
+    organization = models.ForeignKey(
+        'organization.Organization',
+        on_delete=models.CASCADE,
+        related_name='ellma_scripts'
+    )
+
+    script_name = models.CharField(
+        max_length=255,
+        null=False,
+        blank=False
+    )
+
+    llm_model = models.ForeignKey(
+        'llm_core.LLMCore',
+        on_delete=models.CASCADE,
+        related_name='ellma_scripts'
+    )
 
     ellma_script_content = models.TextField(null=True, blank=True)
-    ellma_transcription_language = models.CharField(max_length=255, choices=ELLMA_TRANSCRIPTION_LANGUAGES,
-                                                    null=True, blank=True)
+
+    ellma_transcription_language = models.CharField(
+        max_length=255,
+        choices=ELLMA_TRANSCRIPTION_LANGUAGES,
+        null=True,
+        blank=True
+    )
+
     ellma_transcribed_content = models.TextField(null=True, blank=True)
 
-    created_by_user = models.ForeignKey('auth.User', on_delete=models.CASCADE, related_name='ellma_scripts')
+    created_by_user = models.ForeignKey(
+        'auth.User',
+        on_delete=models.CASCADE,
+        related_name='ellma_scripts'
+    )
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -43,14 +68,35 @@ class EllmaScript(models.Model):
         ordering = ['-created_at']
         verbose_name = 'eLLMa Script'
         verbose_name_plural = 'eLLMa Scripts'
+
         unique_together = [
-            ['organization', 'created_by_user', 'script_name'],
+            [
+                'organization',
+                'created_by_user',
+                'script_name'
+            ],
         ]
+
         indexes = [
-            models.Index(fields=['organization', 'llm_model', 'created_by_user']),
-            models.Index(fields=['organization', 'llm_model']),
-            models.Index(fields=['organization']),
-            models.Index(fields=['llm_model']),
-            models.Index(fields=['created_by_user']),
-            models.Index(fields=['created_at']),
+            models.Index(fields=[
+                'organization',
+                'llm_model',
+                'created_by_user'
+            ]),
+            models.Index(fields=[
+                'organization',
+                'llm_model'
+            ]),
+            models.Index(fields=[
+                'organization'
+            ]),
+            models.Index(fields=[
+                'llm_model'
+            ]),
+            models.Index(fields=[
+                'created_by_user'
+            ]),
+            models.Index(fields=[
+                'created_at'
+            ]),
         ]

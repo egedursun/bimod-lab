@@ -15,11 +15,15 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-
 from django.contrib import admin
 
 from apps.ellma.models import EllmaScript
-from apps.ellma.utils import ELLMA_SCRIPT_ADMIN_LIST, ELLMA_SCRIPT_ADMIN_SEARCH, ELLMA_SCRIPT_ADMIN_FILTER
+
+from apps.ellma.utils import (
+    ELLMA_SCRIPT_ADMIN_LIST,
+    ELLMA_SCRIPT_ADMIN_SEARCH,
+    ELLMA_SCRIPT_ADMIN_FILTER
+)
 
 
 @admin.register(EllmaScript)

@@ -14,14 +14,15 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from django.contrib import admin
 
 from apps.finetuning.models import FineTunedModelConnection
-from apps.finetuning.utils import FINETUNING_ADMIN_LIST, FINETUNING_ADMIN_SEARCH
+
+from apps.finetuning.utils import (
+    FINETUNING_ADMIN_LIST,
+    FINETUNING_ADMIN_SEARCH
+)
 
 
 @admin.register(FineTunedModelConnection)

@@ -14,9 +14,6 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from .create_export_voidforger_views import *
 from .delete_export_voidforger_views import *

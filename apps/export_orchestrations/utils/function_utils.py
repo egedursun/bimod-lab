@@ -32,6 +32,7 @@ def generate_orchestration_endpoint(assistant: Maestro, export_id: int):
     export_id = export_id
 
     endpoint_str = f"{str(org_id)}/{str(assistant_id)}/{str(export_id)}/"
+
     return endpoint_str
 
 
@@ -46,13 +47,18 @@ def generate_orchestration_custom_api_key(assistant: Maestro):
     llm_model_temperature = assistant.llm_model.temperature
     llm_model_max_tokens = assistant.llm_model.maximum_tokens
     llm_temperature = assistant.llm_model.temperature
+
     salt = settings.ENCRYPTION_SALT
-    randomness_constraint = [random.choice(string.ascii_lowercase + string.digits + string.ascii_uppercase)
-                             for _ in range(64)]
+
+    randomness_constraint = [
+        random.choice(string.ascii_lowercase + string.digits + string.ascii_uppercase)
+        for _ in range(64)
+    ]
 
     # merge the strings
     merged_string = (f"{assistant_id}{assistant_name}{instructions}{llm_model_name}"
                      f"{llm_model_temperature}{llm_model_max_tokens}{llm_temperature}{salt}{randomness_constraint}")
+
     # encrypt the merged string with SHA-256
     encrypted_string = ("bimod/" +
                         f"{str(organization_id)}/" +
@@ -61,4 +67,5 @@ def generate_orchestration_custom_api_key(assistant: Maestro):
                         f"{''.join(ch for ch in assistant_name if ch.isalnum())}/" +
                         f"{''.join(ch for ch in llm_model_name if ch.isalnum())}/" +
                         hashlib.sha256(merged_string.encode()).hexdigest())
+
     return str(encrypted_string)

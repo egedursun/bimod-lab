@@ -14,30 +14,75 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from django.urls import path
 
-from apps.export_assistants.views import (ExportAssistantView_List, ExportAssistantView_Create,
-                                          ExportAssistantView_Update, ExportAssistantView_Delete,
-                                          ExportAssistantAPIView, ExportAssistantView_ToggleService,
-                                          ExportAssistantAPIHealthCheckView)
+from apps.export_assistants.views import (
+    ExportAssistantView_List,
+    ExportAssistantView_Create,
+    ExportAssistantView_Update,
+    ExportAssistantView_Delete,
+    ExportAssistantAPIView,
+    ExportAssistantView_ToggleService,
+    ExportAssistantAPIHealthCheckView
+)
 
 app_name = 'export_assistants'
 
 urlpatterns = [
-    path('list/', ExportAssistantView_List.as_view(
-        template_name="export_assistants/list_export_assistants.html"), name='list'),
-    path('create/', ExportAssistantView_Create.as_view(
-        template_name="export_assistants/create_export_assistants.html"), name='create'),
-    path('update/<int:pk>/', ExportAssistantView_Update.as_view(
-        template_name="export_assistants/update_export_assistants.html"), name='update'),
-    path('delete/<int:pk>/', ExportAssistantView_Delete.as_view(), name='delete'),
+    path(
+        'list/',
+        ExportAssistantView_List.as_view(
+            template_name="export_assistants/list_export_assistants.html"
+        ),
+        name='list'
+    ),
 
-    path('exported/assistants/<int:organization_id>/<int:assistant_id>/<int:export_id>/', ExportAssistantAPIView.as_view(), name='api'),
+    path(
+        'create/',
+        ExportAssistantView_Create.as_view(
+            template_name="export_assistants/create_export_assistants.html"
+        ),
+        name='create'
+    ),
 
-    path('health/assistants/<int:organization_id>/<int:assistant_id>/<int:export_id>/', ExportAssistantAPIHealthCheckView.as_view(), name='health_check'),
-    path('toggle_service/<int:pk>/', ExportAssistantView_ToggleService.as_view(), name='toggle_service'),
+    path(
+        'update/<int:pk>/',
+        ExportAssistantView_Update.as_view(
+            template_name="export_assistants/update_export_assistants.html"
+        ),
+        name='update'
+    ),
+
+    path(
+        'delete/<int:pk>/',
+        ExportAssistantView_Delete.as_view(
+
+        ),
+        name='delete'
+    ),
+
+    path(
+        'exported/assistants/<int:organization_id>/<int:assistant_id>/<int:export_id>/',
+        ExportAssistantAPIView.as_view(
+
+        ),
+        name='api'
+    ),
+
+    path(
+        'health/assistants/<int:organization_id>/<int:assistant_id>/<int:export_id>/',
+        ExportAssistantAPIHealthCheckView.as_view(
+
+        ),
+        name='health_check'
+    ),
+
+    path(
+        'toggle_service/<int:pk>/',
+        ExportAssistantView_ToggleService.as_view(
+
+        ),
+        name='toggle_service'
+    ),
 ]

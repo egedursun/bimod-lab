@@ -22,7 +22,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic import TemplateView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
 from apps.export_voidforger.models import ExportVoidForgerAPI
 from apps.user_permissions.utils import PermissionNames
 from apps.voidforger.models import VoidForger
@@ -66,6 +69,7 @@ class ExportVoidForgerView_Update(TemplateView, LoginRequiredMixin):
         )
 
         exp_agent: ExportVoidForgerAPI
+
         exp_agent.voidforger_id = request.POST.get('assistant')
         exp_agent.request_limit_per_hour = request.POST.get('request_limit_per_hour')
         exp_agent.is_public = request.POST.get('is_public') == 'on'
@@ -90,4 +94,5 @@ class ExportVoidForgerView_Update(TemplateView, LoginRequiredMixin):
         )
 
         logger.error(f"Export VoidForger was not updated by User: {request.user.id}.")
+
         return render(request, self.template_name, context)

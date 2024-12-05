@@ -14,9 +14,6 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from django.urls import path
 
@@ -33,17 +30,59 @@ from .views import (
 app_name = 'export_orchestrations'
 
 urlpatterns = [
-    path('list/', ExportOrchestrationView_List.as_view(
-        template_name="export_orchestrations/list_export_orchestrations.html"), name='list'),
-    path('create/', ExportOrchestrationView_Create.as_view(
-        template_name="export_orchestrations/create_export_orchestrations.html"), name='create'),
-    path('update/<int:pk>/', ExportOrchestrationView_Update.as_view(
-        template_name="export_orchestrations/update_export_orchestrations.html"), name='update'),
-    path('delete/<int:pk>/', ExportOrchestrationView_Delete.as_view(), name='delete'),
+    path(
+        'list/',
+        ExportOrchestrationView_List.as_view(
+            template_name="export_orchestrations/list_export_orchestrations.html"
+        ),
+        name='list'
+    ),
 
-    path('exported/orchestrator_assistants/<int:organization_id>/<int:assistant_id>/<int:export_id>/', ExportOrchestrationAPIView.as_view(), name='api'),
+    path(
+        'create/',
+        ExportOrchestrationView_Create.as_view(
+            template_name="export_orchestrations/create_export_orchestrations.html"
+        ),
+        name='create'
+    ),
 
-    path('health/orchestrator_assistants/<int:organization_id>/<int:assistant_id>/<int:export_id>/', ExportOrchestrationAPIHealthCheckView.as_view(), name='health_check'),
+    path(
+        'update/<int:pk>/',
+        ExportOrchestrationView_Update.as_view(
+            template_name="export_orchestrations/update_export_orchestrations.html"
+        ),
+        name='update'
+    ),
 
-    path('toggle_service/<int:pk>/', ExportOrchestrationView_ToggleService.as_view(), name='toggle_service'),
+    path(
+        'delete/<int:pk>/',
+        ExportOrchestrationView_Delete.as_view(
+
+        ),
+        name='delete'
+    ),
+
+    path(
+        'exported/orchestrator_assistants/<int:organization_id>/<int:assistant_id>/<int:export_id>/',
+        ExportOrchestrationAPIView.as_view(
+
+        ),
+        name='api'
+    ),
+
+    path(
+        'health/orchestrator_assistants/<int:organization_id>/<int:assistant_id>/<int:export_id>/',
+        ExportOrchestrationAPIHealthCheckView.as_view(
+
+        ),
+        name='health_check'
+    ),
+
+    path(
+        'toggle_service/<int:pk>/',
+        ExportOrchestrationView_ToggleService.as_view(
+
+        ),
+        name='toggle_service'
+    ),
 ]

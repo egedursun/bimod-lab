@@ -1,5 +1,3 @@
-
-
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
 #  Project: Bimod.io™
@@ -15,9 +13,6 @@
 #  Holdings.
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
-#
-#
-#
 #
 
 def test_init_export_voidforger_test_models():

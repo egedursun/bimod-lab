@@ -14,15 +14,16 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from django.contrib import admin
 
 from apps.export_assistants.models import RequestLog
-from apps.export_assistants.utils import EXPORT_ASSISTANT_LOG_ADMIN_LIST, EXPORT_ASSISTANT_LOG_ADMIN_FILTER, \
+
+from apps.export_assistants.utils import (
+    EXPORT_ASSISTANT_LOG_ADMIN_LIST,
+    EXPORT_ASSISTANT_LOG_ADMIN_FILTER,
     EXPORT_ASSISTANT_LOG_ADMIN_SEARCH
+)
 
 
 @admin.register(RequestLog)

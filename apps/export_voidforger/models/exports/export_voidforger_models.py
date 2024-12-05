@@ -18,8 +18,15 @@
 from django.db import models
 from django.utils import timezone
 
-from apps.export_voidforger.utils import generate_voidforger_custom_api_key, generate_voidforger_endpoint
-from config.settings import BASE_URL, EXPORT_VOIDFORGER_API_BASE_URL
+from apps.export_voidforger.utils import (
+    generate_voidforger_custom_api_key,
+    generate_voidforger_endpoint
+)
+
+from config.settings import (
+    BASE_URL,
+    EXPORT_VOIDFORGER_API_BASE_URL
+)
 
 
 class ExportVoidForgerAPI(models.Model):
@@ -30,27 +37,33 @@ class ExportVoidForgerAPI(models.Model):
         null=True,
         blank=True
     )
+
     voidforger = models.ForeignKey(
         'voidforger.VoidForger',
         on_delete=models.CASCADE,
         related_name='exported_voidforgers'
     )
+
     is_public = models.BooleanField(default=False)
     request_limit_per_hour = models.IntegerField(default=1000)
     is_online = models.BooleanField(default=True)
+
     custom_api_key = models.CharField(
         max_length=1000,
         blank=True,
         null=True,
         unique=True
     )
+
     endpoint = models.CharField(
         max_length=1000,
         blank=True,
         null=True
     )
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
     created_by_user = models.ForeignKey(
         "auth.User",
         on_delete=models.CASCADE,

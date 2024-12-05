@@ -22,7 +22,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
 from django.views import View
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
 from apps.export_assistants.models import ExportAssistantAPI
 from apps.user_permissions.utils import PermissionNames
 
@@ -52,10 +55,13 @@ class ExportAssistantView_ToggleService(LoginRequiredMixin, View):
         except Exception as e:
             logger.error(f"Error toggling Export Assistant: {e}")
             messages.error(request, "Error toggling Export Assistant.")
+
             return redirect('export_assistants:list')
 
         logger.info(f"Export Assistant was toggled by User: {context_user.id}.")
+
         return redirect('export_assistants:list')
 
     def get(self, request, *args, **kwargs):
+
         return self.post(request, *args, **kwargs)

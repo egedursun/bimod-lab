@@ -19,7 +19,11 @@ from django.db import models
 
 
 class VoidForgerRequestLog(models.Model):
-    export_voidforger = models.ForeignKey('ExportVoidForgerAPI', on_delete=models.CASCADE)
+    export_voidforger = models.ForeignKey(
+        'ExportVoidForgerAPI',
+        on_delete=models.CASCADE
+    )
+
     timestamp = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -27,7 +31,14 @@ class VoidForgerRequestLog(models.Model):
         verbose_name_plural = "Request VoidForger Logs"
         ordering = ['-timestamp']
         indexes = [
-            models.Index(fields=['export_voidforger']),
-            models.Index(fields=['timestamp']),
-            models.Index(fields=['export_voidforger', 'timestamp']),
+            models.Index(fields=[
+                'export_voidforger'
+            ]),
+            models.Index(fields=[
+                'timestamp'
+            ]),
+            models.Index(fields=[
+                'export_voidforger',
+                'timestamp'
+            ]),
         ]

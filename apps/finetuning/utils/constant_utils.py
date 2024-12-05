@@ -1,14 +1,3 @@
-MODEL_TYPES = [
-    ('gpt-4o-mini', 'GPT-4o Mini'),
-    ('gpt-4o', 'GPT-4o'),
-    ('gpt-4', 'GPT-4'),
-]
-
-FINE_TUNING_MODEL_PROVIDERS = [
-    ('openai', 'OpenAI'),
-]
-
-
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
 #  Project: Bimod.io™
@@ -26,6 +15,17 @@ FINE_TUNING_MODEL_PROVIDERS = [
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
+MODEL_TYPES = [
+    ('gpt-4o-mini', 'GPT-4o Mini'),
+    ('gpt-4o', 'GPT-4o'),
+    ('gpt-4', 'GPT-4'),
+]
+
+FINE_TUNING_MODEL_PROVIDERS = [
+    ('openai', 'OpenAI'),
+]
+
+
 class FineTunedModelTypesNames:
     GPT_4O_MINI = 'gpt-4o-mini'
     GPT_4O = 'gpt-4o'
@@ -34,7 +34,9 @@ class FineTunedModelTypesNames:
     @staticmethod
     def as_list():
         return [
-            FineTunedModelTypesNames.GPT_4O_MINI, FineTunedModelTypesNames.GPT_4O, FineTunedModelTypesNames.GPT_4,
+            FineTunedModelTypesNames.GPT_4O_MINI,
+            FineTunedModelTypesNames.GPT_4O,
+            FineTunedModelTypesNames.GPT_4,
         ]
 
 
@@ -48,5 +50,19 @@ class FineTuningModelProvidersNames:
         ]
 
 
-FINETUNING_ADMIN_LIST = ('organization', 'nickname', 'model_name', "provider", 'model_type', 'created_at')
-FINETUNING_ADMIN_SEARCH = ('organization', 'nickname', 'model_name', "provider", 'model_type', 'model_description')
+FINETUNING_ADMIN_LIST = (
+    'organization',
+    'nickname',
+    'model_name',
+    "provider",
+    'model_type',
+    'created_at'
+)
+FINETUNING_ADMIN_SEARCH = (
+    'organization',
+    'nickname',
+    'model_name',
+    "provider",
+    'model_type',
+    'model_description'
+)

@@ -15,10 +15,25 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-
-ELLMA_SCRIPT_ADMIN_LIST = ['script_name', 'organization', 'llm_model', 'created_at', 'updated_at']
-ELLMA_SCRIPT_ADMIN_SEARCH = ['script_name', 'organization__name', 'llm_model__nickname', 'created_by_user__email']
-ELLMA_SCRIPT_ADMIN_FILTER = ['organization', 'llm_model', 'created_at', 'updated_at']
+ELLMA_SCRIPT_ADMIN_LIST = [
+    'script_name',
+    'organization',
+    'llm_model',
+    'created_at',
+    'updated_at'
+]
+ELLMA_SCRIPT_ADMIN_SEARCH = [
+    'script_name',
+    'organization__name',
+    'llm_model__nickname',
+    'created_by_user__email'
+]
+ELLMA_SCRIPT_ADMIN_FILTER = [
+    'organization',
+    'llm_model',
+    'created_at',
+    'updated_at'
+]
 
 ELLMA_TRANSCRIPTION_LANGUAGES = [
     ('python', 'Python'),

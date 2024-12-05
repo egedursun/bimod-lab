@@ -18,16 +18,36 @@
 
 from django.urls import path
 
-from .views import (FineTuningView_Delete,
-                    FineTuningView_Add, FineTuningView_List)
+from .views import (
+    FineTuningView_Delete,
+    FineTuningView_Add,
+    FineTuningView_List
+)
 
 app_name = 'finetuning'
 
 urlpatterns = [
-    path('list/', FineTuningView_List.as_view(
-        template_name='finetuning/list_finetuned_connections.html'), name='list'),
-    path('add/', FineTuningView_Add.as_view(
-        template_name='finetuning/list_finetuned_connections.html'), name='add'),
-    path('remove/<int:pk>/', FineTuningView_Delete.as_view(
-        template_name='finetuning/list_finetuned_connections.html'), name='remove'),
+    path(
+        'list/',
+        FineTuningView_List.as_view(
+            template_name='finetuning/list_finetuned_connections.html'
+        ),
+        name='list'
+    ),
+
+    path(
+        'add/',
+        FineTuningView_Add.as_view(
+            template_name='finetuning/list_finetuned_connections.html'
+        ),
+        name='add'
+    ),
+
+    path(
+        'remove/<int:pk>/',
+        FineTuningView_Delete.as_view(
+            template_name='finetuning/list_finetuned_connections.html'
+        ),
+        name='remove'
+    ),
 ]

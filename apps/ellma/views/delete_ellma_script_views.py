@@ -14,12 +14,16 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.views import View
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
 from apps.ellma.models import EllmaScript
 from apps.user_permissions.utils import PermissionNames
 
@@ -33,17 +37,23 @@ class EllmaScriptView_DeleteScript(LoginRequiredMixin, View):
 
         ##############################
         # PERMISSION CHECK FOR - DELETE_ELLMA_SCRIPTS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.DELETE_ELLMA_SCRIPTS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.DELETE_ELLMA_SCRIPTS
+        ):
             messages.error(self.request, "You do not have permission to delete eLLMa scripts.")
             return redirect('ellma:manage-scripts')
         ##############################
 
         try:
             ellma_script = EllmaScript.objects.get(id=script_id)
+
             ellma_script.delete()
+
             messages.success(request, "Script deleted successfully.")
+
         except EllmaScript.DoesNotExist:
+
             messages.error(request, "Script not found.")
 
         return redirect('ellma:manage-scripts')

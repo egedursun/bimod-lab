@@ -24,11 +24,29 @@ from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 
-from apps.core.generative_ai.generative_ai_decode_manager import GenerativeAIDecodeController
-from apps.export_voidforger.models import ExportVoidForgerAPI, VoidForgerRequestLog
-from apps.export_voidforger.utils import ExportVoidForgerRequestStatusCodes
-from apps.multimodal_chat.utils import generate_chat_name, SourcesForMultimodalChatsNames
-from apps.voidforger.models import MultimodalVoidForgerChat, MultimodalVoidForgerChatMessage
+from apps.core.generative_ai.generative_ai_decode_manager import (
+    GenerativeAIDecodeController
+)
+
+from apps.export_voidforger.models import (
+    ExportVoidForgerAPI,
+    VoidForgerRequestLog
+)
+
+from apps.export_voidforger.utils import (
+    ExportVoidForgerRequestStatusCodes
+)
+
+from apps.multimodal_chat.utils import (
+    generate_chat_name,
+    SourcesForMultimodalChatsNames
+)
+
+from apps.voidforger.models import (
+    MultimodalVoidForgerChat,
+    MultimodalVoidForgerChatMessage
+)
+
 from config.consumers import APIExportTypesNames
 
 logger = logging.getLogger(__name__)
@@ -38,6 +56,7 @@ logger = logging.getLogger(__name__)
 class ExportVoidForgerAPIStatusView(View):
     def get(self, request, *args, **kwargs):
         endpoint = request.path
+
         pattern = r'^/app/export_voidforger/status/voidforger_assistants/(?P<organization_id>\d+)/(?P<assistant_id>\d+)/(?P<export_id>\d+)/$'
         match = re.match(pattern, endpoint)
 
@@ -137,6 +156,7 @@ class ExportVoidForgerAPIStatusView(View):
         status_data = export_assistant.voidforger.runtime_status
         instructions = export_assistant.voidforger.additional_instructions
         max_actions_per_cycle = export_assistant.voidforger.maximum_actions_per_cycle
+
         current_cycle = export_assistant.voidforger.auto_run_current_cycle
         max_lifetime_cycles = export_assistant.voidforger.auto_run_max_lifetime_cycles
         auto_run_trigger_interval_minutes = export_assistant.voidforger.auto_run_trigger_interval_minutes
@@ -159,6 +179,7 @@ class ExportVoidForgerAPIStatusView(View):
 
     def post(self, request, *args, **kwargs):
         endpoint = request.path
+
         pattern = r'^/app/export_voidforger/status/voidforger_assistants/(?P<organization_id>\d+)/(?P<assistant_id>\d+)/(?P<export_id>\d+)/$'
         match = re.match(pattern, endpoint)
 
@@ -272,12 +293,14 @@ class ExportVoidForgerAPIStatusView(View):
         old_status_data = export_assistant.voidforger.runtime_status
         old_instructions = export_assistant.voidforger.additional_instructions
         old_max_actions_per_cycle = export_assistant.voidforger.maximum_actions_per_cycle
+
         old_max_lifetime_cycles = export_assistant.voidforger.auto_run_max_lifetime_cycles
         old_auto_run_trigger_interval = export_assistant.voidforger.auto_run_trigger_interval_minutes
 
         new_status_data = body.get('status', None)
         new_instructions = body.get('instructions', None)
         new_max_actions_per_cycle = body.get('maximum_actions_per_cycle', None)
+
         new_max_lifetime_cycles = body.get('max_lifetime_cycles', None)
         new_auto_run_trigger_interval = body.get('auto_run_trigger_interval_minutes', None)
 
@@ -384,6 +407,7 @@ class ExportVoidForgerAPIStatusView(View):
 class ExportVoidForgerAPIManualTriggerView(View):
     def post(self, request, *args, **kwargs):
         endpoint = request.path
+
         pattern = r'^/app/export_voidforger/manual_trigger/voidforger_assistants/(?P<organization_id>\d+)/(?P<assistant_id>\d+)/(?P<export_id>\d+)/$'
         match = re.match(pattern, endpoint)
 

@@ -14,15 +14,16 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from django.contrib import admin
 
 from apps.export_voidforger.models import ExportVoidForgerAPI
-from apps.export_voidforger.utils import EXPORT_VOIDFORGER_ADMIN_LIST, EXPORT_VOIDFORGER_ADMIN_FILTER, \
+
+from apps.export_voidforger.utils import (
+    EXPORT_VOIDFORGER_ADMIN_LIST,
+    EXPORT_VOIDFORGER_ADMIN_FILTER,
     EXPORT_VOIDFORGER_ADMIN_SEARCH
+)
 
 
 @admin.register(ExportVoidForgerAPI)
@@ -30,5 +31,6 @@ class ExportVoidForgerAssistantAPIAdmin(admin.ModelAdmin):
     list_display = EXPORT_VOIDFORGER_ADMIN_LIST
     list_filter = EXPORT_VOIDFORGER_ADMIN_FILTER
     search_fields = EXPORT_VOIDFORGER_ADMIN_SEARCH
+
     date_hierarchy = "created_at"
     ordering = ["-created_at"]

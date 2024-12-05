@@ -21,7 +21,10 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
 from apps.export_voidforger.models import ExportVoidForgerAPI
 from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
@@ -80,7 +83,9 @@ class ExportVoidForgerView_List(TemplateView, LoginRequiredMixin):
 
         except Exception as e:
             messages.error(self.request, f"An error occurred: {str(e)}")
+
             return context
 
         logger.info(f"User: {user_context.id} listed Export VoidForger APIs.")
+
         return context

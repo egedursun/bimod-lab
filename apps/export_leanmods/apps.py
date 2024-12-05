@@ -14,13 +14,8 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from django.apps import AppConfig
-
-from config import settings
 
 
 class ExportLeanmodsConfig(AppConfig):

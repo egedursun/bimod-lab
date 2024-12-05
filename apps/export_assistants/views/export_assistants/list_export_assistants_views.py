@@ -14,13 +14,17 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
 from apps.export_assistants.models import ExportAssistantAPI
 from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
@@ -77,7 +81,9 @@ class ExportAssistantView_List(TemplateView, LoginRequiredMixin):
 
         except Exception as e:
             messages.error(self.request, f"An error occurred: {str(e)}")
+
             return context
 
         logger.info(f"Export Assistant APIs were listed for User: {user_context.id}.")
+
         return context

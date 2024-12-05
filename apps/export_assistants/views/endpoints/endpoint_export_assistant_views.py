@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import json
 import logging
 import re
@@ -24,10 +25,24 @@ from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 
 from apps.assistants.models import Assistant
-from apps.export_assistants.models import ExportAssistantAPI, RequestLog
+
+from apps.export_assistants.models import (
+    ExportAssistantAPI,
+    RequestLog
+)
+
 from apps.export_assistants.utils import ExportAPIStatusCodes
-from apps.multimodal_chat.models import MultimodalChat, MultimodalChatMessage
-from apps.multimodal_chat.utils import generate_chat_name, SourcesForMultimodalChatsNames
+
+from apps.multimodal_chat.models import (
+    MultimodalChat,
+    MultimodalChatMessage
+)
+
+from apps.multimodal_chat.utils import (
+    generate_chat_name,
+    SourcesForMultimodalChatsNames
+)
+
 from apps.organization.models import Organization
 from config.consumers import APIExportTypesNames
 
@@ -38,6 +53,7 @@ logger = logging.getLogger(__name__)
 class ExportAssistantAPIHealthCheckView(View):
     def post(self, request, *args, **kwargs):
         endpoint = request.path
+
         pattern = r'^/app/export_assistants/health/assistants/(?P<organization_id>\d+)/(?P<assistant_id>\d+)/(?P<export_id>\d+)/$'
         match = re.match(pattern, endpoint)
 
@@ -98,6 +114,7 @@ class ExportAssistantAPIHealthCheckView(View):
 class ExportAssistantAPIView(View):
     def post(self, request, *args, **kwargs):
         endpoint = request.path
+
         pattern = r'^/app/export_assistants/exported/assistants/(?P<organization_id>\d+)/(?P<assistant_id>\d+)/(?P<export_id>\d+)/$'
         match = re.match(pattern, endpoint)
 

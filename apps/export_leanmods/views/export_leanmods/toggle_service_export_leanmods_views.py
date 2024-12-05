@@ -22,7 +22,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, get_object_or_404
 from django.views import View
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
 from apps.export_leanmods.models import ExportLeanmodAssistantAPI
 from apps.user_permissions.utils import PermissionNames
 
@@ -49,15 +52,19 @@ class ExportLeanModView_ToggleService(LoginRequiredMixin, View):
             )
 
             exp_agent.is_online = not exp_agent.is_online
+
             exp_agent.save()
 
         except Exception as e:
             logger.error(f"Error toggling Export LeanMod Assistant: {e}")
             messages.error(request, "Error toggling Export LeanMod Assistant.")
+
             return redirect('export_leanmods:list')
 
         logger.info(f"Export LeanMod Assistant was toggled by User: {request.user.id}.")
+
         return redirect('export_leanmods:list')
 
     def get(self, request, *args, **kwargs):
+
         return self.post(request, *args, **kwargs)

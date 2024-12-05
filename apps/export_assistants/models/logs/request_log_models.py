@@ -19,15 +19,27 @@ from django.db import models
 
 
 class RequestLog(models.Model):
-    export_assistant = models.ForeignKey('ExportAssistantAPI', on_delete=models.CASCADE)
+    export_assistant = models.ForeignKey(
+        'ExportAssistantAPI',
+        on_delete=models.CASCADE
+    )
+
     timestamp = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         verbose_name = "Request Log"
         verbose_name_plural = "Request Logs"
         ordering = ['-timestamp']
+
         indexes = [
-            models.Index(fields=['export_assistant']),
-            models.Index(fields=['timestamp']),
-            models.Index(fields=['export_assistant', 'timestamp']),
+            models.Index(fields=[
+                'export_assistant'
+            ]),
+            models.Index(fields=[
+                'timestamp'
+            ]),
+            models.Index(fields=[
+                'export_assistant',
+                'timestamp'
+            ]),
         ]

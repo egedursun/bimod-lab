@@ -14,13 +14,17 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import redirect
 from django.views import View
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
 from apps.ellma.models import EllmaScript
 from apps.llm_core.models import LLMCore
 from apps.organization.models import Organization
@@ -35,8 +39,10 @@ class EllmaScriptView_CreateScript(LoginRequiredMixin, View):
 
         ##############################
         # PERMISSION CHECK FOR - CREATE_ELLMA_SCRIPTS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.CREATE_ELLMA_SCRIPTS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.CREATE_ELLMA_SCRIPTS
+        ):
             messages.error(self.request, "You do not have permission to create eLLMa scripts.")
             return redirect('ellma:manage-scripts')
         ##############################
@@ -44,19 +50,30 @@ class EllmaScriptView_CreateScript(LoginRequiredMixin, View):
         organization_id = request.POST.get('organization')
         llm_model_id = request.POST.get('llm_model')
         script_name = request.POST.get('script_name')
-        if not all([organization_id, llm_model_id, script_name]):
+
+        if not all([
+            organization_id,
+            llm_model_id,
+            script_name
+        ]):
             messages.error(request, "Missing required fields.")
             return redirect('ellma:manage-scripts')
 
         try:
             organization = Organization.objects.get(id=organization_id)
             llm_model = LLMCore.objects.get(id=llm_model_id)
+
         except ObjectDoesNotExist:
             messages.error(request, "Organization or LLM Model not found.")
             return redirect('ellma:manage-scripts')
 
         ellma_script = EllmaScript.objects.create(
-            organization=organization, llm_model=llm_model, script_name=script_name, created_by_user=request.user
+            organization=organization,
+            llm_model=llm_model,
+            script_name=script_name,
+            created_by_user=request.user
         )
+
         messages.success(request, f"Script '{ellma_script.script_name}' created successfully.")
+
         return redirect('ellma:manage-scripts')

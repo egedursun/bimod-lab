@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
@@ -21,7 +22,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic import TemplateView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
 from apps.assistants.models import Assistant
 from apps.export_assistants.models import ExportAssistantAPI
 from apps.user_permissions.utils import PermissionNames
@@ -71,6 +75,7 @@ class ExportAssistantView_Update(TemplateView, LoginRequiredMixin):
                 exp_agent.save()
                 logger.info(f"Export Assistant was updated by User: {request.user.id}.")
                 messages.success(request, "Export Assistant updated successfully.")
+
                 return redirect('export_assistants:list')
 
             else:

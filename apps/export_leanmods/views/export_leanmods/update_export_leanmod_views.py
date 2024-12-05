@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
@@ -21,7 +22,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic import TemplateView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
 from apps.export_leanmods.models import ExportLeanmodAssistantAPI
 from apps.leanmod.models import LeanAssistant
 from apps.user_permissions.utils import PermissionNames
@@ -36,6 +40,7 @@ class ExportLeanModView_Update(TemplateView, LoginRequiredMixin):
 
         exp_agent = get_object_or_404(ExportLeanmodAssistantAPI, pk=self.kwargs['pk'])
         context['export_assistant'] = exp_agent
+
         context['assistants'] = LeanAssistant.objects.filter(
             organization__users__in=[
                 self.request.user
@@ -56,14 +61,21 @@ class ExportLeanModView_Update(TemplateView, LoginRequiredMixin):
             return redirect('export_leanmods:list')
         ##############################
 
-        exp_agent = get_object_or_404(ExportLeanmodAssistantAPI, pk=self.kwargs['pk'])
+        exp_agent = get_object_or_404(
+            ExportLeanmodAssistantAPI,
+            pk=self.kwargs['pk']
+        )
+
         exp_agent: ExportLeanmodAssistantAPI
+
         exp_agent.lean_assistant_id = request.POST.get('assistant')
         exp_agent.request_limit_per_hour = request.POST.get('request_limit_per_hour')
         exp_agent.is_public = request.POST.get('is_public') == 'on'
 
         if exp_agent.lean_assistant_id and exp_agent.request_limit_per_hour:
+
             exp_agent.save()
+
             logger.info(f"Export LeanMod Assistant was updated by User: {request.user.id}.")
             messages.success(request, "Export LeanMod Assistant updated successfully.")
 
@@ -72,6 +84,7 @@ class ExportLeanModView_Update(TemplateView, LoginRequiredMixin):
         else:
             logger.error(f"Export LeanMod Assistant was not updated by User: {request.user.id}.")
             messages.error(request, "There was an error updating the LeanMod Export Assistant.")
+
         context = self.get_context_data()
 
         context.update(

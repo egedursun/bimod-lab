@@ -14,15 +14,16 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from django.contrib import admin
 
 from apps.export_assistants.models import ExportAssistantAPI
-from apps.export_assistants.utils import EXPORT_ASSISTANT_API_ADMIN_LIST, EXPORT_ASSISTANT_API_ADMIN_FILTER, \
+
+from apps.export_assistants.utils import (
+    EXPORT_ASSISTANT_API_ADMIN_LIST,
+    EXPORT_ASSISTANT_API_ADMIN_FILTER,
     EXPORT_ASSISTANT_API_ADMIN_SEARCH
+)
 
 
 @admin.register(ExportAssistantAPI)
