@@ -71,3 +71,5 @@ from .delete_all_sheetos_documents_views import *
 from .delete_all_sheetos_folders_views import *
 from .delete_all_scheduled_jobs_orchestration_views import *
 from .delete_all_triggered_jobs_orchestration_views import *
+from .delete_all_scheduled_jobs_leanmod_views import *
+from .delete_all_triggered_jobs_leanmod_views import *

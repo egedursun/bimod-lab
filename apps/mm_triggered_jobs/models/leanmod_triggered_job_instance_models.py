@@ -1,10 +1,10 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
 #  Project: Bimod.io™
-#  File: triggered_job_instance_models.py
-#  Last Modified: 2024-10-05 01:39:48
+#  File: leanmod_triggered_job_instance_models.py
+#  Last Modified: 2024-12-07 16:56:20
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-#  Created: 2024-10-05 14:42:45
+#  Created: 2024-12-07 16:56:20
 #
 #  This software is proprietary and confidential. Unauthorized copying,
 #  distribution, modification, or use of this software, whether for
@@ -17,13 +17,13 @@
 
 from django.db import models
 
-from apps.mm_triggered_jobs.models import TriggeredJob
 from apps.mm_triggered_jobs.utils import TRIGGERED_JOB_INSTANCE_STATUSES
 
 
-class TriggeredJobInstance(models.Model):
+class LeanModTriggeredJobInstance(models.Model):
     triggered_job = models.ForeignKey(
-        TriggeredJob,
+        ''
+        'mm_triggered_jobs.LeanModTriggeredJob',
         on_delete=models.CASCADE,
         related_name='triggered_job_instances',
         null=True
@@ -47,8 +47,8 @@ class TriggeredJobInstance(models.Model):
 
     class Meta:
         ordering = ['-started_at']
-        verbose_name = 'Triggered Job Instance'
-        verbose_name_plural = 'Triggered Job Instances'
+        verbose_name = 'LeanMod Triggered Job Instance'
+        verbose_name_plural = 'LeanMod Triggered Job Instances'
         indexes = [
             models.Index(fields=[
                 'triggered_job',

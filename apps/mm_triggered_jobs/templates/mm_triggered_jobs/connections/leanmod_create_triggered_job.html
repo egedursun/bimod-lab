@@ -2,10 +2,10 @@
   ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
   ~
   ~ Project: Bimod.io™
-  ~ File: orchestration_create_triggered_job.html
-  ~ Last Modified: 2024-11-14 07:20:06
+  ~ File: leanmod_create_triggered_job.html
+  ~ Last Modified: 2024-12-07 18:04:07
   ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-11-14 13:33:50
+  ~ Created: 2024-12-07 18:04:08
   ~
   ~ This software is proprietary and confidential. Unauthorized copying,
   ~ distribution, modification, or use of this software, whether for
@@ -17,12 +17,13 @@
   ~
   -->
 
+
 {% extends layout_path %}
 
 {% load static %}
 {% load i18n %}
 
-{% block title %}Create Orchestration Triggered Job{% endblock %}
+{% block title %}Create LeanMod Triggered Job{% endblock %}
 
 {% block vendor_css %}
   {{ block.super }}
@@ -40,16 +41,16 @@
     <div class="col-xl mb-6">
       <div class="card">
         <div class="card-datatable table-responsive">
-          <a href="{% url 'mm_triggered_jobs:orchestration_list' %}">
+          <a href="{% url 'mm_triggered_jobs:leanmod_list' %}">
             <button class="btn btn-secondary ms-4 mt-4 mb-8">
               <i class="fa fa-dashboard me-4"></i>
-              <strong> Manage Orchestration Triggered Jobs</strong>
+              <strong> Manage LeanMod Triggered Jobs</strong>
             </button>
           </a>
         </div>
         <div class="card-header d-flex justify-content-between align-items-center">
           <h5 class="mb-0">
-            <strong>Create New Orchestration Triggered Job</strong>
+            <strong>Create New LeanMod Triggered Job</strong>
           </h5>
           <small class="text-muted float-end"></small>
         </div>
@@ -63,9 +64,9 @@
             <div class="d-flex flex-column ps-1">
               <h5 class="alert-heading mb-2">Tip</h5>
               <p class="mb-0">
-                In this page, you can create a new orchestration triggered job. You can set the job name, description, step guide,
-                assistant, orchestration trigger source, event type, and maximum runs. Once you fill in the required fields, click the
-                "Create Orchestration Triggered Job" button to create the job.
+                In this page, you can create a new LeanMod triggered job. You can set the job name, description, step guide,
+                assistant, LeanMod trigger source, event type, and maximum runs. Once you fill in the required fields, click the
+                "Create LeanMod Triggered Job" button to create the job.
               </p>
               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
               </button>
@@ -85,10 +86,10 @@
             {% csrf_token %}
             <div class="row p-8">
               <div class="mb-6 col-4">
-                <label class="form-label" for="trigger_maestro">Maestro</label>
-                <select class="form-select" id="trigger_maestro" name="trigger_maestro">
-                  {% for maestro in trigger_maestros %}
-                    <option value="{{ maestro.id }}">{{ maestro.name }}</option>
+                <label class="form-label" for="trigger_leanmod">LeanMod</label>
+                <select class="form-select" id="trigger_leanmod" name="trigger_leanmod">
+                  {% for leanmod in trigger_leanmods %}
+                    <option value="{{ leanmod.id }}">{{ leanmod.name }}</option>
                   {% endfor %}
                 </select>
               </div>
@@ -135,7 +136,7 @@
                 </span>
                   The trigger source is the source that triggers the job. You can provide this in natural language, for
                   example, if the source is "GitHub", you can simply type in "GitHub". This field is used to identify
-                  the source of the orchestration triggered job to provide context.
+                  the source of the LeanMod triggered job to provide context.
                 </div>
               </div>
               <div class="mb-6 col-4">
@@ -160,7 +161,7 @@
                   <i class="ti ti-info-circle"></i>
                 </span>
                   It can take up to 15 minutes for the triggered job to be processed and integrated into the system to
-                  start getting executed properly. If the orchestration triggered job is not integrated even after a long while,
+                  start getting executed properly. If the LeanMod triggered job is not integrated even after a long while,
                   please feel free to contact the support team to get help.
                 </div>
               </div>
@@ -168,7 +169,7 @@
             <hr>
             <button type="submit" class="btn btn-primary d-grid mt-4 w-25"><strong>
               <i class="fa fa-plus me-4"></i>
-              Create Orchestration Triggered Job
+              Create LeanMod Triggered Job
             </strong></button>
           </form>
         </div>
@@ -200,4 +201,5 @@
     }
   </script>
 {% endblock %}
+
 

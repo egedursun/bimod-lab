@@ -21,13 +21,23 @@ from apps.mm_triggered_jobs.utils import TRIGGERED_JOB_INSTANCE_STATUSES
 
 
 class OrchestrationTriggeredJobInstance(models.Model):
-    triggered_job = models.ForeignKey('mm_triggered_jobs.OrchestrationTriggeredJob', on_delete=models.CASCADE,
-                                      related_name='triggered_job_instances',
-                                      null=True)
-    status = models.CharField(max_length=255, choices=TRIGGERED_JOB_INSTANCE_STATUSES, default='pending')
+    triggered_job = models.ForeignKey(
+        'mm_triggered_jobs.OrchestrationTriggeredJob',
+        on_delete=models.CASCADE,
+        related_name='triggered_job_instances',
+        null=True
+    )
+
+    status = models.CharField(
+        max_length=255,
+        choices=TRIGGERED_JOB_INSTANCE_STATUSES,
+        default='pending'
+    )
+
     webhook_payload = models.JSONField(default=dict)
     logs = models.JSONField(default=list)
     execution_index = models.IntegerField(default=0, null=True)
+
     started_at = models.DateTimeField(auto_now_add=True)
     ended_at = models.DateTimeField(auto_now=True)
 
@@ -39,11 +49,49 @@ class OrchestrationTriggeredJobInstance(models.Model):
         verbose_name = 'Orchestration Triggered Job Instance'
         verbose_name_plural = 'Orchestration Triggered Job Instances'
         indexes = [
-            models.Index(fields=['triggered_job', 'status', 'started_at']),
-            models.Index(fields=['triggered_job', 'status', 'started_at', 'ended_at']),
-            models.Index(fields=['triggered_job', 'status', 'started_at', 'ended_at', 'id']),
-            models.Index(fields=['triggered_job', 'status', 'started_at', 'ended_at', 'id', 'status']),
-            models.Index(fields=['triggered_job', 'status', 'started_at', 'ended_at', 'id', 'status', 'logs']),
-            models.Index(fields=['triggered_job', 'status', 'started_at', 'ended_at', 'id', 'status', 'logs',
-                                 'webhook_payload']),
+            models.Index(fields=[
+                'triggered_job',
+                'status',
+                'started_at'
+            ]),
+            models.Index(fields=[
+                'triggered_job',
+                'status',
+                'started_at',
+                'ended_at'
+            ]),
+            models.Index(fields=[
+                'triggered_job',
+                'status',
+                'started_at',
+                'ended_at',
+                'id'
+            ]),
+            models.Index(fields=[
+                'triggered_job',
+                'status',
+                'started_at',
+                'ended_at',
+                'id',
+                'status'
+            ]),
+            models.Index(fields=[
+                'triggered_job',
+                'status',
+                'started_at',
+                'ended_at',
+                'id',
+                'status',
+                'logs'
+            ]),
+            models.Index(fields=[
+                'triggered_job',
+                'status',
+                'started_at',
+                'ended_at',
+                'id',
+                'status',
+                'logs',
+                'webhook_payload'
+            ]),
         ]

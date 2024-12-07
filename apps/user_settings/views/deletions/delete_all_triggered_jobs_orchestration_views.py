@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
@@ -21,7 +22,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.views import View
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
 from apps.mm_triggered_jobs.models import OrchestrationTriggeredJob
 from apps.user_permissions.utils import PermissionNames
 

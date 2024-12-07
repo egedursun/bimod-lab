@@ -1,10 +1,10 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
 #  Project: Bimod.io™
-#  File: triggered_job_instance_admin.py
-#  Last Modified: 2024-10-05 01:39:48
+#  File: leanmod_triggered_job_admin.py
+#  Last Modified: 2024-12-07 17:08:17
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-#  Created: 2024-10-05 14:42:45
+#  Created: 2024-12-07 17:08:18
 #
 #  This software is proprietary and confidential. Unauthorized copying,
 #  distribution, modification, or use of this software, whether for
@@ -17,17 +17,17 @@
 
 from django.contrib import admin
 
-from apps.mm_triggered_jobs.models import TriggeredJobInstance
+from apps.mm_triggered_jobs.models import LeanModTriggeredJob
 
 from apps.mm_triggered_jobs.utils import (
-    TRIGGERED_JOB_INSTANCE_ADMIN_LIST,
-    TRIGGERED_JOB_INSTANCE_ADMIN_SEARCH,
-    TRIGGERED_JOB_INSTANCE_ADMIN_FILTER
+    LEANMOD_TRIGGERED_JOB_ADMIN_LIST,
+    LEANMOD_TRIGGERED_JOB_ADMIN_SEARCH,
+    LEANMOD_TRIGGERED_JOB_ADMIN_FILTER
 )
 
 
-@admin.register(TriggeredJobInstance)
-class ScheduledJobInstanceAdmin(admin.ModelAdmin):
-    list_display = TRIGGERED_JOB_INSTANCE_ADMIN_LIST
-    search_fields = TRIGGERED_JOB_INSTANCE_ADMIN_SEARCH
-    list_filter = TRIGGERED_JOB_INSTANCE_ADMIN_FILTER
+@admin.register(LeanModTriggeredJob)
+class OrchestrationTriggeredJobAdmin(admin.ModelAdmin):
+    list_display = LEANMOD_TRIGGERED_JOB_ADMIN_LIST
+    search_fields = LEANMOD_TRIGGERED_JOB_ADMIN_SEARCH
+    list_filter = LEANMOD_TRIGGERED_JOB_ADMIN_FILTER

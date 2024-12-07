@@ -817,6 +817,18 @@
       "url": "/app/mm_triggered_jobs/list"
     },
     {
+      "name": "Create LeanMod Trigger",
+      "icon": "menu-icon tf-icons ti ti-anchor",
+      "slug": "leanmod-triggers",
+      "url": "/app/mm_triggered_jobs/leanmod/create"
+    },
+    {
+      "name": "LeanMod Triggers",
+      "icon": "menu-icon tf-icons ti ti-anchor",
+      "slug": "leanmod-triggers",
+      "url": "/app/mm_triggered_jobs/leanmod/list"
+    },
+    {
       "name": "Create Orchestration Trigger",
       "icon": "menu-icon tf-icons ti ti-clock",
       "slug": "orchestration-triggers",

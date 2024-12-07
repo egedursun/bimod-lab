@@ -2,10 +2,10 @@
   ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
   ~
   ~ Project: Bimod.io™
-  ~ File: list_triggered_jobs.html
-  ~ Last Modified: 2024-10-05 01:39:48
+  ~ File: leanmod_list_triggered_job_logs.html
+  ~ Last Modified: 2024-12-07 18:03:48
   ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-05 14:42:45
+  ~ Created: 2024-12-07 18:03:48
   ~
   ~ This software is proprietary and confidential. Unauthorized copying,
   ~ distribution, modification, or use of this software, whether for
@@ -17,14 +17,11 @@
   ~
   -->
 
-<!-- templates/mm_triggered_jobs/list_triggered_jobs.html -->
-
 {% extends layout_path %}
-
 {% load static %}
 {% load i18n %}
 
-{% block title %}Triggered Jobs{% endblock %}
+{% block title %}Execution Logs for {{ triggered_job.name }}{% endblock %}
 
 {% block vendor_css %}
   {{ block.super }}
@@ -42,53 +39,41 @@
 
 {% block page_js %}
   {{ block.super }}
-  <script src="{% static 'js/triggered-jobs-list.js' %}"></script>
-  <script>
-    function copyToClipboard(text) {
-      navigator.clipboard.writeText(text).then(function () {
-        console.log('Text copied to clipboard');
-      }, function (err) {
-        console.error('Could not copy text: ', err);
-      });
-    }
-
-    document.addEventListener('DOMContentLoaded', function () {
-      const copyButtons = document.querySelectorAll('.copy-url-btn');
-      copyButtons.forEach(button => {
-        button.addEventListener('click', function () {
-          const url = this.getAttribute('data-url');
-          copyToClipboard(url);
-          button.parentElement.insertAdjacentHTML('beforeend', '' +
-            '<div class="alert alert-success alert-dismissible mt-1" role="alert"><strong>URL copied to clipboard.</strong></div>');
-          setTimeout(() => {
-            button.parentElement.querySelector('.alert').remove();
-          }, 2000);
-        });
-      });
-    });
-  </script>
+  <script src="{% static 'js/triggered-job-logs.js' %}"></script>
 {% endblock page_js %}
 
 {% block content %}
+
+  <a href="{% url 'mm_triggered_jobs:leanmod_list' %}">
+    <button class="btn btn-secondary my-4 w-25">
+      <i class="fa fa-chevron-left me-4"></i>
+      <strong> Back to LeanMod Triggered jobs</strong>
+    </button>
+  </a>
+
   <div class="row g-6 mb-6">
-    <div class="col-sm-6 col-xl-3">
+    <div class="">
       <h3 class="mb-0">
-        <strong>Triggered Jobs</strong>
+        <strong>Execution Logs</strong>
       </h3>
+      <h5 class="mb-0 mt-4">
+        <i class="fa fa-bolt-lightning me-2"></i>
+        <strong>{{ triggered_job.name }}</strong>
+      </h5>
     </div>
   </div>
 
   <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
-    <img src="{% static 'img/custom-illustrations-v2/i2-18.png' %}" width="25%" style="border-radius: 25px;" class="justify-content-end me-8" alt="Illustration for tip">
+    <img src="{% static 'img/custom-illustrations-v2/i2-40.png' %}" width="25%" style="border-radius: 25px;" class="justify-content-end me-8" alt="Illustration for tip">
     <span class="alert-icon rounded ms-4">
     <i class="bi bi-info-circle"></i>
   </span>
     <div class="d-flex flex-column ps-1">
       <h5 class="alert-heading mb-2">Tip</h5>
       <p class="mb-0">
-        Use the search box to find specific jobs by name or description. You can delete the jobs if you no longer need
-        them. Click the "Execution Logs" button to view the logs for each job. Click the "Delete" button to remove the
-        job.
+        Use the search box to find specific execution logs by status. You can view the details of each log to understand
+        the execution flow and status. The execution logs are used to track the status of the executions of the LeanMod
+        triggered jobs.
       </p>
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
       </button>
@@ -109,15 +94,16 @@
 
   <!-- Search and Filter Form -->
   <div class="row g-4 mb-4 mt-4 card card-border-shadow-primary p-4">
+    <img src="{% static 'img/triggered_jobs/trg-2.png' %}" class="rounded mt-4 mb-4" style="width: 100%;" alt="Illustration for tips">
     <div class="col-xl-12">
-      <h5 class="text-muted"><strong>Filter Jobs</strong></h5>
+      <h5 class="text-muted"><strong>Filter Execution Logs</strong></h5>
       <div class="card text-center mb-4">
         <div class="card-header">
           <div class="nav-align-top">
             <form method="get" action=".">
               <div class="input-group mb-3">
                 <input type="text" name="search" value="{{ request.GET.search }}" class="form-control"
-                       placeholder="Search by name or description">
+                       placeholder="Search by status">
                 <button type="submit" class="btn btn-primary"><strong>Search</strong></button>
                 <a href="." class="btn btn-secondary"><strong>Clear</strong></a>
               </div>
@@ -128,71 +114,53 @@
     </div>
   </div>
 
-  <!-- Triggered Jobs List Table -->
+  <!-- Triggered Job Instances List Table -->
   <div class="card">
     <div class="card-header">
       <h5 class="card-title">
-        <strong>Your Triggered Jobs</strong>
+        <strong>Execution Logs</strong>
       </h5>
-      <img src="{% static 'img/triggered_jobs/trg-1.png' %}" class="rounded mt-4 mb-4" style="width: 100%;" alt="Illustration for tips">
     </div>
     <div class="card-datatable table-responsive">
-      <a href="{% url 'mm_triggered_jobs:create' %}">
-        <button class="btn btn-success ms-4 mb-8">
-          <i class="fa fa-plus me-4"></i>
-          <strong>Create New Job</strong>
-        </button>
-      </a>
-      <table class="table datatables-triggered-jobs">
+      <table class="table datatables-triggered-job-logs">
         <thead class="border-top">
         <tr>
-          <th>Name</th>
-          <th>Description</th>
-          <th style="min-width:180px; max-width: 180px;">Created By</th>
-          <th>Assistant</th>
-          <th>Endpoint URL</th>
-          <th>Trigger Source</th>
-          <th>Event Type</th>
-          <th style="min-width: 150px; max-width: 150px;">Current Run Count</th>
-          <th style="min-width: 150px; max-width: 150px;">Maximum Runs</th>
-          <th>Actions</th>
-          <th></th>
+          <th style="min-width: 150px; max-width: 150px;"><strong>Job</strong></th>
+          <th style="min-width: 200px; max-width: 200px;"><strong>Status</strong></th>
+          <th style="min-width: 350px; max-width: 350px;">Execution Logs</th>
+          <th style="min-width: 150px; max-width: 150px;">Execution Index</th>
+          <th style="min-width: 150px; max-width: 150px;">Started At</th>
+          <th style="min-width: 150px; max-width: 150px;">Ended At</th>
         </tr>
         </thead>
         <tbody>
-        {% for job in page_obj %}
+        {% for instance in page_obj %}
           <tr>
-            <td style="min-width: 200px;"><strong>{{ job.name }}</strong></td>
-            <td style="min-width: 300px;">{{ job.task_description }}</td>
-            <td><strong>{{ job.created_by_user }}</strong></td>
-            <td><strong>{{ job.trigger_assistant.name }}</strong></td>
-            <td style="min-width: 400px;">
-              <strong class="bg-label-secondary rounded p-1 m-2 text-white" style="font-size: 14px;">
-                {{ job.endpoint_url }}
+            <td>
+              <strong>{{ instance.triggered_job.name }}</strong>
+            </td>
+            <td>
+              {% if instance.status == "completed" %}
+                <span class="badge bg-success"><strong>{{ instance.status|capfirst }}</strong></span>
+              {% elif instance.status == "failed" %}
+                <span class="badge bg-danger"><strong>{{ instance.status|capfirst }}</strong></span>
+              {% else %}
+                <span class="badge bg-warning"><strong>{{ instance.status|capfirst }}</strong></span>
+              {% endif %}
+            </td>
+            <td style="max-width: 500px;">
+              <p class="bg-label-secondary p-4 m-2 rounded text-dark font-monospace" style="font-size: 11px;">
+                {{ instance.logs }}
+              </p>
+            </td>
+            <td>
+              <strong class="bg-label-info p-2 m-2 rounded">
+                <i class="fa fa-hashtag"></i>
+                {{ instance.execution_index }} / {{ instance.triggered_job.maximum_runs }}
               </strong>
-              <button class="btn btn-sm btn-secondary rounded p-2 m-2 mt-3 w-25 copy-url-btn"
-                      data-url="{{ job.endpoint_url }}">
-                <i class="fa fa-copy me-2"></i><strong>Copy URL</strong>
-              </button>
             </td>
-            <td style="min-width: 400px; max-width: 400px;">
-              <strong class="btn-info rounded p-1" style="min-width: 200px; max-width: 200px;">{{ job.trigger_source }}</strong>
-            </td>
-            <td style="min-width: 200px;">{{ job.event_type }}</td>
-            <td style="min-width: 60px; max-width: 60px;">
-              <p class="btn-warning p-1 rounded"><strong>{{ job.current_run_count }}</strong></p>
-            </td>
-            <td style="min-width: 60px; max-width: 60px;">
-              <p class="btn-warning p-1 rounded"><strong>{{ job.maximum_runs }}</strong></p>
-            </td>
-            <td>
-              <a href="{% url 'mm_triggered_jobs:logs' job.pk %}" class="btn btn-info"><i
-                class="fa fa-clock-rotate-left me-2"></i><strong>Execution Logs</strong></a>
-            </td>
-            <td>
-              <a href="{% url 'mm_triggered_jobs:delete' job.pk %}" class="btn btn-danger"><i
-                class="fa fa-trash me-2"></i><strong>Delete</strong></a>
-            </td>
+            <td>{{ instance.started_at }}</td>
+            <td>{{ instance.ended_at }}</td>
           </tr>
         {% endfor %}
         </tbody>
@@ -234,3 +202,5 @@
     </div>
   </div>
 {% endblock %}
+
+

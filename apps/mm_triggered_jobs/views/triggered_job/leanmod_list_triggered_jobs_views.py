@@ -1,10 +1,10 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
 #  Project: Bimod.io™
-#  File: list_triggered_jobs_views.py
-#  Last Modified: 2024-10-05 01:39:48
+#  File: leanmod_list_triggered_jobs_views.py
+#  Last Modified: 2024-12-07 17:25:05
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-#  Created: 2024-10-05 14:42:45
+#  Created: 2024-12-07 17:25:05
 #
 #  This software is proprietary and confidential. Unauthorized copying,
 #  distribution, modification, or use of this software, whether for
@@ -27,35 +27,38 @@ from apps.core.user_permissions.permission_manager import (
     UserPermissionManager
 )
 
-from apps.mm_triggered_jobs.models import TriggeredJob
+from apps.mm_triggered_jobs.models import (
+    LeanModTriggeredJob
+)
+
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
 
 
-class TriggeredJobView_List(LoginRequiredMixin, TemplateView):
+class TriggeredJobView_LeanModList(LoginRequiredMixin, TemplateView):
     paginate_by = 10
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
 
         ##############################
-        # PERMISSION CHECK FOR - LIST_TRIGGERS
+        # PERMISSION CHECK FOR - LIST_LEANMOD_TRIGGERS
         if not UserPermissionManager.is_authorized(
             user=self.request.user,
-            operation=PermissionNames.LIST_TRIGGERS
+            operation=PermissionNames.LIST_LEANMOD_TRIGGERS
         ):
-            messages.error(self.request, "You do not have permission to list triggered jobs.")
+            messages.error(self.request, "You do not have permission to list LeanMod triggered jobs.")
             return context
         ##############################
 
         search_query = self.request.GET.get('search', '')
         user_orgs = self.request.user.organizations.all()
-        org_agents = user_orgs.values_list('assistants', flat=True)
+        org_leanmods = user_orgs.values_list('lean_assistants', flat=True)
 
-        triggered_jobs_list = TriggeredJob.objects.filter(
-            trigger_assistant__in=org_agents
+        triggered_jobs_list = LeanModTriggeredJob.objects.filter(
+            trigger_leanmod__in=org_leanmods
         )
 
         if search_query:
@@ -70,8 +73,9 @@ class TriggeredJobView_List(LoginRequiredMixin, TemplateView):
 
         context['page_obj'] = page_obj
         context['triggered_jobs'] = page_obj.object_list
-        context['total_triggered_jobs'] = TriggeredJob.objects.count()
+        context['total_triggered_jobs'] = LeanModTriggeredJob.objects.count()
         context['search_query'] = search_query
 
-        logger.info(f"Triggered Jobs were listed by User: {self.request.user.id}.")
+        logger.info(f"LeanMod Triggered Jobs were listed by User: {self.request.user.id}.")
+
         return context

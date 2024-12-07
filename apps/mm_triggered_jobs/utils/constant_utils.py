@@ -14,9 +14,6 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 
 TRIGGERED_JOB_INSTANCE_STATUSES = [
@@ -43,30 +40,145 @@ class TriggeredJobInstanceStatusesNames:
 
 
 TRIGGERED_JOB_ADMIN_LIST = [
-    'name', 'trigger_assistant', 'current_run_count', 'maximum_runs', 'created_at', 'updated_at', 'created_by_user'
+    'name',
+    'trigger_assistant',
+    'current_run_count',
+    'maximum_runs',
+    'created_at',
+    'updated_at',
+    'created_by_user'
 ]
 TRIGGERED_JOB_ADMIN_SEARCH = [
-    'name', 'trigger_assistant', 'current_run_count', 'maximum_runs', 'created_at', 'updated_at', 'created_by_user'
+    'name',
+    'trigger_assistant',
+    'current_run_count',
+    'maximum_runs',
+    'created_at',
+    'updated_at',
+    'created_by_user'
 ]
 TRIGGERED_JOB_ADMIN_FILTER = [
-    'name', 'trigger_assistant', 'current_run_count', 'maximum_runs', 'created_at', 'updated_at', 'created_by_user'
+    'name',
+    'trigger_assistant',
+    'current_run_count',
+    'maximum_runs',
+    'created_at',
+    'updated_at',
+    'created_by_user'
 ]
 
-TRIGGERED_JOB_INSTANCE_ADMIN_LIST = ['triggered_job', 'status', 'started_at', 'ended_at']
-TRIGGERED_JOB_INSTANCE_ADMIN_SEARCH = ['triggered_job', 'status', 'started_at', 'ended_at']
-TRIGGERED_JOB_INSTANCE_ADMIN_FILTER = ['triggered_job', 'status', 'started_at', 'ended_at']
+TRIGGERED_JOB_INSTANCE_ADMIN_LIST = [
+    'triggered_job',
+    'status',
+    'started_at',
+    'ended_at'
+]
+TRIGGERED_JOB_INSTANCE_ADMIN_SEARCH = [
+    'triggered_job',
+    'status',
+    'started_at',
+    'ended_at'
+]
+TRIGGERED_JOB_INSTANCE_ADMIN_FILTER = [
+    'triggered_job',
+    'status',
+    'started_at',
+    'ended_at'
+]
 
 
 ORCHESTRATION_TRIGGERED_JOB_ADMIN_LIST = [
-    'name', 'trigger_maestro', 'current_run_count', 'maximum_runs', 'created_at', 'updated_at', 'created_by_user'
+    'name',
+    'trigger_maestro',
+    'current_run_count',
+    'maximum_runs',
+    'created_at',
+    'updated_at',
+    'created_by_user'
 ]
 ORCHESTRATION_TRIGGERED_JOB_ADMIN_SEARCH = [
-    'name', 'trigger_maestro', 'current_run_count', 'maximum_runs', 'created_at', 'updated_at', 'created_by_user'
+    'name',
+    'trigger_maestro',
+    'current_run_count',
+    'maximum_runs',
+    'created_at',
+    'updated_at',
+    'created_by_user'
 ]
 ORCHESTRATION_TRIGGERED_JOB_ADMIN_FILTER = [
-    'name', 'trigger_maestro', 'current_run_count', 'maximum_runs', 'created_at', 'updated_at', 'created_by_user'
+    'name',
+    'trigger_maestro',
+    'current_run_count',
+    'maximum_runs',
+    'created_at',
+    'updated_at',
+    'created_by_user'
 ]
 
-ORCHESTRATION_TRIGGERED_JOB_INSTANCE_ADMIN_LIST = ['triggered_job', 'status', 'started_at', 'ended_at']
-ORCHESTRATION_TRIGGERED_JOB_INSTANCE_ADMIN_SEARCH = ['triggered_job', 'status', 'started_at', 'ended_at']
-ORCHESTRATION_TRIGGERED_JOB_INSTANCE_ADMIN_FILTER = ['triggered_job', 'status', 'started_at', 'ended_at']
+LEANMOD_TRIGGERED_JOB_ADMIN_LIST = [
+    'name',
+    'trigger_leanmod',
+    'current_run_count',
+    'maximum_runs',
+    'created_at',
+    'updated_at',
+    'created_by_user'
+]
+LEANMOD_TRIGGERED_JOB_ADMIN_SEARCH = [
+    'name',
+    'trigger_leanmod',
+    'current_run_count',
+    'maximum_runs',
+    'created_at',
+    'updated_at',
+    'created_by_user'
+]
+LEANMOD_TRIGGERED_JOB_ADMIN_FILTER = [
+    'name',
+    'trigger_leanmod',
+    'current_run_count',
+    'maximum_runs',
+    'created_at',
+    'updated_at',
+    'created_by_user'
+]
+
+ORCHESTRATION_TRIGGERED_JOB_INSTANCE_ADMIN_LIST = [
+    'triggered_job',
+    'status',
+    'started_at',
+    'ended_at'
+]
+ORCHESTRATION_TRIGGERED_JOB_INSTANCE_ADMIN_SEARCH = [
+    'triggered_job',
+    'status',
+    'started_at',
+    'ended_at'
+]
+ORCHESTRATION_TRIGGERED_JOB_INSTANCE_ADMIN_FILTER = [
+    'triggered_job',
+    'status',
+    'started_at',
+    'ended_at'
+]
+
+
+
+LEANMOD_TRIGGERED_JOB_INSTANCE_ADMIN_LIST = [
+    'triggered_job',
+    'status',
+    'started_at',
+    'ended_at'
+]
+LEANMOD_TRIGGERED_JOB_INSTANCE_ADMIN_SEARCH = [
+    'triggered_job',
+    'status',
+    'started_at',
+    'ended_at'
+]
+LEANMOD_TRIGGERED_JOB_INSTANCE_ADMIN_FILTER = [
+    'triggered_job',
+    'status',
+    'started_at',
+    'ended_at'
+]

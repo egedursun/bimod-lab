@@ -15,12 +15,15 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-
 from django.contrib import admin
 
 from apps.mm_triggered_jobs.models import OrchestrationTriggeredJob
-from apps.mm_triggered_jobs.utils import ORCHESTRATION_TRIGGERED_JOB_ADMIN_LIST, \
-    ORCHESTRATION_TRIGGERED_JOB_ADMIN_SEARCH, ORCHESTRATION_TRIGGERED_JOB_ADMIN_FILTER
+
+from apps.mm_triggered_jobs.utils import (
+    ORCHESTRATION_TRIGGERED_JOB_ADMIN_LIST,
+    ORCHESTRATION_TRIGGERED_JOB_ADMIN_SEARCH,
+    ORCHESTRATION_TRIGGERED_JOB_ADMIN_FILTER
+)
 
 
 @admin.register(OrchestrationTriggeredJob)

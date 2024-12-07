@@ -43,8 +43,10 @@ from apps.user_settings.views import (
     SettingsView_DeleteAllAPIs,
     SettingsView_DeleteAllScripts,
     SettingsView_DeleteAllScheduledJobs,
+    SettingsView_DeleteAllLeanModScheduledJobs,
     SettingsView_DeleteAllOrchestrationScheduledJobs,
     SettingsView_DeleteAllTriggeredJobs,
+    SettingsView_DeleteAllLeanModTriggeredJobs,
     SettingsView_DeleteAllOrchestrationTriggeredJobs,
     SettingsView_DeleteAllCodeRepos,
     SettingsView_DeleteAllLeanModAssistants,
@@ -89,330 +91,456 @@ urlpatterns = [
 
     path(
         'delete/all/llm_models/',
-        SettingsView_DeleteAllLLMModels.as_view(),
+        SettingsView_DeleteAllLLMModels.as_view(
+
+        ),
         name='delete_all_llm_models'
     ),
 
     path(
         'delete/all/assistants/',
-        SettingsView_DeleteAllAssistants.as_view(),
+        SettingsView_DeleteAllAssistants.as_view(
+
+        ),
         name='delete_all_assistants'
     ),
 
     path(
         'delete/all/lean_assistants/',
-        SettingsView_DeleteAllLeanModAssistants.as_view(),
+        SettingsView_DeleteAllLeanModAssistants.as_view(
+
+        ),
         name='delete_all_lean_assistants'
     ),
 
     path(
         'delete/all/expert_networks/',
-        SettingsView_DeleteAllExpertNets.as_view(),
+        SettingsView_DeleteAllExpertNets.as_view(
+
+        ),
         name='delete_all_expert_networks'
     ),
 
     path(
         'delete/all/chats/',
-        SettingsView_DeleteAllChats.as_view(),
+        SettingsView_DeleteAllChats.as_view(
+
+        ),
         name='delete_all_chats'
     ),
 
     path(
         'delete/all/lean_chats/',
-        SettingsView_DeleteAllLeanModChats.as_view(),
+        SettingsView_DeleteAllLeanModChats.as_view(
+
+        ),
         name='delete_all_lean_chats'
     ),
 
     path(
         'delete/all/starred_messages/',
-        SettingsView_DeleteAllStarredMessages.as_view(),
+        SettingsView_DeleteAllStarredMessages.as_view(
+
+        ),
         name='delete_all_starred_messages'
     ),
 
     path(
         'delete/all/memories/',
-        SettingsView_DeleteAllStandardMemories.as_view(),
+        SettingsView_DeleteAllStandardMemories.as_view(
+
+        ),
         name='delete_all_memories'
     ),
 
     path(
         'delete/all/message_templates/',
-        SettingsView_DeleteAllMessageTemplates.as_view(),
+        SettingsView_DeleteAllMessageTemplates.as_view(
+
+        ),
         name='delete_all_message_templates'
     ),
 
     path(
         'delete/all/export_assistants/',
-        SettingsView_DeleteAllExportAssistants.as_view(),
+        SettingsView_DeleteAllExportAssistants.as_view(
+
+        ),
         name='delete_all_export_assistants'
     ),
 
     path(
         'delete/all/orchestrations/',
-        SettingsView_DeleteAllOrchestrations.as_view(),
+        SettingsView_DeleteAllOrchestrations.as_view(
+
+        ),
         name='delete_all_orchestrations'
     ),
 
     path(
         'delete/all/file_systems/',
-        SettingsView_DeleteAllFileSystems.as_view(),
+        SettingsView_DeleteAllFileSystems.as_view(
+
+        ),
         name='delete_all_file_systems'
     ),
 
     path(
         'delete/all/web_browsers/',
-        SettingsView_DeleteAllBrowsers.as_view(),
+        SettingsView_DeleteAllBrowsers.as_view(
+
+        ),
         name='delete_all_web_browsers'
     ),
 
     path(
         'delete/all/sql_databases/',
-        SettingsView_DeleteAllSQLDBs.as_view(),
+        SettingsView_DeleteAllSQLDBs.as_view(
+
+        ),
         name='delete_all_sql_databases'
     ),
 
     path(
         'delete/all/custom_sql_queries/',
-        SettingsView_DeleteAllSQLQueries.as_view(),
+        SettingsView_DeleteAllSQLQueries.as_view(
+
+        ),
         name='delete_all_custom_sql_queries'
     ),
 
     path(
         'delete/all/knowledge_bases/',
-        SettingsView_DeleteAllVectorStoreManagers.as_view(),
+        SettingsView_DeleteAllVectorStoreManagers.as_view(
+
+        ),
         name='delete_all_knowledge_bases'
     ),
 
     path(
         'delete/all/knowledge_base_documents/',
-        SettingsView_DeleteAllVectorStoreDocuments.as_view(),
+        SettingsView_DeleteAllVectorStoreDocuments.as_view(
+
+        ),
         name='delete_all_knowledge_base_documents'
     ),
 
     path(
         'delete/all/code_storages/',
-        SettingsView_DeleteAllCodeStorages.as_view(),
+        SettingsView_DeleteAllCodeStorages.as_view(
+
+        ),
         name='delete_all_code_storages'
     ),
 
     path(
         'delete/all/repositories/',
-        SettingsView_DeleteAllCodeRepos.as_view(),
+        SettingsView_DeleteAllCodeRepos.as_view(
+
+        ),
         name='delete_all_repositories'
     ),
 
     path(
         'delete/all/ml_model_storages/',
-        SettingsView_DeleteAllMLManagers.as_view(),
+        SettingsView_DeleteAllMLManagers.as_view(
+
+        ),
         name='delete_all_ml_model_storages'
     ),
 
     path(
         'delete/all/ml_models/',
-        SettingsView_DeleteAllMLModels.as_view(),
+        SettingsView_DeleteAllMLModels.as_view(
+
+        ),
         name='delete_all_ml_models'
     ),
 
     path(
         'delete/all/media_storages/',
-        SettingsView_DeleteAllMediaManagers.as_view(),
+        SettingsView_DeleteAllMediaManagers.as_view(
+
+        ),
         name='delete_all_media_storages'
     ),
 
     path(
         'delete/all/multimedia_files/',
-        SettingsView_DeleteAllMediaItems.as_view(),
+        SettingsView_DeleteAllMediaItems.as_view(
+
+        ),
         name='delete_all_multimedia_files'
     ),
 
     path(
         'delete/all/functions/',
-        SettingsView_DeleteAllFunctions.as_view(),
+        SettingsView_DeleteAllFunctions.as_view(
+
+        ),
         name='delete_all_functions'
     ),
 
     path(
         'delete/all/apis/',
-        SettingsView_DeleteAllAPIs.as_view(),
+        SettingsView_DeleteAllAPIs.as_view(
+
+        ),
         name='delete_all_apis'
     ),
 
     path(
         'delete/all/scripts/',
-        SettingsView_DeleteAllScripts.as_view(),
+        SettingsView_DeleteAllScripts.as_view(
+
+        ),
         name='delete_all_scripts'
     ),
 
     path(
         'delete/all/scheduled_jobs/',
-        SettingsView_DeleteAllScheduledJobs.as_view(),
+        SettingsView_DeleteAllScheduledJobs.as_view(
+
+        ),
         name='delete_all_scheduled_jobs'
     ),
 
     path(
+        'delete/all/scheduled_jobs/leanmod/',
+        SettingsView_DeleteAllLeanModScheduledJobs.as_view(
+
+        ),
+        name='delete_all_scheduled_jobs_leanmod'
+    ),
+
+    path(
         'delete/all/scheduled_jobs/orchestration/',
-        SettingsView_DeleteAllOrchestrationScheduledJobs.as_view(),
+        SettingsView_DeleteAllOrchestrationScheduledJobs.as_view(
+
+        ),
         name='delete_all_scheduled_jobs_orchestration'
     ),
 
     path(
         'delete/all/triggered_jobs/',
-        SettingsView_DeleteAllTriggeredJobs.as_view(),
+        SettingsView_DeleteAllTriggeredJobs.as_view(
+
+        ),
         name='delete_all_triggered_jobs'
     ),
 
     path(
+        'delete/all/triggered_jobs/leanmod/',
+        SettingsView_DeleteAllLeanModTriggeredJobs.as_view(
+
+        ),
+        name='delete_all_triggered_jobs_leanmod'
+    ),
+
+    path(
         'delete/all/triggered_jobs/orchestration/',
-        SettingsView_DeleteAllOrchestrationTriggeredJobs.as_view(),
+        SettingsView_DeleteAllOrchestrationTriggeredJobs.as_view(
+
+        ),
         name='delete_all_triggered_jobs_orchestration'
     ),
 
     path(
         'delete/all/brainstorming_sessions/',
-        SettingsView_DeleteAllBrainstormingSessions.as_view(),
+        SettingsView_DeleteAllBrainstormingSessions.as_view(
+
+        ),
         name='delete_all_brainstorming_sessions'
     ),
 
     path(
         'delete/all/drafting_documents/',
-        SettingsView_DeleteAllDraftingDocuments.as_view(),
+        SettingsView_DeleteAllDraftingDocuments.as_view(
+
+        ),
         name='delete_all_drafting_documents'
     ),
 
     path(
         'delete/all/drafting_folders/',
-        SettingsView_DeleteAllDraftingFolders.as_view(),
+        SettingsView_DeleteAllDraftingFolders.as_view(
+
+        ),
         name='delete_all_drafting_folders'
     ),
 
     path(
         'delete/all/sheetos_documents/',
-        SettingsView_DeleteAllSheetosDocuments.as_view(),
+        SettingsView_DeleteAllSheetosDocuments.as_view(
+
+        ),
         name='delete_all_sheetos_documents'
     ),
 
     path(
         'delete/all/sheetos_folders/',
-        SettingsView_DeleteAllSheetosFolders.as_view(),
+        SettingsView_DeleteAllSheetosFolders.as_view(
+
+        ),
         name='delete_all_sheetos_folders'
     ),
 
     path(
         'delete/all/harmoniq_agents/',
-        SettingsView_DeleteAllHarmoniqAgents.as_view(),
+        SettingsView_DeleteAllHarmoniqAgents.as_view(
+
+        ),
         name='delete_all_harmoniq_agents'
     ),
 
     path(
         'delete/all/nosql_databases/',
-        SettingsView_DeleteAllNoSQLDBs.as_view(),
+        SettingsView_DeleteAllNoSQLDBs.as_view(
+
+        ),
         name='delete_all_nosql_databases'
     ),
 
     path(
         'delete/all/data_backups/',
-        SettingsView_DeleteAllDataBackups.as_view(),
+        SettingsView_DeleteAllDataBackups.as_view(
+
+        ),
         name='delete_all_data_backups'
     ),
 
     path(
         'delete/all/video_generator_connections/',
-        SettingsView_DeleteAllVideoGeneratorConnections.as_view(),
+        SettingsView_DeleteAllVideoGeneratorConnections.as_view(
+
+        ),
         name='delete_all_video_generator_connections'
     ),
     path(
         'delete/all/nosql_queries/',
-        SettingsView_DeleteAllNoSQLQueries.as_view(),
+        SettingsView_DeleteAllNoSQLQueries.as_view(
+
+        ),
         name='delete_all_nosql_queries'
     ),
 
     path(
         'delete/all/hadron_topics/',
-        SettingsView_DeleteAllHadronTopics.as_view(),
+        SettingsView_DeleteAllHadronTopics.as_view(
+
+        ),
         name='delete_all_hadron_topics'
     ),
 
     path(
         'delete/all/hadron_nodes/',
-        SettingsView_DeleteAllHadronNodes.as_view(),
+        SettingsView_DeleteAllHadronNodes.as_view(
+
+        ),
         name='delete_all_hadron_nodes'
     ),
 
     path(
         'delete/all/hadron_systems/',
-        SettingsView_DeleteAllHadronSystems.as_view(),
+        SettingsView_DeleteAllHadronSystems.as_view(
+
+        ),
         name='delete_all_hadron_systems'
     ),
 
     path(
         'delete/all/hadron_node_execution_logs/',
-        SettingsView_DeleteAllHadronNodeExecutionLogs.as_view(),
+        SettingsView_DeleteAllHadronNodeExecutionLogs.as_view(
+
+        ),
         name='delete_all_hadron_node_execution_logs'
     ),
 
     path(
         'delete/all/hadron_topic_message_logs/',
-        SettingsView_DeleteAllHadronTopicMessagesLogs.as_view(),
+        SettingsView_DeleteAllHadronTopicMessagesLogs.as_view(
+
+        ),
         name='delete_all_hadron_topic_message_logs'
     ),
 
     path(
         'delete/all/hadron_node_sease_logs/',
-        SettingsView_DeleteAllHadronNodeSEASELogs.as_view(),
+        SettingsView_DeleteAllHadronNodeSEASELogs.as_view(
+
+        ),
         name='delete_all_hadron_node_sease_logs'
     ),
 
     path(
         'delete/all/wallet_connections/',
-        SettingsView_DeleteAllWalletConnections.as_view(),
+        SettingsView_DeleteAllWalletConnections.as_view(
+
+        ),
         name='delete_all_wallet_connections'
     ),
 
     path(
         'delete/soft/all/smart_contracts/',
-        SettingsView_DeleteSoftAllSmartContracts.as_view(),
+        SettingsView_DeleteSoftAllSmartContracts.as_view(
+
+        ),
         name='delete_soft_all_smart_contracts'
     ),
 
     path(
         'delete/all/binexus_elite_agents/',
-        SettingsView_DeleteAllBinexusEliteAgents.as_view(),
+        SettingsView_DeleteAllBinexusEliteAgents.as_view(
+
+        ),
         name='delete_all_binexus_elite_agents'
     ),
 
     path(
         'delete/all/binexus_processes/',
-        SettingsView_DeleteAllBinexusProcesses.as_view(),
+        SettingsView_DeleteAllBinexusProcesses.as_view(
+
+        ),
         name='delete_all_binexus_processes'
     ),
 
     path(
         'delete/all/metatempo_connections/',
-        SettingsView_DeleteAllMetaTempoConnections.as_view(),
+        SettingsView_DeleteAllMetaTempoConnections.as_view(
+
+        ),
         name='delete_all_metatempo_connections'
     ),
 
     path(
         'delete/all/projects/',
-        SettingsView_DeleteAllProjects.as_view(),
+        SettingsView_DeleteAllProjects.as_view(
+
+        ),
         name='delete_all_projects'
     ),
 
     path(
         'delete/all/teams/',
-        SettingsView_DeleteAllTeams.as_view(),
+        SettingsView_DeleteAllTeams.as_view(
+
+        ),
         name='delete_all_teams'
     ),
 
     path(
         'delete/all/metakanban_boards/',
-        SettingsView_DeleteAllMetaKanbanBoards.as_view(),
+        SettingsView_DeleteAllMetaKanbanBoards.as_view(
+
+        ),
         name='delete_all_metakanban_boards'
     ),
 
     path(
         'delete/all/ellma_scripts/',
-        SettingsView_DeleteAllEllmaScripts.as_view(),
+        SettingsView_DeleteAllEllmaScripts.as_view(
+
+        ),
         name='delete_all_ellma_scripts'
     ),
 
@@ -420,7 +548,9 @@ urlpatterns = [
 
     path(
         'auto_backups/toggle/',
-        SettingsView_ToggleAutoBackups.as_view(),
+        SettingsView_ToggleAutoBackups.as_view(
+
+        ),
         name='toggle_automated_backups'
     ),
 ]

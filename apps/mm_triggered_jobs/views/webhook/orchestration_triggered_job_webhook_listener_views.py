@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import json
 import logging
 
@@ -22,73 +23,183 @@ from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 
-from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
-from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
-from apps.core.orchestration.orchestration_executor import OrchestrationExecutor
+from apps.core.generative_ai.utils import (
+    GPT_DEFAULT_ENCODING_ENGINE,
+    ChatRoles
+)
+
+from apps.core.internal_cost_manager.costs_map import (
+    InternalServiceCosts
+)
+
+from apps.core.orchestration.orchestration_executor import (
+    OrchestrationExecutor
+)
+
 from apps.llm_transaction.models import LLMTransaction
-from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
-from apps.mm_triggered_jobs.models import OrchestrationTriggeredJob, OrchestrationTriggeredJobInstance
-from apps.mm_triggered_jobs.utils import TriggeredJobInstanceStatusesNames
-from apps.orchestrations.models import Maestro, OrchestrationQuery, OrchestrationQueryLog
-from apps.orchestrations.utils import OrchestrationQueryLogTypesNames
+
+from apps.llm_transaction.utils import (
+    LLMTransactionSourcesTypesNames
+)
+
+from apps.mm_triggered_jobs.models import (
+    OrchestrationTriggeredJob,
+    OrchestrationTriggeredJobInstance
+)
+
+from apps.mm_triggered_jobs.utils import (
+    TriggeredJobInstanceStatusesNames
+)
+
+from apps.orchestrations.models import (
+    Maestro,
+    OrchestrationQuery,
+    OrchestrationQueryLog
+)
+
+from apps.orchestrations.utils import (
+    OrchestrationQueryLogTypesNames
+)
 
 logger = logging.getLogger(__name__)
 
 
 @method_decorator(csrf_exempt, name='dispatch')
 class OrchestrationTriggeredJobWebhookListenerView(View):
-    def get(self, request, assistant_id, triggered_job_id):
+    def get(
+        self,
+        request,
+        assistant_id,
+        triggered_job_id
+    ):
         _, _ = assistant_id, triggered_job_id
-        logger.error('Method GET is not allowed')
-        return JsonResponse({'status': 'error', 'message': 'Method GET is not allowed'}, status=405)
 
-    def post(self, request, assistant_id, triggered_job_id):
+        logger.error('Method GET is not allowed')
+
+        return JsonResponse(
+            {
+                'status': 'error',
+                'message': 'Method GET is not allowed'
+            },
+            status=405
+        )
+
+    def post(
+        self,
+        request,
+        assistant_id,
+        triggered_job_id
+    ):
         try:
             payload = json.loads(request.body)
+
             try:
-                job = OrchestrationTriggeredJob.objects.get(id=triggered_job_id)
+                job = OrchestrationTriggeredJob.objects.get(
+                    id=triggered_job_id
+                )
+
                 maestro = job.trigger_maestro
-                check_maestro = Maestro.objects.get(id=assistant_id)
+
+                check_maestro = Maestro.objects.get(
+                    id=assistant_id
+                )
+
                 if maestro != check_maestro:
                     logger.error(f"Maestro verification failed for Triggered Job: {job.id}")
-                    return JsonResponse({'status': 'error', 'message': 'Maestro verification failed'}, status=400)
+
+                    return JsonResponse(
+                        {
+                            'status': 'error',
+                            'message': 'Maestro verification failed'
+                        },
+                        status=400
+                    )
+
             except OrchestrationTriggeredJob.DoesNotExist:
                 logger.error(f"Orchestration Triggered Job could not been found: {triggered_job_id}")
-                return JsonResponse({'status': 'error', 'message': 'Orchestration Triggered Job could not been found'},
-                                    status=404)
+
+                return JsonResponse(
+                    {
+                        'status': 'error',
+                        'message': 'Orchestration Triggered Job could not been found'
+                    },
+                    status=404
+                )
+
             except Maestro.DoesNotExist:
                 logger.error(f"Maestro could not been found: {assistant_id}")
-                return JsonResponse({'status': 'error', 'message': 'Maestro could not been found'}, status=404)
+
+                return JsonResponse(
+                    {
+                        'status': 'error',
+                        'message': 'Maestro could not been found'
+                    },
+                    status=404
+                )
 
             if job.current_run_count > job.maximum_runs:
                 job.delete()
                 logger.info(f"Maximum runs reached for Orchestration Triggered Job: {job.id}")
+
                 return JsonResponse(
-                    {'status': 'error', 'message': 'Maximum runs reached for the orchestration triggered job'},
-                    status=400)
+                    {
+                        'status': 'error',
+                        'message': 'Maximum runs reached for the orchestration triggered job'
+                    },
+                    status=400
+                )
+
             new_instance = OrchestrationTriggeredJobInstance.objects.create(
-                triggered_job=job, status=TriggeredJobInstanceStatusesNames.PENDING, webhook_payload=payload)
+                triggered_job=job,
+                status=TriggeredJobInstanceStatusesNames.PENDING,
+                webhook_payload=payload
+            )
 
             job.triggered_job_instances.add(new_instance)
             job.save()
+
             job.current_run_count += 1
             job.save()
+
             new_instance.execution_index = job.current_run_count
             new_instance.save()
-            self.handle_orchestration_triggered_job(job=job, instance=new_instance)
+
+            self.handle_orchestration_triggered_job(
+                job=job,
+                instance=new_instance
+            )
+
             logger.info(f"Webhook payload received for Orchestration Triggered Job: {job.id}")
-            return JsonResponse({
-                'status': 'success', 'message': 'Orchestration Webhook payload received successfully',
-                'data': {'assistant_id': assistant_id, 'triggered_job_id': triggered_job_id, 'payload': payload}
-            }, status=200)
+
+            return JsonResponse(
+                {
+                    'status': 'success',
+                    'message': 'Orchestration Webhook payload received successfully',
+                    'data': {
+                        'assistant_id': assistant_id,
+                        'triggered_job_id': triggered_job_id,
+                        'payload': payload
+                    }
+                },
+                status=200
+            )
+
         except json.JSONDecodeError:
             logger.error('Invalid JSON object')
-            return JsonResponse({'status': 'error', 'message': 'Invalid JSON object'}, status=400)
+
+            return JsonResponse(
+                {
+                    'status': 'error',
+                    'message': 'Invalid JSON object'
+                },
+                status=400
+            )
 
     @staticmethod
     def handle_orchestration_triggered_job(job, instance):
         try:
             job: OrchestrationTriggeredJob
+
             instruction_feed = f"""
                 **WARNING: This is an AUTO-GENERATED user message.**
                 - If you see this message, it means that this message is sent to you by the system, within the context
@@ -142,14 +253,19 @@ class OrchestrationTriggeredJobWebhookListenerView(View):
 
             attached_images = []
             attached_files = []
+
             query = OrchestrationQuery.objects.create(
-                maestro=job.trigger_maestro, query_text=instruction_feed,
+                maestro=job.trigger_maestro,
+                query_text=instruction_feed,
                 created_by_user=job.created_by_user,
                 last_updated_by_user=job.created_by_user
             )
+
             query_text = query.query_text
+
             query_log = OrchestrationQueryLog.objects.create(
-                orchestration_query=query, log_type=OrchestrationQueryLogTypesNames.USER,
+                orchestration_query=query,
+                log_type=OrchestrationQueryLogTypesNames.USER,
                 log_text_content=query_text + f"""
                     -----
                     **IMAGE URLS:**
@@ -162,24 +278,42 @@ class OrchestrationTriggeredJobWebhookListenerView(View):
                     {attached_files}
                     '''
                     -----
-            """, log_file_contents=attached_files, log_image_contents=attached_images)
+            """,
+                log_file_contents=attached_files,
+                log_image_contents=attached_images
+            )
+
             query.logs.add(query_log)
             query.save()
-            xc = OrchestrationExecutor(maestro=job.trigger_maestro, query_chat=query)
+
+            xc = OrchestrationExecutor(
+                maestro=job.trigger_maestro,
+                query_chat=query
+            )
+
             output = xc.execute_for_query()
+
             logger.info("Orchestration Triggered Job Output: \n" + output)
             logger.info(f"Orchestration Triggered Job: {job.id} was executed successfully.")
 
             transaction = LLMTransaction(
-                organization=job.trigger_maestro.organization, model=job.trigger_maestro.llm_model, responsible_user=None,
-                responsible_assistant=None, encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
-                llm_cost=InternalServiceCosts.TriggeredJobExecutor.COST, transaction_type=ChatRoles.SYSTEM,
-                transaction_source=LLMTransactionSourcesTypesNames.TRIGGER_JOB_EXECUTION, is_tool_cost=True
+                organization=job.trigger_maestro.organization,
+                model=job.trigger_maestro.llm_model,
+                responsible_user=None,
+                responsible_assistant=None,
+                encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
+                llm_cost=InternalServiceCosts.TriggeredJobExecutor.COST,
+                transaction_type=ChatRoles.SYSTEM,
+                transaction_source=LLMTransactionSourcesTypesNames.TRIGGER_JOB_EXECUTION,
+                is_tool_cost=True
             )
+
             transaction.save()
 
             logger.info(f"Triggered Job completed successfully: {job.id}")
+
         except Exception as e:
             instance.status = TriggeredJobInstanceStatusesNames.FAILED
             instance.save()
+
             logger.error(f"Triggered Job failed: {job.id} - {str(e)}")

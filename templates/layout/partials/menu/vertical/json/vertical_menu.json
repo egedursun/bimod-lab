@@ -1126,6 +1126,23 @@
       ]
     },
     {
+      "name": "LeanMod Triggers",
+      "icon": "menu-icon tf-icons ti ti-anchor",
+      "slug": "leanmod-triggers",
+      "submenu": [
+        {
+          "name": "Add Trigger",
+          "slug": "leanmod-trigger",
+          "url": "mm_triggered_jobs:leanmod_create"
+        },
+        {
+          "name": "LeanMod Jobs",
+          "slug": "leanmod-trigger",
+          "url": "mm_triggered_jobs:leanmod_list"
+        }
+      ]
+    },
+    {
       "name": "Meta Triggered Jobs",
       "icon": "menu-icon tf-icons ti ti-anchor",
       "slug": "meta-triggers",

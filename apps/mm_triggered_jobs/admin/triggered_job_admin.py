@@ -15,8 +15,12 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-from apps.mm_triggered_jobs.utils import TRIGGERED_JOB_ADMIN_LIST, TRIGGERED_JOB_ADMIN_SEARCH, \
+from apps.mm_triggered_jobs.utils import (
+    TRIGGERED_JOB_ADMIN_LIST,
+    TRIGGERED_JOB_ADMIN_SEARCH,
     TRIGGERED_JOB_ADMIN_FILTER
+)
+
 from django.contrib import admin
 
 from apps.mm_triggered_jobs.models import TriggeredJob

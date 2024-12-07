@@ -21,3 +21,6 @@ from .delete_triggered_job_views import *
 from .orchestration_create_triggered_job_views import *
 from .orchestration_delete_triggered_job_views import *
 from .orchestration_list_triggered_jobs_views import *
+from .leanmod_create_triggered_job_views import *
+from .leanmod_delete_triggered_job_views import *
+from .leanmod_list_triggered_jobs_views import *

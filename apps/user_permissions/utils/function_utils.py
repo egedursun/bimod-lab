@@ -510,6 +510,12 @@ def get_permissions_grouped():
             ('list_triggers', 'List Triggers'),
             ('delete_triggers', 'Delete Triggers')
         ],
+        "LeanMod Trigger Permissions": [
+            ('add_leanmod_triggers', 'Add LeanMod Triggers'),
+            ('update_leanmod_triggers', 'Update LeanMod Triggers'),
+            ('list_leanmod_triggers', 'List LeanMod Triggers'),
+            ('delete_leanmod_triggers', 'Delete LeanMod Triggers'),
+        ],
         "Orchestration Trigger Permissions": [
             ('add_orchestration_triggers', 'Add Orchestration Triggers'),
             ('update_orchestration_triggers', 'Update Orchestration Triggers'),

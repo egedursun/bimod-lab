@@ -17,3 +17,4 @@
 
 from .list_triggered_job_logs_views import *
 from .orchestration_list_triggered_job_logs_views import *
+from .list_leanmod_triggered_job_logs_views import *

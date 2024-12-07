@@ -186,11 +186,11 @@
               <p class="btn-warning p-1 rounded"><strong>{{ job.maximum_runs }}</strong></p>
             </td>
             <td>
-              <a href="{% url 'mm_triggered_jobs:orchestration_logs' job.pk %}" class="btn btn-label-info"><i
+              <a href="{% url 'mm_triggered_jobs:orchestration_logs' job.pk %}" class="btn btn-info"><i
                 class="fa fa-clock-rotate-left me-2"></i><strong>Execution Logs</strong></a>
             </td>
             <td>
-              <a href="{% url 'mm_triggered_jobs:orchestration_delete' job.pk %}" class="btn btn-label-danger"><i
+              <a href="{% url 'mm_triggered_jobs:orchestration_delete' job.pk %}" class="btn btn-danger"><i
                 class="fa fa-trash me-2"></i><strong>Delete</strong></a>
             </td>
           </tr>

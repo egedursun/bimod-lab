@@ -2,10 +2,10 @@
   ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
   ~
   ~ Project: Bimod.io™
-  ~ File: list_triggered_jobs.html
-  ~ Last Modified: 2024-10-05 01:39:48
+  ~ File: leanmod_list_triggered_jobs.html
+  ~ Last Modified: 2024-12-07 18:04:19
   ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-05 14:42:45
+  ~ Created: 2024-12-07 18:04:19
   ~
   ~ This software is proprietary and confidential. Unauthorized copying,
   ~ distribution, modification, or use of this software, whether for
@@ -17,7 +17,6 @@
   ~
   -->
 
-<!-- templates/mm_triggered_jobs/list_triggered_jobs.html -->
 
 {% extends layout_path %}
 
@@ -71,15 +70,15 @@
 
 {% block content %}
   <div class="row g-6 mb-6">
-    <div class="col-sm-6 col-xl-3">
+    <div class="col-sm-12 col-xl-12">
       <h3 class="mb-0">
-        <strong>Triggered Jobs</strong>
+        <strong>LeanMod Triggered Jobs</strong>
       </h3>
     </div>
   </div>
 
   <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
-    <img src="{% static 'img/custom-illustrations-v2/i2-18.png' %}" width="25%" style="border-radius: 25px;" class="justify-content-end me-8" alt="Illustration for tip">
+    <img src="{% static 'img/custom-illustrations-v2/i2-28.png' %}" width="25%" style="border-radius: 25px;" class="justify-content-end me-8" alt="Illustration for tip">
     <span class="alert-icon rounded ms-4">
     <i class="bi bi-info-circle"></i>
   </span>
@@ -128,16 +127,16 @@
     </div>
   </div>
 
-  <!-- Triggered Jobs List Table -->
+  <!-- LeanMod Triggered Jobs List Table -->
   <div class="card">
     <div class="card-header">
       <h5 class="card-title">
-        <strong>Your Triggered Jobs</strong>
+        <strong>Your LeanMod Triggered Jobs</strong>
       </h5>
       <img src="{% static 'img/triggered_jobs/trg-1.png' %}" class="rounded mt-4 mb-4" style="width: 100%;" alt="Illustration for tips">
     </div>
     <div class="card-datatable table-responsive">
-      <a href="{% url 'mm_triggered_jobs:create' %}">
+      <a href="{% url 'mm_triggered_jobs:leanmod_create' %}">
         <button class="btn btn-success ms-4 mb-8">
           <i class="fa fa-plus me-4"></i>
           <strong>Create New Job</strong>
@@ -149,7 +148,7 @@
           <th>Name</th>
           <th>Description</th>
           <th style="min-width:180px; max-width: 180px;">Created By</th>
-          <th>Assistant</th>
+          <th>LeanMod</th>
           <th>Endpoint URL</th>
           <th>Trigger Source</th>
           <th>Event Type</th>
@@ -165,7 +164,7 @@
             <td style="min-width: 200px;"><strong>{{ job.name }}</strong></td>
             <td style="min-width: 300px;">{{ job.task_description }}</td>
             <td><strong>{{ job.created_by_user }}</strong></td>
-            <td><strong>{{ job.trigger_assistant.name }}</strong></td>
+            <td><strong>{{ job.trigger_leanmod.name }}</strong></td>
             <td style="min-width: 400px;">
               <strong class="bg-label-secondary rounded p-1 m-2 text-white" style="font-size: 14px;">
                 {{ job.endpoint_url }}
@@ -186,11 +185,11 @@
               <p class="btn-warning p-1 rounded"><strong>{{ job.maximum_runs }}</strong></p>
             </td>
             <td>
-              <a href="{% url 'mm_triggered_jobs:logs' job.pk %}" class="btn btn-info"><i
+              <a href="{% url 'mm_triggered_jobs:leanmod_logs' job.pk %}" class="btn btn-info"><i
                 class="fa fa-clock-rotate-left me-2"></i><strong>Execution Logs</strong></a>
             </td>
             <td>
-              <a href="{% url 'mm_triggered_jobs:delete' job.pk %}" class="btn btn-danger"><i
+              <a href="{% url 'mm_triggered_jobs:leanmod_delete' job.pk %}" class="btn btn-danger"><i
                 class="fa fa-trash me-2"></i><strong>Delete</strong></a>
             </td>
           </tr>
@@ -234,3 +233,4 @@
     </div>
   </div>
 {% endblock %}
+

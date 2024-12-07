@@ -1,10 +1,10 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
 #  Project: Bimod.io™
-#  File: triggered_job_webhook_listener_views.py
-#  Last Modified: 2024-10-05 01:39:48
+#  File: leanmod_triggered_job_webhook_listener.py
+#  Last Modified: 2024-12-07 17:36:48
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-#  Created: 2024-10-05 14:42:45
+#  Created: 2024-12-07 17:36:48
 #
 #  This software is proprietary and confidential. Unauthorized copying,
 #  distribution, modification, or use of this software, whether for
@@ -14,8 +14,6 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-
-
 import json
 import logging
 
@@ -25,52 +23,37 @@ from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 
-from apps.core.internal_cost_manager.costs_map import (
-    InternalServiceCosts
+from apps.core.generative_ai.generative_ai_decode_manager import GenerativeAIDecodeController
+from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
+from apps.leanmod.models import (
+    LeanAssistant,
 )
-
-from apps.core.generative_ai.generative_ai_decode_manager import (
-    GenerativeAIDecodeController
-)
-
-from apps.assistants.models import Assistant
 from apps.llm_transaction.models import LLMTransaction
-
-from apps.llm_transaction.utils import (
-    LLMTransactionSourcesTypesNames
-)
+from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
 
 from apps.mm_triggered_jobs.models import (
-    TriggeredJob,
-    TriggeredJobInstance
+    LeanModTriggeredJob,
+    LeanModTriggeredJobInstance,
 )
 
 from apps.mm_triggered_jobs.utils import (
-    TriggeredJobInstanceStatusesNames,
-    generate_triggered_job_chat_name
+    TriggeredJobInstanceStatusesNames, generate_triggered_job_chat_name,
 )
-
-from apps.multimodal_chat.models import (
-    MultimodalChat,
-    MultimodalChatMessage
-)
-
-from apps.multimodal_chat.utils import (
-    SourcesForMultimodalChatsNames
-)
+from apps.multimodal_chat.models import MultimodalLeanChat, MultimodalLeanChatMessage
+from apps.multimodal_chat.utils import SourcesForMultimodalChatsNames
 
 logger = logging.getLogger(__name__)
 
 
 @method_decorator(csrf_exempt, name='dispatch')
-class TriggeredJobWebhookListenerView(View):
+class LeanModTriggeredJobWebhookListenerView(View):
     def get(
         self,
         request,
-        assistant_id,
+        leanmod_id,
         triggered_job_id
     ):
-        _, _ = assistant_id, triggered_job_id
+        _, _ = leanmod_id, triggered_job_id
 
         logger.error('Method GET is not allowed')
 
@@ -85,52 +68,52 @@ class TriggeredJobWebhookListenerView(View):
     def post(
         self,
         request,
-        assistant_id,
+        leanmod_id,
         triggered_job_id
     ):
         try:
             payload = json.loads(request.body)
 
             try:
-                job = TriggeredJob.objects.get(
+                job: LeanModTriggeredJob = LeanModTriggeredJob.objects.get(
                     id=triggered_job_id
                 )
 
-                assistant = job.trigger_assistant
+                leanmod: LeanAssistant = job.trigger_leanmod
 
-                check_assistant = Assistant.objects.get(
-                    id=assistant_id
+                check_leanmod = LeanAssistant.objects.get(
+                    id=leanmod_id
                 )
 
-                if assistant != check_assistant:
-                    logger.error(f"Assistant verification failed for Triggered Job: {job.id}")
+                if leanmod != check_leanmod:
+                    logger.error(f"LeanMod agent verification failed for Triggered Job: {job.id}")
 
                     return JsonResponse(
                         {
                             'status': 'error',
-                            'message': 'Assistant verification failed'
+                            'message': 'LeanMod Agent verification failed'
                         },
                         status=400
                     )
 
-            except TriggeredJob.DoesNotExist:
-                logger.error(f"Triggered Job could not been found: {triggered_job_id}")
+            except LeanModTriggeredJob.DoesNotExist:
+                logger.error(f"LeanMod Triggered Job could not been found: {triggered_job_id}")
 
                 return JsonResponse(
                     {
                         'status': 'error',
-                        'message': 'Triggered Job could not been found'
+                        'message': 'LeanMod Triggered Job could not been found'
                     },
                     status=404
                 )
 
-            except Assistant.DoesNotExist:
-                logger.error(f"Assistant could not been found: {assistant_id}")
+            except LeanAssistant.DoesNotExist:
+                logger.error(f"LeanMod Agent could not been found: {leanmod_id}")
 
                 return JsonResponse(
                     {
                         'status': 'error',
-                        'message': 'Assistant could not been found'
+                        'message': 'LeanMod agent could not been found'
                     },
                     status=404
                 )
@@ -138,17 +121,17 @@ class TriggeredJobWebhookListenerView(View):
             if job.current_run_count > job.maximum_runs:
                 job.delete()
 
-                logger.info(f"Maximum runs reached for Triggered Job: {job.id}")
+                logger.info(f"Maximum runs reached for LeanMod Triggered Job: {job.id}")
 
                 return JsonResponse(
                     {
                         'status': 'error',
-                        'message': 'Maximum runs reached for the triggered job'
+                        'message': 'Maximum runs reached for the LeanMod triggered job'
                     },
                     status=400
                 )
 
-            new_instance = TriggeredJobInstance.objects.create(
+            new_instance: LeanModTriggeredJobInstance = LeanModTriggeredJobInstance.objects.create(
                 triggered_job=job,
                 status=TriggeredJobInstanceStatusesNames.PENDING,
                 webhook_payload=payload
@@ -163,19 +146,19 @@ class TriggeredJobWebhookListenerView(View):
             new_instance.execution_index = job.current_run_count
             new_instance.save()
 
-            self.handle_triggered_job(
+            self.handle_leanmod_triggered_job(
                 job=job,
                 instance=new_instance
             )
 
-            logger.info(f"Webhook payload received for Triggered Job: {job.id}")
+            logger.info(f"Webhook payload received for LeanMod Triggered Job: {job.id}")
 
             return JsonResponse(
                 {
                     'status': 'success',
                     'message': 'Webhook payload received successfully',
                     'data': {
-                        'assistant_id': assistant_id,
+                        'leanmod_id': leanmod_id,
                         'triggered_job_id': triggered_job_id,
                         'payload': payload
                     }
@@ -195,20 +178,20 @@ class TriggeredJobWebhookListenerView(View):
             )
 
     @staticmethod
-    def handle_triggered_job(job, instance):
+    def handle_leanmod_triggered_job(job, instance):
         from apps.core.generative_ai.utils import (
             GPT_DEFAULT_ENCODING_ENGINE
         )
 
         from apps.core.generative_ai.utils import ChatRoles
 
-        job: TriggeredJob
+        job: LeanModTriggeredJob
 
         try:
-            chat = MultimodalChat.objects.create(
+            chat = MultimodalLeanChat.objects.create(
                 user=job.created_by_user,
-                organization=job.trigger_assistant.organization,
-                assistant=job.trigger_assistant,
+                organization=job.trigger_leanmod.organization,
+                assistant=job.trigger_leanmod,
                 chat_name=generate_triggered_job_chat_name(job.name),
                 created_by_user=job.created_by_user,
                 chat_source=SourcesForMultimodalChatsNames.TRIGGERED
@@ -269,8 +252,9 @@ class TriggeredJobWebhookListenerView(View):
 
                 ---
                 """
-            instruction_feed_message = MultimodalChatMessage.objects.create(
-                multimodal_chat=chat,
+
+            instruction_feed_message: MultimodalLeanChatMessage = MultimodalLeanChatMessage.objects.create(
+                multimodal_lean_chat=chat,
                 sender_type='USER',
                 message_text_content=instruction_feed
             )
@@ -278,7 +262,8 @@ class TriggeredJobWebhookListenerView(View):
             instance.status = TriggeredJobInstanceStatusesNames.INITIALIZING_ASSISTANT
             instance.save()
 
-            llm_client = GenerativeAIDecodeController.get(
+            llm_client = GenerativeAIDecodeController.get_lean(
+                user=job.created_by_user,
                 assistant=chat.assistant,
                 multimodal_chat=chat
             )
@@ -306,10 +291,10 @@ class TriggeredJobWebhookListenerView(View):
             instance.save()
 
             transaction = LLMTransaction(
-                organization=job.trigger_assistant.organization,
-                model=job.trigger_assistant.llm_model,
+                organization=job.trigger_leanmod.organization,
+                model=job.trigger_leanmod.llm_model,
                 responsible_user=None,
-                responsible_assistant=job.trigger_assistant,
+                responsible_assistant=job.trigger_leanmod,
                 encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
                 llm_cost=InternalServiceCosts.TriggeredJobExecutor.COST,
                 transaction_type=ChatRoles.SYSTEM,

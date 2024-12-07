@@ -217,6 +217,11 @@ class PermissionNames:
     LIST_TRIGGERS = 'list_triggers'
     DELETE_TRIGGERS = 'delete_triggers'
 
+    ADD_LEANMOD_TRIGGERS = 'add_leanmod_triggers'
+    UPDATE_LEANMOD_TRIGGERS = 'update_leanmod_triggers'
+    LIST_LEANMOD_TRIGGERS = 'list_leanmod_triggers'
+    DELETE_LEANMOD_TRIGGERS = 'delete_leanmod_triggers'
+
     ADD_ORCHESTRATION_TRIGGERS = 'add_orchestration_triggers'
     UPDATE_ORCHESTRATION_TRIGGERS = 'update_orchestration_triggers'
     LIST_ORCHESTRATION_TRIGGERS = 'list_orchestration_triggers'
@@ -657,6 +662,11 @@ PERMISSION_TYPES = [
     ('list_triggers', 'List Triggers'),
     ('delete_triggers', 'Delete Triggers'),
 
+    ('add_leanmod_triggers', 'Add LeanMod Triggers'),
+    ('update_leanmod_triggers', 'Update LeanMod Triggers'),
+    ('list_leanmod_triggers', 'List LeanMod Triggers'),
+    ('delete_leanmod_triggers', 'Delete LeanMod Triggers'),
+
     ('add_orchestration_triggers', 'Add Orchestration Triggers'),
     ('update_orchestration_triggers', 'Update Orchestration Triggers'),
     ('list_orchestration_triggers', 'List Orchestration Triggers'),
@@ -957,6 +967,7 @@ class PredefinedRolePackages__Functional:
                 ('add_leanmod_scheduled_jobs', 'Add LeanMod Scheduled Jobs'),
                 ('add_orchestration_scheduled_jobs', 'Add Orchestration Scheduled Jobs'),
                 ('add_triggers', 'Add Triggers'),
+                ('add_leanmod_triggers', 'Add LeanMod Triggers'),
                 ('add_orchestration_triggers', 'Add Orchestration Triggers'),
                 ('can_generate_images', 'Can Generate Images'),
                 ('can_generate_audio', 'Can Generate Audio'),
@@ -1075,6 +1086,7 @@ class PredefinedRolePackages__Functional:
                 ('update_leanmod_scheduled_jobs', 'Update LeanMod Scheduled Jobs'),
                 ('update_orchestration_scheduled_jobs', 'Update Orchestration Scheduled Jobs'),
                 ('update_triggers', 'Update Triggers'),
+                ('update_leanmod_triggers', 'Update LeanMod Triggers'),
                 ('update_orchestration_triggers', 'Update Orchestration Triggers'),
                 ('can_generate_images', 'Can Generate Images'),
                 ('can_generate_audio', 'Can Generate Audio'),
@@ -1185,6 +1197,7 @@ class PredefinedRolePackages__Functional:
                 ('list_leanmod_scheduled_jobs', 'List LeanMod Scheduled Jobs'),
                 ('list_orchestration_scheduled_jobs', 'List Orchestration Scheduled Jobs'),
                 ('list_triggers', 'List Triggers'),
+                ('list_leanmod_triggers', 'List LeanMod Triggers'),
                 ('list_orchestration_triggers', 'List Orchestration Triggers'),
                 ('can_generate_images', 'Can Generate Images'),
                 ('can_generate_audio', 'Can Generate Audio'),
@@ -1281,6 +1294,7 @@ class PredefinedRolePackages__Functional:
                 ('delete_leanmod_scheduled_jobs', 'Delete LeanMod Scheduled Jobs'),
                 ('delete_orchestration_scheduled_jobs', 'Delete Orchestration Scheduled Jobs'),
                 ('delete_triggers', 'Delete Triggers'),
+                ('delete_leanmod_triggers', 'Delete LeanMod Triggers'),
                 ('delete_orchestration_triggers', 'Delete Orchestration Triggers'),
                 ('delete_integrations', 'Delete Integrations'),
                 ('delete_meta_integrations', 'Delete Meta Integrations'),
@@ -1644,6 +1658,10 @@ class PredefinedRolePackages__Contextual:
                 ('update_triggers', 'Update Triggers'),
                 ('list_triggers', 'List Triggers'),
                 ('delete_triggers', 'Delete Triggers'),
+                ('add_leanmod_triggers', 'Add LeanMod Triggers'),
+                ('update_leanmod_triggers', 'Update LeanMod Triggers'),
+                ('list_leanmod_triggers', 'List LeanMod Triggers'),
+                ('delete_leanmod_triggers', 'Delete LeanMod Triggers'),
                 ('add_orchestration_triggers', 'Add Orchestration Triggers'),
                 ('update_orchestration_triggers', 'Update Orchestration Triggers'),
                 ('list_orchestration_triggers', 'List Orchestration Triggers'),
@@ -1760,6 +1778,10 @@ class PredefinedRolePackages__Contextual:
                 ('update_triggers', 'Update Triggers'),
                 ('list_triggers', 'List Triggers'),
                 ('delete_triggers', 'Delete Triggers'),
+                ('add_leanmod_triggers', 'Add LeanMod Triggers'),
+                ('update_leanmod_triggers', 'Update LeanMod Triggers'),
+                ('list_leanmod_triggers', 'List LeanMod Triggers'),
+                ('delete_leanmod_triggers', 'Delete LeanMod Triggers'),
                 ('add_orchestration_triggers', 'Add Orchestration Triggers'),
                 ('update_orchestration_triggers', 'Update Orchestration Triggers'),
                 ('list_orchestration_triggers', 'List Orchestration Triggers'),

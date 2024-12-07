@@ -43,7 +43,9 @@ from apps.llm_transaction.models import LLMTransaction
 
 from apps.multimodal_chat.models import (
     MultimodalChat,
-    MultimodalChatMessage, MultimodalLeanChat, MultimodalLeanChatMessage
+    MultimodalChatMessage,
+    MultimodalLeanChat,
+    MultimodalLeanChatMessage
 )
 
 from apps.multimodal_chat.utils import (

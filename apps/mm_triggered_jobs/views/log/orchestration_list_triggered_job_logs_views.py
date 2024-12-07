@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
@@ -23,9 +24,18 @@ from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from django.views.generic import TemplateView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.mm_triggered_jobs.models import OrchestrationTriggeredJob, OrchestrationTriggeredJobInstance
-from apps.user_permissions.utils import PermissionNames
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
+from apps.mm_triggered_jobs.models import (
+    OrchestrationTriggeredJob,
+    OrchestrationTriggeredJobInstance
+)
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -39,27 +49,44 @@ class TriggeredJobView_OrchestrationLogList(LoginRequiredMixin, TemplateView):
 
         ##############################
         # PERMISSION CHECK FOR - LIST_ORCHESTRATION_TRIGGERS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.LIST_ORCHESTRATION_TRIGGERS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.LIST_ORCHESTRATION_TRIGGERS
+        ):
             messages.error(self.request, "You do not have permission to list orchestration triggered jobs.")
             return context
         ##############################
 
         triggered_job_id = self.kwargs.get('pk')
-        triggered_job = get_object_or_404(OrchestrationTriggeredJob, id=triggered_job_id)
+
+        triggered_job = get_object_or_404(
+            OrchestrationTriggeredJob,
+            id=triggered_job_id
+        )
+
         context['triggered_job'] = triggered_job
         search_query = self.request.GET.get('search', '')
-        job_instances_list = OrchestrationTriggeredJobInstance.objects.filter(triggered_job=triggered_job)
+
+        job_instances_list = OrchestrationTriggeredJobInstance.objects.filter(
+            triggered_job=triggered_job
+        )
+
         if search_query:
             job_instances_list = job_instances_list.filter(
-                Q(status__icontains=search_query) | Q(logs__icontains=search_query) | Q(
-                    triggered_job__name__icontains=search_query))
+                Q(status__icontains=search_query) |
+                Q(logs__icontains=search_query) |
+                Q(triggered_job__name__icontains=search_query)
+            )
+
         paginator = Paginator(job_instances_list, self.paginate_by)
         page_number = self.request.GET.get('page')
         page_obj = paginator.get_page(page_number)
+
         context['page_obj'] = page_obj
         context['triggered_job_instances'] = page_obj.object_list
         context['total_triggered_job_instances'] = job_instances_list.count()
         context['search_query'] = search_query
+
         logger.info(f"Orchestration Triggered Job Log List View accessed by User: {self.request.user.id}.")
+
         return context
