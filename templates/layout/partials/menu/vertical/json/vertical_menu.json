@@ -1075,6 +1075,23 @@
       ]
     },
     {
+      "name": "Lean Scheduled Jobs",
+      "icon": "menu-icon tf-icons ti ti-clock",
+      "slug": "leanmod-scheduled-jobs",
+      "submenu": [
+        {
+          "name": "Add Lean Job",
+          "slug": "leanmod-scheduled-job",
+          "url": "mm_scheduled_jobs:leanmod_create"
+        },
+        {
+          "name": "Lean Jobs",
+          "slug": "leanmod-scheduled-job",
+          "url": "mm_scheduled_jobs:leanmod_list"
+        }
+      ]
+    },
+    {
       "name": "Meta Scheduled Jobs",
       "icon": "menu-icon tf-icons ti ti-clock",
       "slug": "meta-scheduled-jobs",

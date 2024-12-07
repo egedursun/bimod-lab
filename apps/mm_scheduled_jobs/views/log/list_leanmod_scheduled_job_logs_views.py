@@ -1,10 +1,10 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
 #  Project: Bimod.io™
-#  File: list_scheduled_job_logs_views.py
-#  Last Modified: 2024-10-05 01:39:48
+#  File: list_leanmod_scheduled_job_logs_views.py
+#  Last Modified: 2024-12-07 14:51:41
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-#  Created: 2024-10-05 14:42:45
+#  Created: 2024-12-07 14:51:41
 #
 #  This software is proprietary and confidential. Unauthorized copying,
 #  distribution, modification, or use of this software, whether for
@@ -14,7 +14,6 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-
 import logging
 
 from django.contrib import messages
@@ -29,8 +28,8 @@ from apps.core.user_permissions.permission_manager import (
 )
 
 from apps.mm_scheduled_jobs.models import (
-    ScheduledJob,
-    ScheduledJobInstance
+    LeanModScheduledJob,
+    LeanModScheduledJobInstance
 )
 
 from apps.user_permissions.utils import PermissionNames
@@ -39,29 +38,34 @@ from web_project import TemplateLayout
 logger = logging.getLogger(__name__)
 
 
-class ScheduledJobView_LogList(LoginRequiredMixin, TemplateView):
+class ScheduledJobView_LeanModLogList(LoginRequiredMixin, TemplateView):
     paginate_by = 10
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
 
         ##############################
-        # PERMISSION CHECK FOR - LIST_SCHEDULED_JOBS
+        # PERMISSION CHECK FOR - LIST_LEANMOD_SCHEDULED_JOBS
         if not UserPermissionManager.is_authorized(
             user=self.request.user,
-            operation=PermissionNames.LIST_SCHEDULED_JOBS
+            operation=PermissionNames.LIST_LEANMOD_SCHEDULED_JOBS
         ):
-            messages.error(self.request, "You do not have permission to list scheduled jobs.")
+            messages.error(self.request, "You do not have permission to list LeanMod scheduled jobs.")
             return context
         ##############################
 
         scheduled_job_id = self.kwargs.get('pk')
-        scheduled_job = get_object_or_404(ScheduledJob, id=scheduled_job_id)
+
+        scheduled_job = get_object_or_404(
+            LeanModScheduledJob,
+            id=scheduled_job_id
+        )
+
         context['scheduled_job'] = scheduled_job
 
         search_query = self.request.GET.get('search', '')
 
-        job_instances_list = ScheduledJobInstance.objects.filter(
+        job_instances_list = LeanModScheduledJobInstance.objects.filter(
             scheduled_job=scheduled_job
         )
 
@@ -81,6 +85,7 @@ class ScheduledJobView_LogList(LoginRequiredMixin, TemplateView):
         context['total_scheduled_job_instances'] = job_instances_list.count()
         context['search_query'] = search_query
 
-        logger.info(f"User: {self.request.user.id} listed scheduled job logs for Scheduled Job: {scheduled_job.id}.")
+        logger.info(
+            f"User: {self.request.user.id} listed LeanMod scheduled job logs for Scheduled Job: {scheduled_job.id}.")
 
         return context

@@ -1,10 +1,10 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
 #  Project: Bimod.io™
-#  File: scheduled_job_instance_models.py
-#  Last Modified: 2024-10-05 01:39:48
+#  File: leanmod_scheduled_job_instance_models.py
+#  Last Modified: 2024-12-07 13:56:53
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-#  Created: 2024-10-05 14:42:45
+#  Created: 2024-12-07 13:56:53
 #
 #  This software is proprietary and confidential. Unauthorized copying,
 #  distribution, modification, or use of this software, whether for
@@ -22,9 +22,9 @@ from apps.mm_scheduled_jobs.utils import (
 )
 
 
-class ScheduledJobInstance(models.Model):
+class LeanModScheduledJobInstance(models.Model):
     scheduled_job = models.ForeignKey(
-        'mm_scheduled_jobs.ScheduledJob',
+        'mm_scheduled_jobs.LeanModScheduledJob',
         on_delete=models.CASCADE,
         related_name='scheduled_job_instances',
         null=True
@@ -42,12 +42,13 @@ class ScheduledJobInstance(models.Model):
     ended_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.scheduled_job.name + ' - ' + self.status + ' - ' + self.started_at.strftime('%Y%m%d%H%M%S')
+        return self.scheduled_job.name + ' - ' + self.status + ' - ' + self.started_at.strftime(
+            '%Y%m%d%H%M%S')
 
     class Meta:
         ordering = ['-started_at']
-        verbose_name = 'Scheduled Job Instance'
-        verbose_name_plural = 'Scheduled Job Instances'
+        verbose_name = 'LeanMod Scheduled Job Instance'
+        verbose_name_plural = 'LeanMod Scheduled Job Instances'
         indexes = [
             models.Index(fields=[
                 'scheduled_job',

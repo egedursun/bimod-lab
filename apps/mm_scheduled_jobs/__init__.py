@@ -14,8 +14,5 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 default_app_config = 'apps.mm_scheduled_jobs.apps.MmScheduledJobsConfig'

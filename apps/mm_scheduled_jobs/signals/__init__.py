@@ -14,9 +14,6 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from .register_periodic_task_signals import *
 from .unregister_periodic_task_signals import *

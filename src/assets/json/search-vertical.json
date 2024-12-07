@@ -775,6 +775,18 @@
       "url": "/app/mm_scheduled_jobs/list"
     },
     {
+      "name": "Create LeanMod Scheduled Job",
+      "icon": "menu-icon tf-icons ti ti-clock",
+      "slug": "leanmod-scheduled-jobs",
+      "url": "/app/mm_scheduled_jobs/leanmod/create"
+    },
+    {
+      "name": "Scheduled LeanMod Jobs",
+      "icon": "menu-icon tf-icons ti ti-clock",
+      "slug": "leanmod-scheduled-jobs",
+      "url": "/app/mm_scheduled_jobs/leanmod/list"
+    },
+    {
       "name": "Create Orchestration Scheduled Job",
       "icon": "menu-icon tf-icons ti ti-clock",
       "slug": "orchestration-scheduled-jobs",

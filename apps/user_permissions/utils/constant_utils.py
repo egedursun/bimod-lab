@@ -202,6 +202,11 @@ class PermissionNames:
     LIST_SCHEDULED_JOBS = 'list_scheduled_jobs'
     DELETE_SCHEDULED_JOBS = 'delete_scheduled_jobs'
 
+    ADD_LEANMOD_SCHEDULED_JOBS = 'add_leanmod_scheduled_jobs'
+    UPDATE_LEANMOD_SCHEDULED_JOBS = 'update_leanmod_scheduled_jobs'
+    LIST_LEANMOD_SCHEDULED_JOBS = 'list_leanmod_scheduled_jobs'
+    DELETE_LEANMOD_SCHEDULED_JOBS = 'delete_leanmod_scheduled_jobs'
+
     ADD_ORCHESTRATION_SCHEDULED_JOBS = 'add_orchestration_scheduled_jobs'
     UPDATE_ORCHESTRATION_SCHEDULED_JOBS = 'update_orchestration_scheduled_jobs'
     LIST_ORCHESTRATION_SCHEDULED_JOBS = 'list_orchestration_scheduled_jobs'
@@ -637,6 +642,11 @@ PERMISSION_TYPES = [
     ('list_scheduled_jobs', 'List Scheduled Jobs'),
     ('delete_scheduled_jobs', 'Delete Scheduled Jobs'),
 
+    ('add_leanmod_scheduled_jobs', 'Add LeanMod Scheduled Jobs'),
+    ('update_leanmod_scheduled_jobs', 'Update LeanMod Scheduled Jobs'),
+    ('list_leanmod_scheduled_jobs', 'List LeanMod Scheduled Jobs'),
+    ('delete_leanmod_scheduled_jobs', 'Delete LeanMod Scheduled Jobs'),
+
     ('add_orchestration_scheduled_jobs', 'Add Orchestration Scheduled Jobs'),
     ('update_orchestration_scheduled_jobs', 'Update Orchestration Scheduled Jobs'),
     ('list_orchestration_scheduled_jobs', 'List Orchestration Scheduled Jobs'),
@@ -944,6 +954,7 @@ class PredefinedRolePackages__Functional:
                 ('add_apis', 'Add APIs'),
                 ('add_scripts', 'Add Scripts'),
                 ('add_scheduled_jobs', 'Add Scheduled Jobs'),
+                ('add_leanmod_scheduled_jobs', 'Add LeanMod Scheduled Jobs'),
                 ('add_orchestration_scheduled_jobs', 'Add Orchestration Scheduled Jobs'),
                 ('add_triggers', 'Add Triggers'),
                 ('add_orchestration_triggers', 'Add Orchestration Triggers'),
@@ -1061,6 +1072,7 @@ class PredefinedRolePackages__Functional:
                 ('update_apis', 'Update APIs'),
                 ('update_scripts', 'Update Scripts'),
                 ('update_scheduled_jobs', 'Update Scheduled Jobs'),
+                ('update_leanmod_scheduled_jobs', 'Update LeanMod Scheduled Jobs'),
                 ('update_orchestration_scheduled_jobs', 'Update Orchestration Scheduled Jobs'),
                 ('update_triggers', 'Update Triggers'),
                 ('update_orchestration_triggers', 'Update Orchestration Triggers'),
@@ -1170,6 +1182,7 @@ class PredefinedRolePackages__Functional:
                 ('list_apis', 'List APIs'),
                 ('list_scripts', 'List Scripts'),
                 ('list_scheduled_jobs', 'List Scheduled Jobs'),
+                ('list_leanmod_scheduled_jobs', 'List LeanMod Scheduled Jobs'),
                 ('list_orchestration_scheduled_jobs', 'List Orchestration Scheduled Jobs'),
                 ('list_triggers', 'List Triggers'),
                 ('list_orchestration_triggers', 'List Orchestration Triggers'),
@@ -1265,6 +1278,7 @@ class PredefinedRolePackages__Functional:
                 ('delete_apis', 'Delete APIs'),
                 ('delete_scripts', 'Delete Scripts'),
                 ('delete_scheduled_jobs', 'Delete Scheduled Jobs'),
+                ('delete_leanmod_scheduled_jobs', 'Delete LeanMod Scheduled Jobs'),
                 ('delete_orchestration_scheduled_jobs', 'Delete Orchestration Scheduled Jobs'),
                 ('delete_triggers', 'Delete Triggers'),
                 ('delete_orchestration_triggers', 'Delete Orchestration Triggers'),
@@ -1431,8 +1445,7 @@ class PredefinedRolePackages__Contextual:
                 ('list_orchestrations', 'List Orchestrations'),
                 ('delete_orchestrations', 'Delete Orchestrations'),
                 ('connect_reactant_assistants_to_orchestration', 'Connect Reactant Assistants to Orchestration'),
-                ('disconnect_reactant_assistants_from_orchestration',
-                 'Disconnect Reactant Assistants from Orchestration'),
+                ('disconnect_reactant_assistants_from_orchestration', 'Disconnect Reactant Assistants from Orchestration'),
                 ('can_generate_images', 'Can Generate Images'),
                 ('can_generate_audio', 'Can Generate Audio'),
                 ('add_integrations', 'Add Integrations'),
@@ -1619,6 +1632,10 @@ class PredefinedRolePackages__Contextual:
                 ('update_scheduled_jobs', 'Update Scheduled Jobs'),
                 ('list_scheduled_jobs', 'List Scheduled Jobs'),
                 ('delete_scheduled_jobs', 'Delete Scheduled Jobs'),
+                ('add_leanmod_scheduled_jobs', 'Add LeanMod Scheduled Jobs'),
+                ('update_leanmod_scheduled_jobs', 'Update LeanMod Scheduled Jobs'),
+                ('list_leanmod_scheduled_jobs', 'List LeanMod Scheduled Jobs'),
+                ('delete_leanmod_scheduled_jobs', 'Delete LeanMod Scheduled Jobs'),
                 ('add_orchestration_scheduled_jobs', 'Add Orchestration Scheduled Jobs'),
                 ('update_orchestration_scheduled_jobs', 'Update Orchestration Scheduled Jobs'),
                 ('list_orchestration_scheduled_jobs', 'List Orchestration Scheduled Jobs'),
@@ -1731,6 +1748,10 @@ class PredefinedRolePackages__Contextual:
                 ('update_scheduled_jobs', 'Update Scheduled Jobs'),
                 ('list_scheduled_jobs', 'List Scheduled Jobs'),
                 ('delete_scheduled_jobs', 'Delete Scheduled Jobs'),
+                ('add_leanmod_scheduled_jobs', 'Add LeanMod Scheduled Jobs'),
+                ('update_leanmod_scheduled_jobs', 'Update LeanMod Scheduled Jobs'),
+                ('list_leanmod_scheduled_jobs', 'List LeanMod Scheduled Jobs'),
+                ('delete_leanmod_scheduled_jobs', 'Delete LeanMod Scheduled Jobs'),
                 ('add_orchestration_scheduled_jobs', 'Add Orchestration Scheduled Jobs'),
                 ('update_orchestration_scheduled_jobs', 'Update Orchestration Scheduled Jobs'),
                 ('list_orchestration_scheduled_jobs', 'List Orchestration Scheduled Jobs'),
@@ -1971,9 +1992,20 @@ class PredefinedRolePackages__Contextual:
         }
 
 
-USER_PERMISSIONS_ADMIN_LIST = ("user", "permission_type", "created_at",)
-USER_PERMISSIONS_ADMIN_FILTER = ("user", "permission_type", "created_at")
-USER_PERMISSIONS_ADMIN_SEARCH = ("user", "permission_type")
+USER_PERMISSIONS_ADMIN_LIST = (
+    "user",
+    "permission_type",
+    "created_at",
+)
+USER_PERMISSIONS_ADMIN_FILTER = (
+    "user",
+    "permission_type",
+    "created_at"
+)
+USER_PERMISSIONS_ADMIN_SEARCH = (
+    "user",
+    "permission_type"
+)
 
 USER_ROLES_ADMIN_LIST = (
     "organization",

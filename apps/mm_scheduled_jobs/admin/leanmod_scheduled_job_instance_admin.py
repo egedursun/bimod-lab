@@ -1,10 +1,10 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
 #  Project: Bimod.io™
-#  File: scheduled_job_instance_admin.py
-#  Last Modified: 2024-10-05 01:39:48
+#  File: leanmod_scheduled_job_instance_admin.py
+#  Last Modified: 2024-12-07 14:03:09
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-#  Created: 2024-10-05 14:42:45
+#  Created: 2024-12-07 14:03:09
 #
 #  This software is proprietary and confidential. Unauthorized copying,
 #  distribution, modification, or use of this software, whether for
@@ -17,19 +17,17 @@
 
 from django.contrib import admin
 
-from apps.mm_scheduled_jobs.models import (
-    ScheduledJobInstance
-)
+from apps.mm_scheduled_jobs.models import LeanModScheduledJobInstance
 
 from apps.mm_scheduled_jobs.utils import (
-    SCHEDULED_JOB_INSTANCE_ADMIN_LIST,
-    SCHEDULED_JOB_INSTANCE_ADMIN_SEARCH,
-    SCHEDULED_JOB_INSTANCE_ADMIN_FILTER
+    LEANMOD_SCHEDULED_JOB_INSTANCE_ADMIN_LIST,
+    LEANMOD_SCHEDULED_JOB_INSTANCE_ADMIN_SEARCH,
+    LEANMOD_SCHEDULED_JOB_INSTANCE_ADMIN_FILTER
 )
 
 
-@admin.register(ScheduledJobInstance)
+@admin.register(LeanModScheduledJobInstance)
 class ScheduledJobInstanceAdmin(admin.ModelAdmin):
-    list_display = SCHEDULED_JOB_INSTANCE_ADMIN_LIST
-    search_fields = SCHEDULED_JOB_INSTANCE_ADMIN_SEARCH
-    list_filter = SCHEDULED_JOB_INSTANCE_ADMIN_FILTER
+    list_display = LEANMOD_SCHEDULED_JOB_INSTANCE_ADMIN_LIST
+    search_fields = LEANMOD_SCHEDULED_JOB_INSTANCE_ADMIN_SEARCH
+    list_filter = LEANMOD_SCHEDULED_JOB_INSTANCE_ADMIN_FILTER

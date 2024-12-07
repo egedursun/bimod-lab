@@ -2,10 +2,10 @@
   ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
   ~
   ~ Project: Bimod.io™
-  ~ File: list_orchestration_scheduled_jobs.html
-  ~ Last Modified: 2024-11-14 06:15:21
+  ~ File: list_leanmod_scheduled_job_logs.html
+  ~ Last Modified: 2024-12-07 15:02:34
   ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-11-14 06:15:23
+  ~ Created: 2024-12-07 15:02:44
   ~
   ~ This software is proprietary and confidential. Unauthorized copying,
   ~ distribution, modification, or use of this software, whether for
@@ -17,12 +17,12 @@
   ~
   -->
 
-{% extends layout_path %}
 
+{% extends layout_path %}
 {% load static %}
 {% load i18n %}
 
-{% block title %}Orchestration Scheduled Jobs{% endblock %}
+{% block title %}Execution Logs for {{ scheduled_job.name }}{% endblock %}
 
 {% block vendor_css %}
   {{ block.super }}
@@ -40,20 +40,34 @@
 
 {% block page_js %}
   {{ block.super }}
-  <script src="{% static 'js/scheduled-jobs-list.js' %}"></script>
+  <script src="{% static 'js/scheduled-job-logs.js' %}"></script>
 {% endblock page_js %}
 
 {% block content %}
+
+  <a href="{% url 'mm_scheduled_jobs:leanmod_list' %}">
+    <button class="btn btn-secondary my-4 w-25">
+      <i class="fa fa-chevron-left me-4"></i>
+      <strong> Back to LeanMod Scheduled jobs</strong>
+    </button>
+  </a>
+
+  <hr>
+
   <div class="row g-6 mb-6">
-    <div class="col-sm-12 col-xl-12">
+    <div class="">
       <h3 class="mb-0">
-        <strong>Orchestration Scheduled Jobs</strong>
+        <strong>Execution Logs</strong>
       </h3>
+      <h5 class="mb-0">
+        <i class="fa fa-user-clock me-2 mt-4"></i>
+        <strong>{{ scheduled_job.name }}</strong>
+      </h5>
     </div>
   </div>
 
   <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
-    <img src="{% static 'img/custom-illustrations-v2/i2-24.png' %}" width="25%" style="border-radius: 25px;"
+    <img src="{% static 'img/custom-illustrations-v2/i2-35.png' %}" width="25%" style="border-radius: 25px;"
          class="justify-content-end me-8" alt="Illustration for tip">
     <span class="alert-icon rounded ms-4">
     <i class="bi bi-info-circle"></i>
@@ -61,11 +75,9 @@
     <div class="d-flex flex-column ps-1">
       <h5 class="alert-heading mb-2">Tip</h5>
       <p class="mb-0">
-        Use the search box to find specific jobs by name or description. You can delete the jobs if you no longer need
-        them. The orchestration scheduled jobs are used to automate the tasks that you want to run at specific times and intervals.
-        The assistants can be assigned to the jobs to run the tasks for you. The jobs can be scheduled to run at
-        specific times and intervals, and you can view the execution logs to understand the flow and status of the
-        executions.
+        Use the search box to find specific execution logs by status. You can view the details of each log to understand
+        the execution flow and status. The execution logs are used to track the status of the executions of the
+        LeanMod scheduled jobs.
       </p>
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
       </button>
@@ -85,16 +97,17 @@
   <hr>
 
   <!-- Search and Filter Form -->
-  <div class="row g-4 mb-4 mt-8 card card-border-shadow-primary p-4">
+  <div class="row g-4 mb-4 mt-4 card card-border-shadow-primary p-4">
+    <img src="{% static 'img/scheduled_jobs/sch-2.png' %}" class="rounded mt-4 mb-4" style="width: 100%;" alt="Illustration for tips">
     <div class="col-xl-12">
-      <h5 class="text-muted"><strong>Filter Jobs</strong></h5>
+      <h5 class="text-muted"><strong>Filter Execution Logs</strong></h5>
       <div class="card text-center mb-4">
         <div class="card-header">
           <div class="nav-align-top">
             <form method="get" action=".">
               <div class="input-group mb-3">
                 <input type="text" name="search" value="{{ request.GET.search }}" class="form-control"
-                       placeholder="Search by name or description">
+                       placeholder="Search by status">
                 <button type="submit" class="btn btn-primary"><strong>Search</strong></button>
                 <a href="." class="btn btn-secondary"><strong>Clear</strong></a>
               </div>
@@ -105,87 +118,53 @@
     </div>
   </div>
 
-  <!-- Orchestration Scheduled Jobs List Table -->
+  <!-- LeanMod Scheduled Job Instances List Table -->
   <div class="card">
     <div class="card-header">
       <h5 class="card-title">
-        <strong>Your Orchestration Scheduled Jobs</strong>
+        <strong>Execution Logs</strong>
       </h5>
-      <img src="{% static 'img/scheduled_jobs/sch-3.png' %}" class="rounded mt-4 mb-4" style="width: 100%;" alt="Illustration for tips">
     </div>
     <div class="card-datatable table-responsive">
-      <a href="{% url 'mm_scheduled_jobs:orchestration_create' %}">
-        <button class="btn btn-success ms-4 mb-8">
-          <i class="fa fa-plus me-4"></i>
-          <strong>Create New Job</strong>
-        </button>
-      </a>
-      <table class="table datatables-scheduled-jobs">
+      <table class="table datatables-scheduled-job-logs">
         <thead class="border-top">
         <tr>
-          <th>Name</th>
-          <th>Description</th>
-          <th>Created By</th>
-          <th>Maestro</th>
-          <th>Schedule</th>
-          <th>Current Run Count</th>
-          <th>Maximum Runs</th>
-          <th></th>
-          <th>Actions</th>
+          <th style="min-width: 150px; max-width: 150px;"><strong>Job</strong></th>
+          <th style="min-width: 200px; max-width: 200px;"><strong>Status</strong></th>
+          <th style="min-width: 350px; max-width: 350px;">Execution Logs</th>
+          <th style="min-width: 150px; max-width: 150px;">Execution Index</th>
+          <th style="min-width: 150px; max-width: 150px;">Started At</th>
+          <th style="min-width: 150px; max-width: 150px;">Ended At</th>
         </tr>
         </thead>
         <tbody>
-        {% for job in page_obj %}
+        {% for instance in page_obj %}
           <tr>
-            <td style="min-width: 200px; max-width: 200px;"><strong>{{ job.name }}</strong></td>
-            <td style="min-width: 300px; max-width: 200px;">{{ job.task_description }}</td>
-            <td style="min-width: 150px; max-width: 150px;"><strong>{{ job.created_by_user }}</strong></td>
-            <td style="min-width: 250px; max-width: 250px;"><div class="btn-info rounded p-1"><strong>{{ job.maestro.name }}</strong></div></td>
-            <td style="min-width: 380px; max-width: 380px;">
-              <p class="bg-label-secondary rounded p-2 m-1">
-                <i class="bi bi-calendar-month me-4"></i>
-                On months of the year: {% if job.month_of_year != "*" %}
-                <strong>{{ job.month_of_year }}</strong>{% else %}<strong>Every Month</strong>{% endif %}
-              </p>
-              <p class="bg-label-secondary rounded p-2 m-1">
-                <i class="bi bi-calendar-day me-4"></i>
-                On days of the month: {% if job.day_of_month != "*" %}
-                <strong>{{ job.day_of_month }}</strong>{% else %}<strong>Every Month Day</strong>{% endif %}
-              </p>
-              <p class="bg-label-secondary rounded p-2 m-1">
-                <i class="bi bi-calendar-week me-4"></i>
-                On days of the week: {% if job.day_of_week != "*" %}
-                <strong>{{ job.day_of_week }}</strong>{% else %}<strong>Every Week Day</strong>{% endif %}
-              </p>
-              <p class="bg-label-secondary rounded p-2 m-1">
-                <i class="bi bi-clock me-4"></i>
-                At hours of the day: {% if job.hour != "*" %}
-                <strong>{{ job.hour }}</strong>{% else %}<strong>Every Hour</strong>{% endif %}
-              </p>
-              <p class="bg-label-secondary rounded p-2 m-1">
-                <i class="bi bi-hourglass-split me-4"></i>
-                At minutes of the hour: {% if job.minute != "*" %}
-                <strong>{{ job.minute }}</strong>{% else %}<strong>Every Minute</strong>{% endif %}
-              </p>
-            </td>
-            <td style="min-width: 200px; max-width: 200px;">
-              <strong class="border btn-warning p-1 rounded">
-                {{ job.current_run_count }}
-              </strong>
-            </td>
-            <td style="min-width: 200px; max-width: 200px;">
-              <strong class="border btn-warning p-1 rounded">
-                {{ job.maximum_runs }}
-              </strong>
+            <td>
+              <strong>{{ instance.scheduled_job.name }}</strong>
             </td>
             <td>
-              <a href="{% url 'mm_scheduled_jobs:orchestration_logs' job.pk %}" class="btn btn-info"><i
-                class="fa fa-clock-rotate-left me-2"></i><strong>Execution Logs</strong></a>
+              {% if instance.status == "completed" %}
+                <span class="badge bg-success"><strong>{{ instance.status|capfirst }}</strong></span>
+              {% elif instance.status == "failed" %}
+                <span class="badge bg-danger"><strong>{{ instance.status|capfirst }}</strong></span>
+              {% else %}
+                <span class="badge bg-warning"><strong>{{ instance.status|capfirst }}</strong></span>
+              {% endif %}
+            </td>
+            <td style="max-width: 500px;">
+              <p class="bg-label-secondary p-4 m-2 rounded text-dark font-monospace" style="font-size: 11px;">
+                {{ instance.logs }}
+              </p>
             </td>
             <td>
-              <a href="{% url 'mm_scheduled_jobs:orchestration_delete' job.pk %}" class="btn btn-danger"><i
-                class="fa fa-trash me-2"></i><strong>Delete</strong></a>
+              <strong class="btn-info p-2 m-2 rounded">
+                <i class="fa fa-hashtag"></i>
+                {{ instance.execution_index }} / {{ instance.scheduled_job.maximum_runs }}
+              </strong>
             </td>
+            <td>{{ instance.started_at }}</td>
+            <td>{{ instance.ended_at }}</td>
           </tr>
         {% endfor %}
         </tbody>

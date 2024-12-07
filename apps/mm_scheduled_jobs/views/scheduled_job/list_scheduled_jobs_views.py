@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
@@ -22,11 +23,13 @@ from django.core.paginator import Paginator
 from django.db.models import Q
 from django.views.generic import TemplateView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
 from apps.mm_scheduled_jobs.models import ScheduledJob
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
-
 
 logger = logging.getLogger(__name__)
 
@@ -39,8 +42,10 @@ class ScheduledJobView_List(LoginRequiredMixin, TemplateView):
 
         ##############################
         # PERMISSION CHECK FOR - LIST_SCHEDULED_JOBS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.LIST_SCHEDULED_JOBS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.LIST_SCHEDULED_JOBS
+        ):
             messages.error(self.request, "You do not have permission to list scheduled jobs.")
             return context
         ##############################
@@ -48,16 +53,26 @@ class ScheduledJobView_List(LoginRequiredMixin, TemplateView):
         search_query = self.request.GET.get('search', '')
         user_orgs = self.request.user.organizations.all()
         org_agents = user_orgs.values_list('assistants', flat=True)
-        scheduled_jobs_list = ScheduledJob.objects.filter(assistant__in=org_agents)
+
+        scheduled_jobs_list = ScheduledJob.objects.filter(
+            assistant__in=org_agents
+        )
+
         if search_query:
             scheduled_jobs_list = scheduled_jobs_list.filter(
-                Q(name__icontains=search_query) | Q(task_description__icontains=search_query))
+                Q(name__icontains=search_query) |
+                Q(task_description__icontains=search_query)
+            )
+
         paginator = Paginator(scheduled_jobs_list, self.paginate_by)
         page_number = self.request.GET.get('page')
         page_obj = paginator.get_page(page_number)
+
         context['page_obj'] = page_obj
         context['scheduled_jobs'] = page_obj.object_list
+
         context['total_scheduled_jobs'] = ScheduledJob.objects.count()
         context['search_query'] = search_query
+
         logger.info(f"Scheduled Jobs list was fetched by User: {self.request.user.id}.")
         return context

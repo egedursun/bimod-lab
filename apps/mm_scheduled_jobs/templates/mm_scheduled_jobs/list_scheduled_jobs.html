@@ -140,7 +140,7 @@
             <td style="min-width: 200px; max-width: 200px;"><strong>{{ job.name }}</strong></td>
             <td style="min-width: 300px; max-width: 200px;">{{ job.task_description }}</td>
             <td style="min-width: 150px; max-width: 150px;"><strong>{{ job.created_by_user }}</strong></td>
-            <td style="min-width: 250px; max-width: 250px;"><strong class="btn-info rounded p-1">{{ job.assistant.name }}</strong></td>
+            <td style="min-width: 250px; max-width: 250px;"><div class="btn-info rounded p-1"><strong>{{ job.assistant.name }}</strong></div></td>
             <td style="min-width: 380px; max-width: 380px;">
               <p class="bg-label-secondary rounded p-2 m-1">
                 <i class="bi bi-calendar-month me-4"></i>
@@ -179,11 +179,11 @@
               </strong>
             </td>
             <td>
-              <a href="{% url 'mm_scheduled_jobs:logs' job.pk %}" class="btn btn-label-info"><i
+              <a href="{% url 'mm_scheduled_jobs:logs' job.pk %}" class="btn btn-info"><i
                 class="fa fa-clock-rotate-left me-2"></i><strong>Execution Logs</strong></a>
             </td>
             <td>
-              <a href="{% url 'mm_scheduled_jobs:delete' job.pk %}" class="btn btn-label-danger"><i
+              <a href="{% url 'mm_scheduled_jobs:delete' job.pk %}" class="btn btn-danger"><i
                 class="fa fa-trash me-2"></i><strong>Delete</strong></a>
             </td>
           </tr>

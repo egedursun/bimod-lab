@@ -2,10 +2,10 @@
   ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
   ~
   ~ Project: Bimod.io™
-  ~ File: list_orchestration_scheduled_jobs.html
-  ~ Last Modified: 2024-11-14 06:15:21
+  ~ File: list_leanmod_scheduled_jobs.html
+  ~ Last Modified: 2024-12-07 15:01:36
   ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-11-14 06:15:23
+  ~ Created: 2024-12-07 15:01:41
   ~
   ~ This software is proprietary and confidential. Unauthorized copying,
   ~ distribution, modification, or use of this software, whether for
@@ -22,7 +22,7 @@
 {% load static %}
 {% load i18n %}
 
-{% block title %}Orchestration Scheduled Jobs{% endblock %}
+{% block title %}LeanMod Scheduled Jobs{% endblock %}
 
 {% block vendor_css %}
   {{ block.super }}
@@ -47,7 +47,7 @@
   <div class="row g-6 mb-6">
     <div class="col-sm-12 col-xl-12">
       <h3 class="mb-0">
-        <strong>Orchestration Scheduled Jobs</strong>
+        <strong>LeanMod Scheduled Jobs</strong>
       </h3>
     </div>
   </div>
@@ -62,7 +62,7 @@
       <h5 class="alert-heading mb-2">Tip</h5>
       <p class="mb-0">
         Use the search box to find specific jobs by name or description. You can delete the jobs if you no longer need
-        them. The orchestration scheduled jobs are used to automate the tasks that you want to run at specific times and intervals.
+        them. The LeanMod scheduled jobs are used to automate the tasks that you want to run at specific times and intervals.
         The assistants can be assigned to the jobs to run the tasks for you. The jobs can be scheduled to run at
         specific times and intervals, and you can view the execution logs to understand the flow and status of the
         executions.
@@ -105,16 +105,16 @@
     </div>
   </div>
 
-  <!-- Orchestration Scheduled Jobs List Table -->
+  <!-- LeanMod Scheduled Jobs List Table -->
   <div class="card">
     <div class="card-header">
       <h5 class="card-title">
-        <strong>Your Orchestration Scheduled Jobs</strong>
+        <strong>Your LeanMod Scheduled Jobs</strong>
       </h5>
       <img src="{% static 'img/scheduled_jobs/sch-3.png' %}" class="rounded mt-4 mb-4" style="width: 100%;" alt="Illustration for tips">
     </div>
     <div class="card-datatable table-responsive">
-      <a href="{% url 'mm_scheduled_jobs:orchestration_create' %}">
+      <a href="{% url 'mm_scheduled_jobs:leanmod_create' %}">
         <button class="btn btn-success ms-4 mb-8">
           <i class="fa fa-plus me-4"></i>
           <strong>Create New Job</strong>
@@ -126,7 +126,7 @@
           <th>Name</th>
           <th>Description</th>
           <th>Created By</th>
-          <th>Maestro</th>
+          <th>LeanMod</th>
           <th>Schedule</th>
           <th>Current Run Count</th>
           <th>Maximum Runs</th>
@@ -140,7 +140,7 @@
             <td style="min-width: 200px; max-width: 200px;"><strong>{{ job.name }}</strong></td>
             <td style="min-width: 300px; max-width: 200px;">{{ job.task_description }}</td>
             <td style="min-width: 150px; max-width: 150px;"><strong>{{ job.created_by_user }}</strong></td>
-            <td style="min-width: 250px; max-width: 250px;"><div class="btn-info rounded p-1"><strong>{{ job.maestro.name }}</strong></div></td>
+            <td style="min-width: 250px; max-width: 250px;"><div class="btn-info rounded p-1"><strong>{{ job.leanmod.name }}</strong></div></td>
             <td style="min-width: 380px; max-width: 380px;">
               <p class="bg-label-secondary rounded p-2 m-1">
                 <i class="bi bi-calendar-month me-4"></i>
@@ -179,11 +179,11 @@
               </strong>
             </td>
             <td>
-              <a href="{% url 'mm_scheduled_jobs:orchestration_logs' job.pk %}" class="btn btn-info"><i
+              <a href="{% url 'mm_scheduled_jobs:leanmod_logs' job.pk %}" class="btn btn-info"><i
                 class="fa fa-clock-rotate-left me-2"></i><strong>Execution Logs</strong></a>
             </td>
             <td>
-              <a href="{% url 'mm_scheduled_jobs:orchestration_delete' job.pk %}" class="btn btn-danger"><i
+              <a href="{% url 'mm_scheduled_jobs:leanmod_delete' job.pk %}" class="btn btn-danger"><i
                 class="fa fa-trash me-2"></i><strong>Delete</strong></a>
             </td>
           </tr>
@@ -227,5 +227,6 @@
     </div>
   </div>
 {% endblock %}
+
 
 

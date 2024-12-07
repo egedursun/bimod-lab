@@ -14,9 +14,6 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from .add_periodic_task_tasks import *
 from .execute_scheduled_job_tasks import *

@@ -18,9 +18,15 @@
 
 from django.contrib import admin
 
-from apps.mm_scheduled_jobs.models import OrchestrationScheduledJobInstance
-from apps.mm_scheduled_jobs.utils import ORCHESTRATION_SCHEDULED_JOB_INSTANCE_ADMIN_LIST, \
-    ORCHESTRATION_SCHEDULED_JOB_INSTANCE_ADMIN_SEARCH, ORCHESTRATION_SCHEDULED_JOB_INSTANCE_ADMIN_FILTER
+from apps.mm_scheduled_jobs.models import (
+    OrchestrationScheduledJobInstance
+)
+
+from apps.mm_scheduled_jobs.utils import (
+    ORCHESTRATION_SCHEDULED_JOB_INSTANCE_ADMIN_LIST,
+    ORCHESTRATION_SCHEDULED_JOB_INSTANCE_ADMIN_SEARCH,
+    ORCHESTRATION_SCHEDULED_JOB_INSTANCE_ADMIN_FILTER
+)
 
 
 @admin.register(OrchestrationScheduledJobInstance)

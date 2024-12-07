@@ -14,9 +14,6 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 class TriggerTypeChoicesNames:
     INTERVAL = 'interval'
@@ -74,9 +71,24 @@ SCHEDULED_JOB_ADMIN_FILTER = [
     'created_by_user',
 ]
 
-SCHEDULED_JOB_INSTANCE_ADMIN_LIST = ['scheduled_job', 'status', 'started_at', 'ended_at']
-SCHEDULED_JOB_INSTANCE_ADMIN_SEARCH = ['scheduled_job', 'status', 'started_at', 'ended_at']
-SCHEDULED_JOB_INSTANCE_ADMIN_FILTER = ['scheduled_job', 'status', 'started_at', 'ended_at']
+SCHEDULED_JOB_INSTANCE_ADMIN_LIST = [
+    'scheduled_job',
+    'status',
+    'started_at',
+    'ended_at'
+]
+SCHEDULED_JOB_INSTANCE_ADMIN_SEARCH = [
+    'scheduled_job',
+    'status',
+    'started_at',
+    'ended_at'
+]
+SCHEDULED_JOB_INSTANCE_ADMIN_FILTER = [
+    'scheduled_job',
+    'status',
+    'started_at',
+    'ended_at'
+]
 
 ORCHESTRATION_SCHEDULED_JOB_ADMIN_LIST = [
     'name',
@@ -106,6 +118,72 @@ ORCHESTRATION_SCHEDULED_JOB_ADMIN_FILTER = [
     'created_by_user',
 ]
 
-ORCHESTRATION_SCHEDULED_JOB_INSTANCE_ADMIN_LIST = ['scheduled_job', 'status', 'started_at', 'ended_at']
-ORCHESTRATION_SCHEDULED_JOB_INSTANCE_ADMIN_SEARCH = ['scheduled_job', 'status', 'started_at', 'ended_at']
-ORCHESTRATION_SCHEDULED_JOB_INSTANCE_ADMIN_FILTER = ['scheduled_job', 'status', 'started_at', 'ended_at']
+ORCHESTRATION_SCHEDULED_JOB_INSTANCE_ADMIN_LIST = [
+    'scheduled_job',
+    'status',
+    'started_at',
+    'ended_at'
+]
+ORCHESTRATION_SCHEDULED_JOB_INSTANCE_ADMIN_SEARCH = [
+    'scheduled_job',
+    'status',
+    'started_at',
+    'ended_at'
+]
+ORCHESTRATION_SCHEDULED_JOB_INSTANCE_ADMIN_FILTER = [
+    'scheduled_job',
+    'status',
+    'started_at',
+    'ended_at'
+]
+
+LEANMOD_SCHEDULED_JOB_ADMIN_LIST = [
+    'name',
+    'leanmod',
+    'current_run_count',
+    'maximum_runs',
+    'created_at',
+    'updated_at',
+    'created_by_user',
+]
+
+LEANMOD_SCHEDULED_JOB_ADMIN_SEARCH = [
+    'name',
+    'leanmod',
+    'current_run_count',
+    'maximum_runs',
+    'created_at',
+    'updated_at',
+    'created_by_user',
+]
+
+LEANMOD_SCHEDULED_JOB_ADMIN_FILTER = [
+    'name',
+    'leanmod',
+    'current_run_count',
+    'maximum_runs',
+    'created_at',
+    'updated_at',
+    'created_by_user',
+]
+
+LEANMOD_SCHEDULED_JOB_INSTANCE_ADMIN_LIST = [
+    'scheduled_job',
+    'status',
+    'started_at',
+    'ended_at'
+]
+
+LEANMOD_SCHEDULED_JOB_INSTANCE_ADMIN_SEARCH = [
+    'scheduled_job',
+    'status',
+    'started_at',
+    'ended_at'
+]
+
+LEANMOD_SCHEDULED_JOB_INSTANCE_ADMIN_FILTER = [
+    'scheduled_job',
+    'status',
+    'started_at',
+    'ended_at'
+]

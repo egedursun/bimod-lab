@@ -17,14 +17,25 @@
 
 from django.db import models
 
-
-from apps.mm_scheduled_jobs.utils import SCHEDULED_JOB_INSTANCE_STATUSES
+from apps.mm_scheduled_jobs.utils import (
+    SCHEDULED_JOB_INSTANCE_STATUSES
+)
 
 
 class OrchestrationScheduledJobInstance(models.Model):
-    scheduled_job = models.ForeignKey('mm_scheduled_jobs.OrchestrationScheduledJob', on_delete=models.CASCADE,
-                                      related_name='scheduled_job_instances', null=True)
-    status = models.CharField(max_length=255, choices=SCHEDULED_JOB_INSTANCE_STATUSES, default='pending')
+    scheduled_job = models.ForeignKey(
+        'mm_scheduled_jobs.OrchestrationScheduledJob',
+        on_delete=models.CASCADE,
+        related_name='scheduled_job_instances',
+        null=True
+    )
+
+    status = models.CharField(
+        max_length=255,
+        choices=SCHEDULED_JOB_INSTANCE_STATUSES,
+        default='pending'
+    )
+
     logs = models.JSONField(default=list)
     execution_index = models.IntegerField(default=0, null=True)
     started_at = models.DateTimeField(auto_now_add=True)
@@ -39,9 +50,39 @@ class OrchestrationScheduledJobInstance(models.Model):
         verbose_name = 'Orchestration Scheduled Job Instance'
         verbose_name_plural = 'Orchestration Scheduled Job Instances'
         indexes = [
-            models.Index(fields=['scheduled_job', 'status', 'started_at']),
-            models.Index(fields=['scheduled_job', 'status', 'started_at', 'ended_at']),
-            models.Index(fields=['scheduled_job', 'status', 'started_at', 'ended_at', 'id']),
-            models.Index(fields=['scheduled_job', 'status', 'started_at', 'ended_at', 'id', 'status']),
-            models.Index(fields=['scheduled_job', 'status', 'started_at', 'ended_at', 'id', 'status', 'logs']),
+            models.Index(fields=[
+                'scheduled_job',
+                'status',
+                'started_at'
+            ]),
+            models.Index(fields=[
+                'scheduled_job',
+                'status',
+                'started_at',
+                'ended_at'
+            ]),
+            models.Index(fields=[
+                'scheduled_job',
+                'status',
+                'started_at',
+                'ended_at',
+                'id'
+            ]),
+            models.Index(fields=[
+                'scheduled_job',
+                'status',
+                'started_at',
+                'ended_at',
+                'id',
+                'status'
+            ]),
+            models.Index(fields=[
+                'scheduled_job',
+                'status',
+                'started_at',
+                'ended_at',
+                'id',
+                'status',
+                'logs'
+            ]),
         ]

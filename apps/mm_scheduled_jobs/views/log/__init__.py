@@ -14,8 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from .list_scheduled_job_logs_views import *
+from .list_orchestration_scheduled_job_logs_views import *
+from .list_leanmod_scheduled_job_logs_views import *

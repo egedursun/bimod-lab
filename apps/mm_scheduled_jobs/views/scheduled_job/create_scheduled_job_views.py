@@ -23,13 +23,16 @@ from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
 from apps.assistants.models import Assistant
-from apps.core.user_permissions.permission_manager import UserPermissionManager
+
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
 from apps.mm_scheduled_jobs.forms import ScheduledJobForm
 from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from config.settings import MAX_SCHEDULED_JOBS_PER_ASSISTANT
 from web_project import TemplateLayout
-
 
 logger = logging.getLogger(__name__)
 
@@ -37,18 +40,28 @@ logger = logging.getLogger(__name__)
 class ScheduledJobView_Create(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+
         context['form'] = ScheduledJobForm()
         context["user"] = self.request.user
-        user_orgs = Organization.objects.filter(users__in=[self.request.user])
-        context['assistants'] = Assistant.objects.filter(organization__in=user_orgs)
+
+        user_orgs = Organization.objects.filter(
+            users__in=[self.request.user]
+        )
+
+        context['assistants'] = Assistant.objects.filter(
+            organization__in=user_orgs
+        )
+
         return context
 
     def post(self, request, *args, **kwargs):
 
         ##############################
         # PERMISSION CHECK FOR - ADD_SCHEDULED_JOBS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.ADD_SCHEDULED_JOBS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.ADD_SCHEDULED_JOBS
+        ):
             messages.error(self.request, "You do not have permission to add scheduled jobs.")
             return redirect('mm_scheduled_jobs:list')
         ##############################
@@ -65,6 +78,7 @@ class ScheduledJobView_Create(LoginRequiredMixin, TemplateView):
             if n_scheduled_jobs > MAX_SCHEDULED_JOBS_PER_ASSISTANT:
                 messages.error(request,
                                f'Assistant has reached the maximum number of connected scheduled jobs ({MAX_SCHEDULED_JOBS_PER_ASSISTANT}).')
+
                 return redirect('mm_scheduled_jobs:list')
 
             scheduled_job = form.save(commit=False)
@@ -77,9 +91,15 @@ class ScheduledJobView_Create(LoginRequiredMixin, TemplateView):
 
             logger.info(f"Scheduled Job was created by User: {self.request.user.id}.")
             messages.success(request, "Scheduled Job created successfully!")
+
             return redirect('mm_scheduled_jobs:list')
 
         else:
             logger.error(f"Error creating Scheduled Job by User: {self.request.user.id}: {form.errors}")
             messages.error(request, "There was an error creating the scheduled job.")
-            return self.render_to_response({'form': form})
+
+            return self.render_to_response(
+                {
+                    'form': form
+                }
+            )

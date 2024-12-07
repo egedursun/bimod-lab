@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 logger = logging.getLogger(__name__)
@@ -490,6 +491,12 @@ def get_permissions_grouped():
             ('update_scheduled_jobs', 'Update Scheduled Jobs'),
             ('list_scheduled_jobs', 'List Scheduled Jobs'),
             ('delete_scheduled_jobs', 'Delete Scheduled Jobs')
+        ],
+        "LeanMod Scheduled Job Permissions": [
+            ('add_leanmod_scheduled_jobs', 'Add LeanMod Scheduled Jobs'),
+            ('update_leanmod_scheduled_jobs', 'Update LeanMod Scheduled Jobs'),
+            ('list_leanmod_scheduled_jobs', 'List LeanMod Scheduled Jobs'),
+            ('delete_leanmod_scheduled_jobs', 'Delete LeanMod Scheduled Jobs'),
         ],
         "Orchestration Scheduled Job Permissions": [
             ('add_orchestration_scheduled_jobs', 'Add Orchestration Scheduled Jobs'),

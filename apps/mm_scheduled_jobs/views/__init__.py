@@ -14,9 +14,6 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from .scheduled_job import *
 from .log import *

@@ -1,10 +1,10 @@
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
 #  Project: Bimod.io™
-#  File: scheduled_job_models.py
-#  Last Modified: 2024-10-05 01:39:48
+#  File: leanmod_scheduled_job_models.py
+#  Last Modified: 2024-12-07 13:56:42
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-#  Created: 2024-10-05 14:42:45
+#  Created: 2024-12-07 13:56:43
 #
 #  This software is proprietary and confidential. Unauthorized copying,
 #  distribution, modification, or use of this software, whether for
@@ -15,33 +15,45 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
+
 from django.db import models
 
 
-class ScheduledJob(models.Model):
-    name = models.CharField(max_length=255)
-    task_description = models.TextField(blank=True, null=True)
-    step_guide = models.JSONField(default=list)
-
-    assistant = models.ForeignKey(
-        'assistants.Assistant',
+class LeanModScheduledJob(models.Model):
+    leanmod = models.ForeignKey(
+        'leanmod.LeanAssistant',
         on_delete=models.CASCADE,
         related_name='scheduled_jobs'
     )
 
-    minute = models.CharField(max_length=600, blank=True, null=True)
-    hour = models.CharField(max_length=240, blank=True, null=True)
+    name = models.CharField(max_length=255)
+    task_description = models.TextField(blank=True, null=True)
+    step_guide = models.JSONField(default=list)
+
+    minute = models.CharField(
+        max_length=600,
+        blank=True,
+        null=True
+    )
+
+    hour = models.CharField(
+        max_length=240,
+        blank=True,
+        null=True
+    )
 
     day_of_week = models.CharField(
         max_length=90,
         blank=True,
         null=True
     )  # e.g., "0,1,2,3,4"
+
     day_of_month = models.CharField(
         max_length=310,
         blank=True,
         null=True
     )  # e.g., "1,15,30"
+
     month_of_year = models.CharField(
         max_length=120,
         blank=True,
@@ -56,27 +68,27 @@ class ScheduledJob(models.Model):
     created_by_user = models.ForeignKey(
         'auth.User',
         on_delete=models.CASCADE,
-        related_name='scheduled_jobs'
+        related_name='leanmod_scheduled_jobs'
     )
 
     def __str__(self):
-        return self.name + ' - ' + self.assistant.name + ' - ' + self.created_by_user.username + ' - ' + self.created_at.strftime(
+        return self.name + ' - ' + self.leanmod.name + ' - ' + self.created_by_user.username + ' - ' + self.created_at.strftime(
             '%Y%m%d%H%M%S')
 
     class Meta:
         ordering = ['-created_at']
-        verbose_name = 'Scheduled Job'
-        verbose_name_plural = 'Scheduled Jobs'
+        verbose_name = 'LeanMod Scheduled Job'
+        verbose_name_plural = 'LeanMod Scheduled Jobs'
         unique_together = [
             [
-                "assistant",
+                "leanmod",
                 "name"
             ],
         ]
         indexes = [
             models.Index(fields=[
                 'name',
-                'assistant',
+                'leanmod',
                 'created_by_user',
                 'created_at'
             ]),
@@ -84,28 +96,28 @@ class ScheduledJob(models.Model):
                 'created_at'
             ]),
             models.Index(fields=[
-                'assistant'
+                'leanmod'
             ]),
             models.Index(fields=[
                 'created_by_user'
             ]),
             models.Index(fields=[
-                'assistant',
+                'leanmod',
                 'created_by_user'
             ]),
             models.Index(fields=[
-                'assistant',
+                'leanmod',
                 'created_by_user',
                 'created_at'
             ]),
             models.Index(fields=[
-                'assistant',
+                'leanmod',
                 'created_by_user',
                 'created_at',
                 'name'
             ]),
             models.Index(fields=[
-                'assistant',
+                'leanmod',
                 'created_by_user',
                 'created_at',
                 'name',
