@@ -30,7 +30,7 @@ import uuid
 class ForgetPasswordView(AuthView):
     def get(self, request):
         if request.user.is_authenticated:
-            return redirect("dashboard:main-dashboard")
+            return redirect("dashboard:lab-landing")
         return super().get(request)
 
     def post(self, request):

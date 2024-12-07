@@ -39,48 +39,48 @@ logger = logging.getLogger(__name__)
 class VectorStoreView_List(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+        context_user = self.request.user
 
-        ##############################
-        # PERMISSION CHECK FOR - LIST_KNOWLEDGE_BASES
+        ############################
+        # Permission check
+        ############################
         if not UserPermissionManager.is_authorized(
             user=self.request.user,
             operation=PermissionNames.LIST_KNOWLEDGE_BASES
         ):
             messages.error(self.request, "You do not have permission to list Knowledge Bases.")
             return context
-        ##############################
+        ############################
 
         try:
-            context_user = self.request.user
             user_orgs = Organization.objects.filter(
                 users__in=[context_user]
             )
 
             conns_by_orgs = {}
+            for org in user_orgs:
+                conns_by_orgs[org] = {}
+                for agent in org.assistants.all():
+                    conns_by_orgs[org][agent] = []
 
             for org in user_orgs:
-                agents = org.assistants.all()
-                agents_conns = {}
+                for agent in org.assistants.all():
 
-                for agent in agents:
                     conn = DocumentKnowledgeBaseConnection.objects.filter(
                         assistant=agent
                     )
 
                     if conn.exists():
-                        agents_conns[agent] = conn
+                        conns_by_orgs[org][agent].extend(conn)
 
-                if agents_conns:
-                    conns_by_orgs[org] = agents_conns
+            context['connections_by_organization'] = conns_by_orgs
+            logger.info("Knowledge Bases were listed.")
 
         except Exception as e:
-            logger.error(f"User: {self.request.user} - Knowledge Base - List Error: {e}")
+            logger.error(f"User: {context_user} - Knowledge Base - List Error: {e}")
             messages.error(self.request, 'An error occurred while listing the knowledge bases.')
 
             return context
 
-        context['connections_by_organization'] = conns_by_orgs
         context['user'] = context_user
-        logger.info(f"Knowledge Bases were listed.")
-
         return context

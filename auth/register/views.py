@@ -33,7 +33,7 @@ import uuid
 class RegisterView(AuthView):
     def get(self, request):
         if request.user.is_authenticated:
-            return redirect("dashboard:main-dashboard")
+            return redirect("dashboard:lab-landing")
         context = self.get_context_data()
         return super().get(request, context)
 

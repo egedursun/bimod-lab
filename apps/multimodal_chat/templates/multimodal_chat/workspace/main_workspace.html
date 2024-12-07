@@ -99,7 +99,7 @@
 <!--  Brand demo (display only for navbar-full and hide on below xl) -->
 {% if navbar_full %}
   <div class="navbar-brand app-brand demo d-none d-xl-flex py-0 me-4">
-    <a href="{% url 'dashboard:main-dashboard' %}" class="app-brand-link">
+    <a href="{% url 'dashboard:lab-landing' %}" class="app-brand-link">
           <span class="">
             <!-- { % include 'partials/logo.html' with height="150px" width="150px" % } -->
             <img src="{% static 'img/logo.png' %}" alt="logo" style="width: 60px;" class="ms-0">
@@ -142,7 +142,7 @@
     <!-- /Search -->
   {% endif %}
   <ul class="navbar-nav flex-row align-items-center ms-auto">
-    <a href="{% url 'dashboard:main-dashboard' %}">
+    <a href="{% url 'dashboard:lab-landing' %}">
       <button class="btn btn-success rounded me-4">
         <i class="fa fa-robot me-4"></i><strong>BimodLab Dashboard</strong>
       </button>
@@ -450,33 +450,33 @@
           <div class="dropdown-divider my-1 mx-n2 mb-4"></div>
         </li>
         <li>
-          <a class="dropdown-item bg-label-hover-success" href="{% url "llm_transaction:create_top_up" %}">
+          <a class="dropdown-item bg-label-hover-success" href="{% url 'llm_transaction:create_top_up' %}">
             <i class="ti ti-circle-plus me-3 ti-md"></i><span class="align-middle"><strong>Add Balance</strong></span>
           </a>
         </li>
         <li>
-          <a class="dropdown-item bg-label-hover-info" href="{% url "llm_transaction:transfer_balance" %}">
+          <a class="dropdown-item bg-label-hover-info" href="{% url 'llm_transaction:transfer_balance' %}">
             <i class="ti ti-transfer me-3 ti-md"></i><span class="align-middle"><strong>Transfer Balance</strong></span>
           </a>
         </li>
         <hr>
         <li>
-          <a class="dropdown-item" href="{% url "user_profile_management:list" %}">
+          <a class="dropdown-item" href="{% url 'user_profile_management:list' %}">
             <i class="ti ti-user me-3 ti-md"></i><span class="align-middle">My Profile</span>
           </a>
         </li>
         <li>
-          <a class="dropdown-item" href="{% url "llm_transaction:transaction_invoices_list" %}">
+          <a class="dropdown-item" href="{% url 'llm_transaction:transaction_invoices_list' %}">
             <i class="ti ti-invoice me-3 ti-md"></i><span class="align-middle">Invoices</span>
           </a>
         </li>
         <li>
-          <a class="dropdown-item" href="{% url "notifications:list_create" %}">
+          <a class="dropdown-item" href="{% url 'notifications:list_create' %}">
             <i class="ti ti-bell-bolt me-3 ti-md"></i><span class="align-middle">Notification Manager</span>
           </a>
         </li>
         <li>
-          <a class="dropdown-item" href="{% url "data_backups:manage" %}">
+          <a class="dropdown-item" href="{% url 'data_backups:manage' %}">
             <i class="ti ti-refresh me-3 ti-md"></i><span class="align-middle">Data Backups</span>
           </a>
         </li>

@@ -32,8 +32,9 @@ from apps.core.user_permissions.permission_manager import (
 from apps.assistants.models import Assistant
 
 from apps.datasource_sql.models import (
-    CustomSQLQuery
+    CustomSQLQuery, SQLDatabaseConnection
 )
+from apps.organization.models import Organization
 
 from apps.user_permissions.utils import (
     PermissionNames
@@ -61,28 +62,40 @@ class SQLDatabaseView_QueryList(TemplateView, LoginRequiredMixin):
         context_user = self.request.user
 
         try:
+
+            user_orgs = Organization.objects.filter(
+                users__in=[context_user]
+            ).all()
+
+            org_assistants = Assistant.objects.filter(
+                organization__in=user_orgs
+            ).all()
+
+            assistant_sql_dbs = SQLDatabaseConnection.objects.filter(
+                assistant__in=org_assistants
+            ).all()
+
             queries = CustomSQLQuery.objects.filter(
-                database_connection__assistant__in=Assistant.objects.filter(
-                    organization__in=context_user.organizations.all()
-                )
-            ).select_related(
-                'database_connection__assistant',
-                'database_connection__assistant__organization'
-            )
+                database_connection__in=assistant_sql_dbs
+            ).all()
 
             queries_by_orgs = {}
 
-            for qu in queries:
-                org = qu.database_connection.assistant.organization
-                agent = qu.database_connection.assistant
+            for organization in user_orgs:
 
-                if org not in queries_by_orgs:
-                    queries_by_orgs[org] = {}
+                queries_by_orgs[organization] = {}
 
-                if agent not in queries_by_orgs[org]:
-                    queries_by_orgs[org][agent] = []
+                organizations_assistants = org_assistants.filter(
+                    organization=organization
+                ).all()
 
-                queries_by_orgs[org][agent].append(qu)
+                for assistant in organizations_assistants:
+
+                    assistant_queries = queries.filter(
+                        database_connection__assistant=assistant
+                    ).all()
+
+                    queries_by_orgs[organization][assistant] = assistant_queries
 
         except Exception as e:
             logger.error(f"User: {context_user} - SQL Query - List Error: {e}")

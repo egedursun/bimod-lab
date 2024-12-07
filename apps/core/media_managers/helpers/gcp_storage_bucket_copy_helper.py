@@ -46,8 +46,10 @@ class MediaStorageCopyClient__GCSBucket:
             )
 
         except DataSourceMediaStorageConnection.DoesNotExist:
-            logger.error(f"Media storage with ID '{media_storage_id}' not found.")
-            raise ValueError(f"Media storage with ID '{media_storage_id}' not found.")
+            logger.error(
+                f"Media storage with ID '{media_storage_id}' not found."
+            )
+            return
 
     def copy_file_to_media_storage(self, file_blob):
         file_name = file_blob.name.split('/')[-1]

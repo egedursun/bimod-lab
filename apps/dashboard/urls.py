@@ -18,9 +18,10 @@
 from django.urls import path
 
 from .views import (
+    DashboardView_LabLanding,
     DashboardView_Main,
     DashboardView_Refresh,
-    DashboardView_ChangeStatisticsInterval
+    DashboardView_ChangeStatisticsInterval,
 )
 
 app_name = "dashboard"
@@ -28,6 +29,14 @@ app_name = "dashboard"
 urlpatterns = [
     path(
         "",
+        DashboardView_LabLanding.as_view(
+            template_name="dashboard/lab_landing.html"
+        ),
+        name="lab-landing"
+    ),
+
+    path(
+        "dashboard/",
         DashboardView_Main.as_view(
             template_name="dashboard/dashboard_main.html"),
         name="main-dashboard"

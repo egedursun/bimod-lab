@@ -7,6 +7,12 @@
       "name": "Dashboard",
       "icon": "menu-icon tf-icons ti ti-smart-home",
       "slug": "main-dashboard",
+      "url": "dashboard:lab-landing"
+    },
+    {
+      "name": "Usage & Statistics",
+      "icon": "menu-icon tf-icons ti ti-dashboard",
+      "slug": "main-dashboard",
       "url": "dashboard:main-dashboard"
     },
     {

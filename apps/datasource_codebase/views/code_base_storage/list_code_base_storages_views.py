@@ -37,40 +37,45 @@ logger = logging.getLogger(__name__)
 
 
 class CodeBaseView_StorageList(LoginRequiredMixin, TemplateView):
-
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+        context_user = self.request.user
 
-        ##############################
-        # PERMISSION CHECK FOR - LIST_CODE_BASE
+        ############################
+        # Permission check
+        ############################
         if not UserPermissionManager.is_authorized(
             user=self.request.user,
             operation=PermissionNames.LIST_CODE_BASE
         ):
             messages.error(self.request, "You do not have permission to list code base storages.")
             return context
-        ##############################
+        ############################
 
-        context_user = self.request.user
         try:
-            user_orgs = Organization.objects.filter(users__in=[context_user])
+            user_orgs = Organization.objects.filter(
+                users__in=[context_user]
+            )
 
             conns_by_orgs = {}
 
             for org in user_orgs:
-                agents = org.assistants.all()
-                agent_conns = {}
+                conns_by_orgs[org] = {}
+                for agent in org.assistants.all():
+                    conns_by_orgs[org][agent] = []
 
-                for agent in agents:
+            for org in user_orgs:
+                for agent in org.assistants.all():
+
                     conns = CodeRepositoryStorageConnection.objects.filter(
                         assistant=agent
                     )
 
                     if conns.exists():
-                        agent_conns[agent] = conns
+                        conns_by_orgs[org][agent].extend(conns)
 
-                if agent_conns:
-                    conns_by_orgs[org] = agent_conns
+            context['connections_by_organization'] = conns_by_orgs
+            logger.info(f"[CodeBaseView_StorageList] User: {context_user} listed code base storages.")
 
         except Exception as e:
             logger.error(f"User: {context_user} - Code Base Storage - List Error: {e}")
@@ -78,9 +83,6 @@ class CodeBaseView_StorageList(LoginRequiredMixin, TemplateView):
 
             return context
 
-        context['connections_by_organization'] = conns_by_orgs
         context['user'] = context_user
-
-        logger.info(f"[CodeBaseView_StorageList] User: {context_user} listed code base storages.")
 
         return context

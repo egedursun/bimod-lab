@@ -43,50 +43,49 @@ logger = logging.getLogger(__name__)
 class NoSQLDatabaseView_QueryList(TemplateView, LoginRequiredMixin):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+        context_user = self.request.user
 
         ##############################
-        # PERMISSION CHECK FOR - LIST_CUSTOM_NOSQL_QUERIES
+        # Permission check
+        ##############################
         if not UserPermissionManager.is_authorized(
-            user=self.request.user,
+            user=context_user,
             operation=PermissionNames.LIST_CUSTOM_NOSQL_QUERIES
         ):
             messages.error(self.request, "You do not have permission to list custom NoSQL queries.")
             return context
         ##############################
 
-        context_user = self.request.user
-
-        queries = CustomNoSQLQuery.objects.filter(
-            database_connection__assistant__in=Assistant.objects.filter(
-                organization__in=context_user.organizations.all()
-            )
-        ).select_related(
-            'database_connection__assistant',
-            'database_connection__assistant__organization'
-        )
-
         try:
             queries_by_orgs = {}
+            user_orgs = context_user.organizations.all()
+
+            for org in user_orgs:
+
+                queries_by_orgs[org] = {}
+
+                for assistant in org.assistants.all():
+                    queries_by_orgs[org][assistant] = []
+
+            queries = CustomNoSQLQuery.objects.filter(
+                database_connection__assistant__organization__in=user_orgs
+            ).select_related(
+                'database_connection__assistant',
+                'database_connection__assistant__organization'
+            )
 
             for qu in queries:
                 org = qu.database_connection.assistant.organization
-                agent = qu.database_connection.assistant
+                assistant = qu.database_connection.assistant
+                queries_by_orgs[org][assistant].append(qu)
 
-                if org not in queries_by_orgs:
-                    queries_by_orgs[org] = {}
-
-                if agent not in queries_by_orgs[org]:
-                    queries_by_orgs[org][agent] = []
-
-                queries_by_orgs[org][agent].append(qu)
+            context['queries_by_organization'] = queries_by_orgs
+            logger.info("Custom NoSQL Queries were listed.")
 
         except Exception as e:
             logger.error(f"User: {context_user} - NoSQL Query - List Error: {e}")
             messages.error(self.request, 'An error occurred while listing NoSQL Queries.')
 
             return context
-
-        context['queries_by_organization'] = queries_by_orgs
-        logger.info(f"NoSQL Queries were listed.")
 
         return context

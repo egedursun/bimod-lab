@@ -26,7 +26,7 @@ from auth.views import AuthView
 class LoginView(AuthView):
     def get(self, request):
         if request.user.is_authenticated:
-            return redirect("dashboard:main-dashboard")
+            return redirect("dashboard:lab-landing")
         return super().get(request)
 
     def post(self, request):
@@ -56,7 +56,7 @@ class LoginView(AuthView):
                 if "next" in request.POST:
                     return redirect(request.POST["next"])
                 else:
-                    return redirect("dashboard:main-dashboard")
+                    return redirect("dashboard:lab-landing")
             else:
                 messages.error(request, "Either the username or password is incorrect. Please try again.")
                 return redirect("login")

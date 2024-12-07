@@ -43,6 +43,7 @@ class FileSystemView_List(LoginRequiredMixin, TemplateView):
 
         ##############################
         # PERMISSION CHECK FOR - LIST_FILE_SYSTEMS
+        ##############################
         if not UserPermissionManager.is_authorized(
             user=self.request.user,
             operation=PermissionNames.LIST_FILE_SYSTEMS
@@ -51,38 +52,34 @@ class FileSystemView_List(LoginRequiredMixin, TemplateView):
             return context
         ##############################
 
+        context_user = self.request.user
         try:
-            context_user = self.request.user
             conns_by_orgs = {}
+            user_orgs = context_user.organizations.all()
+
+            for org in user_orgs:
+                conns_by_orgs[org] = {}
+                for agent in org.assistants.all():
+                    conns_by_orgs[org][agent] = []
 
             agents = Assistant.objects.filter(
-                organization__in=context_user.organizations.filter(
-                    users__in=[context_user]
-                )
+                organization__in=user_orgs
             )
 
             for agent in agents:
                 org = agent.organization
-
-                if org not in conns_by_orgs:
-                    conns_by_orgs[org] = {}
-
-                if agent not in conns_by_orgs[org]:
-                    conns_by_orgs[org][agent] = []
-
-                conns = DataSourceFileSystem.objects.filter(
-                    assistant=agent
-                )
-
+                conns = DataSourceFileSystem.objects.filter(assistant=agent)
                 conns_by_orgs[org][agent].extend(conns)
 
             context['connections_by_organization'] = conns_by_orgs
             context['user'] = context_user
 
         except Exception as e:
-            logger.error(f"User: {self.request.user} - File System - List Error: {e}")
+            logger.error(f"User: {context_user} - File System - List Error: {e}")
             messages.error(self.request, 'An error occurred while listing file system connections.')
+
             return context
 
-        logger.info(f"File System Connections were listed.")
+        logger.info("File System Connections were listed.")
+
         return context

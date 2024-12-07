@@ -111,7 +111,13 @@
         {% for ticket in page_obj %}
           <tr>
             <td>{{ ticket.id }}</td>
-            <td><a href="{% url 'support_system:detail' ticket.id %}"><strong>{{ ticket.title }}</strong></a></td>
+            <td>
+              <a href="{% url 'support_system:detail' ticket.id %}" class="btn-primary p-2 rounded">
+                <strong>
+                  {{ ticket.title }}
+                </strong>
+              </a>
+            </td>
             <td>
               {% if ticket.get_status_display == "Open" %}
                 <i class="fa fa-circle text-warning me-2"></i>

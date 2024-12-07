@@ -43,7 +43,8 @@ class BrowserView_BrowserList(LoginRequiredMixin, TemplateView):
         context_user = self.request.user
 
         ##############################
-        # PERMISSION CHECK FOR - LIST_WEB_BROWSERS
+        # Permission check
+        ##############################
         if not UserPermissionManager.is_authorized(
             user=self.request.user,
             operation=PermissionNames.LIST_WEB_BROWSERS
@@ -54,26 +55,26 @@ class BrowserView_BrowserList(LoginRequiredMixin, TemplateView):
 
         try:
             cs_by_orgs = {}
+            user_orgs = context_user.organizations.all()
+
+            for org in user_orgs:
+                cs_by_orgs[org] = {}
+                for agent in org.assistants.all():
+                    cs_by_orgs[org][agent] = []
+
             agents = Assistant.objects.filter(
-                organization__in=context_user.organizations.filter(
-                    users__in=[context_user]
-                )
+                organization__in=user_orgs
             )
 
             for agent in agents:
                 org = agent.organization
-
-                if org not in cs_by_orgs:
-                    cs_by_orgs[org] = {}
-
-                if agent not in cs_by_orgs[org]:
-                    cs_by_orgs[org][agent] = []
-
                 cs = DataSourceBrowserConnection.objects.filter(
                     assistant=agent
                 )
-
                 cs_by_orgs[org][agent].extend(cs)
+
+            context['connections_by_organization'] = cs_by_orgs
+            context['user'] = context_user
 
         except Exception as e:
             logger.error(f"User: {context_user} - Browser Connections - List Error: {e}")
@@ -81,8 +82,6 @@ class BrowserView_BrowserList(LoginRequiredMixin, TemplateView):
 
             return context
 
-        logger.info(f"Browser Connections were listed.")
-        context['connections_by_organization'] = cs_by_orgs
-        context['user'] = context_user
+        logger.info("Browser Connections were listed.")
 
         return context

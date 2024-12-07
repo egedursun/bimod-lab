@@ -1,0 +1,136 @@
+<!--
+  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+  ~
+  ~ Project: Bimod.io™
+  ~ File: third_party_connection_azure_blob.html
+  ~ Last Modified: 2024-12-05 16:06:09
+  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+  ~ Created: 2024-12-05 16:06:10
+  ~
+  ~ This software is proprietary and confidential. Unauthorized copying,
+  ~ distribution, modification, or use of this software, whether for
+  ~ commercial, academic, or any other purpose, is strictly prohibited
+  ~ without the prior express written permission of BMD™ Autonomous
+  ~ Holdings.
+  ~
+  ~  For permission inquiries, please contact: admin@Bimod.io.
+  ~
+  -->
+
+{% extends layout_path %}
+
+{% load static %}
+{% load i18n %}
+
+{% block title %}Azure Blob Storage Synchronization{% endblock %}
+
+{% block vendor_css %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.min.css' %}">
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+{{ block.super }}
+<script src="{% static 'vendor/libs/select2/select2.full.min.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block content %}
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="">
+            <strong>
+              <i class="fa fa-cloud me-4"></i>
+              Synchronize Azure Blob Storage
+            </strong>
+          </h3>
+          <hr>
+          <a href="{% url 'datasource_media_storages:third_party_main' %}" class="btn btn-secondary rounded w-25">
+            <strong>
+              <i class="fa fa-chevron-left me-2"></i>
+              Back to Sync Methods
+            </strong>
+          </a>
+        </div>
+        <div class="card-body">
+
+          <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+            <img src="{% static 'img/custom-illustrations-v2/i2-67.png' %}" width="25%" style="border-radius: 25px;"
+                 class="justify-content-end me-8" alt="Illustration for tips">
+            <span class="alert-icon rounded">
+              <i class="ti ti-bookmark"></i>
+            </span>
+            <div class="d-flex flex-column ps-1">
+              <h5 class="alert-heading mb-2">Tip</h5>
+              <p class="mb-0">
+                Synchronize your Azure Blob Storage container with the assistant to access the media files stored in the
+                container and utilize them to provide better insights and recommendations via your assistants.
+              </p>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+              </button>
+            </div>
+          </div>
+
+          <hr>
+
+          {% if messages %}
+          {% for message in messages %}
+          <div
+            class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-info{% endif %}"
+            role="alert">
+            {{ message }}
+          </div>
+          {% endfor %}
+          {% endif %}
+
+          <hr>
+
+          <form method="post" class="mt-4" action="{% url 'datasource_media_storages:connect_azure_blob' %}">
+            {% csrf_token %}
+            <div class="row p-4">
+              <div class="col-md-6 p-2">
+                <label for="media_storage_id" class="form-label">Media Storage</label>
+                <select class="form-select" id="media_storage_id" name="media_storage_id" required>
+                  {% for storage in media_storages %}
+                  <option value="{{ storage.id }}">{{ storage.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-md-6 p-2">
+                <label for="account_name" class="form-label">Azure Storage Account Name</label>
+                <input type="text" class="form-control" id="account_name" name="account_name" required>
+              </div>
+              <div class="col-md-6 p-2">
+                <label for="account_key" class="form-label">Azure Storage Account Key</label>
+                <input type="password" class="form-control" id="account_key" name="account_key" required>
+              </div>
+              <div class="col-md-6 p-2">
+                <label for="container_name" class="form-label">Container Name</label>
+                <input type="text" class="form-control" id="container_name" name="container_name" required>
+              </div>
+              <div class="col-md-6 p-2">
+                <label for="prefix" class="form-label">Prefix (Optional)</label>
+                <input type="text" class="form-control" id="prefix" name="prefix">
+              </div>
+            </div>
+
+            <hr>
+
+            <div class="mt-4 d-flex">
+              <button type="submit" class="btn btn-primary w-25">
+                <strong>
+                  <i class="fa fa-sync-alt me-2"></i>
+                  Start Synchronization
+                </strong>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+

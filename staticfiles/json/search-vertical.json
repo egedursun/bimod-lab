@@ -7,10 +7,10 @@
       "url": "/app/dashboard"
     },
     {
-      "name": "VoidForger Configuration",
-      "icon": "menu-icon tf-icons ti ti-brain",
-      "slug": "voidforger-configuration",
-      "url": "/app/voidforger/configuration"
+      "name": "Usage & Statistics",
+      "icon": "menu-icon tf-icons ti ti-dashboard",
+      "slug": "dashboard",
+      "url": "/app/dashboard/dashboard"
     },
     {
       "name": "VoidForger Action Memory Logs",

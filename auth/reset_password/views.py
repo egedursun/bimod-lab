@@ -27,7 +27,7 @@ from django.contrib.auth import authenticate, login
 class ResetPasswordView(AuthView):
     def get(self, request, token):
         if request.user.is_authenticated:
-            return redirect("dashboard:main-dashboard")
+            return redirect("dashboard:lab-landing")
         return super().get(request)
 
     def post(self, request, token):
@@ -60,7 +60,7 @@ class ResetPasswordView(AuthView):
             authenticated_user = authenticate(request, username=user.username, password=new_password)
             if authenticated_user:
                 login(request, authenticated_user)
-                return redirect("dashboard:main-dashboard")
+                return redirect("dashboard:lab-landing")
             else:
                 messages.success(request, "Password reset successful. Please log in.")
                 return redirect("login")

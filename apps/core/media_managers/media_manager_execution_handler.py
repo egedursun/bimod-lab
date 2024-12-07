@@ -29,7 +29,12 @@ from PIL import Image
 
 from apps.core.generative_ai.gpt_openai_manager import OpenAIGPTClientManager
 from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
-from apps.core.media_managers.helpers import MediaStorageCopyClient__AWSS3Bucket, MediaStorageCopyClient__GCSBucket
+
+from apps.core.media_managers.helpers import (
+    MediaStorageCopyClient__AWSS3Bucket,
+    MediaStorageCopyClient__GCSBucket,
+    MediaStorageCopyClient__AzureBlob, MediaStorageCopyClient__GoogleDrive
+)
 
 from apps.core.media_managers.utils import (
     FILE_EXTENSION_BIN,
@@ -484,14 +489,70 @@ class MediaManager:
         logger.info("GCP bucket copied into the storage successfully.")
         return True
 
-    def copy_azure_bucket_into_storage(self):
+    @staticmethod
+    def copy_azure_bucket_into_storage(
+        media_storage_id,
+        account_name,
+        account_key,
+        container_name,
+        prefix
+    ):
+        try:
+
+            xc_helper = MediaStorageCopyClient__AzureBlob(
+                account_name=account_name,
+                account_key=account_key,
+                container_name=container_name,
+                media_storage_id=media_storage_id,
+            )
+
+            success = xc_helper.execute_copy_process(
+                prefix=prefix
+            )
+
+            if success is False:
+                logger.error("Error occurred while copying Azure blob container into the storage.")
+                return False
+
+        except Exception as e:
+            logger.error(f"Error occurred while copying Azure blob container into the storage: {e}")
+            return False
+
+        logger.info("Azure blob container copied into the storage successfully.")
+        return True
+
+    @staticmethod
+    def copy_google_drive_folder_items_into_storage(
+        media_storage_id,
+        credentials_json,
+        folder_id
+    ):
+        try:
+
+            xc_helper = MediaStorageCopyClient__GoogleDrive(
+                credentials_json=credentials_json,
+                media_storage_id=media_storage_id,
+            )
+
+            success = xc_helper.execute_copy_process(
+                folder_id=folder_id
+            )
+
+            if success is False:
+                logger.error("Error occurred while copying Google Drive folder items into the storage.")
+                return False
+
+        except Exception as e:
+            logger.error(f"Error occurred while copying Google Drive folder items into the storage: {e}")
+            return False
+
+        logger.info("Google Drive folder items copied into the storage successfully.")
+        return True
+
+    @staticmethod
+    def copy_dropbox_folder_items_into_storage():
         pass
 
-    def copy_google_drive_folder_items_into_storage(self):
-        pass
-
-    def copy_dropbox_folder_items_into_storage(self):
-        pass
-
-    def copy_onedrive_folder_items_into_storage(self):
+    @staticmethod
+    def copy_onedrive_folder_items_into_storage():
         pass

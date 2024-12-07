@@ -113,15 +113,15 @@
                                  alt="Avatar" class="rounded" width="70" height="70"/>
                           </div>
                           <div class="me-2">
-                            <div class="label bg-label-primary rounded mt-2 pt-1 pb-1 ps-2 pe-2">
-                              <div class="client-info text-body"><strong><span
+                            <div class="label btn-primary rounded mt-2 pt-1 pb-1 ps-2 pe-2">
+                              <div class="client-info text-body"><strong class="text-white"><span
                                 class="fw-medium me-4"><i class="fa fa-building me-4"></i> Chat Name: </span><span>
                                 {{ message.chat.chat_name }}
                               </span></strong></div>
                             </div>
                             <div
-                              class="label {% if message.sender_type == "USER" %}bg-label-info{% else %}bg-label-danger{% endif %} rounded mt-2 pt-1 pb-1 ps-2 pe-2">
-                              <div class="client-info text-body"><strong><span class="fw-medium me-4"><i class="fa fa-building me-4"></i>Sender Role: </span><span>{{ message.sender_type|lower|capfirst }}</span></strong>
+                              class="label {% if message.sender_type == "USER" %}btn-info{% else %}btn-danger{% endif %} rounded mt-2 pt-1 pb-1 ps-2 pe-2">
+                              <div class="client-info text-body"><strong class="text-white"><span class="fw-medium me-4"><i class="fa fa-building me-4"></i>Sender Role: </span><span>{{ message.sender_type|lower|capfirst }}</span></strong>
                               </div>
                             </div>
                           </div>

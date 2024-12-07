@@ -21,158 +21,160 @@
   <hr>
 
   <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
-      <img src="{% static 'img/custom-illustrations-v2/i2-49.png' %}" width="25%" style="border-radius: 25px;"
-           class="justify-content-end me-8" alt="Illustration for tips">
-      <span class="alert-icon rounded">
+    <img src="{% static 'img/custom-illustrations-v2/i2-49.png' %}" width="25%" style="border-radius: 25px;"
+         class="justify-content-end me-8" alt="Illustration for tips">
+    <span class="alert-icon rounded">
         <i class="ti ti-bookmark"></i>
       </span>
-      <div class="d-flex flex-column ps-1">
-        <h5 class="alert-heading mb-2">Tip</h5>
-        <p class="mb-0">
-         You can copy the contents of your media storages within third party providers to let your AI assistants
-          quickly have access to the media files. This will help you to create a more efficient and effective AI
-          assistants that can provide better services by achieving more contextual information from the media files.
-        </p>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-        </button>
-      </div>
-    </div>
-    <div class="card-body">
-      {% if messages %}
-        {% for message in messages %}
-          <div
-            class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-info{% endif %}"
-            role="alert">
-            {{ message }}
-          </div>
-        {% endfor %}
-      {% endif %}
-
-  <hr>
-
-  <div class="row gy-6 mb-6">
-    <!-- Amazon Web Services S3 Buckets -->
-    <div class="col-md-6 category-card">
-      <a href="{% url 'datasource_media_storages:connect_aws_s3' %}" class="card-link">
-        <div class="card p-2 h-100 shadow">
-          <div class="card-body text-center">
-            <img src="{% static 'img/media_storages/aws-banner.png' %}" alt="AWS Icon" class="img-fluid mb-4">
-            <hr>
-            <h4 class="card-title">
-              <strong>
-                <i class="fa fa-cloud me-2"></i>
-                Amazon Web Services, S3 Buckets
-              </strong>
-            </h4>
-            <hr>
-            <div class="bg-label-success p-4 mt-4 rounded border border-primary border-2 rounded">
-              <i class="fa fa-lg fa-check-circle text-success me-2"></i>
-              <strong class="text-dark">Available for Integration</strong>
-            </div>
-          </div>
-        </div>
-      </a>
-    </div>
-    <!-- Google Cloud Platform Storage Buckets -->
-    <div class="col-md-6 category-card">
-      <a href="{% url 'datasource_media_storages:connect_gcp_bucket' %}" class="card-link">
-        <div class="card p-2 h-100 shadow">
-          <div class="card-body text-center">
-            <img src="{% static 'img/media_storages/gcp-banner.png' %}" alt="GCP Icon" class="img-fluid mb-4">
-            <hr>
-            <h4 class="card-title"><strong>
-              <i class="fa fa-cloud me-2"></i>
-              Google Cloud Platform, Storage Buckets
-            </strong></h4>
-            <hr>
-            <div class="bg-label-success p-4 mt-4 rounded border border-primary border-2 rounded">
-              <i class="fa fa-lg fa-check-circle text-success me-2"></i>
-              <strong class="text-dark">Available for Integration</strong>
-            </div>
-          </div>
-        </div>
-      </a>
-    </div>
-    <!-- Microsoft Azure Blob Storage -->
-    <div class="col-md-6 category-card">
-      <a href="#" class="card-link">
-        <div class="card p-2 h-100 shadow">
-          <div class="card-body text-center">
-            <img src="{% static 'img/media_storages/azure-banner.png' %}" alt="Azure Icon" class="img-fluid mb-4">
-            <hr>
-            <h4 class="card-title"><strong>
-              <i class="fa fa-cloud me-2"></i>
-              Microsoft Azure, Blob Storage
-            </strong></h4>
-            <hr>
-            <div class="bg-label-warning p-4 mt-4 rounded border border-primary border-2 rounded">
-              <i class="fa fa-lg fa-times-circle text-warning me-2"></i>
-              <strong class="text-dark">Coming Soon</strong>
-            </div>
-          </div>
-        </div>
-      </a>
-    </div>
-    <!-- Google Drive Media Folder -->
-    <div class="col-md-6 category-card">
-      <a href="#" class="card-link">
-        <div class="card p-2 h-100 shadow">
-          <div class="card-body text-center">
-            <img src="{% static 'img/media_storages/google-drive-banner.png' %}" alt="Google Drive Icon" class="img-fluid mb-4">
-            <hr>
-            <h4 class="card-title"><strong>
-              <i class="fa fa-cloud me-2"></i>
-              Google Drive, Media Folder
-            </strong></h4>
-            <hr>
-            <div class="bg-label-warning p-4 mt-4 rounded border border-primary border-2 rounded">
-              <i class="fa fa-lg fa-times-circle text-warning me-2"></i>
-              <strong class="text-dark">Coming Soon</strong>
-            </div>
-          </div>
-        </div>
-      </a>
-    </div>
-    <!-- DropBox Media Folder -->
-    <div class="col-md-6 category-card">
-      <a href="#" class="card-link">
-        <div class="card p-2 h-100 shadow">
-          <div class="card-body text-center">
-            <img src="{% static 'img/media_storages/dropbox-banner.png' %}" alt="DropBox Icon" class="img-fluid mb-4">
-            <hr>
-            <h4 class="card-title"><strong>
-              <i class="fa fa-cloud me-2"></i>
-              DropBox, Media Folder
-            </strong></h4>
-            <hr>
-            <div class="bg-label-warning p-4 mt-4 rounded border border-primary border-2 rounded">
-              <i class="fa fa-lg fa-times-circle text-warning me-2"></i>
-              <strong class="text-dark">Coming Soon</strong>
-            </div>
-          </div>
-        </div>
-      </a>
-    </div>
-    <!-- OneDrive Media Folder -->
-    <div class="col-md-6 category-card">
-      <a href="#" class="card-link">
-        <div class="card p-2 h-100 shadow">
-          <div class="card-body text-center">
-            <img src="{% static 'img/media_storages/onedrive-banner.png' %}" alt="OneDrive Icon" class="img-fluid mb-4">
-            <hr>
-            <h4 class="card-title"><strong>
-              <i class="fa fa-cloud me-2"></i>
-              OneDrive, Media Folder
-            </strong></h4>
-            <hr>
-            <div class="bg-label-warning p-4 mt-4 rounded border border-primary border-2 rounded">
-              <i class="fa fa-lg fa-times-circle text-warning me-2"></i>
-              <strong class="text-dark">Coming Soon</strong>
-            </div>
-          </div>
-        </div>
-      </a>
+    <div class="d-flex flex-column ps-1">
+      <h5 class="alert-heading mb-2">Tip</h5>
+      <p class="mb-0">
+        You can copy the contents of your media storages within third party providers to let your AI assistants
+        quickly have access to the media files. This will help you to create a more efficient and effective AI
+        assistants that can provide better services by achieving more contextual information from the media files.
+      </p>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+      </button>
     </div>
   </div>
-</div>
-{% endblock %}
+  <div class="card-body">
+    {% if messages %}
+    {% for message in messages %}
+    <div
+      class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-info{% endif %}"
+      role="alert">
+      {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+
+    <hr>
+
+    <div class="row gy-6 mb-6">
+      <!-- Amazon Web Services S3 Buckets -->
+      <div class="col-md-6 category-card">
+        <a href="{% url 'datasource_media_storages:connect_aws_s3' %}" class="card-link">
+          <div class="card p-2 h-100 shadow">
+            <div class="card-body text-center">
+              <img src="{% static 'img/media_storages/aws-banner.png' %}" alt="AWS Icon" class="img-fluid mb-4">
+              <hr>
+              <h4 class="card-title">
+                <strong>
+                  <i class="fa fa-cloud me-2"></i>
+                  Amazon Web Services, S3 Buckets
+                </strong>
+              </h4>
+              <hr>
+              <div class="bg-label-success p-4 mt-4 rounded border border-primary border-2 rounded">
+                <i class="fa fa-lg fa-check-circle text-success me-2"></i>
+                <strong class="text-dark">Available for Integration</strong>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+      <!-- Google Cloud Platform Storage Buckets -->
+      <div class="col-md-6 category-card">
+        <a href="{% url 'datasource_media_storages:connect_gcp_bucket' %}" class="card-link">
+          <div class="card p-2 h-100 shadow">
+            <div class="card-body text-center">
+              <img src="{% static 'img/media_storages/gcp-banner.png' %}" alt="GCP Icon" class="img-fluid mb-4">
+              <hr>
+              <h4 class="card-title"><strong>
+                <i class="fa fa-cloud me-2"></i>
+                Google Cloud Platform, Storage Buckets
+              </strong></h4>
+              <hr>
+              <div class="bg-label-success p-4 mt-4 rounded border border-primary border-2 rounded">
+                <i class="fa fa-lg fa-check-circle text-success me-2"></i>
+                <strong class="text-dark">Available for Integration</strong>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+      <!-- Microsoft Azure Blob Storage -->
+      <div class="col-md-6 category-card">
+        <a href="{% url 'datasource_media_storages:connect_azure_blob' %}" class="card-link">
+          <div class="card p-2 h-100 shadow">
+            <div class="card-body text-center">
+              <img src="{% static 'img/media_storages/azure-banner.png' %}" alt="Azure Icon" class="img-fluid mb-4">
+              <hr>
+              <h4 class="card-title"><strong>
+                <i class="fa fa-cloud me-2"></i>
+                Microsoft Azure, Blob Storage
+              </strong></h4>
+              <hr>
+              <div class="bg-label-success p-4 mt-4 rounded border border-primary border-2 rounded">
+                <i class="fa fa-lg fa-check-circle text-success me-2"></i>
+                <strong class="text-dark">Available for Integration</strong>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+      <!-- Google Drive Media Folder -->
+      <div class="col-md-6 category-card">
+        <a href="#" class="card-link">
+          <div class="card p-2 h-100 shadow">
+            <div class="card-body text-center">
+              <img src="{% static 'img/media_storages/google-drive-banner.png' %}" alt="Google Drive Icon"
+                   class="img-fluid mb-4">
+              <hr>
+              <h4 class="card-title"><strong>
+                <i class="fa fa-cloud me-2"></i>
+                Google Drive, Media Folder
+              </strong></h4>
+              <hr>
+              <div class="bg-label-warning p-4 mt-4 rounded border border-primary border-2 rounded">
+                <i class="fa fa-lg fa-times-circle text-warning me-2"></i>
+                <strong class="text-dark">Coming Soon</strong>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+      <!-- DropBox Media Folder -->
+      <div class="col-md-6 category-card">
+        <a href="#" class="card-link">
+          <div class="card p-2 h-100 shadow">
+            <div class="card-body text-center">
+              <img src="{% static 'img/media_storages/dropbox-banner.png' %}" alt="DropBox Icon" class="img-fluid mb-4">
+              <hr>
+              <h4 class="card-title"><strong>
+                <i class="fa fa-cloud me-2"></i>
+                DropBox, Media Folder
+              </strong></h4>
+              <hr>
+              <div class="bg-label-warning p-4 mt-4 rounded border border-primary border-2 rounded">
+                <i class="fa fa-lg fa-times-circle text-warning me-2"></i>
+                <strong class="text-dark">Coming Soon</strong>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+      <!-- OneDrive Media Folder -->
+      <div class="col-md-6 category-card">
+        <a href="#" class="card-link">
+          <div class="card p-2 h-100 shadow">
+            <div class="card-body text-center">
+              <img src="{% static 'img/media_storages/onedrive-banner.png' %}" alt="OneDrive Icon"
+                   class="img-fluid mb-4">
+              <hr>
+              <h4 class="card-title"><strong>
+                <i class="fa fa-cloud me-2"></i>
+                OneDrive, Media Folder
+              </strong></h4>
+              <hr>
+              <div class="bg-label-warning p-4 mt-4 rounded border border-primary border-2 rounded">
+                <i class="fa fa-lg fa-times-circle text-warning me-2"></i>
+                <strong class="text-dark">Coming Soon</strong>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+  {% endblock %}

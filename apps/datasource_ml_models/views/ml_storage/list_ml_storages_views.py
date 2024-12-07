@@ -33,36 +33,46 @@ logger = logging.getLogger(__name__)
 class MLModelView_ManagerList(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
-
-        ##############################
-        # PERMISSION CHECK FOR - LIST_ML_MODEL_CONNECTIONS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.LIST_ML_MODEL_CONNECTIONS):
-            messages.error(self.request, "You do not have permission to list ML Model Connections.")
-            return context
-        ##############################
-
         context_user = self.request.user
 
+        ############################
+        # Permission check
+        ############################
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.LIST_ML_MODEL_CONNECTIONS
+        ):
+            messages.error(self.request, "You do not have permission to list ML Model Connections.")
+            return context
+        ############################
+
         try:
-            mgrs = DataSourceMLModelConnection.objects.filter(
-                assistant__in=Assistant.objects.filter(organization__in=context_user.organizations.all())
-            ).select_related('assistant__organization')
+            user_orgs = context_user.organizations.all()
 
             mgrs_by_orgs = {}
+
+            for org in user_orgs:
+                mgrs_by_orgs[org] = {}
+
+                for agent in org.assistants.all():
+                    mgrs_by_orgs[org][agent] = []
+
+            mgrs = DataSourceMLModelConnection.objects.filter(
+                assistant__organization__in=user_orgs
+            ).select_related('assistant', 'assistant__organization')
+
             for manager in mgrs:
                 org = manager.assistant.organization
                 agent = manager.assistant
-                if org not in mgrs_by_orgs:
-                    mgrs_by_orgs[org] = {}
-                if agent not in mgrs_by_orgs[org]:
-                    mgrs_by_orgs[org][agent] = []
                 mgrs_by_orgs[org][agent].append(manager)
+
+            context['connections_by_organization'] = mgrs_by_orgs
+            logger.info("ML Model Connections were listed.")
+
         except Exception as e:
             logger.error(f"User: {context_user} - ML Model Connection - List Error: {e}")
             messages.error(self.request, 'An error occurred while listing ML Model Connections.')
+
             return context
 
-        context['connections_by_organization'] = mgrs_by_orgs
-        logger.info(f"ML Model Connections were listed.")
         return context

@@ -43,9 +43,11 @@ logger = logging.getLogger(__name__)
 class NoSQLDatabaseView_ManagerList(TemplateView, LoginRequiredMixin):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+        context_user = self.request.user
 
         ##############################
-        # PERMISSION CHECK FOR - LIST_NOSQL_DATABASES
+        # Permission check
+        ##############################
         if not UserPermissionManager.is_authorized(
             user=self.request.user,
             operation=PermissionNames.LIST_NOSQL_DATABASES
@@ -54,36 +56,31 @@ class NoSQLDatabaseView_ManagerList(TemplateView, LoginRequiredMixin):
             return context
         ##############################
 
-        context_user = self.request.user
-
         try:
-            c = NoSQLDatabaseConnection.objects.filter(
-                assistant__in=Assistant.objects.filter(
-                    organization__in=context_user.organizations.all()
-                )
-            ).select_related('assistant__organization')
-
             c_by_orgs = {}
+            user_orgs = context_user.organizations.all()
 
-            for connection in c:
-                orgs = connection.assistant.organization
-                agent = connection.assistant
+            for org in user_orgs:
+                c_by_orgs[org] = {}
+                for assistant in org.assistants.all():
+                    c_by_orgs[org][assistant] = []
 
-                if orgs not in c_by_orgs:
-                    c_by_orgs[orgs] = {}
+            connections = NoSQLDatabaseConnection.objects.filter(
+                assistant__organization__in=user_orgs
+            ).select_related('assistant', 'assistant__organization')
 
-                if agent not in c_by_orgs[orgs]:
-                    c_by_orgs[orgs][agent] = []
+            for connection in connections:
+                org = connection.assistant.organization
+                assistant = connection.assistant
+                c_by_orgs[org][assistant].append(connection)
 
-                c_by_orgs[orgs][agent].append(connection)
+            context['connections_by_organization'] = c_by_orgs
+            logger.info("NoSQL Database Connections were listed.")
 
         except Exception as e:
             logger.error(f"User: {context_user} - NoSQL Data Source - List Error: {e}")
             messages.error(self.request, 'An error occurred while listing NoSQL Data Sources.')
 
             return context
-
-        context['connections_by_organization'] = c_by_orgs
-        logger.info(f"NoSQL Database Connections were listed.")
 
         return context

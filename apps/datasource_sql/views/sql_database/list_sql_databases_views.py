@@ -45,7 +45,8 @@ class SQLDatabaseView_ManagerList(TemplateView, LoginRequiredMixin):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
 
         ##############################
-        # PERMISSION CHECK FOR - LIST_SQL_DATABASES
+        # Check permissions
+        ##############################
         if not UserPermissionManager.is_authorized(
             user=self.request.user,
             operation=PermissionNames.LIST_SQL_DATABASES
@@ -55,27 +56,23 @@ class SQLDatabaseView_ManagerList(TemplateView, LoginRequiredMixin):
         ##############################
 
         context_user = self.request.user
+
+        c_by_orgs = {}
+        user_orgs = context_user.organizations.all()
+        for org in user_orgs:
+            c_by_orgs[org] = {}
+            for assistant in org.assistants.all():
+                c_by_orgs[org][assistant] = []  # Initialize with empty list
+
         try:
-            c = SQLDatabaseConnection.objects.filter(
-                assistant__in=Assistant.objects.filter(
-                    organization__in=context_user.organizations.all()
-                )
-            ).select_related('assistant__organization')
+            connections = SQLDatabaseConnection.objects.filter(
+                assistant__organization__in=user_orgs
+            ).select_related('assistant', 'assistant__organization')
 
-            c_by_orgs = {}
-
-            for connection in c:
-
-                orgs = connection.assistant.organization
-                agent = connection.assistant
-
-                if orgs not in c_by_orgs:
-                    c_by_orgs[orgs] = {}
-
-                if agent not in c_by_orgs[orgs]:
-                    c_by_orgs[orgs][agent] = []
-
-                c_by_orgs[orgs][agent].append(connection)
+            for connection in connections:
+                org = connection.assistant.organization
+                assistant = connection.assistant
+                c_by_orgs[org][assistant].append(connection)
 
         except Exception as e:
             logger.error(f"User: {context_user} - SQL Data Source - List Error: {e}")
@@ -84,6 +81,6 @@ class SQLDatabaseView_ManagerList(TemplateView, LoginRequiredMixin):
             return context
 
         context['connections_by_organization'] = c_by_orgs
-        logger.info(f"SQL Database Connections were listed.")
+        logger.info("SQL Database Connections were listed.")
 
         return context

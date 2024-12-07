@@ -33,6 +33,8 @@ from apps.datasource_media_storages.views import (
     MediaView_ThirdPartyConnectionMain,
     MediaView_ThirdPartyConnection_AWSS3Bucket,
     MediaView_ThirdPartyConnection_GCPStorageBucket,
+    MediaView_ThirdPartyConnection_AzureBlob,
+    MediaView_ThirdPartyConnection_GoogleDrive,
 )
 
 app_name = "datasource_media_storages"
@@ -155,5 +157,21 @@ urlpatterns = [
             template_name="datasource_media_storages/third_party_connection/third_party_connections_gcp_bucket.html"
         ),
         name='connect_gcp_bucket'
+    ),
+
+    path(
+        'third_party_connections/azure_blob/',
+        MediaView_ThirdPartyConnection_AzureBlob.as_view(
+            template_name="datasource_media_storages/third_party_connection/third_party_connection_azure_blob.html"
+        ),
+        name='connect_azure_blob'
+    ),
+
+    path(
+        'third_party_connections/google_drive/',
+        MediaView_ThirdPartyConnection_GoogleDrive.as_view(
+            template_name="datasource_media_storages/third_party_connection/third_party_connection_google_drive.html"
+        ),
+        name='connect_google_drive'
     ),
 ]
