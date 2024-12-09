@@ -45,7 +45,11 @@ class VoidForgerView_RefreshVoidForgerConnections(LoginRequiredMixin, View):
         try:
             voidforger_id = kwargs.get('voidforger_id')
             voidforger = VoidForger.objects.get(id=voidforger_id)
-            user_orgs = Organization.objects.filter(users=self.request.user)
+
+            user_orgs = Organization.objects.filter(
+                users__in=[self.request.user]
+            )
+
             voidforger.organizations.set(user_orgs)
 
         except Exception as e:

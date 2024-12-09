@@ -41,6 +41,7 @@ from apps.core.tool_calls.utils import (
 from apps.core.user_permissions.permission_manager import (
     UserPermissionManager
 )
+from apps.llm_core.models import LLMCore
 
 from apps.message_templates.models import MessageTemplate
 from apps.multimodal_chat.models import MultimodalChat
@@ -74,9 +75,37 @@ class ChatView_MainWorkspace(TemplateView, LoginRequiredMixin):
 
     def get_context_data(self, **kwargs):
 
-        _, _ = VoidForger.objects.get_or_create(
+        context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+
+        context.update(
+            {
+                "layout": "blank",
+                "layout_path": TemplateHelper.set_layout(
+                    "layout_blank.html",
+                    context
+                ),
+            }
+        )
+
+        user_orgs = Organization.objects.filter(
+            users__in=[self.request.user]
+        )
+
+        llm_models = LLMCore.objects.filter(
+            organization__in=user_orgs
+        )
+
+        if not llm_models or len(llm_models) == 0:
+            messages.error(self.request, "You do not have an LLM model to use, to use VoidForger chat, please create an LLM model.")
+            return context
+
+        voidforger_object, _ = VoidForger.objects.get_or_create(
             user=self.request.user
         )
+
+        if voidforger_object.llm_model is None:
+            voidforger_object.llm_model = llm_models[0]
+            voidforger_object.save()
 
         active_chat = None
         context_user = self.request.user
@@ -126,8 +155,6 @@ class ChatView_MainWorkspace(TemplateView, LoginRequiredMixin):
             user=context_user,
             organization__in=orgs
         )
-
-        context = TemplateLayout.init(self, super().get_context_data(**kwargs))
 
         active_chat_msgs = active_chat.voidforger_chat_messages.all().order_by('sent_at') if active_chat else None
 

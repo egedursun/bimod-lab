@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
@@ -26,6 +27,8 @@ from apps.quick_setup_helper.services import (
     action__002_llm_core_create,
     action__003_meta_integration_teams_create,
     action__004_media_storages_create,
+    action__004a_website_storages_create,
+    action__004b_website_items_create,
     action__005_web_browsers_create,
     action__006_ml_model_storages_create,
     action__007_memories_create,
@@ -52,7 +55,7 @@ from apps.quick_setup_helper.services import (
     action__027_code_base_connection_create,
     action__028_file_base_connection_create,
     action__029_invite_users_create,
-    action__030_user_roles_create,
+    action__030_user_roles_create, action__023a_export_voidforger_create,
 )
 
 logger = logging.getLogger(__name__)
@@ -199,6 +202,68 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
                 messages.error(request, f"Failed to create the Media Storages for Assistants.")
                 pass
 
+            metadata__maximum__pages_to_index = request.POST.get('response__maximum__pages_to_index')
+
+            # Action-004a: Create the Website Storage for Assistants
+            success_004a = action__004a_website_storages_create(
+                metadata__user=context_user,
+                metadata__assistants=new_assistants,
+                metadata__maximum__pages_to_index=metadata__maximum__pages_to_index
+            )
+
+            if success_004a is False:
+                print(
+                    f"Failed to create the Website Storage for Assistants. response__assistant_use_cases_list.")
+                messages.error(request, f"Failed to create the Website Storage for Assistants.")
+                pass
+
+            # Action-004b: Index Websites requested by the User
+            requested_website_url_1 = request.POST.get('response__datasource_website_url_1')
+            requested_website_url_2 = request.POST.get('response__datasource_website_url_2')
+            requested_website_url_3 = request.POST.get('response__datasource_website_url_3')
+            requested_website_url_4 = request.POST.get('response__datasource_website_url_4')
+            requested_website_url_5 = request.POST.get('response__datasource_website_url_5')
+
+            requested_website_urls = []
+            if requested_website_url_1 and requested_website_url_1.strip() != "":
+                requested_website_urls.append(requested_website_url_1)
+            if requested_website_url_2 and requested_website_url_2.strip() != "":
+                requested_website_urls.append(requested_website_url_2)
+            if requested_website_url_3 and requested_website_url_3.strip() != "":
+                requested_website_urls.append(requested_website_url_3)
+            if requested_website_url_4 and requested_website_url_4.strip() != "":
+                requested_website_urls.append(requested_website_url_4)
+            if requested_website_url_5 and requested_website_url_5.strip() != "":
+                requested_website_urls.append(requested_website_url_5)
+
+            response__internal_data_sources_decision = request.POST.get('response__internal_data_sources_decision')
+
+            if len(requested_website_urls) != 0 and response__internal_data_sources_decision == 'yes':
+
+                success_004b = action__004b_website_items_create(
+                    metadata__user=context_user,
+                    metadata__website_urls=requested_website_urls,
+                    metadata__assistants=new_assistants
+                )
+
+                if success_004b is False:
+                    print(
+                        f"Failed to index the Websites for Assistants. response__assistant_use_cases_list.")
+                    messages.error(request, f"Failed to index the Websites for Assistants.")
+                    pass
+
+                else:
+                    print(
+                        f"Successfully indexed the Websites for Assistants. response__assistant_use_cases_list.")
+                    logger.info(request, f"Successfully indexed the Websites for Assistants.")
+                    pass
+
+            else:
+                print(
+                    f"No Websites were provided for indexing, skipping.")
+                logger.info(request, f"No Websites were provided for indexing, skipping.")
+                pass
+
             # Action-005: Create the Web Browsers for Assistants
             success_005 = action__005_web_browsers_create(
                 metadata__user=context_user,
@@ -290,7 +355,8 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
         # STEP 4A
         ############################################################################################################
         # Q6A. Do you want to create automated execution schedules for your assistant teams?
-        response__orchestration_scheduled_jobs_decision = request.POST.get('response__assistant_scheduled_jobs_decision')
+        response__orchestration_scheduled_jobs_decision = request.POST.get(
+            'response__assistant_scheduled_jobs_decision')
 
         if response__orchestration_scheduled_jobs_decision == 'yes':
 
@@ -337,7 +403,8 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
                         pass
 
                 else:
-                    messages.error(request, f"Please provide at least '1 (one)' step of process description for the scheduled job, if you are going to create any.")
+                    messages.error(request,
+                                   f"Please provide at least '1 (one)' step of process description for the scheduled job, if you are going to create any.")
                     return redirect("quick_setup_helper:wrapper")
 
             else:
@@ -574,11 +641,13 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
             response__balance_top_up_amount = request.POST.get('response__balance_top_up_amount')
 
             if response__balance_top_up_option is None or response__balance_top_up_option.strip() == "":
-                messages.error(request, f"Balance top-up option is required since you opt for automated balance top-up creation.")
+                messages.error(request,
+                               f"Balance top-up option is required since you opt for automated balance top-up creation.")
                 return redirect("quick_setup_helper:wrapper")
 
             if response__balance_top_up_amount is None or response__balance_top_up_amount.strip() == "":
-                messages.error(request, f"Balance top-up amount is required since you opt for automated balance top-up creation.")
+                messages.error(request,
+                               f"Balance top-up amount is required since you opt for automated balance top-up creation.")
                 return redirect("quick_setup_helper:wrapper")
 
             response__balance_top_up_interval_days = None
@@ -592,11 +661,13 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
                 response__balance_top_up_hard_limit = request.POST.get('response__balance_top_up_hard_limit')
 
                 if response__balance_top_up_interval_days is None or response__balance_top_up_interval_days.strip() == "":
-                    messages.error(request, f"Balance top-up interval days is required since you opt for automated balance top-up creation.")
+                    messages.error(request,
+                                   f"Balance top-up interval days is required since you opt for automated balance top-up creation.")
                     return redirect("quick_setup_helper:wrapper")
 
                 if response__balance_top_up_hard_limit is None or response__balance_top_up_hard_limit.strip() == "":
-                    messages.error(request, f"Balance top-up hard limit is required since you opt for automated balance top-up creation.")
+                    messages.error(request,
+                                   f"Balance top-up hard limit is required since you opt for automated balance top-up creation.")
                     return redirect("quick_setup_helper:wrapper")
 
             elif response__balance_top_up_option == 'threshold_trigger':
@@ -606,11 +677,13 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
                 response__balance_top_up_hard_limit = request.POST.get('response__balance_top_up_hard_limit')
 
                 if response__balance_top_up_threshold_value is None or response__balance_top_up_threshold_value.strip() == "":
-                    messages.error(request, f"Balance top-up threshold value is required since you opt for automated balance top-up creation.")
+                    messages.error(request,
+                                   f"Balance top-up threshold value is required since you opt for automated balance top-up creation.")
                     return redirect("quick_setup_helper:wrapper")
 
                 if response__balance_top_up_hard_limit is None or response__balance_top_up_hard_limit.strip() == "":
-                    messages.error(request, f"Balance top-up hard limit is required since you opt for automated balance top-up creation.")
+                    messages.error(request,
+                                   f"Balance top-up hard limit is required since you opt for automated balance top-up creation.")
                     return redirect("quick_setup_helper:wrapper")
 
             else:
@@ -734,6 +807,19 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
                 messages.error(request, f"Failed to create export Orchestrations for created Orchestrations.")
                 pass
 
+            # Action-023a: Create export VoidForger for the user
+            success_023a = action__023a_export_voidforger_create(
+                metadata__user=context_user,
+                metadata__organization=new_organization,
+                metadata__llm_model=new_llm_model
+            )
+
+            if success_023a is False:
+                print(
+                    f"Failed to create export VoidForger for the user.")
+                messages.error(request, f"Failed to create export VoidForger for the user.")
+                pass
+
         elif response__external_usage_decision == 'no':
             print("User opt out for using assistants externally, skipping.")
             pass
@@ -747,7 +833,6 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
         # STEP 10 (+15%) = 90%
         ############################################################################################################
         # Q15: Do you want to integrate your internal data sources (e.g. SQL/NoSQL databases, Text Documents such as pdf, txt, docx, xlsx, etc., GitHub Code Repositories, Website Storages, Servers/Computers) now?
-        response__internal_data_sources_decision = request.POST.get('response__internal_data_sources_decision')
         if response__internal_data_sources_decision == 'yes':
 
             # Q16: Please fill in the relevant fields of this form to connect your internal data sources.
@@ -757,7 +842,8 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
                 'response__internal_data_sources__data_source_is_read_only')
 
             if response__internal_data_sources__data_source_is_read_only is None or response__internal_data_sources__data_source_is_read_only.strip() == "":
-                messages.error(request, f"Data source read-only specifier field is required since you opt for connecting internal data sources.")
+                messages.error(request,
+                               f"Data source read-only specifier field is required since you opt for connecting internal data sources.")
                 return redirect("quick_setup_helper:wrapper")
 
             if response__internal_data_sources__data_source_is_read_only == 'yes':
@@ -955,10 +1041,6 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
                 print("User opt out for adding a new Code Base connection.")
                 pass
 
-            #       - (4a) Answers for @ Website Storage
-            # TODO-A: Implement Website Storage connection creation
-            pass
-
             #       - (5) Answers for @ File Base (SSH)
             response__internal_data_sources__file_base_os_type = request.POST.get(
                 'response__internal_data_sources__file_base_os_type')
@@ -1052,7 +1134,8 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
                 if success_029 is False:
                     print(
                         f"Failed to add users and their profiles to the organization and application.")
-                    messages.error(request, f"Failed to add users and their profiles to the organization and application.")
+                    messages.error(request,
+                                   f"Failed to add users and their profiles to the organization and application.")
                     pass
 
             else:
@@ -1081,7 +1164,8 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
 
                 # Q20: Which of the following options would work best for your requirements regarding user permissions?
                 response__user_roles_option = request.POST.get('response__user_roles_option')
-                if response__user_roles_option and response__user_roles_option in ['full_access', 'moderation_access', 'limited_access']:
+                if response__user_roles_option and response__user_roles_option in ['full_access', 'moderation_access',
+                                                                                   'limited_access']:
 
                     # Action-030: Create new user roles
                     success_030 = action__030_user_roles_create(

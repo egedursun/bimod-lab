@@ -37,15 +37,44 @@ class VoidForgerView_Configuration(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
-        config, created = VoidForger.objects.get_or_create(user=self.request.user)
+
+        config, created = VoidForger.objects.get_or_create(
+            user=self.request.user
+        )
+
+        user_orgs = Organization.objects.filter(
+            users__in=[self.request.user]
+        )
+
+        llm_models = LLMCore.objects.filter(
+            organization__in=user_orgs
+        )
+
+        if not llm_models or len(llm_models) == 0:
+            messages.error(
+                self.request,
+                "You do not have an LLM model to use, to use VoidForger chat, please create an LLM model."
+            )
+            return context
+
+        if config.llm_model is None:
+            config.llm_model = llm_models[0]
+            config.save()
 
         # Updatable data selections
         user_orgs = Organization.objects.filter(users__in=[self.request.user])
         llm_cores = LLMCore.objects.filter(organization__in=user_orgs)
 
         # Calculate lifetime
-        remaining_lifetime_cycles = config.auto_run_max_lifetime_cycles - config.auto_run_current_cycle
-        remaining_lifetime_pct = (remaining_lifetime_cycles / config.auto_run_max_lifetime_cycles) * 100
+        remaining_lifetime_cycles = (
+            config.auto_run_max_lifetime_cycles - config.auto_run_current_cycle
+        )
+
+        remaining_lifetime_pct = (
+            (
+                remaining_lifetime_cycles / config.auto_run_max_lifetime_cycles
+            ) * 100
+        )
 
         context['config'] = config
         context['user_orgs'] = user_orgs

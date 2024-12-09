@@ -170,6 +170,7 @@ def integrate_meta_integration_team_naked(user: User, organization: Organization
 
             for team_member in created_team_members:
                 created_expert_network_member = ExpertNetworkAssistantReference.objects.create(
+                    network=expert_network,
                     assistant=team_member,
                     context_instructions=team_member.instructions,
                     created_by_user=user,

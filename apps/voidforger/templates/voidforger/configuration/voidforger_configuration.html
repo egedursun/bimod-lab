@@ -181,9 +181,15 @@
                             </span>
                   </h5>
                   <hr>
-                  <a href="{% url 'voidforger:auto_run' config.id %}" class="btn btn-success w-50 mt-4">
-                    <i class="fa fa-play-circle me-2"></i> Activate
-                  </a>
+                  {% if config %}
+                    <a href="{% url 'voidforger:auto_run' config.id %}" class="btn btn-success w-50 mt-4">
+                      <i class="fa fa-play-circle me-2"></i> Activate
+                    </a>
+                  {% else %}
+                    <a href="#" class="btn btn-success w-50 mt-4 disabled">
+                      <i class="fa fa-play-circle me-2"></i> Activate
+                    </a>
+                  {% endif %}
                 {% elif config.runtime_status == "active" %}
                   <h5 class="badge card text-dark p-12 mt-4 mb-4 w-100 border border-primary border-4 rounded">
                             <span class="btn-success p-4 rounded w-75">
@@ -224,14 +230,26 @@
           <div class="row bg-body border border-2 border-primary-subtle rounded mt-8 p-8"
                style="margin-left: 0; margin-right: 0;">
             <div class="col-6">
-              <a href="{% url 'voidforger:refresh_connections' config.id %}" class="btn btn-success w-100">
-                <i class="fa fa-sync-alt me-2"></i> <strong>Refresh Connections</strong>
-              </a>
+              {% if config %}
+                <a href="{% url 'voidforger:refresh_connections' config.id %}" class="btn btn-success w-100">
+                  <i class="fa fa-sync-alt me-2"></i> <strong>Refresh Connections</strong>
+                </a>
+              {% else %}
+                <a href="#" class="btn btn-success w-50 mt-4 disabled">
+                  <i class="fa fa-sync-alt me-2"></i> Refresh Connections
+                </a>
+              {% endif %}
             </div>
             <div class="col-6">
+              {% if config %}
               <a href="{% url 'voidforger:manual_run' config.id %}" class="btn btn-warning w-100">
                 <i class="fa fa-bolt me-2"></i><strong>Manual Trigger</strong>
               </a>
+              {% else %}
+              <a href="#" class="btn btn-warning w-50 mt-4 disabled">
+                <i class="fa fa-bolt me-2"></i> Manual Trigger
+              </a>
+              {% endif %}
             </div>
           </div>
         </div>

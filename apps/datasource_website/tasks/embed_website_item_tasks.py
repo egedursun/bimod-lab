@@ -194,8 +194,6 @@ def clean_previous_data(item: DataSourceWebsiteStorageItem) -> bool:
                 xids = np.array(vector_ids, dtype=np.int64)
                 index.remove_ids(xids)
 
-
-
                 # Save the updated FAISS index back to the file
                 faiss.write_index(index, index_path)
 
@@ -339,7 +337,8 @@ def crawl_and_index_website_item(item_id: int, delete_previous=False) -> bool:
                 return False
 
         except Exception as e:
-            logger.error(f"An error occurred while cleaning the previous data for website item with ID: {item_id}, {e}")
+            logger.error(
+                f"An error occurred while cleaning the previous data for website item with ID: {item_id}, {e}")
 
             return False
 
@@ -352,7 +351,10 @@ def crawl_and_index_website_item(item_id: int, delete_previous=False) -> bool:
         fetch_text_only = False
 
     complete_content = _crawl(item, fetch_text_only=fetch_text_only)
-    logger.info("Complete content: \n\n", complete_content)
+
+    print("The complete content for website URL: ", item.website_url,
+          " has been retrieved successfully, for storage: ", item.storage.id, " and related assistant: ",
+          item.storage.assistant.id)
 
     # Convert the content to string.
     complete_content_string = json.dumps(complete_content, indent=2)
