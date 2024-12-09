@@ -25,168 +25,157 @@
 {% block title %}Update Harmoniq™ Agent{% endblock %}
 
 {% block vendor_css %}
-{{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}">
-<style>
-  /* Select box styling */
-  .select2-container--default .select2-selection--single {
-    min-height: 80px;
-    display: flex;
-    align-items: center;
-  }
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}">
+  <style>
+    /* Select box styling */
+    .select2-container--default .select2-selection--single {
+      min-height: 80px;
+      display: flex;
+      align-items: center;
+    }
 
-  /* Image size inside dropdown items */
-  .select2-results__option img {
-    max-width: 30px;
-    max-height: 30px;
-    margin-right: 10px;
-    border-radius: 50%;
-    vertical-align: middle;
-  }
+    /* Image size inside dropdown items */
+    .select2-results__option img {
+      max-width: 30px;
+      max-height: 30px;
+      margin-right: 10px;
+      border-radius: 50%;
+      vertical-align: middle;
+    }
 
-  /* Image size for selected deity */
-  .select2-selection__rendered img {
-    max-width: 35px;
-    max-height: 35px;
-    margin-right: 8px;
-    border-radius: 50%;
-    vertical-align: middle;
-  }
+    /* Image size for selected deity */
+    .select2-selection__rendered img {
+      max-width: 35px;
+      max-height: 35px;
+      margin-right: 8px;
+      border-radius: 50%;
+      vertical-align: middle;
+    }
 
-  /* Deity card styling */
-  .deity-card {
-    border-radius: 8px;
-    padding: 20px;
-    margin-top: 20px;
-    display: flex;
-    align-items: center;
-    text-align: justify;
-  }
+    /* Deity card styling */
+    .deity-card {
+      border-radius: 8px;
+      padding: 20px;
+      margin-top: 20px;
+      display: flex;
+      align-items: center;
+      text-align: justify;
+    }
 
-  .deity-card img {
-    max-width: 80px;
-    max-height: 80px;
-    margin-right: 20px;
-    border-radius: 10%;
-  }
+    .deity-card img {
+      max-width: 80px;
+      max-height: 80px;
+      margin-right: 20px;
+      border-radius: 10%;
+    }
 
-  .deity-details {
-    flex-grow: 1;
-  }
+    .deity-details {
+      flex-grow: 1;
+    }
 
-  .deity-details h4 {
-    margin-bottom: 5px;
-  }
+    .deity-details h4 {
+      margin-bottom: 5px;
+    }
 
-  .deity-details p {
-    font-size: 1.0em;
-  }
+    .deity-details p {
+      font-size: 1.0em;
+    }
 
-  /* Hidden initially */
-  .deity-card.hidden {
-    display: none;
-  }
-</style>
+    /* Hidden initially */
+    .deity-card.hidden {
+      display: none;
+    }
+  </style>
 {% endblock vendor_css %}
 
 {% block vendor_js %}
-{{ block.super }}
-<script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
-<script>
-  $(document).ready(function () {
-    $('.select2').select2({
-      placeholder: 'Select Expert Networks',
-      allowClear: true,
-      dropdownAutoWidth: true,
-      width: '100%'
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+  <script>
+    $(document).ready(function() {
+      $('.select2').select2({
+        placeholder: 'Select Expert Networks',
+        allowClear: true,
+        dropdownAutoWidth: true,
+        width: '100%'
+      });
     });
-  });
-</script>
+  </script>
 {% endblock vendor_js %}
 
 {% block page_js %}
-<script>
-  $(document).ready(function() {
-    const deityDetails = {
-      'arathreus': {
-        name: 'Arathreus: The Gentle Healer',
-        description: 'Arathreus embodies a polished, empathetic, and patient demeanor, known for being highly personable and diplomatic. With a calming presence, Arathreus speaks in a sophisticated yet warm tone, ensuring customers feel understood and valued. In terms of behavior, Arathreus delivers thoughtful and detailed responses, always prioritizing clarity in communication. When addressing conflicts, Arathreus maintains a calm and collaborative approach, focusing on minimizing friction while ensuring customer satisfaction. ',
-        image: "{% static 'video/thumbnails/arathreus-A.png' %}"
-      },
-      'berathron': {
-        name: 'Berathron: The Joker Lord',
-        description: '\n' +
-          'Berathron is known for being sarcastic and sharp-witted, delivering advice in a brash yet surprisingly effective manner. While Berathron doesn\'t sugar-coat responses, this assistant cuts straight to the point, making them ideal for customers who value efficiency over pleasantries. In behavior, Berathron offers fast and direct solutions, particularly when dealing with technical challenges. They aren\'t afraid to challenge assumptions or propose bold alternatives, which can come off as slightly intimidating but always effective.',
-        image: "{% static 'video/thumbnails/berathron-B.png' %}"
-      },
-      'celesthar': {
-        name: 'Celesthar: The Wise Advisor',
-        description: 'Celesthar embodies wisdom, serenity, and seriousness, projecting calm authority that makes them ideal for guiding customers through complex challenges. Their approach is reflective and thoughtful, providing profound insights and carefully reasoned advice, particularly in strategic situations. Celesthar avoids small talk, focusing instead on delivering practical solutions with an emphasis on long-term outcomes',
-        image: "{% static 'video/thumbnails/celesthar-C.png' %}"
-      },
-      'demorthon': {
-        name: 'Demorthon: The Elder Commander',
-        description: '\n' +
-          'Demorthon is characterized by an authoritative, no-nonsense, and direct personality, embodying the role of an elder statesman who speaks with experience and gravitas. This assistant instills confidence in customers by offering firm and unambiguous guidance. In behavior, Demorthon takes command of difficult situations, providing clear and uncompromising solutions. They excel in crisis scenarios, guiding customers through tough decisions with decisive actions.',
-        image: "{% static 'video/thumbnails/demorthon-D.png' %}"
-      },
-      'eratheris': {
-        name: 'Eratheris: The Diplomat',
-        description: '\n' +
-          'Eratheris is charismatic, graceful, and persuasive, expertly balancing charm with strategic thinking. Known for being diplomatic yet assertive, Eratheris excels at handling negotiations or tricky customer interactions by using charm to de-escalate tense situations. In behavior, Eratheris offers elegant, well-rounded solutions that strike a balance between customer needs and business interests. This assistant is particularly effective in customer retention scenarios, using charisma to rebuild trust and maintain relationships.',
-        image: "{% static 'video/thumbnails/eratheris-E.png' %}"
-      }
-    };
+  <script>
+    $(document).ready(function() {
+      const deityDetails = {
+        'arathreus': {
+          name: 'Arathreus: The Gentle Healer',
+          description: 'Arathreus embodies a polished, empathetic, and patient demeanor, known for being highly personable and diplomatic. With a calming presence, Arathreus speaks in a sophisticated yet warm tone, ensuring customers feel understood and valued. In terms of behavior, Arathreus delivers thoughtful and detailed responses, always prioritizing clarity in communication. When addressing conflicts, Arathreus maintains a calm and collaborative approach, focusing on minimizing friction while ensuring customer satisfaction. ',
+          image: "{% static 'video/thumbnails/arathreus-A.png' %}"
+        },
+        'berathron': {
+          name: 'Berathron: The Joker Lord',
+          description: '\n' +
+            'Berathron is known for being sarcastic and sharp-witted, delivering advice in a brash yet surprisingly effective manner. While Berathron doesn\'t sugar-coat responses, this assistant cuts straight to the point, making them ideal for customers who value efficiency over pleasantries. In behavior, Berathron offers fast and direct solutions, particularly when dealing with technical challenges. They aren\'t afraid to challenge assumptions or propose bold alternatives, which can come off as slightly intimidating but always effective.',
+          image: "{% static 'video/thumbnails/berathron-B.png' %}"
+        },
+        'celesthar': {
+          name: 'Celesthar: The Wise Advisor',
+          description: 'Celesthar embodies wisdom, serenity, and seriousness, projecting calm authority that makes them ideal for guiding customers through complex challenges. Their approach is reflective and thoughtful, providing profound insights and carefully reasoned advice, particularly in strategic situations. Celesthar avoids small talk, focusing instead on delivering practical solutions with an emphasis on long-term outcomes',
+          image: "{% static 'video/thumbnails/celesthar-C.png' %}"
+        },
+        'demorthon': {
+          name: 'Demorthon: The Elder Commander',
+          description: '\n' +
+            'Demorthon is characterized by an authoritative, no-nonsense, and direct personality, embodying the role of an elder statesman who speaks with experience and gravitas. This assistant instills confidence in customers by offering firm and unambiguous guidance. In behavior, Demorthon takes command of difficult situations, providing clear and uncompromising solutions. They excel in crisis scenarios, guiding customers through tough decisions with decisive actions.',
+          image: "{% static 'video/thumbnails/demorthon-D.png' %}"
+        },
+        'eratheris': {
+          name: 'Eratheris: The Diplomat',
+          description: '\n' +
+            'Eratheris is charismatic, graceful, and persuasive, expertly balancing charm with strategic thinking. Known for being diplomatic yet assertive, Eratheris excels at handling negotiations or tricky customer interactions by using charm to de-escalate tense situations. In behavior, Eratheris offers elegant, well-rounded solutions that strike a balance between customer needs and business interests. This assistant is particularly effective in customer retention scenarios, using charisma to rebuild trust and maintain relationships.',
+          image: "{% static 'video/thumbnails/eratheris-E.png' %}"
+        }
+      };
 
-    function formatDeity(deity) {
-      if (!deity.id) {
-        return deity.text;
-      }
-      var deityThumbnailName = '';
-      if (deity.element.value === 'arathreus'){
-        deityThumbnailName = 'Arathreus-A';
-      } else if (deity.element.value === 'berathron'){
-        deityThumbnailName = 'Berathron-B';
-      } else if (deity.element.value === 'celesthar'){
-        deityThumbnailName = 'Celesthar-C';
-      } else if (deity.element.value === 'demorthon'){
-        deityThumbnailName = 'Demorthon-D';
-      } else if (deity.element.value === 'eratheris'){
-        deityThumbnailName = 'Eratheris-E';
-      }
-      var baseUrl = "{% static 'video/thumbnails/' %}";
-      var $deity = $(
-        '<span>' +
-        '<img src="' + baseUrl + deityThumbnailName + '.png" class="rounded" /> ' +
-        deity.text +
-        '</span>'
-      );
-      return $deity;
-    };
+      function formatDeity(deity) {
+        if (!deity.id) {
+          return deity.text;
+        }
+        var deityThumbnailName = '';
+        if (deity.element.value === 'arathreus') {
+          deityThumbnailName = 'Arathreus-A';
+        } else if (deity.element.value === 'berathron') {
+          deityThumbnailName = 'Berathron-B';
+        } else if (deity.element.value === 'celesthar') {
+          deityThumbnailName = 'Celesthar-C';
+        } else if (deity.element.value === 'demorthon') {
+          deityThumbnailName = 'Demorthon-D';
+        } else if (deity.element.value === 'eratheris') {
+          deityThumbnailName = 'Eratheris-E';
+        }
+        var baseUrl = "{% static 'video/thumbnails/' %}";
+        var $deity = $(
+          '<span>' +
+          '<img src="' + baseUrl + deityThumbnailName + '.png" class="rounded" /> ' +
+          deity.text +
+          '</span>'
+        );
+        return $deity;
+      };
 
-    // Initialize Select2
-    $('#harmoniq_deity').select2({
-      templateResult: formatDeity,
-      templateSelection: formatDeity,
-      width: '50%'
-    });
+      // Initialize Select2
+      $('#harmoniq_deity').select2({
+        templateResult: formatDeity,
+        templateSelection: formatDeity,
+        width: '50%'
+      });
 
-    // Pre-select the existing deity (using context from the view)
-    $('#harmoniq_deity').val('{{ harmoniq_agent.harmoniq_deity }}').trigger('change');
+      // Pre-select the existing deity (using context from the view)
+      $('#harmoniq_deity').val('{{ harmoniq_agent.harmoniq_deity }}').trigger('change');
 
-    // Populate deity card with existing agent details
-    var selectedDeity = '{{ harmoniq_agent.harmoniq_deity }}';
-    var details = deityDetails[selectedDeity];
-    if (details) {
-      $('#deity-card img').attr('src', details.image);
-      $('#deity-name').text(details.name);
-      $('#deity-description').text(details.description);
-      $('#deity-card').removeClass('hidden');
-    }
-
-    // Update deity card when another deity is selected
-    $('#harmoniq_deity').on('select2:select', function(e) {
-      var selectedDeity = e.params.data.id;
+      // Populate deity card with existing agent details
+      var selectedDeity = '{{ harmoniq_agent.harmoniq_deity }}';
       var details = deityDetails[selectedDeity];
       if (details) {
         $('#deity-card img').attr('src', details.image);
@@ -194,126 +183,143 @@
         $('#deity-description').text(details.description);
         $('#deity-card').removeClass('hidden');
       }
+
+      // Update deity card when another deity is selected
+      $('#harmoniq_deity').on('select2:select', function(e) {
+        var selectedDeity = e.params.data.id;
+        var details = deityDetails[selectedDeity];
+        if (details) {
+          $('#deity-card img').attr('src', details.image);
+          $('#deity-name').text(details.name);
+          $('#deity-description').text(details.description);
+          $('#deity-card').removeClass('hidden');
+        }
+      });
     });
-  });
-</script>
+  </script>
 {% endblock page_js %}
 
 {% block content %}
-<div class="row g-6 mb-6">
-  <div class="col-12">
-    <h3 class="mb-0"><strong>Update Harmoniq™ Agent</strong></h3>
-  </div>
-  <a href="{% url 'harmoniq:list' %}">
-    <button class="btn btn-secondary mt-2 mb-2">
-      <i class="fa fa-dashboard me-4"></i>
-      <strong>Manage Harmoniq™ Agents</strong>
-    </button>
-  </a>
+  <div class="row g-6 mb-6">
+    <div class="col-12">
+      <h3 class="mb-0"><strong>Update Harmoniq™ Agent</strong></h3>
+    </div>
+    <a href="{% url 'harmoniq:list' %}">
+      <button class="btn btn-secondary mt-2 mb-2">
+        <i class="fa fa-dashboard me-4"></i>
+        <strong>Manage Harmoniq™ Agents</strong>
+      </button>
+    </a>
 
-  <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-11 ms-4 align-items-center" role="alert">
-    <img src="{% static 'img/custom-illustrations-v2/i2-63.png' %}" width="25%" style="border-radius: 25px;"
-         class="justify-content-end me-8" alt="Illustration for tip">
-    <span class="alert-icon rounded">
+    <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-11 ms-4 align-items-center"
+         role="alert">
+      <img src="{% static 'img/custom-illustrations-v2/i2-63.png' %}" width="25%" style="border-radius: 25px;"
+           class="justify-content-end me-8" alt="Illustration for tip">
+      <span class="alert-icon rounded">
         <i class="ti ti-bookmark"></i>
       </span>
-    <div class="d-flex flex-column ps-1">
-      <h5 class="alert-heading mb-2">Tip</h5>
-      <p class="mb-0">
-        In this page, you can update the details of a Harmoniq™ Agent. Make sure to select the correct organization,
-        LLM model, and Harmoniq™ Deity for the agent. You can also update the agent's name, description, and optional
-        instructions. Click the "Save Changes" button to update the agent.
-      </p>
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-      </button>
-    </div>
-  </div>
-
-  <!-- Same structure as the create form, but with values pre-populated -->
-  <form method="post" action="" class="mt-4">
-    {% csrf_token %}
-    <div class="card mb-4 p-4">
-      <div class="card-body">
-        <!-- Pre-populated fields from the context -->
-        <div class="row g-6 mb-6">
-          <div class="col-6">
-            <label for="organization" class="form-label">Select Organization</label>
-            <select class="form-select" id="organization" name="organization" required>
-              {% for organization in organizations %}
-              <option value="{{ organization.id }}" {% if organization.id == harmoniq_agent.organization.id %}selected{% endif %}>{{ organization.name }}</option>
-              {% endfor %}
-            </select>
-          </div>
-          <div class="col-6">
-            <label for="llm_model" class="form-label">Select LLM Model</label>
-            <select class="form-select" id="llm_model" name="llm_model" required>
-              {% for llm_model in llm_models %}
-              <option value="{{ llm_model.id }}" {% if llm_model.id == harmoniq_agent.llm_model.id %}selected{% endif %}>{{ llm_model.nickname }}</option>
-              {% endfor %}
-            </select>
-          </div>
-        </div>
-
-        <!-- Harmoniq Deity Selection with Images -->
-        <div class="row g-6 mb-6">
-          <div class="col-12">
-            <label for="harmoniq_deity" class="form-label">Select Harmoniq™ Deity</label>
-            <select class="form-select" id="harmoniq_deity" name="harmoniq_deity" required>
-              <option value="arathreus">Arathreus</option>
-              <option value="berathron">Berathron</option>
-              <option value="celesthar">Celesthar</option>
-              <option value="demorthon">Demorthon</option>
-              <option value="eratheris">Eratheris</option>
-            </select>
-          </div>
-        </div>
-
-        <!-- Deity Card (dynamic display) -->
-        <div id="deity-card" class="deity-card card-border-shadow-primary hidden border border-primary border-4 rounded">
-          <img src="" alt="Deity Image">
-          <div class="deity-details">
-            <h4 id="deity-name" class="fw-extrabold"></h4>
-            <p id="deity-description"></p>
-          </div>
-        </div>
-
-        <!-- Agent Name -->
-        <div class="row g-6 mb-6 mt-4">
-          <div class="col-4">
-            <label for="name" class="form-label">Agent Name</label>
-            <input type="text" class="form-control" id="name" name="name" value="{{ harmoniq_agent.name }}" required>
-          </div>
-          <div class="col-4">
-            <label for="description" class="form-label">Agent Description</label>
-            <textarea class="form-control" id="description" name="description" rows="1" required>{{ harmoniq_agent.description }}</textarea>
-          </div>
-          <div class="col-4">
-            <label for="optional_instructions" class="form-label">Optional Instructions</label>
-            <textarea class="form-control" id="optional_instructions" name="optional_instructions" rows="1">{{ harmoniq_agent.optional_instructions }}</textarea>
-          </div>
-        </div>
-
-        <div class="row g-6 mb-6">
-          <label class="form-label" for="expert_networks">Expert Networks</label>
-          <select class="form-select select2" id="expert_networks" name="expert_networks" multiple="multiple">
-            {% for network in expert_networks %}
-              <option value="{{ network.id }}"
-                      {% if network.id in selected_expert_networks %}selected{% endif %}>{{ network.name }}</option>
-            {% endfor %}
-          </select>
-        </div>
-
-        <!-- Submit Button -->
-        <div class="col-12">
-          <button type="submit" class="btn btn-primary w-25">
-            <strong>
-              <i class="fa fa-save me-4"></i>
-              Save Changes
-            </strong>
-          </button>
-        </div>
+      <div class="d-flex flex-column ps-1">
+        <h5 class="alert-heading mb-2">Tip</h5>
+        <p class="mb-0">
+          In this page, you can update the details of a Harmoniq™ Agent. Make sure to select the correct organization,
+          LLM model, and Harmoniq™ Deity for the agent. You can also update the agent's name, description, and optional
+          instructions. Click the "Save Changes" button to update the agent.
+        </p>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+        </button>
       </div>
     </div>
-  </form>
-</div>
+
+    <!-- Same structure as the create form, but with values pre-populated -->
+    <form method="post" action="" class="mt-4">
+      {% csrf_token %}
+      <div class="card mb-4 p-4">
+        <div class="card-body">
+          <!-- Pre-populated fields from the context -->
+          <div class="row g-6 mb-6">
+            <div class="col-6">
+              <label for="organization" class="form-label">Select Organization</label>
+              <select class="form-select" id="organization" name="organization" required>
+                {% for organization in organizations %}
+                  <option value="{{ organization.id }}"
+                          {% if organization.id == harmoniq_agent.organization.id %}selected{% endif %}>{{ organization.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-6">
+              <label for="llm_model" class="form-label">Select LLM Model</label>
+              <select class="form-select" id="llm_model" name="llm_model" required>
+                {% for llm_model in llm_models %}
+                  <option value="{{ llm_model.id }}"
+                          {% if llm_model.id == harmoniq_agent.llm_model.id %}selected{% endif %}>{{ llm_model.nickname }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+
+          <!-- Harmoniq Deity Selection with Images -->
+          <div class="row g-6 mb-6">
+            <div class="col-12">
+              <label for="harmoniq_deity" class="form-label">Select Harmoniq™ Deity</label>
+              <select class="form-select" id="harmoniq_deity" name="harmoniq_deity" required>
+                <option value="arathreus">Arathreus</option>
+                <option value="berathron">Berathron</option>
+                <option value="celesthar">Celesthar</option>
+                <option value="demorthon">Demorthon</option>
+                <option value="eratheris">Eratheris</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Deity Card (dynamic display) -->
+          <div id="deity-card"
+               class="deity-card card-border-shadow-primary hidden border border-primary border-4 rounded">
+            <img src="" alt="Deity Image">
+            <div class="deity-details">
+              <h4 id="deity-name" class="fw-extrabold"></h4>
+              <p id="deity-description"></p>
+            </div>
+          </div>
+
+          <!-- Agent Name -->
+          <div class="row g-6 mb-6 mt-4">
+            <div class="col-4">
+              <label for="name" class="form-label">Agent Name</label>
+              <input type="text" class="form-control" id="name" name="name" value="{{ harmoniq_agent.name }}" required>
+            </div>
+            <div class="col-4">
+              <label for="description" class="form-label">Agent Description</label>
+              <textarea class="form-control" id="description" name="description" rows="1"
+                        required>{{ harmoniq_agent.description }}</textarea>
+            </div>
+            <div class="col-4">
+              <label for="optional_instructions" class="form-label">Optional Instructions</label>
+              <textarea class="form-control" id="optional_instructions" name="optional_instructions"
+                        rows="1">{{ harmoniq_agent.optional_instructions }}</textarea>
+            </div>
+          </div>
+
+          <div class="row g-6 mb-6">
+            <label class="form-label" for="expert_networks">Expert Networks</label>
+            <select class="form-select select2" id="expert_networks" name="expert_networks" multiple="multiple">
+              {% for network in expert_networks %}
+                <option value="{{ network.id }}"
+                        {% if network.id in selected_expert_networks %}selected{% endif %}>{{ network.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="col-12">
+            <button type="submit" class="btn btn-primary w-25">
+              <strong>
+                <i class="fa fa-save me-4"></i>
+                Save Changes
+              </strong>
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
 {% endblock %}

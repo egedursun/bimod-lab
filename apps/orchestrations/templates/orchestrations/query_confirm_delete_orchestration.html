@@ -1,21 +1,21 @@
-  <!--
-  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
-  ~
-  ~ Project: Bimod.io™
-  ~ File: query_confirm_delete_orchestration.html
-  ~ Last Modified: 2024-10-05 01:39:48
-  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-05 14:42:41
-  ~
-  ~ This software is proprietary and confidential. Unauthorized copying,
-  ~ distribution, modification, or use of this software, whether for
-  ~ commercial, academic, or any other purpose, is strictly prohibited
-  ~ without the prior express written permission of BMD™ Autonomous
-  ~ Holdings.
-  ~
-  ~  For permission inquiries, please contact: admin@Bimod.io.
-  ~
-  -->
+<!--
+~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+~
+~ Project: Bimod.io™
+~ File: query_confirm_delete_orchestration.html
+~ Last Modified: 2024-10-05 01:39:48
+~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+~ Created: 2024-10-05 14:42:41
+~
+~ This software is proprietary and confidential. Unauthorized copying,
+~ distribution, modification, or use of this software, whether for
+~ commercial, academic, or any other purpose, is strictly prohibited
+~ without the prior express written permission of BMD™ Autonomous
+~ Holdings.
+~
+~  For permission inquiries, please contact: admin@Bimod.io.
+~
+-->
 
 {% extends layout_path %}
 {% load static %}
@@ -24,7 +24,7 @@
 {% block title %}Delete Query{% endblock %}
 
 {% block content %}
-<div class="row">
+  <div class="row">
     <div class="col-xl mb-6">
       <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
@@ -50,7 +50,8 @@
               • This deletion operation is completely irreversible and will entirely remove the query and all
               associated logs from the system.
             </strong></h6>
-            <img src="{% static 'img/custom-illustrations-v2/i2-102.png' %}" width="25%" style="border-radius:25px;" class="justify-content-end" alt="Illustration for tip">
+            <img src="{% static 'img/custom-illustrations-v2/i2-102.png' %}" width="25%" style="border-radius:25px;"
+                 class="justify-content-end" alt="Illustration for tip">
             <hr>
             <button type="submit" class="btn btn-danger mt-4 me-4"><strong>
               <i class="fa fa-skull-crossbones me-2"></i>

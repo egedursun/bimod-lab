@@ -46,11 +46,13 @@
         <div class="card-body">
           <form method="post">
             {% csrf_token %}
-            <p>Are you sure you want to delete the LeanMod triggered job <strong>"{{ triggered_job.name }}"</strong>?</p><br>
+            <p>Are you sure you want to delete the LeanMod triggered job <strong>"{{ triggered_job.name }}"</strong>?
+            </p><br>
             <h6><strong>
               • This operation will result in the complete removal of the LeanMod triggered job from the system.
               <br>
-              • This deletion operation is completely irreversible and will entirely remove the LeanMod triggered job and all
+              • This deletion operation is completely irreversible and will entirely remove the LeanMod triggered job
+              and all
               associated data from the system.
             </strong></h6>
             <img src="{% static 'img/custom-illustrations-v2/i2-73.png' %}" width="25%" style="border-radius: 25px;"

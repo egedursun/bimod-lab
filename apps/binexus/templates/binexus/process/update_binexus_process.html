@@ -17,8 +17,6 @@
   ~
   -->
 
-<!-- templates/binexus/process/update_binexus_process.html -->
-
 {% extends layout_path %}
 {% load static %}
 {% load i18n %}
@@ -27,7 +25,7 @@
 
 {% block vendor_css %}
   {{ block.super }}
-  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
 {% endblock vendor_css %}
 
 {% block vendor_js %}
@@ -36,7 +34,7 @@
   <script>
     $(document).ready(function() {
       $('#llm_model, #organization').select2({
-        placeholder: "Select an option",
+        placeholder: 'Select an option',
         allowClear: true,
         width: '100%'
       });
@@ -53,10 +51,10 @@
     });
   </script>
   <script>
-      function addKeyValuePair() {
-      const container = document.getElementById("key-value-container");
-      const keyValuePair = document.createElement("div");
-      keyValuePair.classList.add("key-value-pair", "row", "mb-4");
+    function addKeyValuePair() {
+      const container = document.getElementById('key-value-container');
+      const keyValuePair = document.createElement('div');
+      keyValuePair.classList.add('key-value-pair', 'row', 'mb-4');
 
       keyValuePair.innerHTML = `
           <div class="col-5">
@@ -73,31 +71,31 @@
           </div>
       `;
       container.appendChild(keyValuePair);
-  }
+    }
 
-  function removeKeyValuePair(element) {
-      element.closest(".key-value-pair").remove();
-  }
+    function removeKeyValuePair(element) {
+      element.closest('.key-value-pair').remove();
+    }
 
-  function splitValuesToBadges(input) {
+    function splitValuesToBadges(input) {
       const values = input.value.split(',');
       const badgesContainer = input.nextElementSibling;
       badgesContainer.innerHTML = '';
       values.forEach(value => {
-          const trimmedValue = value.trim();
-          if (trimmedValue) {
-              const badge = document.createElement('span');
-              badge.classList.add('badge', 'btn-primary', 'm-1', 'p-2');
-              badge.textContent = trimmedValue;
-              badgesContainer.appendChild(badge);
-          }
+        const trimmedValue = value.trim();
+        if (trimmedValue) {
+          const badge = document.createElement('span');
+          badge.classList.add('badge', 'btn-primary', 'm-1', 'p-2');
+          badge.textContent = trimmedValue;
+          badgesContainer.appendChild(badge);
+        }
       });
-  }
+    }
   </script>
 {% endblock vendor_js %}
 
 {% block content %}
-<div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+  <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
     <img src="{% static 'img/custom-illustrations-v2/i2-63.png' %}" width="25%" style="border-radius:25px;"
          class="justify-content-end me-8" alt="Illustration for tip">
     <span class="alert-icon rounded">
@@ -168,143 +166,170 @@
 
               <div class="col-4 mb-6">
                 <label class="form-label" for="process_name">Process Name</label>
-                <input type="text" class="form-control" id="process_name" name="process_name" placeholder="Enter process name" value="{{ binexus_process.process_name }}" required>
+                <input type="text" class="form-control" id="process_name" name="process_name"
+                       placeholder="Enter process name" value="{{ binexus_process.process_name }}" required>
               </div>
 
               <div class="col-4 mb-6">
                 <label class="form-label" for="process_description">Process Description</label>
-                <textarea class="form-control" id="process_description" name="process_description" rows="2" placeholder="Enter a description for this process.">{{ binexus_process.process_description }}</textarea>
+                <textarea class="form-control" id="process_description" name="process_description" rows="2"
+                          placeholder="Enter a description for this process.">{{ binexus_process.process_description }}</textarea>
               </div>
 
               <div class="col-4 mb-6">
                 <label class="form-label" for="process_objective">Process Objective</label>
-                <textarea class="form-control" id="process_objective" name="process_objective" rows="2" placeholder="Enter process objective.">{{ binexus_process.process_objective }}</textarea>
+                <textarea class="form-control" id="process_objective" name="process_objective" rows="2"
+                          placeholder="Enter process objective.">{{ binexus_process.process_objective }}</textarea>
               </div>
 
               <div class="col-4 mb-6">
                 <label class="form-label" for="process_success_criteria">Process Success Criteria</label>
-                <textarea class="form-control" id="process_success_criteria" name="process_success_criteria" rows="2" placeholder="Enter success criteria for this process.">{{ binexus_process.process_success_criteria }}</textarea>
+                <textarea class="form-control" id="process_success_criteria" name="process_success_criteria" rows="2"
+                          placeholder="Enter success criteria for this process.">{{ binexus_process.process_success_criteria }}</textarea>
               </div>
 
               <div class="col-4 mb-6">
                 <img src="{% static 'img/binexus/bx-1.png' %}" width="100%" style="border-radius:50px;"
                      class="justify-content-end me-8 p-8 image" alt="Hadron prime image">
                 <label class="form-label" for="fitness_manager_selectiveness">Fitness Manager Selectiveness</label>
-                <input type="number" class="form-control" id="fitness_manager_selectiveness" name="fitness_manager_selectiveness" min="0.0" max="1.0" step="0.1" value="{{ binexus_process.fitness_manager_selectiveness }}">
+                <input type="number" class="form-control" id="fitness_manager_selectiveness"
+                       name="fitness_manager_selectiveness" min="0.0" max="1.0" step="0.1"
+                       value="{{ binexus_process.fitness_manager_selectiveness }}">
               </div>
 
               <div class="col-4 mb-6">
                 <img src="{% static 'img/binexus/bx-2.png' %}" width="100%" style="border-radius:50px;"
                      class="justify-content-end me-8 p-8 image" alt="Hadron prime image">
                 <label class="form-label" for="optimization_generations">Optimization Generations</label>
-                <input type="number" class="form-control" id="optimization_generations" name="optimization_generations" min="1" max="25" value="{{ binexus_process.optimization_generations }}" required>
+                <input type="number" class="form-control" id="optimization_generations" name="optimization_generations"
+                       min="1" max="25" value="{{ binexus_process.optimization_generations }}" required>
               </div>
 
               <div class="col-4 mb-6">
                 <img src="{% static 'img/binexus/bx-3.png' %}" width="100%" style="border-radius:50px;"
                      class="justify-content-end me-8 p-8 image" alt="Hadron prime image">
                 <label class="form-label" for="optimization_population_size">Optimization Population Size</label>
-                <input type="number" class="form-control" id="optimization_population_size" name="optimization_population_size" min="1" max="25" value="{{ binexus_process.optimization_population_size }}" required>
+                <input type="number" class="form-control" id="optimization_population_size"
+                       name="optimization_population_size" min="1" max="25"
+                       value="{{ binexus_process.optimization_population_size }}" required>
               </div>
 
               <div class="col-3 mb-6">
                 <img src="{% static 'img/binexus/bx-4.png' %}" width="100%" style="border-radius:50px;"
                      class="justify-content-end me-8 p-8 image" alt="Hadron prime image">
                 <label class="form-label" for="optimization_breeding_pool_rate">Optimization Breeding Pool Rate</label>
-                <input type="number" class="form-control" id="optimization_breeding_pool_rate" name="optimization_breeding_pool_rate" min="0" max="1" step="0.05" value="{{ binexus_process.optimization_breeding_pool_rate }}" required>
+                <input type="number" class="form-control" id="optimization_breeding_pool_rate"
+                       name="optimization_breeding_pool_rate" min="0" max="1" step="0.05"
+                       value="{{ binexus_process.optimization_breeding_pool_rate }}" required>
               </div>
 
               <div class="col-3 mb-6">
                 <img src="{% static 'img/binexus/bx-5.png' %}" width="100%" style="border-radius:50px;"
                      class="justify-content-end me-8 p-8 image" alt="Hadron prime image">
-                <label class="form-label" for="optimization_mutation_rate_per_individual">Mutation Rate per Individual</label>
-                <input type="number" class="form-control" id="optimization_mutation_rate_per_individual" name="optimization_mutation_rate_per_individual" min="0" max="1" step="0.01" value="{{ binexus_process.optimization_mutation_rate_per_individual }}" required>
+                <label class="form-label" for="optimization_mutation_rate_per_individual">Mutation Rate per
+                  Individual</label>
+                <input type="number" class="form-control" id="optimization_mutation_rate_per_individual"
+                       name="optimization_mutation_rate_per_individual" min="0" max="1" step="0.01"
+                       value="{{ binexus_process.optimization_mutation_rate_per_individual }}" required>
               </div>
 
               <div class="col-3 mb-6">
                 <img src="{% static 'img/binexus/bx-6.png' %}" width="100%" style="border-radius:50px;"
                      class="justify-content-end me-8 p-8 image" alt="Hadron prime image">
                 <label class="form-label" for="optimization_mutation_rate_per_gene">Mutation Rate per Gene</label>
-                <input type="number" class="form-control" id="optimization_mutation_rate_per_gene" name="optimization_mutation_rate_per_gene" min="0" max="1" step="0.01" value="{{ binexus_process.optimization_mutation_rate_per_gene }}" required>
+                <input type="number" class="form-control" id="optimization_mutation_rate_per_gene"
+                       name="optimization_mutation_rate_per_gene" min="0" max="1" step="0.01"
+                       value="{{ binexus_process.optimization_mutation_rate_per_gene }}" required>
               </div>
 
               <div class="col-3 mb-6">
                 <img src="{% static 'img/binexus/bx-7.png' %}" width="100%" style="border-radius:50px;"
                      class="justify-content-end me-8 p-8 image" alt="Hadron prime image">
                 <label class="form-label" for="optimization_crossover_rate">Crossover Rate</label>
-                <input type="number" class="form-control" id="optimization_crossover_rate" name="optimization_crossover_rate" min="0" max="1" step="0.01" value="{{ binexus_process.optimization_crossover_rate }}" required>
+                <input type="number" class="form-control" id="optimization_crossover_rate"
+                       name="optimization_crossover_rate" min="0" max="1" step="0.01"
+                       value="{{ binexus_process.optimization_crossover_rate }}" required>
               </div>
 
               <div class="col-12 mb-6 mt-4">
-                  <h5><strong>Additional Genes (Optional)</strong></h5>
-                  <div id="key-value-container">
-                      {% if binexus_process.additional_genes %}
-                          {% for gene_name, gene_values in binexus_process.additional_genes.items %}
-                              <div class="key-value-pair row mb-4">
-                                  {% if forloop.first %}
-                                      <div class="col-5">
-                                          <label class="form-label" for="additional_genes_keys" hidden>Gene Name</label>
-                                          <input id="additional_genes_keys" type="text" class="form-control" name="additional_genes_keys[]" value="{{ gene_name }}" />
-                                      </div>
-                                      <div class="col-5">
-                                          <label class="form-label" for="additional_genes_values" hidden>Gene Value Set</label>
-                                          <input id="additional_genes_values" type="text" class="form-control gene-value-input" name="additional_genes_values[]" value="{{ gene_values|join:',' }}" oninput="splitValuesToBadges(this)">
-                                          <div class="gene-value-badges mt-2 fw-bolder">
-                                              {% for value in gene_values %}
-                                                  <span class="badge btn-primary m-1 p-2">{{ value }}</span>
-                                              {% endfor %}
-                                          </div>
-                                      </div>
-                                      <div class="col-2">
-                                          <button class="btn btn-success w-100 mb-2" type="button" onclick="addKeyValuePair()">
-                                              <i class="fa fa-plus me-2"></i><strong>Add Row</strong>
-                                          </button>
-                                      </div>
-                                  {% else %}
-                                      <div class="col-5">
-                                          <label class="form-label" for="additional_genes_keys" hidden>Gene Name</label>
-                                          <input id="additional_genes_keys" type="text" class="form-control" name="additional_genes_keys[]" value="{{ gene_name }}" />
-                                      </div>
-                                      <div class="col-5">
-                                          <label class="form-label" for="additional_genes_values" hidden>Gene Value Set</label>
-                                          <input id="additional_genes_values" type="text" class="form-control gene-value-input" name="additional_genes_values[]" value="{{ gene_values|join:',' }}" oninput="splitValuesToBadges(this)">
-                                          <div class="gene-value-badges mt-2 fw-bolder">
-                                              {% for value in gene_values %}
-                                                  <span class="badge btn-primary m-1 p-2">{{ value }}</span>
-                                              {% endfor %}
-                                          </div>
-                                      </div>
-                                      <div class="col-2">
-                                          <button class="btn btn-danger w-100" type="button" onclick="removeKeyValuePair(this)">
-                                              <i class="fa fa-minus me-2"></i><strong>Remove</strong>
-                                          </button>
-                                      </div>
-                                  {% endif %}
-                              </div>
-                          {% endfor %}
-                      {% else %}
-                          <!-- If no genes, display empty row with badges container -->
-                          <div class="key-value-pair row mb-4">
-                              <div class="col-5">
-                                  <label class="form-label" for="additional_genes_keys" hidden>Gene Name</label>
-                                  <input id="additional_genes_keys" type="text" class="form-control" name="additional_genes_keys[]" placeholder="Gene Name" />
-                              </div>
-                              <div class="col-5">
-                                  <label class="form-label" for="additional_genes_values" hidden>Gene Value Set</label>
-                                  <input id="additional_genes_values" type="text" class="form-control gene-value-input" name="additional_genes_values[]" placeholder="Gene Value Set (Comma Separated ',')" oninput="splitValuesToBadges(this)">
-                                  <div class="gene-value-badges mt-2 fw-bolder"></div>
-                              </div>
-                              <div class="col-2">
-                                  <button class="btn btn-success w-100 mb-2" type="button" onclick="addKeyValuePair()">
-                                      <i class="fa fa-plus me-2"></i><strong>Add Row</strong>
-                                  </button>
-                                  <button class="btn btn-danger w-100" type="button" onclick="removeKeyValuePair(this)">
-                                      <i class="fa fa-minus me-2"></i><strong>Remove</strong>
-                                  </button>
-                              </div>
+                <h5><strong>Additional Genes (Optional)</strong></h5>
+                <div id="key-value-container">
+                  {% if binexus_process.additional_genes %}
+                    {% for gene_name, gene_values in binexus_process.additional_genes.items %}
+                      <div class="key-value-pair row mb-4">
+                        {% if forloop.first %}
+                          <div class="col-5">
+                            <label class="form-label" for="additional_genes_keys" hidden>Gene Name</label>
+                            <input id="additional_genes_keys" type="text" class="form-control"
+                                   name="additional_genes_keys[]" value="{{ gene_name }}" />
                           </div>
-                      {% endif %}
-                  </div>
+                          <div class="col-5">
+                            <label class="form-label" for="additional_genes_values" hidden>Gene Value Set</label>
+                            <input id="additional_genes_values" type="text" class="form-control gene-value-input"
+                                   name="additional_genes_values[]" value="{{ gene_values|join:',' }}"
+                                   oninput="splitValuesToBadges(this)">
+                            <div class="gene-value-badges mt-2 fw-bolder">
+                              {% for value in gene_values %}
+                                <span class="badge btn-primary m-1 p-2">{{ value }}</span>
+                              {% endfor %}
+                            </div>
+                          </div>
+                          <div class="col-2">
+                            <button class="btn btn-success w-100 mb-2" type="button" onclick="addKeyValuePair()">
+                              <i class="fa fa-plus me-2"></i><strong>Add Row</strong>
+                            </button>
+                          </div>
+                        {% else %}
+                          <div class="col-5">
+                            <label class="form-label" for="additional_genes_keys" hidden>Gene Name</label>
+                            <input id="additional_genes_keys" type="text" class="form-control"
+                                   name="additional_genes_keys[]" value="{{ gene_name }}" />
+                          </div>
+                          <div class="col-5">
+                            <label class="form-label" for="additional_genes_values" hidden>Gene Value Set</label>
+                            <input id="additional_genes_values" type="text" class="form-control gene-value-input"
+                                   name="additional_genes_values[]" value="{{ gene_values|join:',' }}"
+                                   oninput="splitValuesToBadges(this)">
+                            <div class="gene-value-badges mt-2 fw-bolder">
+                              {% for value in gene_values %}
+                                <span class="badge btn-primary m-1 p-2">{{ value }}</span>
+                              {% endfor %}
+                            </div>
+                          </div>
+                          <div class="col-2">
+                            <button class="btn btn-danger w-100" type="button" onclick="removeKeyValuePair(this)">
+                              <i class="fa fa-minus me-2"></i><strong>Remove</strong>
+                            </button>
+                          </div>
+                        {% endif %}
+                      </div>
+                    {% endfor %}
+                  {% else %}
+                    <!-- If no genes, display empty row with badges container -->
+                    <div class="key-value-pair row mb-4">
+                      <div class="col-5">
+                        <label class="form-label" for="additional_genes_keys" hidden>Gene Name</label>
+                        <input id="additional_genes_keys" type="text" class="form-control"
+                               name="additional_genes_keys[]" placeholder="Gene Name" />
+                      </div>
+                      <div class="col-5">
+                        <label class="form-label" for="additional_genes_values" hidden>Gene Value Set</label>
+                        <input id="additional_genes_values" type="text" class="form-control gene-value-input"
+                               name="additional_genes_values[]" placeholder="Gene Value Set (Comma Separated ',')"
+                               oninput="splitValuesToBadges(this)">
+                        <div class="gene-value-badges mt-2 fw-bolder"></div>
+                      </div>
+                      <div class="col-2">
+                        <button class="btn btn-success w-100 mb-2" type="button" onclick="addKeyValuePair()">
+                          <i class="fa fa-plus me-2"></i><strong>Add Row</strong>
+                        </button>
+                        <button class="btn btn-danger w-100" type="button" onclick="removeKeyValuePair(this)">
+                          <i class="fa fa-minus me-2"></i><strong>Remove</strong>
+                        </button>
+                      </div>
+                    </div>
+                  {% endif %}
+                </div>
               </div>
 
               <hr>

@@ -27,94 +27,97 @@
 
 {% block content %}
 
-<div class="container mt-4">
+  <div class="container mt-4">
 
-  <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
-    <img src="{% static 'img/custom-illustrations-v2/i2-44.png' %}" width="25%" style="border-radius: 25px;"
-         class="justify-content-end me-8" alt="Illustration for tip">
-    <span class="alert-icon rounded">
+    <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+      <img src="{% static 'img/custom-illustrations-v2/i2-44.png' %}" width="25%" style="border-radius: 25px;"
+           class="justify-content-end me-8" alt="Illustration for tip">
+      <span class="alert-icon rounded">
     <i class="ti ti-bookmark"></i>
   </span>
-    <div class="d-flex flex-column ps-1">
-      <h5 class="alert-heading mb-2">Tip</h5>
-      <p class="mb-0">
-        In this page, you can update the folder you have in your organization. You can use this page
-        to update the folder's organization, name, description, and meta context instructions. Be careful in updating
-        the slider folders, since doing so will cause irreversible changes to the underlying documents.
-      </p>
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-  </div>
-
-  <a href="{% url 'slider:folders_list' %}">
-    <button class="btn btn-secondary mt-0 mb-4">
-      <i class="fa fa-folder me-4"></i>
-      <strong> Turn Back to List of Folders</strong>
-    </button>
-  </a>
-
-  {% if messages %}
-    {% for message in messages %}
-      <div
-        class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
-        role="alert">
-        {{ message }}
+      <div class="d-flex flex-column ps-1">
+        <h5 class="alert-heading mb-2">Tip</h5>
+        <p class="mb-0">
+          In this page, you can update the folder you have in your organization. You can use this page
+          to update the folder's organization, name, description, and meta context instructions. Be careful in updating
+          the slider folders, since doing so will cause irreversible changes to the underlying documents.
+        </p>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
-    {% endfor %}
-  {% endif %}
+    </div>
 
-  <hr>
+    <a href="{% url 'slider:folders_list' %}">
+      <button class="btn btn-secondary mt-0 mb-4">
+        <i class="fa fa-folder me-4"></i>
+        <strong> Turn Back to List of Folders</strong>
+      </button>
+    </a>
 
-  <div class="row">
-    <div class="col-md-12">
-      <div class="card">
-        <div class="card-header">
-          <h4>
-            <i class="fa fa-edit me-2"></i>
-            <strong>Update Folder</strong>
-          </h4>
+    {% if messages %}
+      {% for message in messages %}
+        <div
+          class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
+          role="alert">
+          {{ message }}
         </div>
-        <div class="card-body">
-          <form method="post" action="{% url 'slider:folders_update' folder.id %}">
-            {% csrf_token %}
+      {% endfor %}
+    {% endif %}
 
-            <div class="row">
-              <!-- Organization Picker -->
-              <div class="col-6 mb-3">
-                <label for="organization" class="form-label">Organization</label>
-                <select id="organization" name="organization" class="form-control" required>
-                  <option value="" disabled>Select an Organization</option>
-                  {% for org in organizations %}
-                    <option value="{{ org.id }}" {% if org.id == folder.organization.id %}selected{% endif %}>{{ org.name }}</option>
-                  {% endfor %}
-                </select>
-              </div>
-              <div class="col-6 mb-3">
-                <label for="name" class="form-label">Folder Name</label>
-                <input type="text" class="form-control" id="name" name="name" value="{{ folder.name }}" required>
-              </div>
-              <div class="col-6 mb-3">
-                <label for="description" class="form-label">Description</label>
-                <textarea class="form-control" id="description" name="description" rows="2">{{ folder.description }}</textarea>
-              </div>
-              <div class="col-6 mb-3">
-                <label for="meta_context_instructions" class="form-label">Meta Context Instructions</label>
-                <textarea class="form-control" id="meta_context_instructions" name="meta_context_instructions" rows="2">{{ folder.meta_context_instructions }}</textarea>
-              </div>
-            </div>
+    <hr>
 
-            <hr>
-
-            <button type="submit" class="btn btn-primary mt-4 w-25">
-              <i class="fa fa-save me-4"></i>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <h4>
+              <i class="fa fa-edit me-2"></i>
               <strong>Update Folder</strong>
-            </button>
-          </form>
+            </h4>
+          </div>
+          <div class="card-body">
+            <form method="post" action="{% url 'slider:folders_update' folder.id %}">
+              {% csrf_token %}
+
+              <div class="row">
+                <!-- Organization Picker -->
+                <div class="col-6 mb-3">
+                  <label for="organization" class="form-label">Organization</label>
+                  <select id="organization" name="organization" class="form-control" required>
+                    <option value="" disabled>Select an Organization</option>
+                    {% for org in organizations %}
+                      <option value="{{ org.id }}"
+                              {% if org.id == folder.organization.id %}selected{% endif %}>{{ org.name }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+                <div class="col-6 mb-3">
+                  <label for="name" class="form-label">Folder Name</label>
+                  <input type="text" class="form-control" id="name" name="name" value="{{ folder.name }}" required>
+                </div>
+                <div class="col-6 mb-3">
+                  <label for="description" class="form-label">Description</label>
+                  <textarea class="form-control" id="description" name="description"
+                            rows="2">{{ folder.description }}</textarea>
+                </div>
+                <div class="col-6 mb-3">
+                  <label for="meta_context_instructions" class="form-label">Meta Context Instructions</label>
+                  <textarea class="form-control" id="meta_context_instructions" name="meta_context_instructions"
+                            rows="2">{{ folder.meta_context_instructions }}</textarea>
+                </div>
+              </div>
+
+              <hr>
+
+              <button type="submit" class="btn btn-primary mt-4 w-25">
+                <i class="fa fa-save me-4"></i>
+                <strong>Update Folder</strong>
+              </button>
+            </form>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-</div>
+  </div>
 {% endblock %}
 

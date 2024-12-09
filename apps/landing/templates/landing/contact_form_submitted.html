@@ -1,21 +1,21 @@
-  <!--
-  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
-  ~
-  ~ Project: Bimod.io™
-  ~ File: contact_form_submitted.html
-  ~ Last Modified: 2024-10-05 01:39:48
-  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-05 14:42:33
-  ~
-  ~ This software is proprietary and confidential. Unauthorized copying,
-  ~ distribution, modification, or use of this software, whether for
-  ~ commercial, academic, or any other purpose, is strictly prohibited
-  ~ without the prior express written permission of BMD™ Autonomous
-  ~ Holdings.
-  ~
-  ~  For permission inquiries, please contact: admin@Bimod.io.
-  ~
-  -->
+<!--
+~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+~
+~ Project: Bimod.io™
+~ File: contact_form_submitted.html
+~ Last Modified: 2024-10-05 01:39:48
+~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+~ Created: 2024-10-05 14:42:33
+~
+~ This software is proprietary and confidential. Unauthorized copying,
+~ distribution, modification, or use of this software, whether for
+~ commercial, academic, or any other purpose, is strictly prohibited
+~ without the prior express written permission of BMD™ Autonomous
+~ Holdings.
+~
+~  For permission inquiries, please contact: admin@Bimod.io.
+~
+-->
 
 {% extends layout_path %}
 
@@ -26,7 +26,7 @@
 
 {% block page_css %}
   {{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/css/pages/page-misc.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/css/pages/page-misc.css' %}" />
 {% endblock page_css %}
 
 {% block content %}
@@ -36,7 +36,8 @@
       <h4 class="mb-2 mx-2"><strong>Your message is sent successfully.</strong></h4>
       <p class="mb-6 mx-2">We will get back to you as soon as possible.</p>
       <div class="mt-12">
-        <img src="{% static 'img/custom-illustrations-v2/i2-26.png' %}" style="border-radius: 25px;" alt="page-misc-launching-soon"
+        <img src="{% static 'img/custom-illustrations-v2/i2-26.png' %}" style="border-radius: 25px;"
+             alt="page-misc-launching-soon"
              width="500" class="img-fluid">
       </div>
       <a href="{% url 'landing:index' %}" class="btn btn-primary mt-6 mx-2">

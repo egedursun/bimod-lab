@@ -1,21 +1,21 @@
-  <!--
-  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
-  ~
-  ~ Project: Bimod.io™
-  ~ File: manage_auto_topup_plans.html
-  ~ Last Modified: 2024-10-05 01:39:48
-  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-05 14:42:43
-  ~
-  ~ This software is proprietary and confidential. Unauthorized copying,
-  ~ distribution, modification, or use of this software, whether for
-  ~ commercial, academic, or any other purpose, is strictly prohibited
-  ~ without the prior express written permission of BMD™ Autonomous
-  ~ Holdings.
-  ~
-  ~  For permission inquiries, please contact: admin@Bimod.io.
-  ~
-  -->
+<!--
+~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+~
+~ Project: Bimod.io™
+~ File: manage_auto_topup_plans.html
+~ Last Modified: 2024-10-05 01:39:48
+~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+~ Created: 2024-10-05 14:42:43
+~
+~ This software is proprietary and confidential. Unauthorized copying,
+~ distribution, modification, or use of this software, whether for
+~ commercial, academic, or any other purpose, is strictly prohibited
+~ without the prior express written permission of BMD™ Autonomous
+~ Holdings.
+~
+~  For permission inquiries, please contact: admin@Bimod.io.
+~
+-->
 
 {% extends layout_path %}
 
@@ -27,8 +27,8 @@
 
 {% block vendor_css %}
   {{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}"/>
-  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
   <style>
     .text-wrap {
       white-space: normal;
@@ -59,7 +59,8 @@
   </div>
 
   <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
-    <img src="{% static 'img/custom-illustrations-v2/i2-16.png' %}" width="25%" style="border-radius:25px;" class="justify-content-end me-8" alt="Illustration for tip">
+    <img src="{% static 'img/custom-illustrations-v2/i2-16.png' %}" width="25%" style="border-radius:25px;"
+         class="justify-content-end me-8" alt="Illustration for tip">
     <span class="alert-icon rounded">
     <i class="ti ti-bookmark"></i>
   </span>
@@ -69,7 +70,8 @@
         In this page, you can manage your automated top-up plans for your organization. Simply click on a top-up plan to
         delete it. The automated top-up plans will automatically top up the balance of your organizations when the
         conditions you set are met. There can be two triggers for the automated top-up plans; balance threshold trigger
-        and interval by days trigger. Balance threshold trigger will automatically top up the balance of the organization
+        and interval by days trigger. Balance threshold trigger will automatically top up the balance of the
+        organization
         when the balance is lower than the threshold you set. Interval by days trigger will automatically top-up the
         balance of the organization at the interval you set. You can create a new automated top-up plan by clicking on
         the "Create Top-Up Plan" button.
@@ -97,8 +99,9 @@
           <div class="card-header d-flex justify-content-between align-content-center align-items-center">
             <div class="card-title mb-0">
               <div class="d-flex align-items-center justify-content-center align-content-center">
-                <img src="{% if organization.organization_image %}{{ organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
-                   class="rounded" width="60" height="60" alt="Organization Image">
+                <img src="
+                  {% if organization.organization_image %}{{ organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+                     class="rounded" width="60" height="60" alt="Organization Image">
                 <h4><strong class="ms-4">{{ organization.name }}</strong></h4>
               </div>
             </div>
@@ -188,7 +191,8 @@
                     {% csrf_token %}
                     <input type="hidden" name="organization_id" value="{{ organization.id }}">
                     <input type="hidden" name="delete" value="delete">
-                    <a class="btn btn-warning me-4" href="{% url 'llm_transaction:auto_top_up_update' plan_id=organization.auto_balance_topup.id %}">
+                    <a class="btn btn-warning me-4"
+                       href="{% url 'llm_transaction:auto_top_up_update' plan_id=organization.auto_balance_topup.id %}">
                       <i class="ti ti-pencil me-2"></i><strong>Edit</strong>
                     </a>
                     <button type="submit" class="btn btn-danger"><i class="ti ti-trash me-2"></i><strong>Delete</strong>

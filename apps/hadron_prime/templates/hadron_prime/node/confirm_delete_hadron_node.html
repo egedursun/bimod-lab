@@ -23,7 +23,7 @@
 {% block title %}Delete Hadron Node{% endblock %}
 
 {% block content %}
-<div class="row">
+  <div class="row">
     <div class="col-xl mb-6">
       <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
@@ -33,7 +33,9 @@
         <div class="card-body">
           {% if messages %}
             {% for message in messages %}
-              <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}" role="alert">
+              <div
+                class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
+                role="alert">
                 {{ message }}
               </div>
             {% endfor %}
@@ -46,7 +48,8 @@
               <br>
               • This deletion is irreversible and will completely remove the node and all its associated data.
             </strong></h6>
-            <img src="{% static 'img/custom-illustrations-v2/i2-22.png' %}" width="25%" style="border-radius:25px;" class="justify-content-end" alt="Illustration for confirming deletion">
+            <img src="{% static 'img/custom-illustrations-v2/i2-22.png' %}" width="25%" style="border-radius:25px;"
+                 class="justify-content-end" alt="Illustration for confirming deletion">
             <hr>
             <button type="submit" class="btn btn-danger mt-4 me-4"><strong>
               <i class="fa fa-skull-crossbones me-4"></i>

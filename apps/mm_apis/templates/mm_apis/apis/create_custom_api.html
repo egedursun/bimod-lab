@@ -1,21 +1,21 @@
-  <!--
-  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
-  ~
-  ~ Project: Bimod.io™
-  ~ File: create_custom_api.html
-  ~ Last Modified: 2024-10-05 01:39:48
-  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-05 14:42:33
-  ~
-  ~ This software is proprietary and confidential. Unauthorized copying,
-  ~ distribution, modification, or use of this software, whether for
-  ~ commercial, academic, or any other purpose, is strictly prohibited
-  ~ without the prior express written permission of BMD™ Autonomous
-  ~ Holdings.
-  ~
-  ~  For permission inquiries, please contact: admin@Bimod.io.
-  ~
-  -->
+<!--
+~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+~
+~ Project: Bimod.io™
+~ File: create_custom_api.html
+~ Last Modified: 2024-10-05 01:39:48
+~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+~ Created: 2024-10-05 14:42:33
+~
+~ This software is proprietary and confidential. Unauthorized copying,
+~ distribution, modification, or use of this software, whether for
+~ commercial, academic, or any other purpose, is strictly prohibited
+~ without the prior express written permission of BMD™ Autonomous
+~ Holdings.
+~
+~  For permission inquiries, please contact: admin@Bimod.io.
+~
+-->
 
 {% extends layout_path %}
 
@@ -27,11 +27,11 @@
 
 {% block vendor_css %}
   {{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}"/>
-  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.css"/>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/material.min.css"/>
-  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/material.min.css" />
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 {% endblock vendor_css %}
 
 {% block vendor_js %}
@@ -72,7 +72,8 @@
           <small class="text-muted float-end"></small>
         </div>
         <div class="card-body">
-          <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+          <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center"
+               role="alert">
             <img src="{% static 'img/custom-illustrations-v2/i2-77.png' %}" width="25%" style="border-radius: 25px;"
                  class="justify-content-end me-8" alt="Illustration for tip">
             <span class="alert-icon rounded">
@@ -103,7 +104,7 @@
             <div class="row p-8">
               <div class="mb-6 col-6">
                 <label class="form-label" for="name">Name</label>
-                <input type="text" class="form-control" id="name" name="name" placeholder="Enter API name" required/>
+                <input type="text" class="form-control" id="name" name="name" placeholder="Enter API name" required />
               </div>
               <div class="mb-6 col-6">
                 <label class="form-label" for="description">Description</label>
@@ -113,7 +114,7 @@
               </div>
               <div class="mb-6 col-3">
                 <label class="form-label" for="api_picture">Thumbnail Image</label>
-                <input type="file" class="form-control" id="api_picture" name="api_picture"/>
+                <input type="file" class="form-control" id="api_picture" name="api_picture" />
               </div>
               <div class="mb-6 col-3">
                 <label class="form-label" for="authentication_type">Authentication Type</label>
@@ -126,12 +127,12 @@
               <div class="mb-6 col-3">
                 <label class="form-label" for="authentication_token">Authentication Token</label>
                 <input type="text" class="form-control" id="authentication_token" name="authentication_token"
-                       placeholder="Enter authentication token"/>
+                       placeholder="Enter authentication token" />
               </div>
               <div class="mb-6 col-3">
                 <label class="form-label" for="base_url">Base URL</label>
                 <input type="text" class="form-control" id="base_url" name="base_url" placeholder="Enter base URL"
-                       required/>
+                       required />
               </div>
               <div class="mb-6 col-12" style="overflow-x: scroll;">
                 <label class="form-label" for="endpoints">Endpoints</label>
@@ -380,13 +381,13 @@
       row.remove();
     }
 
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener('DOMContentLoaded', function() {
       const categoryCheckboxes = document.querySelectorAll('.category-checkbox');
       const maxCategories = 5;
       const categoryLimitAlert = document.getElementById('categoryLimitAlert');
 
       categoryCheckboxes.forEach(checkbox => {
-        checkbox.addEventListener('change', function () {
+        checkbox.addEventListener('change', function() {
           const checkedCheckboxes = document.querySelectorAll('.category-checkbox:checked');
           if (checkedCheckboxes.length > maxCategories) {
             this.checked = false;

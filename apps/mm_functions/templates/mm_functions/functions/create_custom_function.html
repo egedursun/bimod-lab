@@ -1,21 +1,21 @@
-  <!--
-  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
-  ~
-  ~ Project: Bimod.io™
-  ~ File: create_custom_function.html
-  ~ Last Modified: 2024-10-05 01:39:48
-  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-05 14:42:40
-  ~
-  ~ This software is proprietary and confidential. Unauthorized copying,
-  ~ distribution, modification, or use of this software, whether for
-  ~ commercial, academic, or any other purpose, is strictly prohibited
-  ~ without the prior express written permission of BMD™ Autonomous
-  ~ Holdings.
-  ~
-  ~  For permission inquiries, please contact: admin@Bimod.io.
-  ~
-  -->
+<!--
+~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+~
+~ Project: Bimod.io™
+~ File: create_custom_function.html
+~ Last Modified: 2024-10-05 01:39:48
+~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+~ Created: 2024-10-05 14:42:40
+~
+~ This software is proprietary and confidential. Unauthorized copying,
+~ distribution, modification, or use of this software, whether for
+~ commercial, academic, or any other purpose, is strictly prohibited
+~ without the prior express written permission of BMD™ Autonomous
+~ Holdings.
+~
+~  For permission inquiries, please contact: admin@Bimod.io.
+~
+-->
 
 {% extends layout_path %}
 
@@ -27,23 +27,23 @@
 
 {% block vendor_css %}
   {{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}"/>
-  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.css"/>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/material.min.css"/>
-  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/material.min.css" />
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
   <style>
     .CodeMirror {
-    transform: scale(1.43);
-    transform-origin: top left;
-    width: calc(100% / 1.43);
-    max-height: calc((100% / 1.43));
-    overflow: auto;
-    border-radius: 5px;
-    font-family: monospace;
-    font-size: 0.70rem;
-    margin-bottom: 15%;
-  }
+      transform: scale(1.43);
+      transform-origin: top left;
+      width: calc(100% / 1.43);
+      max-height: calc((100% / 1.43));
+      overflow: auto;
+      border-radius: 5px;
+      font-family: monospace;
+      font-size: 0.70rem;
+      margin-bottom: 15%;
+    }
   </style>
 {% endblock vendor_css %}
 
@@ -85,7 +85,8 @@
           <small class="text-muted float-end"></small>
         </div>
         <div class="card-body">
-          <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+          <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center"
+               role="alert">
             <img src="{% static 'img/custom-illustrations-v2/i2-79.png' %}" width="25%" style="border-radius: 25px;"
                  class="justify-content-end me-8" alt="Illustration for tip">
             <span class="alert-icon rounded">
@@ -117,7 +118,7 @@
               <div class="mb-6 col-4">
                 <label class="form-label" for="name">Name</label>
                 <input type="text" class="form-control" id="name" name="name" placeholder="Enter function name"
-                       required/>
+                       required />
               </div>
               <div class="mb-6 col-4">
                 <label class="form-label" for="description">Description</label>
@@ -126,7 +127,7 @@
               </div>
               <div class="mb-6 col-4">
                 <label class="form-label" for="function_picture">Thumbnail Image</label>
-                <input type="file" class="form-control" id="function_picture" name="function_picture"/>
+                <input type="file" class="form-control" id="function_picture" name="function_picture" />
               </div>
               <hr>
               <div class="mb-6 col-12">
@@ -159,7 +160,7 @@
               <div class="mb-6 col-12">
                 <label class="form-label" for="requirements_txt">Upload Requirements File (requirements.txt)</label>
                 <input type="file" class="form-control" id="requirements_txt" name="requirements_txt" accept=".txt"
-                       onchange="parseRequirementsFile(this)"/>
+                       onchange="parseRequirementsFile(this)" />
               </div>
               <hr>
               <div class="mb-6 col-12">
@@ -271,7 +272,7 @@
               <div class="mb-6 col-12">
                 <label class="form-label" for="env_file">Upload Environment / Secrets File (.json)</label>
                 <input type="file" class="form-control" id="env_file" name="env_file" accept="env"
-                       onchange="parseSecretsFile(this)"/>
+                       onchange="parseSecretsFile(this)" />
               </div>
               <hr>
               <div class="mb-6 col-12 rounded">
@@ -282,7 +283,7 @@
               <div class="mb-6 col-12">
                 <label class="form-label" for="code_file">Upload Code File (.py)</label>
                 <input type="file" class="form-control" id="code_file" name="code_file" accept=".py"
-                       onchange="parseCodeFile(this)"/>
+                       onchange="parseCodeFile(this)" />
               </div>
               <div class="mb-6 col-8">
                 <label class="form-label" for="categories">Categories</label>
@@ -394,11 +395,11 @@
       const file = input.files[0];
       if (file) {
         const reader = new FileReader();
-        reader.onload = function (e) {
+        reader.onload = function(e) {
           const content = e.target.result;
           const packages = content.split('\n').map(line => {
             const [name, version] = line.split('==');
-            return {name, version: version || ''};
+            return { name, version: version || '' };
           }).filter(pkg => pkg.name);
 
           const tableBody = document.querySelector('#packagesTable tbody');
@@ -420,20 +421,20 @@
   </script>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       var codeTextArea = document.getElementById('code_text');
 
       if (codeTextArea) {
         var editor = CodeMirror.fromTextArea(codeTextArea, {
-          mode: "python",
-          theme: "material",
+          mode: 'python',
+          theme: 'material',
           lineNumbers: true,
           matchBrackets: true,
-          autoRefresh: true,
+          autoRefresh: true
         });
 
         // Ensure the original textarea is updated on form submission
-        document.querySelector('form').addEventListener('submit', function () {
+        document.querySelector('form').addEventListener('submit', function() {
           codeTextArea.value = editor.getValue();
         });
 
@@ -442,7 +443,7 @@
           const file = input.files[0];
           if (file) {
             const reader = new FileReader();
-            reader.onload = function (e) {
+            reader.onload = function(e) {
               const content = e.target.result;
               editor.setValue(content);  // Update CodeMirror content
             };
@@ -451,7 +452,7 @@
         }
 
         // Attach event listener to file input
-        document.getElementById('code_file').addEventListener('change', function () {
+        document.getElementById('code_file').addEventListener('change', function() {
           parseCodeFile(this);
         });
       } else {
@@ -462,7 +463,7 @@
         const file = input.files[0];
         if (file) {
           const reader = new FileReader();
-          reader.onload = function (e) {
+          reader.onload = function(e) {
             const content = e.target.result;
             const secrets = JSON.parse(content);
 
@@ -485,20 +486,20 @@
       }
 
       // Attach event listener to .env file input
-      document.getElementById('env_file').addEventListener('change', function () {
+      document.getElementById('env_file').addEventListener('change', function() {
         parseSecretsFile(this);
       });
     });
   </script>
 
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener('DOMContentLoaded', function() {
       const categoryCheckboxes = document.querySelectorAll('.category-checkbox');
       const maxCategories = 5;
       const categoryLimitAlert = document.getElementById('categoryLimitAlert');
 
       categoryCheckboxes.forEach(checkbox => {
-        checkbox.addEventListener('change', function () {
+        checkbox.addEventListener('change', function() {
           const checkedCheckboxes = document.querySelectorAll('.category-checkbox:checked');
           if (checkedCheckboxes.length > maxCategories) {
             this.checked = false;

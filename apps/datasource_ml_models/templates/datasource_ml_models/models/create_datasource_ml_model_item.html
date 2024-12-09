@@ -1,21 +1,21 @@
-  <!--
-  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
-  ~
-  ~ Project: Bimod.io™
-  ~ File: create_datasource_ml_model_item.html
-  ~ Last Modified: 2024-10-05 01:39:48
-  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-05 14:42:46
-  ~
-  ~ This software is proprietary and confidential. Unauthorized copying,
-  ~ distribution, modification, or use of this software, whether for
-  ~ commercial, academic, or any other purpose, is strictly prohibited
-  ~ without the prior express written permission of BMD™ Autonomous
-  ~ Holdings.
-  ~
-  ~  For permission inquiries, please contact: admin@Bimod.io.
-  ~
-  -->
+<!--
+~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+~
+~ Project: Bimod.io™
+~ File: create_datasource_ml_model_item.html
+~ Last Modified: 2024-10-05 01:39:48
+~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+~ Created: 2024-10-05 14:42:46
+~
+~ This software is proprietary and confidential. Unauthorized copying,
+~ distribution, modification, or use of this software, whether for
+~ commercial, academic, or any other purpose, is strictly prohibited
+~ without the prior express written permission of BMD™ Autonomous
+~ Holdings.
+~
+~  For permission inquiries, please contact: admin@Bimod.io.
+~
+-->
 
 {% extends layout_path %}
 
@@ -27,7 +27,7 @@
 
 {% block vendor_css %}
   {{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
 {% endblock vendor_css %}
 
 {% block vendor_js %}
@@ -59,7 +59,8 @@
           </h5>
           <small class="text-muted float-end"></small>
         </div>
-        <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+        <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center"
+             role="alert">
           <img src="{% static 'img/custom-illustrations-v2/i2-71.png' %}" width="25%" style="border-radius: 25px;"
                class="justify-content-end me-8" alt="Illustration for tips">
           <span class="alert-icon rounded">
@@ -120,7 +121,7 @@
                 <label class="form-label" for="interpretation_temperature">Temperature</label>
                 <input type="number" class="form-control" id="interpretation_temperature"
                        name="interpretation_temperature" step="0.05"
-                       min="0" max="2" placeholder="Enter temperature" value="0.25"/>
+                       min="0" max="2" placeholder="Enter temperature" value="0.25" />
                 <div class="form-text"></div>
               </div>
             </div>

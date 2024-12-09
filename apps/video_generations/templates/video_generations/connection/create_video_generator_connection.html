@@ -29,7 +29,7 @@
 
 {% block vendor_css %}
   {{ block.super }}
-  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
 {% endblock vendor_css %}
 
 {% block vendor_js %}
@@ -39,42 +39,45 @@
 
 {% block content %}
   <div class="row">
-    <div class="col-xl mb-6">
-      <div class="card">
-        <div class="card-header d-flex justify-content-between align-items-center">
-          <h4 class="mb-0">
-            <strong>
-              <i class="fa fa-video-camera me-4"></i>
-              Create Video Generator Connection
-            </strong>
-          </h4>
-        </div>
-        <a class="ms-4 mb-4" href="{% url 'video_generations:list' %}">
-            <button class="btn btn-secondary mt-4 ms-4">
-              <i class="fa fa-dashboard me-4"></i>
-              <strong> Manage Video Generators</strong>
-            </button>
-          </a>
-        <div>
-          <div class="tips-section alert alert-secondary alert-dismissible d-flex ms-8 col-lg-12 mt-4 align-items-center" style="width: 90%;" role="alert">
-            <img src="{% static 'img/custom-illustrations-v2/i2-8.png' %}" width="25%" style="border-radius:25px;"
-                 class="justify-content-end me-8" alt="Illustration for tip">
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <span class="alert-icon rounded">
+  <div class="col-xl mb-6">
+    <div class="card">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h4 class="mb-0">
+          <strong>
+            <i class="fa fa-video-camera me-4"></i>
+            Create Video Generator Connection
+          </strong>
+        </h4>
+      </div>
+      <a class="ms-4 mb-4" href="{% url 'video_generations:list' %}">
+        <button class="btn btn-secondary mt-4 ms-4">
+          <i class="fa fa-dashboard me-4"></i>
+          <strong> Manage Video Generators</strong>
+        </button>
+      </a>
+      <div>
+        <div class="tips-section alert alert-secondary alert-dismissible d-flex ms-8 col-lg-12 mt-4 align-items-center"
+             style="width: 90%;" role="alert">
+          <img src="{% static 'img/custom-illustrations-v2/i2-8.png' %}" width="25%" style="border-radius:25px;"
+               class="justify-content-end me-8" alt="Illustration for tip">
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <span class="alert-icon rounded">
                     <i class="ti ti-bookmark"></i>
                   </span>
-            <div class="d-flex flex-column ps-1">
-              <h5 class="alert-heading mb-2">Tip</h5>
-              <p class="mb-0">
-                On this page, you can create a new Video Generator Connection. This feature allows you to manage your video
-                generation providers and their configurations. To create a new Video Generator Connection, fill out the form
-                below and click the "Connect Video Generator" button.
-              </p>
-              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-              </button>
-            </div>
+          <div class="d-flex flex-column ps-1">
+            <h5 class="alert-heading mb-2">Tip</h5>
+            <p class="mb-0">
+              On this page, you can create a new Video Generator Connection. This feature allows you to manage your
+              video
+              generation providers and their configurations. To create a new Video Generator Connection, fill out the
+              form
+              below and click the "Connect Video Generator" button.
+            </p>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+            </button>
+          </div>
         </div>
-          <hr>
+        <hr>
         <div class="card-body">
           {% if error_messages %}
             {% for field, error in error_messages.items %}
@@ -104,11 +107,13 @@
               </div>
               <div class="col-4 mb-6">
                 <label class="form-label" for="name">Name</label>
-                <input type="text" class="form-control" id="name" name="name" placeholder="Enter a name for the connection"/>
+                <input type="text" class="form-control" id="name" name="name"
+                       placeholder="Enter a name for the connection" />
               </div>
               <div class="col-4 mb-6">
                 <label class="form-label" for="description">Description</label>
-                <textarea class="form-control" id="description" name="description" rows="1" placeholder="Enter a description"></textarea>
+                <textarea class="form-control" id="description" name="description" rows="1"
+                          placeholder="Enter a description"></textarea>
               </div>
               <div class="col-4 mb-6">
                 <label class="form-label" for="provider">Provider</label>
@@ -120,7 +125,8 @@
               </div>
               <div class="col-4 mb-6">
                 <label class="form-label" for="provider_api_key">Provider API Key</label>
-                <input type="text" class="form-control" id="provider_api_key" name="provider_api_key" placeholder="Enter the provider API key"/>
+                <input type="text" class="form-control" id="provider_api_key" name="provider_api_key"
+                       placeholder="Enter the provider API key" />
               </div>
             </div>
             <hr>

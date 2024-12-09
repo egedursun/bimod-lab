@@ -1,21 +1,21 @@
-  <!--
-  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
-  ~
-  ~ Project: Bimod.io™
-  ~ File: list_browser_connections.html
-  ~ Last Modified: 2024-10-05 01:39:47
-  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-05 14:42:46
-  ~
-  ~ This software is proprietary and confidential. Unauthorized copying,
-  ~ distribution, modification, or use of this software, whether for
-  ~ commercial, academic, or any other purpose, is strictly prohibited
-  ~ without the prior express written permission of BMD™ Autonomous
-  ~ Holdings.
-  ~
-  ~  For permission inquiries, please contact: admin@Bimod.io.
-  ~
-  -->
+<!--
+~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+~
+~ Project: Bimod.io™
+~ File: list_browser_connections.html
+~ Last Modified: 2024-10-05 01:39:47
+~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+~ Created: 2024-10-05 14:42:46
+~
+~ This software is proprietary and confidential. Unauthorized copying,
+~ distribution, modification, or use of this software, whether for
+~ commercial, academic, or any other purpose, is strictly prohibited
+~ without the prior express written permission of BMD™ Autonomous
+~ Holdings.
+~
+~  For permission inquiries, please contact: admin@Bimod.io.
+~
+-->
 
 {% extends layout_path %}
 
@@ -28,7 +28,7 @@
 {% block vendor_css %}
   {{ block.super }}
 
-<link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
   <style>
     .text-wrap {
       white-space: normal;
@@ -85,6 +85,7 @@
            aria-expanded="false" aria-controls="collapse-org-{{ organization.id }}">
           <div class="d-flex">
             <img src="
+
               {% if organization.organization_image %}{{ organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
                  width="60" class="rounded me-4" alt="Organization image">
             <h4>
@@ -103,6 +104,7 @@
           <div class="assistant-group m-8">
             <div class="d-flex card card-border-shadow-primary p-4">
               <img src="
+
                 {% if assistant.assistant_image %}{{ assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
                    width="80" class="rounded me-4" alt="Assistant image">
               <h5 class="assistant-title mt-4"><strong>{{ assistant.name }}</strong></h5>
@@ -277,9 +279,9 @@
   {% endfor %}
 
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      document.querySelectorAll('.toggle-icon').forEach(function (icon) {
-        icon.addEventListener('click', function () {
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('.toggle-icon').forEach(function(icon) {
+        icon.addEventListener('click', function() {
           var target = document.querySelector(this.getAttribute('data-target'));
           var bootstrapCollapse = new bootstrap.Collapse(target, {
             toggle: false
@@ -292,8 +294,8 @@
         });
       });
 
-      document.querySelectorAll('.collapse').forEach(function (collapse) {
-        collapse.addEventListener('show.bs.collapse', function () {
+      document.querySelectorAll('.collapse').forEach(function(collapse) {
+        collapse.addEventListener('show.bs.collapse', function() {
           var icon = document.querySelector(`.toggle-icon[data-target="#${this.id}"]`);
           if (icon) {
             icon.classList.remove('fa-arrow-alt-circle-down');
@@ -301,7 +303,7 @@
           }
         });
 
-        collapse.addEventListener('hide.bs.collapse', function () {
+        collapse.addEventListener('hide.bs.collapse', function() {
           var icon = document.querySelector(`.toggle-icon[data-target="#${this.id}"]`);
           if (icon) {
             icon.classList.remove('fa-arrow-alt-circle-up');

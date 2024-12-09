@@ -1,21 +1,21 @@
-  <!--
-  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
-  ~
-  ~ Project: Bimod.io™
-  ~ File: update_datasource_ml_model.html
-  ~ Last Modified: 2024-10-05 01:39:48
-  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-05 14:42:46
-  ~
-  ~ This software is proprietary and confidential. Unauthorized copying,
-  ~ distribution, modification, or use of this software, whether for
-  ~ commercial, academic, or any other purpose, is strictly prohibited
-  ~ without the prior express written permission of BMD™ Autonomous
-  ~ Holdings.
-  ~
-  ~  For permission inquiries, please contact: admin@Bimod.io.
-  ~
-  -->
+<!--
+~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+~
+~ Project: Bimod.io™
+~ File: update_datasource_ml_model.html
+~ Last Modified: 2024-10-05 01:39:48
+~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+~ Created: 2024-10-05 14:42:46
+~
+~ This software is proprietary and confidential. Unauthorized copying,
+~ distribution, modification, or use of this software, whether for
+~ commercial, academic, or any other purpose, is strictly prohibited
+~ without the prior express written permission of BMD™ Autonomous
+~ Holdings.
+~
+~  For permission inquiries, please contact: admin@Bimod.io.
+~
+-->
 
 {% extends layout_path %}
 
@@ -27,8 +27,8 @@
 
 {% block vendor_css %}
   {{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}"/>
-  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
 {% endblock vendor_css %}
 
 {% block vendor_js %}
@@ -65,7 +65,8 @@
           <small class="text-muted float-end"></small>
         </div>
         <div class="card-body">
-          <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+          <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center"
+               role="alert">
             <img src="{% static 'img/custom-illustrations-v2/i2-69.png' %}" width="25%" style="border-radius: 25px;"
                  class="justify-content-end me-8" alt="Illustration for tip">
             <span class="alert-icon rounded">
@@ -91,7 +92,8 @@
           {% endif %}
           <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            <img src="{% static 'img/machine_learning/ml-1.png' %}" class="rounded" style="width: 100%;" alt="Illustration for tips">
+            <img src="{% static 'img/machine_learning/ml-1.png' %}" class="rounded" style="width: 100%;"
+                 alt="Illustration for tips">
             <div class="row p-8">
               <div class="mb-6 col-4">
                 <label class="form-label" for="assistant">Assistant</label>
@@ -104,7 +106,7 @@
               </div>
               <div class="mb-6 col-4">
                 <label class="form-label" for="name">Name</label>
-                <input type="text" class="form-control" id="name" name="name" value="{{ connection.name }}"/>
+                <input type="text" class="form-control" id="name" name="name" value="{{ connection.name }}" />
               </div>
               <div class="mb-6 col-4">
                 <label class="form-label" for="description">Description</label>
@@ -124,13 +126,13 @@
                 <label class="form-label" for="interpretation_temperature">Interpretation Temperature</label>
                 <input type="number" class="form-control" id="interpretation_temperature"
                        name="interpretation_temperature" max="2.0" min="0.0" step="0.05"
-                       value="{{ connection.interpretation_temperature }}"/>
+                       value="{{ connection.interpretation_temperature }}" />
               </div>
               <div class="mb-6 col-4">
                 <label class="form-label" for="interpretation_maximum_tokens">Interpretation Maximum Tokens</label>
                 <input type="number" class="form-control" id="interpretation_maximum_tokens"
                        name="interpretation_maximum_tokens" max="4032" min="512" step="32"
-                       value="{{ connection.interpretation_maximum_tokens }}"/>
+                       value="{{ connection.interpretation_maximum_tokens }}" />
               </div>
             </div>
             <hr>

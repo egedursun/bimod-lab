@@ -1,21 +1,21 @@
-  <!--
-  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
-  ~
-  ~ Project: Bimod.io™
-  ~ File: confirm_delete_scheduled_job.html
-  ~ Last Modified: 2024-10-05 01:39:48
-  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-05 14:42:45
-  ~
-  ~ This software is proprietary and confidential. Unauthorized copying,
-  ~ distribution, modification, or use of this software, whether for
-  ~ commercial, academic, or any other purpose, is strictly prohibited
-  ~ without the prior express written permission of BMD™ Autonomous
-  ~ Holdings.
-  ~
-  ~  For permission inquiries, please contact: admin@Bimod.io.
-  ~
-  -->
+<!--
+~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+~
+~ Project: Bimod.io™
+~ File: confirm_delete_scheduled_job.html
+~ Last Modified: 2024-10-05 01:39:48
+~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+~ Created: 2024-10-05 14:42:45
+~
+~ This software is proprietary and confidential. Unauthorized copying,
+~ distribution, modification, or use of this software, whether for
+~ commercial, academic, or any other purpose, is strictly prohibited
+~ without the prior express written permission of BMD™ Autonomous
+~ Holdings.
+~
+~  For permission inquiries, please contact: admin@Bimod.io.
+~
+-->
 
 {% extends layout_path %}
 {% load static %}
@@ -24,7 +24,7 @@
 {% block title %}Delete Scheduled Job{% endblock %}
 
 {% block content %}
-<div class="row">
+  <div class="row">
     <div class="col-xl mb-6">
       <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
@@ -43,10 +43,12 @@
               • This deletion operation is completely irreversible and will entirely remove the scheduled job and all
               associated data from the system.
             </strong></h6>
-            <img src="{% static 'img/custom-illustrations-v2/i2-87.png' %}" width="25%" style="border-radius: 25px;" class="justify-content-end me-8" alt="Illustration for confirming deletion">
+            <img src="{% static 'img/custom-illustrations-v2/i2-87.png' %}" width="25%" style="border-radius: 25px;"
+                 class="justify-content-end me-8" alt="Illustration for confirming deletion">
             <hr>
             <button type="submit" class="btn btn-danger mt-4 me-4"><strong>
-              <i class="fa fa-skull-crossbones me-4"></i>DELETE &nbsp;</strong> the scheduled job.</button>
+              <i class="fa fa-skull-crossbones me-4"></i>DELETE &nbsp;</strong> the scheduled job.
+            </button>
             <a href="{% url 'mm_scheduled_jobs:list' %}" class="btn btn-secondary mt-4"><strong>
               <i class="fa fa-times me-4"></i>CANCEL &nbsp;</strong> the deletion operation.</a>
           </form>

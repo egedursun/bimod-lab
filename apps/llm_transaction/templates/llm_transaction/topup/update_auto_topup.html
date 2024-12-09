@@ -1,21 +1,21 @@
-  <!--
-  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
-  ~
-  ~ Project: Bimod.io™
-  ~ File: update_auto_topup.html
-  ~ Last Modified: 2024-10-05 01:39:48
-  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-05 14:42:43
-  ~
-  ~ This software is proprietary and confidential. Unauthorized copying,
-  ~ distribution, modification, or use of this software, whether for
-  ~ commercial, academic, or any other purpose, is strictly prohibited
-  ~ without the prior express written permission of BMD™ Autonomous
-  ~ Holdings.
-  ~
-  ~  For permission inquiries, please contact: admin@Bimod.io.
-  ~
-  -->
+<!--
+~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+~
+~ Project: Bimod.io™
+~ File: update_auto_topup.html
+~ Last Modified: 2024-10-05 01:39:48
+~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+~ Created: 2024-10-05 14:42:43
+~
+~ This software is proprietary and confidential. Unauthorized copying,
+~ distribution, modification, or use of this software, whether for
+~ commercial, academic, or any other purpose, is strictly prohibited
+~ without the prior express written permission of BMD™ Autonomous
+~ Holdings.
+~
+~  For permission inquiries, please contact: admin@Bimod.io.
+~
+-->
 
 {% extends layout_path %}
 
@@ -27,8 +27,8 @@
 
 {% block vendor_css %}
   {{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}"/>
-  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
 {% endblock vendor_css %}
 
 {% block vendor_js %}
@@ -116,7 +116,8 @@
             </div>
             <div class="row p-4">
               <div class="col-6 mb-6 card card-border-shadow-primary p-12">
-                <img src="{% static 'img/llm_transactions/tx-5.png' %}" class="rounded w-100" alt="Illustration for tips">
+                <img src="{% static 'img/llm_transactions/tx-5.png' %}" class="rounded w-100"
+                     alt="Illustration for tips">
                 <label class="form-label mt-8" for="on_balance_threshold_trigger">
                   <strong>
                     <i class="ti ti-alert-triangle-filled me-2"></i>
@@ -138,18 +139,19 @@
                     Value</label>
                   <input type="number" class="form-control" id="balance_lower_trigger_threshold_value"
                          name="balance_lower_trigger_threshold_value"
-                         value="{{ plan.balance_lower_trigger_threshold_value }}"/>
+                         value="{{ plan.balance_lower_trigger_threshold_value }}" />
                 </div>
                 <div class="mt-4">
                   <label class="form-label" for="addition_on_balance_threshold_trigger">Addition on Balance Threshold
                     Trigger</label>
                   <input type="number" class="form-control" id="addition_on_balance_threshold_trigger"
                          name="addition_on_balance_threshold_trigger"
-                         value="{{ plan.addition_on_balance_threshold_trigger }}"/>
+                         value="{{ plan.addition_on_balance_threshold_trigger }}" />
                 </div>
               </div>
               <div class="col-6 mb-6 card card-border-shadow-primary p-12">
-                <img src="{% static 'img/llm_transactions/tx-4.png' %}" class="rounded w-100" alt="Illustration for tips">
+                <img src="{% static 'img/llm_transactions/tx-4.png' %}" class="rounded w-100"
+                     alt="Illustration for tips">
                 <label class="form-label mt-8" for="on_interval_by_days_trigger">
                   <strong>
                     <i class="ti ti-clock-bolt me-2"></i>
@@ -168,14 +170,14 @@
                 <div class="mt-4">
                   <label class="form-label" for="regular_by_days_interval">Regular by Days Interval</label>
                   <input type="number" class="form-control" id="regular_by_days_interval"
-                         name="regular_by_days_interval" value="{{ plan.regular_by_days_interval }}"/>
+                         name="regular_by_days_interval" value="{{ plan.regular_by_days_interval }}" />
                 </div>
                 <div class="mt-4">
                   <label class="form-label" for="addition_on_interval_by_days_trigger">Addition on Interval by Days
                     Trigger</label>
                   <input type="number" class="form-control" id="addition_on_interval_by_days_trigger"
                          name="addition_on_interval_by_days_trigger"
-                         value="{{ plan.addition_on_interval_by_days_trigger }}"/>
+                         value="{{ plan.addition_on_interval_by_days_trigger }}" />
                 </div>
               </div>
               <div class="col-12 mb-6 card card-border-shadow-primary p-12">
@@ -183,7 +185,7 @@
                   Limit</label>
                 <input type="number" class="form-control" id="monthly_hard_limit_auto_addition_amount"
                        name="monthly_hard_limit_auto_addition_amount"
-                       value="{{ plan.monthly_hard_limit_auto_addition_amount }}"/>
+                       value="{{ plan.monthly_hard_limit_auto_addition_amount }}" />
               </div>
             </div>
             <hr>

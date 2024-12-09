@@ -1,21 +1,21 @@
-  <!--
-  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
-  ~
-  ~ Project: Bimod.io™
-  ~ File: list_transaction_invoices.html
-  ~ Last Modified: 2024-10-05 01:39:48
-  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-05 14:42:43
-  ~
-  ~ This software is proprietary and confidential. Unauthorized copying,
-  ~ distribution, modification, or use of this software, whether for
-  ~ commercial, academic, or any other purpose, is strictly prohibited
-  ~ without the prior express written permission of BMD™ Autonomous
-  ~ Holdings.
-  ~
-  ~  For permission inquiries, please contact: admin@Bimod.io.
-  ~
-  -->
+<!--
+~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+~
+~ Project: Bimod.io™
+~ File: list_transaction_invoices.html
+~ Last Modified: 2024-10-05 01:39:48
+~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+~ Created: 2024-10-05 14:42:43
+~
+~ This software is proprietary and confidential. Unauthorized copying,
+~ distribution, modification, or use of this software, whether for
+~ commercial, academic, or any other purpose, is strictly prohibited
+~ without the prior express written permission of BMD™ Autonomous
+~ Holdings.
+~
+~  For permission inquiries, please contact: admin@Bimod.io.
+~
+-->
 
 {% extends layout_path %}
 
@@ -26,9 +26,9 @@
 
 {% block vendor_css %}
   {{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}"/>
-  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}"/>
-  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css' %}" />
 {% endblock %}
 
 {% block vendor_js %}
@@ -54,7 +54,8 @@
             <h5 class="alert-heading mb-2">Tip</h5>
             <p class="mb-0">
               In this page, you can view all the transaction invoices you have created. You can track the updates in the
-              invoice status and amount. As there will be updates in the invoice status, you can view the invoice details
+              invoice status and amount. As there will be updates in the invoice status, you can view the invoice
+              details
               and download the transaction paper.
             </p>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
@@ -73,7 +74,8 @@
         <hr>
 
         <table class="table table-striped mt-4">
-          <img src="{% static 'img/invoices/inv-1.png' %}" class="rounded mt-4 mb-4" style="width: 100%;" alt="Illustration for tips">
+          <img src="{% static 'img/invoices/inv-1.png' %}" class="rounded mt-4 mb-4" style="width: 100%;"
+               alt="Illustration for tips">
           <thead>
           <tr>
             <th>Barcode</th>
@@ -116,7 +118,7 @@
               <td colspan="8">
                 <div class="alert alert-info mt-4" role="alert">
                   <i class="fa fa-info-circle me-2"></i>
-                    No invoices that can be associated with you has been found yet.
+                  No invoices that can be associated with you has been found yet.
                 </div>
               </td>
             </tr>

@@ -28,9 +28,9 @@
 
 {% block vendor_css %}
   {{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}"/>
-  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
-  <link rel="stylesheet" href="{% static 'css/prism-css/prism-material-light.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/prism-css/prism-material-light.css' %}" />
   <style>
     .text-wrap {
       white-space: normal;
@@ -54,9 +54,9 @@
   {{ block.super }}
   <script src="{% static 'js/form-layouts.js' %}"></script>
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      document.querySelectorAll('.toggle-icon').forEach(function (icon) {
-        icon.addEventListener('click', function () {
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('.toggle-icon').forEach(function(icon) {
+        icon.addEventListener('click', function() {
           var target = document.querySelector(this.getAttribute('data-target'));
           var bootstrapCollapse = new bootstrap.Collapse(target, {
             toggle: false
@@ -69,8 +69,8 @@
         });
       });
 
-      document.querySelectorAll('.collapse').forEach(function (collapse) {
-        collapse.addEventListener('show.bs.collapse', function () {
+      document.querySelectorAll('.collapse').forEach(function(collapse) {
+        collapse.addEventListener('show.bs.collapse', function() {
           var icon = document.querySelector(`.toggle-icon[data-target="#${this.id}"]`);
           if (icon) {
             icon.classList.remove('fa-arrow-alt-circle-down');
@@ -78,7 +78,7 @@
           }
         });
 
-        collapse.addEventListener('hide.bs.collapse', function () {
+        collapse.addEventListener('hide.bs.collapse', function() {
           var icon = document.querySelector(`.toggle-icon[data-target="#${this.id}"]`);
           if (icon) {
             icon.classList.remove('fa-arrow-alt-circle-up');
@@ -136,6 +136,7 @@
            aria-expanded="false" aria-controls="collapse-org-{{ organization.id }}">
           <div class="d-flex">
             <img src="
+
               {% if organization.organization_image %}{{ organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
                  class="rounded me-4" width="60" height="60" alt="Organization image">
             <h4>
@@ -153,7 +154,8 @@
         {% for assistant, queries in assistants.items %}
           <div class="assistant-group m-8 card card-border-shadow-primary p-4">
             <div class="d-flex">
-              <img src="{% if assistant.assistant_image %}{{ assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+              <img src="
+                {% if assistant.assistant_image %}{{ assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
                    class="rounded me-4" width="60" height="60" alt="Assistant image">
               <h5 class="assistant-title"><strong>{{ assistant.name }}</strong></h5>
             </div>
@@ -190,14 +192,16 @@
                               <i class="fa fa-info-circle me-2"></i>
                               Description:
                             </strong></span>
-                          <span class="text-wrap overflow-auto" style="min-width: 70%; max-width: 70%; max-height: 250px;">{{ query.description|linebreaksbr }}</span>
+                          <span class="text-wrap overflow-auto"
+                                style="min-width: 70%; max-width: 70%; max-height: 250px;">{{ query.description|linebreaksbr }}</span>
                         </li>
                         <li class="mb-4 d-flex justify-content-between align-items-center">
                           <span class="text-body me-4"><strong>
                             <i class="fa fa-code me-2"></i>
                             Query:
                           </strong></span>
-                          <pre class="text-wrap p-2 rounded overflow-auto" style="min-width: 70%; max-width: 70%; max-height: 250px; font-size: 11px;"><code
+                          <pre class="text-wrap p-2 rounded overflow-auto"
+                               style="min-width: 70%; max-width: 70%; max-height: 250px; font-size: 11px;"><code
                             class="language-sql fw-extrabold overflow-auto">{{ query.nosql_query }}</code></pre>
                         </li>
                       </ul>
@@ -228,9 +232,9 @@
   {% endfor %}
 
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      document.querySelectorAll('.toggle-icon').forEach(function (icon) {
-        icon.addEventListener('click', function () {
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('.toggle-icon').forEach(function(icon) {
+        icon.addEventListener('click', function() {
           var target = document.querySelector(this.getAttribute('data-target'));
           var bootstrapCollapse = new bootstrap.Collapse(target, {
             toggle: false
@@ -243,8 +247,8 @@
         });
       });
 
-      document.querySelectorAll('.collapse').forEach(function (collapse) {
-        collapse.addEventListener('show.bs.collapse', function () {
+      document.querySelectorAll('.collapse').forEach(function(collapse) {
+        collapse.addEventListener('show.bs.collapse', function() {
           var icon = document.querySelector(`.toggle-icon[data-target="#${this.id}"]`);
           if (icon) {
             icon.classList.remove('fa-arrow-alt-circle-down');
@@ -252,7 +256,7 @@
           }
         });
 
-        collapse.addEventListener('hide.bs.collapse', function () {
+        collapse.addEventListener('hide.bs.collapse', function() {
           var icon = document.querySelector(`.toggle-icon[data-target="#${this.id}"]`);
           if (icon) {
             icon.classList.remove('fa-arrow-alt-circle-up');

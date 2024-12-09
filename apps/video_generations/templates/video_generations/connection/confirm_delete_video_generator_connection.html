@@ -45,18 +45,21 @@
           {% endif %}
           <form method="post">
             {% csrf_token %}
-            <p>Are you sure you want to delete the Video Generator Connection <strong>"{{ video_generator_connection.name }}"</strong>?</p><br>
+            <p>Are you sure you want to delete the Video Generator Connection
+              <strong>"{{ video_generator_connection.name }}"</strong>?</p><br>
             <h6><strong>
               • This operation will result in the complete removal of the Video Generator Connection from the system.
               <br>
               • This deletion operation is completely irreversible and will entirely remove the connection and all
               associated data from the system.
             </strong></h6>
-            <img src="{% static 'img/custom-illustrations-v2/i2-33.png' %}" width="25%" style="border-radius:25px;" class="justify-content-end" alt="Illustration for confirming deletion">
+            <img src="{% static 'img/custom-illustrations-v2/i2-33.png' %}" width="25%" style="border-radius:25px;"
+                 class="justify-content-end" alt="Illustration for confirming deletion">
             <hr>
             <button type="submit" class="btn btn-danger mt-4 me-4"><strong>
               <i class="fa fa-skull-crossbones me-4"></i>
-              DELETE &nbsp;</strong> the Video Generator Connection.</button>
+              DELETE &nbsp;</strong> the Video Generator Connection.
+            </button>
             <a href="{% url 'video_generations:list' %}" class="btn btn-secondary mt-4"><strong>
               <i class="fa fa-cancel me-4"></i>
               CANCEL &nbsp;</strong> the deletion operation.</a>

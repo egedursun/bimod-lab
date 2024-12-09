@@ -1,21 +1,21 @@
-  <!--
-  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
-  ~
-  ~ Project: Bimod.io™
-  ~ File: archived_chats.html
-  ~ Last Modified: 2024-10-05 01:39:48
-  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-05 14:42:43
-  ~
-  ~ This software is proprietary and confidential. Unauthorized copying,
-  ~ distribution, modification, or use of this software, whether for
-  ~ commercial, academic, or any other purpose, is strictly prohibited
-  ~ without the prior express written permission of BMD™ Autonomous
-  ~ Holdings.
-  ~
-  ~  For permission inquiries, please contact: admin@Bimod.io.
-  ~
-  -->
+<!--
+~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+~
+~ Project: Bimod.io™
+~ File: archived_chats.html
+~ Last Modified: 2024-10-05 01:39:48
+~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+~ Created: 2024-10-05 14:42:43
+~
+~ This software is proprietary and confidential. Unauthorized copying,
+~ distribution, modification, or use of this software, whether for
+~ commercial, academic, or any other purpose, is strictly prohibited
+~ without the prior express written permission of BMD™ Autonomous
+~ Holdings.
+~
+~  For permission inquiries, please contact: admin@Bimod.io.
+~
+-->
 
 {% extends layout_path %}
 {% load markdown_extras %}
@@ -26,7 +26,7 @@
 
 {% block vendor_css %}
   {{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/libs/bootstrap-maxlength/bootstrap-maxlength.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/bootstrap-maxlength/bootstrap-maxlength.css' %}" />
 {% endblock vendor_css %}
 
 {% block vendor_js %}
@@ -36,13 +36,14 @@
 
 {% block page_css %}
   {{ block.super }}
-  <link rel="stylesheet" href="{% static 'vendor/css/pages/app-chat.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/css/pages/app-chat.css' %}" />
   <style>
     /* Ensure images within markdown content fit within their container */
     .markdown-content img {
       max-width: 80%;
       overflow-x: auto;
     }
+
     /* Ensure images within markdown content fit within their container */
     .markdown-content img {
       max-width: 35%;
@@ -106,7 +107,8 @@
   </div>
 
   <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
-    <img src="{% static 'img/custom-illustrations-v2/i2-75.png' %}" width="25%" style="border-radius: 25px;" class="justify-content-end me-8" alt="Illustration for tips">
+    <img src="{% static 'img/custom-illustrations-v2/i2-75.png' %}" width="25%" style="border-radius: 25px;"
+         class="justify-content-end me-8" alt="Illustration for tips">
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     <span class="alert-icon rounded">
     <i class="ti ti-bookmark"></i>
@@ -144,6 +146,7 @@
           class="chat-sidebar-left-user sidebar-header d-flex flex-column justify-content-center align-items-center flex-wrap px-6 pt-12">
           <div class="avatar avatar-xl avatar-online chat-sidebar-avatar">
             <img src="
+
 
               {% if user.profile.profile_picture %}{{ user.profile.profile_picture.url }}{% else %}{% static 'img/avatars/0.png' %}{% endif %}"
                  alt="Avatar" class="rounded">
@@ -214,6 +217,7 @@
                         class="flex-shrink-0 avatar avatar-lg {% if chat.id == active_chat.id %}avatar-online {% else %}avatar-away {% endif %} rounded"
                         {% if chat.id != active_chat.id %}style="border-style: solid; border-width: 1px; border-color: AccentColor; animation: ease-in-out 2s infinite alternate border-color-change;"{% endif %}>
                         <img src="
+
                           {% if chat.assistant.assistant_image %}{{ chat.assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
                              class="rounded-pill" alt="Image of the assistant object">
                       </div>
@@ -284,7 +288,8 @@
           </div>
           <div class="alert alert-solid-primary alert-dismissible d-flex col-lg-11 align-items-center mt-10 ms-10"
                role="alert">
-            <img src="{% static 'img/custom-illustrations-v2/i2-32.png' %}" width="25%" style="border-radius: 25px;" class="justify-content-end me-8" alt="Illustration for tips">
+            <img src="{% static 'img/custom-illustrations-v2/i2-32.png' %}" width="25%" style="border-radius: 25px;"
+                 class="justify-content-end me-8" alt="Illustration for tips">
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <span class="alert-icon rounded">
             <i class="ti ti-alert-circle-filled"></i>
@@ -311,8 +316,10 @@
                      data-overlay data-target="#app-chat-chats"></i>
                   <div class="flex-shrink-0 avatar avatar-online">
                     <img src="
+
                       {% if active_chat.assistant.assistant_image %}{{ active_chat.assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
-                         class="rounded" data-bs-toggle="sidebar" data-overlay data-target="#app-chat-sidebar-right" alt="Image of the assistant object">
+                         class="rounded" data-bs-toggle="sidebar" data-overlay data-target="#app-chat-sidebar-right"
+                         alt="Image of the assistant object">
                   </div>
                   <div class="chat-contact-info flex-grow-1 ms-4">
                     <div class="d-flex justify-content-between align-items-center mt-1">
@@ -362,6 +369,7 @@
                           <div class="avatar avatar-xl">
                             <img src="
 
+
                               {% if active_chat.assistant.assistant_image %}{{ active_chat.assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
                                  alt="Avatar" class="rounded">
                           </div>
@@ -379,7 +387,8 @@
                              class="chat-message-text {% if message.sender_type == 'TOOL' %} bg-primary-subtle{% endif %} border-primary"
                              style="{% if message.sender_type == 'TOOL' %}border: 2px solid{% endif %};">
                           {% if message.sender_type != 'TOOL' %}
-                            <p class="mb-0 markdown-content" style="min-width: 90%; max-width: 90%;">{{ message.message_text_content|safe }}</p>
+                            <p class="mb-0 markdown-content"
+                               style="min-width: 90%; max-width: 90%;">{{ message.message_text_content|safe }}</p>
                             <hr>
                             {% if message.message_image_contents %}
                               <p class="text-dark bg-label-secondary rounded p-2 ps-4 mt-4 flex-wrap"><strong>Image
@@ -475,6 +484,7 @@
 
 
 
+
                               {% if user.profile.profile_picture %}{{ user.profile.profile_picture.url }}{% else %}{% static 'img/avatars/0.png' %}{% endif %}"
                                  alt="Avatar" class="rounded">
                           </div>
@@ -515,6 +525,7 @@
           <div class="sidebar-header d-flex flex-column justify-content-center align-items-center flex-wrap px-6 pt-12">
             <div class="avatar avatar-xl avatar-online chat-sidebar-avatar">
               <img src="
+
 
 
 
@@ -599,16 +610,16 @@
   <!-- Include a markdown library, for example, Showdown.js -->
   <script src="https://cdn.jsdelivr.net/npm/showdown/dist/showdown.min.js"></script>
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       const converter = new showdown.Converter();
-      document.querySelectorAll('.markdown-content').forEach(function (element) {
+      document.querySelectorAll('.markdown-content').forEach(function(element) {
         element.innerHTML = converter.makeHtml(element.innerHTML);
       });
     });
   </script>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       const chatForm = document.querySelector('.form-send-message');
       const createChatForm = document.querySelector('#create-chat-form');
 
@@ -619,14 +630,14 @@
       const loadingBarCreateChat = document.getElementById('loadingBarCreateChat');
       const loadingBarWarningCreateChat = document.getElementById('loadingBarWarningCreateChat');
 
-      chatForm.addEventListener('submit', function (event) {
+      chatForm.addEventListener('submit', function(event) {
         // Show the loading bar
         loadingBar.classList.remove('d-none');
         loadingBarWarning.classList.remove('d-none');
         submitMessageButton.disabled = true;
       });
 
-      createChatForm.addEventListener('submit', function (event) {
+      createChatForm.addEventListener('submit', function(event) {
         // Show the loading bar
         loadingBarCreateChat.classList.remove('d-none');
         loadingBarWarningCreateChat.classList.remove('d-none');
@@ -634,9 +645,9 @@
 
     });
 
-    document.addEventListener('DOMContentLoaded', function () {
-      document.querySelectorAll('.card-template').forEach(function (template) {
-        template.addEventListener('click', function () {
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('.card-template').forEach(function(template) {
+        template.addEventListener('click', function() {
           const fullText = this.getAttribute('data-full-text');
           console.log(fullText);
           const chatInput = document.querySelector('.message-input');
@@ -665,8 +676,8 @@
       });
     });
 
-    document.querySelectorAll('.copy-btn-html').forEach(function (btn) {
-      btn.addEventListener('click', function () {
+    document.querySelectorAll('.copy-btn-html').forEach(function(btn) {
+      btn.addEventListener('click', function() {
         const messageId = this.getAttribute('data-message-id');
         const templateTextElement = document.getElementById(`copied-message-${messageId}`);
         const textToCopy = templateTextElement ? templateTextElement.innerText : '';
@@ -695,16 +706,16 @@
       });
     });
 
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       const chatInput = document.querySelector('.message-input');
 
-      chatInput.addEventListener('input', function () {
+      chatInput.addEventListener('input', function() {
         this.style.height = 'auto'; // Reset the height
         this.style.height = (this.scrollHeight) + 'px'; // Set the height to match the content
       });
 
-      document.querySelectorAll('.card-template').forEach(function (template) {
-        template.addEventListener('click', function () {
+      document.querySelectorAll('.card-template').forEach(function(template) {
+        template.addEventListener('click', function() {
           const fullText = this.getAttribute('data-full-text');
           chatInput.value = fullText;
           chatInput.style.height = 'auto'; // Reset the height
@@ -735,9 +746,9 @@
   </script>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       const floatingButton = document.querySelector('.floating-button');
-      floatingButton.addEventListener('click', function () {
+      floatingButton.addEventListener('click', function() {
         if (floatingButton.innerHTML.includes('Chat')) {
           window.scrollTo({
             top: document.body.scrollHeight,
@@ -756,10 +767,10 @@
   </script>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       const btnCollapseTemplates = document.querySelector('.btn-collapse-templates');
       const cardTemplateContainer = document.querySelector('#message-templates-container');
-      btnCollapseTemplates.addEventListener('click', function () {
+      btnCollapseTemplates.addEventListener('click', function() {
         cardTemplateContainerClasses = cardTemplateContainer.classList;
         if (cardTemplateContainerClasses.contains('d-none')) {
           cardTemplateContainer.classList.remove('d-none');
@@ -775,8 +786,8 @@
   </script>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      document.getElementById('attach-doc').addEventListener('change', function (event) {
+    document.addEventListener('DOMContentLoaded', function() {
+      document.getElementById('attach-doc').addEventListener('change', function(event) {
         const fileList = Array.from(event.target.files);
         const fileDisplayArea = document.getElementById('file_display_area');
         fileDisplayArea.innerHTML = '<small class="text-muted mb-2 ms-6"><strong>Media File Staging</strong></small><hr>';
@@ -827,11 +838,11 @@
             'docx': 'docx.png',
             'pptx': 'pptx.png',
             'pdf': 'pdf.png',
-            'txt': 'txt.png',
+            'txt': 'txt.png'
           };
           const icon = iconMap[fileExtension] || 'file.png';
-          let filename_root = file.name.split(".")[0];
-          let filename_extension = file.name.split(".")[1];
+          let filename_root = file.name.split('.')[0];
+          let filename_extension = file.name.split('.')[1];
           if (filename_root.length > 64) {
             filename_root = filename_root.substring(0, 64) + '...';
           }
@@ -848,7 +859,7 @@
         });
 
         document.querySelectorAll('.btn-close').forEach(button => {
-          button.addEventListener('click', function () {
+          button.addEventListener('click', function() {
             const index = this.getAttribute('data-index');
             fileList.splice(index, 1);
             const dataTransfer = new DataTransfer();
@@ -859,7 +870,7 @@
         });
       });
 
-      document.getElementById('attach-image').addEventListener('change', function (event) {
+      document.getElementById('attach-image').addEventListener('change', function(event) {
         const fileList = Array.from(event.target.files);
         const fileDisplayArea = document.getElementById('image_display_area');
         fileDisplayArea.innerHTML = '<small class="text-muted mb-2 ms-6"><strong>Media Image Staging</strong></small><hr>';
@@ -867,8 +878,8 @@
           const fileSize = (file.size / 1024).toFixed(2) + ' KB';
           const fileExtension = file.name.split('.').pop().toLowerCase();
           const image_data = null; // ????
-          let filename_root = file.name.split(".")[0];
-          let filename_extension = file.name.split(".")[1];
+          let filename_root = file.name.split('.')[0];
+          let filename_extension = file.name.split('.')[1];
           if (filename_root.length > 64) {
             filename_root = filename_root.substring(0, 64) + '...';
           }
@@ -876,7 +887,7 @@
           fileElement.classList.add('col-lg-12');
 
           const reader = new FileReader();
-          reader.onload = function (e) {
+          reader.onload = function(e) {
             const imageUrl = e.target.result;
             fileElement.innerHTML = `
                           <div class="badge bg-lighter d-flex align-items-center my-2">
@@ -887,7 +898,7 @@
                       `;
             fileDisplayArea.appendChild(fileElement);
 
-            document.getElementById(`btn-close-image-${index}`).addEventListener('click', function () {
+            document.getElementById(`btn-close-image-${index}`).addEventListener('click', function() {
               const index = this.getAttribute('data-index');
               fileList.splice(index, 1);
               const dataTransfer = new DataTransfer();
@@ -900,7 +911,7 @@
         });
 
         document.querySelectorAll('.btn-close').forEach(button => {
-          button.addEventListener('click', function () {
+          button.addEventListener('click', function() {
             const index = this.getAttribute('data-index');
             fileList.splice(index, 1);
             const dataTransfer = new DataTransfer();
@@ -911,7 +922,7 @@
         });
 
         document.getElementById('.btn-close-image').forEach(button => {
-          button.addEventListener('click', function () {
+          button.addEventListener('click', function() {
             const index = this.getAttribute('data-index');
             fileList.splice(index, 1);
             const dataTransfer = new DataTransfer();

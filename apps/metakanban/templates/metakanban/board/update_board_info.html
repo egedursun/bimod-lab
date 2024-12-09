@@ -1,4 +1,3 @@
-
 <!--
   ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
   ~
@@ -27,108 +26,117 @@
 {% block title %}Update Kanban Board{% endblock %}
 
 {% block vendor_css %}
-    {{ block.super }}
-    <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
 {% endblock vendor_css %}
 
 {% block vendor_js %}
-    {{ block.super }}
-    <script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
 {% endblock vendor_js %}
 
 {% block content %}
-<div class="row">
+  <div class="row">
     <div class="col-xl mb-6">
-        <div class="card">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <h5 class="mb-0"><strong>Update Kanban Board</strong></h5>
-            </div>
-
-            <a href="{% url 'metakanban:board_list' %}">
-              <button class="btn btn-secondary mt-4 ms-8 mb-4">
-                <i class="fa fa-dashboard me-4"></i>
-                <strong> Manage MetaKanban™ Boards</strong>
-              </button>
-            </a>
-
-            <hr>
-
-            <!-- Tip Section -->
-            <div class="tips-section alert alert-secondary alert-dismissible d-flex align-items-center ms-8 me-8" role="alert">
-                <img src="{% static 'img/custom-illustrations-v2/i2-28.png' %}" width="25%" style="border-radius:25px;" class="me-4" alt="Illustration for tip">
-                <span class="alert-icon rounded"><i class="ti ti-bookmark"></i></span>
-                <div class="d-flex flex-column">
-                    <h5 class="alert-heading mb-2">Tip</h5>
-                    <p class="mb-0">
-                      Here you can update the kanban board. Adjust the fields as needed and click "Update Board"
-                      to save changes. You can also select a project and LLM model to associate with the board. This
-                      will help you organize your boards and keep track of your projects with the power of AI.
-                    </p>
-                </div>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-
-            <hr>
-
-            <!-- Alert Section for Messages -->
-            <div class="card-body">
-                <img src="{% static 'img/metakanban/kbn-2.png' %}" class="rounded" style="width: 100%;" alt="Illustration for tips">
-
-                <hr>
-
-                {% if messages %}
-                    {% for message in messages %}
-                        <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-info{% endif %}" role="alert">
-                            {{ message }}
-                        </div>
-                    {% endfor %}
-                {% endif %}
-
-                <form method="post" class="mt-4">
-                    {% csrf_token %}
-                    <div class="row">
-                        <div class="col-6 mb-4">
-                            <label for="project" class="form-label">Project</label>
-                            <select class="form-select select2" id="project" name="project" required>
-                                <option value="" disabled>Select Project</option>
-                                {% for project in projects %}
-                                    <option value="{{ project.id }}" {% if project.id == board.project.id %}selected{% endif %}>{{ project.project_name }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <div class="col-6 mb-4">
-                            <label for="llm_model" class="form-label">LLM Model</label>
-                            <select class="form-select select2" id="llm_model" name="llm_model" required>
-                                <option value="" disabled>Select LLM Model</option>
-                                {% for llm_model in llm_models %}
-                                    <option value="{{ llm_model.id }}" {% if llm_model.id == board.llm_model.id %}selected{% endif %}>{{ llm_model.nickname }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <div class="col-6 mb-4">
-                            <label for="title" class="form-label">Title</label>
-                            <input type="text" class="form-control" id="title" name="title" value="{{ board.title }}" placeholder="Enter board title" required>
-                        </div>
-                        <div class="col-6 mb-4">
-                            <label for="description" class="form-label">Description</label>
-                            <textarea class="form-control" id="description" name="description" placeholder="Enter board description" rows="1">{{ board.description }}</textarea>
-                        </div>
-                    </div>
-                    <button type="submit" class="btn btn-primary mt-4 d-grid w-25">
-                        <strong><i class="fa fa-save me-2"></i>Update Board</strong>
-                    </button>
-                </form>
-            </div>
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="mb-0"><strong>Update Kanban Board</strong></h5>
         </div>
-    </div>
-</div>
 
-<script>
+        <a href="{% url 'metakanban:board_list' %}">
+          <button class="btn btn-secondary mt-4 ms-8 mb-4">
+            <i class="fa fa-dashboard me-4"></i>
+            <strong> Manage MetaKanban™ Boards</strong>
+          </button>
+        </a>
+
+        <hr>
+
+        <!-- Tip Section -->
+        <div class="tips-section alert alert-secondary alert-dismissible d-flex align-items-center ms-8 me-8"
+             role="alert">
+          <img src="{% static 'img/custom-illustrations-v2/i2-28.png' %}" width="25%" style="border-radius:25px;"
+               class="me-4" alt="Illustration for tip">
+          <span class="alert-icon rounded"><i class="ti ti-bookmark"></i></span>
+          <div class="d-flex flex-column">
+            <h5 class="alert-heading mb-2">Tip</h5>
+            <p class="mb-0">
+              Here you can update the kanban board. Adjust the fields as needed and click "Update Board"
+              to save changes. You can also select a project and LLM model to associate with the board. This
+              will help you organize your boards and keep track of your projects with the power of AI.
+            </p>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <hr>
+
+        <!-- Alert Section for Messages -->
+        <div class="card-body">
+          <img src="{% static 'img/metakanban/kbn-2.png' %}" class="rounded" style="width: 100%;"
+               alt="Illustration for tips">
+
+          <hr>
+
+          {% if messages %}
+            {% for message in messages %}
+              <div
+                class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-info{% endif %}"
+                role="alert">
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+
+          <form method="post" class="mt-4">
+            {% csrf_token %}
+            <div class="row">
+              <div class="col-6 mb-4">
+                <label for="project" class="form-label">Project</label>
+                <select class="form-select select2" id="project" name="project" required>
+                  <option value="" disabled>Select Project</option>
+                  {% for project in projects %}
+                    <option value="{{ project.id }}"
+                            {% if project.id == board.project.id %}selected{% endif %}>{{ project.project_name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-6 mb-4">
+                <label for="llm_model" class="form-label">LLM Model</label>
+                <select class="form-select select2" id="llm_model" name="llm_model" required>
+                  <option value="" disabled>Select LLM Model</option>
+                  {% for llm_model in llm_models %}
+                    <option value="{{ llm_model.id }}"
+                            {% if llm_model.id == board.llm_model.id %}selected{% endif %}>{{ llm_model.nickname }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-6 mb-4">
+                <label for="title" class="form-label">Title</label>
+                <input type="text" class="form-control" id="title" name="title" value="{{ board.title }}"
+                       placeholder="Enter board title" required>
+              </div>
+              <div class="col-6 mb-4">
+                <label for="description" class="form-label">Description</label>
+                <textarea class="form-control" id="description" name="description" placeholder="Enter board description"
+                          rows="1">{{ board.description }}</textarea>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary mt-4 d-grid w-25">
+              <strong><i class="fa fa-save me-2"></i>Update Board</strong>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
     $(document).ready(function() {
-        $('.select2').select2({
-            width: '100%',
-            placeholder: 'Select an option',
-        });
+      $('.select2').select2({
+        width: '100%',
+        placeholder: 'Select an option'
+      });
     });
-</script>
+  </script>
 {% endblock %}

@@ -1,21 +1,21 @@
-  <!--
-  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
-  ~
-  ~ Project: Bimod.io™
-  ~ File: add_document.html
-  ~ Last Modified: 2024-10-05 01:39:48
-  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-05 14:42:47
-  ~
-  ~ This software is proprietary and confidential. Unauthorized copying,
-  ~ distribution, modification, or use of this software, whether for
-  ~ commercial, academic, or any other purpose, is strictly prohibited
-  ~ without the prior express written permission of BMD™ Autonomous
-  ~ Holdings.
-  ~
-  ~  For permission inquiries, please contact: admin@Bimod.io.
-  ~
-  -->
+<!--
+~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+~
+~ Project: Bimod.io™
+~ File: add_document.html
+~ Last Modified: 2024-10-05 01:39:48
+~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+~ Created: 2024-10-05 14:42:47
+~
+~ This software is proprietary and confidential. Unauthorized copying,
+~ distribution, modification, or use of this software, whether for
+~ commercial, academic, or any other purpose, is strictly prohibited
+~ without the prior express written permission of BMD™ Autonomous
+~ Holdings.
+~
+~  For permission inquiries, please contact: admin@Bimod.io.
+~
+-->
 
 {% extends layout_path %}
 
@@ -27,8 +27,8 @@
 
 {% block vendor_css %}
   {{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}"/>
-  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
 {% endblock vendor_css %}
 
 {% block vendor_js %}
@@ -44,7 +44,7 @@
   {{ block.super }}
   <script src="{% static 'js/form-layouts.js' %}"></script>
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       const organizations = {{ organizations|safe }};
       const assistants = {{ assistants|safe }};
       const knowledgeBases = {{ knowledge_bases|safe }};
@@ -53,7 +53,7 @@
       const assistantSelect = document.getElementById('assistant') || null;
       const knowledgeBaseSelect = document.getElementById('knowledge_base') || null;
 
-      organizationSelect.addEventListener('change', function () {
+      organizationSelect.addEventListener('change', function() {
         const selectedOrganization = this.value;
         assistantSelect.innerHTML = '<option value="" disabled selected>Select Assistant</option>';
         knowledgeBaseSelect.innerHTML = '<option value="" disabled selected>Select Knowledge Base</option>';
@@ -68,7 +68,7 @@
         });
       });
 
-      assistantSelect.addEventListener('change', function () {
+      assistantSelect.addEventListener('change', function() {
         const selectedAssistant = this.value;
         knowledgeBaseSelect.innerHTML = '<option value="" disabled selected>Select Knowledge Base</option>';
 
@@ -83,7 +83,7 @@
         });
       });
 
-      document.getElementById('document_files').addEventListener('change', function (event) {
+      document.getElementById('document_files').addEventListener('change', function(event) {
         const fileList = Array.from(event.target.files);
         const fileDisplayArea = document.getElementById('file_display_area');
         fileDisplayArea.innerHTML = '<h5 class="card-header"><strong>Document Staging</strong></h5><hr>';
@@ -106,8 +106,8 @@
             'xlsx': 'xlsx.png'
           };
           const icon = iconMap[fileExtension] || 'file.png';
-          let filename_root = file.name.split(".")[0];
-          let filename_extension = file.name.split(".")[1];
+          let filename_root = file.name.split('.')[0];
+          let filename_extension = file.name.split('.')[1];
           if (filename_root.length > 64) {
             filename_root = filename_root.substring(0, 64) + '...';
           }
@@ -124,7 +124,7 @@
         });
 
         document.querySelectorAll('.btn-close').forEach(button => {
-          button.addEventListener('click', function () {
+          button.addEventListener('click', function() {
             const index = this.getAttribute('data-index');
             fileList.splice(index, 1);
             const dataTransfer = new DataTransfer();
@@ -135,7 +135,7 @@
         });
       });
 
-      document.querySelector('form').addEventListener('submit', function () {
+      document.querySelector('form').addEventListener('submit', function() {
         document.getElementById('loadingBarWarning').classList.remove('d-none');
         document.getElementById('loadingBar').classList.remove('d-none');
         this.querySelector('button[type="submit"]').disabled = true;
@@ -163,7 +163,8 @@
         </h5>
         <small class="text-muted float-end"></small>
       </div>
-      <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+      <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center"
+           role="alert">
         <img src="{% static 'img/custom-illustrations-v2/i2-67.png' %}" width="25%" style="border-radius: 25px;"
              class="justify-content-end me-8" alt="Illustration for tips">
         <span class="alert-icon rounded">

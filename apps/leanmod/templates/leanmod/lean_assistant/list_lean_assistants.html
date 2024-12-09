@@ -1,21 +1,21 @@
-  <!--
-  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
-  ~
-  ~ Project: Bimod.io™
-  ~ File: list_lean_assistants.html
-  ~ Last Modified: 2024-10-05 01:39:48
-  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-05 14:42:33
-  ~
-  ~ This software is proprietary and confidential. Unauthorized copying,
-  ~ distribution, modification, or use of this software, whether for
-  ~ commercial, academic, or any other purpose, is strictly prohibited
-  ~ without the prior express written permission of BMD™ Autonomous
-  ~ Holdings.
-  ~
-  ~  For permission inquiries, please contact: admin@Bimod.io.
-  ~
-  -->
+<!--
+~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+~
+~ Project: Bimod.io™
+~ File: list_lean_assistants.html
+~ Last Modified: 2024-10-05 01:39:48
+~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+~ Created: 2024-10-05 14:42:33
+~
+~ This software is proprietary and confidential. Unauthorized copying,
+~ distribution, modification, or use of this software, whether for
+~ commercial, academic, or any other purpose, is strictly prohibited
+~ without the prior express written permission of BMD™ Autonomous
+~ Holdings.
+~
+~  For permission inquiries, please contact: admin@Bimod.io.
+~
+-->
 
 {% extends layout_path %}
 
@@ -26,11 +26,11 @@
 
 {% block vendor_css %}
   {{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}"/>
-  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}"/>
-  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css' %}"/>
-  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
-  <link rel="stylesheet" href="{% static 'vendor/libs/@form-validation/form-validation.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/@form-validation/form-validation.css' %}" />
   <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/font/bootstrap-icons.min.css">
 {% endblock vendor_css %}
@@ -67,7 +67,8 @@
     <div class="d-flex flex-column ps-1">
       <h5 class="alert-heading mb-2">Tip</h5>
       <p class="mb-0">
-        In this page, you can view all the lean assistants. You can edit or delete any assistant and create new ones. To create a new lean assistant, click on the "Create Lean Assistant" button, which is located on the left side.
+        In this page, you can view all the lean assistants. You can edit or delete any assistant and create new ones. To
+        create a new lean assistant, click on the "Create Lean Assistant" button, which is located on the left side.
       </p>
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
       </button>
@@ -93,7 +94,8 @@
         <a class="collapsed" data-bs-toggle="collapse" href="#collapse-{{ organization.id }}" role="button"
            aria-expanded="false" aria-controls="collapse-{{ organization.id }}">
           <div class="d-flex">
-            <img src="{% if organization.organization_image %}{{ organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+            <img src="
+              {% if organization.organization_image %}{{ organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
                  alt="Organization Image" class="rounded" width="60">
             <h4>
               <strong class="ms-4">{{ organization.name }}</strong>
@@ -137,14 +139,16 @@
             <tr>
               <td>
                 {% if lean_assistant.lean_assistant_image %}
-                  <img class="rounded" src="{{ lean_assistant.lean_assistant_image.url }}" alt="Lean Assistant Image" width="50">
+                  <img class="rounded" src="{{ lean_assistant.lean_assistant_image.url }}" alt="Lean Assistant Image"
+                       width="50">
                 {% else %}
                   <img class="rounded" src="{% static 'img/avatars/org-0.png' %}" alt="Lean Assistant Image" width="50">
                 {% endif %}
               </td>
               <td><strong>{{ lean_assistant.name }}</strong></td>
               <td style="min-width:400px; max-width: 400px;">
-                <p class="mt-2 mb-2" style="max-height: 180px; overflow: auto;">{{ lean_assistant.instructions|linebreaksbr }}</p>
+                <p class="mt-2 mb-2"
+                   style="max-height: 180px; overflow: auto;">{{ lean_assistant.instructions|linebreaksbr }}</p>
               </td>
               <td style="min-width:200px;"><strong>{{ lean_assistant.llm_model.nickname }}</strong></td>
               <td style="min-width:200px;">{{ lean_assistant.created_by_user }}</td>
@@ -177,9 +181,9 @@
   {% endfor %}
 
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      document.querySelectorAll('.toggle-icon').forEach(function (icon) {
-        icon.addEventListener('click', function () {
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('.toggle-icon').forEach(function(icon) {
+        icon.addEventListener('click', function() {
           var target = document.querySelector(this.getAttribute('data-target'));
           var bootstrapCollapse = new bootstrap.Collapse(target, {
             toggle: false
@@ -192,8 +196,8 @@
         });
       });
 
-      document.querySelectorAll('.collapse').forEach(function (collapse) {
-        collapse.addEventListener('show.bs.collapse', function () {
+      document.querySelectorAll('.collapse').forEach(function(collapse) {
+        collapse.addEventListener('show.bs.collapse', function() {
           var icon = document.querySelector(`.toggle-icon[data-target="#${this.id}"]`);
           if (icon) {
             icon.classList.remove('fa-arrow-alt-circle-down');
@@ -201,7 +205,7 @@
           }
         });
 
-        collapse.addEventListener('hide.bs.collapse', function () {
+        collapse.addEventListener('hide.bs.collapse', function() {
           var icon = document.querySelector(`.toggle-icon[data-target="#${this.id}"]`);
           if (icon) {
             icon.classList.remove('fa-arrow-alt-circle-up');

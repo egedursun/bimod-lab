@@ -6,224 +6,229 @@
 {% block title %}eLLMa Script Editor{% endblock %}
 
 {% block vendor_css %}
-{{ block.super }}
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.css">
-<link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}" />
-<style>
-  .CodeMirror {
-    transform: scale(1.43);
-    transform-origin: top left;
-    width: calc(100% / 1.43);
-    max-height: calc((100% / 1.43));
-    overflow: scroll;
-    border-radius: 5px;
-    font-family: monospace;
-    font-size: 0.70rem;
-    margin-bottom: 15%;
-  }
-  .cm-variable {
-    color: #00b002;
-  }
-  .cm-string {
-    color: #003be5;
-    font-weight: bold;
-  }
-  .cm-keyword {
-    color: #52009d;
-    font-weight: bolder;
-  }
-  .cm-comment {
-    color: #6c757d;
-    font-style: italic;
-  }
-  .cm-number {
-    color: #ff9900;
-  }
-</style>
+  {{ block.super }}
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.css">
+  <link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}" />
+  <style>
+    .CodeMirror {
+      transform: scale(1.43);
+      transform-origin: top left;
+      width: calc(100% / 1.43);
+      max-height: calc((100% / 1.43));
+      overflow: scroll;
+      border-radius: 5px;
+      font-family: monospace;
+      font-size: 0.70rem;
+      margin-bottom: 15%;
+    }
+
+    .cm-variable {
+      color: #00b002;
+    }
+
+    .cm-string {
+      color: #003be5;
+      font-weight: bold;
+    }
+
+    .cm-keyword {
+      color: #52009d;
+      font-weight: bolder;
+    }
+
+    .cm-comment {
+      color: #6c757d;
+      font-style: italic;
+    }
+
+    .cm-number {
+      color: #ff9900;
+    }
+  </style>
 {% endblock vendor_css %}
 
 {% block vendor_js %}
-{{ block.super }}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/mode/simple.min.js"></script>
-<script src="{% static 'vendor/libs/sweetalert2/sweetalert2.js' %}"></script>
+  {{ block.super }}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/mode/simple.min.js"></script>
+  <script src="{% static 'vendor/libs/sweetalert2/sweetalert2.js' %}"></script>
 {% endblock vendor_js %}
 
 {% block page_js %}
-<script>
-  CodeMirror.defineSimpleMode("ellma", {
-    start: [
-      // Comments
-      { regex: /\/\/.*/, token: "comment" },
-      { regex: /\/\*[\s\S]*?\*\//, token: "comment" },
+  <script>
+    CodeMirror.defineSimpleMode('ellma', {
+      start: [
+        // Comments
+        { regex: /\/\/.*/, token: 'comment' },
+        { regex: /\/\*[\s\S]*?\*\//, token: 'comment' },
 
-      // Keywords and Operators
-      { regex: /\b(?:if|elif|else|for|log|try|catch|append)\b/, token: "keyword" },
-      { regex: /@/, token: "keyword" },  // "@" symbol as a keyword
-      { regex: /\b(?:true|false|null)\b/, token: "atom" },
-      { regex: /=|->|:/, token: "operator" },  // Includes colon for dictionary key-value
+        // Keywords and Operators
+        { regex: /\b(?:if|elif|else|for|log|try|catch|append)\b/, token: 'keyword' },
+        { regex: /@/, token: 'keyword' },  // "@" symbol as a keyword
+        { regex: /\b(?:true|false|null)\b/, token: 'atom' },
+        { regex: /=|->|:/, token: 'operator' },  // Includes colon for dictionary key-value
 
-      // Function Definitions and Annotations
-      { regex: /@[a-zA-Z_]\w*/, token: "variable-2" },  // Function names prefixed with "@"
+        // Function Definitions and Annotations
+        { regex: /@[a-zA-Z_]\w*/, token: 'variable-2' },  // Function names prefixed with "@"
 
-      // Variable Declarations and Assignments
-      { regex: /\b[a-zA-Z_]\w*\b(?=\s*:\s*["'].*["']\s*=)/, token: "variable" },  // Variables with descriptions
-      { regex: /\b[a-zA-Z_]\w*\b(?=\s*=)/, token: "variable" },  // Variables in assignments
+        // Variable Declarations and Assignments
+        { regex: /\b[a-zA-Z_]\w*\b(?=\s*:\s*["'].*["']\s*=)/, token: 'variable' },  // Variables with descriptions
+        { regex: /\b[a-zA-Z_]\w*\b(?=\s*=)/, token: 'variable' },  // Variables in assignments
 
-      // Strings (single and double quotes), Numbers, and Dictionary Keys
-      { regex: /"(?:[^"\\]|\\.)*"/, token: "string" },  // Double-quoted strings
-      { regex: /'(?:[^'\\]|\\.)*'/, token: "string" },  // Single-quoted strings
-      { regex: /\b\d+(\.\d+)?\b/, token: "number" },  // Numbers
-      { regex: /\b[a-zA-Z_]\w*\b(?=\s*:)/, token: "atom" },  // Dictionary keys without quotes
+        // Strings (single and double quotes), Numbers, and Dictionary Keys
+        { regex: /"(?:[^"\\]|\\.)*"/, token: 'string' },  // Double-quoted strings
+        { regex: /'(?:[^'\\]|\\.)*'/, token: 'string' },  // Single-quoted strings
+        { regex: /\b\d+(\.\d+)?\b/, token: 'number' },  // Numbers
+        { regex: /\b[a-zA-Z_]\w*\b(?=\s*:)/, token: 'atom' },  // Dictionary keys without quotes
 
-      // Brackets for Blocks, Lists, and Dictionaries
-      { regex: /[{}()\[\]]/, token: "bracket" }
-    ],
-    meta: {
-      lineComment: "//",
-      blockCommentStart: "/*",
-      blockCommentEnd: "*/"
-    }
-  });
-
-  // Initialize CodeMirror with custom mode for eLLMa syntax
-  var editor = CodeMirror.fromTextArea(document.getElementById("editor"), {
-    lineNumbers: true,
-    theme: "default",
-    mode: "ellma",
-    styleActiveLine: true,
-    matchBrackets: true,
-    autoCloseBrackets: true,
-    viewportMargin: Infinity  // Expands editor to fit content
-  });
-
-  // Save content to form and submit
-  function saveContent() {
-    const content = editor.getValue();
-    document.getElementById("scriptContentInput").value = content;
-    document.getElementById("scriptContentInputCompilation").value = content;
-    document.getElementById("scriptNameInput").value = document.getElementById("scriptName").value;
-    document.getElementById("transcriptionLanguageInput").value = document.getElementById("transcriptionLanguage").value;
-    document.getElementById("transcriptionLanguageInputCompilation").value = document.getElementById("transcriptionLanguage").value;
-    document.getElementById("saveForm").submit();
-  }
-
-  // Detect unsaved changes
-  let initialContent = editor.getValue();
-  editor.on('change', function() {
-    document.getElementById('unsavedChangesWarning').hidden = (editor.getValue() === initialContent);
-  });
-
-  // Reset content to initial state
-  function resetContent() {
-    Swal.fire({
-      title: 'Are you sure?',
-      text: 'This will reset all unsaved changes.',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Yes, reset it!',
-      cancelButtonText: 'No, cancel!',
-      customClass: {
-        confirmButton: 'btn btn-warning me-2',
-        cancelButton: 'btn btn-secondary'
-      },
-      buttonsStyling: false
-    }).then((result) => {
-      if (result.isConfirmed) {
-        editor.setValue(initialContent);
-        document.getElementById('unsavedChangesWarning').hidden = true;
+        // Brackets for Blocks, Lists, and Dictionaries
+        { regex: /[{}()\[\]]/, token: 'bracket' }
+      ],
+      meta: {
+        lineComment: '//',
+        blockCommentStart: '/*',
+        blockCommentEnd: '*/'
       }
     });
-  }
-</script>
-<script>
-  // Map transcription language to CodeMirror mode
-  const languageModes = {
-    'python3': 'python',
-    'javascript': 'javascript',
-    'typescript': 'javascript',
-    'java': 'text/x-java',
-    'csharp': 'text/x-csharp',
-    'c': 'text/x-csrc',
-    'cpp': 'text/x-c++src',
-    'go': 'go',
-    'rust': 'rust',
-    'ruby': 'ruby',
-    'php': 'php',
-    'swift': 'swift',
-    'kotlin': 'text/x-kotlin',
-    'scala': 'text/x-scala',
-    'r': 'r',
-    'perl': 'perl',
-    'bash': 'shell',
-    'powershell': 'powershell'
-  };
 
-  // Initialize generatedCodeEditor with the mode based on the selected transcription language
-  const selectedLanguage = "{{ ellma_script.ellma_transcription_language }}";
-  const initialMode = languageModes[selectedLanguage] || 'plaintext';
-
-  // Initialize CodeMirror for the generated code editor
-  const generatedCodeEditor = CodeMirror.fromTextArea(document.getElementById("generatedCodeEditor"), {
-    lineNumbers: true,
-    theme: "default",
-    mode: initialMode,   // Set initial mode based on selected language
-    readOnly: true,
-    styleActiveLine: true,
-    matchBrackets: true,
-    viewportMargin: Infinity
-  });
-
-  // Update the mode of generatedCodeEditor when transcription language changes
-  document.getElementById("transcriptionLanguage").addEventListener("change", function() {
-    const newLanguage = this.value;
-    const newMode = languageModes[newLanguage] || 'plaintext';
-    generatedCodeEditor.setOption("mode", newMode);
-  });
-
-  // Update generatedCodeEditor mode when transcription language changes
-  document.getElementById("transcriptionLanguage").addEventListener("change", function() {
-    const newMode = languageModes[this.value] || 'plaintext';
-    generatedCodeEditor.setOption("mode", newMode);
-  });
-
-  // Download content as text file
-  function downloadGeneratedCode() {
-    const content = generatedCodeEditor.getValue();
-    const blob = new Blob([content], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
-
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = "{{ ellma_script.script_name }}.txt";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-
-    URL.revokeObjectURL(url); // Clean up the URL object
-  }
-
-  // Function to copy generated code content to clipboard
-  function copyGeneratedCode() {
-    const content = generatedCodeEditor.getValue();
-    navigator.clipboard.writeText(content).then(() => {
-      // Show success message (optional)
-      Swal.fire({
-        title: 'Copied!',
-        text: 'Generated code has been copied to clipboard.',
-        icon: 'success',
-        timer: 2000,
-        showConfirmButton: false
-      });
-    }).catch(err => {
-      console.error('Error copying text: ', err);
+    // Initialize CodeMirror with custom mode for eLLMa syntax
+    var editor = CodeMirror.fromTextArea(document.getElementById('editor'), {
+      lineNumbers: true,
+      theme: 'default',
+      mode: 'ellma',
+      styleActiveLine: true,
+      matchBrackets: true,
+      autoCloseBrackets: true,
+      viewportMargin: Infinity  // Expands editor to fit content
     });
-  }
-</script>
+
+    // Save content to form and submit
+    function saveContent() {
+      const content = editor.getValue();
+      document.getElementById('scriptContentInput').value = content;
+      document.getElementById('scriptContentInputCompilation').value = content;
+      document.getElementById('scriptNameInput').value = document.getElementById('scriptName').value;
+      document.getElementById('transcriptionLanguageInput').value = document.getElementById('transcriptionLanguage').value;
+      document.getElementById('transcriptionLanguageInputCompilation').value = document.getElementById('transcriptionLanguage').value;
+      document.getElementById('saveForm').submit();
+    }
+
+    // Detect unsaved changes
+    let initialContent = editor.getValue();
+    editor.on('change', function() {
+      document.getElementById('unsavedChangesWarning').hidden = (editor.getValue() === initialContent);
+    });
+
+    // Reset content to initial state
+    function resetContent() {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: 'This will reset all unsaved changes.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, reset it!',
+        cancelButtonText: 'No, cancel!',
+        customClass: {
+          confirmButton: 'btn btn-warning me-2',
+          cancelButton: 'btn btn-secondary'
+        },
+        buttonsStyling: false
+      }).then((result) => {
+        if (result.isConfirmed) {
+          editor.setValue(initialContent);
+          document.getElementById('unsavedChangesWarning').hidden = true;
+        }
+      });
+    }
+  </script>
+  <script>
+    // Map transcription language to CodeMirror mode
+    const languageModes = {
+      'python3': 'python',
+      'javascript': 'javascript',
+      'typescript': 'javascript',
+      'java': 'text/x-java',
+      'csharp': 'text/x-csharp',
+      'c': 'text/x-csrc',
+      'cpp': 'text/x-c++src',
+      'go': 'go',
+      'rust': 'rust',
+      'ruby': 'ruby',
+      'php': 'php',
+      'swift': 'swift',
+      'kotlin': 'text/x-kotlin',
+      'scala': 'text/x-scala',
+      'r': 'r',
+      'perl': 'perl',
+      'bash': 'shell',
+      'powershell': 'powershell'
+    };
+
+    // Initialize generatedCodeEditor with the mode based on the selected transcription language
+    const selectedLanguage = "{{ ellma_script.ellma_transcription_language }}";
+    const initialMode = languageModes[selectedLanguage] || 'plaintext';
+
+    // Initialize CodeMirror for the generated code editor
+    const generatedCodeEditor = CodeMirror.fromTextArea(document.getElementById('generatedCodeEditor'), {
+      lineNumbers: true,
+      theme: 'default',
+      mode: initialMode,   // Set initial mode based on selected language
+      readOnly: true,
+      styleActiveLine: true,
+      matchBrackets: true,
+      viewportMargin: Infinity
+    });
+
+    // Update the mode of generatedCodeEditor when transcription language changes
+    document.getElementById('transcriptionLanguage').addEventListener('change', function() {
+      const newLanguage = this.value;
+      const newMode = languageModes[newLanguage] || 'plaintext';
+      generatedCodeEditor.setOption('mode', newMode);
+    });
+
+    // Update generatedCodeEditor mode when transcription language changes
+    document.getElementById('transcriptionLanguage').addEventListener('change', function() {
+      const newMode = languageModes[this.value] || 'plaintext';
+      generatedCodeEditor.setOption('mode', newMode);
+    });
+
+    // Download content as text file
+    function downloadGeneratedCode() {
+      const content = generatedCodeEditor.getValue();
+      const blob = new Blob([content], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = "{{ ellma_script.script_name }}.txt";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      URL.revokeObjectURL(url); // Clean up the URL object
+    }
+
+    // Function to copy generated code content to clipboard
+    function copyGeneratedCode() {
+      const content = generatedCodeEditor.getValue();
+      navigator.clipboard.writeText(content).then(() => {
+        // Show success message (optional)
+        Swal.fire({
+          title: 'Copied!',
+          text: 'Generated code has been copied to clipboard.',
+          icon: 'success',
+          timer: 2000,
+          showConfirmButton: false
+        });
+      }).catch(err => {
+        console.error('Error copying text: ', err);
+      });
+    }
+  </script>
 {% endblock page_js %}
 
 {% block content %}
-<div class="container mt-4">
+  <div class="container mt-4">
   <h3 class="mb-12 ms-4">
     <strong>eLLMa Script Editor</strong>
   </h3>
@@ -239,210 +244,218 @@
 
     <hr>
 
-  <!-- Creation Tips Section -->
-  <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
-    <img src="{% static 'img/custom-illustrations-v2/i2-54.png' %}" width="25%" style="border-radius:25px;" class="me-8" alt="Illustration for tip">
-    <span class="alert-icon rounded">
+    <!-- Creation Tips Section -->
+    <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+      <img src="{% static 'img/custom-illustrations-v2/i2-54.png' %}" width="25%" style="border-radius:25px;"
+           class="me-8" alt="Illustration for tip">
+      <span class="alert-icon rounded">
       <i class="ti ti-bookmark"></i>
     </span>
-    <div class="d-flex flex-column ps-1">
-      <h5 class="alert-heading mb-2">Tip</h5>
-      <p class="mb-0">
-        In this page, you can edit your eLLMa script. eLLMa scripts are very powerful tools with which
-        you can design your code with minimal effort and save time by letting AI transcribe your code for you.
-        You can edit the script name, transcription language, and the script content as you wish.
-      </p>
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      <div class="d-flex flex-column ps-1">
+        <h5 class="alert-heading mb-2">Tip</h5>
+        <p class="mb-0">
+          In this page, you can edit your eLLMa script. eLLMa scripts are very powerful tools with which
+          you can design your code with minimal effort and save time by letting AI transcribe your code for you.
+          You can edit the script name, transcription language, and the script content as you wish.
+        </p>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
     </div>
-  </div>
 
-  <img src="{% static 'img/ellma/ellma-2.png' %}" class="rounded" style="width: 100%;" alt="Illustration for tips">
+    <img src="{% static 'img/ellma/ellma-2.png' %}" class="rounded" style="width: 100%;" alt="Illustration for tips">
 
     <div class="alert alert-solid-primary alert-dismissible d-flex mt-8 align-items-center">
-  <div class="d-flex flex-column p-12" style="max-height: 500px; overflow: auto;" role="alert">
-    <h5 class="alert-heading mb-2">
-      <strong>
-        <i class="fa fa-info-circle me-4"></i>
-        eLLMa Language Quick Guide
-      </strong>
-    </h5>
-    <p class="mt-2 bg-body p-2 rounded">
-      eLLMa Language is a high-level, rule-based language optimized for LLM interpretation. Use this guide to structure data, define functions, and control logic flow effectively.
-    </p>
-    <hr>
-    <p class="bg-body p-2 rounded"><strong>Variable Declarations</strong> <br>
-      Define variables with an identifier and an optional description. Supported types include integers, floats, strings, lists, and dictionaries. <br><br>
-      <code class="d-block p-2 border border-primary border-4 rounded">
-        variable_name: "natural language description" = value <br>
-        x: "some integer" <br>
-        y: "some integer" = 5 <br>
-        z: "some floating point value" = 234.234 <br>
-        user_name: "the user's name" = "Mike" <br>
-        numbers: "list of integers" = [1, 2, 3, 4, 5] <br>
-        user_info: "dictionary of user details" = {"name": "Mike", "age": 25} <br>
-      </code>
-    </p>
-    <p class="bg-body p-2 rounded"><strong>Variable Generation</strong> <br>
-      Quickly create structured data with patterns. <br><br>
-      <code class="d-block p-2 border border-primary border-4 rounded">
-        numbers: "1 to 1000" = [@("list of a range of integers from 1 to 1000")] <br>
-        random_names: "random names" = {@("dictionary of random names and their phone numbers, total of 10 items")}
-      </code>
-    </p>
-    <p class="bg-body p-2 rounded"><strong>Function Definitions</strong> <br>
-      Define inputs and outputs without internal logic, and AI will handle the rest for you. <br><br>
-      <code class="d-block p-2 border border-primary border-4 rounded">
-        @function_name(param1: "desc", param2: "desc", ) -> "function desc in plain language" -> (output1, output2, ...) <br>
-        @sum(a: "first number", b: "second number") -> "add two numbers" -> (result) <br>
-        @get_user_info(user_id: "user's ID") -> "get user details" -> (user_name, user_age) <br>
-      </code>
-    </p>
-    <p class="bg-body p-2 rounded"><strong>Control Blocks</strong> <br>
-      Use <code>if</code>, <code>elif</code>, and <code>else</code> for conditional logic. <br><br>
-      <code class="d-block p-2 border border-primary border-4 rounded">
-        if("condition") { /* action */ } <br>
-        if("age is larger than 18") { log("adult") } <br>
-        elif("age is larger than 12") { log("teenager") } <br>
-        else { log("child") } <br>
-      </code>
-    </p>
-    <p class="bg-body p-2 rounded"><strong>Loops</strong> <br>
-      Iterate over lists or ranges using for keyword. <br><br>
-      <code class="d-block p-2 border border-primary border-4 rounded">
-        for("description of iteration") { /* action */ } <br>
-        for("number in numbers") { log(number) } <br>
-        for("name in random_names") { log(name) } <br>
-      </code>
-    </p>
-    <p class="bg-body p-2 rounded"><strong>Function Composition</strong> <br>
-      Chain and nest multiple functions to build complex workflows. <br><br>
-      <code class="d-block p-2 border border-primary border-4 rounded">
-        @(func1: "desc", func2: "desc") -> ("description of the workflow") -> (output1: "desc", output2: "desc") <br><br>
-        @(sum(a: "desc" = 1, b: "desc" = 2), manage_balance(user_id: "desc" = 123)) -> ("sum two invoices and reduce user balance") -> (cost:"desc", new_balance:"desc") <br><br>
-        @(get_user_info(user_id: "desc" = 123), get_user_balance(user_id: "desc" = 123)) -> ("get user details and balance") -> (user_name:"desc", user_balance:"desc")
-      </code>
-    </p>
-    <p class="bg-body p-2 rounded"><strong>Try-Catch Blocks</strong> <br>
-      Handle errors using the less than and greater than symbols. <br><br>
-      <code class="d-block p-2 border border-primary border-4 rounded">
-        &lt; /* action that may raise an error */ &gt; <br>
-        &lt; <br>
-        &nbsp; @get_user_info(user_id: "desc" = 123) <br>
-        &nbsp; if("user not found") { log("user not found") } <br>
-        &gt; <br>
-      </code>
-    </p>
-    <p class="bg-body p-2 rounded"><strong>Logging & Comments</strong><br>
-      Use
-      <code class="d-block p-2 border border-primary border-4 rounded">
-        log("message")
-      </code> for runtime tracking. Add comments with
-      <code class="d-block p-2 border border-primary border-4 rounded">
-        //
-      </code>
-      for single-line or
-      <code class="d-block p-2 border border-primary border-4 rounded">
-        /* */
-      </code>
-      for multi-line comments.
-    </p>
-    <hr>
-    <p class="mb-0">
-      <strong>For more details, refer to the documentation or contact support.</strong>
-    </p>
-  </div>
-</div>
-
-
-  <hr>
-
-  {% if messages %}
-    {% for message in messages %}
-      <div
-        class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
-        role="alert">
-        {{ message }}
+      <div class="d-flex flex-column p-12" style="max-height: 500px; overflow: auto;" role="alert">
+        <h5 class="alert-heading mb-2">
+          <strong>
+            <i class="fa fa-info-circle me-4"></i>
+            eLLMa Language Quick Guide
+          </strong>
+        </h5>
+        <p class="mt-2 bg-body p-2 rounded">
+          eLLMa Language is a high-level, rule-based language optimized for LLM interpretation. Use this guide to
+          structure data, define functions, and control logic flow effectively.
+        </p>
+        <hr>
+        <p class="bg-body p-2 rounded"><strong>Variable Declarations</strong> <br>
+          Define variables with an identifier and an optional description. Supported types include integers, floats,
+          strings, lists, and dictionaries. <br><br>
+          <code class="d-block p-2 border border-primary border-4 rounded">
+            variable_name: "natural language description" = value <br>
+            x: "some integer" <br>
+            y: "some integer" = 5 <br>
+            z: "some floating point value" = 234.234 <br>
+            user_name: "the user's name" = "Mike" <br>
+            numbers: "list of integers" = [1, 2, 3, 4, 5] <br>
+            user_info: "dictionary of user details" = {"name": "Mike", "age": 25} <br>
+          </code>
+        </p>
+        <p class="bg-body p-2 rounded"><strong>Variable Generation</strong> <br>
+          Quickly create structured data with patterns. <br><br>
+          <code class="d-block p-2 border border-primary border-4 rounded">
+            numbers: "1 to 1000" = [@("list of a range of integers from 1 to 1000")] <br>
+            random_names: "random names" = {@("dictionary of random names and their phone numbers, total of 10 items")}
+          </code>
+        </p>
+        <p class="bg-body p-2 rounded"><strong>Function Definitions</strong> <br>
+          Define inputs and outputs without internal logic, and AI will handle the rest for you. <br><br>
+          <code class="d-block p-2 border border-primary border-4 rounded">
+            @function_name(param1: "desc", param2: "desc", ) -> "function desc in plain language" -> (output1, output2,
+            ...) <br>
+            @sum(a: "first number", b: "second number") -> "add two numbers" -> (result) <br>
+            @get_user_info(user_id: "user's ID") -> "get user details" -> (user_name, user_age) <br>
+          </code>
+        </p>
+        <p class="bg-body p-2 rounded"><strong>Control Blocks</strong> <br>
+          Use <code>if</code>, <code>elif</code>, and <code>else</code> for conditional logic. <br><br>
+          <code class="d-block p-2 border border-primary border-4 rounded">
+            if("condition") { /* action */ } <br>
+            if("age is larger than 18") { log("adult") } <br>
+            elif("age is larger than 12") { log("teenager") } <br>
+            else { log("child") } <br>
+          </code>
+        </p>
+        <p class="bg-body p-2 rounded"><strong>Loops</strong> <br>
+          Iterate over lists or ranges using for keyword. <br><br>
+          <code class="d-block p-2 border border-primary border-4 rounded">
+            for("description of iteration") { /* action */ } <br>
+            for("number in numbers") { log(number) } <br>
+            for("name in random_names") { log(name) } <br>
+          </code>
+        </p>
+        <p class="bg-body p-2 rounded"><strong>Function Composition</strong> <br>
+          Chain and nest multiple functions to build complex workflows. <br><br>
+          <code class="d-block p-2 border border-primary border-4 rounded">
+            @(func1: "desc", func2: "desc") -> ("description of the workflow") -> (output1: "desc", output2: "desc")
+            <br><br>
+            @(sum(a: "desc" = 1, b: "desc" = 2), manage_balance(user_id: "desc" = 123)) -> ("sum two invoices and reduce
+            user balance") -> (cost:"desc", new_balance:"desc") <br><br>
+            @(get_user_info(user_id: "desc" = 123), get_user_balance(user_id: "desc" = 123)) -> ("get user details and
+            balance") -> (user_name:"desc", user_balance:"desc")
+          </code>
+        </p>
+        <p class="bg-body p-2 rounded"><strong>Try-Catch Blocks</strong> <br>
+          Handle errors using the less than and greater than symbols. <br><br>
+          <code class="d-block p-2 border border-primary border-4 rounded">
+            &lt; /* action that may raise an error */ &gt; <br>
+            &lt; <br>
+            &nbsp; @get_user_info(user_id: "desc" = 123) <br>
+            &nbsp; if("user not found") { log("user not found") } <br>
+            &gt; <br>
+          </code>
+        </p>
+        <p class="bg-body p-2 rounded"><strong>Logging & Comments</strong><br>
+          Use
+          <code class="d-block p-2 border border-primary border-4 rounded">
+            log("message")
+          </code> for runtime tracking. Add comments with
+          <code class="d-block p-2 border border-primary border-4 rounded">
+            //
+          </code>
+          for single-line or
+          <code class="d-block p-2 border border-primary border-4 rounded">
+            /* */
+          </code>
+          for multi-line comments.
+        </p>
+        <hr>
+        <p class="mb-0">
+          <strong>For more details, refer to the documentation or contact support.</strong>
+        </p>
       </div>
-    {% endfor %}
-  {% endif %}
+    </div>
 
-  <hr>
 
-  <div class="d-flex align-items-center mb-4">
-    <!-- Script Name -->
-    <input type="text" id="scriptName" class="form-control me-3 w-25" value="{{ ellma_script.script_name }}" placeholder="Script Name">
+    <hr>
 
-    <!-- Transcription Language -->
-    <select id="transcriptionLanguage" class="form-select me-3 w-25">
-      {% for code, language in ELLMA_TRANSCRIPTION_LANGUAGES %}
-        <option value="{{ code }}" {% if code == ellma_script.ellma_transcription_language %}selected{% endif %}>
-          {{ language }}
-        </option>
+    {% if messages %}
+      {% for message in messages %}
+        <div
+          class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
+          role="alert">
+          {{ message }}
+        </div>
       {% endfor %}
-    </select>
+    {% endif %}
 
-    <span id="unsavedChangesWarning" class="bg-label-warning rounded p-1" role="alert" hidden>
+    <hr>
+
+    <div class="d-flex align-items-center mb-4">
+      <!-- Script Name -->
+      <input type="text" id="scriptName" class="form-control me-3 w-25" value="{{ ellma_script.script_name }}"
+             placeholder="Script Name">
+
+      <!-- Transcription Language -->
+      <select id="transcriptionLanguage" class="form-select me-3 w-25">
+        {% for code, language in ELLMA_TRANSCRIPTION_LANGUAGES %}
+          <option value="{{ code }}" {% if code == ellma_script.ellma_transcription_language %}selected{% endif %}>
+            {{ language }}
+          </option>
+        {% endfor %}
+      </select>
+
+      <span id="unsavedChangesWarning" class="bg-label-warning rounded p-1" role="alert" hidden>
       <small><i class="fa fa-exclamation-triangle me-1 ms-2"></i><strong>Unsaved Changes</strong></small>
     </span>
 
-    <!-- Save and Compile Buttons -->
-    <form id="saveForm" method="post" action="{% url 'ellma:script-editor' ellma_script.id %}">
-      {% csrf_token %}
-      <input type="hidden" name="script_content" id="scriptContentInput">
-      <input type="hidden" name="script_name" id="scriptNameInput">
-      <input type="hidden" name="transcription_language" id="transcriptionLanguageInput">
+      <!-- Save and Compile Buttons -->
+      <form id="saveForm" method="post" action="{% url 'ellma:script-editor' ellma_script.id %}">
+        {% csrf_token %}
+        <input type="hidden" name="script_content" id="scriptContentInput">
+        <input type="hidden" name="script_name" id="scriptNameInput">
+        <input type="hidden" name="transcription_language" id="transcriptionLanguageInput">
 
-      <button type="button" class="btn btn-link ms-4" onclick="saveContent()">
-        <i class="fa fa-save text-dark" style="font-size: 24px;"></i>
+        <button type="button" class="btn btn-link ms-4" onclick="saveContent()">
+          <i class="fa fa-save text-dark" style="font-size: 24px;"></i>
+        </button>
+      </form>
+
+      <button type="button" class="btn btn-link me-12" onclick="resetContent()">
+        <i class="fa fa-undo text-warning" style="font-size: 24px;"></i>
       </button>
-    </form>
 
-    <button type="button" class="btn btn-link me-12" onclick="resetContent()">
-      <i class="fa fa-undo text-warning" style="font-size: 24px;"></i>
-    </button>
+      <!-- Compile Form -->
+      <form method="post" action="{% url 'ellma:compile-script' ellma_script.id %}">
+        {% csrf_token %}
+        <input type="hidden" name="script_content" id="scriptContentInputCompilation">
+        <input type="hidden" name="transcription_language" id="transcriptionLanguageInputCompilation">
+        <button type="submit" class="btn btn-link btn-primary p-2 rounded ms-12">
+          <i class="fa fa-play text-success me-2" style="font-size: 24px;"></i>
+          <strong>Compile Script</strong>
+        </button>
+      </form>
+    </div>
 
-    <!-- Compile Form -->
-    <form method="post" action="{% url 'ellma:compile-script' ellma_script.id %}">
-      {% csrf_token %}
-      <input type="hidden" name="script_content" id="scriptContentInputCompilation">
-      <input type="hidden" name="transcription_language" id="transcriptionLanguageInputCompilation">
-      <button type="submit" class="btn btn-link btn-primary p-2 rounded ms-12">
-        <i class="fa fa-play text-success me-2" style="font-size: 24px;"></i>
-        <strong>Compile Script</strong>
-      </button>
-    </form>
-  </div>
+    <hr>
 
-  <hr>
-
-  <!-- Code Editor -->
-  <h5 class="mt-8"><strong>
+    <!-- Code Editor -->
+    <h5 class="mt-8"><strong>
       <i class="fa fa-code me-2"></i>
       Editor Space
     </strong>
-  </h5>
-  <textarea id="editor" hidden>{{ ellma_script.ellma_script_content }}</textarea>
+    </h5>
+    <textarea id="editor" hidden>{{ ellma_script.ellma_script_content }}</textarea>
 
-  {% if ellma_script.ellma_transcribed_content %}
-    <hr>
-    <div class="bg-label-primary p-4 rounded">
-      <h5 class="mt-8 bg-body p-4 rounded"><strong>
-        <i class="fa fa-magic-wand-sparkles me-2"></i>
-        Generated Code Output (Read-Only)
-      </strong></h5>
-      <textarea class="" id="generatedCodeEditor">{{ ellma_script.ellma_transcribed_content }}</textarea>
-      <div class="d-flex justify-content-evenly align-items-center">
-        <button type="button" class="btn btn-success rounded mt-3 mb-3 w-50 mx-12" onclick="downloadGeneratedCode()">
-          <i class="fa fa-download me-2"></i>
-          <strong>Download Generated Code as Text</strong>
-        </button>
-        <button type="button" class="btn btn-secondary rounded mt-3 mb-3 w-50 mx-12" onclick="copyGeneratedCode()">
-          <i class="fa fa-copy me-2"></i>
-          <strong>Copy Generated Code as Text</strong>
-        </button>
+    {% if ellma_script.ellma_transcribed_content %}
+      <hr>
+      <div class="bg-label-primary p-4 rounded">
+        <h5 class="mt-8 bg-body p-4 rounded"><strong>
+          <i class="fa fa-magic-wand-sparkles me-2"></i>
+          Generated Code Output (Read-Only)
+        </strong></h5>
+        <textarea class="" id="generatedCodeEditor">{{ ellma_script.ellma_transcribed_content }}</textarea>
+        <div class="d-flex justify-content-evenly align-items-center">
+          <button type="button" class="btn btn-success rounded mt-3 mb-3 w-50 mx-12" onclick="downloadGeneratedCode()">
+            <i class="fa fa-download me-2"></i>
+            <strong>Download Generated Code as Text</strong>
+          </button>
+          <button type="button" class="btn btn-secondary rounded mt-3 mb-3 w-50 mx-12" onclick="copyGeneratedCode()">
+            <i class="fa fa-copy me-2"></i>
+            <strong>Copy Generated Code as Text</strong>
+          </button>
+        </div>
       </div>
-    </div>
-  {% endif %}
+    {% endif %}
 
-</div>
+  </div>
 {% endblock content %}

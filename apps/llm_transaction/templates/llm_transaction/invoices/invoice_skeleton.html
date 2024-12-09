@@ -20,7 +20,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
+  <meta charset="utf-8" />
   <title>Invoice #{{ invoice.invoice_number }}</title>
 
   <style>
@@ -123,9 +123,9 @@
   <hr>
   <small style="font-size: 10px;">
     <strong>Invoice #:</strong> {{ invoice.invoice_number }}
-  </small> <br/>
+  </small> <br />
   <small style="font-size: 10px;">
-    <strong>Transaction Date:</strong> {{ invoice.transaction_date }}<br/>
+    <strong>Transaction Date:</strong> {{ invoice.transaction_date }}<br />
   </small>
   <hr>
   <table cellpadding="0" cellspacing="0" style="margin-top: 32px;">
@@ -157,18 +157,18 @@
         <table>
           <tr>
             <td>
-              <strong>{{ organization.name }}</strong> <br/>
-              {{ organization.email }} <br/>
-              {{ organization.address|linebreaksbr }} <br/>
-              {{ organization.city }} / {{ organization.country }} | {{ organization.postal_code }} <br/>
-              {{ organization.phone }} <br/>
+              <strong>{{ organization.name }}</strong> <br />
+              {{ organization.email }} <br />
+              {{ organization.address|linebreaksbr }} <br />
+              {{ organization.city }} / {{ organization.country }} | {{ organization.postal_code }} <br />
+              {{ organization.phone }} <br />
             </td>
 
             <td>
-              <strong>Date:</strong> {{ invoice.transaction_date }} <br/>
-              {{ user.profile.first_name }} {{ user.profile.last_name }} <br/>
-              {{ user.profile.email }} <br/>
-              {{ user.profile.phone_number }} <br/>
+              <strong>Date:</strong> {{ invoice.transaction_date }} <br />
+              {{ user.profile.first_name }} {{ user.profile.last_name }} <br />
+              {{ user.profile.email }} <br />
+              {{ user.profile.phone_number }} <br />
             </td>
           </tr>
         </table>

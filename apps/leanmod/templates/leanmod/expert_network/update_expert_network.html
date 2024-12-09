@@ -1,21 +1,21 @@
-  <!--
-  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
-  ~
-  ~ Project: Bimod.io™
-  ~ File: update_expert_network.html
-  ~ Last Modified: 2024-10-05 01:39:48
-  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-05 14:42:33
-  ~
-  ~ This software is proprietary and confidential. Unauthorized copying,
-  ~ distribution, modification, or use of this software, whether for
-  ~ commercial, academic, or any other purpose, is strictly prohibited
-  ~ without the prior express written permission of BMD™ Autonomous
-  ~ Holdings.
-  ~
-  ~  For permission inquiries, please contact: admin@Bimod.io.
-  ~
-  -->
+<!--
+~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+~
+~ Project: Bimod.io™
+~ File: update_expert_network.html
+~ Last Modified: 2024-10-05 01:39:48
+~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+~ Created: 2024-10-05 14:42:33
+~
+~ This software is proprietary and confidential. Unauthorized copying,
+~ distribution, modification, or use of this software, whether for
+~ commercial, academic, or any other purpose, is strictly prohibited
+~ without the prior express written permission of BMD™ Autonomous
+~ Holdings.
+~
+~  For permission inquiries, please contact: admin@Bimod.io.
+~
+-->
 
 {% extends layout_path %}
 
@@ -26,7 +26,7 @@
 
 {% block vendor_css %}
   {{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
 {% endblock vendor_css %}
 
 {% block vendor_js %}
@@ -36,7 +36,7 @@
 
 {% block page_js %}
   <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
       // Initialize Select2 with a search bar
       $('.select2').select2({
         placeholder: 'Update Assistants',
@@ -47,7 +47,7 @@
 
       // Pre-load existing assistants with context instructions
       const existingAssistants = {{ assistant_references|safe }};
-      existingAssistants.forEach(function (assistant) {
+      existingAssistants.forEach(function(assistant) {
         const assistantId = assistant.id;
         const assistantName = assistant.name;
         const contextInstructions = assistant.context_instructions;
@@ -62,17 +62,17 @@
           </div>
         `;
         $('#selected-assistants').append(html);
-        $('#assistants').val(function (i, current) {
+        $('#assistants').val(function(i, current) {
           return current.concat(assistantId); // Preselect the assistants in Select2 dropdown
         }).trigger('change');
       });
 
       // Logic for newly selected assistants
-      $('#assistants').on('change', function () {
+      $('#assistants').on('change', function() {
         const selectedAssistants = $(this).val() || [];
 
         // Remove any assistant not in the selection
-        $('.assistant-entry').each(function () {
+        $('.assistant-entry').each(function() {
           const assistantId = $(this).attr('id').split('-')[1];
           if (!selectedAssistants.includes(assistantId)) {
             $(this).remove();
@@ -80,7 +80,7 @@
         });
 
         // Add newly selected assistants if they aren't already displayed
-        selectedAssistants.forEach(function (assistantId) {
+        selectedAssistants.forEach(function(assistantId) {
           if ($('#assistant-' + assistantId).length === 0) {
             const assistantName = $('#assistants option[value="' + assistantId + '"]').text();
             const html = `
@@ -98,7 +98,7 @@
       });
 
       // Remove assistant when clicking the "Remove" button
-      $(document).on('click', '.remove-assistant', function () {
+      $(document).on('click', '.remove-assistant', function() {
         const assistantId = $(this).data('id');
         $('#assistants option[value="' + assistantId + '"]').prop('selected', false).trigger('change');
         $('#assistant-' + assistantId).remove();
@@ -158,7 +158,8 @@
     <div class="card mb-4 p-4">
       <div class="card-body">
 
-        <img src="{% static 'img/leanmod/exp-1.png' %}" class="rounded mb-8" style="width: 100%;" alt="Illustration for tips">
+        <img src="{% static 'img/leanmod/exp-1.png' %}" class="rounded mb-8" style="width: 100%;"
+             alt="Illustration for tips">
 
         <div class="row g-6 mb-6">
           <div class="col-4">

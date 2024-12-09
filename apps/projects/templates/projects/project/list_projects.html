@@ -1,4 +1,3 @@
-
 <!--
   ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
   ~
@@ -27,11 +26,12 @@
 
 {% block vendor_css %}
   {{ block.super }}
-  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}"/>
-  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}"/>
-  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css' %}"/>
-  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/font/bootstrap-icons.min.css">
 {% endblock vendor_css %}
 
 {% block vendor_js %}
@@ -81,7 +81,8 @@
         <a class="collapsed" data-bs-toggle="collapse" href="#collapse-{{ organization.id }}" role="button"
            aria-expanded="false" aria-controls="collapse-{{ organization.id }}">
           <div class="d-flex">
-            <img src="{% if organization.organization_image %}{{ organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+            <img src="
+              {% if organization.organization_image %}{{ organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
                  alt="Organization Image" class="rounded" width="60">
             <h4>
               <strong class="ms-4">
@@ -130,7 +131,8 @@
             <tr>
               <td>
                 {% if project.organization.organization_image %}
-                  <img class="rounded" src="{{ project.organization.organization_image.url }}" alt="Org Image" width="50">
+                  <img class="rounded" src="{{ project.organization.organization_image.url }}" alt="Org Image"
+                       width="50">
                 {% else %}
                   <img class="rounded" src="{% static 'img/avatars/org-0.png' %}" alt="Org Image" width="50">
                 {% endif %}
@@ -138,7 +140,8 @@
               <td><strong>{{ project.project_name }}</strong></td>
               <td>{{ project.project_department }}</td>
               <td style="min-width:400px; max-width: 400px;">
-                <p class="mt-2 mb-2" style="max-height: 250px; overflow: auto;">{{ project.project_description|linebreaksbr }}</p>
+                <p class="mt-2 mb-2"
+                   style="max-height: 250px; overflow: auto;">{{ project.project_description|linebreaksbr }}</p>
               </td>
               <td>{{ project.project_status }}</td>
               <td>{{ project.project_priority }}</td>
@@ -173,9 +176,9 @@
   {% endfor %}
 
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      document.querySelectorAll('.toggle-icon').forEach(function (icon) {
-        icon.addEventListener('click', function () {
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('.toggle-icon').forEach(function(icon) {
+        icon.addEventListener('click', function() {
           var target = document.querySelector(this.getAttribute('data-target'));
           var bootstrapCollapse = new bootstrap.Collapse(target, {
             toggle: false
@@ -188,8 +191,8 @@
         });
       });
 
-      document.querySelectorAll('.collapse').forEach(function (collapse) {
-        collapse.addEventListener('show.bs.collapse', function () {
+      document.querySelectorAll('.collapse').forEach(function(collapse) {
+        collapse.addEventListener('show.bs.collapse', function() {
           var icon = document.querySelector(`.toggle-icon[data-target="#${this.id}"]`);
           if (icon) {
             icon.classList.remove('fa-arrow-alt-circle-down');
@@ -197,7 +200,7 @@
           }
         });
 
-        collapse.addEventListener('hide.bs.collapse', function () {
+        collapse.addEventListener('hide.bs.collapse', function() {
           var icon = document.querySelector(`.toggle-icon[data-target="#${this.id}"]`);
           if (icon) {
             icon.classList.remove('fa-arrow-alt-circle-up');

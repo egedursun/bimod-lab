@@ -27,8 +27,8 @@
 
 {% block vendor_css %}
   {{ block.super }}
-  <link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}"/>
-  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
 {% endblock vendor_css %}
 
 {% block vendor_js %}
@@ -67,7 +67,8 @@
         </div>
         <div class="card-body">
 
-          <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+          <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center"
+               role="alert">
             <img src="{% static 'img/custom-illustrations-v2/i2-26.png' %}" width="25%" style="border-radius: 25px;"
                  class="justify-content-end me-8" alt="Illustration for tips">
             <span class="alert-icon rounded">
@@ -108,11 +109,12 @@
               </div>
               <div class="mb-6 col-6">
                 <label class="form-label" for="name">Name</label>
-                <input type="text" class="form-control" id="name" name="name" placeholder="Enter connection name"/>
+                <input type="text" class="form-control" id="name" name="name" placeholder="Enter connection name" />
               </div>
               <div class="mb-6 col-6">
                 <label class="form-label" for="description">Description</label>
-                <textarea class="form-control" id="description" name="description" rows="1" placeholder="Describe the connection"></textarea>
+                <textarea class="form-control" id="description" name="description" rows="1"
+                          placeholder="Describe the connection"></textarea>
               </div>
               <div class="mb-6 col-6">
                 <label class="form-label" for="vectorizer">Vectorizer Model</label>
@@ -124,19 +126,23 @@
               </div>
               <div class="mb-6 col-3">
                 <label class="form-label" for="embedding_chunk_size">Embedding Chunk Size</label>
-                <input type="number" class="form-control" id="embedding_chunk_size" value="1000" min="200" max="8000" name="embedding_chunk_size" placeholder="Enter size">
+                <input type="number" class="form-control" id="embedding_chunk_size" value="1000" min="200" max="8000"
+                       name="embedding_chunk_size" placeholder="Enter size">
               </div>
               <div class="mb-6 col-3">
                 <label class="form-label" for="embedding_chunk_overlap">Embedding Chunk Overlap</label>
-                <input type="number" class="form-control" id="embedding_chunk_overlap" value="500" min="100" max="4000" name="embedding_chunk_overlap" placeholder="Enter overlap">
+                <input type="number" class="form-control" id="embedding_chunk_overlap" value="500" min="100" max="4000"
+                       name="embedding_chunk_overlap" placeholder="Enter overlap">
               </div>
               <div class="mb-6 col-3">
                 <label class="form-label" for="search_instance_retrieval_limit">Search Instance Retrieval Limit</label>
-                <input type="number" class="form-control" id="search_instance_retrieval_limit" value="10" min="1" max="50" name="search_instance_retrieval_limit" placeholder="Enter limit">
+                <input type="number" class="form-control" id="search_instance_retrieval_limit" value="10" min="1"
+                       max="50" name="search_instance_retrieval_limit" placeholder="Enter limit">
               </div>
               <div class="mb-6 col-3">
                 <label class="form-label" for="maximum_pages_to_index">Maximum Pages to Index</label>
-                <input type="number" class="form-control" id="maximum_pages_to_index" value="1000" min="1" max="1000000" name="maximum_pages_to_index" placeholder="Enter max pages">
+                <input type="number" class="form-control" id="maximum_pages_to_index" value="1000" min="1" max="1000000"
+                       name="maximum_pages_to_index" placeholder="Enter max pages">
               </div>
             </div>
             <hr>

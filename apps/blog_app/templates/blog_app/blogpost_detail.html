@@ -1,21 +1,21 @@
-    <!--
-  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
-  ~
-  ~ Project: Bimod.io™
-  ~ File: blogpost_detail.html
-  ~ Last Modified: 2024-10-05 01:39:47
-  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-05 14:42:34
-  ~
-  ~ This software is proprietary and confidential. Unauthorized copying,
-  ~ distribution, modification, or use of this software, whether for
-  ~ commercial, academic, or any other purpose, is strictly prohibited
-  ~ without the prior express written permission of BMD™ Autonomous
-  ~ Holdings.
-  ~
-  ~  For permission inquiries, please contact: admin@Bimod.io.
-  ~
-  -->
+<!--
+~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+~
+~ Project: Bimod.io™
+~ File: blogpost_detail.html
+~ Last Modified: 2024-10-05 01:39:47
+~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+~ Created: 2024-10-05 14:42:34
+~
+~ This software is proprietary and confidential. Unauthorized copying,
+~ distribution, modification, or use of this software, whether for
+~ commercial, academic, or any other purpose, is strictly prohibited
+~ without the prior express written permission of BMD™ Autonomous
+~ Holdings.
+~
+~  For permission inquiries, please contact: admin@Bimod.io.
+~
+-->
 
 {% extends layout_path %}
 
@@ -25,7 +25,7 @@
 {% block title %}
   {{ post.title }} - Blog
   {% if seo_meta %}
-<meta name="description" content="{{ seo_meta.meta_description }}">
+    <meta name="description" content="{{ seo_meta.meta_description }}">
     <meta name="keywords" content="{{ seo_meta.meta_keywords }}">
   {% else %}
     <meta name="description" content="{{ post.content|truncatechars:250 }}">
@@ -35,7 +35,8 @@
 
 {% block content %}
 
-  <section class="section-py over first-section-pt" style="width: 100vw; margin-left: 10%; margin-top: 5%; margin-bottom: 5%;">
+  <section class="section-py over first-section-pt"
+           style="width: 100vw; margin-left: 10%; margin-top: 5%; margin-bottom: 5%;">
 
     <div class="container" style="width: 100vw; ">
       <a href="{% url 'blog_app:post_list' %}" class="btn btn-primary w-25 mt-8 mb-4">
@@ -45,7 +46,8 @@
         </strong>
       </a>
       <hr>
-      <div class="row card p-12 mt-4 rounded" style="width: 100vw; display: grid; grid-template-columns: 4fr 2fr; gap: 0;">
+      <div class="row card p-12 mt-4 rounded"
+           style="width: 100vw; display: grid; grid-template-columns: 4fr 2fr; gap: 0;">
         <div class="w-100">
           <nav aria-label="breadcrumb">
             <ol class="breadcrumb breadcrumb-style1 mb-2">
@@ -78,7 +80,8 @@
           </p>
           <hr>
           <div class="mt-12 mb-12 " style="width: 50%; height: auto;">
-            <img src="{% if post.thumbnail_image %}{{ post.thumbnail_image.url }}{% else %}{% static 'img/custom-illustrations-v2/i2-1.png' %}{% endif %}"
+            <img src="
+              {% if post.thumbnail_image %}{{ post.thumbnail_image.url }}{% else %}{% static 'img/custom-illustrations-v2/i2-1.png' %}{% endif %}"
                  alt="{{ post.title }}" class="img-fluid rounded border border-primary border-4 rounded">
           </div>
           <hr class="my-6">

@@ -1,4 +1,3 @@
-
 <!--
   ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
   ~
@@ -27,8 +26,8 @@
 
 {% block vendor_css %}
   {{ block.super }}
-  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}"/>
-  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}" />
 {% endblock vendor_css %}
 
 {% block vendor_js %}
@@ -53,7 +52,8 @@
     <div class="d-flex flex-column ps-1">
       <h5 class="alert-heading mb-2">Tip</h5>
       <p class="mb-0">
-        In this page, you can view and manage all the wallet connections created for your organizations. You can update, delete, or view the details of any wallet connection.
+        In this page, you can view and manage all the wallet connections created for your organizations. You can update,
+        delete, or view the details of any wallet connection.
       </p>
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
       </button>
@@ -76,14 +76,16 @@
         <a class="collapsed" data-bs-toggle="collapse" href="#collapse-{{ organization.id }}" role="button"
            aria-expanded="false" aria-controls="collapse-{{ organization.id }}">
           <div class="d-flex">
-            <img src="{% if organization.organization_image %}{{ organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+            <img src="
+              {% if organization.organization_image %}{{ organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
                  alt="Organization Image" class="rounded" width="60">
             <h4>
               <strong class="ms-4">{{ organization.name }}</strong>
             </h4>
           </div>
         </a>
-        <p class="mt-8"><i class="fa fa-wallet"></i><strong>&nbsp; Total Wallet Connections: </strong> {{ wallet_connections|length }}</p>
+        <p class="mt-8"><i class="fa fa-wallet"></i><strong>&nbsp; Total Wallet
+          Connections: </strong> {{ wallet_connections|length }}</p>
         <i class="fa fa-arrow-alt-circle-down toggle-icon" data-target="#collapse-{{ organization.id }}"></i>
         <span data-bs-toggle="collapse" href="#collapse-{{ organization.id }}" role="button" aria-expanded="false"
               aria-controls="collapse-{{ organization.id }}"><strong>&nbsp; See Wallet Connections</strong></span>
@@ -109,18 +111,24 @@
           {% for wallet_connection in wallet_connections %}
             <tr class="overflow-auto">
               <td><strong>{{ wallet_connection.nickname }}</strong></td>
-              <td><div style="min-width: 400px; max-width: 400px; max-height: 150px; min-height: 150px; overflow: auto;">{{ wallet_connection.description|linebreaksbr }}</div></td>
+              <td>
+                <div
+                  style="min-width: 400px; max-width: 400px; max-height: 150px; min-height: 150px; overflow: auto;">{{ wallet_connection.description|linebreaksbr }}</div>
+              </td>
               <td><strong>{{ wallet_connection.get_blockchain_type_display }}</strong></td>
               <td><strong class="btn-success p-2 rounded">ETH {{ wallet_connection.wallet_balance }}</strong></td>
               <td><strong>{{ wallet_connection.balance_last_synced_at|timesince }}</strong></td>
               <td>
-                <a href="{% url 'smart_contracts:wallet_connection_sync' pk=wallet_connection.id %}" class="btn btn-sm btn-success me-4">
+                <a href="{% url 'smart_contracts:wallet_connection_sync' pk=wallet_connection.id %}"
+                   class="btn btn-sm btn-success me-4">
                   <i class="fa fa-refresh me-2"></i>Sync
                 </a>
-                <a href="{% url 'smart_contracts:wallet_connection_update' pk=wallet_connection.id %}" class="btn btn-sm btn-warning me-4">
+                <a href="{% url 'smart_contracts:wallet_connection_update' pk=wallet_connection.id %}"
+                   class="btn btn-sm btn-warning me-4">
                   <i class="fa fa-edit me-2"></i>Edit
                 </a>
-                <a href="{% url 'smart_contracts:wallet_connection_delete' pk=wallet_connection.id %}" class="btn btn-sm btn-danger">
+                <a href="{% url 'smart_contracts:wallet_connection_delete' pk=wallet_connection.id %}"
+                   class="btn btn-sm btn-danger">
                   <i class="fa fa-trash me-2"></i>Delete
                 </a>
               </td>

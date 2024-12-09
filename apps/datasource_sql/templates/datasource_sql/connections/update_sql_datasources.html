@@ -1,21 +1,21 @@
-  <!--
-  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
-  ~
-  ~ Project: Bimod.io™
-  ~ File: update_sql_datasources.html
-  ~ Last Modified: 2024-10-05 01:39:48
-  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-05 14:42:41
-  ~
-  ~ This software is proprietary and confidential. Unauthorized copying,
-  ~ distribution, modification, or use of this software, whether for
-  ~ commercial, academic, or any other purpose, is strictly prohibited
-  ~ without the prior express written permission of BMD™ Autonomous
-  ~ Holdings.
-  ~
-  ~  For permission inquiries, please contact: admin@Bimod.io.
-  ~
-  -->
+<!--
+~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+~
+~ Project: Bimod.io™
+~ File: update_sql_datasources.html
+~ Last Modified: 2024-10-05 01:39:48
+~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+~ Created: 2024-10-05 14:42:41
+~
+~ This software is proprietary and confidential. Unauthorized copying,
+~ distribution, modification, or use of this software, whether for
+~ commercial, academic, or any other purpose, is strictly prohibited
+~ without the prior express written permission of BMD™ Autonomous
+~ Holdings.
+~
+~  For permission inquiries, please contact: admin@Bimod.io.
+~
+-->
 
 {% extends layout_path %}
 
@@ -27,8 +27,8 @@
 
 {% block vendor_css %}
   {{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}"/>
-  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
 {% endblock vendor_css %}
 
 {% block vendor_js %}
@@ -65,7 +65,8 @@
           <small class="text-muted float-end"></small>
         </div>
         <div class="card-body">
-          <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+          <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center"
+               role="alert">
             <img src="{% static 'img/custom-illustrations-v2/i2-73.png' %}" width="25%" style="border-radius: 25px;"
                  class="justify-content-end me-8" alt="Illustration for tip">
             <span class="alert-icon rounded">
@@ -93,7 +94,8 @@
           <hr>
           <form method="post" enctype="multipart/form-data" class="mt-4">
             {% csrf_token %}
-            <img src="{% static 'img/sql_databases/sql-1.png' %}" class="rounded mt-4" style="width: 100%;" alt="Illustration for tips">
+            <img src="{% static 'img/sql_databases/sql-1.png' %}" class="rounded mt-4" style="width: 100%;"
+                 alt="Illustration for tips">
             <div class="row p-8">
               <div class="mb-6 col-6">
                 <label class="form-label" for="dbms_type">DBMS Type</label>
@@ -117,7 +119,7 @@
               </div>
               <div class="mb-6 col-3">
                 <label class="form-label" for="name">Name</label>
-                <input type="text" class="form-control" id="name" name="name" value="{{ connection.name }}"/>
+                <input type="text" class="form-control" id="name" name="name" value="{{ connection.name }}" />
               </div>
               <div class="mb-6 col-3">
                 <label class="form-label" for="description">Description</label>
@@ -126,26 +128,26 @@
               </div>
               <div class="mb-6 col-3">
                 <label class="form-label me-4" for="host">Host</label>
-                <input type="text" class="form-control" id="host" name="host" value="{{ connection.host }}"/>
+                <input type="text" class="form-control" id="host" name="host" value="{{ connection.host }}" />
               </div>
               <div class="mb-6 col-3">
                 <label class="form-label" for="port">Port</label>
-                <input type="number" class="form-control" id="port" name="port" value="{{ connection.port }}"/>
+                <input type="number" class="form-control" id="port" name="port" value="{{ connection.port }}" />
               </div>
               <div class="mb-6 col-3">
                 <label class="form-label" for="database_name">Database Name</label>
                 <input type="text" class="form-control" id="database_name" name="database_name"
-                       value="{{ connection.database_name }}"/>
+                       value="{{ connection.database_name }}" />
               </div>
               <div class="mb-6 col-3">
                 <label class="form-label" for="username">Username</label>
                 <input type="text" class="form-control" id="username" name="username"
-                       value="{{ connection.username }}"/>
+                       value="{{ connection.username }}" />
               </div>
               <div class="mb-6 col-3">
                 <label class="form-label" for="password">Password</label>
                 <input type="password" class="form-control" id="password" name="password"
-                       value="{{ connection.password }}"/>
+                       value="{{ connection.password }}" />
               </div>
               <div class="mb-6 col-3">
                 <label class="form-label" for="is_read_only">Read-Only</label>
@@ -192,11 +194,11 @@
   </div>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       const checkbox = document.getElementById('isReadOnlyCheckbox');
       const isReadOnlyField = document.getElementById('is-read-only');
 
-      checkbox.addEventListener('change', function () {
+      checkbox.addEventListener('change', function() {
         isReadOnlyField.value = checkbox.checked ? 'on' : 'off';
       });
     });

@@ -1,21 +1,21 @@
-  <!--
-  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
-  ~
-  ~ Project: Bimod.io™
-  ~ File: create_llm_core.html
-  ~ Last Modified: 2024-10-05 01:39:48
-  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-05 14:42:34
-  ~
-  ~ This software is proprietary and confidential. Unauthorized copying,
-  ~ distribution, modification, or use of this software, whether for
-  ~ commercial, academic, or any other purpose, is strictly prohibited
-  ~ without the prior express written permission of BMD™ Autonomous
-  ~ Holdings.
-  ~
-  ~  For permission inquiries, please contact: admin@Bimod.io.
-  ~
-  -->
+<!--
+~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+~
+~ Project: Bimod.io™
+~ File: create_llm_core.html
+~ Last Modified: 2024-10-05 01:39:48
+~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+~ Created: 2024-10-05 14:42:34
+~
+~ This software is proprietary and confidential. Unauthorized copying,
+~ distribution, modification, or use of this software, whether for
+~ commercial, academic, or any other purpose, is strictly prohibited
+~ without the prior express written permission of BMD™ Autonomous
+~ Holdings.
+~
+~  For permission inquiries, please contact: admin@Bimod.io.
+~
+-->
 
 {% extends layout_path %}
 
@@ -28,8 +28,8 @@
 
 {% block vendor_css %}
   {{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}"/>
-  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
 {% endblock vendor_css %}
 
 {% block vendor_js %}
@@ -64,7 +64,8 @@
           class="text-muted float-end"></small>
         </div>
         <div class="card-body">
-          <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+          <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center"
+               role="alert">
             <img src="{% static 'img/custom-illustrations-v2/i2-6.png' %}" width="25%" style="border-radius: 25px;"
                  class="justify-content-end me-8" alt="Illustration for tips">
             <span class="alert-icon rounded">
@@ -110,7 +111,7 @@
               <div class="col-6 mb-6">
                 <label class="form-label" for="nickname">Nickname for the Model</label>
                 <input type="text" class="form-control" id="nickname" name="nickname"
-                       placeholder="Enter a nickname for your new LLM model"/>
+                       placeholder="Enter a nickname for your new LLM model" />
                 <div class="form-text"></div>
               </div>
               <div class="col-12 mb-6">
@@ -130,7 +131,7 @@
               </div>
               <div class="col-6 mb-3">
                 <label class="form-label" for="api_key">Provider API Key</label>
-                <input type="text" class="form-control" id="api_key" name="api_key" placeholder="Enter API key"/>
+                <input type="text" class="form-control" id="api_key" name="api_key" placeholder="Enter API key" />
                 <div class="form-text"></div>
               </div>
               <div class="col-3 mb-3">
@@ -145,19 +146,19 @@
               <div class="col-3 mb-3">
                 <label class="form-label" for="temperature">Temperature Value</label>
                 <input type="number" class="form-control" id="temperature" name="temperature" step="0.05"
-                       min="0" max="2" placeholder="Enter temperature" value="1.00"/>
+                       min="0" max="2" placeholder="Enter temperature" value="1.00" />
                 <div class="form-text"></div>
               </div>
               <div class="col-3 mb-6">
                 <label class="form-label" for="maximum_tokens">Maximum Response Tokens</label>
                 <input type="number" class="form-control" id="maximum_tokens" name="maximum_tokens"
-                       min="256" max="4032" step="64" placeholder="Enter maximum tokens" value="4032"/>
+                       min="256" max="4032" step="64" placeholder="Enter maximum tokens" value="4032" />
                 <div class="form-text"></div>
               </div>
               <div class="col-3 mb-6">
                 <label class="form-label" for="top_p">Top P (Optional)</label>
                 <input type="number" class="form-control" id="top_p" name="top_p" step="0.025"
-                       min="0" max="1" placeholder="Enter a top P value for your model" value="1.0"/>
+                       min="0" max="1" placeholder="Enter a top P value for your model" value="1.0" />
                 <div class="form-text"></div>
               </div>
               <div class="col-6 mb-6">
@@ -169,13 +170,13 @@
               <div class="col-3 mb-6">
                 <label class="form-label" for="frequency_penalty">Frequency Penalty (Optional)</label>
                 <input type="number" class="form-control" id="frequency_penalty" name="frequency_penalty" step="0.025"
-                       min="0" max="2" placeholder="Enter a frequency penalty value for your model" value="0.0"/>
+                       min="0" max="2" placeholder="Enter a frequency penalty value for your model" value="0.0" />
                 <div class="form-text"></div>
               </div>
               <div class="col-3 mb-6">
                 <label class="form-label" for="presence_penalty">Presence Penalty (Optional)</label>
                 <input type="number" class="form-control" id="presence_penalty" name="presence_penalty" step="0.025"
-                       min="0" max="2" placeholder="Enter a presence penalty value for your model" value="0.0"/>
+                       min="0" max="2" placeholder="Enter a presence penalty value for your model" value="0.0" />
                 <div class="form-text"></div>
               </div>
             </div>

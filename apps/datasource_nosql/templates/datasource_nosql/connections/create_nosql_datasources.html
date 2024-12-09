@@ -26,185 +26,187 @@
 {% block title %}Create NoSQL Database Connection{% endblock %}
 
 {% block vendor_css %}
-{{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}" />
-<link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
 {% endblock vendor_css %}
 
 {% block vendor_js %}
-{{ block.super }}
-<script src="{% static 'vendor/libs/cleavejs/cleave.js' %}"></script>
-<script src="{% static 'vendor/libs/cleavejs/cleave-phone.js' %}"></script>
-<script src="{% static 'vendor/libs/moment/moment.js' %}"></script>
-<script src="{% static 'vendor/libs/flatpickr/flatpickr.js' %}"></script>
-<script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/cleavejs/cleave.js' %}"></script>
+  <script src="{% static 'vendor/libs/cleavejs/cleave-phone.js' %}"></script>
+  <script src="{% static 'vendor/libs/moment/moment.js' %}"></script>
+  <script src="{% static 'vendor/libs/flatpickr/flatpickr.js' %}"></script>
+  <script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
 {% endblock vendor_js %}
 
 {% block page_js %}
-{{ block.super }}
-<script src="{% static 'js/form-layouts.js' %}"></script>
+  {{ block.super }}
+  <script src="{% static 'js/form-layouts.js' %}"></script>
 {% endblock page_js %}
 
 {% block content %}
-<!-- Basic Layout -->
-<div class="row">
-  <div class="col-xl mb-6">
-    <div class="card">
-      <div class="card-datatable table-responsive">
-        <a href="{% url 'datasource_nosql:list' %}">
-          <button class="btn btn-secondary ms-4 mt-4 mb-8">
-            <i class="fa fa-dashboard me-4"></i>
-            <strong> Manage NoSQL Database Connections</strong>
-          </button>
-        </a>
-      </div>
-      <div class="card-header d-flex justify-content-between align-items-center">
-        <h5 class="mb-0">
-          <strong>Create NoSQL Database Connection</strong>
-        </h5>
-        <small class="text-muted float-end"></small>
-      </div>
-      <div class="card-body">
-        <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center"
-             role="alert">
-          <img src="{% static 'img/custom-illustrations-v2/i2-82.png' %}" width="25%" style="border-radius: 25px;"
-               class="justify-content-end me-8" alt="Illustration for tips">
-          <span class="alert-icon rounded">
+  <!-- Basic Layout -->
+  <div class="row">
+    <div class="col-xl mb-6">
+      <div class="card">
+        <div class="card-datatable table-responsive">
+          <a href="{% url 'datasource_nosql:list' %}">
+            <button class="btn btn-secondary ms-4 mt-4 mb-8">
+              <i class="fa fa-dashboard me-4"></i>
+              <strong> Manage NoSQL Database Connections</strong>
+            </button>
+          </a>
+        </div>
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">
+            <strong>Create NoSQL Database Connection</strong>
+          </h5>
+          <small class="text-muted float-end"></small>
+        </div>
+        <div class="card-body">
+          <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center"
+               role="alert">
+            <img src="{% static 'img/custom-illustrations-v2/i2-82.png' %}" width="25%" style="border-radius: 25px;"
+                 class="justify-content-end me-8" alt="Illustration for tips">
+            <span class="alert-icon rounded">
             <i class="ti ti-bookmark"></i>
           </span>
-          <div class="d-flex flex-column ps-1">
-            <h5 class="alert-heading mb-2">Tip</h5>
-            <p class="mb-0">
-              Create a new NoSQL data source by providing the necessary information. You can use this data source to
-              connect to a NoSQL database and make your assistants be able to reach the data within your organization
-              to provide better insights and recommendations. This is a very powerful feature that you can utilize
-              in many different ways. Yet, make sure that you take regular backups of your data sources and keep your
-              data sources secure since there is no 100% guarantee that the assistants won't make a mistake and delete
-              or modify your data.
-            </p>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-            </button>
+            <div class="d-flex flex-column ps-1">
+              <h5 class="alert-heading mb-2">Tip</h5>
+              <p class="mb-0">
+                Create a new NoSQL data source by providing the necessary information. You can use this data source to
+                connect to a NoSQL database and make your assistants be able to reach the data within your organization
+                to provide better insights and recommendations. This is a very powerful feature that you can utilize
+                in many different ways. Yet, make sure that you take regular backups of your data sources and keep your
+                data sources secure since there is no 100% guarantee that the assistants won't make a mistake and delete
+                or modify your data.
+              </p>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+              </button>
+            </div>
           </div>
-        </div>
-        {% if messages %}
-        {% for message in messages %}
-        <div
-          class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
-          role="alert">
-          {{ message }}
-        </div>
-        {% endfor %}
-        {% endif %}
-        <hr>
-        <form method="post" enctype="multipart/form-data" class="mt-4">
-          {% csrf_token %}
-          <img src="{% static 'img/nosql_databases/nosql-1.png' %}" class="rounded mt-4" style="width: 100%;" alt="Illustration for tips">
-          <div class="row p-8">
-            <div class="mb-6 col-6">
-              <label class="form-label" for="nosql_db_type">DBMS Type</label>
-              <select class="form-select" id="nosql_db_type" name="nosql_db_type">
-                <option value="" disabled selected>Select DBMS Type</option>
-                {% for key, value in dbms_choices %}
-                <option value="{{ key }}">{{ value }}</option>
-                {% endfor %}
-              </select>
-            </div>
-            <div class="mb-6 col-6">
-              <label class="form-label" for="assistant">Assistant</label>
-              <select class="form-select" id="assistant" name="assistant">
-                {% for assistant in assistants %}
-                <option value="{{ assistant.id }}">{{ assistant.name }}</option>
-                {% endfor %}
-              </select>
-              <div class="form-text"></div>
-            </div>
-            <div class="mb-6 col-3">
-              <label class="form-label" for="name">Name</label>
-              <input type="text" class="form-control" id="name" name="name" placeholder="Enter data source name" />
-            </div>
-            <div class="mb-6 col-3">
-              <label class="form-label" for="description">Description</label>
-              <textarea class="form-control" id="description" name="description" rows="1"
-                        placeholder="Enter data source description"></textarea>
-            </div>
-            <div class="mb-6 col-3">
-              <label class="form-label" for="host">Host</label>
-              <input type="text" class="form-control" id="host" name="host" placeholder="Enter host" />
-            </div>
-            <div class="mb-6 col-3">
-              <label class="form-label" for="bucket_name">Bucket Name</label>
-              <input type="text" class="form-control" id="bucket_name" name="bucket_name"
-                     placeholder="Enter bucket name" />
-            </div>
-            <div class="mb-6 col-3">
-              <label class="form-label" for="username">Username</label>
-              <input type="text" class="form-control" id="username" name="username" placeholder="Enter username" />
-            </div>
-            <div class="mb-6 col-3">
-              <label class="form-label" for="password">Password</label>
-              <input type="password" class="form-control" id="password" name="password" placeholder="Enter password" />
-            </div>
-            <div class="mb-6 col-3">
-              <label class="form-label" for="is_read_only">Read-Only</label>
-              <br>
-              <label class="switch switch-square switch-lg mt-2">
-                <input type="checkbox" class="switch-input" id="isReadOnlyCheckbox" name="is_read_only" checked>
-                <span class="switch-toggle-slider">
+          {% if messages %}
+            {% for message in messages %}
+              <div
+                class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
+                role="alert">
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+          <hr>
+          <form method="post" enctype="multipart/form-data" class="mt-4">
+            {% csrf_token %}
+            <img src="{% static 'img/nosql_databases/nosql-1.png' %}" class="rounded mt-4" style="width: 100%;"
+                 alt="Illustration for tips">
+            <div class="row p-8">
+              <div class="mb-6 col-6">
+                <label class="form-label" for="nosql_db_type">DBMS Type</label>
+                <select class="form-select" id="nosql_db_type" name="nosql_db_type">
+                  <option value="" disabled selected>Select DBMS Type</option>
+                  {% for key, value in dbms_choices %}
+                    <option value="{{ key }}">{{ value }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="mb-6 col-6">
+                <label class="form-label" for="assistant">Assistant</label>
+                <select class="form-select" id="assistant" name="assistant">
+                  {% for assistant in assistants %}
+                    <option value="{{ assistant.id }}">{{ assistant.name }}</option>
+                  {% endfor %}
+                </select>
+                <div class="form-text"></div>
+              </div>
+              <div class="mb-6 col-3">
+                <label class="form-label" for="name">Name</label>
+                <input type="text" class="form-control" id="name" name="name" placeholder="Enter data source name" />
+              </div>
+              <div class="mb-6 col-3">
+                <label class="form-label" for="description">Description</label>
+                <textarea class="form-control" id="description" name="description" rows="1"
+                          placeholder="Enter data source description"></textarea>
+              </div>
+              <div class="mb-6 col-3">
+                <label class="form-label" for="host">Host</label>
+                <input type="text" class="form-control" id="host" name="host" placeholder="Enter host" />
+              </div>
+              <div class="mb-6 col-3">
+                <label class="form-label" for="bucket_name">Bucket Name</label>
+                <input type="text" class="form-control" id="bucket_name" name="bucket_name"
+                       placeholder="Enter bucket name" />
+              </div>
+              <div class="mb-6 col-3">
+                <label class="form-label" for="username">Username</label>
+                <input type="text" class="form-control" id="username" name="username" placeholder="Enter username" />
+              </div>
+              <div class="mb-6 col-3">
+                <label class="form-label" for="password">Password</label>
+                <input type="password" class="form-control" id="password" name="password"
+                       placeholder="Enter password" />
+              </div>
+              <div class="mb-6 col-3">
+                <label class="form-label" for="is_read_only">Read-Only</label>
+                <br>
+                <label class="switch switch-square switch-lg mt-2">
+                  <input type="checkbox" class="switch-input" id="isReadOnlyCheckbox" name="is_read_only" checked>
+                  <span class="switch-toggle-slider">
                     <span class="switch-on"><i class="ti ti-check"></i></span>
                     <span class="switch-off"><i class="ti ti-x"></i></span>
                   </span>
-              </label>
-            </div>
-            <div class="mb-6 col-6">
-              <label class="form-label" for="one_time_retrieval_instance_limit">Maximum Record Retrieval per
-                Request</label>
-              <!-- slider bar here -->
-              <input type="range" class="form-range" id="one_time_retrieval_instance_limit"
-                     name="one_time_retrieval_instance_limit" min="1" max="100" step="1" value="50"
-                     oninput="this.nextElementSibling.value = this.value">
-              <output>50</output>
-            </div>
-            <div class="mb-6 col-6">
-              <label class="form-label" for="one_time_retrieval_token_limit">Maximum Tokens per Retrieval</label>
-              <!-- slider bar here -->
-              <input type="range" class="form-range" id="one_time_retrieval_token_limit"
-                     name="one_time_retrieval_token_limit" min="100" max="10000" step="100" value="10000"
-                     oninput="this.nextElementSibling.value = this.value">
-              <output>10000</output>
-            </div>
-            <div class="alert alert-solid-danger d-flex align-items-center col-12" role="alert">
+                </label>
+              </div>
+              <div class="mb-6 col-6">
+                <label class="form-label" for="one_time_retrieval_instance_limit">Maximum Record Retrieval per
+                  Request</label>
+                <!-- slider bar here -->
+                <input type="range" class="form-range" id="one_time_retrieval_instance_limit"
+                       name="one_time_retrieval_instance_limit" min="1" max="100" step="1" value="50"
+                       oninput="this.nextElementSibling.value = this.value">
+                <output>50</output>
+              </div>
+              <div class="mb-6 col-6">
+                <label class="form-label" for="one_time_retrieval_token_limit">Maximum Tokens per Retrieval</label>
+                <!-- slider bar here -->
+                <input type="range" class="form-range" id="one_time_retrieval_token_limit"
+                       name="one_time_retrieval_token_limit" min="100" max="10000" step="100" value="10000"
+                       oninput="this.nextElementSibling.value = this.value">
+                <output>10000</output>
+              </div>
+              <div class="alert alert-solid-danger d-flex align-items-center col-12" role="alert">
               <span class="alert-icon rounded">
                 <i class="ti ti-alert-triangle-filled"></i>
               </span>
-              We recommend that you create a read-only instance for the data source to prevent any accidental data
-              loss or leaks. Do not forget that the users who have access to the chat can ask for deletion or
-              modification of your data which can have unintended consequences.
+                We recommend that you create a read-only instance for the data source to prevent any accidental data
+                loss or leaks. Do not forget that the users who have access to the chat can ask for deletion or
+                modification of your data which can have unintended consequences.
+              </div>
             </div>
-          </div>
-          <hr>
-          <input type="hidden" name="created_by_user" value="{{ user.id }}">
-          <button type="submit" class="btn btn-primary d-grid w-25 mt-4">
-            <strong><i class="fa fa-plus me-4"></i>Create NoSQL Database Connection</strong>
-          </button>
-        </form>
+            <hr>
+            <input type="hidden" name="created_by_user" value="{{ user.id }}">
+            <button type="submit" class="btn btn-primary d-grid w-25 mt-4">
+              <strong><i class="fa fa-plus me-4"></i>Create NoSQL Database Connection</strong>
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const checkbox = document.getElementById('isReadOnlyCheckbox');
-    const isReadOnlyField = document.getElementById('is-read-only');
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const checkbox = document.getElementById('isReadOnlyCheckbox');
+      const isReadOnlyField = document.getElementById('is-read-only');
 
-    checkbox.addEventListener('change', function() {
-      if (checkbox.checked) {
-        isReadOnlyField.value = 'on';
-      } else {
-        isReadOnlyField.value = 'off';
-      }
+      checkbox.addEventListener('change', function() {
+        if (checkbox.checked) {
+          isReadOnlyField.value = 'on';
+        } else {
+          isReadOnlyField.value = 'off';
+        }
+      });
     });
-  });
-</script>
+  </script>
 
 {% endblock %}

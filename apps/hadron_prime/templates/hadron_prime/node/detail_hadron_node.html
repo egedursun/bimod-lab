@@ -1,22 +1,21 @@
-
-  <!--
-  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
-  ~
-  ~ Project: Bimod.io™
-  ~ File: detail_hadron_node.html
-  ~ Last Modified: 2024-10-18 00:39:57
-  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-18 00:39:57
-  ~
-  ~ This software is proprietary and confidential. Unauthorized copying,
-  ~ distribution, modification, or use of this software, whether for
-  ~ commercial, academic, or any other purpose, is strictly prohibited
-  ~ without the prior express written permission of BMD™ Autonomous
-  ~ Holdings.
-  ~
-  ~  For permission inquiries, please contact: admin@Bimod.io.
-  ~
-  -->
+<!--
+~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+~
+~ Project: Bimod.io™
+~ File: detail_hadron_node.html
+~ Last Modified: 2024-10-18 00:39:57
+~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+~ Created: 2024-10-18 00:39:57
+~
+~ This software is proprietary and confidential. Unauthorized copying,
+~ distribution, modification, or use of this software, whether for
+~ commercial, academic, or any other purpose, is strictly prohibited
+~ without the prior express written permission of BMD™ Autonomous
+~ Holdings.
+~
+~  For permission inquiries, please contact: admin@Bimod.io.
+~
+-->
 
 {% extends layout_path %}
 {% load static %}
@@ -26,7 +25,7 @@
 
 {% block vendor_css %}
   {{ block.super }}
-  <link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}" />
 {% endblock vendor_css %}
 
 {% block vendor_js %}
@@ -35,219 +34,222 @@
 {% endblock vendor_js %}
 
 {% block page_js %}
-<!-- JavaScript for copy and toggle visibility -->
-<script>
-  // Function to copy text to clipboard
-  function copyToClipboard(element) {
-    var $temp = $("<input>");
-    $("body").append($temp);
-    $temp.val($(element).text()).select().toString().trim();
-    document.execCommand("copy");
-    $temp.remove();
-  }
-  // Function to copy text from input elements
-  function copyToClipboardInput(elementId, apiKeyToken) {
-    var $temp = $("<input>");
-    $("body").append($temp);
-    $temp.val(apiKeyToken).select().toString().trim();
-    document.execCommand("copy");
-    $temp.remove();
-  }
-  // Function to toggle visibility of API key
-  function toggleVisibility(fieldId, button) {
-    var field = document.getElementById(fieldId);
-    if (field.type === "password") {
-      field.type = "text";
-      button.innerHTML = '<i class="fa fa-eye-slash me-2"></i> Show/Hide';
-    } else {
-      field.type = "password";
-      button.innerHTML = '<i class="fa fa-eye me-2"></i> Show/Hide';
+  <!-- JavaScript for copy and toggle visibility -->
+  <script>
+    // Function to copy text to clipboard
+    function copyToClipboard(element) {
+      var $temp = $('<input>');
+      $('body').append($temp);
+      $temp.val($(element).text()).select().toString().trim();
+      document.execCommand('copy');
+      $temp.remove();
     }
-  }
-</script>
-<script>
-  function confirmRegenerateApiKey() {
-    Swal.fire({
-      title: 'Are you sure?',
-      text: 'You won\'t be able to revert this action.',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Yes, regenerate it!',
-      cancelButtonText: 'No, cancel!',
-      customClass: {
-        confirmButton: 'btn btn-danger me-2 waves-effect waves-light',
-        cancelButton: 'btn btn-label-secondary waves-effect waves-light'
-      },
-      buttonsStyling: false
-    }).then((result) => {
-      if (result.isConfirmed) {
-        regenerateApiKey();
-      }
-    });
-  }
-  function regenerateApiKey() {
-    const url = `{% url 'hadron_prime:regenerate_node_api_key' pk=node.id %}`;
-    fetch(url, {
-      method: 'POST',
-      headers: {
-        'X-CSRFToken': '{{ csrf_token }}',
-        'Content-Type': 'application/json'
-      },
-      credentials: 'same-origin'
-    })
-    .then(response => response.json())
-    .then(data => {
-      if (data.new_token) {
-        document.getElementById('apiKey').value = data.new_token;
+
+    // Function to copy text from input elements
+    function copyToClipboardInput(elementId, apiKeyToken) {
+      var $temp = $('<input>');
+      $('body').append($temp);
+      $temp.val(apiKeyToken).select().toString().trim();
+      document.execCommand('copy');
+      $temp.remove();
+    }
+
+    // Function to toggle visibility of API key
+    function toggleVisibility(fieldId, button) {
+      var field = document.getElementById(fieldId);
+      if (field.type === 'password') {
+        field.type = 'text';
+        button.innerHTML = '<i class="fa fa-eye-slash me-2"></i> Show/Hide';
       } else {
-        console.error('Error:', data.error);
+        field.type = 'password';
+        button.innerHTML = '<i class="fa fa-eye me-2"></i> Show/Hide';
       }
-    })
-    .catch(error => {
-      console.error('Error:', error);
-    });
-  }
-</script>
-<script>
-  // Function to show confirmation dialog before purging execution logs
-  function confirmPurgeSpeechLogs() {
-    Swal.fire({
-      title: 'Are you sure?',
-      text: 'This will delete all speech logs, and you won\'t be able to revert this action.',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Yes, purge them!',
-      cancelButtonText: 'No, cancel!',
-      customClass: {
-        confirmButton: 'btn btn-danger me-2 waves-effect waves-light',
-        cancelButton: 'btn btn-label-secondary waves-effect waves-light'
-      },
-      buttonsStyling: false
-    }).then((result) => {
-      if (result.isConfirmed) {
-        document.getElementById('purge-speech-logs-form').submit();
-      }
-    });
-  }
+    }
+  </script>
+  <script>
+    function confirmRegenerateApiKey() {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: 'You won\'t be able to revert this action.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, regenerate it!',
+        cancelButtonText: 'No, cancel!',
+        customClass: {
+          confirmButton: 'btn btn-danger me-2 waves-effect waves-light',
+          cancelButton: 'btn btn-label-secondary waves-effect waves-light'
+        },
+        buttonsStyling: false
+      }).then((result) => {
+        if (result.isConfirmed) {
+          regenerateApiKey();
+        }
+      });
+    }
 
-  // Function to show confirmation dialog before purging execution logs
-  function confirmPurgeExecutionLogs() {
-    Swal.fire({
-      title: 'Are you sure?',
-      text: 'This will delete all execution logs, and you won\'t be able to revert this action.',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Yes, purge them!',
-      cancelButtonText: 'No, cancel!',
-      customClass: {
-        confirmButton: 'btn btn-danger me-2 waves-effect waves-light',
-        cancelButton: 'btn btn-label-secondary waves-effect waves-light'
-      },
-      buttonsStyling: false
-    }).then((result) => {
-      if (result.isConfirmed) {
-        document.getElementById('purge-execution-logs-form').submit();
-      }
-    });
-  }
+    function regenerateApiKey() {
+      const url = `{% url 'hadron_prime:regenerate_node_api_key' pk=node.id %}`;
+      fetch(url, {
+        method: 'POST',
+        headers: {
+          'X-CSRFToken': '{{ csrf_token }}',
+          'Content-Type': 'application/json'
+        },
+        credentials: 'same-origin'
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.new_token) {
+            document.getElementById('apiKey').value = data.new_token;
+          } else {
+            console.error('Error:', data.error);
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+    }
+  </script>
+  <script>
+    // Function to show confirmation dialog before purging execution logs
+    function confirmPurgeSpeechLogs() {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: 'This will delete all speech logs, and you won\'t be able to revert this action.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, purge them!',
+        cancelButtonText: 'No, cancel!',
+        customClass: {
+          confirmButton: 'btn btn-danger me-2 waves-effect waves-light',
+          cancelButton: 'btn btn-label-secondary waves-effect waves-light'
+        },
+        buttonsStyling: false
+      }).then((result) => {
+        if (result.isConfirmed) {
+          document.getElementById('purge-speech-logs-form').submit();
+        }
+      });
+    }
 
-  // Function to show confirmation dialog before purging SEASE logs
-  function confirmPurgeSeaseLogs() {
-    Swal.fire({
-      title: 'Are you sure?',
-      text: 'This will delete all SEASE logs, and you won\'t be able to revert this action.',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Yes, purge them!',
-      cancelButtonText: 'No, cancel!',
-      customClass: {
-        confirmButton: 'btn btn-danger me-2 waves-effect waves-light',
-        cancelButton: 'btn btn-label-secondary waves-effect waves-light'
-      },
-      buttonsStyling: false
-    }).then((result) => {
-      if (result.isConfirmed) {
-        document.getElementById('purge-sease-logs-form').submit();
-      }
-    });
-  }
+    // Function to show confirmation dialog before purging execution logs
+    function confirmPurgeExecutionLogs() {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: 'This will delete all execution logs, and you won\'t be able to revert this action.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, purge them!',
+        cancelButtonText: 'No, cancel!',
+        customClass: {
+          confirmButton: 'btn btn-danger me-2 waves-effect waves-light',
+          cancelButton: 'btn btn-label-secondary waves-effect waves-light'
+        },
+        buttonsStyling: false
+      }).then((result) => {
+        if (result.isConfirmed) {
+          document.getElementById('purge-execution-logs-form').submit();
+        }
+      });
+    }
 
-  // Function to show confirmation dialog before purging publishing logs
-  function confirmPurgePublishingLogs() {
-    Swal.fire({
-      title: 'Are you sure?',
-      text: 'This will delete all publishing logs, and you won\'t be able to revert this action.',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Yes, purge them!',
-      cancelButtonText: 'No, cancel!',
-      customClass: {
-        confirmButton: 'btn btn-danger me-2 waves-effect waves-light',
-        cancelButton: 'btn btn-label-secondary waves-effect waves-light'
-      },
-      buttonsStyling: false
-    }).then((result) => {
-      if (result.isConfirmed) {
-        document.getElementById('purge-publishing-logs-form').submit();
-      }
-    });
-  }
-</script>
+    // Function to show confirmation dialog before purging SEASE logs
+    function confirmPurgeSeaseLogs() {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: 'This will delete all SEASE logs, and you won\'t be able to revert this action.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, purge them!',
+        cancelButtonText: 'No, cancel!',
+        customClass: {
+          confirmButton: 'btn btn-danger me-2 waves-effect waves-light',
+          cancelButton: 'btn btn-label-secondary waves-effect waves-light'
+        },
+        buttonsStyling: false
+      }).then((result) => {
+        if (result.isConfirmed) {
+          document.getElementById('purge-sease-logs-form').submit();
+        }
+      });
+    }
+
+    // Function to show confirmation dialog before purging publishing logs
+    function confirmPurgePublishingLogs() {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: 'This will delete all publishing logs, and you won\'t be able to revert this action.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, purge them!',
+        cancelButtonText: 'No, cancel!',
+        customClass: {
+          confirmButton: 'btn btn-danger me-2 waves-effect waves-light',
+          cancelButton: 'btn btn-label-secondary waves-effect waves-light'
+        },
+        buttonsStyling: false
+      }).then((result) => {
+        if (result.isConfirmed) {
+          document.getElementById('purge-publishing-logs-form').submit();
+        }
+      });
+    }
+  </script>
 {% endblock page_js %}
 
 {% block content %}
   <div class="row">
     <div class="col-xl mb-6">
       <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center"
-               role="alert">
-      <img src="{% static 'img/custom-illustrations-v2/i2-71.png' %}" width="25%" style="border-radius:25px;"
-           class="justify-content-end me-8" alt="Illustration for tip">
-      <span class="alert-icon rounded">
+           role="alert">
+        <img src="{% static 'img/custom-illustrations-v2/i2-71.png' %}" width="25%" style="border-radius:25px;"
+             class="justify-content-end me-8" alt="Illustration for tip">
+        <span class="alert-icon rounded">
         <i class="ti ti-bookmark"></i>
       </span>
-      <div class="d-flex flex-column ps-1">
-        <h5 class="alert-heading mb-2">Tip</h5>
-        <p class="mb-0">
-          This page aims to provide detailed information about the selected Hadron Node.
-          You can view the execution logs, state-error-action-state-error logs, and publishing logs for the node.
-          For more information, please refer to the documentation or contact the support team.
-        </p>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-        </button>
-      </div>
-    </div>
-    {% if messages %}
-      {% for message in messages %}
-        <div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %}">
-          {{ message }}
+        <div class="d-flex flex-column ps-1">
+          <h5 class="alert-heading mb-2">Tip</h5>
+          <p class="mb-0">
+            This page aims to provide detailed information about the selected Hadron Node.
+            You can view the execution logs, state-error-action-state-error logs, and publishing logs for the node.
+            For more information, please refer to the documentation or contact the support team.
+          </p>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+          </button>
         </div>
-      {% endfor %}
-    {% endif %}
-    <a href="{% url 'hadron_prime:detail_hadron_system' pk=node.system.id %}">
-      <button class="btn btn-secondary ms-4 mt-4 mb-8">
-        <i class="fa fa-dashboard me-4"></i>
-        <strong>Back to System Details</strong>
-      </button>
-    </a>
-    <a href="{% url 'hadron_prime:detail_hadron_node' pk=node.id %}">
-      <button class="btn btn-success ms-4 mt-4 mb-8">
-        <i class="fa fa-refresh me-4"></i>
-        <strong>Refresh</strong>
-      </button>
-    </a>
-    <a href="{% url 'hadron_prime:update_hadron_node' node.id %}">
-      <button class="btn btn-warning ms-4 mt-4 mb-8">
-        <i class="fa fa-edit me-2"></i>
-        <strong>Update Hadron Node</strong>
-      </button>
-    </a>
-    <a href="{% url 'hadron_prime:delete_hadron_node' node.id %}">
-      <button class="btn btn-danger ms-4 mt-4 mb-8">
-        <i class="fa fa-trash me-2"></i>
-        <strong>Delete Hadron Node</strong>
-      </button>
-    </a>
-    <hr>
+      </div>
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %}">
+            {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
+      <a href="{% url 'hadron_prime:detail_hadron_system' pk=node.system.id %}">
+        <button class="btn btn-secondary ms-4 mt-4 mb-8">
+          <i class="fa fa-dashboard me-4"></i>
+          <strong>Back to System Details</strong>
+        </button>
+      </a>
+      <a href="{% url 'hadron_prime:detail_hadron_node' pk=node.id %}">
+        <button class="btn btn-success ms-4 mt-4 mb-8">
+          <i class="fa fa-refresh me-4"></i>
+          <strong>Refresh</strong>
+        </button>
+      </a>
+      <a href="{% url 'hadron_prime:update_hadron_node' node.id %}">
+        <button class="btn btn-warning ms-4 mt-4 mb-8">
+          <i class="fa fa-edit me-2"></i>
+          <strong>Update Hadron Node</strong>
+        </button>
+      </a>
+      <a href="{% url 'hadron_prime:delete_hadron_node' node.id %}">
+        <button class="btn btn-danger ms-4 mt-4 mb-8">
+          <i class="fa fa-trash me-2"></i>
+          <strong>Delete Hadron Node</strong>
+        </button>
+      </a>
+      <hr>
       <div class="card">
         <div class="card-header justify-content-between align-items-center">
           <h4 class="mb-0"><strong>
@@ -260,7 +262,8 @@
               {{ node.node_name }}
             </strong>
           </h6>
-          <form method="post" action="{% url 'hadron_prime:trigger_activate_hadron_node_via_form' pk=node.id hash=node.activation_trigger_hashed_param %}">
+          <form method="post"
+                action="{% url 'hadron_prime:trigger_activate_hadron_node_via_form' pk=node.id hash=node.activation_trigger_hashed_param %}">
             {% csrf_token %}
             <input type="hidden" name="node_id" value="{{ node.id }}">
             <input type="hidden" name="id_token" value="{{ node.activation_trigger_hashed_param }}">
@@ -271,7 +274,8 @@
             </button>
           </form>
           <hr>
-          <img src="{% static 'img/hadron_prime/had-1.png' %}" class="rounded mt-4" style="width: 100%;" alt="Illustration for tips">
+          <img src="{% static 'img/hadron_prime/had-1.png' %}" class="rounded mt-4" style="width: 100%;"
+               alt="Illustration for tips">
         </div>
         <hr>
 
@@ -323,11 +327,15 @@
             <!-- Authentication Key Section with Copy Button and Toggle Visibility -->
             <p><strong>Authentication Key:</strong></p>
             <div class="d-flex align-items-center">
-              <strong class="me-2 bg-label-dark p-2 rounded">Bearer</strong> <input type="password" id="apiKey" class="form-control bg-label-dark p-2 rounded fw-bolder" value="{{ node.activation_trigger_authentication_key }}" readonly>
+              <strong class="me-2 bg-label-dark p-2 rounded">Bearer</strong> <input type="password" id="apiKey"
+                                                                                    class="form-control bg-label-dark p-2 rounded fw-bolder"
+                                                                                    value="{{ node.activation_trigger_authentication_key }}"
+                                                                                    readonly>
               <button class="btn btn-warning ms-2" onclick="toggleVisibility('apiKey', this)">
                 <i class="fa fa-eye me-2"></i> <strong>Show/Hide</strong>
               </button>
-              <button class="btn btn-warning ms-2" onclick="copyToClipboardInput('apiKey', '{{ node.activation_trigger_authentication_key }}')">
+              <button class="btn btn-warning ms-2"
+                      onclick="copyToClipboardInput('apiKey', '{{ node.activation_trigger_authentication_key }}')">
                 <i class="fa fa-copy me-2"></i> <strong>Copy</strong>
               </button>
               <button class="btn btn-danger ms-2" id="regenerate-api-key-button" onclick="confirmRegenerateApiKey()">
@@ -362,48 +370,50 @@
             </button>
           </a>
           <hr>
-          <img src="{% static 'img/hadron_prime/had-3.png' %}" class="rounded mt-4" style="width: 100%;" alt="Illustration for tips">
-          <form id="purge-speech-logs-form" method="post" action="{% url 'hadron_prime:delete_all_speech_logs' pk=node.id %}">
+          <img src="{% static 'img/hadron_prime/had-3.png' %}" class="rounded mt-4" style="width: 100%;"
+               alt="Illustration for tips">
+          <form id="purge-speech-logs-form" method="post"
+                action="{% url 'hadron_prime:delete_all_speech_logs' pk=node.id %}">
             {% csrf_token %}
           </form>
           {% if speech_logs_page_obj|length != -1 %}
             <table class="table table-striped table-bordered mt-4">
               <thead>
-                <tr>
-                  <th>Timestamp</th>
-                  <th>User Query</th>
-                  <th>Node Response Log</th>
-                </tr>
+              <tr>
+                <th>Timestamp</th>
+                <th>User Query</th>
+                <th>Node Response Log</th>
+              </tr>
               </thead>
               <tbody>
-                {% for log in speech_logs_page_obj %}
-                  <tr>
-                    <td><strong>{{ log.created_at|date:"Y-m-d H:i:s" }}</strong></td>
-                    <td>
-                      <p style="min-width:500px; max-width: 500px; min-height: 100px; max-height: 100px; overflow: auto;">
-                        <strong>
-                          🟡 &nbsp; {{ log.user_query_text|linebreaksbr }}
-                        </strong>
-                      </p>
-                    </td>
-                    <td>
-                      <p style="min-width:500px; max-width: 500px; min-height: 100px; max-height: 100px; overflow: auto;">
-                        <strong>
-                          🔵 &nbsp; {{ log.speech_log|linebreaksbr }}
-                        </strong>
-                      </p>
-                    </td>
-                  </tr>
-                {% empty %}
-                  <tr>
-                    <td colspan="3" class="text-center">
-                      <div class="alert alert-warning p-2 mt-4">
-                        <i class="fa fa-exclamation-triangle me-2"></i>
-                        <strong>No execution logs are available for this node (yet).</strong>
-                      </div>
-                    </td>
-                  </tr>
-                {% endfor %}
+              {% for log in speech_logs_page_obj %}
+                <tr>
+                  <td><strong>{{ log.created_at|date:"Y-m-d H:i:s" }}</strong></td>
+                  <td>
+                    <p style="min-width:500px; max-width: 500px; min-height: 100px; max-height: 100px; overflow: auto;">
+                      <strong>
+                        🟡 &nbsp; {{ log.user_query_text|linebreaksbr }}
+                      </strong>
+                    </p>
+                  </td>
+                  <td>
+                    <p style="min-width:500px; max-width: 500px; min-height: 100px; max-height: 100px; overflow: auto;">
+                      <strong>
+                        🔵 &nbsp; {{ log.speech_log|linebreaksbr }}
+                      </strong>
+                    </p>
+                  </td>
+                </tr>
+              {% empty %}
+                <tr>
+                  <td colspan="3" class="text-center">
+                    <div class="alert alert-warning p-2 mt-4">
+                      <i class="fa fa-exclamation-triangle me-2"></i>
+                      <strong>No execution logs are available for this node (yet).</strong>
+                    </div>
+                  </td>
+                </tr>
+              {% endfor %}
               </tbody>
             </table>
 
@@ -412,7 +422,8 @@
               <ul class="pagination p-4">
                 {% if speech_logs_page_obj.has_previous %}
                   <li class="page-item">
-                    <a class="page-link" href="?speech_logs_page={{ speech_logs_page_obj.previous_page_number }}" aria-label="Previous">
+                    <a class="page-link" href="?speech_logs_page={{ speech_logs_page_obj.previous_page_number }}"
+                       aria-label="Previous">
                       <span aria-hidden="true">&laquo;</span>
                     </a>
                   </li>
@@ -424,7 +435,8 @@
                 {% endfor %}
                 {% if speech_logs_page_obj.has_next %}
                   <li class="page-item">
-                    <a class="page-link" href="?speech_logs_page={{ speech_logs_page_obj.next_page_number }}" aria-label="Next">
+                    <a class="page-link" href="?speech_logs_page={{ speech_logs_page_obj.next_page_number }}"
+                       aria-label="Next">
                       <span aria-hidden="true">&raquo;</span>
                     </a>
                   </li>
@@ -435,11 +447,14 @@
 
           <!-- form for submitting a speech log request -->
           <div class="mt-4">
-            <form method="post" action="{% url 'hadron_prime:speak_with_hadron_node_via_form' pk=node.id hash=node.activation_trigger_hashed_param %}">
+            <form method="post"
+                  action="{% url 'hadron_prime:speak_with_hadron_node_via_form' pk=node.id hash=node.activation_trigger_hashed_param %}">
               {% csrf_token %}
               <div class="form-group mb-4">
-                <label for="user_query_text" class="form-label"><strong>Your Query / Question to Node Manager</strong></label>
-                <textarea class="form-control" id="user_query_text" name="user_query_text" rows="3" required placeholder="Please enter your question or query to the managing agent of this node."></textarea>
+                <label for="user_query_text" class="form-label"><strong>Your Query / Question to Node
+                  Manager</strong></label>
+                <textarea class="form-control" id="user_query_text" name="user_query_text" rows="3" required
+                          placeholder="Please enter your question or query to the managing agent of this node."></textarea>
               </div>
               <input type="hidden" name="node_id" value="{{ node.id }}">
               <input type="hidden" name="id_token" value="{{ node.activation_trigger_hashed_param }}">
@@ -460,51 +475,55 @@
             </button>
           </a>
           <hr>
-          <img src="{% static 'img/hadron_prime/had-4.png' %}" class="rounded mt-4" style="width: 100%;" alt="Illustration for tips">
-          <form id="purge-execution-logs-form" method="post" action="{% url 'hadron_prime:delete_all_execution_logs' pk=node.id %}">
+          <img src="{% static 'img/hadron_prime/had-4.png' %}" class="rounded mt-4" style="width: 100%;"
+               alt="Illustration for tips">
+          <form id="purge-execution-logs-form" method="post"
+                action="{% url 'hadron_prime:delete_all_execution_logs' pk=node.id %}">
             {% csrf_token %}
           </form>
           {% if execution_logs_page_obj|length != -1 %}
             <table class="table table-striped table-bordered mt-4">
               <thead>
-                <tr>
-                  <th>Timestamp</th>
-                  <th>Log</th>
-                  <th>Status</th>
-                </tr>
+              <tr>
+                <th>Timestamp</th>
+                <th>Log</th>
+                <th>Status</th>
+              </tr>
               </thead>
               <tbody>
-                {% for log in execution_logs_page_obj %}
-                  <tr>
-                    <td><strong>{{ log.created_at|date:"Y-m-d H:i:s" }}</strong></td>
-                    <td><p style="min-width:900px; max-width: 900px; min-height: 100px; max-height: 100px; overflow: auto;">{{ log.execution_log|linebreaksbr }}</p></td>
-                    <td><strong class="alert-solid-primary rounded p-2">
-                      {% if log.execution_status == 'DEACTIVE' %}
-                        ⚫ &nbsp;
-                      {% elif log.execution_status == 'PENDING' %}
-                        🟡 &nbsp;
-                      {% elif log.execution_status == 'RUNNING' %}
-                        🔵 &nbsp;
-                      {% elif log.execution_status == 'COMPLETED' %}
-                        🟢 &nbsp;
-                      {% elif log.execution_status == 'FAILED' %}
-                        🔴 &nbsp;
-                      {% else %}
-                        ⚫ &nbsp;
-                      {% endif %}
-                      {{ log.execution_status|capfirst }}
-                    </strong></td>
-                  </tr>
-                {% empty %}
-                  <tr>
-                    <td colspan="3" class="text-center">
-                      <div class="alert alert-warning p-2 mt-4">
-                        <i class="fa fa-exclamation-triangle me-2"></i>
-                        <strong>No execution logs are available for this node (yet).</strong>
-                      </div>
-                    </td>
-                  </tr>
-                {% endfor %}
+              {% for log in execution_logs_page_obj %}
+                <tr>
+                  <td><strong>{{ log.created_at|date:"Y-m-d H:i:s" }}</strong></td>
+                  <td><p
+                    style="min-width:900px; max-width: 900px; min-height: 100px; max-height: 100px; overflow: auto;">{{ log.execution_log|linebreaksbr }}</p>
+                  </td>
+                  <td><strong class="alert-solid-primary rounded p-2">
+                    {% if log.execution_status == 'DEACTIVE' %}
+                      ⚫ &nbsp;
+                    {% elif log.execution_status == 'PENDING' %}
+                      🟡 &nbsp;
+                    {% elif log.execution_status == 'RUNNING' %}
+                      🔵 &nbsp;
+                    {% elif log.execution_status == 'COMPLETED' %}
+                      🟢 &nbsp;
+                    {% elif log.execution_status == 'FAILED' %}
+                      🔴 &nbsp;
+                    {% else %}
+                      ⚫ &nbsp;
+                    {% endif %}
+                    {{ log.execution_status|capfirst }}
+                  </strong></td>
+                </tr>
+              {% empty %}
+                <tr>
+                  <td colspan="3" class="text-center">
+                    <div class="alert alert-warning p-2 mt-4">
+                      <i class="fa fa-exclamation-triangle me-2"></i>
+                      <strong>No execution logs are available for this node (yet).</strong>
+                    </div>
+                  </td>
+                </tr>
+              {% endfor %}
               </tbody>
             </table>
 
@@ -513,7 +532,8 @@
               <ul class="pagination p-4">
                 {% if execution_logs_page_obj.has_previous %}
                   <li class="page-item">
-                    <a class="page-link" href="?execution_logs_page={{ execution_logs_page_obj.previous_page_number }}" aria-label="Previous">
+                    <a class="page-link" href="?execution_logs_page={{ execution_logs_page_obj.previous_page_number }}"
+                       aria-label="Previous">
                       <span aria-hidden="true">&laquo;</span>
                     </a>
                   </li>
@@ -525,7 +545,8 @@
                 {% endfor %}
                 {% if execution_logs_page_obj.has_next %}
                   <li class="page-item">
-                    <a class="page-link" href="?execution_logs_page={{ execution_logs_page_obj.next_page_number }}" aria-label="Next">
+                    <a class="page-link" href="?execution_logs_page={{ execution_logs_page_obj.next_page_number }}"
+                       aria-label="Next">
                       <span aria-hidden="true">&raquo;</span>
                     </a>
                   </li>
@@ -543,42 +564,54 @@
             </button>
           </a>
           <hr>
-          <img src="{% static 'img/hadron_prime/had-5.png' %}" class="rounded mt-4" style="width: 100%;" alt="Illustration for tips">
-          <form id="purge-sease-logs-form" method="post" action="{% url 'hadron_prime:delete_all_sase_logs' pk=node.id %}">
+          <img src="{% static 'img/hadron_prime/had-5.png' %}" class="rounded mt-4" style="width: 100%;"
+               alt="Illustration for tips">
+          <form id="purge-sease-logs-form" method="post"
+                action="{% url 'hadron_prime:delete_all_sase_logs' pk=node.id %}">
             {% csrf_token %}
           </form>
           {% if seas_logs_page_obj|length != -1 %}
             <table class="table table-striped table-bordered mt-4">
               <thead>
-                <tr>
-                  <th>Timestamp</th>
-                  <th>Old State</th>
-                  <th>Old Error</th>
-                  <th>Action</th>
-                  <th>New State</th>
-                  <th>New Error</th>
-                </tr>
+              <tr>
+                <th>Timestamp</th>
+                <th>Old State</th>
+                <th>Old Error</th>
+                <th>Action</th>
+                <th>New State</th>
+                <th>New Error</th>
+              </tr>
               </thead>
               <tbody>
-                {% for log in seas_logs_page_obj %}
-                  <tr>
-                    <td><strong>{{ log.created_at|date:"Y-m-d H:i:s" }}</strong></td>
-                    <td><p style="min-width:200px; max-width: 200px; min-height: 100px; max-height: 100px; overflow: auto;"><strong>{{ log.old_state }}</strong></p></td>
-                    <td><p style="min-width:200px; max-width: 200px; min-height: 100px; max-height: 100px; overflow: auto;"><strong>{{ log.old_error }}</strong></p></td>
-                    <td><p style="min-width:200px; max-width: 200px; min-height: 100px; max-height: 100px; overflow: auto;"><strong>{{ log.action }}</strong></p></td>
-                    <td><p style="min-width:200px; max-width: 200px; min-height: 100px; max-height: 100px; overflow: auto;"><strong>{{ log.new_state }}</strong></p></td>
-                    <td><p style="min-width:200px; max-width: 200px; min-height: 100px; max-height: 100px; overflow: auto;"><strong>{{ log.new_error }}</strong></p></td>
-                  </tr>
-                {% empty %}
-                  <tr>
-                    <td colspan="6" class="text-center">
-                      <div class="alert alert-warning p-2 mt-4">
-                        <i class="fa fa-exclamation-triangle me-2"></i>
-                        <strong>No SEASE logs are available for this node (yet).</strong>
-                      </div>
-                    </td>
-                  </tr>
-                {% endfor %}
+              {% for log in seas_logs_page_obj %}
+                <tr>
+                  <td><strong>{{ log.created_at|date:"Y-m-d H:i:s" }}</strong></td>
+                  <td><p
+                    style="min-width:200px; max-width: 200px; min-height: 100px; max-height: 100px; overflow: auto;">
+                    <strong>{{ log.old_state }}</strong></p></td>
+                  <td><p
+                    style="min-width:200px; max-width: 200px; min-height: 100px; max-height: 100px; overflow: auto;">
+                    <strong>{{ log.old_error }}</strong></p></td>
+                  <td><p
+                    style="min-width:200px; max-width: 200px; min-height: 100px; max-height: 100px; overflow: auto;">
+                    <strong>{{ log.action }}</strong></p></td>
+                  <td><p
+                    style="min-width:200px; max-width: 200px; min-height: 100px; max-height: 100px; overflow: auto;">
+                    <strong>{{ log.new_state }}</strong></p></td>
+                  <td><p
+                    style="min-width:200px; max-width: 200px; min-height: 100px; max-height: 100px; overflow: auto;">
+                    <strong>{{ log.new_error }}</strong></p></td>
+                </tr>
+              {% empty %}
+                <tr>
+                  <td colspan="6" class="text-center">
+                    <div class="alert alert-warning p-2 mt-4">
+                      <i class="fa fa-exclamation-triangle me-2"></i>
+                      <strong>No SEASE logs are available for this node (yet).</strong>
+                    </div>
+                  </td>
+                </tr>
+              {% endfor %}
               </tbody>
             </table>
 
@@ -587,7 +620,8 @@
               <ul class="pagination p-4">
                 {% if seas_logs_page_obj.has_previous %}
                   <li class="page-item">
-                    <a class="page-link" href="?seas_logs_page={{ seas_logs_page_obj.previous_page_number }}" aria-label="Previous">
+                    <a class="page-link" href="?seas_logs_page={{ seas_logs_page_obj.previous_page_number }}"
+                       aria-label="Previous">
                       <span aria-hidden="true">&laquo;</span>
                     </a>
                   </li>
@@ -599,7 +633,8 @@
                 {% endfor %}
                 {% if seas_logs_page_obj.has_next %}
                   <li class="page-item">
-                    <a class="page-link" href="?seas_logs_page={{ seas_logs_page_obj.next_page_number }}" aria-label="Next">
+                    <a class="page-link" href="?seas_logs_page={{ seas_logs_page_obj.next_page_number }}"
+                       aria-label="Next">
                       <span aria-hidden="true">&raquo;</span>
                     </a>
                   </li>
@@ -617,54 +652,58 @@
             </button>
           </a>
           <hr>
-          <img src="{% static 'img/hadron_prime/had-6.png' %}" class="rounded mt-4" style="width: 100%;" alt="Illustration for tips">
-          <form id="purge-publishing-logs-form" method="post" action="{% url 'hadron_prime:delete_all_publish_history_logs' pk=node.id %}">
+          <img src="{% static 'img/hadron_prime/had-6.png' %}" class="rounded mt-4" style="width: 100%;"
+               alt="Illustration for tips">
+          <form id="purge-publishing-logs-form" method="post"
+                action="{% url 'hadron_prime:delete_all_publish_history_logs' pk=node.id %}">
             {% csrf_token %}
           </form>
           {% if publishing_logs_page_obj|length != -1 %}
             <table class="table table-striped table-bordered mt-4">
               <thead>
-                <tr>
-                  <th>Timestamp</th>
-                  <th>Topic</th>
-                  <th>Category</th>
-                  <th>Message</th>
-                </tr>
+              <tr>
+                <th>Timestamp</th>
+                <th>Topic</th>
+                <th>Category</th>
+                <th>Message</th>
+              </tr>
               </thead>
               <tbody>
-                {% for log in publishing_logs_page_obj %}
-                  <tr>
-                    <td><strong>{{ log.created_at|date:"Y-m-d H:i:s" }}</strong></td>
-                    <td><strong>{{ log.topic.topic_name }}</strong></td>
-                    <td>
-                      {% if log.topic.get_topic_category_display == 'Alerts' %}
+              {% for log in publishing_logs_page_obj %}
+                <tr>
+                  <td><strong>{{ log.created_at|date:"Y-m-d H:i:s" }}</strong></td>
+                  <td><strong>{{ log.topic.topic_name }}</strong></td>
+                  <td>
+                    {% if log.topic.get_topic_category_display == 'Alerts' %}
                       <span class="btn-danger p-2 rounded"><strong>Alerts</strong></span>
-                      {% elif log.topic.get_topic_category_display == 'Info' %}
-                        <span class="btn-warning p-2 rounded"><strong>Info</strong></span>
-                      {% elif log.topic.get_topic_category_display == 'States' %}
-                        <span class="btn-primary p-2 rounded"><strong>States</strong></span>
-                      {% elif log.topic.get_topic_category_display == 'Measurements' %}
-                        <span class="btn-info p-2 rounded"><strong>Measurements</strong></span>
-                      {% elif log.topic.get_topic_category_display == 'Actions' %}
-                        <span class="btn-success p-2 rounded"><strong>Actions</strong></span>
-                      {% elif log.topic.get_topic_category_display == 'Commands' %}
-                        <span class="btn-dark p-2 rounded"><strong>Commands</strong></span>
-                      {% else %}
-                        <span class="btn-secondary p-2 rounded"><strong>Unknown</strong></span>
-                      {% endif %}
-                    </td>
-                    <td><p style="min-width:900px; max-width: 900px; min-height: 100px; max-height: 100px; overflow: auto;">{{ log.message }}</p></td>
-                  </tr>
-                {% empty %}
-                  <tr>
-                    <td colspan="4" class="text-center">
-                      <div class="alert alert-warning p-2 mt-4">
-                        <i class="fa fa-exclamation-triangle me-2"></i>
-                        <strong>No publishing history logs are available for this node (yet).</strong>
-                      </div>
-                    </td>
-                  </tr>
-                {% endfor %}
+                    {% elif log.topic.get_topic_category_display == 'Info' %}
+                      <span class="btn-warning p-2 rounded"><strong>Info</strong></span>
+                    {% elif log.topic.get_topic_category_display == 'States' %}
+                      <span class="btn-primary p-2 rounded"><strong>States</strong></span>
+                    {% elif log.topic.get_topic_category_display == 'Measurements' %}
+                      <span class="btn-info p-2 rounded"><strong>Measurements</strong></span>
+                    {% elif log.topic.get_topic_category_display == 'Actions' %}
+                      <span class="btn-success p-2 rounded"><strong>Actions</strong></span>
+                    {% elif log.topic.get_topic_category_display == 'Commands' %}
+                      <span class="btn-dark p-2 rounded"><strong>Commands</strong></span>
+                    {% else %}
+                      <span class="btn-secondary p-2 rounded"><strong>Unknown</strong></span>
+                    {% endif %}
+                  </td>
+                  <td><p
+                    style="min-width:900px; max-width: 900px; min-height: 100px; max-height: 100px; overflow: auto;">{{ log.message }}</p>
+                  </td>
+                </tr>
+              {% empty %}
+                <tr>
+                  <td colspan="4" class="text-center">
+                    <div class="alert alert-warning p-2 mt-4">
+                      <i class="fa fa-exclamation-triangle me-2"></i>
+                      <strong>No publishing history logs are available for this node (yet).</strong>
+                    </div>
+                  </td>
+                </tr>
+              {% endfor %}
               </tbody>
             </table>
 
@@ -673,7 +712,9 @@
               <ul class="pagination p-4">
                 {% if publishing_logs_page_obj.has_previous %}
                   <li class="page-item">
-                    <a class="page-link" href="?publishing_logs_page={{ publishing_logs_page_obj.previous_page_number }}" aria-label="Previous">
+                    <a class="page-link"
+                       href="?publishing_logs_page={{ publishing_logs_page_obj.previous_page_number }}"
+                       aria-label="Previous">
                       <span aria-hidden="true">&laquo;</span>
                     </a>
                   </li>
@@ -685,7 +726,8 @@
                 {% endfor %}
                 {% if publishing_logs_page_obj.has_next %}
                   <li class="page-item">
-                    <a class="page-link" href="?publishing_logs_page={{ publishing_logs_page_obj.next_page_number }}" aria-label="Next">
+                    <a class="page-link" href="?publishing_logs_page={{ publishing_logs_page_obj.next_page_number }}"
+                       aria-label="Next">
                       <span aria-hidden="true">&raquo;</span>
                     </a>
                   </li>

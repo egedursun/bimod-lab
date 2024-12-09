@@ -1,4 +1,3 @@
-
 <!--
   ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
   ~
@@ -28,8 +27,8 @@
 
 {% block vendor_css %}
   {{ block.super }}
-  <link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}"/>
-  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
 {% endblock vendor_css %}
 
 {% block vendor_js %}
@@ -65,7 +64,8 @@
             <div class="d-flex flex-column ps-1">
               <h5 class="alert-heading mb-2">Tip</h5>
               <p class="mb-0">
-                In this page, you can create a new project. Select an organization, and fill in project details like name,
+                In this page, you can create a new project. Select an organization, and fill in project details like
+                name,
                 department, description, and other key information. Once ready, click "Create" to finalize the project.
               </p>
               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -73,7 +73,8 @@
           </div>
           {% if messages %}
             {% for message in messages %}
-              <div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %}" role="alert">
+              <div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %}"
+                   role="alert">
                 {{ message }}
               </div>
             {% endfor %}
@@ -93,39 +94,48 @@
               </div>
               <div class="col-4 mb-6">
                 <label class="form-label" for="project_name">Project Name</label>
-                <input type="text" class="form-control" id="project_name" name="project_name" placeholder="Enter project name" required>
+                <input type="text" class="form-control" id="project_name" name="project_name"
+                       placeholder="Enter project name" required>
               </div>
               <div class="col-4 mb-6">
                 <label class="form-label" for="project_department">Project Department</label>
-                <input type="text" class="form-control" id="project_department" name="project_department" placeholder="Enter department" required>
+                <input type="text" class="form-control" id="project_department" name="project_department"
+                       placeholder="Enter department" required>
               </div>
               <div class="col-4 mb-6">
                 <label class="form-label" for="project_description">Project Description</label>
-                <textarea class="form-control" id="project_description" name="project_description" placeholder="Enter project description" rows="1" required></textarea>
+                <textarea class="form-control" id="project_description" name="project_description"
+                          placeholder="Enter project description" rows="1" required></textarea>
               </div>
               <div class="col-3 mb-6">
                 <label class="form-label" for="project_status">Project Status</label>
-                <input type="text" class="form-control" id="project_status" name="project_status" placeholder="Enter status">
+                <input type="text" class="form-control" id="project_status" name="project_status"
+                       placeholder="Enter status">
               </div>
               <div class="col-3 mb-6">
                 <label class="form-label" for="project_priority">Project Priority</label>
-                <input type="text" class="form-control" id="project_priority" name="project_priority" placeholder="Enter priority">
+                <input type="text" class="form-control" id="project_priority" name="project_priority"
+                       placeholder="Enter priority">
               </div>
               <div class="col-2 mb-6">
                 <label class="form-label" for="project_risk_level">Project Risk Level</label>
-                <input type="text" class="form-control" id="project_risk_level" name="project_risk_level" placeholder="Enter risk level">
+                <input type="text" class="form-control" id="project_risk_level" name="project_risk_level"
+                       placeholder="Enter risk level">
               </div>
               <div class="col-4 mb-6">
                 <label class="form-label" for="project_goals">Project Goals</label>
-                <textarea class="form-control" id="project_goals" name="project_goals" rows="1" placeholder="Enter project goals"></textarea>
+                <textarea class="form-control" id="project_goals" name="project_goals" rows="1"
+                          placeholder="Enter project goals"></textarea>
               </div>
               <div class="col-4 mb-6">
                 <label class="form-label" for="project_constraints">Project Constraints</label>
-                <textarea class="form-control" id="project_constraints" name="project_constraints" rows="1" placeholder="Enter constraints"></textarea>
+                <textarea class="form-control" id="project_constraints" name="project_constraints" rows="1"
+                          placeholder="Enter constraints"></textarea>
               </div>
               <div class="col-4 mb-6">
                 <label class="form-label" for="project_stakeholders">Project Stakeholders</label>
-                <textarea class="form-control" id="project_stakeholders" name="project_stakeholders" rows="1" placeholder="Enter stakeholders"></textarea>
+                <textarea class="form-control" id="project_stakeholders" name="project_stakeholders" rows="1"
+                          placeholder="Enter stakeholders"></textarea>
               </div>
               <div class="col-4 mb-6">
                 <label class="form-label" for="project_start_date">Start Date</label>
@@ -137,7 +147,8 @@
               </div>
               <div class="col-4 mb-6">
                 <label class="form-label" for="project_budget">Budget</label>
-                <input type="number" class="form-control" id="project_budget" name="project_budget" step="0.01" placeholder="Enter budget">
+                <input type="number" class="form-control" id="project_budget" name="project_budget" step="0.01"
+                       placeholder="Enter budget">
               </div>
             </div>
             <hr>

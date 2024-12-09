@@ -1,4 +1,3 @@
-
 <!--
   ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
   ~
@@ -26,7 +25,7 @@
 
 {% block vendor_css %}
   {{ block.super }}
-  <link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}" />
 {% endblock vendor_css %}
 
 {% block vendor_js %}
@@ -35,186 +34,193 @@
 {% endblock vendor_js %}
 
 {% block page_js %}
-<script>
-  // Function to confirm purging logs
-  function confirmPurgeLogs(voidforgerId) {
-    Swal.fire({
-      title: 'Are you sure?',
-      text: 'This will delete all auto execution logs, and you won\'t be able to revert this action.',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Yes, purge them!',
-      cancelButtonText: 'No, cancel!',
-      customClass: {
-        confirmButton: 'btn btn-danger me-2 waves-effect waves-light',
-        cancelButton: 'btn btn-label-secondary waves-effect waves-light'
-      },
-      buttonsStyling: false
-    }).then((result) => {
-      if (result.isConfirmed) {
-        const url = `{% url 'voidforger:purge_auto_execution_logs' voidforger_id=voidforger.id %}`;
-        window.location.href = url;
-      }
+  <script>
+    // Function to confirm purging logs
+    function confirmPurgeLogs(voidforgerId) {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: 'This will delete all auto execution logs, and you won\'t be able to revert this action.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, purge them!',
+        cancelButtonText: 'No, cancel!',
+        customClass: {
+          confirmButton: 'btn btn-danger me-2 waves-effect waves-light',
+          cancelButton: 'btn btn-label-secondary waves-effect waves-light'
+        },
+        buttonsStyling: false
+      }).then((result) => {
+        if (result.isConfirmed) {
+          const url = `{% url 'voidforger:purge_auto_execution_logs' voidforger_id=voidforger.id %}`;
+          window.location.href = url;
+        }
+      });
+    }
+  </script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const textareas = document.querySelectorAll('textarea[id^="metadata-"]');
+      textareas.forEach((textarea) => {
+        try {
+          // Replace single quotes with double quotes
+          const rawJson = textarea.textContent.trim().replace(/'/g, '"');
+          const json = JSON.parse(rawJson); // Parse JSON
+          textarea.textContent = JSON.stringify(json, null, 4); // Beautify JSON
+        } catch (e) {
+          console.error('Failed to parse JSON:', textarea.textContent, e);
+          textarea.textContent = 'Invalid JSON';
+        }
+      });
     });
-  }
-</script>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const textareas = document.querySelectorAll('textarea[id^="metadata-"]');
-        textareas.forEach((textarea) => {
-            try {
-                // Replace single quotes with double quotes
-                const rawJson = textarea.textContent.trim().replace(/'/g, '"');
-                const json = JSON.parse(rawJson); // Parse JSON
-                textarea.textContent = JSON.stringify(json, null, 4); // Beautify JSON
-            } catch (e) {
-                console.error("Failed to parse JSON:", textarea.textContent, e);
-                textarea.textContent = "Invalid JSON";
-            }
-        });
-    });
-</script>
+  </script>
 {% endblock page_js %}
 
 {% block content %}
-<div class="row">
+  <div class="row">
     <div class="col-xl mb-6">
-        <!-- Tips Section -->
-        <div class="alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center mb-8" role="alert">
-            <img src="{% static 'img/custom-illustrations-v2/i2-73.png' %}" width="25%" style="border-radius:25px;" alt="Tip Illustration" class="me-4">
-            <div class="d-flex flex-column ps-1">
-                <h5 class="alert-heading mb-2"><strong>Tip</strong></h5>
-                <p class="mb-0">
-                  Review the auto execution logs for VoidForger's automatic actions over time. You can purge all logs if necessary.
-                </p>
-            </div>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      <!-- Tips Section -->
+      <div class="alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center mb-8" role="alert">
+        <img src="{% static 'img/custom-illustrations-v2/i2-73.png' %}" width="25%" style="border-radius:25px;"
+             alt="Tip Illustration" class="me-4">
+        <div class="d-flex flex-column ps-1">
+          <h5 class="alert-heading mb-2"><strong>Tip</strong></h5>
+          <p class="mb-0">
+            Review the auto execution logs for VoidForger's automatic actions over time. You can purge all logs if
+            necessary.
+          </p>
         </div>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
 
-        {% if messages %}
-            {% for message in messages %}
-                <div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %}" role="alert">
-                    {{ message }}
-                </div>
-            {% endfor %}
-        {% endif %}
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %}"
+               role="alert">
+            {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
 
+      <hr>
+
+      <!-- Purge Logs Button -->
+      <button class="btn btn-danger w-25 mb-2 mt-2" onclick="confirmPurgeLogs({{ voidforger.id }})">
+        <i class="fa fa-skull-crossbones me-2"></i>
+        <strong>Purge Auto Execution Logs</strong>
+      </button>
+
+      <hr>
+
+      <!-- Logs Table -->
+      <div class="card">
+        <div class="card-header">
+          <h4><strong><i class="fa fa-list-alt me-4"></i>VoidForger Auto Execution Logs</strong></h4>
+        </div>
         <hr>
-
-        <!-- Purge Logs Button -->
-        <button class="btn btn-danger w-25 mb-2 mt-2" onclick="confirmPurgeLogs({{ voidforger.id }})">
-            <i class="fa fa-skull-crossbones me-2"></i>
-          <strong>Purge Auto Execution Logs</strong>
-        </button>
-
+        <img src="{% static 'img/voidforger/vf-3.png' %}" class="rounded mb-4 mt-4 ps-6 pe-6" style="width: 100%;"
+             alt="Illustration for tips">
         <hr>
-
-        <!-- Logs Table -->
-        <div class="card">
-            <div class="card-header">
-                <h4><strong><i class="fa fa-list-alt me-4"></i>VoidForger Auto Execution Logs</strong></h4>
-            </div>
-            <hr>
-            <img src="{% static 'img/voidforger/vf-3.png' %}" class="rounded mb-4 mt-4 ps-6 pe-6" style="width: 100%;" alt="Illustration for tips">
-            <hr>
-            <div class="card-body">
-                {% if auto_execution_logs %}
-                  <table class="table table-striped table-bordered mt-4">
-                      <thead>
-                          <tr>
-                              <th>Timestamp</th>
-                              <th>Action Type</th>
-                              <th>Metadata</th>
-                              <th>Responsible User</th>
-                          </tr>
-                      </thead>
-                      <tbody>
-                          {% for log in auto_execution_logs %}
-                              <tr>
-                                  <td><strong>{{ log.timestamp|date:"Y-m-d H:i:s" }}</strong></td>
-                                  <td><span class="badge bg-dark p-4 w-100"><strong>{{ log.get_action_type_display }}</strong></span></td>
-                                  <td>
-                                      <textarea id="metadata-{{ log.id }}" class="form-control" style="min-width: 600px; max-width: 600px; min-height: 150px; max-height: 150px; overflow: auto;">
+        <div class="card-body">
+          {% if auto_execution_logs %}
+            <table class="table table-striped table-bordered mt-4">
+              <thead>
+              <tr>
+                <th>Timestamp</th>
+                <th>Action Type</th>
+                <th>Metadata</th>
+                <th>Responsible User</th>
+              </tr>
+              </thead>
+              <tbody>
+              {% for log in auto_execution_logs %}
+                <tr>
+                  <td><strong>{{ log.timestamp|date:"Y-m-d H:i:s" }}</strong></td>
+                  <td><span class="badge bg-dark p-4 w-100"><strong>{{ log.get_action_type_display }}</strong></span>
+                  </td>
+                  <td>
+                                      <textarea id="metadata-{{ log.id }}" class="form-control"
+                                                style="min-width: 600px; max-width: 600px; min-height: 150px; max-height: 150px; overflow: auto;">
                                           {{ log.metadata }}
                                       </textarea>
-                                  </td>
-                                  <td>
-                                      {% if log.responsible_user %}
-                                          <span class="badge bg-secondary p-4 w-100">
+                  </td>
+                  <td>
+                    {% if log.responsible_user %}
+                      <span class="badge bg-secondary p-4 w-100">
                                             <strong>
                                               <i class="fa fa-user me-2"></i>
                                               {{ log.responsible_user.username }}
                                             </strong>
                                           </span>
-                                      {% else %}
-                                          <span class="badge bg-primary p-4 w-100">
+                    {% else %}
+                      <span class="badge bg-primary p-4 w-100">
                                             <strong>
                                               <i class="fa fa-robot me-2"></i>
                                               System
                                             </strong>
                                           </span>
-                                      {% endif %}
-                                  </td>
-                              </tr>
-                          {% empty %}
-                              <tr>
-                                  <td colspan="4" class="text-center">
-                                      <div class="alert alert-warning">
-                                          <i class="fa fa-exclamation-triangle me-2"></i>No auto execution logs found.
-                                      </div>
-                                  </td>
-                              </tr>
-                          {% endfor %}
-                      </tbody>
-                  </table>
-
-                  <hr>
-
-                  <!-- Pagination -->
-                  <nav class="mt-8">
-                      <ul class="pagination justify-content-center">
-                          {% if auto_execution_logs.has_previous %}
-                              <li class="page-item">
-                                  <a class="page-link" href="?page=1" aria-label="First">
-                                      <span aria-hidden="true">&laquo;&laquo;</span>
-                                  </a>
-                              </li>
-                              <li class="page-item">
-                                  <a class="page-link" href="?page={{ auto_execution_logs.previous_page_number }}" aria-label="Previous">
-                                      <span aria-hidden="true">&laquo;</span>
-                                  </a>
-                              </li>
-                          {% endif %}
-                          {% for page_num in auto_execution_logs.paginator.page_range %}
-                              {% if auto_execution_logs.number == page_num %}
-                                  <li class="page-item active" aria-current="page">
-                                      <span class="page-link">{{ page_num }}</span>
-                                  </li>
-                              {% elif page_num >= auto_execution_logs.number|add:'-2' and page_num <= auto_execution_logs.number|add:'2' %}
-                                  <li class="page-item"><a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a></li>
-                              {% endif %}
-                          {% endfor %}
-                          {% if auto_execution_logs.has_next %}
-                              <li class="page-item">
-                                  <a class="page-link" href="?page={{ auto_execution_logs.next_page_number }}" aria-label="Next">
-                                      <span aria-hidden="true">&raquo;</span>
-                                  </a>
-                              </li>
-                              <li class="page-item">
-                                  <a class="page-link" href="?page={{ auto_execution_logs.paginator.num_pages }}" aria-label="Last">
-                                      <span aria-hidden="true">&raquo;&raquo;</span>
-                                  </a>
-                              </li>
-                          {% endif %}
-                      </ul>
-                  </nav>
-              {% else %}
-                  <div class="alert alert-warning">
+                    {% endif %}
+                  </td>
+                </tr>
+              {% empty %}
+                <tr>
+                  <td colspan="4" class="text-center">
+                    <div class="alert alert-warning">
                       <i class="fa fa-exclamation-triangle me-2"></i>No auto execution logs found.
-                  </div>
-              {% endif %}
+                    </div>
+                  </td>
+                </tr>
+              {% endfor %}
+              </tbody>
+            </table>
+
+            <hr>
+
+            <!-- Pagination -->
+            <nav class="mt-8">
+              <ul class="pagination justify-content-center">
+                {% if auto_execution_logs.has_previous %}
+                  <li class="page-item">
+                    <a class="page-link" href="?page=1" aria-label="First">
+                      <span aria-hidden="true">&laquo;&laquo;</span>
+                    </a>
+                  </li>
+                  <li class="page-item">
+                    <a class="page-link" href="?page={{ auto_execution_logs.previous_page_number }}"
+                       aria-label="Previous">
+                      <span aria-hidden="true">&laquo;</span>
+                    </a>
+                  </li>
+                {% endif %}
+                {% for page_num in auto_execution_logs.paginator.page_range %}
+                  {% if auto_execution_logs.number == page_num %}
+                    <li class="page-item active" aria-current="page">
+                      <span class="page-link">{{ page_num }}</span>
+                    </li>
+                  {% elif page_num >= auto_execution_logs.number|add:'-2' and page_num <= auto_execution_logs.number|add:'2' %}
+                    <li class="page-item"><a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a></li>
+                  {% endif %}
+                {% endfor %}
+                {% if auto_execution_logs.has_next %}
+                  <li class="page-item">
+                    <a class="page-link" href="?page={{ auto_execution_logs.next_page_number }}" aria-label="Next">
+                      <span aria-hidden="true">&raquo;</span>
+                    </a>
+                  </li>
+                  <li class="page-item">
+                    <a class="page-link" href="?page={{ auto_execution_logs.paginator.num_pages }}" aria-label="Last">
+                      <span aria-hidden="true">&raquo;&raquo;</span>
+                    </a>
+                  </li>
+                {% endif %}
+              </ul>
+            </nav>
+          {% else %}
+            <div class="alert alert-warning">
+              <i class="fa fa-exclamation-triangle me-2"></i>No auto execution logs found.
             </div>
+          {% endif %}
         </div>
+      </div>
     </div>
-</div>
+  </div>
 {% endblock %}

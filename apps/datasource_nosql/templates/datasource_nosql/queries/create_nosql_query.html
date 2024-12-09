@@ -27,21 +27,21 @@
 
 {% block vendor_css %}
   {{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.css"/>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/material.min.css"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/material.min.css" />
   <style>
     .CodeMirror {
-    transform: scale(1.43);
-    transform-origin: top left;
-    width: calc(100% / 1.43);
-    max-height: calc((100% / 1.43));
-    overflow: scroll;
-    border-radius: 5px;
-    font-family: monospace;
-    font-size: 0.70rem;
-    margin-bottom: 15%;
-  }
+      transform: scale(1.43);
+      transform-origin: top left;
+      width: calc(100% / 1.43);
+      max-height: calc((100% / 1.43));
+      overflow: scroll;
+      border-radius: 5px;
+      font-family: monospace;
+      font-size: 0.70rem;
+      margin-bottom: 15%;
+    }
   </style>
 {% endblock vendor_css %}
 
@@ -56,7 +56,7 @@
 {% block page_js %}
   {{ block.super }}
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       $('#database_connection').select2();
     });
   </script>
@@ -82,7 +82,8 @@
           <small class="text-muted float-end"></small>
         </div>
         <div class="card-body">
-          <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+          <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center"
+               role="alert">
             <img src="{% static 'img/custom-illustrations-v2/i2-68.png' %}" width="25%" style="border-radius: 25px;"
                  class="justify-content-end me-8" alt="Illustration for tips">
             <span class="alert-icon rounded">
@@ -126,7 +127,7 @@
               </div>
               <div class="mb-6 col-4">
                 <label class="form-label" for="name">Query Name</label>
-                <input type="text" class="form-control" id="name" name="name" placeholder="Enter query name"/>
+                <input type="text" class="form-control" id="name" name="name" placeholder="Enter query name" />
               </div>
               <div class="mb-6 col-4">
                 <label class="form-label" for="description">Description</label>
@@ -158,19 +159,19 @@
   </div>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       var codeTextArea = document.getElementById('nosql_query');
 
       if (codeTextArea) {
         var editor = CodeMirror.fromTextArea(codeTextArea, {
-          mode: "sql",
-          theme: "material",
+          mode: 'sql',
+          theme: 'material',
           lineNumbers: true,
           matchBrackets: true,
-          autoRefresh: true,
+          autoRefresh: true
         });
 
-        document.querySelector('form').addEventListener('submit', function () {
+        document.querySelector('form').addEventListener('submit', function() {
           codeTextArea.value = editor.getValue();
         });
       }

@@ -1,21 +1,21 @@
-  <!--
-  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
-  ~
-  ~ Project: Bimod.io™
-  ~ File: update_assistant.html
-  ~ Last Modified: 2024-10-05 01:39:47
-  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-05 14:42:38
-  ~
-  ~ This software is proprietary and confidential. Unauthorized copying,
-  ~ distribution, modification, or use of this software, whether for
-  ~ commercial, academic, or any other purpose, is strictly prohibited
-  ~ without the prior express written permission of BMD™ Autonomous
-  ~ Holdings.
-  ~
-  ~  For permission inquiries, please contact: admin@Bimod.io.
-  ~
-  -->
+<!--
+~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+~
+~ Project: Bimod.io™
+~ File: update_assistant.html
+~ Last Modified: 2024-10-05 01:39:47
+~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+~ Created: 2024-10-05 14:42:38
+~
+~ This software is proprietary and confidential. Unauthorized copying,
+~ distribution, modification, or use of this software, whether for
+~ commercial, academic, or any other purpose, is strictly prohibited
+~ without the prior express written permission of BMD™ Autonomous
+~ Holdings.
+~
+~  For permission inquiries, please contact: admin@Bimod.io.
+~
+-->
 
 {% extends layout_path %}
 
@@ -28,8 +28,8 @@
 {% block vendor_css %}
   {{ block.super }}
 
-<link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}"/>
-  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
 {% endblock vendor_css %}
 
 {% block vendor_js %}
@@ -45,7 +45,7 @@
   {{ block.super }}
   <script src="{% static 'js/form-layouts.js' %}"></script>
   <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
       $('#project_items').select2({
         placeholder: 'Select Team Members',
         allowClear: true,
@@ -166,13 +166,13 @@
               <div class="col-3 mb-6">
                 <label class="form-label" for="name">Name</label>
                 <input type="text" class="form-control" id="name" name="name" placeholder="Enter assistant name"
-                       value="{{ assistant.name }}"/>
+                       value="{{ assistant.name }}" />
                 <div class="form-text"></div>
               </div>
               <div class="col-3 mb-6">
                 <label class="form-label" for="description">Description</label>
                 <input type="text" class="form-control" id="description" name="description"
-                       placeholder="Enter assistant description" value="{{ assistant.description }}"/>
+                       placeholder="Enter assistant description" value="{{ assistant.description }}" />
                 <div class="form-text"></div>
               </div>
               <div class="col-3 mb-6">
@@ -221,13 +221,13 @@
               <div class="col-3 mb-6">
                 <label class="form-label" for="audience">Audience</label>
                 <input type="text" class="form-control" id="audience" name="audience"
-                       placeholder="Enter assistant audience" value="{{ assistant.audience }}"/>
+                       placeholder="Enter assistant audience" value="{{ assistant.audience }}" />
                 <div class="form-text"></div>
               </div>
               <div class="col-3 mb-6">
                 <label class="form-label" for="tone">Tone</label>
                 <input type="text" class="form-control" id="tone" name="tone" placeholder="Enter assistant tone"
-                       value="{{ assistant.tone }}"/>
+                       value="{{ assistant.tone }}" />
                 <div class="form-text"></div>
               </div>
               <div class="mb-6 col-2">
@@ -268,9 +268,11 @@
                 </label>
                 <br>
                 <label class="switch switch-success switch-square switch-lg mt-2">
-                  <input type="checkbox" class="switch-input" id="beamGuardActivityCheckbox" {% if assistant.is_beamguard_active %}checked{% endif %}>
+                  <input type="checkbox" class="switch-input" id="beamGuardActivityCheckbox"
+                         {% if assistant.is_beamguard_active %}checked{% endif %}>
                   <span class="switch-toggle-slider">
-                    <input type="hidden" name="is_beamguard_active" id="is_beamguard_active" value="{% if assistant.is_beamguard_active %}on{% else %}off{% endif %}">
+                    <input type="hidden" name="is_beamguard_active" id="is_beamguard_active"
+                           value="{% if assistant.is_beamguard_active %}on{% else %}off{% endif %}">
                     <span class="switch-on"><i class="ti ti-check"></i></span>
                     <span class="switch-off"><i class="ti ti-x"></i></span>
                   </span>
@@ -318,12 +320,14 @@
               </div>
               <div class="mb-6 col-3">
                 <label class="form-label" for="assistant_image">Assistant Image</label>
-                <input type="file" class="form-control" id="assistant_image" name="assistant_image"/>
+                <input type="file" class="form-control" id="assistant_image" name="assistant_image" />
                 <div class="form-text"></div>
               </div>
               <div class="mb-6 col-3">
-                <label class="form-label" for="multi_step_reasoning_capability_choice">Multi-Step Reasoning <span class="text-warning"><strong>(† increases costs)</strong></span></label>
-                <select class="form-select" id="multi_step_reasoning_capability_choice" name="multi_step_reasoning_capability_choice">
+                <label class="form-label" for="multi_step_reasoning_capability_choice">Multi-Step Reasoning <span
+                  class="text-warning"><strong>(† increases costs)</strong></span></label>
+                <select class="form-select" id="multi_step_reasoning_capability_choice"
+                        name="multi_step_reasoning_capability_choice">
                   {% for choice in reasoning_capability_choices %}
                     <option value="{{ choice.0 }}"
                             {% if choice.0 == assistant.multi_step_reasoning_capability_choice %}selected{% endif %}>{{ choice.1 }}
@@ -380,12 +384,12 @@
 
 
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       const checkbox = document.getElementById('awarenessCheckbox');
       const timeAwarenessField = document.getElementById('timeAwareness');
       const placeAwarenessField = document.getElementById('placeAwareness');
 
-      checkbox.addEventListener('change', function () {
+      checkbox.addEventListener('change', function() {
         if (checkbox.checked) {
           timeAwarenessField.value = 'on';
           placeAwarenessField.value = 'on';
@@ -398,11 +402,11 @@
   </script>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       const checkbox = document.getElementById('imageGenerationCapabilityCheckbox');
       const imageGenerationCapabilityField = document.getElementById('image_generation_capability');
 
-      checkbox.addEventListener('change', function () {
+      checkbox.addEventListener('change', function() {
         if (checkbox.checked) {
           imageGenerationCapabilityField.value = 'on';
         } else {
@@ -413,11 +417,11 @@
   </script>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       const checkbox = document.getElementById('beamGuardActivityCheckbox');
       const isBeamGuardActiveField = document.getElementById('is_beamguard_active');
 
-      checkbox.addEventListener('change', function () {
+      checkbox.addEventListener('change', function() {
         if (checkbox.checked) {
           isBeamGuardActiveField.value = 'on';
         } else {
@@ -444,7 +448,7 @@
       row.remove();
     }
 
-    document.getElementById('keyValueForm').addEventListener('submit', function (event) {
+    document.getElementById('keyValueForm').addEventListener('submit', function(event) {
       event.preventDefault();
       const formData = new FormData(this);
       const keys = formData.getAll('keys[]');

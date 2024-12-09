@@ -1,21 +1,21 @@
-  <!--
-  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
-  ~
-  ~ Project: Bimod.io™
-  ~ File: test.html
-  ~ Last Modified: 2024-10-05 01:39:48
-  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-05 14:42:43
-  ~
-  ~ This software is proprietary and confidential. Unauthorized copying,
-  ~ distribution, modification, or use of this software, whether for
-  ~ commercial, academic, or any other purpose, is strictly prohibited
-  ~ without the prior express written permission of BMD™ Autonomous
-  ~ Holdings.
-  ~
-  ~  For permission inquiries, please contact: admin@Bimod.io.
-  ~
-  -->
+<!--
+~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+~
+~ Project: Bimod.io™
+~ File: test.html
+~ Last Modified: 2024-10-05 01:39:48
+~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+~ Created: 2024-10-05 14:42:43
+~
+~ This software is proprietary and confidential. Unauthorized copying,
+~ distribution, modification, or use of this software, whether for
+~ commercial, academic, or any other purpose, is strictly prohibited
+~ without the prior express written permission of BMD™ Autonomous
+~ Holdings.
+~
+~  For permission inquiries, please contact: admin@Bimod.io.
+~
+-->
 
 {% extends layout_path %}
 {% load markdown_extras %}
@@ -26,7 +26,7 @@
 
 {% block vendor_css %}
   {{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/libs/bootstrap-maxlength/bootstrap-maxlength.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/bootstrap-maxlength/bootstrap-maxlength.css' %}" />
 {% endblock vendor_css %}
 
 {% block vendor_js %}
@@ -36,7 +36,7 @@
 
 {% block page_css %}
   {{ block.super }}
-  <link rel="stylesheet" href="{% static 'vendor/css/pages/app-chat.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/css/pages/app-chat.css' %}" />
   <style>
     .markdown-content {
       width: 100%;
@@ -105,6 +105,7 @@
           <div class="avatar avatar-xl avatar-online chat-sidebar-avatar">
             <img src="
 
+
               {% if user.profile.profile_picture %}{{ user.profile.profile_picture.url }}{% else %}{% static 'img/avatars/0.png' %}{% endif %}"
                  alt="Avatar" class="rounded">
           </div>
@@ -122,7 +123,8 @@
           <img src="https://fundpath.com/wp-content/uploads/2023/10/Fundpath-Header-Logo-New.svg"
                class="img-fluid w-100" alt="Fundpath Logo" style="max-width: 200px;">
         </div>
-        <div class="col app-chat-contacts app-sidebar border-end overflow-auto" style="max-height: 400px; min-width: 400px;"
+        <div class="col app-chat-contacts app-sidebar border-end overflow-auto"
+             style="max-height: 400px; min-width: 400px;"
              id="app-chat-contacts">
           <div class="sidebar-body">
             <!-- Assistants -->
@@ -194,7 +196,8 @@
             </ul>
           </div>
         </div>
-        <div class="col app-chat-contacts app-sidebar border-end overflow-auto" style="max-height: 400px; min-width: 400px;"
+        <div class="col app-chat-contacts app-sidebar border-end overflow-auto"
+             style="max-height: 400px; min-width: 400px;"
              id="app-chat-contacts">
           <div class="sidebar-body">
             <!-- Assistants -->
@@ -281,9 +284,11 @@
                   <i class="ti ti-menu-2 ti-lg cursor-pointer d-lg-none d-block" data-bs-toggle="sidebar"
                      data-overlay="" data-target="#app-chat-contacts"></i>
                   <div class="flex-shrink-0 avatar avatar-online">
-                    <img src="https://previews.123rf.com/images/oez/oez1412/oez141200001/34264920-data-analysis-concept-eps10-file-and-included-high-resolution-jpg.jpg" alt="Avatar"
-                         class="rounded-circle" data-bs-toggle="sidebar" data-overlay=""
-                         data-target="#app-chat-sidebar-right">
+                    <img
+                      src="https://previews.123rf.com/images/oez/oez1412/oez141200001/34264920-data-analysis-concept-eps10-file-and-included-high-resolution-jpg.jpg"
+                      alt="Avatar"
+                      class="rounded-circle" data-bs-toggle="sidebar" data-overlay=""
+                      data-target="#app-chat-sidebar-right">
                   </div>
                   <div class="chat-contact-info flex-grow-1 ms-4">
                     <h6 class="m-0 fw-normal">Data Analysis + Insights</h6>
@@ -332,13 +337,16 @@
                   <div class="d-flex overflow-hidden">
                     <div class="user-avatar flex-shrink-0 me-4">
                       <div class="avatar avatar-sm">
-                        <img src="https://previews.123rf.com/images/oez/oez1412/oez141200001/34264920-data-analysis-concept-eps10-file-and-included-high-resolution-jpg.jpg" alt="Avatar"
-                             class="rounded-circle">
+                        <img
+                          src="https://previews.123rf.com/images/oez/oez1412/oez141200001/34264920-data-analysis-concept-eps10-file-and-included-high-resolution-jpg.jpg"
+                          alt="Avatar"
+                          class="rounded-circle">
                       </div>
                     </div>
                     <div class="chat-message-wrapper flex-grow-1">
                       <div class="chat-message-text">
-                        <p class="mb-0">Hi Chris, sure, I can check for the patterns and insights by analyzing your dataset.</p>
+                        <p class="mb-0">Hi Chris, sure, I can check for the patterns and insights by analyzing your
+                          dataset.</p>
                       </div>
                       <div class="chat-message-text mt-2">
                         <p class="mb-0">Is there specific information or topics you would like me to focus on?</p>
@@ -353,7 +361,8 @@
                   <div class="d-flex overflow-hidden">
                     <div class="chat-message-wrapper flex-grow-1">
                       <div class="chat-message-text">
-                        <p class="mb-0">We need to understand the statistical nature of the distribution of our customers and the most important products they are demanding.</p>
+                        <p class="mb-0">We need to understand the statistical nature of the distribution of our
+                          customers and the most important products they are demanding.</p>
                       </div>
                       <div class="text-end text-muted mt-1">
                         <i class="ti ti-checks ti-16px text-success me-1"></i>
@@ -372,8 +381,10 @@
                   <div class="d-flex overflow-hidden">
                     <div class="user-avatar flex-shrink-0 me-4">
                       <div class="avatar avatar-sm">
-                        <img src="https://previews.123rf.com/images/oez/oez1412/oez141200001/34264920-data-analysis-concept-eps10-file-and-included-high-resolution-jpg.jpg" alt="Avatar"
-                             class="rounded-circle">
+                        <img
+                          src="https://previews.123rf.com/images/oez/oez1412/oez141200001/34264920-data-analysis-concept-eps10-file-and-included-high-resolution-jpg.jpg"
+                          alt="Avatar"
+                          class="rounded-circle">
                       </div>
                     </div>
                     <div class="chat-message-wrapper flex-grow-1">
@@ -415,8 +426,10 @@
                   <div class="d-flex overflow-hidden">
                     <div class="user-avatar flex-shrink-0 me-4">
                       <div class="avatar avatar-sm">
-                        <img src="https://previews.123rf.com/images/oez/oez1412/oez141200001/34264920-data-analysis-concept-eps10-file-and-included-high-resolution-jpg.jpg" alt="Avatar"
-                             class="rounded-circle">
+                        <img
+                          src="https://previews.123rf.com/images/oez/oez1412/oez141200001/34264920-data-analysis-concept-eps10-file-and-included-high-resolution-jpg.jpg"
+                          alt="Avatar"
+                          class="rounded-circle">
                       </div>
                     </div>
                     <div class="chat-message-wrapper flex-grow-1">
@@ -455,8 +468,10 @@
                   <div class="d-flex overflow-hidden">
                     <div class="user-avatar flex-shrink-0 me-4">
                       <div class="avatar avatar-sm">
-                        <img src="https://previews.123rf.com/images/oez/oez1412/oez141200001/34264920-data-analysis-concept-eps10-file-and-included-high-resolution-jpg.jpg" alt="Avatar"
-                             class="rounded-circle">
+                        <img
+                          src="https://previews.123rf.com/images/oez/oez1412/oez141200001/34264920-data-analysis-concept-eps10-file-and-included-high-resolution-jpg.jpg"
+                          alt="Avatar"
+                          class="rounded-circle">
                       </div>
                     </div>
                     <div class="chat-message-wrapper flex-grow-1">
@@ -866,7 +881,7 @@
   <script src="https://unpkg.com/konva@9.3.14/konva.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       let stage, layer, background;
       let isDrawing = false;
       let mode = 'draw';
@@ -892,15 +907,15 @@
         layer.add(background);
         layer.draw();
 
-        stage.on('mousedown touchstart', function () {
+        stage.on('mousedown touchstart', function() {
           isDrawing = true;
         });
 
-        stage.on('mouseup touchend', function () {
+        stage.on('mouseup touchend', function() {
           isDrawing = false;
         });
 
-        stage.on('mousemove touchmove', function (e) {
+        stage.on('mousemove touchmove', function(e) {
           if (!isDrawing) return;
 
           const pos = stage.getPointerPosition();
@@ -925,31 +940,31 @@
         });
       }
 
-      $('#canvasEditModal').on('shown.bs.modal', function () {
+      $('#canvasEditModal').on('shown.bs.modal', function() {
         initCanvas();
       });
 
-      document.getElementById('brushSize').addEventListener('input', function () {
+      document.getElementById('brushSize').addEventListener('input', function() {
         brushSize = this.value;
       });
 
-      document.getElementById('brushTool').addEventListener('click', function () {
+      document.getElementById('brushTool').addEventListener('click', function() {
         mode = 'draw';
       });
 
-      document.getElementById('eraserTool').addEventListener('click', function () {
+      document.getElementById('eraserTool').addEventListener('click', function() {
         mode = 'erase';
       });
 
-      document.getElementById('resetTool').addEventListener('click', function () {
+      document.getElementById('resetTool').addEventListener('click', function() {
         // clear the layer
         layer.destroyChildren();
         layer.add(background);
         layer.draw();
       });
 
-      document.getElementById('saveCanvasEdits').addEventListener('click', function () {
-        document.getElementById('sketch-image').value = stage.toDataURL({pixelRatio: 1});
+      document.getElementById('saveCanvasEdits').addEventListener('click', function() {
+        document.getElementById('sketch-image').value = stage.toDataURL({ pixelRatio: 1 });
         $('#canvasEditModal').modal('hide');
         // show the thumbnail in the image staging
         const stagingElement = document.getElementById('image_display_area');
@@ -957,7 +972,7 @@
         divElement.innerHTML = `
           <div class="badge bg-info d-flex align-items-center my-2">
               <strong>SKETCH <i class="fa fa-lightbulb me-4"></i></strong>
-              <img src="${stage.toDataURL({pixelRatio: 0.5})}" class="img-fluid rounded" style="max-width: 100px;" alt="Image">
+              <img src="${stage.toDataURL({ pixelRatio: 0.5 })}" class="img-fluid rounded" style="max-width: 100px;" alt="Image">
           </div>
           `;
       });
@@ -965,7 +980,7 @@
   </script>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       const fileInput = document.getElementById('edit-image');
       const maskInput = document.getElementById('edit-image-mask');
       let stage, layer, imageNode;
@@ -973,13 +988,13 @@
       let brushSize = 50;
       let originalImage;
 
-      fileInput.addEventListener('change', function (event) {
+      fileInput.addEventListener('change', function(event) {
         const file = event.target.files[0];
         if (file) {
           const reader = new FileReader();
-          reader.onload = function (e) {
+          reader.onload = function(e) {
             const img = new Image();
-            img.onload = function () {
+            img.onload = function() {
               originalImage = img.src;
               if (stage) {
                 stage.destroy();
@@ -1002,15 +1017,15 @@
               layer.add(imageNode);
               layer.draw();
 
-              stage.on('mousedown touchstart', function () {
+              stage.on('mousedown touchstart', function() {
                 isErasing = true;
               });
 
-              stage.on('mouseup touchend', function () {
+              stage.on('mouseup touchend', function() {
                 isErasing = false;
               });
 
-              stage.on('mousemove touchmove', function (e) {
+              stage.on('mousemove touchmove', function(e) {
                 if (!isErasing) {
                   return;
                 }
@@ -1034,19 +1049,19 @@
         }
       });
 
-      document.getElementById('brushSize').addEventListener('input', function () {
+      document.getElementById('brushSize').addEventListener('input', function() {
         brushSize = this.value;
       });
 
-      document.getElementById('eraserTool').addEventListener('click', function () {
+      document.getElementById('eraserTool').addEventListener('click', function() {
         // clear the layer
         layer.destroyChildren();
         layer.add(imageNode);
         layer.draw();
       });
 
-      document.getElementById('saveImageEdits').addEventListener('click', function () {
-        maskInput.value = stage.toDataURL({pixelRatio: 1});
+      document.getElementById('saveImageEdits').addEventListener('click', function() {
+        maskInput.value = stage.toDataURL({ pixelRatio: 1 });
         $('#imageEditModal').modal('hide');
       });
     });
@@ -1057,15 +1072,15 @@
   <!-- Include a markdown library, for example, Showdown.js -->
   <script src="https://cdn.jsdelivr.net/npm/showdown/dist/showdown.min.js"></script>
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       const converter = new showdown.Converter();
       converter.setOption('tables', true);
       converter.setOption('ghCodeBlocks', true);
-      document.querySelectorAll('.markdown-content').forEach(function (element) {
+      document.querySelectorAll('.markdown-content').forEach(function(element) {
         element.innerHTML = converter.makeHtml(element.innerHTML);
       });
 
-      document.querySelectorAll('.markdown-content').forEach(function (element) {
+      document.querySelectorAll('.markdown-content').forEach(function(element) {
         element.innerHTML = converter.makeHtml(element.innerHTML);
       });
 
@@ -1077,7 +1092,7 @@
           .replace(/\b\d+(\.\d+)?\b/g, '<span class="number">$&</span>');
       }
 
-      document.querySelectorAll('.markdown-content pre code').forEach(function (block) {
+      document.querySelectorAll('.markdown-content pre code').forEach(function(block) {
         let text = block.innerText;
         // Only highlight JSON code blocks
         if (text.trim().startsWith('{') && text.trim().endsWith('}')) {
@@ -1105,7 +1120,7 @@
   </script>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       const chatForm = document.querySelector('.form-send-message');
       const createChatForm = document.querySelector('#create-chat-form');
 
@@ -1115,9 +1130,9 @@
       const retryButton = document.querySelector('#retry-response-button');
 
       // if the button is clicked, set the value of the message to "Your response either failed, or I didn't like it. Please try again."
-      retryButton.addEventListener('click', function () {
+      retryButton.addEventListener('click', function() {
         const chatInput = document.querySelector('.message-input');
-        chatInput.value = "Your answer wasn't satisfactory, or you have made an error, or you have failed to provide a valid and comprehensive answer to me. Please try again.";
+        chatInput.value = 'Your answer wasn\'t satisfactory, or you have made an error, or you have failed to provide a valid and comprehensive answer to me. Please try again.';
         // automatically submit
         chatForm.submit();
       });
@@ -1125,14 +1140,14 @@
       const loadingBarCreateChat = document.getElementById('loadingBarCreateChat');
       const loadingBarWarningCreateChat = document.getElementById('loadingBarWarningCreateChat');
 
-      chatForm.addEventListener('submit', function (event) {
+      chatForm.addEventListener('submit', function(event) {
         // Show the loading bar
         loadingBar.classList.remove('d-none');
         loadingBarWarning.classList.remove('d-none');
         submitMessageButton.disabled = true;
       });
 
-      createChatForm.addEventListener('submit', function (event) {
+      createChatForm.addEventListener('submit', function(event) {
         // Show the loading bar
         loadingBarCreateChat.classList.remove('d-none');
         loadingBarWarningCreateChat.classList.remove('d-none');
@@ -1140,9 +1155,9 @@
 
     });
 
-    document.addEventListener('DOMContentLoaded', function () {
-      document.querySelectorAll('.card-template').forEach(function (template) {
-        template.addEventListener('click', function () {
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('.card-template').forEach(function(template) {
+        template.addEventListener('click', function() {
           const fullText = this.getAttribute('data-full-text');
           console.log(fullText);
           const chatInput = document.querySelector('.message-input');
@@ -1171,8 +1186,8 @@
       });
     });
 
-    document.querySelectorAll('.copy-btn-plain').forEach(function (btn) {
-      btn.addEventListener('click', function () {
+    document.querySelectorAll('.copy-btn-plain').forEach(function(btn) {
+      btn.addEventListener('click', function() {
         const messageId = this.getAttribute('data-message-id');
         const templateTextElement = document.getElementById(`copied-message-${messageId}`);
         const textToCopy = templateTextElement ? templateTextElement.innerText : '';
@@ -1200,8 +1215,8 @@
       });
     });
 
-    document.querySelectorAll('.copy-btn-html').forEach(function (btn) {
-      btn.addEventListener('click', function () {
+    document.querySelectorAll('.copy-btn-html').forEach(function(btn) {
+      btn.addEventListener('click', function() {
         const messageId = this.getAttribute('data-message-id');
         const templateTextElement = document.getElementById(`copied-message-${messageId}`);
         const textToCopy = templateTextElement ? templateTextElement.innerText : '';
@@ -1230,8 +1245,8 @@
       });
     });
 
-    document.querySelectorAll('.copy-btn-markdown').forEach(function (btn) {
-      btn.addEventListener('click', function () {
+    document.querySelectorAll('.copy-btn-markdown').forEach(function(btn) {
+      btn.addEventListener('click', function() {
         const messageId = this.getAttribute('data-message-id');
         const templateTextElement = document.getElementById(`copied-message-${messageId}`);
         const textToCopy = templateTextElement ? templateTextElement.innerText : '';
@@ -1260,16 +1275,16 @@
       });
     });
 
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       const chatInput = document.querySelector('.message-input');
 
-      chatInput.addEventListener('input', function () {
+      chatInput.addEventListener('input', function() {
         this.style.height = 'auto'; // Reset the height
         this.style.height = (this.scrollHeight) + 'px'; // Set the height to match the content
       });
 
-      document.querySelectorAll('.card-template').forEach(function (template) {
-        template.addEventListener('click', function () {
+      document.querySelectorAll('.card-template').forEach(function(template) {
+        template.addEventListener('click', function() {
           const fullText = this.getAttribute('data-full-text');
           chatInput.value = fullText;
           chatInput.style.height = 'auto'; // Reset the height
@@ -1299,9 +1314,9 @@
   </script>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       const floatingButton = document.querySelector('.floating-button');
-      floatingButton.addEventListener('click', function () {
+      floatingButton.addEventListener('click', function() {
         if (floatingButton.innerHTML.includes('Chat')) {
           window.scrollTo({
             top: document.body.scrollHeight,
@@ -1320,10 +1335,10 @@
   </script>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       const btnCollapseTemplates = document.querySelector('.btn-collapse-templates');
       const cardTemplateContainer = document.querySelector('#message-templates-container');
-      btnCollapseTemplates.addEventListener('click', function () {
+      btnCollapseTemplates.addEventListener('click', function() {
         cardTemplateContainerClasses = cardTemplateContainer.classList;
         if (cardTemplateContainerClasses.contains('d-none')) {
           cardTemplateContainer.classList.remove('d-none');
@@ -1339,8 +1354,8 @@
   </script>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      document.getElementById('attach-doc').addEventListener('change', function (event) {
+    document.addEventListener('DOMContentLoaded', function() {
+      document.getElementById('attach-doc').addEventListener('change', function(event) {
         const fileList = Array.from(event.target.files);
         const fileDisplayArea = document.getElementById('file_display_area');
         fileDisplayArea.innerHTML = '<small class="text-muted mb-2 ms-6"><strong>Media File Staging</strong></small><hr>';
@@ -1391,11 +1406,11 @@
             'docx': 'docx.png',
             'pptx': 'pptx.png',
             'pdf': 'pdf.png',
-            'txt': 'txt.png',
+            'txt': 'txt.png'
           };
           const icon = iconMap[fileExtension] || 'file.png';
-          let filename_root = file.name.split(".")[0];
-          let filename_extension = file.name.split(".")[1];
+          let filename_root = file.name.split('.')[0];
+          let filename_extension = file.name.split('.')[1];
           if (filename_root.length > 64) {
             filename_root = filename_root.substring(0, 64) + '...';
           }
@@ -1412,7 +1427,7 @@
         });
 
         document.querySelectorAll('.btn-close').forEach(button => {
-          button.addEventListener('click', function () {
+          button.addEventListener('click', function() {
             const index = this.getAttribute('data-index');
             fileList.splice(index, 1);
             const dataTransfer = new DataTransfer();
@@ -1423,7 +1438,7 @@
         });
       });
 
-      document.getElementById('attach-image').addEventListener('change', function (event) {
+      document.getElementById('attach-image').addEventListener('change', function(event) {
         const fileList = Array.from(event.target.files);
         const fileDisplayArea = document.getElementById('image_display_area');
         fileDisplayArea.innerHTML = '<small class="text-muted mb-2 ms-6"><strong>Media Image Staging</strong></small><hr>';
@@ -1431,8 +1446,8 @@
           const fileSize = (file.size / 1024).toFixed(2) + ' KB';
           const fileExtension = file.name.split('.').pop().toLowerCase();
           const image_data = null; // ????
-          let filename_root = file.name.split(".")[0];
-          let filename_extension = file.name.split(".")[1];
+          let filename_root = file.name.split('.')[0];
+          let filename_extension = file.name.split('.')[1];
           if (filename_root.length > 64) {
             filename_root = filename_root.substring(0, 64) + '...';
           }
@@ -1440,7 +1455,7 @@
           fileElement.classList.add('col-lg-12');
 
           const reader = new FileReader();
-          reader.onload = function (e) {
+          reader.onload = function(e) {
             const imageUrl = e.target.result;
             fileElement.innerHTML = `
                           <div class="badge bg-lighter d-flex align-items-center my-2">
@@ -1451,7 +1466,7 @@
                       `;
             fileDisplayArea.appendChild(fileElement);
 
-            document.getElementById(`btn-close-image-${index}`).addEventListener('click', function () {
+            document.getElementById(`btn-close-image-${index}`).addEventListener('click', function() {
               const index = this.getAttribute('data-index');
               fileList.splice(index, 1);
               const dataTransfer = new DataTransfer();
@@ -1464,7 +1479,7 @@
         });
 
         document.querySelectorAll('.btn-close').forEach(button => {
-          button.addEventListener('click', function () {
+          button.addEventListener('click', function() {
             const index = this.getAttribute('data-index');
             fileList.splice(index, 1);
             const dataTransfer = new DataTransfer();
@@ -1475,7 +1490,7 @@
         });
 
         document.getElementById('.btn-close-image').forEach(button => {
-          button.addEventListener('click', function () {
+          button.addEventListener('click', function() {
             const index = this.getAttribute('data-index');
             fileList.splice(index, 1);
             const dataTransfer = new DataTransfer();
@@ -1486,7 +1501,7 @@
         });
       });
 
-      document.getElementById('edit-image').addEventListener('change', function (event) {
+      document.getElementById('edit-image').addEventListener('change', function(event) {
         const fileList = Array.from(event.target.files);
         const fileDisplayArea = document.getElementById('image_display_area');
         fileDisplayArea.innerHTML = '<small class="text-muted mb-2 ms-6"><strong>Image Modification Staging</strong></small><hr>';
@@ -1494,8 +1509,8 @@
           const fileSize = (file.size / 1024).toFixed(2) + ' KB';
           const fileExtension = file.name.split('.').pop().toLowerCase();
           const image_data = null; // ????
-          let filename_root = file.name.split(".")[0];
-          let filename_extension = file.name.split(".")[1];
+          let filename_root = file.name.split('.')[0];
+          let filename_extension = file.name.split('.')[1];
           if (filename_root.length > 64) {
             filename_root = filename_root.substring(0, 64) + '...';
           }
@@ -1503,7 +1518,7 @@
           fileElement.classList.add('col-lg-12');
 
           const reader = new FileReader();
-          reader.onload = function (e) {
+          reader.onload = function(e) {
             const imageUrl = e.target.result;
             fileElement.innerHTML = `
                           <div class="badge bg-warning d-flex align-items-center my-2">
@@ -1515,7 +1530,7 @@
                       `;
             fileDisplayArea.appendChild(fileElement);
 
-            document.getElementById(`btn-close-image-${index}`).addEventListener('click', function () {
+            document.getElementById(`btn-close-image-${index}`).addEventListener('click', function() {
               const index = this.getAttribute('data-index');
               fileList.splice(index, 1);
               const dataTransfer = new DataTransfer();
@@ -1528,7 +1543,7 @@
         });
 
         document.querySelectorAll('.btn-close').forEach(button => {
-          button.addEventListener('click', function () {
+          button.addEventListener('click', function() {
             const index = this.getAttribute('data-index');
             fileList.splice(index, 1);
             const dataTransfer = new DataTransfer();
@@ -1539,7 +1554,7 @@
         });
 
         document.getElementById('.btn-close-image').forEach(button => {
-          button.addEventListener('click', function () {
+          button.addEventListener('click', function() {
             const index = this.getAttribute('data-index');
             fileList.splice(index, 1);
             const dataTransfer = new DataTransfer();

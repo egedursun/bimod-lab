@@ -1,21 +1,21 @@
-  <!--
-  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
-  ~
-  ~ Project: Bimod.io™
-  ~ File: user_profile_list.html
-  ~ Last Modified: 2024-10-05 01:39:48
-  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-05 14:42:47
-  ~
-  ~ This software is proprietary and confidential. Unauthorized copying,
-  ~ distribution, modification, or use of this software, whether for
-  ~ commercial, academic, or any other purpose, is strictly prohibited
-  ~ without the prior express written permission of BMD™ Autonomous
-  ~ Holdings.
-  ~
-  ~  For permission inquiries, please contact: admin@Bimod.io.
-  ~
-  -->
+<!--
+~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+~
+~ Project: Bimod.io™
+~ File: user_profile_list.html
+~ Last Modified: 2024-10-05 01:39:48
+~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+~ Created: 2024-10-05 14:42:47
+~
+~ This software is proprietary and confidential. Unauthorized copying,
+~ distribution, modification, or use of this software, whether for
+~ commercial, academic, or any other purpose, is strictly prohibited
+~ without the prior express written permission of BMD™ Autonomous
+~ Holdings.
+~
+~  For permission inquiries, please contact: admin@Bimod.io.
+~
+-->
 
 {% extends layout_path %}
 
@@ -26,10 +26,10 @@
 
 {% block vendor_css %}
   {{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
-  <link rel="stylesheet" href="{% static 'vendor/libs/@form-validation/form-validation.css' %}"/>
-  <link rel="stylesheet" href="{% static 'vendor/libs/animate-css/animate.css' %}"/>
-  <link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/@form-validation/form-validation.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/animate-css/animate.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}" />
 {% endblock vendor_css %}
 
 {% block vendor_js %}
@@ -100,7 +100,7 @@
                 {% csrf_token %}
                 <div class="d-flex align-items-start align-items-sm-center gap-6">
                   <img src="{{ request.user.profile.profile_picture.url }}" alt="user-avatar"
-                       class="d-block w-px-100 h-px-100 rounded" id="uploadedAvatar"/>
+                       class="d-block w-px-100 h-px-100 rounded" id="uploadedAvatar" />
                   <div class="button-wrapper">
                     <label for="upload" class="btn btn-primary me-3 mb-4" tabindex="0">
                       <span class="d-none d-sm-block"><strong>
@@ -109,7 +109,7 @@
                       </strong></span>
                       <i class="ti ti-upload d-block d-sm-none"></i>
                       <input type="file" id="upload" name="profile_picture" class="account-file-input" hidden
-                             accept="image/png, image/jpeg"/>
+                             accept="image/png, image/jpeg" />
                     </label>
                     <button type="button" class="btn btn-label-secondary account-image-reset mb-4" id="resetImage">
                       <i class="ti ti-refresh-dot d-block d-sm-none"></i>
@@ -127,37 +127,37 @@
                   <div class="mb-4 col-md-6">
                     <label for="first_name" class="form-label">First Name</label>
                     <input class="form-control" type="text" id="first_name" name="first_name"
-                           value="{{ request.user.profile.first_name }}" autofocus/>
+                           value="{{ request.user.profile.first_name }}" autofocus />
                   </div>
                   <div class="mb-4 col-md-6">
                     <label for="last_name" class="form-label">Last Name</label>
                     <input class="form-control" type="text" id="last_name" name="last_name"
-                           value="{{ request.user.profile.last_name }}"/>
+                           value="{{ request.user.profile.last_name }}" />
                   </div>
                   <div class="mb-4 col-md-6">
                     <label for="email" class="form-label">E-mail</label>
                     <input class="form-control" type="text" id="email" name="email"
-                           value="{{ request.user.profile.email }}"/>
+                           value="{{ request.user.profile.email }}" />
                   </div>
                   <div class="mb-4 col-md-6">
                     <label class="form-label" for="phone_number">Phone Number</label>
                     <input type="text" id="phone_number" name="phone_number" class="form-control"
-                           value="{{ request.user.profile.phone_number }}"/>
+                           value="{{ request.user.profile.phone_number }}" />
                   </div>
                   <div class="mb-4 col-md-6">
                     <label class="form-label" for="birthdate">Date of Birth</label>
                     <input type="date" id="birthdate" name="birthdate" class="form-control"
-                           value="{{ request.user.profile.birthdate|date:'Y-m-d' }}"/>
+                           value="{{ request.user.profile.birthdate|date:'Y-m-d' }}" />
                   </div>
                   <div class="mb-4 col-md-6">
                     <label for="address" class="form-label">Address</label>
                     <input type="text" class="form-control" id="address" name="address"
-                           value="{{ request.user.profile.address }}"/>
+                           value="{{ request.user.profile.address }}" />
                   </div>
                   <div class="mb-4 col-md-6">
                     <label for="city" class="form-label">City</label>
                     <input class="form-control" type="text" id="city" name="city"
-                           value="{{ request.user.profile.city }}"/>
+                           value="{{ request.user.profile.city }}" />
                   </div>
                   <div class="mb-4 col-md-6">
                     <label for="country" class="form-label">Country</label>
@@ -172,7 +172,7 @@
                   <div class="mb-4 col-md-6">
                     <label for="postal_code" class="form-label">Postal Code</label>
                     <input type="text" class="form-control" id="postal_code" name="postal_code"
-                           value="{{ request.user.profile.postal_code }}"/>
+                           value="{{ request.user.profile.postal_code }}" />
                   </div>
                   <div class="mb-4 col-md-6">
                     <label for="referral_code" class="form-label">Referral Code</label>
@@ -212,7 +212,8 @@
                 <i class="fa fa-credit-card me-2"></i>
                 Saved Cards
               </strong></h5>
-              <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+              <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center"
+                   role="alert">
                 <img src="{% static 'img/custom-illustrations-v2/i2-95.png' %}" width="25%" style="border-radius: 25px;"
                      class="justify-content-end me-8" alt="Illustration for tip">
                 <span class="alert-icon rounded">
@@ -243,17 +244,20 @@
                                   {{ item.card.name_on_card }}
                                 </strong></h6>
                                 <hr>
-                                <h6 class="text-muted mt-2 font-monospace label bg-label-dark rounded p-2 border border-1 border-secondary ">
+                                <h6
+                                  class="text-muted mt-2 font-monospace label bg-label-dark rounded p-2 border border-1 border-secondary ">
                                   <strong>
                                     <i class="fa fa-credit-card me-12"></i>
-                                    {{ item.card.card_number|slice:":4" }} - **** - **** - {{ item.card.card_number|slice:"-4:" }}</strong></h6>
+                                    {{ item.card.card_number|slice:":4" }} - **** - ****
+                                    - {{ item.card.card_number|slice:"-4:" }}</strong></h6>
                               </div>
                               <div class="row">
                                 <div class="col-9">
                                   <small class="text-muted">
                                     <strong>
                                       <i class="fa fa-calendar me-2"></i>
-                                      EXP: &nbsp; {{ item.card.card_expiration_month }} / {{ item.card.card_expiration_year }}
+                                      EXP: &nbsp; {{ item.card.card_expiration_month }}
+                                      / {{ item.card.card_expiration_year }}
                                     </strong></small>
                                   <br>
                                   <small class="text-muted">
@@ -324,32 +328,32 @@
                   <div class="mb-4 col-sm-6">
                     <label for="name_on_card" class="form-label">Name on Card</label>
                     <input type="text" id="name_on_card" name="name_on_card" class="form-control"
-                           placeholder="John Doe" required/>
+                           placeholder="John Doe" required />
                   </div>
                   <div class="mb-4 col-sm-6">
                     <label for="card_number" class="form-label">Card Number</label>
                     <input type="text" id="card_number" name="card_number" class="form-control" maxlength="19"
                            placeholder="0000-0000-0000-0000"
-                           required/>
+                           required />
                   </div>
                   <div class="mb-4 col-sm-2">
                     <label for="card_expiration_month" class="form-label">Expiration Month</label>
                     <input type="text" id="card_expiration_month" name="card_expiration_month" placeholder="MM"
                            class="form-control"
-                           maxlength="2" required/>
+                           maxlength="2" required />
                   </div>
                   <div class="mb-4 col-sm-2">
                     <label for="card_expiration_year" class="form-label">Expiration Year</label>
                     <input type="text" id="card_expiration_year" name="card_expiration_year" placeholder="YY"
                            class="form-control"
-                           maxlength="2" required/>
+                           maxlength="2" required />
                   </div>
                   <div class="mb-4 col-sm-2">
                   </div>
                   <div class="mb-4 col-sm-2">
                     <label for="card_cvc" class="form-label">CVC</label>
                     <input type="text" id="card_cvc" name="card_cvc" class="form-control" placeholder="000X"
-                           maxlength="4" required/>
+                           maxlength="4" required />
                   </div>
                 </div>
                 <div class="mt-4">
@@ -371,14 +375,14 @@
   </div>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       const uploadInput = document.getElementById('upload');
       const uploadedAvatar = document.getElementById('uploadedAvatar');
       const resetImage = document.getElementById('resetImage');
       const uploadWarning = document.getElementById('upload-warning');
 
       if (uploadInput) {
-        uploadInput.addEventListener('change', function (event) {
+        uploadInput.addEventListener('change', function(event) {
           const [file] = event.target.files;
           if (file) {
             uploadedAvatar.src = URL.createObjectURL(file);
@@ -388,7 +392,7 @@
       }
 
       if (resetImage) {
-        resetImage.addEventListener('click', function () {
+        resetImage.addEventListener('click', function() {
           uploadedAvatar.src = '{{ request.user.profile.profile_picture.url }}';
           uploadWarning.classList.add('d-none');
           uploadInput.value = ''; // Clear the file input
@@ -397,27 +401,27 @@
 
       // Handle form submission
       const formAccountSettings = document.getElementById('formAccountSettings');
-      formAccountSettings.addEventListener('submit', function (event) {
+      formAccountSettings.addEventListener('submit', function(event) {
         uploadWarning.classList.add('d-none');
       });
 
       // Credit Card Input Formatting
       const cardNumberInput = document.getElementById('card_number');
-      cardNumberInput.addEventListener('input', function (event) {
+      cardNumberInput.addEventListener('input', function(event) {
         let value = event.target.value.replace(/\D/g, ''); // Remove non-digit characters
         let formattedValue = value.replace(/(\d{4})(?=\d)/g, '$1-'); // Add hyphens
         event.target.value = formattedValue;
       });
 
       const form = document.getElementById('creditCardForm');
-      form.addEventListener('submit', function (event) {
+      form.addEventListener('submit', function(event) {
         cardNumberInput.value = cardNumberInput.value.replace(/\D/g, ''); // Remove hyphens before submitting
       });
 
       // Popover for card removal confirmation
       const removeCardButtons = document.querySelectorAll('.remove-card-btn');
       removeCardButtons.forEach(button => {
-        button.addEventListener('click', function (event) {
+        button.addEventListener('click', function(event) {
           event.preventDefault();
           const cardId = button.getAttribute('data-card-id');
           Swal.fire({
@@ -429,7 +433,7 @@
             customClass: {
               confirmButton: 'btn btn-danger me-2 waves-effect waves-light',
               cancelButton: 'btn btn-label-secondary waves-effect waves-light'
-            },
+            }
           }).then((result) => {
             if (result.isConfirmed) {
               document.getElementById(`removeCardForm-${cardId}`).submit();

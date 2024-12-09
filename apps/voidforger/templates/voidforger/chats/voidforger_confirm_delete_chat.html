@@ -25,44 +25,47 @@
 
 {% block content %}
 
-<div class="row">
-  <div class="col-xl mb-6">
-    <div class="card">
-      <div class="card-header d-flex justify-content-between align-items-center">
-        <h3 class="mb-0">
-          <strong>Delete VoidForger Chat</strong>
-        </h3>
-        <small class="text-muted float-end"></small>
-      </div>
-      {% if messages %}
-      {% for message in messages %}
-      <div
-        class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
-        role="alert">
-        {{ message }}
-      </div>
-      {% endfor %}
-      {% endif %}
-      <hr>
-      <div class="card-body">
-        <form method="post">
-          {% csrf_token %}
-          <p>Are you sure you want to delete the VoidForger chat <strong>"{{ chat.chat_name }}"</strong>?</p><br>
-          <h6><strong>
-            • This operation will result in the complete removal of the VoidForger chat from the system.
-            <br>
-            • This deletion operation is completely irreversible and will entirely remove the VoidForger chat and all associated
-            messages from the system.
-          </strong></h6>
-          <img src="{% static 'img/custom-illustrations-v2/i2-72.png' %}" width="25%" style="border-radius: 25px;"
-               class="justify-content-end me-8" alt="Illustration for confirming deletion">
-          <hr>
-          <button type="submit" class="btn btn-danger mt-4 me-4"><strong>DELETE &nbsp;</strong> the VoidForger chat.</button>
-          <a href="{% url 'multimodal_chat:main_workspace' %}" class="btn btn-secondary mt-4"><strong>CANCEL &nbsp;</strong> the
-            deletion operation.</a>
-        </form>
+  <div class="row">
+    <div class="col-xl mb-6">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h3 class="mb-0">
+            <strong>Delete VoidForger Chat</strong>
+          </h3>
+          <small class="text-muted float-end"></small>
+        </div>
+        {% if messages %}
+          {% for message in messages %}
+            <div
+              class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
+              role="alert">
+              {{ message }}
+            </div>
+          {% endfor %}
+        {% endif %}
+        <hr>
+        <div class="card-body">
+          <form method="post">
+            {% csrf_token %}
+            <p>Are you sure you want to delete the VoidForger chat <strong>"{{ chat.chat_name }}"</strong>?</p><br>
+            <h6><strong>
+              • This operation will result in the complete removal of the VoidForger chat from the system.
+              <br>
+              • This deletion operation is completely irreversible and will entirely remove the VoidForger chat and all
+              associated
+              messages from the system.
+            </strong></h6>
+            <img src="{% static 'img/custom-illustrations-v2/i2-72.png' %}" width="25%" style="border-radius: 25px;"
+                 class="justify-content-end me-8" alt="Illustration for confirming deletion">
+            <hr>
+            <button type="submit" class="btn btn-danger mt-4 me-4"><strong>DELETE &nbsp;</strong> the VoidForger chat.
+            </button>
+            <a href="{% url 'multimodal_chat:main_workspace' %}" class="btn btn-secondary mt-4"><strong>CANCEL
+              &nbsp;</strong> the
+              deletion operation.</a>
+          </form>
+        </div>
       </div>
     </div>
   </div>
-</div>
 {% endblock %}

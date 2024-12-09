@@ -25,419 +25,432 @@
 {% block title %}BMD™ Autonomous Holdings - Meta Integration Teams{% endblock %}
 
 {% block vendor_css %}
-{{ block.super }}
+  {{ block.super }}
 
-<link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
 {% endblock vendor_css %}
 
 {% block vendor_js %}
-{{ block.super }}
-<script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
 {% endblock vendor_js %}
 
 {% block page_css %}
-{{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/css/pages/meta-integration-teams.css' %}" />
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/css/pages/meta-integration-teams.css' %}" />
 {% endblock page_css %}
 
 {% block page_js %}
-{{ block.super }}
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    // Search functionality
-    const searchInput = document.querySelector('input[type="search"]');
-    searchInput.addEventListener('input', function () {
-      const searchValue = searchInput.value.toLowerCase();
-      const teamCards = document.querySelectorAll('.team-card');
+  {{ block.super }}
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Search functionality
+      const searchInput = document.querySelector('input[type="search"]');
+      searchInput.addEventListener('input', function() {
+        const searchValue = searchInput.value.toLowerCase();
+        const teamCards = document.querySelectorAll('.team-card');
 
-      teamCards.forEach(card => {
-        const title = card.querySelector('.team-title')?.textContent.toLowerCase() || "";
-        const description = card.querySelector('.team-description')?.textContent.toLowerCase() || "";
-        const tags = card.getAttribute('data-tags').toLowerCase();
+        teamCards.forEach(card => {
+          const title = card.querySelector('.team-title')?.textContent.toLowerCase() || '';
+          const description = card.querySelector('.team-description')?.textContent.toLowerCase() || '';
+          const tags = card.getAttribute('data-tags').toLowerCase();
 
-        card.style.display = title.includes(searchValue) || description.includes(searchValue) || tags.includes(searchValue) ? 'block' : 'none';
+          card.style.display = title.includes(searchValue) || description.includes(searchValue) || tags.includes(searchValue) ? 'block' : 'none';
+        });
+      });
+
+      // Modal trigger functionality for meta integrations
+      document.querySelectorAll('.integrate-btn, .team-image, .team-title').forEach(element => {
+        element.addEventListener('click', function(e) {
+          e.preventDefault();
+
+          // Retrieve the team card and its integration ID
+          const teamCard = this.closest('.team-card');
+          const teamName = teamCard.querySelector('.team-title')?.textContent.trim();
+          const metaIntegrationId = teamCard.getAttribute('data-meta-integration-id');
+
+          // Update modal content with the selected team's name and ID
+          document.querySelector('#metaIntegrationModal .team-name').textContent = teamName;
+          document.querySelector('#metaIntegrationModal input[name="meta_integration_id"]').value = metaIntegrationId;
+
+          // Display the modal
+          $('#metaIntegrationModal').modal('show');
+        });
       });
     });
-
-    // Modal trigger functionality for meta integrations
-    document.querySelectorAll('.integrate-btn, .team-image, .team-title').forEach(element => {
-      element.addEventListener('click', function (e) {
-        e.preventDefault();
-
-        // Retrieve the team card and its integration ID
-        const teamCard = this.closest('.team-card');
-        const teamName = teamCard.querySelector('.team-title')?.textContent.trim();
-        const metaIntegrationId = teamCard.getAttribute('data-meta-integration-id');
-
-        // Update modal content with the selected team's name and ID
-        document.querySelector('#metaIntegrationModal .team-name').textContent = teamName;
-        document.querySelector('#metaIntegrationModal input[name="meta_integration_id"]').value = metaIntegrationId;
-
-        // Display the modal
-        $('#metaIntegrationModal').modal('show');
-      });
-    });
-  });
-</script>
+  </script>
 {% endblock page_js %}
 
 {% block content %}
-<div class="meta-integration-teams">
-  <h2>
-    <strong>
-      <i class="fa fa-users me-4"></i>
-      Meta Integration Teams
-    </strong>
-  </h2>
+  <div class="meta-integration-teams">
+    <h2>
+      <strong>
+        <i class="fa fa-users me-4"></i>
+        Meta Integration Teams
+      </strong>
+    </h2>
 
-  <hr>
+    <hr>
 
-  <a href="{% url 'meta_integrations:list' %}" class="btn btn-primary btn-icon mt-4 w-25">
-    <strong>
-      <i class="fa fa-chevron-left me-2"></i>
-      Back to Categories
-    </strong>
-  </a>
+    <a href="{% url 'meta_integrations:list' %}" class="btn btn-primary btn-icon mt-4 w-25">
+      <strong>
+        <i class="fa fa-chevron-left me-2"></i>
+        Back to Categories
+      </strong>
+    </a>
 
-  <hr>
+    <hr>
 
-  <div class="tips-section alert alert-secondary d-flex col-lg-12 mt-4 align-items-center" role="alert">
-    <img src="{% static 'img/custom-illustrations-v2/i2-68.png' %}" width="25%" class="justify-content-end me-8" alt="Tip illustration">
-    <span class="alert-icon rounded"><i class="ti ti-lightbulb"></i></span>
-    <div class="d-flex flex-column ps-1">
-      <h5 class="alert-heading mb-2">Tip</h5>
-      <p><strong>Browse Meta Integration Teams</strong> to find the right combination for your business needs.</p>
-    </div>
-  </div>
-
-  {% if messages %}
-    {% for message in messages %}
-      <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% endif %}" role="alert">
-        {{ message }}
+    <div class="tips-section alert alert-secondary d-flex col-lg-12 mt-4 align-items-center" role="alert">
+      <img src="{% static 'img/custom-illustrations-v2/i2-68.png' %}" width="25%" class="justify-content-end me-8"
+           alt="Tip illustration">
+      <span class="alert-icon rounded"><i class="ti ti-lightbulb"></i></span>
+      <div class="d-flex flex-column ps-1">
+        <h5 class="alert-heading mb-2">Tip</h5>
+        <p><strong>Browse Meta Integration Teams</strong> to find the right combination for your business needs.</p>
       </div>
-    {% endfor %}
-  {% endif %}
+    </div>
 
-  <hr>
-
-  <div class="category-info-card card mb-6">
-    <div class="row g-0 align-items-center">
-      {% if category.category_image_url %}
-        <div class="col-md-4 p-4">
-          <img src="{{ category.category_image_url }}" alt="{{ category.category_name }}" class="img-fluid rounded">
+    {% if messages %}
+      {% for message in messages %}
+        <div
+          class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% endif %}"
+          role="alert">
+          {{ message }}
         </div>
-      {% endif %}
-      <div class="col-md-8">
-        <div class="card-body">
-          <h4 class="card-title"><strong>{{ category.category_name }}</strong></h4>
-          {% if category.category_description %}
-            <p class="card-text">{{ category.category_description }}</p>
-          {% endif %}
+      {% endfor %}
+    {% endif %}
+
+    <hr>
+
+    <div class="category-info-card card mb-6">
+      <div class="row g-0 align-items-center">
+        {% if category.category_image_url %}
+          <div class="col-md-4 p-4">
+            <img src="{{ category.category_image_url }}" alt="{{ category.category_name }}" class="img-fluid rounded">
+          </div>
+        {% endif %}
+        <div class="col-md-8">
+          <div class="card-body">
+            <h4 class="card-title"><strong>{{ category.category_name }}</strong></h4>
+            {% if category.category_description %}
+              <p class="card-text">{{ category.category_description }}</p>
+            {% endif %}
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <hr>
+    <hr>
 
-  <div class="card mb-6">
-    <div class="card-header">
-      <h5 class="mb-0"><strong>Available Meta Integration Teams</strong></h5>
-      <p class="mb-0">Total {{ meta_integration_teams|length }} teams available.</p>
-    </div>
-    <div class="card-body">
-      <div class="d-flex align-items-center mb-4 p-6">
-        <input type="search" placeholder="Search through teams..." class="form-control me-4 border border-primary border-3 mt-4 rounded" style="min-height: 60px;" />
+    <div class="card mb-6">
+      <div class="card-header">
+        <h5 class="mb-0"><strong>Available Meta Integration Teams</strong></h5>
+        <p class="mb-0">Total {{ meta_integration_teams|length }} teams available.</p>
       </div>
-      <hr>
-      <div class="row gy-6 mb-6">
-        {% for team in meta_integration_teams %}
-        <div class="col-sm-3 col-lg-3 team-card" data-meta-integration-id="{{ team.id }}" data-tags="{{ team.tags|join:', ' }}">
-          <div class="card p-2 h-100 shadow-none border">
-            <div class="rounded-2 text-center mb-4">
-              <a href="#" class="team-image">
-                {% if team.meta_integration_team_image %}
-                  <img class="img-fluid rounded px-4 pt-4" src="{{ team.meta_integration_team_image.url }}" alt="{{ team.meta_integration_name }}">
-                {% else %}
-                  <img class="img-fluid rounded px-4 pt-4" src="{% static 'img/default-team.png' %}" alt="{{ team.meta_integration_name }}">
-                {% endif %}
-              </a>
-            </div>
-            <div class="card-body p-4 pt-2 d-flex flex-column">
-              <div class="badge bg-primary mb-2 p-2">
-                <strong>
-                  <i class="fa fa-tag me-2"></i>
-                  {{ team.meta_integration_category.category_name }}
-                </strong>
-              </div>
-              <hr>
-              <a href="#" class="h5 team-title">
-                <strong>{{ team.meta_integration_name }}</strong>
-              </a>
-              <p class="mt-1 team-description">{{ team.meta_integration_description }}</p>
-              <div class="d-flex flex-wrap mt-2 p-2 border border-primary border-4 rounded mb-2">
-                {% for assistant in team.integration_assistants.all %}
-                <div class="btn-instagram rounded m-1 p-2 w-100">
-                  <strong>
-                    <i class="fa fa-robot me-2"></i>
-                    {{ assistant.integration_name }}
-                  </strong>
+      <div class="card-body">
+        <div class="d-flex align-items-center mb-4 p-6">
+          <input type="search" placeholder="Search through teams..."
+                 class="form-control me-4 border border-primary border-3 mt-4 rounded" style="min-height: 60px;" />
+        </div>
+        <hr>
+        <div class="row gy-6 mb-6">
+          {% for team in meta_integration_teams %}
+            <div class="col-sm-3 col-lg-3 team-card" data-meta-integration-id="{{ team.id }}"
+                 data-tags="{{ team.tags|join:', ' }}">
+              <div class="card p-2 h-100 shadow-none border">
+                <div class="rounded-2 text-center mb-4">
+                  <a href="#" class="team-image">
+                    {% if team.meta_integration_team_image %}
+                      <img class="img-fluid rounded px-4 pt-4" src="{{ team.meta_integration_team_image.url }}"
+                           alt="{{ team.meta_integration_name }}">
+                    {% else %}
+                      <img class="img-fluid rounded px-4 pt-4" src="{% static 'img/default-team.png' %}"
+                           alt="{{ team.meta_integration_name }}">
+                    {% endif %}
+                  </a>
                 </div>
-                {% endfor %}
-              </div>
-              <hr>
-              <div class="mt-auto">
-                <a href="#" class="w-100 btn btn-primary integrate-btn" data-team="{{ team.meta_integration_name }}">
-                  <strong>
-                    <i class="fa fa-rocket me-2"></i>
-                    Integrate
-                  </strong>
-                </a>
+                <div class="card-body p-4 pt-2 d-flex flex-column">
+                  <div class="badge bg-primary mb-2 p-2">
+                    <strong>
+                      <i class="fa fa-tag me-2"></i>
+                      {{ team.meta_integration_category.category_name }}
+                    </strong>
+                  </div>
+                  <hr>
+                  <a href="#" class="h5 team-title">
+                    <strong>{{ team.meta_integration_name }}</strong>
+                  </a>
+                  <p class="mt-1 team-description">{{ team.meta_integration_description }}</p>
+                  <div class="d-flex flex-wrap mt-2 p-2 border border-primary border-4 rounded mb-2">
+                    {% for assistant in team.integration_assistants.all %}
+                      <div class="btn-instagram rounded m-1 p-2 w-100">
+                        <strong>
+                          <i class="fa fa-robot me-2"></i>
+                          {{ assistant.integration_name }}
+                        </strong>
+                      </div>
+                    {% endfor %}
+                  </div>
+                  <hr>
+                  <div class="mt-auto">
+                    <a href="#" class="w-100 btn btn-primary integrate-btn"
+                       data-team="{{ team.meta_integration_name }}">
+                      <strong>
+                        <i class="fa fa-rocket me-2"></i>
+                        Integrate
+                      </strong>
+                    </a>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
+          {% endfor %}
         </div>
-        {% endfor %}
       </div>
     </div>
   </div>
-</div>
 
-<!-- Modal for Meta Integration -->
-<div class="modal fade border" id="metaIntegrationModal" tabindex="-1" aria-labelledby="metaIntegrationModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered d-flex align-items-center justify-content-center">
-    <div class="modal-content border-primary border-4 rounded">
-      <div class="modal-header btn-primary rounded p-2 m-2">
-        <h5 class="modal-title" id="metaIntegrationModalLabel">
-          <strong class="text-white">
-            <i class="fa fa-magic-wand-sparkles me-2"></i>
-            Integrate <span class="team-name"></span>
-          </strong>
-        </h5>
-        <button type="button" class="btn-close bg-danger-subtle" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <form method="post" action="{% url 'meta_integrations:integrate' %}">
-        {% csrf_token %}
-        <div class="modal-body">
-
-          <h6>
-            <strong>
-              <i class="fa fa-cogs me-2"></i>
-              Required Settings
+  <!-- Modal for Meta Integration -->
+  <div class="modal fade border" id="metaIntegrationModal" tabindex="-1" aria-labelledby="metaIntegrationModalLabel"
+       aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered d-flex align-items-center justify-content-center">
+      <div class="modal-content border-primary border-4 rounded">
+        <div class="modal-header btn-primary rounded p-2 m-2">
+          <h5 class="modal-title" id="metaIntegrationModalLabel">
+            <strong class="text-white">
+              <i class="fa fa-magic-wand-sparkles me-2"></i>
+              Integrate <span class="team-name"></span>
             </strong>
-          </h6>
+          </h5>
+          <button type="button" class="btn-close bg-danger-subtle" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form method="post" action="{% url 'meta_integrations:integrate' %}">
+          {% csrf_token %}
+          <div class="modal-body">
 
-          <div class="bg-body rounded p-4">
-            <!-- Required Fields -->
-            <div class="mb-3">
-              <label for="organization" class="form-label">Organization <span class="text-danger">*</span></label>
-              <select id="organization" name="organization" class="form-control select" required>
-                {% for organization in organizations %}
-                <option value="{{ organization.id }}">{{ organization.name }}</option>
-                {% endfor %}
-              </select>
+            <h6>
+              <strong>
+                <i class="fa fa-cogs me-2"></i>
+                Required Settings
+              </strong>
+            </h6>
+
+            <div class="bg-body rounded p-4">
+              <!-- Required Fields -->
+              <div class="mb-3">
+                <label for="organization" class="form-label">Organization <span class="text-danger">*</span></label>
+                <select id="organization" name="organization" class="form-control select" required>
+                  {% for organization in organizations %}
+                    <option value="{{ organization.id }}">{{ organization.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+
+              <div class="mb-3">
+                <label for="llm_model" class="form-label">LLM Model <span class="text-danger">*</span></label>
+                <select id="llm_model" name="llm_model" class="form-control select" required>
+                  {% for model in llm_models %}
+                    <option value="{{ model.id }}">{{ model.nickname }}</option>
+                  {% endfor %}
+                </select>
+              </div>
             </div>
 
-            <div class="mb-3">
-              <label for="llm_model" class="form-label">LLM Model <span class="text-danger">*</span></label>
-              <select id="llm_model" name="llm_model" class="form-control select" required>
-                {% for model in llm_models %}
-                <option value="{{ model.id }}">{{ model.nickname }}</option>
-                {% endfor %}
-              </select>
-            </div>
-          </div>
+            <hr>
 
-          <hr>
-
-          <div class="alert alert-info p-4 rounded">
+            <div class="alert alert-info p-4 rounded">
               <i class="fa fa-info-circle me-2"></i>
               Don't worry, you can still update these settings later on. Similarly, if you need to add more than a
               single data source connection of the same type, you can do so after integrating your team.
+            </div>
+
+            <hr>
+
+            <h6>
+              <strong>
+                <i class="fa fa-rocket me-2"></i>
+                Choose Data Source Connections (Optional)
+              </strong>
+            </h6>
+
+            <!-- Optional Fields -->
+            <div class="row">
+              <div class="col-6 mb-3">
+                <label for="web_browser" class="form-label">Web Browser</label>
+                <select id="web_browser" name="web_browser" class="form-control select">
+                  <option value="" selected>Choose a Web Browser</option>
+                  {% for browser in web_browsers %}
+                    <option value="{{ browser.id }}">{{ browser.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+
+              <div class="col-6 mb-3">
+                <label for="file_system" class="form-label">File System</label>
+                <select id="file_system" name="file_system" class="form-control select">
+                  <option value="" selected>Choose a File System</option>
+                  {% for file_system in ssh_file_systems %}
+                    <option value="{{ file_system.id }}">{{ file_system.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+
+              <div class="col-6 mb-3">
+                <label for="sql_database" class="form-label">SQL Database</label>
+                <select id="sql_database" name="sql_database" class="form-control select">
+                  <option value="" selected>Choose a SQL Database</option>
+                  {% for sql_db in sql_databases %}
+                    <option value="{{ sql_db.id }}">{{ sql_db.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+
+              <div class="col-6 mb-3">
+                <label for="nosql_database" class="form-label">NoSQL Database</label>
+                <select id="nosql_database" name="nosql_database" class="form-control select">
+                  <option value="" selected>Choose a NoSQL Database</option>
+                  {% for nosql_db in nosql_databases %}
+                    <option value="{{ nosql_db.id }}">{{ nosql_db.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+
+              <div class="col-6 mb-3">
+                <label for="knowledge_base" class="form-label">Knowledge Base</label>
+                <select id="knowledge_base" name="knowledge_base" class="form-control select">
+                  <option value="" selected>Choose a Knowledge Base</option>
+                  {% for kb in knowledge_bases %}
+                    <option value="{{ kb.id }}">{{ kb.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+
+              <div class="col-6 mb-3">
+                <label for="code_base" class="form-label">Code Base</label>
+                <select id="code_base" name="code_base" class="form-control select">
+                  <option value="" selected>Choose a Code Base</option>
+                  {% for code_base in code_bases %}
+                    <option value="{{ code_base.id }}">{{ code_base.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+
+              <div class="col-6 mb-3">
+                <label for="website_storage" class="form-label">Website Storage</label>
+                <select id="website_storage" name="website_storage" class="form-control select">
+                  <option value="" selected>Choose a Website Storage</option>
+                  {% for website_storage in website_storages %}
+                    <option value="{{ website_storage.id }}">{{ website_storage.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+
+              <div class="col-6 mb-3">
+                <label for="media_storage" class="form-label">Media Storage</label>
+                <select id="media_storage" name="media_storage" class="form-control select">
+                  <option value="" selected>Choose a Media Storage</option>
+                  {% for media_storage in media_storages %}
+                    <option value="{{ media_storage.id }}">{{ media_storage.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+
+              <div class="col-6 mb-3">
+                <label for="ml_storage" class="form-label">ML Storage</label>
+                <select id="ml_storage" name="ml_storage" class="form-control select">
+                  <option value="" selected>Choose an ML Storage</option>
+                  {% for ml_storage in ml_storages %}
+                    <option value="{{ ml_storage.id }}">{{ ml_storage.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+
+              <div class="col-6 mb-3">
+                <label for="video_generator" class="form-label">Video Generator</label>
+                <select id="video_generator" name="video_generator" class="form-control select">
+                  <option value="" selected>Choose a Video Generator</option>
+                  {% for video_gen in video_generators %}
+                    <option value="{{ video_gen.id }}">{{ video_gen.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+
+              <div class="col-6 mb-3">
+                <label for="project_item" class="form-label">Project</label>
+                <select id="project_item" name="project_item" class="form-control select">
+                  <option value="" selected>Choose a Project</option>
+                  {% for project_item in project_items %}
+                    <option value="{{ project_item.id }}">{{ project_item.project_name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+
+              <div class="col-6 mb-3">
+                <label for="hadron_node" class="form-label">Connect Hadron Prime Node</label>
+                <select id="hadron_node" name="hadron_node" class="form-control select">
+                  <option value="" selected>Choose a Node</option>
+                  {% for hadron_node_connection in hadron_node_connections %}
+                    <option
+                      value="{{ hadron_node_connection.id }}">{{ hadron_node_connection.hadron_prime_node.node_name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+
+              <div class="col-6 mb-3">
+                <label for="metakanban" class="form-label">Connect MetaKanban Board</label>
+                <select id="metakanban" name="metakanban" class="form-control select">
+                  <option value="" selected>Choose a Board</option>
+                  {% for metakanban_connection in metakanban_connections %}
+                    <option
+                      value="{{ metakanban_connection.id }}">{{ metakanban_connection.metakanban_board.title }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+
+              <div class="col-6 mb-3">
+                <label for="metatempo" class="form-label">Connect MetaTempo Tracker</label>
+                <select id="metatempo" name="metatempo" class="form-control select">
+                  <option value="" selected>Choose a Tracker</option>
+                  {% for metatempo_connection in metatempo_connections %}
+                    <option
+                      value="{{ metatempo_connection.id }}">{{ metatempo_connection.metatempo_instance.board.title }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+
+              <div class="col-6 mb-3">
+                <label for="orchestration" class="form-label">Assign Orchestration Trigger</label>
+                <select id="orchestration" name="orchestration" class="form-control select">
+                  <option value="" selected>Choose an Orchestrator</option>
+                  {% for orchestration_connection in orchestration_connections %}
+                    <option
+                      value="{{ orchestration_connection.id }}">{{ orchestration_connection.orchestration_maestro.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
           </div>
 
-          <hr>
+          <input type="hidden" name="category_id" value="{{ category.id }}" />
+          <input type="hidden" name="meta_integration_id" value="{{ team.id }}" />
 
-          <h6>
-            <strong>
-              <i class="fa fa-rocket me-2"></i>
-              Choose Data Source Connections (Optional)
-            </strong>
-          </h6>
-
-          <!-- Optional Fields -->
-          <div class="row">
-            <div class="col-6 mb-3">
-              <label for="web_browser" class="form-label">Web Browser</label>
-              <select id="web_browser" name="web_browser" class="form-control select">
-                <option value="" selected>Choose a Web Browser</option>
-                {% for browser in web_browsers %}
-                <option value="{{ browser.id }}">{{ browser.name }}</option>
-                {% endfor %}
-              </select>
-            </div>
-
-           <div class="col-6 mb-3">
-              <label for="file_system" class="form-label">File System</label>
-              <select id="file_system" name="file_system" class="form-control select">
-                <option value="" selected>Choose a File System</option>
-                {% for file_system in ssh_file_systems %}
-                <option value="{{ file_system.id }}">{{ file_system.name }}</option>
-                {% endfor %}
-              </select>
-            </div>
-
-            <div class="col-6 mb-3">
-              <label for="sql_database" class="form-label">SQL Database</label>
-              <select id="sql_database" name="sql_database" class="form-control select">
-                <option value="" selected>Choose a SQL Database</option>
-                {% for sql_db in sql_databases %}
-                <option value="{{ sql_db.id }}">{{ sql_db.name }}</option>
-                {% endfor %}
-              </select>
-            </div>
-
-            <div class="col-6 mb-3">
-              <label for="nosql_database" class="form-label">NoSQL Database</label>
-              <select id="nosql_database" name="nosql_database" class="form-control select">
-                <option value="" selected>Choose a NoSQL Database</option>
-                {% for nosql_db in nosql_databases %}
-                <option value="{{ nosql_db.id }}">{{ nosql_db.name }}</option>
-                {% endfor %}
-              </select>
-            </div>
-
-            <div class="col-6 mb-3">
-              <label for="knowledge_base" class="form-label">Knowledge Base</label>
-              <select id="knowledge_base" name="knowledge_base" class="form-control select">
-                <option value="" selected>Choose a Knowledge Base</option>
-                {% for kb in knowledge_bases %}
-                <option value="{{ kb.id }}">{{ kb.name }}</option>
-                {% endfor %}
-              </select>
-            </div>
-
-            <div class="col-6 mb-3">
-              <label for="code_base" class="form-label">Code Base</label>
-              <select id="code_base" name="code_base" class="form-control select">
-                <option value="" selected>Choose a Code Base</option>
-                {% for code_base in code_bases %}
-                <option value="{{ code_base.id }}">{{ code_base.name }}</option>
-                {% endfor %}
-              </select>
-            </div>
-
-            <div class="col-6 mb-3">
-              <label for="website_storage" class="form-label">Website Storage</label>
-              <select id="website_storage" name="website_storage" class="form-control select">
-                <option value="" selected>Choose a Website Storage</option>
-                {% for website_storage in website_storages %}
-                <option value="{{ website_storage.id }}">{{ website_storage.name }}</option>
-                {% endfor %}
-              </select>
-            </div>
-
-            <div class="col-6 mb-3">
-              <label for="media_storage" class="form-label">Media Storage</label>
-              <select id="media_storage" name="media_storage" class="form-control select">
-                <option value="" selected>Choose a Media Storage</option>
-                {% for media_storage in media_storages %}
-                <option value="{{ media_storage.id }}">{{ media_storage.name }}</option>
-                {% endfor %}
-              </select>
-            </div>
-
-            <div class="col-6 mb-3">
-              <label for="ml_storage" class="form-label">ML Storage</label>
-              <select id="ml_storage" name="ml_storage" class="form-control select">
-                <option value="" selected>Choose an ML Storage</option>
-                {% for ml_storage in ml_storages %}
-                <option value="{{ ml_storage.id }}">{{ ml_storage.name }}</option>
-                {% endfor %}
-              </select>
-            </div>
-
-            <div class="col-6 mb-3">
-              <label for="video_generator" class="form-label">Video Generator</label>
-              <select id="video_generator" name="video_generator" class="form-control select">
-                <option value="" selected>Choose a Video Generator</option>
-                {% for video_gen in video_generators %}
-                <option value="{{ video_gen.id }}">{{ video_gen.name }}</option>
-                {% endfor %}
-              </select>
-            </div>
-
-            <div class="col-6 mb-3">
-              <label for="project_item" class="form-label">Project</label>
-              <select id="project_item" name="project_item" class="form-control select">
-                <option value="" selected>Choose a Project</option>
-                {% for project_item in project_items %}
-                <option value="{{ project_item.id }}">{{ project_item.project_name }}</option>
-                {% endfor %}
-              </select>
-            </div>
-
-            <div class="col-6 mb-3">
-              <label for="hadron_node" class="form-label">Connect Hadron Prime Node</label>
-              <select id="hadron_node" name="hadron_node" class="form-control select">
-                <option value="" selected>Choose a Node</option>
-                {% for hadron_node_connection in hadron_node_connections %}
-                <option value="{{ hadron_node_connection.id }}">{{ hadron_node_connection.hadron_prime_node.node_name }}</option>
-                {% endfor %}
-              </select>
-            </div>
-
-            <div class="col-6 mb-3">
-              <label for="metakanban" class="form-label">Connect MetaKanban Board</label>
-              <select id="metakanban" name="metakanban" class="form-control select">
-                <option value="" selected>Choose a Board</option>
-                {% for metakanban_connection in metakanban_connections %}
-                <option value="{{ metakanban_connection.id }}">{{ metakanban_connection.metakanban_board.title }}</option>
-                {% endfor %}
-              </select>
-            </div>
-
-            <div class="col-6 mb-3">
-              <label for="metatempo" class="form-label">Connect MetaTempo Tracker</label>
-              <select id="metatempo" name="metatempo" class="form-control select">
-                <option value="" selected>Choose a Tracker</option>
-                {% for metatempo_connection in metatempo_connections %}
-                <option value="{{ metatempo_connection.id }}">{{ metatempo_connection.metatempo_instance.board.title }}</option>
-                {% endfor %}
-              </select>
-            </div>
-
-            <div class="col-6 mb-3">
-              <label for="orchestration" class="form-label">Assign Orchestration Trigger</label>
-              <select id="orchestration" name="orchestration" class="form-control select">
-                <option value="" selected>Choose an Orchestrator</option>
-                {% for orchestration_connection in orchestration_connections %}
-                <option value="{{ orchestration_connection.id }}">{{ orchestration_connection.orchestration_maestro.name }}</option>
-                {% endfor %}
-              </select>
-            </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+              <strong>
+                <i class="fa fa-times me-2"></i>
+                Cancel
+              </strong>
+            </button>
+            <button type="submit" class="btn btn-instagram">
+              <strong>
+                <i class="fa fa-magic-wand-sparkles me-2"></i>
+                Hire Team
+              </strong>
+            </button>
           </div>
-        </div>
-
-        <input type="hidden" name="category_id" value="{{ category.id }}" />
-        <input type="hidden" name="meta_integration_id" value="{{ team.id }}" />
-
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-            <strong>
-              <i class="fa fa-times me-2"></i>
-              Cancel
-            </strong>
-          </button>
-          <button type="submit" class="btn btn-instagram">
-            <strong>
-              <i class="fa fa-magic-wand-sparkles me-2"></i>
-              Hire Team
-            </strong>
-          </button>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   </div>
-</div>
 {% endblock %}

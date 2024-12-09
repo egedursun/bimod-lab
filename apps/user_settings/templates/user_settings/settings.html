@@ -1,21 +1,21 @@
-  <!--
-  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
-  ~
-  ~ Project: Bimod.io™
-  ~ File: settings.html
-  ~ Last Modified: 2024-10-05 01:39:48
-  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-05 14:42:40
-  ~
-  ~ This software is proprietary and confidential. Unauthorized copying,
-  ~ distribution, modification, or use of this software, whether for
-  ~ commercial, academic, or any other purpose, is strictly prohibited
-  ~ without the prior express written permission of BMD™ Autonomous
-  ~ Holdings.
-  ~
-  ~  For permission inquiries, please contact: admin@Bimod.io.
-  ~
-  -->
+<!--
+~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+~
+~ Project: Bimod.io™
+~ File: settings.html
+~ Last Modified: 2024-10-05 01:39:48
+~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+~ Created: 2024-10-05 14:42:40
+~
+~ This software is proprietary and confidential. Unauthorized copying,
+~ distribution, modification, or use of this software, whether for
+~ commercial, academic, or any other purpose, is strictly prohibited
+~ without the prior express written permission of BMD™ Autonomous
+~ Holdings.
+~
+~  For permission inquiries, please contact: admin@Bimod.io.
+~
+-->
 
 {% extends layout_path %}
 
@@ -26,7 +26,7 @@
 
 {% block vendor_css %}
   {{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
 {% endblock vendor_css %}
 
 {% block vendor_js %}
@@ -78,7 +78,8 @@
           </div>
           <div class="table-responsive">
             <table class="table">
-              <img src="{% static 'img/user_settings/stg-1.png' %}" class="rounded mb-8" style="width: 100%;" alt="Illustration for tips">
+              <img src="{% static 'img/user_settings/stg-1.png' %}" class="rounded mb-8" style="width: 100%;"
+                   alt="Illustration for tips">
               <thead>
               <tr>
                 <th class="text-nowrap">Feature</th>
@@ -290,7 +291,8 @@
                     <label for="confirmation" class="form-label">
                       <i class="fa fa-delete-left me-2"></i>
                       <small class="text-muted text-danger">
-                        <strong>Type in 'CONFIRM DELETING ALL METAKANBAN BOARDS' to confirm the deletion process.</strong>
+                        <strong>Type in 'CONFIRM DELETING ALL METAKANBAN BOARDS' to confirm the deletion
+                          process.</strong>
                       </small>
                       <input type="text" class="form-control mt-2" placeholder="" name="confirmation" required />
                     </label>
@@ -325,7 +327,8 @@
                     <label for="confirmation" class="form-label">
                       <i class="fa fa-delete-left me-2"></i>
                       <small class="text-muted text-danger">
-                        <strong>Type in 'CONFIRM DELETING ALL METATEMPO CONNECTIONS' to confirm the deletion process.</strong>
+                        <strong>Type in 'CONFIRM DELETING ALL METATEMPO CONNECTIONS' to confirm the deletion
+                          process.</strong>
                       </small>
                       <input type="text" class="form-control mt-2" placeholder="" name="confirmation" required />
                     </label>
@@ -341,7 +344,8 @@
                     </label>
                   </td>
                   <td>
-                    <button id="delete-metatempo-connections-button" type="submit" class="btn btn-danger w-100" disabled>
+                    <button id="delete-metatempo-connections-button" type="submit" class="btn btn-danger w-100"
+                            disabled>
                       <i class="fa fa-trash me-2"></i>
                       <strong>Delete ALL Connections</strong>
                     </button>
@@ -783,7 +787,8 @@
                     <label for="confirmation" class="form-label">
                       <i class="fa fa-delete-left me-2"></i>
                       <small class="text-muted text-danger">
-                        <strong>Type in 'CONFIRM DELETING ALL DRAFTING FOLDERS' to confirm the deletion process.</strong>
+                        <strong>Type in 'CONFIRM DELETING ALL DRAFTING FOLDERS' to confirm the deletion
+                          process.</strong>
                       </small>
                       <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required />
                     </label>
@@ -818,7 +823,8 @@
                     <label for="confirmation" class="form-label">
                       <i class="fa fa-delete-left me-2"></i>
                       <small class="text-muted text-danger">
-                        <strong>Type in 'CONFIRM DELETING ALL DRAFTING DOCUMENTS' to confirm the deletion process.</strong>
+                        <strong>Type in 'CONFIRM DELETING ALL DRAFTING DOCUMENTS' to confirm the deletion
+                          process.</strong>
                       </small>
                       <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required />
                     </label>
@@ -888,7 +894,8 @@
                     <label for="confirmation" class="form-label">
                       <i class="fa fa-delete-left me-2"></i>
                       <small class="text-muted text-danger">
-                        <strong>Type in 'CONFIRM DELETING ALL SHEETOS DOCUMENTS' to confirm the deletion process.</strong>
+                        <strong>Type in 'CONFIRM DELETING ALL SHEETOS DOCUMENTS' to confirm the deletion
+                          process.</strong>
                       </small>
                       <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required />
                     </label>
@@ -923,7 +930,8 @@
                     <label for="confirmation" class="form-label">
                       <i class="fa fa-delete-left me-2"></i>
                       <small class="text-muted text-danger">
-                        <strong>Type in 'CONFIRM DELETING ALL BRAINSTORMING SESSIONS' to confirm the deletion process.</strong>
+                        <strong>Type in 'CONFIRM DELETING ALL BRAINSTORMING SESSIONS' to confirm the deletion
+                          process.</strong>
                       </small>
                       <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required />
                     </label>
@@ -939,7 +947,8 @@
                     </label>
                   </td>
                   <td>
-                    <button id="delete-brainstorming-sessions-button" type="submit" class="btn btn-danger w-100" disabled>
+                    <button id="delete-brainstorming-sessions-button" type="submit" class="btn btn-danger w-100"
+                            disabled>
                       <i class="fa fa-trash me-2"></i>
                       <strong>Delete ALL Sessions</strong>
                     </button>
@@ -1098,7 +1107,8 @@
                     <label for="confirmation" class="form-label">
                       <i class="fa fa-delete-left me-2"></i>
                       <small class="text-muted text-danger">
-                        <strong>Type in 'CONFIRM DELETING ALL HADRON NODE EXECUTION LOGS' to confirm the deletion process.</strong>
+                        <strong>Type in 'CONFIRM DELETING ALL HADRON NODE EXECUTION LOGS' to confirm the deletion
+                          process.</strong>
                       </small>
                       <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required />
                     </label>
@@ -1114,7 +1124,8 @@
                     </label>
                   </td>
                   <td>
-                    <button id="delete-hadron-node-execution-logs-button" type="submit" class="btn btn-danger w-100" disabled>
+                    <button id="delete-hadron-node-execution-logs-button" type="submit" class="btn btn-danger w-100"
+                            disabled>
                       <i class="fa fa-trash me-2"></i>
                       <strong>Delete ALL Logs</strong>
                     </button>
@@ -1133,7 +1144,8 @@
                     <label for="confirmation" class="form-label">
                       <i class="fa fa-delete-left me-2"></i>
                       <small class="text-muted text-danger">
-                        <strong>Type in 'CONFIRM DELETING ALL HADRON NODE SEASE LOGS' to confirm the deletion process.</strong>
+                        <strong>Type in 'CONFIRM DELETING ALL HADRON NODE SEASE LOGS' to confirm the deletion
+                          process.</strong>
                       </small>
                       <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required />
                     </label>
@@ -1168,7 +1180,8 @@
                     <label for="confirmation" class="form-label">
                       <i class="fa fa-delete-left me-2"></i>
                       <small class="text-muted text-danger">
-                        <strong>Type in 'CONFIRM DELETING ALL HADRON TOPIC MESSAGES' to confirm the deletion process.</strong>
+                        <strong>Type in 'CONFIRM DELETING ALL HADRON TOPIC MESSAGES' to confirm the deletion
+                          process.</strong>
                       </small>
                       <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required />
                     </label>
@@ -1184,7 +1197,8 @@
                     </label>
                   </td>
                   <td>
-                    <button id="delete-hadron-topic-messages-button" type="submit" class="btn btn-danger w-100" disabled>
+                    <button id="delete-hadron-topic-messages-button" type="submit" class="btn btn-danger w-100"
+                            disabled>
                       <i class="fa fa-trash me-2"></i>
                       <strong>Delete ALL Messages</strong>
                     </button>
@@ -1203,7 +1217,8 @@
                     <label for="confirmation" class="form-label">
                       <i class="fa fa-delete-left me-2"></i>
                       <small class="text-muted text-danger">
-                        <strong>Type in 'CONFIRM DELETING ALL BINEXUS PROCESSES' to confirm the deletion process.</strong>
+                        <strong>Type in 'CONFIRM DELETING ALL BINEXUS PROCESSES' to confirm the deletion
+                          process.</strong>
                       </small>
                       <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required />
                     </label>
@@ -1238,7 +1253,8 @@
                     <label for="confirmation" class="form-label">
                       <i class="fa fa-delete-left me-2"></i>
                       <small class="text-muted text-danger">
-                        <strong>Type in 'CONFIRM DELETING ALL BINEXUS ELITE AGENTS' to confirm the deletion process.</strong>
+                        <strong>Type in 'CONFIRM DELETING ALL BINEXUS ELITE AGENTS' to confirm the deletion
+                          process.</strong>
                       </small>
                       <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required />
                     </label>
@@ -1273,7 +1289,8 @@
                     <label for="confirmation" class="form-label">
                       <i class="fa fa-delete-left me-2"></i>
                       <small class="text-muted text-danger">
-                        <strong>Type in 'CONFIRM DELETING ALL BLOCKCHAIN WALLET CONNECTIONS' to confirm the deletion process.</strong>
+                        <strong>Type in 'CONFIRM DELETING ALL BLOCKCHAIN WALLET CONNECTIONS' to confirm the deletion
+                          process.</strong>
                       </small>
                       <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required />
                     </label>
@@ -1289,7 +1306,8 @@
                     </label>
                   </td>
                   <td>
-                    <button id="delete-blockchain-wallet-connections-button" type="submit" class="btn btn-danger w-100" disabled>
+                    <button id="delete-blockchain-wallet-connections-button" type="submit" class="btn btn-danger w-100"
+                            disabled>
                       <i class="fa fa-trash me-2"></i>
                       <strong>Delete ALL Wallets</strong>
                     </button>
@@ -1312,7 +1330,8 @@
                     <label for="confirmation" class="form-label">
                       <i class="fa fa-delete-left me-2"></i>
                       <small class="text-muted text-danger">
-                        <strong>Type in 'CONFIRM SOFT DELETING ALL BLOCKCHAIN SMART CONTRACTS' to confirm the deletion process.</strong>
+                        <strong>Type in 'CONFIRM SOFT DELETING ALL BLOCKCHAIN SMART CONTRACTS' to confirm the deletion
+                          process.</strong>
                       </small>
                       <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required />
                     </label>
@@ -1328,7 +1347,8 @@
                     </label>
                   </td>
                   <td>
-                    <button id="delete-blockchain-smart-contracts-button" type="submit" class="btn btn-danger w-100" disabled>
+                    <button id="delete-blockchain-smart-contracts-button" type="submit" class="btn btn-danger w-100"
+                            disabled>
                       <i class="fa fa-trash me-2"></i>
                       <strong>Delete ALL Contracts</strong>
                     </button>
@@ -1523,7 +1543,8 @@
                     <label for="confirmation" class="form-label">
                       <i class="fa fa-delete-left me-2"></i>
                       <small class="text-muted text-danger">
-                        <strong>Type in 'CONFIRM DELETING ALL CUSTOM NOSQL QUERIES' to confirm the deletion process.</strong>
+                        <strong>Type in 'CONFIRM DELETING ALL CUSTOM NOSQL QUERIES' to confirm the deletion
+                          process.</strong>
                       </small>
                       <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required />
                     </label>
@@ -1700,7 +1721,8 @@
                     <label for="confirmation" class="form-label">
                       <i class="fa fa-delete-left me-2"></i>
                       <small class="text-muted text-danger">
-                        <strong>Type in 'CONFIRM DELETING ALL WEBSITE STORAGES' to confirm the deletion process.</strong>
+                        <strong>Type in 'CONFIRM DELETING ALL WEBSITE STORAGES' to confirm the deletion
+                          process.</strong>
                       </small>
                       <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required />
                     </label>
@@ -1735,7 +1757,8 @@
                     <label for="confirmation" class="form-label">
                       <i class="fa fa-delete-left me-2"></i>
                       <small class="text-muted text-danger">
-                        <strong>Type in 'CONFIRM DELETING ALL WEBSITE STORAGE ITEMS' to confirm the deletion process.</strong>
+                        <strong>Type in 'CONFIRM DELETING ALL WEBSITE STORAGE ITEMS' to confirm the deletion
+                          process.</strong>
                       </small>
                       <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required />
                     </label>
@@ -2123,7 +2146,8 @@
                     <label for="confirmation" class="form-label">
                       <i class="fa fa-delete-left me-2"></i>
                       <small class="text-muted text-danger">
-                        <strong>Type in 'CONFIRM DELETING ALL LEANMOD SCHEDULED JOBS' to confirm the deletion process.</strong>
+                        <strong>Type in 'CONFIRM DELETING ALL LEANMOD SCHEDULED JOBS' to confirm the deletion
+                          process.</strong>
                       </small>
                       <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required />
                     </label>
@@ -2139,7 +2163,8 @@
                     </label>
                   </td>
                   <td>
-                    <button id="delete-leanmod-scheduled-jobs-button" type="submit" class="btn btn-danger w-100" disabled>
+                    <button id="delete-leanmod-scheduled-jobs-button" type="submit" class="btn btn-danger w-100"
+                            disabled>
                       <i class="fa fa-trash me-2"></i>
                       <strong>Delete ALL LeanMod Jobs</strong>
                     </button>
@@ -2158,7 +2183,8 @@
                     <label for="confirmation" class="form-label">
                       <i class="fa fa-delete-left me-2"></i>
                       <small class="text-muted text-danger">
-                        <strong>Type in 'CONFIRM DELETING ALL LEANMOD TRIGGERED JOBS' to confirm the deletion process.</strong>
+                        <strong>Type in 'CONFIRM DELETING ALL LEANMOD TRIGGERED JOBS' to confirm the deletion
+                          process.</strong>
                       </small>
                       <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required />
                     </label>
@@ -2174,7 +2200,8 @@
                     </label>
                   </td>
                   <td>
-                    <button id="delete-leanmod-triggered-jobs-button" type="submit" class="btn btn-danger w-100" disabled>
+                    <button id="delete-leanmod-triggered-jobs-button" type="submit" class="btn btn-danger w-100"
+                            disabled>
                       <i class="fa fa-trash me-2"></i>
                       <strong>Delete ALL LeanMod Jobs</strong>
                     </button>
@@ -2193,7 +2220,8 @@
                     <label for="confirmation" class="form-label">
                       <i class="fa fa-delete-left me-2"></i>
                       <small class="text-muted text-danger">
-                        <strong>Type in 'CONFIRM DELETING ALL ORCHESTRATION SCHEDULED JOBS' to confirm the deletion process.</strong>
+                        <strong>Type in 'CONFIRM DELETING ALL ORCHESTRATION SCHEDULED JOBS' to confirm the deletion
+                          process.</strong>
                       </small>
                       <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required />
                     </label>
@@ -2209,7 +2237,8 @@
                     </label>
                   </td>
                   <td>
-                    <button id="delete-orchestration-scheduled-jobs-button" type="submit" class="btn btn-danger w-100" disabled>
+                    <button id="delete-orchestration-scheduled-jobs-button" type="submit" class="btn btn-danger w-100"
+                            disabled>
                       <i class="fa fa-trash me-2"></i>
                       <strong>Delete ALL Orchestration Jobs</strong>
                     </button>
@@ -2228,7 +2257,8 @@
                     <label for="confirmation" class="form-label">
                       <i class="fa fa-delete-left me-2"></i>
                       <small class="text-muted text-danger">
-                        <strong>Type in 'CONFIRM DELETING ALL ORCHESTRATION TRIGGERED JOBS' to confirm the deletion process.</strong>
+                        <strong>Type in 'CONFIRM DELETING ALL ORCHESTRATION TRIGGERED JOBS' to confirm the deletion
+                          process.</strong>
                       </small>
                       <input type="text" class="form-control mt-2 w-100" placeholder="" name="confirmation" required />
                     </label>
@@ -2244,7 +2274,8 @@
                     </label>
                   </td>
                   <td>
-                    <button id="delete-orchestration-triggered-jobs-button" type="submit" class="btn btn-danger w-100" disabled>
+                    <button id="delete-orchestration-triggered-jobs-button" type="submit" class="btn btn-danger w-100"
+                            disabled>
                       <i class="fa fa-trash me-2"></i>
                       <strong>Delete ALL Orchestration Jobs</strong>
                     </button>

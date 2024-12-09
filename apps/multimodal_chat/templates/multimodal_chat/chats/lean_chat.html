@@ -1,21 +1,21 @@
-  <!--
-  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
-  ~
-  ~ Project: Bimod.io™
-  ~ File: lean_chat.html
-  ~ Last Modified: 2024-10-05 01:39:48
-  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-05 14:42:43
-  ~
-  ~ This software is proprietary and confidential. Unauthorized copying,
-  ~ distribution, modification, or use of this software, whether for
-  ~ commercial, academic, or any other purpose, is strictly prohibited
-  ~ without the prior express written permission of BMD™ Autonomous
-  ~ Holdings.
-  ~
-  ~  For permission inquiries, please contact: admin@Bimod.io.
-  ~
-  -->
+<!--
+~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+~
+~ Project: Bimod.io™
+~ File: lean_chat.html
+~ Last Modified: 2024-10-05 01:39:48
+~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+~ Created: 2024-10-05 14:42:43
+~
+~ This software is proprietary and confidential. Unauthorized copying,
+~ distribution, modification, or use of this software, whether for
+~ commercial, academic, or any other purpose, is strictly prohibited
+~ without the prior express written permission of BMD™ Autonomous
+~ Holdings.
+~
+~  For permission inquiries, please contact: admin@Bimod.io.
+~
+-->
 
 {% extends layout_path %}
 {% load markdown_extras %}
@@ -26,7 +26,7 @@
 
 {% block vendor_css %}
   {{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/libs/bootstrap-maxlength/bootstrap-maxlength.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/bootstrap-maxlength/bootstrap-maxlength.css' %}" />
 {% endblock vendor_css %}
 
 {% block vendor_js %}
@@ -36,12 +36,13 @@
 
 {% block page_css %}
   {{ block.super }}
-  <link rel="stylesheet" href="{% static 'vendor/css/pages/app-chat.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/css/pages/app-chat.css' %}" />
   <style>
     .markdown-content {
       max-width: 80%;
       overflow-x: auto;
     }
+
     /* Ensure images within markdown content fit within their container */
     .markdown-content img {
       max-width: 35%;
@@ -145,6 +146,7 @@
           class="chat-sidebar-left-user sidebar-header d-flex flex-column justify-content-center align-items-center flex-wrap px-6 pt-12">
           <div class="avatar avatar-xl avatar-online chat-sidebar-avatar">
             <img src="
+
               {% if user.profile.profile_picture %}{{ user.profile.profile_picture.url }}{% else %}{% static 'img/avatars/0.png' %}{% endif %}"
                  alt="Avatar" class="rounded">
           </div>
@@ -172,7 +174,8 @@
             <li class="chat-contact-list-item chat-contact-list-item-title mt-0">
               <h5 class="mb-0"><strong>LeanMod™ Assistants</strong></h5>
             </li>
-            <div class="tips-section alert alert-secondary alert-dismissible d-flex align-items-center ms-3 me-3" role="alert">
+            <div class="tips-section alert alert-secondary alert-dismissible d-flex align-items-center ms-3 me-3"
+                 role="alert">
             <span class="alert-icon rounded">
               <i class="ti ti-brain"></i>
             </span>
@@ -193,6 +196,7 @@
                     <div class="d-flex align-items-center">
                       <div class="flex-shrink-0 avatar avatar-md">
                         <img src="
+
                           {% if assistant.lean_assistant_image %}{{ assistant.lean_assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
                              alt="Avatar" class="rounded-pill">
                       </div>
@@ -250,7 +254,8 @@
             <li class="chat-contact-list-item chat-list-item-0 d-none">
               <h6 class="text-muted mb-0"><strong>No LeanMod™ Chats Found</strong></h6>
             </li>
-            <div class="tips-section alert alert-secondary alert-dismissible d-flex align-items-center ms-3 me-3" role="alert">
+            <div class="tips-section alert alert-secondary alert-dismissible d-flex align-items-center ms-3 me-3"
+                 role="alert">
             <span class="alert-icon rounded">
               <i class="ti ti-brain"></i>
             </span>
@@ -289,6 +294,7 @@
                         class="flex-shrink-0 avatar avatar-md {% if chat.id == active_chat.id %}avatar-online {% else %}avatar-away {% endif %} rounded-pill"
                         {% if chat.id != active_chat.id %}style="border-style: solid; border-width: 1px; border-color: AccentColor; animation: ease-in-out 2s infinite alternate border-color-change;"{% endif %}>
                         <img src="
+
                           {% if chat.lean_assistant.lean_assistant_image %}{{ chat.lean_assistant.lean_assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
                              class="rounded-pill" alt="Lean Assistant Image">
                       </div>
@@ -345,7 +351,8 @@
                      data-overlay data-target="#app-chat-contacts"></i>
                   <div class="chat-contact-info flex-grow-1 ms-4">
                     <h6 class="m-0 fw-normal"><strong>No LeanMod™ Chat Selected</strong></h6>
-                    <small class="user-status text-body">Select a chat to start chatting with LeanMod™ assistants</small>
+                    <small class="user-status text-body">Select a chat to start chatting with LeanMod™
+                      assistants</small>
                   </div>
                 </div>
               </div>
@@ -362,8 +369,10 @@
             <div class="d-flex flex-column ps-1">
               <h5 class="alert-heading mb-2">Tip</h5>
               <p class="mb-0">
-                Oops. It looks like you either haven't selected a LeanMod™ chat or you don't have any chat at all. Come on,
-                start a new LeanMod™ chat to discover how powerful you can become with {% get_theme_variables 'template_name' %}
+                Oops. It looks like you either haven't selected a LeanMod™ chat or you don't have any chat at all. Come
+                on,
+                start a new LeanMod™ chat to discover how powerful you can become
+                with {% get_theme_variables 'template_name' %}
                 LeanMod™ assistants!
               </p>
               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
@@ -380,15 +389,17 @@
                      data-overlay data-target="#app-chat-chats"></i>
                   <div class="flex-shrink-0 avatar avatar-online">
                     <img src="
+
                       {% if active_chat.lean_assistant.lean_assistant_image %}{{ active_chat.lean_assistant.lean_assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
-                         class="rounded" data-bs-toggle="sidebar" data-overlay data-target="#app-chat-sidebar-right" alt="Lean Assistant Image">
+                         class="rounded" data-bs-toggle="sidebar" data-overlay data-target="#app-chat-sidebar-right"
+                         alt="Lean Assistant Image">
                   </div>
                   <div class="chat-contact-info flex-grow-1 ms-4">
                     <form method="post" action=".">
                       {% csrf_token %}
                       <div class="d-flex justify-content-between align-items-center mt-1">
                         <input type="text" class="form-control bg-lightest text-bg-light" name="new_chat_name"
-                               value="{{ active_chat.chat_name }}" style="font-weight: bold;"/>
+                               value="{{ active_chat.chat_name }}" style="font-weight: bold;" />
                         <input type="hidden" name="chat_id" value="{{ active_chat.id }}">
                         <button type="submit" class="btn btn-link p-0 ms-2">
                           <i class="fa fa-save text-bg-light"></i>
@@ -420,7 +431,8 @@
                           <i class="fa fa-archive me-2"></i>Archive
                         </strong>
                       </a>
-                      <a class="dropdown-item bg-label-danger" href="{% url 'multimodal_chat:delete_lean' active_chat.id %}">
+                      <a class="dropdown-item bg-label-danger"
+                         href="{% url 'multimodal_chat:delete_lean' active_chat.id %}">
                         <strong>
                           <i class="fa fa-trash me-2"></i>Delete
                         </strong></a>
@@ -438,6 +450,7 @@
                         <div class="user-avatar flex-shrink-0 me-4">
                           <div class="avatar avatar-xl">
                             <img src="
+
                               {% if active_chat.lean_assistant.lean_assistant_image %}{{ active_chat.lean_assistant.lean_assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
                                  alt="Avatar" class="rounded">
                           </div>
@@ -455,7 +468,8 @@
                              class="chat-message-text {% if message.sender_type == 'TOOL' %} bg-primary-subtle{% endif %} border-primary"
                              style="{% if message.sender_type == 'TOOL' %}border: 2px solid{% endif %}; max-width:80%;">
                           {% if message.sender_type != 'TOOL' %}
-                            <p class="mb-0 markdown-content" style="min-width: 90%; max-width: 90%;">{{ message.message_text_content|safe }}</p>
+                            <p class="mb-0 markdown-content"
+                               style="min-width: 90%; max-width: 90%;">{{ message.message_text_content|safe }}</p>
                             <hr>
                             {% if message.message_image_contents %}
                               <p class="text-dark bg-label-secondary rounded p-2 ps-4 mt-4 flex-wrap"><strong>Image
@@ -560,6 +574,7 @@
                           <div class="user-avatar flex-shrink-0 ms-4">
                             <div class="avatar avatar-xl">
                               <img src="
+
                                 {% if user.profile.profile_picture %}{{ user.profile.profile_picture.url }}{% else %}{% static 'img/avatars/0.png' %}{% endif %}"
                                    alt="Avatar" class="rounded">
                             </div>
@@ -620,8 +635,10 @@
                     <div class="card bg-body rounded shadow-sm border border-primary border-4 rounded p-12 mb-4">
                       <p class="mb-3">
                         <strong>
-                          <span class="text-warning py-2 px-6 text-black btn-warning rounded me-4 rounded"> #{{ artifact.id }}</span>
-                          <span class="btn-primary py-2 px-6 rounded me-4 rounded"><i class="fa fa-shield-alt text-success"></i></span>
+                          <span
+                            class="text-warning py-2 px-6 text-black btn-warning rounded me-4 rounded"> #{{ artifact.id }}</span>
+                          <span class="btn-primary py-2 px-6 rounded me-4 rounded"><i
+                            class="fa fa-shield-alt text-success"></i></span>
                           <span class="me-4">BeamGuard™ Data Protector</span>
                         </strong>
                       </p>
@@ -629,7 +646,8 @@
                       <small class="px-12 py-6 bg-label-dark rounded fw-bold">
                         <i class="fa fa-info-circle me-2"></i>
                         BeamGuard™ captured a query with unauthorized keywords in it. As per requested by your
-                        organization, this query requires your manual permission to be executed. You can also accept/reject
+                        organization, this query requires your manual permission to be executed. You can also
+                        accept/reject
                         this query on BeamGuard™ watch page.
                       </small>
                       <hr>
@@ -689,7 +707,8 @@
                       <hr>
                       <div class="row">
                         <div class="col-3">
-                          <a href="{% url 'beamguard:absolve' pk=artifact.id %}" class="btn btn-md btn-success w-100 rounded p-2">
+                          <a href="{% url 'beamguard:absolve' pk=artifact.id %}"
+                             class="btn btn-md btn-success w-100 rounded p-2">
                             <strong>
                               <i class="fa fa-check-circle me-2"></i>
                               Authorize &amp; Commit
@@ -697,7 +716,8 @@
                           </a>
                         </div>
                         <div class="col-3">
-                          <a href="{% url 'beamguard:discard' pk=artifact.id %}" class="btn btn-md btn-danger w-100 rounded p-2">
+                          <a href="{% url 'beamguard:discard' pk=artifact.id %}"
+                             class="btn btn-md btn-danger w-100 rounded p-2">
                             <strong>
                               <i class="fa fa-times-circle me-2"></i>
                               Reject &amp; Discard
@@ -981,7 +1001,8 @@
         </div>
         <hr>
         <div class="modal-body" style="justify-content: center; display: flex; align-items: center;">
-          <div id="imageCanvas" class="border border-label-primary border-3 rounded m-2 mb-8"  style="min-width: 500px; max-height: 500px; overflow: auto;"></div>
+          <div id="imageCanvas" class="border border-label-primary border-3 rounded m-2 mb-8"
+               style="min-width: 500px; max-height: 500px; overflow: auto;"></div>
         </div>
         <div class="alert alert-solid-info d-flex align-items-center mt-4 mb-8" role="alert"
              style="margin-left: 20%; margin-right: 20%;">
@@ -1038,7 +1059,7 @@
   <script src="https://unpkg.com/konva@9.3.14/konva.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       let stage, layer, background;
       let isDrawing = false;
       let mode = 'draw';
@@ -1064,15 +1085,15 @@
         layer.add(background);
         layer.draw();
 
-        stage.on('mousedown touchstart', function () {
+        stage.on('mousedown touchstart', function() {
           isDrawing = true;
         });
 
-        stage.on('mouseup touchend', function () {
+        stage.on('mouseup touchend', function() {
           isDrawing = false;
         });
 
-        stage.on('mousemove touchmove', function (e) {
+        stage.on('mousemove touchmove', function(e) {
           if (!isDrawing) return;
 
           const pos = stage.getPointerPosition();
@@ -1097,31 +1118,31 @@
         });
       }
 
-      $('#canvasEditModal').on('shown.bs.modal', function () {
+      $('#canvasEditModal').on('shown.bs.modal', function() {
         initCanvas();
       });
 
-      document.getElementById('brushSize').addEventListener('input', function () {
+      document.getElementById('brushSize').addEventListener('input', function() {
         brushSize = this.value;
       });
 
-      document.getElementById('brushTool').addEventListener('click', function () {
+      document.getElementById('brushTool').addEventListener('click', function() {
         mode = 'draw';
       });
 
-      document.getElementById('eraserTool').addEventListener('click', function () {
+      document.getElementById('eraserTool').addEventListener('click', function() {
         mode = 'erase';
       });
 
-      document.getElementById('resetTool').addEventListener('click', function () {
+      document.getElementById('resetTool').addEventListener('click', function() {
         // clear the layer
         layer.destroyChildren();
         layer.add(background);
         layer.draw();
       });
 
-      document.getElementById('saveCanvasEdits').addEventListener('click', function () {
-        document.getElementById('sketch-image').value = stage.toDataURL({pixelRatio: 1});
+      document.getElementById('saveCanvasEdits').addEventListener('click', function() {
+        document.getElementById('sketch-image').value = stage.toDataURL({ pixelRatio: 1 });
         $('#canvasEditModal').modal('hide');
         // show the thumbnail in the image staging
         const stagingElement = document.getElementById('image_display_area');
@@ -1129,7 +1150,7 @@
         divElement.innerHTML = `
           <div class="badge bg-info d-flex align-items-center my-2">
               <strong>SKETCH <i class="fa fa-lightbulb me-4"></i></strong>
-              <img src="${stage.toDataURL({pixelRatio: 0.5})}" class="img-fluid rounded" style="max-width: 100px;" alt="Image">
+              <img src="${stage.toDataURL({ pixelRatio: 0.5 })}" class="img-fluid rounded" style="max-width: 100px;" alt="Image">
           </div>
           `;
       });
@@ -1137,7 +1158,7 @@
   </script>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       const fileInput = document.getElementById('edit-image');
       const maskInput = document.getElementById('edit-image-mask');
       let stage, layer, imageNode;
@@ -1145,13 +1166,13 @@
       let brushSize = 50;
       let originalImage;
 
-      fileInput.addEventListener('change', function (event) {
+      fileInput.addEventListener('change', function(event) {
         const file = event.target.files[0];
         if (file) {
           const reader = new FileReader();
-          reader.onload = function (e) {
+          reader.onload = function(e) {
             const img = new Image();
-            img.onload = function () {
+            img.onload = function() {
               originalImage = img.src;
               if (stage) {
                 stage.destroy();
@@ -1174,15 +1195,15 @@
               layer.add(imageNode);
               layer.draw();
 
-              stage.on('mousedown touchstart', function () {
+              stage.on('mousedown touchstart', function() {
                 isErasing = true;
               });
 
-              stage.on('mouseup touchend', function () {
+              stage.on('mouseup touchend', function() {
                 isErasing = false;
               });
 
-              stage.on('mousemove touchmove', function (e) {
+              stage.on('mousemove touchmove', function(e) {
                 if (!isErasing) {
                   return;
                 }
@@ -1206,19 +1227,19 @@
         }
       });
 
-      document.getElementById('brushSize').addEventListener('input', function () {
+      document.getElementById('brushSize').addEventListener('input', function() {
         brushSize = this.value;
       });
 
-      document.getElementById('eraserTool').addEventListener('click', function () {
+      document.getElementById('eraserTool').addEventListener('click', function() {
         // clear the layer
         layer.destroyChildren();
         layer.add(imageNode);
         layer.draw();
       });
 
-      document.getElementById('saveImageEdits').addEventListener('click', function () {
-        maskInput.value = stage.toDataURL({pixelRatio: 1});
+      document.getElementById('saveImageEdits').addEventListener('click', function() {
+        maskInput.value = stage.toDataURL({ pixelRatio: 1 });
         $('#imageEditModal').modal('hide');
       });
     });
@@ -1229,15 +1250,15 @@
   <!-- Include a markdown library, for example, Showdown.js -->
   <script src="https://cdn.jsdelivr.net/npm/showdown/dist/showdown.min.js"></script>
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       const converter = new showdown.Converter();
       converter.setOption('tables', true);
       converter.setOption('ghCodeBlocks', true);
-      document.querySelectorAll('.markdown-content').forEach(function (element) {
+      document.querySelectorAll('.markdown-content').forEach(function(element) {
         element.innerHTML = converter.makeHtml(element.innerHTML);
       });
 
-      document.querySelectorAll('.markdown-content').forEach(function (element) {
+      document.querySelectorAll('.markdown-content').forEach(function(element) {
         element.innerHTML = converter.makeHtml(element.innerHTML);
       });
 
@@ -1249,7 +1270,7 @@
           .replace(/\b\d+(\.\d+)?\b/g, '<span class="number">$&</span>');
       }
 
-      document.querySelectorAll('.markdown-content pre code').forEach(function (block) {
+      document.querySelectorAll('.markdown-content pre code').forEach(function(block) {
         let text = block.innerText;
         // Only highlight JSON code blocks
         if (text.trim().startsWith('{') && text.trim().endsWith('}')) {
@@ -1277,7 +1298,7 @@
   </script>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       const chatForm = document.querySelector('.form-send-message');
       const createChatForm = document.querySelector('#create-chat-form');
 
@@ -1296,12 +1317,12 @@
       });
 
       // if the button is clicked, set the value of the message to "Your response either failed, or I didn't like it. Please try again."
-      retryButton.addEventListener('click', function () {
+      retryButton.addEventListener('click', function() {
         loadingBar.classList.remove('d-none');
         loadingBarWarning.classList.remove('d-none');
         submitMessageButton.disabled = true;
         const chatInput = document.querySelector('.message-input');
-        chatInput.value = "Your answer wasn't satisfactory, or you have made an error, or you have failed to provide a valid and comprehensive answer to me. Please try again.";
+        chatInput.value = 'Your answer wasn\'t satisfactory, or you have made an error, or you have failed to provide a valid and comprehensive answer to me. Please try again.';
         // automatically submit
         chatForm.submit();
       });
@@ -1309,13 +1330,13 @@
       const loadingBarCreateChat = document.getElementById('loadingBarCreateChat');
       const loadingBarWarningCreateChat = document.getElementById('loadingBarWarningCreateChat');
 
-      createChatForm.addEventListener('submit', function (event) {
+      createChatForm.addEventListener('submit', function(event) {
         // Show the loading bar
         loadingBarCreateChat.classList.remove('d-none');
         loadingBarWarningCreateChat.classList.remove('d-none');
       });
 
-      submitStreamMessageButton.addEventListener('click', function () {
+      submitStreamMessageButton.addEventListener('click', function() {
         // Show the loading bar
         loadingBar.classList.remove('d-none');
         loadingBarWarning.classList.remove('d-none');
@@ -1323,9 +1344,9 @@
       });
     });
 
-    document.addEventListener('DOMContentLoaded', function () {
-      document.querySelectorAll('.card-template').forEach(function (template) {
-        template.addEventListener('click', function () {
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('.card-template').forEach(function(template) {
+        template.addEventListener('click', function() {
           const fullText = this.getAttribute('data-full-text');
           console.log(fullText);
           const chatInput = document.querySelector('.message-input');
@@ -1354,8 +1375,8 @@
       });
     });
 
-    document.querySelectorAll('.copy-btn-plain').forEach(function (btn) {
-      btn.addEventListener('click', function () {
+    document.querySelectorAll('.copy-btn-plain').forEach(function(btn) {
+      btn.addEventListener('click', function() {
         const messageId = this.getAttribute('data-message-id');
         const templateTextElement = document.getElementById(`copied-message-${messageId}`);
         const textToCopy = templateTextElement ? templateTextElement.innerText : '';
@@ -1383,8 +1404,8 @@
       });
     });
 
-    document.querySelectorAll('.copy-btn-html').forEach(function (btn) {
-      btn.addEventListener('click', function () {
+    document.querySelectorAll('.copy-btn-html').forEach(function(btn) {
+      btn.addEventListener('click', function() {
         const messageId = this.getAttribute('data-message-id');
         const templateTextElement = document.getElementById(`copied-message-${messageId}`);
         const textToCopy = templateTextElement ? templateTextElement.innerText : '';
@@ -1413,8 +1434,8 @@
       });
     });
 
-    document.querySelectorAll('.copy-btn-markdown').forEach(function (btn) {
-      btn.addEventListener('click', function () {
+    document.querySelectorAll('.copy-btn-markdown').forEach(function(btn) {
+      btn.addEventListener('click', function() {
         const messageId = this.getAttribute('data-message-id');
         const templateTextElement = document.getElementById(`copied-message-${messageId}`);
         const textToCopy = templateTextElement ? templateTextElement.innerText : '';
@@ -1443,10 +1464,10 @@
       });
     });
 
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       const chatInput = document.querySelector('.message-input');
 
-      chatInput.addEventListener('input', function () {
+      chatInput.addEventListener('input', function() {
         this.style.height = 'auto'; // Reset the height
         this.style.height = (this.scrollHeight) + 'px'; // Set the height to match the content
       });
@@ -1454,9 +1475,9 @@
   </script>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       const floatingButton = document.querySelector('.floating-button');
-      floatingButton.addEventListener('click', function () {
+      floatingButton.addEventListener('click', function() {
         if (floatingButton.innerHTML.includes('Chat')) {
           window.scrollTo({
             top: document.body.scrollHeight,
@@ -1475,10 +1496,10 @@
   </script>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       const btnCollapseTemplates = document.querySelector('.btn-collapse-templates');
       const cardTemplateContainer = document.querySelector('#message-templates-container');
-      btnCollapseTemplates.addEventListener('click', function () {
+      btnCollapseTemplates.addEventListener('click', function() {
         cardTemplateContainerClasses = cardTemplateContainer.classList;
         if (cardTemplateContainerClasses.contains('d-none')) {
           cardTemplateContainer.classList.remove('d-none');
@@ -1494,8 +1515,8 @@
   </script>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      document.getElementById('attach-doc').addEventListener('change', function (event) {
+    document.addEventListener('DOMContentLoaded', function() {
+      document.getElementById('attach-doc').addEventListener('change', function(event) {
         const fileList = Array.from(event.target.files);
         const fileDisplayArea = document.getElementById('file_display_area');
         fileDisplayArea.innerHTML = '<small class="text-muted mb-2 ms-6"><strong>Media File Staging</strong></small><hr>';
@@ -1546,11 +1567,11 @@
             'docx': 'docx.png',
             'pptx': 'pptx.png',
             'pdf': 'pdf.png',
-            'txt': 'txt.png',
+            'txt': 'txt.png'
           };
           const icon = iconMap[fileExtension] || 'file.png';
-          let filename_root = file.name.split(".")[0];
-          let filename_extension = file.name.split(".")[1];
+          let filename_root = file.name.split('.')[0];
+          let filename_extension = file.name.split('.')[1];
           if (filename_root.length > 64) {
             filename_root = filename_root.substring(0, 64) + '...';
           }
@@ -1567,7 +1588,7 @@
         });
 
         document.querySelectorAll('.btn-close').forEach(button => {
-          button.addEventListener('click', function () {
+          button.addEventListener('click', function() {
             const index = this.getAttribute('data-index');
             fileList.splice(index, 1);
             const dataTransfer = new DataTransfer();
@@ -1578,7 +1599,7 @@
         });
       });
 
-      document.getElementById('attach-image').addEventListener('change', function (event) {
+      document.getElementById('attach-image').addEventListener('change', function(event) {
         const fileList = Array.from(event.target.files);
         const fileDisplayArea = document.getElementById('image_display_area');
         fileDisplayArea.innerHTML = '<small class="text-muted mb-2 ms-6"><strong>Media Image Staging</strong></small><hr>';
@@ -1586,8 +1607,8 @@
           const fileSize = (file.size / 1024).toFixed(2) + ' KB';
           const fileExtension = file.name.split('.').pop().toLowerCase();
           const image_data = null; // ????
-          let filename_root = file.name.split(".")[0];
-          let filename_extension = file.name.split(".")[1];
+          let filename_root = file.name.split('.')[0];
+          let filename_extension = file.name.split('.')[1];
           if (filename_root.length > 64) {
             filename_root = filename_root.substring(0, 64) + '...';
           }
@@ -1595,7 +1616,7 @@
           fileElement.classList.add('col-lg-12');
 
           const reader = new FileReader();
-          reader.onload = function (e) {
+          reader.onload = function(e) {
             const imageUrl = e.target.result;
             fileElement.innerHTML = `
                           <div class="badge bg-lighter d-flex align-items-center my-2">
@@ -1606,7 +1627,7 @@
                       `;
             fileDisplayArea.appendChild(fileElement);
 
-            document.getElementById(`btn-close-image-${index}`).addEventListener('click', function () {
+            document.getElementById(`btn-close-image-${index}`).addEventListener('click', function() {
               const index = this.getAttribute('data-index');
               fileList.splice(index, 1);
               const dataTransfer = new DataTransfer();
@@ -1619,7 +1640,7 @@
         });
 
         document.querySelectorAll('.btn-close').forEach(button => {
-          button.addEventListener('click', function () {
+          button.addEventListener('click', function() {
             const index = this.getAttribute('data-index');
             fileList.splice(index, 1);
             const dataTransfer = new DataTransfer();
@@ -1630,7 +1651,7 @@
         });
 
         document.getElementById('.btn-close-image').forEach(button => {
-          button.addEventListener('click', function () {
+          button.addEventListener('click', function() {
             const index = this.getAttribute('data-index');
             fileList.splice(index, 1);
             const dataTransfer = new DataTransfer();
@@ -1641,7 +1662,7 @@
         });
       });
 
-      document.getElementById('edit-image').addEventListener('change', function (event) {
+      document.getElementById('edit-image').addEventListener('change', function(event) {
         const fileList = Array.from(event.target.files);
         const fileDisplayArea = document.getElementById('image_display_area');
         fileDisplayArea.innerHTML = '<small class="text-muted mb-2 ms-6"><strong>Image Modification Staging</strong></small><hr>';
@@ -1649,8 +1670,8 @@
           const fileSize = (file.size / 1024).toFixed(2) + ' KB';
           const fileExtension = file.name.split('.').pop().toLowerCase();
           const image_data = null; // ????
-          let filename_root = file.name.split(".")[0];
-          let filename_extension = file.name.split(".")[1];
+          let filename_root = file.name.split('.')[0];
+          let filename_extension = file.name.split('.')[1];
           if (filename_root.length > 64) {
             filename_root = filename_root.substring(0, 64) + '...';
           }
@@ -1658,7 +1679,7 @@
           fileElement.classList.add('col-lg-12');
 
           const reader = new FileReader();
-          reader.onload = function (e) {
+          reader.onload = function(e) {
             const imageUrl = e.target.result;
             fileElement.innerHTML = `
                           <div class="badge bg-warning d-flex align-items-center my-2">
@@ -1670,7 +1691,7 @@
                       `;
             fileDisplayArea.appendChild(fileElement);
 
-            document.getElementById(`btn-close-image-${index}`).addEventListener('click', function () {
+            document.getElementById(`btn-close-image-${index}`).addEventListener('click', function() {
               const index = this.getAttribute('data-index');
               fileList.splice(index, 1);
               const dataTransfer = new DataTransfer();
@@ -1683,7 +1704,7 @@
         });
 
         document.querySelectorAll('.btn-close').forEach(button => {
-          button.addEventListener('click', function () {
+          button.addEventListener('click', function() {
             const index = this.getAttribute('data-index');
             fileList.splice(index, 1);
             const dataTransfer = new DataTransfer();
@@ -1694,7 +1715,7 @@
         });
 
         document.getElementById('.btn-close-image').forEach(button => {
-          button.addEventListener('click', function () {
+          button.addEventListener('click', function() {
             const index = this.getAttribute('data-index');
             fileList.splice(index, 1);
             const dataTransfer = new DataTransfer();
@@ -1708,9 +1729,9 @@
   </script>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       const startStreamingButton = document.getElementById('start-streaming');
-      startStreamingButton.addEventListener('click', function (event) {
+      startStreamingButton.addEventListener('click', function(event) {
         event.preventDefault();
         const chatForm = document.querySelector('.form-send-message');
         const formData = new FormData(chatForm);
@@ -1730,7 +1751,7 @@
   </script>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       const element = document.getElementById('non-tool-markdown-content');
       let accumulatedContent = ''; // To accumulate chunks for a single stream
       let socket = null;
@@ -1743,7 +1764,7 @@
         // Construct the WebSocket URL with the unique group identifier
         const leanChatId = new URLSearchParams(window.location.search).get('chat_id');
         socket = new WebSocket(protocol + window.location.host + `/ws/lean_logs/${leanChatId}/`);
-        socket.onmessage = function (event) {
+        socket.onmessage = function(event) {
           const data = JSON.parse(event.data);
           let newChunk = data.log;
           if (newChunk.includes('<[bimod_streaming_end]>')) {
@@ -1758,7 +1779,7 @@
           } else if (newChunk.includes('<[bimod_process_end]>')) {
             // Force refresh the page with the same chat id
             const chatId = new URLSearchParams(window.location.search).get('chat_id');
-            console.log("End of processing detected...");
+            console.log('End of processing detected...');
             socket.close(); // Close the WebSocket connection
             // Automatically refresh the page
             window.location.href = `/app/multimodal_chat/lean_chat/?chat_id=${chatId}`;
@@ -1767,29 +1788,29 @@
             accumulatedContent += newChunk;
           }
         };
-        socket.onerror = function (event) {
-          console.error("WebSocket error", event);
+        socket.onerror = function(event) {
+          console.error('WebSocket error', event);
           socket.close();
         };
-        socket.onclose = function (event) {
-          console.log("WebSocket connection closed", event);
+        socket.onclose = function(event) {
+          console.log('WebSocket connection closed', event);
           if (retryCount < maxRetries) {
             retryCount++;
             console.log(`Reconnecting... attempt ${retryCount}`);
             setTimeout(connectWebSocket, 2000); // Reconnect after 2 seconds
           } else {
-            console.error("Max reconnection attempts reached. Unable to reconnect.");
+            console.error('Max reconnection attempts reached. Unable to reconnect.');
           }
         };
       }
 
       connectWebSocket(); // Initial connection attempt
-      console.log("WebSocket connection established successfully.");
+      console.log('WebSocket connection established successfully.');
     });
   </script>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       const recordButton = document.getElementById('recordAudioButton');
       const audioDisplayArea = document.getElementById('audio_display_area');
       const audioDataInput = document.getElementById('record_audio');
@@ -1801,7 +1822,7 @@
       // Function to display recorded audio and handle Base64 encoding
       function displayAudio(name, size, audioBlob) {
         const reader = new FileReader();
-        reader.onloadend = function () {
+        reader.onloadend = function() {
           const base64data = reader.result;
           console.log('Base64 data:', base64data);
           audioDataInput.value = base64data; // Store Base64 data in hidden input
@@ -1827,7 +1848,7 @@
 
           audioDisplayArea.appendChild(audioElement);
 
-          audioElement.querySelector(`#btn-close-audio-${audioIndex}`).addEventListener('click', function () {
+          audioElement.querySelector(`#btn-close-audio-${audioIndex}`).addEventListener('click', function() {
             const index = this.getAttribute('data-index');
             const elementToRemove = document.querySelector(`.badge[data-index="${index}"]`);
             if (elementToRemove) {
@@ -1836,7 +1857,7 @@
             if (audioDisplayArea.querySelectorAll('.badge').length === 0) {
               audioDisplayArea.innerHTML = '';
             }
-            audioDataInput.value = ""; // Clear the hidden input
+            audioDataInput.value = ''; // Clear the hidden input
           });
 
           audioIndex++;
@@ -1847,7 +1868,7 @@
       recordButton.addEventListener('click', async () => {
         if (!mediaRecorder || mediaRecorder.state === 'inactive') {
           try {
-            const stream = await navigator.mediaDevices.getUserMedia({audio: true});
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
             startRecording(stream);
             recordButton.className = 'speech-to-text ti ti-hand-stop ti-md btn btn-sm btn-text-danger btn-icon rounded-pill cursor-pointer text-danger';
           } catch (err) {
@@ -1860,13 +1881,13 @@
       });
 
       function startRecording(stream) {
-        let options = {mimeType: 'audio/webm'};
+        let options = { mimeType: 'audio/webm' };
         mediaRecorder = new MediaRecorder(stream, options);
         mediaRecorder.ondataavailable = event => {
           audioChunks.push(event.data);
         };
         mediaRecorder.onstop = () => {
-          const audioBlob = new Blob(audioChunks, {type: 'audio/webm'});
+          const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
           displayAudio(`recording_${Date.now()}.webm`, (audioBlob.size / 1024).toFixed(2), audioBlob);
           audioChunks = [];
         };
@@ -1887,7 +1908,7 @@
           button.disabled = true;
           button.innerHTML = '<i class="fa fa-spinner fa-spin ms-1"></i><span class="ms-2"><strong>Playing...</strong></span>';
 
-          console.log("Sending fetch request to:", url); // Debugging URL
+          console.log('Sending fetch request to:', url); // Debugging URL
           fetch(url)
             .then(response => {
               if (!response.ok) {
@@ -1897,7 +1918,7 @@
               return response.json();
             })
             .then(data => {
-              console.log("Fetch request successful:", data); // Debugging data
+              console.log('Fetch request successful:', data); // Debugging data
               if (data.audio_url) {
                 const audio = new Audio(data.audio_url);
                 audio.play();

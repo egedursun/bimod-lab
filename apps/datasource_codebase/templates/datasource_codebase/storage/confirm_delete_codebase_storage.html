@@ -1,21 +1,21 @@
-  <!--
-  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
-  ~
-  ~ Project: Bimod.io™
-  ~ File: confirm_delete_codebase_storage.html
-  ~ Last Modified: 2024-10-05 01:39:47
-  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-05 14:42:46
-  ~
-  ~ This software is proprietary and confidential. Unauthorized copying,
-  ~ distribution, modification, or use of this software, whether for
-  ~ commercial, academic, or any other purpose, is strictly prohibited
-  ~ without the prior express written permission of BMD™ Autonomous
-  ~ Holdings.
-  ~
-  ~  For permission inquiries, please contact: admin@Bimod.io.
-  ~
-  -->
+<!--
+~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+~
+~ Project: Bimod.io™
+~ File: confirm_delete_codebase_storage.html
+~ Last Modified: 2024-10-05 01:39:47
+~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+~ Created: 2024-10-05 14:42:46
+~
+~ This software is proprietary and confidential. Unauthorized copying,
+~ distribution, modification, or use of this software, whether for
+~ commercial, academic, or any other purpose, is strictly prohibited
+~ without the prior express written permission of BMD™ Autonomous
+~ Holdings.
+~
+~  For permission inquiries, please contact: admin@Bimod.io.
+~
+-->
 
 {% extends layout_path %}
 {% load static %}
@@ -24,7 +24,7 @@
 {% block title %}Delete Code Base Storage Connection{% endblock %}
 
 {% block content %}
-<div class="row">
+  <div class="row">
     <div class="col-xl mb-6">
       <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
@@ -36,19 +36,24 @@
         <div class="card-body">
           <form method="post">
             {% csrf_token %}
-            <p>Are you sure you want to delete the code base storage <strong>"{{ knowledge_base.name }}"</strong>?</p><br>
+            <p>Are you sure you want to delete the code base storage <strong>"{{ knowledge_base.name }}"</strong>?</p>
+            <br>
             <h6><strong>
-              • This operation will result in the complete removal of the code base storage and the repository links in it
+              • This operation will result in the complete removal of the code base storage and the repository links in
+              it
               from the system.
               <br>
-              • This deletion operation is completely irreversible and will entirely remove the code base storage and all
+              • This deletion operation is completely irreversible and will entirely remove the code base storage and
+              all
               associated data and repository links from the system.
             </strong></h6>
-            <img src="{% static 'img/custom-illustrations-v2/i2-77.png' %}" width="25%" style="border-radius: 25px;" class="justify-content-end me-8">
+            <img src="{% static 'img/custom-illustrations-v2/i2-77.png' %}" width="25%" style="border-radius: 25px;"
+                 class="justify-content-end me-8">
             <hr>
             <button type="submit" class="btn btn-danger mt-4 me-4"><strong>
               <i class="fa fa-skull-crossbones me-4"></i>
-              DELETE &nbsp;</strong> the Code Base Storage.</button>
+              DELETE &nbsp;</strong> the Code Base Storage.
+            </button>
             <a href="{% url 'datasource_codebase:list' %}" class="btn btn-secondary mt-4"><strong>
               <i class="fa fa-cancel me-4"></i>
               CANCEL &nbsp; </strong> the deletion operation.</a>

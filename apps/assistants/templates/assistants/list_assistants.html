@@ -1,21 +1,21 @@
-  <!--
-  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
-  ~
-  ~ Project: Bimod.io™
-  ~ File: list_assistants.html
-  ~ Last Modified: 2024-10-05 01:39:47
-  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-05 14:42:38
-  ~
-  ~ This software is proprietary and confidential. Unauthorized copying,
-  ~ distribution, modification, or use of this software, whether for
-  ~ commercial, academic, or any other purpose, is strictly prohibited
-  ~ without the prior express written permission of BMD™ Autonomous
-  ~ Holdings.
-  ~
-  ~  For permission inquiries, please contact: admin@Bimod.io.
-  ~
-  -->
+<!--
+~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+~
+~ Project: Bimod.io™
+~ File: list_assistants.html
+~ Last Modified: 2024-10-05 01:39:47
+~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+~ Created: 2024-10-05 14:42:38
+~
+~ This software is proprietary and confidential. Unauthorized copying,
+~ distribution, modification, or use of this software, whether for
+~ commercial, academic, or any other purpose, is strictly prohibited
+~ without the prior express written permission of BMD™ Autonomous
+~ Holdings.
+~
+~  For permission inquiries, please contact: admin@Bimod.io.
+~
+-->
 
 {% extends layout_path %}
 
@@ -27,11 +27,11 @@
 {% block vendor_css %}
   {{ block.super }}
 
-<link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}"/>
-  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}"/>
-  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css' %}"/>
-  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
-  <link rel="stylesheet" href="{% static 'vendor/libs/@form-validation/form-validation.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/@form-validation/form-validation.css' %}" />
   <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/font/bootstrap-icons.min.css">
 {% endblock vendor_css %}
@@ -97,6 +97,7 @@
            aria-expanded="false" aria-controls="collapse-{{ organization.id }}">
           <div class="d-flex">
             <img src="
+
 
 
 
@@ -222,9 +223,9 @@
   {% endfor %}
 
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      document.querySelectorAll('.toggle-icon').forEach(function (icon) {
-        icon.addEventListener('click', function () {
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('.toggle-icon').forEach(function(icon) {
+        icon.addEventListener('click', function() {
           var target = document.querySelector(this.getAttribute('data-target'));
           var bootstrapCollapse = new bootstrap.Collapse(target, {
             toggle: false
@@ -237,8 +238,8 @@
         });
       });
 
-      document.querySelectorAll('.collapse').forEach(function (collapse) {
-        collapse.addEventListener('show.bs.collapse', function () {
+      document.querySelectorAll('.collapse').forEach(function(collapse) {
+        collapse.addEventListener('show.bs.collapse', function() {
           var icon = document.querySelector(`.toggle-icon[data-target="#${this.id}"]`);
           if (icon) {
             icon.classList.remove('fa-arrow-alt-circle-down');
@@ -246,7 +247,7 @@
           }
         });
 
-        collapse.addEventListener('hide.bs.collapse', function () {
+        collapse.addEventListener('hide.bs.collapse', function() {
           var icon = document.querySelector(`.toggle-icon[data-target="#${this.id}"]`);
           if (icon) {
             icon.classList.remove('fa-arrow-alt-circle-up');

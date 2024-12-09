@@ -1,21 +1,21 @@
-  <!--
-  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
-  ~
-  ~ Project: Bimod.io™
-  ~ File: list_export_orchestrations.html
-  ~ Last Modified: 2024-10-05 01:39:48
-  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-05 14:42:46
-  ~
-  ~ This software is proprietary and confidential. Unauthorized copying,
-  ~ distribution, modification, or use of this software, whether for
-  ~ commercial, academic, or any other purpose, is strictly prohibited
-  ~ without the prior express written permission of BMD™ Autonomous
-  ~ Holdings.
-  ~
-  ~  For permission inquiries, please contact: admin@Bimod.io.
-  ~
-  -->
+<!--
+~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+~
+~ Project: Bimod.io™
+~ File: list_export_orchestrations.html
+~ Last Modified: 2024-10-05 01:39:48
+~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+~ Created: 2024-10-05 14:42:46
+~
+~ This software is proprietary and confidential. Unauthorized copying,
+~ distribution, modification, or use of this software, whether for
+~ commercial, academic, or any other purpose, is strictly prohibited
+~ without the prior express written permission of BMD™ Autonomous
+~ Holdings.
+~
+~  For permission inquiries, please contact: admin@Bimod.io.
+~
+-->
 
 {% extends layout_path %}
 
@@ -27,9 +27,9 @@
 
 {% block vendor_css %}
   {{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}"/>
-  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
-  <link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}" />
   <style>
     .text-wrap {
       white-space: normal;
@@ -103,6 +103,7 @@
             <div class="card-title mb-0">
               <div class="d-flex">
                 <img src="
+
 
 
                   {% if data.organization.organization_image %}{{ data.organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
@@ -263,10 +264,10 @@
   </div>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
 
-      document.querySelectorAll('.toggle-api-key').forEach(function (btn) {
-        btn.addEventListener('click', function () {
+      document.querySelectorAll('.toggle-api-key').forEach(function(btn) {
+        btn.addEventListener('click', function() {
           const apiKey = this.getAttribute('data-key');
           const id = this.getAttribute('data-id');
           const apiKeySpan = document.querySelector(`#api-key-${id}`);
@@ -282,8 +283,8 @@
         });
       });
 
-      document.querySelectorAll('.copy-btn-endpoint').forEach(function (btn) {
-        btn.addEventListener('click', function () {
+      document.querySelectorAll('.copy-btn-endpoint').forEach(function(btn) {
+        btn.addEventListener('click', function() {
           const endpoint = this.getAttribute('data-endpoint');
           const textToCopy = endpoint ? endpoint : '';
 
@@ -309,8 +310,8 @@
         });
       });
 
-      document.querySelectorAll('.copy-btn-key').forEach(function (btn) {
-        btn.addEventListener('click', function () {
+      document.querySelectorAll('.copy-btn-key').forEach(function(btn) {
+        btn.addEventListener('click', function() {
           const apiKey = this.getAttribute('data-key');
           const textToCopy = apiKey ? apiKey : '';
 
@@ -336,14 +337,14 @@
         });
       });
 
-      document.querySelectorAll('.btn-danger').forEach(function (button) {
-        button.addEventListener('click', function (event) {
+      document.querySelectorAll('.btn-danger').forEach(function(button) {
+        button.addEventListener('click', function(event) {
           event.preventDefault();
           const form = button.closest('a').getAttribute('href');
 
           Swal.fire({
             title: 'Are you sure?',
-            text: "You won't be able to revert this action.",
+            text: 'You won\'t be able to revert this action.',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonText: 'Yes, delete it!',

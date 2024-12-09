@@ -1,21 +1,21 @@
-  <!--
-  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
-  ~
-  ~ Project: Bimod.io™
-  ~ File: blogpost_list.html
-  ~ Last Modified: 2024-10-05 01:39:47
-  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-05 14:42:34
-  ~
-  ~ This software is proprietary and confidential. Unauthorized copying,
-  ~ distribution, modification, or use of this software, whether for
-  ~ commercial, academic, or any other purpose, is strictly prohibited
-  ~ without the prior express written permission of BMD™ Autonomous
-  ~ Holdings.
-  ~
-  ~  For permission inquiries, please contact: admin@Bimod.io.
-  ~
-  -->
+<!--
+~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+~
+~ Project: Bimod.io™
+~ File: blogpost_list.html
+~ Last Modified: 2024-10-05 01:39:47
+~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+~ Created: 2024-10-05 14:42:34
+~
+~ This software is proprietary and confidential. Unauthorized copying,
+~ distribution, modification, or use of this software, whether for
+~ commercial, academic, or any other purpose, is strictly prohibited
+~ without the prior express written permission of BMD™ Autonomous
+~ Holdings.
+~
+~  For permission inquiries, please contact: admin@Bimod.io.
+~
+-->
 
 {% extends layout_path %}
 
@@ -26,7 +26,7 @@
 
 {% block page_css %}
   {{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/css/pages/front-page-help-center.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/css/pages/front-page-help-center.css' %}" />
 {% endblock page_css %}
 
 {% block content %}
@@ -34,7 +34,8 @@
   <section id="blog-main" style="margin: 5% 20%;">
 
     <!-- Blog Header: Start -->
-    <section class="card section-py first-section-pt blog-header position-relative overflow-hidden text-center mb-12 p-12">
+    <section
+      class="card section-py first-section-pt blog-header position-relative overflow-hidden text-center mb-12 p-12">
       <h4 class="justify-content-center bg-body p-4 rounded w-100 mb-12">
         <strong>BMD Autonomous Holdings. Bimod.io, BimodLab AIaaS Products</strong>
       </h4>
@@ -64,7 +65,8 @@
     <div class="row g-4 mb-4 mt-8 card card-border-shadow-primary p-4">
       <div class="col-xl-12">
         <h5 class="text-muted"><strong>Search Posts</strong></h5>
-        <img src="{% static 'img/blog_app/blg-1.png' %}" class="rounded mt-8 mb-8" style="width: 100%;" alt="Illustration for tips">
+        <img src="{% static 'img/blog_app/blg-1.png' %}" class="rounded mt-8 mb-8" style="width: 100%;"
+             alt="Illustration for tips">
         <div class="card text-center mb-4">
           <div class="card-header">
             <div class="nav-align-top">
@@ -95,10 +97,12 @@
                 <div class="col-xl-4 col-md-6 d-flex">
                   <div class="card border shadow-none">
                     <img class="card-img-top rounded" src="
+
                       {% if post.thumbnail_image %}{{ post.thumbnail_image.url }}{% else %}{% static 'img/custom-illustrations-v2/i2-1.png' %}{% endif %}"
                          alt="{{ post.title }}">
                     <div class="card-body">
-                      <h5 class="my-3"><strong><a href="{% url 'blog_app:post_detail' slug=post.slug %}">{{ post.title }}</a></strong></h5>
+                      <h5 class="my-3"><strong><a
+                        href="{% url 'blog_app:post_detail' slug=post.slug %}">{{ post.title }}</a></strong></h5>
                       <p class="mb-3">{{ post.content|safe|truncatechars:150 }}</p>
                       <a class="btn btn-sm btn-label-primary" href="{% url 'blog_app:post_detail' slug=post.slug %}">
                         <strong>Read More</strong></a>

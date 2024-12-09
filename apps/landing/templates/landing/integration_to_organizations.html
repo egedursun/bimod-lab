@@ -1,21 +1,21 @@
-  <!--
-  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
-  ~
-  ~ Project: Bimod.io™
-  ~ File: integration_to_organizations.html
-  ~ Last Modified: 2024-10-05 14:42:29
-  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-05 14:42:33
-  ~
-  ~ This software is proprietary and confidential. Unauthorized copying,
-  ~ distribution, modification, or use of this software, whether for
-  ~ commercial, academic, or any other purpose, is strictly prohibited
-  ~ without the prior express written permission of BMD™ Autonomous
-  ~ Holdings.
-  ~
-  ~  For permission inquiries, please contact: admin@Bimod.io.
-  ~
-  -->
+<!--
+~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+~
+~ Project: Bimod.io™
+~ File: integration_to_organizations.html
+~ Last Modified: 2024-10-05 14:42:29
+~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+~ Created: 2024-10-05 14:42:33
+~
+~ This software is proprietary and confidential. Unauthorized copying,
+~ distribution, modification, or use of this software, whether for
+~ commercial, academic, or any other purpose, is strictly prohibited
+~ without the prior express written permission of BMD™ Autonomous
+~ Holdings.
+~
+~  For permission inquiries, please contact: admin@Bimod.io.
+~
+-->
 
 {% extends layout_path %}
 
@@ -26,8 +26,8 @@
 
 {% block vendor_css %}
   {{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/libs/nouislider/nouislider.css' %}"/>
-  <link rel="stylesheet" href="{% static 'vendor/libs/swiper/swiper.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/nouislider/nouislider.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/swiper/swiper.css' %}" />
 {% endblock vendor_css %}
 
 {% block vendor_js %}
@@ -69,7 +69,7 @@
            alt="Integration page illustration 6">
       <div id="landingHero" class="section-py landing-hero position-relative">
         <img src="{% static 'img/front-pages/backgrounds/hero-bg.png' %}" alt="hero background"
-             class="position-absolute top-0 start-50 translate-middle-x object-fit-cover w-100 h-100" data-speed="1"/>
+             class="position-absolute top-0 start-50 translate-middle-x object-fit-cover w-100 h-100" data-speed="1" />
         <div class="container">
           <div class="hero-text-box text-center position-relative">
             <h1 class="text-primary hero-title display-6 fw-extrabold" style="font-size: 3vw;">
@@ -82,8 +82,10 @@
             <hr>
             <h2 class="hero-sub-title h6 mb-6 mt-12" style="font-size: 1vw;">
               <strong>Custom AI-Powered Integrations for Your Enterprise. Our services <br> cover end-to-end integration
-                solutions from analyzing your <br> enterprises' requirements to identifying the best assistants, data <br>
-                sources, multi-modality models, and deploying your autonomous <br> strategies with the best practices.</strong>
+                solutions from analyzing your <br> enterprises' requirements to identifying the best assistants, data
+                <br>
+                sources, multi-modality models, and deploying your autonomous <br> strategies with the best
+                practices.</strong>
             </h2>
             <a href="{% url 'landing:index' %}" class="btn btn-primary btn-lg mt-8" style="min-width: 250px;">
               <strong><i class="fa fa-home me-2"></i>Back to Homepage</strong>
@@ -104,7 +106,8 @@
           <span class="position-relative fw-extrabold z-1">End-to-End Solutions Tailored for the Needs of Your Enterprise</span>
         </h4>
         <p class="text-center mb-12">
-          BimodLab<span style="vertical-align: super; font-size: small; font-family: Arial, sans-serif;">&#8482;</span> offers the most flexible AI as a Service and integration solutions for you to automate your <br>
+          BimodLab<span style="vertical-align: super; font-size: small; font-family: Arial, sans-serif;">&#8482;</span>
+          offers the most flexible AI as a Service and integration solutions for you to automate your <br>
           processes with the best practices and the most advanced AI technologies. Our services cover end-to-end <br>
           integration solutions from analyzing your enterprises' requirements to identifying the best assistants,<br>
           data sources, multi-modality models, and deploying your autonomous strategies with the best practices. <br>
@@ -116,7 +119,7 @@
             <div class="d-flex flex-column align-items-center">
               <img src="{% static 'img/custom-illustrations-v2/integrations/e2e-requirements-analysis.png' %}"
                    class="border border-2 border-primary" style="width: 200px; height: 200px; border-radius: 25px;"
-                   alt="Integration Module"/>
+                   alt="Integration Module" />
               <h4 class="mt-4 mb-2"><strong>Requirements Analysis</strong></h4>
               <p style="text-align: justify;">
                 In this critical initial phase, our team focuses on understanding and documenting your business's unique
@@ -134,7 +137,7 @@
             <div class="d-flex flex-column align-items-center">
               <img src="{% static 'img/custom-illustrations-v2/integrations/e2e-user-management.png' %}"
                    class="border border-2 border-primary" style="width: 200px; height: 200px; border-radius: 25px;"
-                   alt="Workflow Automation"/>
+                   alt="Workflow Automation" />
               <h4 class="mt-4 mb-2"><strong>User &amp; Tenancy Management</strong></h4>
               <p style="text-align: justify;">
                 We understand that effective user and tenancy management is foundational to securing and
@@ -153,10 +156,11 @@
             <div class="d-flex flex-column align-items-center">
               <img src="{% static 'img/custom-illustrations-v2/integrations/e2e-data-security.png' %}"
                    class="border border-2 border-primary" style="width: 200px; height: 200px; border-radius: 25px;"
-                   alt="Integration Module"/>
+                   alt="Integration Module" />
               <h4 class="mt-4 mb-2"><strong>Data Security Integrations</strong></h4>
               <p style="text-align: justify;">
-                Our approach to data security at {% get_theme_variables 'template_name' %} is centered on implementing robust, scalable solutions that
+                Our approach to data security at {% get_theme_variables 'template_name' %} is centered on implementing
+                robust, scalable solutions that
                 protect your enterprise's valuable data assets against unauthorized access, breaches, and other cyber
                 threats. We employ state-of-the-art encryption methods, secure data storage solutions, and comprehensive
                 access controls to ensure that your data remains confidential, intact, and available only to authorized
@@ -171,7 +175,7 @@
             <div class="d-flex flex-column align-items-center">
               <img src="{% static 'img/custom-illustrations-v2/integrations/e2e-payments.png' %}"
                    class="border border-2 border-primary" style="width: 200px; height: 200px; border-radius: 25px;"
-                   alt="Workflow Automation"/>
+                   alt="Workflow Automation" />
               <h4 class="mt-4 mb-2"><strong>Payment Plans &amp; Transaction Management</strong></h4>
               <p style="text-align: justify;">
                 We tailor payment plans and transaction management systems to facilitate smooth, secure
@@ -190,10 +194,11 @@
             <div class="d-flex flex-column align-items-center">
               <img src="{% static 'img/custom-illustrations-v2/integrations/e2e-data-source-analysis.png' %}"
                    class="border border-2 border-primary" style="width: 200px; height: 200px; border-radius: 25px;"
-                   alt="Integration Module"/>
+                   alt="Integration Module" />
               <h4 class="mt-4 mb-2"><strong>Data Source Analysis &amp; Integrations</strong></h4>
               <p style="text-align: justify;">
-                Our data source analysis and integration services at {% get_theme_variables 'template_name' %} are designed to ensure that your
+                Our data source analysis and integration services at {% get_theme_variables 'template_name' %} are
+                designed to ensure that your
                 organization can harness the full potential of its data landscape. By conducting thorough evaluations of
                 both internal and external data sources, we identify the most valuable datasets and determine the
                 optimal ways to integrate them into your existing systems. Our expertise allows us to seamlessly merge
@@ -208,7 +213,7 @@
             <div class="d-flex flex-column align-items-center">
               <img src="{% static 'img/custom-illustrations-v2/integrations/e2e-memory-storage.png' %}"
                    class="border border-2 border-primary" style="width: 200px; height: 200px; border-radius: 25px;"
-                   alt="Workflow Automation"/>
+                   alt="Workflow Automation" />
               <h4 class="mt-4 mb-2"><strong>Memory &amp; Retrieval Policies Setup</strong></h4>
               <p style="text-align: justify;">
                 Our memory and retrieval policy setup for AI assistants is engineered to maximize
@@ -228,7 +233,7 @@
             <div class="d-flex flex-column align-items-center">
               <img src="{% static 'img/custom-illustrations-v2/integrations/e2e-code-repositories.png' %}"
                    class="border border-2 border-primary" style="width: 200px; height: 200px; border-radius: 25px;"
-                   alt="Integration Module"/>
+                   alt="Integration Module" />
               <h4 class="mt-4 mb-2"><strong>Repository &amp; Document Storage Setups</strong></h4>
               <p style="text-align: justify;">
                 We specialize in configuring repository and document storage solutions optimized for
@@ -248,7 +253,7 @@
             <div class="d-flex flex-column align-items-center">
               <img src="{% static 'img/custom-illustrations-v2/integrations/e2e-multi-modality.png' %}"
                    class="border border-2 border-primary" style="width: 200px; height: 200px; border-radius: 25px;"
-                   alt="Workflow Automation"/>
+                   alt="Workflow Automation" />
               <h4 class="mt-4 mb-2"><strong>Multimodal Tool &amp; Resource Integrations</strong></h4>
               <p style="text-align: justify;">
                 We specialize in enhancing your AI assistants by integrating a diverse array of tools and
@@ -268,7 +273,7 @@
             <div class="d-flex flex-column align-items-center">
               <img src="{% static 'img/custom-illustrations-v2/integrations/e2e-assistants.png' %}"
                    class="border border-2 border-primary" style="width: 200px; height: 200px; border-radius: 25px;"
-                   alt="Integration Module"/>
+                   alt="Integration Module" />
               <h4 class="mt-4 mb-2"><strong>Assistant Setups &amp; Optimizations</strong></h4>
               <p style="text-align: justify;">
                 We specialize in configuring and fine-tuning AI assistants to seamlessly integrate with
@@ -287,7 +292,7 @@
             <div class="d-flex flex-column align-items-center">
               <img src="{% static 'img/custom-illustrations-v2/integrations/e2e-data-migrations.png' %}"
                    class="border border-2 border-primary" style="width: 200px; height: 200px; border-radius: 25px;"
-                   alt="Workflow Automation"/>
+                   alt="Workflow Automation" />
               <h4 class="mt-4 mb-2"><strong>Data &amp; Dataset Migration Setups</strong></h4>
               <p style="text-align: justify;">
                 We offer specialized data and dataset migration services to facilitate the smooth transfer
@@ -308,7 +313,7 @@
             <div class="d-flex flex-column align-items-center">
               <img src="{% static 'img/custom-illustrations-v2/integrations/e2e-function-api-script.png' %}"
                    class="border border-2 border-primary" style="width: 200px; height: 200px; border-radius: 25px;"
-                   alt="Integration Module"/>
+                   alt="Integration Module" />
               <h4 class="mt-4 mb-2"><strong>Function, API, and Script Development</strong></h4>
               <p style="text-align: justify;">
                 We excel in crafting custom functions, APIs, and scripts that enhance the capabilities of
@@ -328,7 +333,7 @@
             <div class="d-flex flex-column align-items-center">
               <img src="{% static 'img/custom-illustrations-v2/integrations/e2e-schedules-triggers.png' %}"
                    class="border border-2 border-primary" style="width: 200px; height: 200px; border-radius: 25px;"
-                   alt="Workflow Automation"/>
+                   alt="Workflow Automation" />
               <h4 class="mt-4 mb-2"><strong>Scheduled &amp; Triggered Task Integrations</strong></h4>
               <p style="text-align: justify;">
                 We specialize in integrating scheduled and event-triggered tasks to enhance the efficiency
@@ -349,7 +354,7 @@
             <div class="d-flex flex-column align-items-center">
               <img src="{% static 'img/custom-illustrations-v2/integrations/e2e-cloud-export-api.png' %}"
                    class="border border-2 border-primary" style="width: 200px; height: 200px; border-radius: 25px;"
-                   alt="Integration Module"/>
+                   alt="Integration Module" />
               <h4 class="mt-4 mb-2"><strong>Exported Assistant API Integrations</strong></h4>
               <p style="text-align: justify;">
                 We empower your enterprise by providing seamless Exported Assistant API Integrations,
@@ -368,7 +373,7 @@
             <div class="d-flex flex-column align-items-center">
               <img src="{% static 'img/custom-illustrations-v2/integrations/e2e-orchestrations.png' %}"
                    class="border border-2 border-primary" style="width: 200px; height: 200px; border-radius: 25px;"
-                   alt="Workflow Automation"/>
+                   alt="Workflow Automation" />
               <h4 class="mt-4 mb-2"><strong>Orchestration Setups</strong></h4>
               <p style="text-align: justify;">
                 We specialize in designing and implementing orchestration setups that harmonize your AI
@@ -391,7 +396,7 @@
     <!-- Call to Action: Start -->
     <section id="landingCTA" class="section-py landing-cta position-relative">
       <img src="{% static 'img/front-pages/backgrounds/cta-bg-dark.png' %}"
-           class="position-absolute bottom-0 end-0 scaleX-n1-rtl h-100 w-100 z-n1" alt="cta background"/>
+           class="position-absolute bottom-0 end-0 scaleX-n1-rtl h-100 w-100 z-n1" alt="cta background" />
       <div class="container">
         <div class="row align-items-center gy-12">
           <div class="col-lg-6 text-start text-lg-start">
@@ -399,7 +404,8 @@
               <strong>Take the Step for 100%, 7/24 Automation</strong>
             </h4>
             <h6 class="text-body mb-12 mt-12 me-12" style="text-align: justify;">
-              Let's discuss how {% get_theme_variables 'template_name' %} can help you automate your processes by using state-of-the-art technology
+              Let's discuss how {% get_theme_variables 'template_name' %} can help you automate your processes by using
+              state-of-the-art technology
               stack and powerful assitants and orchestrations. Our team is ready to help you with your integration
               needs and you can feel free to contact us for more information.
             </h6>
@@ -409,7 +415,7 @@
           </div>
           <div class="col-lg-6 text-center text-lg-end">
             <img src="{% static 'img/custom-illustrations-v2/banners/i2-b1.png' %}" alt="cta dashboard"
-                 class="img-fluid mt-lg-4 mb-12" style="border-radius: 15px;"/>
+                 class="img-fluid mt-lg-4 mb-12" style="border-radius: 15px;" />
           </div>
         </div>
       </div>

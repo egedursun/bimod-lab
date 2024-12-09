@@ -1,4 +1,3 @@
-
 <!--
   ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
   ~
@@ -24,7 +23,7 @@
 
 {% block vendor_css %}
   {{ block.super }}
-  <link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}" />
 {% endblock vendor_css %}
 
 {% block vendor_js %}
@@ -33,50 +32,55 @@
 {% endblock vendor_js %}
 
 {% block content %}
-<div class="container mt-4">
-  <div class="card">
-    <div class="card-header">
-      <h3><strong>Meeting Transcriptions</strong></h3>
-    </div>
-    <div class="card-body overflow-auto">
-      <a href="{% url 'metakanban:board_detail' board.id %}">
-        <button class="btn btn-secondary mt-0 mb-4 ms-4">
-          <i class="fa fa-chevron-left me-4"></i>
-          <strong>Back to MetaKanban™ Board</strong>
-        </button>
-      </a>
+  <div class="container mt-4">
+    <div class="card">
+      <div class="card-header">
+        <h3><strong>Meeting Transcriptions</strong></h3>
+      </div>
+      <div class="card-body overflow-auto">
+        <a href="{% url 'metakanban:board_detail' board.id %}">
+          <button class="btn btn-secondary mt-0 mb-4 ms-4">
+            <i class="fa fa-chevron-left me-4"></i>
+            <strong>Back to MetaKanban™ Board</strong>
+          </button>
+        </a>
 
-      <!-- Tip Section -->
-      <div class="tips-section alert alert-secondary alert-dismissible d-flex align-items-center ms-4 me-4" role="alert">
-          <img src="{% static 'img/custom-illustrations-v2/i2-73.png' %}" width="25%" style="border-radius:25px;" class="me-4" alt="Illustration for tip">
+        <!-- Tip Section -->
+        <div class="tips-section alert alert-secondary alert-dismissible d-flex align-items-center ms-4 me-4"
+             role="alert">
+          <img src="{% static 'img/custom-illustrations-v2/i2-73.png' %}" width="25%" style="border-radius:25px;"
+               class="me-4" alt="Illustration for tip">
           <span class="alert-icon rounded"><i class="ti ti-bookmark"></i></span>
           <div class="d-flex flex-column">
-              <h5 class="alert-heading mb-2">Tip</h5>
-              <p class="mb-0">
-                  In this page, you can view all meeting transcriptions delivered by your Electron Copilot desktop
-            client. You can also update MetaKanban™ with the key takeaways from the meeting transcriptions via AI.
-            Click the "Update MetaKanban via AI" button to update MetaKanban™ with the key takeaways from the
-            meeting transcription. You can also delete the meeting transcription by clicking the "Delete" button.
-              </p>
+            <h5 class="alert-heading mb-2">Tip</h5>
+            <p class="mb-0">
+              In this page, you can view all meeting transcriptions delivered by your Electron Copilot desktop
+              client. You can also update MetaKanban™ with the key takeaways from the meeting transcriptions via AI.
+              Click the "Update MetaKanban via AI" button to update MetaKanban™ with the key takeaways from the
+              meeting transcription. You can also delete the meeting transcription by clicking the "Delete" button.
+            </p>
           </div>
           <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>
+        </div>
 
-      <hr>
+        <hr>
 
-      {% if messages %}
-        {% for message in messages %}
-          <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-info{% endif %}" role="alert">
-            {{ message }}
-          </div>
-        {% endfor %}
-      {% endif %}
+        {% if messages %}
+          {% for message in messages %}
+            <div
+              class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-info{% endif %}"
+              role="alert">
+              {{ message }}
+            </div>
+          {% endfor %}
+        {% endif %}
 
-      <hr>
+        <hr>
 
-      <img src="{% static 'img/metakanban/kbn-7.png' %}" class="rounded mt-2 mb-2" style="width: 100%;" alt="Illustration for tips">
+        <img src="{% static 'img/metakanban/kbn-7.png' %}" class="rounded mt-2 mb-2" style="width: 100%;"
+             alt="Illustration for tips">
 
-      <div class="alert alert-solid-primary alert-dismissible d-flex ms-0 my-8 me-0 align-items-center" role="alert">
+        <div class="alert alert-solid-primary alert-dismissible d-flex ms-0 my-8 me-0 align-items-center" role="alert">
           <div class="d-flex flex-column p-12">
             <h5 class="alert-heading mb-2">
               <strong>
@@ -93,11 +97,14 @@
             <!-- Authentication Key Section with Copy Button and Toggle Visibility -->
             <p><strong>Authentication Key:</strong></p>
             <div class="d-flex align-items-center">
-              <input type="password" id="apiKey" class="form-control bg-label-dark p-2 rounded fw-bolder" value="{% if board_api_key %}{{ board_api_key }}{% else %}{{ 'You do not have the required permissions record meeting transcriptions.'}}{% endif %}" readonly>
+              <input type="password" id="apiKey" class="form-control bg-label-dark p-2 rounded fw-bolder" value="
+                {% if board_api_key %}{{ board_api_key }}{% else %}{{ 'You do not have the required permissions record meeting transcriptions.' }}{% endif %}"
+                     readonly>
               <button class="btn btn-warning ms-2" onclick="toggleVisibility('apiKey', this)">
                 <i class="fa fa-eye ms-2 me-2"></i> <strong>Show/Hide</strong>
               </button>
-              <button class="btn btn-warning ms-2" onclick="copyToClipboardInput('apiKey', '{% if board_api_key %}{{ board_api_key }}{% endif %}')">
+              <button class="btn btn-warning ms-2"
+                      onclick="copyToClipboardInput('apiKey', '{% if board_api_key %}{{ board_api_key }}{% endif %}')">
                 <i class="fa fa-copy ms-2 me-2"></i> <strong>Copy</strong>
               </button>
               <button class="btn btn-danger ms-2" id="regenerate-api-key-button" onclick="confirmRegenerateApiKey()">
@@ -108,21 +115,22 @@
           </div>
         </div>
 
-      <table class="table table-striped mt-4">
-        <thead>
+        <table class="table table-striped mt-4">
+          <thead>
           <tr>
             <th style="min-width: 200px;">Date</th>
             <th>Transcription</th>
             <th style="min-width: 400px;">Key Takeaways</th>
             <th style="min-width: 400px;">Actions</th>
           </tr>
-        </thead>
-        <tbody>
+          </thead>
+          <tbody>
           {% for transcription in page_obj %}
             <tr>
               <td><strong>{{ transcription.created_at|date:"Y-m-d H:i" }}</strong></td>
               <td>
-                <p style="text-align: justify; min-width: 600px; max-width: 600px; min-height: 150px; max-height: 150px; overflow: auto;">{{ transcription.meeting_transcription_text }}</p>
+                <p
+                  style="text-align: justify; min-width: 600px; max-width: 600px; min-height: 150px; max-height: 150px; overflow: auto;">{{ transcription.meeting_transcription_text }}</p>
               </td>
               <td>
                 <div style="max-height: 150px; min-height: 150px; overflow: auto;">
@@ -133,21 +141,23 @@
                       </p>
                     {% endfor %}
                   {% else %}
-                  <p class="bg-label-warning p-2 rounded">
-                    <i class="fa fa-exclamation-triangle me-2"></i>
-                    <strong>Not generated yet.</strong>
-                  </p>
+                    <p class="bg-label-warning p-2 rounded">
+                      <i class="fa fa-exclamation-triangle me-2"></i>
+                      <strong>Not generated yet.</strong>
+                    </p>
                   {% endif %}
                 </div>
               </td>
               <td>
-                <form action="{% url 'metakanban:meeting_transcription_implement' transcription.pk %}" method="post" class="d-inline">
+                <form action="{% url 'metakanban:meeting_transcription_implement' transcription.pk %}" method="post"
+                      class="d-inline">
                   {% csrf_token %}
                   <button type="submit" class="btn btn-success btn-sm">
                     <i class="fa fa-magic me-4"></i> <strong>Update MetaKanban via AI</strong>
                   </button>
                 </form>
-                <form action="{% url 'metakanban:meeting_transcription_delete' transcription.pk %}" method="post" class="d-inline ms-2">
+                <form action="{% url 'metakanban:meeting_transcription_delete' transcription.pk %}" method="post"
+                      class="d-inline ms-2">
                   {% csrf_token %}
                   <button type="submit" class="btn btn-danger btn-sm">
                     <i class="fa fa-trash me-4"></i> <strong>Delete</strong>
@@ -165,145 +175,148 @@
               </td>
             </tr>
           {% endfor %}
-        </tbody>
-      </table>
+          </tbody>
+        </table>
 
-      <hr>
+        <hr>
 
-      <!-- Pagination Controls -->
-      <nav aria-label="Page navigation">
+        <!-- Pagination Controls -->
+        <nav aria-label="Page navigation">
           <ul class="pagination justify-content-center mt-4">
-              {% if page_obj.has_previous %}
-                  <li class="page-item">
-                      <a class="page-link" href="?page=1" aria-label="First">
-                          <span aria-hidden="true">&laquo;&laquo;</span>
-                      </a>
-                  </li>
-                  <li class="page-item">
-                      <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
-                          <span aria-hidden="true">&laquo;</span>
-                      </a>
-                  </li>
-              {% else %}
-                  <li class="page-item disabled"><span class="page-link">&laquo;&laquo;</span></li>
-                  <li class="page-item disabled"><span class="page-link">&laquo;</span></li>
-              {% endif %}
+            {% if page_obj.has_previous %}
+              <li class="page-item">
+                <a class="page-link" href="?page=1" aria-label="First">
+                  <span aria-hidden="true">&laquo;&laquo;</span>
+                </a>
+              </li>
+              <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                  <span aria-hidden="true">&laquo;</span>
+                </a>
+              </li>
+            {% else %}
+              <li class="page-item disabled"><span class="page-link">&laquo;&laquo;</span></li>
+              <li class="page-item disabled"><span class="page-link">&laquo;</span></li>
+            {% endif %}
 
-              <!-- Page numbers -->
-              {% for num in page_obj.paginator.page_range %}
-                  {% if page_obj.number == num %}
-                      <li class="page-item active"><span class="page-link">{{ num }}</span></li>
-                  {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-                      <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
-                  {% endif %}
-              {% endfor %}
-
-              {% if page_obj.has_next %}
-                  <li class="page-item">
-                      <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
-                          <span aria-hidden="true">&raquo;</span>
-                      </a>
-                  </li>
-                  <li class="page-item">
-                      <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="Last">
-                          <span aria-hidden="true">&raquo;&raquo;</span>
-                      </a>
-                  </li>
-              {% else %}
-                  <li class="page-item disabled"><span class="page-link">&raquo;</span></li>
-                  <li class="page-item disabled"><span class="page-link">&raquo;&raquo;</span></li>
+            <!-- Page numbers -->
+            {% for num in page_obj.paginator.page_range %}
+              {% if page_obj.number == num %}
+                <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+              {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
               {% endif %}
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                  <span aria-hidden="true">&raquo;</span>
+                </a>
+              </li>
+              <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="Last">
+                  <span aria-hidden="true">&raquo;&raquo;</span>
+                </a>
+              </li>
+            {% else %}
+              <li class="page-item disabled"><span class="page-link">&raquo;</span></li>
+              <li class="page-item disabled"><span class="page-link">&raquo;&raquo;</span></li>
+            {% endif %}
           </ul>
-      </nav>
+        </nav>
 
+      </div>
     </div>
   </div>
-</div>
 {% endblock %}
 
 {% block page_js %}
-<!-- JavaScript for copy and toggle visibility -->
-<script>
-  // Function to copy text to clipboard
-  function copyToClipboard(element) {
-    var $temp = $("<input>");
-    $("body").append($temp);
-    $temp.val($(element).text()).select().toString().trim();
-    document.execCommand("copy");
-    $temp.remove();
-  }
-  // Function to copy text from input elements
-  function copyToClipboardInput(elementId, apiKeyToken) {
-    var $temp = $("<input>");
-    $("body").append($temp);
-    $temp.val(apiKeyToken).select().toString().trim();
-    document.execCommand("copy");
-    $temp.remove();
-  }
-  // Function to toggle visibility of API key
-  function toggleVisibility(fieldId, button) {
-    var field = document.getElementById(fieldId);
-    if (field.type === "password") {
-      field.type = "text";
-      button.innerHTML = '<i class="fa fa-eye-slash me-2"></i> Show/Hide';
-    } else {
-      field.type = "password";
-      button.innerHTML = '<i class="fa fa-eye me-2"></i> Show/Hide';
+  <!-- JavaScript for copy and toggle visibility -->
+  <script>
+    // Function to copy text to clipboard
+    function copyToClipboard(element) {
+      var $temp = $('<input>');
+      $('body').append($temp);
+      $temp.val($(element).text()).select().toString().trim();
+      document.execCommand('copy');
+      $temp.remove();
     }
-  }
-</script>
-<script>
-  function confirmRegenerateApiKey() {
-    Swal.fire({
-      title: 'Are you sure?',
-      text: 'You won\'t be able to revert this action.',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Yes, regenerate it!',
-      cancelButtonText: 'No, cancel!',
-      customClass: {
-        confirmButton: 'btn btn-danger me-2 waves-effect waves-light',
-        cancelButton: 'btn btn-label-secondary waves-effect waves-light'
-      },
-      buttonsStyling: false
-    }).then((result) => {
-      if (result.isConfirmed) {
-        regenerateApiKey();
-      }
-    });
-  }
-  function regenerateApiKey() {
-    const url = "{% url 'metakanban:meeting_regenerate_api_key' %}";
-    const boardId = "{{ board.id }}";
 
-    fetch(url, {
+    // Function to copy text from input elements
+    function copyToClipboardInput(elementId, apiKeyToken) {
+      var $temp = $('<input>');
+      $('body').append($temp);
+      $temp.val(apiKeyToken).select().toString().trim();
+      document.execCommand('copy');
+      $temp.remove();
+    }
+
+    // Function to toggle visibility of API key
+    function toggleVisibility(fieldId, button) {
+      var field = document.getElementById(fieldId);
+      if (field.type === 'password') {
+        field.type = 'text';
+        button.innerHTML = '<i class="fa fa-eye-slash me-2"></i> Show/Hide';
+      } else {
+        field.type = 'password';
+        button.innerHTML = '<i class="fa fa-eye me-2"></i> Show/Hide';
+      }
+    }
+  </script>
+  <script>
+    function confirmRegenerateApiKey() {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: 'You won\'t be able to revert this action.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, regenerate it!',
+        cancelButtonText: 'No, cancel!',
+        customClass: {
+          confirmButton: 'btn btn-danger me-2 waves-effect waves-light',
+          cancelButton: 'btn btn-label-secondary waves-effect waves-light'
+        },
+        buttonsStyling: false
+      }).then((result) => {
+        if (result.isConfirmed) {
+          regenerateApiKey();
+        }
+      });
+    }
+
+    function regenerateApiKey() {
+      const url = "{% url 'metakanban:meeting_regenerate_api_key' %}";
+      const boardId = "{{ board.id }}";
+
+      fetch(url, {
         method: 'POST',
         headers: {
-            'X-CSRFToken': '{{ csrf_token }}',
-            'Content-Type': 'application/json'
+          'X-CSRFToken': '{{ csrf_token }}',
+          'Content-Type': 'application/json'
         },
         credentials: 'same-origin',
         body: JSON.stringify({ board_id: boardId })
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error("Network response was not ok " + response.statusText);
-        }
-        return response.json();
-    })
-    .then(data => {
-        if (data.new_token) {
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok ' + response.statusText);
+          }
+          return response.json();
+        })
+        .then(data => {
+          if (data.new_token) {
             document.getElementById('apiKey').value = data.new_token;
-        } else {
+          } else {
             console.error('Error:', data.error);
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-    });
-}
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+    }
 
-</script>
+  </script>
 {% endblock page_js %}
 
 

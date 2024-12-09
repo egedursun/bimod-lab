@@ -24,7 +24,7 @@
 {% block content %}
   <div class="row">
     <div class="tips-section alert alert-secondary alert-dismissible d-flex ms-2 col-lg-11 align-items-center"
-               role="alert">
+         role="alert">
       <img src="{% static 'img/custom-illustrations-v2/i2-71.png' %}" width="25%" style="border-radius:25px;"
            class="justify-content-end me-8" alt="Illustration for tip">
       <span class="alert-icon rounded">
@@ -97,55 +97,58 @@
           </strong></h5>
           {% if nodes_page_obj %}
             <table class="table table-striped table-bordered mt-4">
-              <img src="{% static 'img/hadron_prime/had-1.png' %}" class="rounded" style="width: 100%;" alt="Illustration for tips">
+              <img src="{% static 'img/hadron_prime/had-1.png' %}" class="rounded" style="width: 100%;"
+                   alt="Illustration for tips">
               <thead>
-                <tr>
-                  <th>Node Name</th>
-                  <th>Description</th>
-                  <th>LLM Model</th>
-                  <th style="min-width:110px; max-width: 110px;">Message Memory</th>
-                  <th style="min-width:110px; max-width: 110px;">SEASE Memory</th>
-                  <th style="min-width:110px; max-width: 110px;">Publish Memory</th>
-                  <th>Actions</th>
-                </tr>
+              <tr>
+                <th>Node Name</th>
+                <th>Description</th>
+                <th>LLM Model</th>
+                <th style="min-width:110px; max-width: 110px;">Message Memory</th>
+                <th style="min-width:110px; max-width: 110px;">SEASE Memory</th>
+                <th style="min-width:110px; max-width: 110px;">Publish Memory</th>
+                <th>Actions</th>
+              </tr>
               </thead>
               <tbody>
-                {% for node in nodes_page_obj %}
-                  <tr>
-                    <td><strong>{{ node.node_name }}</strong></td>
-                    <td><p style="min-width:310px; max-width: 310px; min-height: 100px; max-height: 100px; overflow: auto;">{{ node.node_description }}</p></td>
-                    <td>
-                      {% if node.llm_model %}
-                        {{ node.llm_model.nickname }}
-                      {% else %}
-                        <em>No model assigned</em>
-                      {% endif %}
-                    </td>
-                    <td>
-                      <strong>{{ node.topic_messages_history_lookback_memory_size }}</strong>
-                    </td>
-                    <td>
-                      <strong>{{ node.state_action_state_lookback_memory_size }}</strong>
-                    </td>
-                    <td>
-                      <strong>{{ node.publishing_history_lookback_memory_size }}</strong>
-                    </td>
-                    <td>
-                      <a href="{% url 'hadron_prime:detail_hadron_node' node.id %}" class="btn btn-primary btn-sm me-4">
-                        <i class="fa fa-eye me-2"></i>
-                        <strong>Inspect</strong>
-                      </a>
-                      <a href="{% url 'hadron_prime:update_hadron_node' node.id %}" class="btn btn-warning btn-sm me-4">
-                        <i class="fa fa-edit me-2"></i>
-                        <strong>Update</strong>
-                      </a>
-                      <a href="{% url 'hadron_prime:delete_hadron_node' node.id %}" class="btn btn-danger btn-sm">
-                        <i class="fa fa-trash me-2"></i>
-                        <strong>Delete</strong>
-                      </a>
-                    </td>
-                  </tr>
-                {% endfor %}
+              {% for node in nodes_page_obj %}
+                <tr>
+                  <td><strong>{{ node.node_name }}</strong></td>
+                  <td><p
+                    style="min-width:310px; max-width: 310px; min-height: 100px; max-height: 100px; overflow: auto;">{{ node.node_description }}</p>
+                  </td>
+                  <td>
+                    {% if node.llm_model %}
+                      {{ node.llm_model.nickname }}
+                    {% else %}
+                      <em>No model assigned</em>
+                    {% endif %}
+                  </td>
+                  <td>
+                    <strong>{{ node.topic_messages_history_lookback_memory_size }}</strong>
+                  </td>
+                  <td>
+                    <strong>{{ node.state_action_state_lookback_memory_size }}</strong>
+                  </td>
+                  <td>
+                    <strong>{{ node.publishing_history_lookback_memory_size }}</strong>
+                  </td>
+                  <td>
+                    <a href="{% url 'hadron_prime:detail_hadron_node' node.id %}" class="btn btn-primary btn-sm me-4">
+                      <i class="fa fa-eye me-2"></i>
+                      <strong>Inspect</strong>
+                    </a>
+                    <a href="{% url 'hadron_prime:update_hadron_node' node.id %}" class="btn btn-warning btn-sm me-4">
+                      <i class="fa fa-edit me-2"></i>
+                      <strong>Update</strong>
+                    </a>
+                    <a href="{% url 'hadron_prime:delete_hadron_node' node.id %}" class="btn btn-danger btn-sm">
+                      <i class="fa fa-trash me-2"></i>
+                      <strong>Delete</strong>
+                    </a>
+                  </td>
+                </tr>
+              {% endfor %}
               </tbody>
             </table>
 
@@ -154,7 +157,8 @@
               <ul class="pagination p-4">
                 {% if nodes_page_obj.has_previous %}
                   <li class="page-item">
-                    <a class="page-link" href="?nodes_page={{ nodes_page_obj.previous_page_number }}" aria-label="Previous">
+                    <a class="page-link" href="?nodes_page={{ nodes_page_obj.previous_page_number }}"
+                       aria-label="Previous">
                       <span aria-hidden="true">&laquo;</span>
                     </a>
                   </li>
@@ -197,55 +201,58 @@
           </strong></h5>
           {% if topics_page_obj %}
             <table class="table table-striped table-bordered mt-4">
-              <img src="{% static 'img/hadron_prime/had-2.png' %}" class="rounded" style="width: 100%;" alt="Illustration for tips">
+              <img src="{% static 'img/hadron_prime/had-2.png' %}" class="rounded" style="width: 100%;"
+                   alt="Illustration for tips">
               <thead>
-                <tr>
-                  <th>Topic Name</th>
-                  <th>Category</th>
-                  <th>Purpose</th>
-                  <th>Created At</th>
-                  <th>Actions</th>
-                </tr>
+              <tr>
+                <th>Topic Name</th>
+                <th>Category</th>
+                <th>Purpose</th>
+                <th>Created At</th>
+                <th>Actions</th>
+              </tr>
               </thead>
               <tbody>
-                {% for topic in topics_page_obj %}
-                  <tr>
-                    <td><strong>{{ topic.topic_name }}</strong></td>
-                    <td>
-                      {% if topic.get_topic_category_display == 'Alerts' %}
+              {% for topic in topics_page_obj %}
+                <tr>
+                  <td><strong>{{ topic.topic_name }}</strong></td>
+                  <td>
+                    {% if topic.get_topic_category_display == 'Alerts' %}
                       <span class="btn-danger p-2 rounded"><strong>Alerts</strong></span>
-                      {% elif topic.get_topic_category_display == 'Info' %}
-                        <span class="btn-warning p-2 rounded"><strong>Info</strong></span>
-                      {% elif topic.get_topic_category_display == 'States' %}
-                        <span class="btn-primary p-2 rounded"><strong>States</strong></span>
-                      {% elif topic.get_topic_category_display == 'Measurements' %}
-                        <span class="btn-info p-2 rounded"><strong>Measurements</strong></span>
-                      {% elif topic.get_topic_category_display == 'Actions' %}
-                        <span class="btn-success p-2 rounded"><strong>Actions</strong></span>
-                      {% elif topic.get_topic_category_display == 'Commands' %}
-                        <span class="btn-dark p-2 rounded"><strong>Commands</strong></span>
-                      {% else %}
-                        <span class="btn-secondary p-2 rounded"><strong>Unknown</strong></span>
-                      {% endif %}
-                    </td>
-                    <td><p style="min-width:400px; max-width: 400px; min-height: 100px; max-height: 100px; overflow: auto;">{{ topic.topic_purpose }}</p></td>
-                    <td>{{ topic.created_at|date:"Y-m-d H:i:s" }}</td>
-                    <td>
-                      <a href="{% url 'hadron_prime:detail_hadron_topic' topic.id %}" class="btn btn-primary btn-sm me-4">
-                        <i class="fa fa-eye me-2"></i>
-                        <strong>Inspect</strong>
-                      </a>
-                      <a href="{% url 'hadron_prime:update_hadron_topic' topic.id %}" class="btn btn-warning btn-sm me-4">
-                        <i class="fa fa-edit me-2"></i>
-                        <strong>Edit</strong>
-                      </a>
-                      <a href="{% url 'hadron_prime:delete_hadron_topic' topic.id %}" class="btn btn-danger btn-sm">
-                        <i class="fa fa-trash me-2"></i>
-                        <strong>Delete</strong>
-                      </a>
-                    </td>
-                  </tr>
-                {% endfor %}
+                    {% elif topic.get_topic_category_display == 'Info' %}
+                      <span class="btn-warning p-2 rounded"><strong>Info</strong></span>
+                    {% elif topic.get_topic_category_display == 'States' %}
+                      <span class="btn-primary p-2 rounded"><strong>States</strong></span>
+                    {% elif topic.get_topic_category_display == 'Measurements' %}
+                      <span class="btn-info p-2 rounded"><strong>Measurements</strong></span>
+                    {% elif topic.get_topic_category_display == 'Actions' %}
+                      <span class="btn-success p-2 rounded"><strong>Actions</strong></span>
+                    {% elif topic.get_topic_category_display == 'Commands' %}
+                      <span class="btn-dark p-2 rounded"><strong>Commands</strong></span>
+                    {% else %}
+                      <span class="btn-secondary p-2 rounded"><strong>Unknown</strong></span>
+                    {% endif %}
+                  </td>
+                  <td><p
+                    style="min-width:400px; max-width: 400px; min-height: 100px; max-height: 100px; overflow: auto;">{{ topic.topic_purpose }}</p>
+                  </td>
+                  <td>{{ topic.created_at|date:"Y-m-d H:i:s" }}</td>
+                  <td>
+                    <a href="{% url 'hadron_prime:detail_hadron_topic' topic.id %}" class="btn btn-primary btn-sm me-4">
+                      <i class="fa fa-eye me-2"></i>
+                      <strong>Inspect</strong>
+                    </a>
+                    <a href="{% url 'hadron_prime:update_hadron_topic' topic.id %}" class="btn btn-warning btn-sm me-4">
+                      <i class="fa fa-edit me-2"></i>
+                      <strong>Edit</strong>
+                    </a>
+                    <a href="{% url 'hadron_prime:delete_hadron_topic' topic.id %}" class="btn btn-danger btn-sm">
+                      <i class="fa fa-trash me-2"></i>
+                      <strong>Delete</strong>
+                    </a>
+                  </td>
+                </tr>
+              {% endfor %}
               </tbody>
             </table>
 
@@ -254,7 +261,8 @@
               <ul class="pagination p-4">
                 {% if topics_page_obj.has_previous %}
                   <li class="page-item">
-                    <a class="page-link" href="?topics_page={{ topics_page_obj.previous_page_number }}" aria-label="Previous">
+                    <a class="page-link" href="?topics_page={{ topics_page_obj.previous_page_number }}"
+                       aria-label="Previous">
                       <span aria-hidden="true">&laquo;</span>
                     </a>
                   </li>

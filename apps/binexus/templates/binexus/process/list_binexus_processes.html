@@ -17,8 +17,6 @@
   ~
   -->
 
-<!-- templates/binexus/process/list_binexus_processes.html -->
-
 {% extends layout_path %}
 
 {% load static %}
@@ -28,8 +26,8 @@
 
 {% block vendor_css %}
   {{ block.super }}
-  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}"/>
-  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}" />
 {% endblock vendor_css %}
 
 {% block vendor_js %}
@@ -54,7 +52,8 @@
     <div class="d-flex flex-column ps-1">
       <h5 class="alert-heading mb-2">Tip</h5>
       <p class="mb-0">
-        In this page, you can view and manage all the processes created for your organizations. You can update, delete, or view the details of any process.
+        In this page, you can view and manage all the processes created for your organizations. You can update, delete,
+        or view the details of any process.
       </p>
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
       </button>
@@ -77,7 +76,8 @@
         <a class="collapsed" data-bs-toggle="collapse" href="#collapse-{{ organization.id }}" role="button"
            aria-expanded="false" aria-controls="collapse-{{ organization.id }}">
           <div class="d-flex">
-            <img src="{% if organization.organization_image %}{{ organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+            <img src="
+              {% if organization.organization_image %}{{ organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
                  alt="Organization Image" class="rounded" width="60">
             <h4>
               <strong class="ms-4">{{ organization.name }}</strong>
@@ -109,7 +109,10 @@
           {% for process in processes %}
             <tr class="overflow-auto">
               <td><strong>{{ process.process_name }}</strong></td>
-              <td><div style="min-width: 400px; max-width: 400px; max-height: 150px; min-height: 150px; overflow: auto;">{{ process.process_description|linebreaksbr }}</div></td>
+              <td>
+                <div
+                  style="min-width: 400px; max-width: 400px; max-height: 150px; min-height: 150px; overflow: auto;">{{ process.process_description|linebreaksbr }}</div>
+              </td>
               <td><strong>{{ process.llm_model.nickname }}</strong></td>
               <td><strong>{{ process.created_at|date:"Y-m-d H:i" }}</strong></td>
               <td>

@@ -1,21 +1,21 @@
-  <!--
-  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
-  ~
-  ~ Project: Bimod.io™
-  ~ File: list_custom_functions.html
-  ~ Last Modified: 2024-10-05 01:39:48
-  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-05 14:42:40
-  ~
-  ~ This software is proprietary and confidential. Unauthorized copying,
-  ~ distribution, modification, or use of this software, whether for
-  ~ commercial, academic, or any other purpose, is strictly prohibited
-  ~ without the prior express written permission of BMD™ Autonomous
-  ~ Holdings.
-  ~
-  ~  For permission inquiries, please contact: admin@Bimod.io.
-  ~
-  -->
+<!--
+~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+~
+~ Project: Bimod.io™
+~ File: list_custom_functions.html
+~ Last Modified: 2024-10-05 01:39:48
+~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+~ Created: 2024-10-05 14:42:40
+~
+~ This software is proprietary and confidential. Unauthorized copying,
+~ distribution, modification, or use of this software, whether for
+~ commercial, academic, or any other purpose, is strictly prohibited
+~ without the prior express written permission of BMD™ Autonomous
+~ Holdings.
+~
+~  For permission inquiries, please contact: admin@Bimod.io.
+~
+-->
 
 {% extends layout_path %}
 
@@ -26,9 +26,9 @@
 
 {% block vendor_css %}
   {{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}"/>
-  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}"/>
-  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css' %}" />
   <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/font/bootstrap-icons.min.css">
 {% endblock vendor_css %}
@@ -109,7 +109,8 @@
       <h5 class="card-title">
         <strong>Internal Function Library</strong>
       </h5>
-      <img src="{% static 'img/functions/fun-1.png' %}" class="rounded mt-4 mb-4" style="width: 100%;" alt="Illustration for tips">
+      <img src="{% static 'img/functions/fun-1.png' %}" class="rounded mt-4 mb-4" style="width: 100%;"
+           alt="Illustration for tips">
     </div>
     <div class="card-datatable table-responsive">
       <a href="{% url 'mm_functions:create' %}">
@@ -152,6 +153,7 @@
             <td></td>
             <td>
               <img src="
+
                 {% if function.function_picture %}{{ function.function_picture.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
                    alt="{{ function.name }}" class="avatar rounded">
             </td>
@@ -159,7 +161,8 @@
             <td><strong>{{ function.created_by_user }}</strong></td>
             <td style="min-width: 300px;">{{ function.description }}</td>
             <td>
-              <div class="label bg-label-dark rounded p-2 overflow-scroll" style="min-height: 200px; max-height: 200px;">
+              <div class="label bg-label-dark rounded p-2 overflow-scroll"
+                   style="min-height: 200px; max-height: 200px;">
                 {% for package in function.packages %}
                   <div class="badge bg-light text-dark m-1">
                     {{ package.name }}{% if package.version %} ({{ package.version }}){% endif %}
@@ -169,7 +172,8 @@
             </td>
             <td>
               <ul class="list-unstyled" style="font-size: 10px;">
-                <div class="label bg-label-dark rounded p-2 overflow-scroll" style="min-height: 200px; max-height: 200px;">
+                <div class="label bg-label-dark rounded p-2 overflow-scroll"
+                     style="min-height: 200px; max-height: 200px;">
                   {% for input in function.input_fields %}
                     <li class="badge bg-label-secondary rounded m-1 w-100">
                       <p class="label bg-label-light text-dark rounded p-1 m-1">
@@ -185,7 +189,8 @@
             </td>
             <td>
               <ul class="list-unstyled" style="font-size: 10px;">
-                <div class="label bg-label-dark rounded p-2 overflow-scroll" style="min-height: 200px; max-height: 200px;">
+                <div class="label bg-label-dark rounded p-2 overflow-scroll"
+                     style="min-height: 200px; max-height: 200px;">
                   {% for output in function.output_fields %}
                     <li class="badge bg-label-secondary rounded m-1 w-100">
                       <p class="label bg-label-light text-dark rounded p-1 m-1">

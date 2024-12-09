@@ -1,4 +1,3 @@
-
 <!--
   ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
   ~
@@ -27,152 +26,158 @@
 {% block title %}BMD™ Autonomous Holdings - Learning Academy{% endblock %}
 
 {% block vendor_css %}
-{{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
-<link rel="stylesheet" href="{% static 'vendor/libs/plyr/plyr.css' %}" />
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/plyr/plyr.css' %}" />
 {% endblock vendor_css %}
 
 {% block vendor_js %}
-{{ block.super }}
-<script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
-<script src="{% static 'vendor/libs/plyr/plyr.js' %}"></script>
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+  <script src="{% static 'vendor/libs/plyr/plyr.js' %}"></script>
 {% endblock vendor_js %}
 
 {% block page_css %}
-{{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/css/pages/app-academy.css' %}" />
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/css/pages/app-academy.css' %}" />
 {% endblock page_css %}
 
 {% block page_js %}
-{{ block.super }}
-<script src="{% static 'js/app-academy-course.js' %}"></script>
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const searchInput = document.querySelector('input[type="search"]');
-    searchInput.addEventListener('input', function () {
-      const searchValue = searchInput.value.toLowerCase();
-      const courseCards = document.querySelectorAll('.course-card');
+  {{ block.super }}
+  <script src="{% static 'js/app-academy-course.js' %}"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const searchInput = document.querySelector('input[type="search"]');
+      searchInput.addEventListener('input', function() {
+        const searchValue = searchInput.value.toLowerCase();
+        const courseCards = document.querySelectorAll('.course-card');
 
-      courseCards.forEach(card => {
-        const title = card.querySelector('.course-title').textContent.toLowerCase();
-        const description = card.querySelector('.course-description').textContent.toLowerCase();
-        const tags = card.getAttribute('data-tags').toLowerCase();
-        if (title.includes(searchValue) || description.includes(searchValue) || tags.includes(searchValue)) {
-          card.style.display = 'block';
-        } else {
-          card.style.display = 'none';
-        }
+        courseCards.forEach(card => {
+          const title = card.querySelector('.course-title').textContent.toLowerCase();
+          const description = card.querySelector('.course-description').textContent.toLowerCase();
+          const tags = card.getAttribute('data-tags').toLowerCase();
+          if (title.includes(searchValue) || description.includes(searchValue) || tags.includes(searchValue)) {
+            card.style.display = 'block';
+          } else {
+            card.style.display = 'none';
+          }
+        });
       });
     });
-  });
-</script>
+  </script>
 {% endblock page_js %}
 
 {% block content %}
-<div class="app-academy" style="margin: 5% 15%;">
-  <h2>
-    <strong>
-      <i class="fa fa-mortar-board me-4"></i>
-      BMD™ Learning Academy
-    </strong>
-  </h2>
-  <a href="{% url 'landing:index' %}" class="btn btn-primary btn-icon mt-4 w-25">
-    <strong>
-      <i class="fa fa-home me-2"></i>
-      Back to Home
-    </strong>
-  </a>
-  <hr>
-  <img src="{% static 'img/bmd_academy/aca-1.png' %}" class="rounded mt-8 mb-8" style="width: 100%;" alt="Illustration for tips">
-  <hr>
-  <div class="card p-0 mb-6">
-    <div class="card-body d-flex flex-column flex-md-row justify-content-between p-0 pt-6">
-      <div class="app-academy-md-25 card-body py-0 pt-6 ps-12">
-        <img src="{% static 'img/bmd_academy/academy-bmd.png' %}" class="img-fluid mb-12" alt="Bulb in hand" />
-      </div>
-      <div class="app-academy-md-50 card-body d-flex align-items-md-center flex-column text-md-center mb-6 py-6">
+  <div class="app-academy" style="margin: 5% 15%;">
+    <h2>
+      <strong>
+        <i class="fa fa-mortar-board me-4"></i>
+        BMD™ Learning Academy
+      </strong>
+    </h2>
+    <a href="{% url 'landing:index' %}" class="btn btn-primary btn-icon mt-4 w-25">
+      <strong>
+        <i class="fa fa-home me-2"></i>
+        Back to Home
+      </strong>
+    </a>
+    <hr>
+    <img src="{% static 'img/bmd_academy/aca-1.png' %}" class="rounded mt-8 mb-8" style="width: 100%;"
+         alt="Illustration for tips">
+    <hr>
+    <div class="card p-0 mb-6">
+      <div class="card-body d-flex flex-column flex-md-row justify-content-between p-0 pt-6">
+        <div class="app-academy-md-25 card-body py-0 pt-6 ps-12">
+          <img src="{% static 'img/bmd_academy/academy-bmd.png' %}" class="img-fluid mb-12" alt="Bulb in hand" />
+        </div>
+        <div class="app-academy-md-50 card-body d-flex align-items-md-center flex-column text-md-center mb-6 py-6">
           <span class="card-title mb-4 lh-lg px-md-12 h4 text-heading fw-bolder">
             Learn using BimodLab™, ElectronCopilot™, FermionCopilot™, and more by checking our online courses.
             <span class="text-primary text-nowrap">All in one place.</span>
           </span>
-        <p class="mb-4 px-0 px-md-2">
-          <strong>
-            Grow your skill in using our products with our online course offerings and get the most of your experience
-            with Bimod.o and all other services offered by BMD™ Autonomous Holdings.
-          </strong>
-        </p>
-        <hr class="my-6 w-100">
-        <div class="d-flex align-items-center justify-content-between app-academy-md-80 w-100">
-          <input type="search" placeholder="Search through course offerings..." class="form-control me-4 border border-primary border-3 mt-4 rounded" style="min-height: 60px;" />
+          <p class="mb-4 px-0 px-md-2">
+            <strong>
+              Grow your skill in using our products with our online course offerings and get the most of your experience
+              with Bimod.o and all other services offered by BMD™ Autonomous Holdings.
+            </strong>
+          </p>
+          <hr class="my-6 w-100">
+          <div class="d-flex align-items-center justify-content-between app-academy-md-80 w-100">
+            <input type="search" placeholder="Search through course offerings..."
+                   class="form-control me-4 border border-primary border-3 mt-4 rounded" style="min-height: 60px;" />
+          </div>
+        </div>
+        <div class="app-academy-md-25 d-flex align-items-end justify-content-end">
+          <img src="{% static 'img/bmd_academy/academy-bimodlab.png' %}" alt="pencil rocket"
+               class="img-fluid mb-10 p-9 pt-6 me-4" style="border-radius: 60px;" />
         </div>
       </div>
-      <div class="app-academy-md-25 d-flex align-items-end justify-content-end">
-        <img src="{% static 'img/bmd_academy/academy-bimodlab.png' %}" alt="pencil rocket" class="img-fluid mb-10 p-9 pt-6 me-4" style="border-radius: 60px;" />
-      </div>
     </div>
-  </div>
-  <div class="card mb-6">
-    <div class="card-header d-flex flex-wrap justify-content-between gap-4">
-      <div class="card-title mb-0 me-1">
-        <h5 class="mb-0"><strong>Course Offerings</strong></h5>
-        <p class="mb-0">Total {{ courses|length }} course offerings available.</p>
+    <div class="card mb-6">
+      <div class="card-header d-flex flex-wrap justify-content-between gap-4">
+        <div class="card-title mb-0 me-1">
+          <h5 class="mb-0"><strong>Course Offerings</strong></h5>
+          <p class="mb-0">Total {{ courses|length }} course offerings available.</p>
+        </div>
       </div>
-    </div>
-    <div class="card-body">
-      <div class="row gy-6 mb-6">
-        {% for course in courses %}
-        <div class="col-sm-6 col-lg-4 course-card" data-tags="{{ course.tags }}">
-          <div class="card p-2 h-100 shadow-none border">
-            <div class="rounded-2 text-center mb-4">
-              <a href="{% url 'bmd_academy:course_detail' course.course_slug %}">
-                {% if course.course_thumbnail_image_url %}
-                  <img class="img-fluid rounded px-4 pt-4" src="{{ course.course_thumbnail_image_url }}" alt="Course Thumbnail">
-                {% else %}
-                  <img class="img-fluid rounded px-4 pt-4" src="{% static 'img/front-pages/landing-page/hero-dashboard-dark.png' %}" alt="Course Thumbnail">
-                {% endif %}
-              </a>
-            </div>
-            <div class="card-body p-4 pt-2">
-              <div class="d-flex justify-content-start align-items-center mb-4">
+      <div class="card-body">
+        <div class="row gy-6 mb-6">
+          {% for course in courses %}
+            <div class="col-sm-6 col-lg-4 course-card" data-tags="{{ course.tags }}">
+              <div class="card p-2 h-100 shadow-none border">
+                <div class="rounded-2 text-center mb-4">
+                  <a href="{% url 'bmd_academy:course_detail' course.course_slug %}">
+                    {% if course.course_thumbnail_image_url %}
+                      <img class="img-fluid rounded px-4 pt-4" src="{{ course.course_thumbnail_image_url }}"
+                           alt="Course Thumbnail">
+                    {% else %}
+                      <img class="img-fluid rounded px-4 pt-4"
+                           src="{% static 'img/front-pages/landing-page/hero-dashboard-dark.png' %}"
+                           alt="Course Thumbnail">
+                    {% endif %}
+                  </a>
+                </div>
+                <div class="card-body p-4 pt-2">
+                  <div class="d-flex justify-content-start align-items-center mb-4">
                 <span class="btn-primary rounded p-2 me-2">
                   <strong>
                     <i class="ti ti-world me-1"></i>{{ course.course_language }}
                   </strong>
                 </span>
-                {% if course.course_under_construction %}
-                  <div class="btn-danger rounded p-2 me-2">
-                    <strong>
-                      <i class="ti ti-tools me-1"></i>Coming Soon
-                    </strong>
+                    {% if course.course_under_construction %}
+                      <div class="btn-danger rounded p-2 me-2">
+                        <strong>
+                          <i class="ti ti-tools me-1"></i>Coming Soon
+                        </strong>
+                      </div>
+                    {% endif %}
+                    <div class="btn-warning rounded p-2 me-2">
+                      <strong>
+                        <i class="ti ti-book me-1"></i>{{ course.sections.all|length }} Chapters
+                      </strong>
+                    </div>
+                    <div class="btn-instagram rounded p-2 me-2">
+                      <strong>
+                        <i class="ti ti-world me-1"></i>{{ amount_videos_by_course|get_item:course.id }} Videos
+                      </strong>
+                    </div>
                   </div>
-                {% endif %}
-                <div class="btn-warning rounded p-2 me-2">
-                  <strong>
-                    <i class="ti ti-book me-1"></i>{{ course.sections.all|length }} Chapters
-                  </strong>
-                </div>
-                <div class="btn-instagram rounded p-2 me-2">
-                  <strong>
-                    <i class="ti ti-world me-1"></i>{{ amount_videos_by_course|get_item:course.id }} Videos
-                  </strong>
+                  <a href="{% url 'bmd_academy:course_detail' course.course_slug %}" class="h5 course-title">
+                    <strong>{{ course.course_title }}</strong>
+                  </a>
+                  <p class="mt-1 course-description">{{ course.course_description|truncatewords:20 }}</p>
+                  <a class="w-100 btn btn-primary" href="{% url 'bmd_academy:course_detail' course.course_slug %}">
+                    <strong>
+                      <i class="ti ti-arrow-right me-2"></i>
+                      <span class="me-2">Join Course Now</span>
+                    </strong>
+                  </a>
                 </div>
               </div>
-              <a href="{% url 'bmd_academy:course_detail' course.course_slug %}" class="h5 course-title">
-                <strong>{{ course.course_title }}</strong>
-              </a>
-              <p class="mt-1 course-description">{{ course.course_description|truncatewords:20 }}</p>
-              <a class="w-100 btn btn-primary" href="{% url 'bmd_academy:course_detail' course.course_slug %}">
-                <strong>
-                  <i class="ti ti-arrow-right me-2"></i>
-                  <span class="me-2">Join Course Now</span>
-                </strong>
-              </a>
             </div>
-          </div>
+          {% endfor %}
         </div>
-        {% endfor %}
       </div>
     </div>
   </div>
-</div>
 {% endblock %}

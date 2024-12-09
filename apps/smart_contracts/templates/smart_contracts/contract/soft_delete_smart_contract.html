@@ -1,4 +1,3 @@
-
 <!--
   ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
   ~
@@ -25,7 +24,7 @@
 {% block title %}Delete Smart Contract{% endblock %}
 
 {% block content %}
-<div class="row">
+  <div class="row">
     <div class="col-xl mb-6">
       <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
@@ -34,7 +33,9 @@
         <div class="card-body">
           {% if messages %}
             {% for message in messages %}
-              <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}" role="alert">
+              <div
+                class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
+                role="alert">
                 {{ message }}
               </div>
             {% endfor %}
@@ -47,13 +48,16 @@
               <br>
               • This deletion is irreversible and will remove the contract and all its associated data.
               <br>
-              • This action will not affect the blockchain network, thus your smart contract will STILL remain active on the blockchain.
+              • This action will not affect the blockchain network, thus your smart contract will STILL remain active on
+              the blockchain.
             </strong></h6>
-            <img src="{% static 'img/custom-illustrations-v2/i2-88.png' %}" width="25%" style="border-radius:25px;" class="justify-content-end" alt="Illustration for confirming deletion">
+            <img src="{% static 'img/custom-illustrations-v2/i2-88.png' %}" width="25%" style="border-radius:25px;"
+                 class="justify-content-end" alt="Illustration for confirming deletion">
             <hr>
             <button type="submit" class="btn btn-danger mt-4 me-4"><strong>
               <i class="fa fa-skull-crossbones me-4"></i>
-              DELETE &nbsp;</strong> the Smart Contract.</button>
+              DELETE &nbsp;</strong> the Smart Contract.
+            </button>
             <a href="{% url 'smart_contracts:contract_list' %}" class="btn btn-secondary mt-4"><strong>
               <i class="fa fa-cancel me-4"></i>
               CANCEL &nbsp;</strong> the deletion

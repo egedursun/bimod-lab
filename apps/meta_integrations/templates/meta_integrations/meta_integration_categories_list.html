@@ -26,133 +26,136 @@
 {% block title %}BMD™ Autonomous Holdings - Meta Integration Categories{% endblock %}
 
 {% block vendor_css %}
-{{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
 {% endblock vendor_css %}
 
 {% block vendor_js %}
-{{ block.super }}
-<script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
 {% endblock vendor_js %}
 
 {% block page_css %}
-{{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/css/pages/app-meta-integration-categories.css' %}" />
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/css/pages/app-meta-integration-categories.css' %}" />
 {% endblock page_css %}
 
 {% block page_js %}
-{{ block.super }}
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const searchInput = document.querySelector('input[type="search"]');
-    searchInput.addEventListener('input', function () {
-      const searchValue = searchInput.value.toLowerCase();
-      const categoryCards = document.querySelectorAll('.category-card');
+  {{ block.super }}
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const searchInput = document.querySelector('input[type="search"]');
+      searchInput.addEventListener('input', function() {
+        const searchValue = searchInput.value.toLowerCase();
+        const categoryCards = document.querySelectorAll('.category-card');
 
-      categoryCards.forEach(card => {
-        const title = card.querySelector('.category-title').textContent.toLowerCase();
-        const description = card.querySelector('.category-description').textContent.toLowerCase();
-        const tags = card.getAttribute('data-tags').toLowerCase();
-        if (title.includes(searchValue) || description.includes(searchValue) || tags.includes(searchValue)) {
-          card.style.display = 'block';
-        } else {
-          card.style.display = 'none';
-        }
+        categoryCards.forEach(card => {
+          const title = card.querySelector('.category-title').textContent.toLowerCase();
+          const description = card.querySelector('.category-description').textContent.toLowerCase();
+          const tags = card.getAttribute('data-tags').toLowerCase();
+          if (title.includes(searchValue) || description.includes(searchValue) || tags.includes(searchValue)) {
+            card.style.display = 'block';
+          } else {
+            card.style.display = 'none';
+          }
+        });
       });
     });
-  });
-</script>
+  </script>
 {% endblock page_js %}
 
 {% block content %}
-<div class="app-meta-integration-categories">
-  <h2>
-    <strong>
-      <i class="fa fa-plug me-4"></i>
-      Meta Integration Categories
-    </strong>
-  </h2>
+  <div class="app-meta-integration-categories">
+    <h2>
+      <strong>
+        <i class="fa fa-plug me-4"></i>
+        Meta Integration Categories
+      </strong>
+    </h2>
 
-  <hr>
+    <hr>
 
-  <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 mt-4 align-items-center"
-       role="alert">
-    <img src="{% static 'img/custom-illustrations-v2/i2-88.png' %}" width="25%" style="border-radius:25px;"
-         class="justify-content-end me-8" alt="Illustration for tip">
-    <span class="alert-icon rounded">
+    <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 mt-4 align-items-center"
+         role="alert">
+      <img src="{% static 'img/custom-illustrations-v2/i2-88.png' %}" width="25%" style="border-radius:25px;"
+           class="justify-content-end me-8" alt="Illustration for tip">
+      <span class="alert-icon rounded">
       <i class="ti ti-bookmark"></i>
     </span>
-    <div class="d-flex flex-column ps-1">
-      <h5 class="alert-heading mb-2">Tip</h5>
-      <p class="mb-0">
-        <strong>Explore Meta Integration Categories</strong> to discover plug-and-play teams that suit your business
-        needs. Search through categories to find the best team, then click below to explore more.
-      </p>
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-      </button>
-    </div>
-  </div>
-
-  {% if messages %}
-    {% for message in messages %}
-      <div
-        class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
-        role="alert">
-        {{ message }}
+      <div class="d-flex flex-column ps-1">
+        <h5 class="alert-heading mb-2">Tip</h5>
+        <p class="mb-0">
+          <strong>Explore Meta Integration Categories</strong> to discover plug-and-play teams that suit your business
+          needs. Search through categories to find the best team, then click below to explore more.
+        </p>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+        </button>
       </div>
-    {% endfor %}
-  {% endif %}
-
-  <hr>
-
-  <div class="card mb-6">
-    <div class="card-header">
-      <h5 class="mb-4"><strong>Available Categories</strong></h5>
-      <p class="mb-2">🟢 &nbsp; Total {{ categories|length }} categories available.</p>
-      <p class="mb-0">🟢 &nbsp; Total {{ total_teams }} boilerplate teams available.</p>
     </div>
-    <div class="card-body">
-      <div class="d-flex align-items-center mb-4 p-6">
-        <input type="search" placeholder="Search through categories..." class="form-control me-4 border border-primary border-3 mt-4 rounded" style="min-height: 60px;" />
-      </div>
-      <hr>
-      <div class="row gy-6 mb-6">
-        {% for category in categories %}
-        <div class="col-sm-4 col-lg-4 category-card" data-tags="{{ category.tags|join:', ' }}">
-          <div class="card p-2 h-100 shadow-none border">
-            <div class="rounded-2 text-center mb-4">
-              <a href="{% url 'meta_integrations:store' category.category_slug %}">
-                {% if category.category_image_url %}
-                  <img class="img-fluid rounded px-4 pt-4" src="{{ category.category_image_url }}" alt="{{ category.category_name }}">
-                {% else %}
-                  <img class="img-fluid rounded px-4 pt-4" src="{% static 'img/default-category.png' %}" alt="{{ category.category_name }}">
-                {% endif %}
-              </a>
-            </div>
-            <div class="btn-primary rounded p-2 ms-4 me-4">
-              <strong class="text-white">
-                <i class="fa fa-tag me-2"></i>
-                {{ category.metaintegrationteam_set.count }} Boilerplate Teams
-              </strong>
-            </div>
-            <hr>
-            <div class="card-body p-4 pt-2">
-              <a href="{% url 'meta_integrations:store' category.category_slug %}" class="h5 category-title">
-                <strong>{{ category.category_name }}</strong>
-              </a>
-              <p class="mt-1 category-description">{{ category.category_description }}</p>
-              <a class="w-100 btn btn-instagram" href="{% url 'meta_integrations:store' category.category_slug %}">
-                <strong>
-                  <i class="ti ti-eye me-2"></i>
-                  <span class="me-2">Explore Teams</span>
-                </strong>
-              </a>
-            </div>
-          </div>
+
+    {% if messages %}
+      {% for message in messages %}
+        <div
+          class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
+          role="alert">
+          {{ message }}
         </div>
-        {% endfor %}
+      {% endfor %}
+    {% endif %}
+
+    <hr>
+
+    <div class="card mb-6">
+      <div class="card-header">
+        <h5 class="mb-4"><strong>Available Categories</strong></h5>
+        <p class="mb-2">🟢 &nbsp; Total {{ categories|length }} categories available.</p>
+        <p class="mb-0">🟢 &nbsp; Total {{ total_teams }} boilerplate teams available.</p>
+      </div>
+      <div class="card-body">
+        <div class="d-flex align-items-center mb-4 p-6">
+          <input type="search" placeholder="Search through categories..."
+                 class="form-control me-4 border border-primary border-3 mt-4 rounded" style="min-height: 60px;" />
+        </div>
+        <hr>
+        <div class="row gy-6 mb-6">
+          {% for category in categories %}
+            <div class="col-sm-4 col-lg-4 category-card" data-tags="{{ category.tags|join:', ' }}">
+              <div class="card p-2 h-100 shadow-none border">
+                <div class="rounded-2 text-center mb-4">
+                  <a href="{% url 'meta_integrations:store' category.category_slug %}">
+                    {% if category.category_image_url %}
+                      <img class="img-fluid rounded px-4 pt-4" src="{{ category.category_image_url }}"
+                           alt="{{ category.category_name }}">
+                    {% else %}
+                      <img class="img-fluid rounded px-4 pt-4" src="{% static 'img/default-category.png' %}"
+                           alt="{{ category.category_name }}">
+                    {% endif %}
+                  </a>
+                </div>
+                <div class="btn-primary rounded p-2 ms-4 me-4">
+                  <strong class="text-white">
+                    <i class="fa fa-tag me-2"></i>
+                    {{ category.metaintegrationteam_set.count }} Boilerplate Teams
+                  </strong>
+                </div>
+                <hr>
+                <div class="card-body p-4 pt-2">
+                  <a href="{% url 'meta_integrations:store' category.category_slug %}" class="h5 category-title">
+                    <strong>{{ category.category_name }}</strong>
+                  </a>
+                  <p class="mt-1 category-description">{{ category.category_description }}</p>
+                  <a class="w-100 btn btn-instagram" href="{% url 'meta_integrations:store' category.category_slug %}">
+                    <strong>
+                      <i class="ti ti-eye me-2"></i>
+                      <span class="me-2">Explore Teams</span>
+                    </strong>
+                  </a>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
       </div>
     </div>
   </div>
-</div>
 {% endblock %}

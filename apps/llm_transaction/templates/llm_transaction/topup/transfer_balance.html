@@ -1,21 +1,21 @@
-  <!--
-  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
-  ~
-  ~ Project: Bimod.io™
-  ~ File: transfer_balance.html
-  ~ Last Modified: 2024-10-05 01:39:48
-  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-05 14:42:43
-  ~
-  ~ This software is proprietary and confidential. Unauthorized copying,
-  ~ distribution, modification, or use of this software, whether for
-  ~ commercial, academic, or any other purpose, is strictly prohibited
-  ~ without the prior express written permission of BMD™ Autonomous
-  ~ Holdings.
-  ~
-  ~  For permission inquiries, please contact: admin@Bimod.io.
-  ~
-  -->
+<!--
+~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+~
+~ Project: Bimod.io™
+~ File: transfer_balance.html
+~ Last Modified: 2024-10-05 01:39:48
+~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+~ Created: 2024-10-05 14:42:43
+~
+~ This software is proprietary and confidential. Unauthorized copying,
+~ distribution, modification, or use of this software, whether for
+~ commercial, academic, or any other purpose, is strictly prohibited
+~ without the prior express written permission of BMD™ Autonomous
+~ Holdings.
+~
+~  For permission inquiries, please contact: admin@Bimod.io.
+~
+-->
 
 {% extends layout_path %}
 
@@ -26,10 +26,10 @@
 
 {% block vendor_css %}
   {{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}"/>
-  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}"/>
-  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css' %}"/>
-  <link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}" />
   <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/font/bootstrap-icons.min.css">
 {% endblock vendor_css %}
@@ -42,12 +42,12 @@
 
   <!-- Adding JavaScript for dynamic balance updates -->
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       const organizationsData = {
         {% for org in organizations %}
           "{{ org.id }}": {
-            "balance": "{{ org.balance }}",
-            "name": "{{ org.name }}"
+            'balance': "{{ org.balance }}",
+            'name': "{{ org.name }}"
           },
         {% endfor %}
       };
@@ -59,7 +59,7 @@
       const transferForm = document.querySelector('form');
 
       // Update balance cards dynamically when an organization is selected
-      sourceSelect.addEventListener('change', function () {
+      sourceSelect.addEventListener('change', function() {
         const selectedOrgId = this.value;
         const selectedOrg = organizationsData[selectedOrgId];
         if (selectedOrg) {
@@ -67,7 +67,7 @@
         }
       });
 
-      targetSelect.addEventListener('change', function () {
+      targetSelect.addEventListener('change', function() {
         const selectedOrgId = this.value;
         const selectedOrg = organizationsData[selectedOrgId];
         if (selectedOrg) {
@@ -76,7 +76,7 @@
       });
 
       // Form validation to prevent the same source and destination
-      transferForm.addEventListener('submit', function (event) {
+      transferForm.addEventListener('submit', function(event) {
         if (sourceSelect.value === targetSelect.value) {
           event.preventDefault();
           alert('Source and destination organizations cannot be the same.');

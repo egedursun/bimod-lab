@@ -1,21 +1,21 @@
-  <!--
-  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
-  ~
-  ~ Project: Bimod.io™
-  ~ File: create_support_ticket.html
-  ~ Last Modified: 2024-10-05 01:39:48
-  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-05 14:42:41
-  ~
-  ~ This software is proprietary and confidential. Unauthorized copying,
-  ~ distribution, modification, or use of this software, whether for
-  ~ commercial, academic, or any other purpose, is strictly prohibited
-  ~ without the prior express written permission of BMD™ Autonomous
-  ~ Holdings.
-  ~
-  ~  For permission inquiries, please contact: admin@Bimod.io.
-  ~
-  -->
+<!--
+~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+~
+~ Project: Bimod.io™
+~ File: create_support_ticket.html
+~ Last Modified: 2024-10-05 01:39:48
+~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+~ Created: 2024-10-05 14:42:41
+~
+~ This software is proprietary and confidential. Unauthorized copying,
+~ distribution, modification, or use of this software, whether for
+~ commercial, academic, or any other purpose, is strictly prohibited
+~ without the prior express written permission of BMD™ Autonomous
+~ Holdings.
+~
+~  For permission inquiries, please contact: admin@Bimod.io.
+~
+-->
 
 {% extends layout_path %}
 
@@ -26,7 +26,7 @@
 
 {% block vendor_css %}
   {{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
 {% endblock vendor_css %}
 
 {% block vendor_js %}
@@ -51,7 +51,8 @@
         </a>
 
         <div class="card-body">
-          <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+          <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center"
+               role="alert">
             <img src="{% static 'img/custom-illustrations-v2/i2-48.png' %}" width="25%" style="border-radius:25px;"
                  class="justify-content-end me-8" alt="Illustration for tips">
             <span class="alert-icon rounded">
@@ -83,7 +84,7 @@
               <div class="col-6 mb-6">
                 <label class="form-label" for="title">Title</label>
                 <input type="text" class="form-control" id="title" name="title" placeholder="Enter ticket title"
-                       required/>
+                       required />
               </div>
               <div class="col-6 mb-6">
                 <label class="form-label" for="priority">Priority</label>
@@ -101,7 +102,7 @@
               </div>
               <div class="col-6 mb-6">
                 <label class="form-label" for="attachment">Attachment (optional)</label>
-                <input type="file" class="form-control" id="attachment" name="attachment"/>
+                <input type="file" class="form-control" id="attachment" name="attachment" />
               </div>
             </div>
             <hr>
@@ -115,7 +116,7 @@
   </div>
 
   <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
       $('.select2').select2();
     });
   </script>

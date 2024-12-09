@@ -25,166 +25,178 @@
 {% block title %}Semantor Configuration{% endblock %}
 
 {% block vendor_css %}
-    {{ block.super }}
+  {{ block.super }}
 
-<link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
 {% endblock vendor_css %}
 
 {% block vendor_js %}
-    {{ block.super }}
-    <script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
 {% endblock vendor_js %}
 
 {% block content %}
-<div class="row">
+  <div class="row">
     <div class="col-xl mb-6">
-        <div class="card">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <h4 class="mb-0"><strong>
-                  <i class="fa fa-cogs me-4"></i>
-                  Semantor Configuration
-                </strong></h4>
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h4 class="mb-0"><strong>
+            <i class="fa fa-cogs me-4"></i>
+            Semantor Configuration
+          </strong></h4>
+        </div>
+        <div class="card-body">
+          <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center mb-8"
+               role="alert">
+            <img src="{% static 'img/custom-illustrations-v2/i2-60.png' %}" width="25%" style="border-radius:25px;"
+                 class="me-4" alt="Illustration for tip">
+            <span class="alert-icon rounded"><i class="ti ti-bookmark"></i></span>
+            <div class="d-flex flex-column ps-1">
+              <h5 class="alert-heading mb-2">Tip</h5>
+              <p class="mb-0">
+                Adjust your Semantor settings here. Use the switches to enable or disable network functionalities.
+                Maximum search items can be configured as well. Click "Save Configuration" to save your changes,
+                and remember to test your settings to ensure they work as expected.
+              </p>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-            <div class="card-body">
-                <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center mb-8" role="alert">
-                    <img src="{% static 'img/custom-illustrations-v2/i2-60.png' %}" width="25%" style="border-radius:25px;" class="me-4" alt="Illustration for tip">
-                    <span class="alert-icon rounded"><i class="ti ti-bookmark"></i></span>
-                    <div class="d-flex flex-column ps-1">
-                        <h5 class="alert-heading mb-2">Tip</h5>
-                        <p class="mb-0">
-                          Adjust your Semantor settings here. Use the switches to enable or disable network functionalities.
-                          Maximum search items can be configured as well. Click "Save Configuration" to save your changes,
-                          and remember to test your settings to ensure they work as expected.
-                        </p>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
+          </div>
+
+          {% if messages %}
+            {% for message in messages %}
+              <div
+                class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-info{% endif %}"
+                role="alert">
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+
+          <hr>
+
+          <form method="post" class="mt-8">
+            {% csrf_token %}
+
+            <!-- Row for Network Activation Switches -->
+            <div class="row mb-4">
+              <div class="col-4 mb-4">
+                <div class="">
+                  <img src="{% static 'img/semantor/semantor-1.png' %}" width="100%" style="border-radius:50px;"
+                       class="justify-content-end me-8 p-8 image" alt="Brainstorming image">
                 </div>
-
-                {% if messages %}
-                    {% for message in messages %}
-                        <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-info{% endif %}" role="alert">
-                            {{ message }}
-                        </div>
-                    {% endfor %}
-                {% endif %}
-
+                <div class="alert alert-warning p-4 rounded">
+                  <strong>
+                    <i class="fa fa-exclamation-triangle me-2"></i>
+                    Local network allows your assistants to communicate openly with each other when the task
+                    you are working on requires their help. If you disable this, your LeanMod assistants can
+                    only have access to assistants within the expert networks (and public Semantor assistants
+                    if you enable the switch).
+                  </strong>
+                </div>
                 <hr>
-
-                <form method="post" class="mt-8">
-                    {% csrf_token %}
-
-                    <!-- Row for Network Activation Switches -->
-                    <div class="row mb-4">
-                        <div class="col-4 mb-4">
-                          <div class="">
-                            <img src="{% static 'img/semantor/semantor-1.png' %}" width="100%" style="border-radius:50px;"
-                                 class="justify-content-end me-8 p-8 image" alt="Brainstorming image">
-                          </div>
-                          <div class="alert alert-warning p-4 rounded">
-                              <strong>
-                                <i class="fa fa-exclamation-triangle me-2"></i>
-                                Local network allows your assistants to communicate openly with each other when the task
-                                you are working on requires their help. If you disable this, your LeanMod assistants can
-                                only have access to assistants within the expert networks (and public Semantor assistants
-                                if you enable the switch).
-                              </strong>
-                            </div>
-                          <hr>
-                          <label class="form-label" for="is_local_network_active">
-                            <strong>Local Network Access</strong>
-                          </label>
-                          <br>
-                          <label class="switch switch-square switch-lg mt-2">
-                              <input type="checkbox" class="switch-input" id="is_local_network_active" name="is_local_network_active" {% if config.is_local_network_active %}checked{% endif %}>
-                              <span class="switch-toggle-slider">
+                <label class="form-label" for="is_local_network_active">
+                  <strong>Local Network Access</strong>
+                </label>
+                <br>
+                <label class="switch switch-square switch-lg mt-2">
+                  <input type="checkbox" class="switch-input" id="is_local_network_active"
+                         name="is_local_network_active" {% if config.is_local_network_active %}checked{% endif %}>
+                  <span class="switch-toggle-slider">
                                   <span class="switch-on"><i class="ti ti-check"></i></span>
                                   <span class="switch-off"><i class="ti ti-x"></i></span>
                               </span>
-                          </label>
-                        </div>
-                        <div class="col-4 mb-4">
-                          <div class="">
-                            <img src="{% static 'img/semantor/semantor-2.png' %}" width="100%" style="border-radius:50px;"
-                                 class="justify-content-end me-8 p-8 image" alt="Brainstorming image">
-                          </div>
-                          <div class="alert alert-warning p-4 rounded">
-                              <strong>
-                                <i class="fa fa-exclamation-triangle me-2"></i>
-                                Global network allows publicly available specialized assistants within the BimodLab platform
-                                to communicate with your LeanMod assistants. If you disable this, your LeanMod assistants
-                                can only have access to assistants within the expert networks (and your local network if
-                                you enable the switch).
-                              </strong>
-                            </div>
-                            <hr>
-                            <label class="form-label" for="is_global_network_active">
-                              <strong>Global Network Access</strong>
-                            </label>
-                            <br>
-                            <label class="switch switch-square switch-lg mt-2">
-                                <input type="checkbox" class="switch-input" id="is_global_network_active" name="is_global_network_active" {% if config.is_global_network_active %}checked{% endif %}>
-                                <span class="switch-toggle-slider">
+                </label>
+              </div>
+              <div class="col-4 mb-4">
+                <div class="">
+                  <img src="{% static 'img/semantor/semantor-2.png' %}" width="100%" style="border-radius:50px;"
+                       class="justify-content-end me-8 p-8 image" alt="Brainstorming image">
+                </div>
+                <div class="alert alert-warning p-4 rounded">
+                  <strong>
+                    <i class="fa fa-exclamation-triangle me-2"></i>
+                    Global network allows publicly available specialized assistants within the BimodLab platform
+                    to communicate with your LeanMod assistants. If you disable this, your LeanMod assistants
+                    can only have access to assistants within the expert networks (and your local network if
+                    you enable the switch).
+                  </strong>
+                </div>
+                <hr>
+                <label class="form-label" for="is_global_network_active">
+                  <strong>Global Network Access</strong>
+                </label>
+                <br>
+                <label class="switch switch-square switch-lg mt-2">
+                  <input type="checkbox" class="switch-input" id="is_global_network_active"
+                         name="is_global_network_active" {% if config.is_global_network_active %}checked{% endif %}>
+                  <span class="switch-toggle-slider">
                                     <span class="switch-on"><i class="ti ti-check"></i></span>
                                     <span class="switch-off"><i class="ti ti-x"></i></span>
                                 </span>
-                            </label>
-                        </div>
-                        <div class="col-4 mb-4">
-                          <div class="">
-                            <img src="{% static 'img/semantor/semantor-3.png' %}" width="100%" style="border-radius:50px;"
-                                 class="justify-content-end me-8 p-8 image" alt="Brainstorming image">
-                          </div>
-                          <div class="alert alert-warning p-4 rounded">
-                              <strong>
-                                <i class="fa fa-exclamation-triangle me-2"></i>
-                                Temporary data source access allows for the Semantor consultants to temporarily gain
-                                access to your data sources and tools to gather more context and information to provide
-                                viable solutions to your problems. We highly recommend you to keep this switch enabled
-                                to enhance the skills of Semantor network.
-                              </strong>
-                            </div>
-                            <hr>
-                            <label class="form-label" for="is_global_network_active">
-                              <strong>Temporary Data Source &amp; Tool Access</strong>
-                            </label>
-                            <br>
-                            <label class="switch switch-square switch-lg mt-2">
-                                <input type="checkbox" class="switch-input" id="temporary_data_source_and_tool_access" name="temporary_data_source_and_tool_access" {% if config.temporary_data_source_and_tool_access %}checked{% endif %}>
-                                <span class="switch-toggle-slider">
+                </label>
+              </div>
+              <div class="col-4 mb-4">
+                <div class="">
+                  <img src="{% static 'img/semantor/semantor-3.png' %}" width="100%" style="border-radius:50px;"
+                       class="justify-content-end me-8 p-8 image" alt="Brainstorming image">
+                </div>
+                <div class="alert alert-warning p-4 rounded">
+                  <strong>
+                    <i class="fa fa-exclamation-triangle me-2"></i>
+                    Temporary data source access allows for the Semantor consultants to temporarily gain
+                    access to your data sources and tools to gather more context and information to provide
+                    viable solutions to your problems. We highly recommend you to keep this switch enabled
+                    to enhance the skills of Semantor network.
+                  </strong>
+                </div>
+                <hr>
+                <label class="form-label" for="is_global_network_active">
+                  <strong>Temporary Data Source &amp; Tool Access</strong>
+                </label>
+                <br>
+                <label class="switch switch-square switch-lg mt-2">
+                  <input type="checkbox" class="switch-input" id="temporary_data_source_and_tool_access"
+                         name="temporary_data_source_and_tool_access"
+                         {% if config.temporary_data_source_and_tool_access %}checked{% endif %}>
+                  <span class="switch-toggle-slider">
                                     <span class="switch-on"><i class="ti ti-check"></i></span>
                                     <span class="switch-off"><i class="ti ti-x"></i></span>
                                 </span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <!-- Row for Maximum Search Items Fields -->
-                    <div class="row mb-4">
-                        <div class="col-6">
-                            <label for="maximum_assistant_search_items" class="form-label mb-4">
-                              <strong>Maximum Local Network Search Items</strong>
-                            </label>
-                            <input type="number" class="form-control" id="maximum_assistant_search_items" name="maximum_assistant_search_items" value="{{ config.maximum_assistant_search_items }}" min="1" max="50" required>
-                        </div>
-
-                        <div class="col-6">
-                            <label for="maximum_integration_search_items" class="form-label mb-4">
-                              <strong>Maximum Global Network Search Items</strong>
-                            </label>
-                            <input type="number" class="form-control" id="maximum_integration_search_items" name="maximum_integration_search_items" value="{{ config.maximum_integration_search_items }}" min="1" max="50" required>
-                        </div>
-                    </div>
-
-                    <hr>
-
-                    <!-- Save Button -->
-                    <button type="submit" class="btn btn-primary w-50 mt-4">
-                        <strong><i class="fa fa-save me-2"></i> Save Semantor Network Configurations</strong>
-                    </button>
-                </form>
+                </label>
+              </div>
             </div>
+
+            <!-- Row for Maximum Search Items Fields -->
+            <div class="row mb-4">
+              <div class="col-6">
+                <label for="maximum_assistant_search_items" class="form-label mb-4">
+                  <strong>Maximum Local Network Search Items</strong>
+                </label>
+                <input type="number" class="form-control" id="maximum_assistant_search_items"
+                       name="maximum_assistant_search_items" value="{{ config.maximum_assistant_search_items }}" min="1"
+                       max="50" required>
+              </div>
+
+              <div class="col-6">
+                <label for="maximum_integration_search_items" class="form-label mb-4">
+                  <strong>Maximum Global Network Search Items</strong>
+                </label>
+                <input type="number" class="form-control" id="maximum_integration_search_items"
+                       name="maximum_integration_search_items" value="{{ config.maximum_integration_search_items }}"
+                       min="1" max="50" required>
+              </div>
+            </div>
+
+            <hr>
+
+            <!-- Save Button -->
+            <button type="submit" class="btn btn-primary w-50 mt-4">
+              <strong><i class="fa fa-save me-2"></i> Save Semantor Network Configurations</strong>
+            </button>
+          </form>
         </div>
+      </div>
     </div>
-</div>
+  </div>
 
 {% endblock %}

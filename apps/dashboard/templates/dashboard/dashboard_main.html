@@ -1,21 +1,21 @@
-  <!--
-  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
-  ~
-  ~ Project: Bimod.io™
-  ~ File: dashboard_main.html
-  ~ Last Modified: 2024-10-05 01:39:47
-  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-05 14:42:37
-  ~
-  ~ This software is proprietary and confidential. Unauthorized copying,
-  ~ distribution, modification, or use of this software, whether for
-  ~ commercial, academic, or any other purpose, is strictly prohibited
-  ~ without the prior express written permission of BMD™ Autonomous
-  ~ Holdings.
-  ~
-  ~  For permission inquiries, please contact: admin@Bimod.io.
-  ~
-  -->
+<!--
+~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+~
+~ Project: Bimod.io™
+~ File: dashboard_main.html
+~ Last Modified: 2024-10-05 01:39:47
+~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+~ Created: 2024-10-05 14:42:37
+~
+~ This software is proprietary and confidential. Unauthorized copying,
+~ distribution, modification, or use of this software, whether for
+~ commercial, academic, or any other purpose, is strictly prohibited
+~ without the prior express written permission of BMD™ Autonomous
+~ Holdings.
+~
+~  For permission inquiries, please contact: admin@Bimod.io.
+~
+-->
 
 
 {% extends layout_path %}
@@ -27,7 +27,7 @@
 {% block title %}Dashboard{% endblock %}
 
 {% block vendor_css %}
-<link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}" />
 {% endblock vendor_css %}
 
 {% block vendor_js %}
@@ -41,7 +41,7 @@
   {{ block.super }}
   <!-- COSTS -->
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       // Define color variables
       const cyanColor = '#28dac6';
       let cardColor, headingColor, labelColor, borderColor, legendColor;
@@ -63,7 +63,7 @@
 
       // Set height according to their data-height
       const chartList = document.querySelectorAll('.chartjs');
-      chartList.forEach(function (chartListItem) {
+      chartList.forEach(function(chartListItem) {
         chartListItem.height = chartListItem.dataset.height;
       });
 
@@ -135,7 +135,7 @@
     });
   </script>
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       // Define color variables
       const orangeColor = '#FF8132';
       let cardColor, headingColor, labelColor, borderColor, legendColor;
@@ -157,7 +157,7 @@
 
       // Set height according to their data-height
       const chartList = document.querySelectorAll('.chartjs');
-      chartList.forEach(function (chartListItem) {
+      chartList.forEach(function(chartListItem) {
         chartListItem.height = chartListItem.dataset.height;
       });
 
@@ -229,7 +229,7 @@
     });
   </script>
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       // Define color variables
       const oceanBlueColor = '#299AFF';
       let cardColor, headingColor, labelColor, borderColor, legendColor;
@@ -251,7 +251,7 @@
 
       // Set height according to their data-height
       const chartList = document.querySelectorAll('.chartjs');
-      chartList.forEach(function (chartListItem) {
+      chartList.forEach(function(chartListItem) {
         chartListItem.height = chartListItem.dataset.height;
       });
 
@@ -323,7 +323,7 @@
     });
   </script>
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       // Define color variables
       const purpleColor = '#836AF9';
       let cardColor, headingColor, labelColor, borderColor, legendColor;
@@ -345,7 +345,7 @@
 
       // Set height according to their data-height
       const chartList = document.querySelectorAll('.chartjs');
-      chartList.forEach(function (chartListItem) {
+      chartList.forEach(function(chartListItem) {
         chartListItem.height = chartListItem.dataset.height;
       });
 
@@ -417,7 +417,7 @@
     });
   </script>
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       // Define color variables
       const purpleColor = '#836AF9';
       let cardColor, headingColor, labelColor, borderColor, legendColor;
@@ -439,7 +439,7 @@
 
       // Set height according to their data-height
       const chartList = document.querySelectorAll('.chartjs');
-      chartList.forEach(function (chartListItem) {
+      chartList.forEach(function(chartListItem) {
         chartListItem.height = chartListItem.dataset.height;
       });
 
@@ -512,7 +512,7 @@
   </script>
   <!-- TOKENS -->
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       // Define color variables
       const cyanColor = '#28dac6';
       let cardColor, headingColor, labelColor, borderColor, legendColor;
@@ -534,7 +534,7 @@
 
       // Set height according to their data-height
       const chartList = document.querySelectorAll('.chartjs');
-      chartList.forEach(function (chartListItem) {
+      chartList.forEach(function(chartListItem) {
         chartListItem.height = chartListItem.dataset.height;
       });
 
@@ -606,7 +606,7 @@
     });
   </script>
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       // Define color variables
       const orangeColor = '#FF8132';
       let cardColor, headingColor, labelColor, borderColor, legendColor;
@@ -628,7 +628,7 @@
 
       // Set height according to their data-height
       const chartList = document.querySelectorAll('.chartjs');
-      chartList.forEach(function (chartListItem) {
+      chartList.forEach(function(chartListItem) {
         chartListItem.height = chartListItem.dataset.height;
       });
 
@@ -700,7 +700,7 @@
     });
   </script>
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       // Define color variables
       const oceanBlueColor = '#299AFF';
       let cardColor, headingColor, labelColor, borderColor, legendColor;
@@ -722,7 +722,7 @@
 
       // Set height according to their data-height
       const chartList = document.querySelectorAll('.chartjs');
-      chartList.forEach(function (chartListItem) {
+      chartList.forEach(function(chartListItem) {
         chartListItem.height = chartListItem.dataset.height;
       });
 
@@ -794,7 +794,7 @@
     });
   </script>
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       // Define color variables
       const purpleColor = '#836AF9';
       let cardColor, headingColor, labelColor, borderColor, legendColor;
@@ -816,7 +816,7 @@
 
       // Set height according to their data-height
       const chartList = document.querySelectorAll('.chartjs');
-      chartList.forEach(function (chartListItem) {
+      chartList.forEach(function(chartListItem) {
         chartListItem.height = chartListItem.dataset.height;
       });
 
@@ -888,7 +888,7 @@
     });
   </script>
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       // Define color variables
       const purpleColor = '#836AF9';
       let cardColor, headingColor, labelColor, borderColor, legendColor;
@@ -910,7 +910,7 @@
 
       // Set height according to their data-height
       const chartList = document.querySelectorAll('.chartjs');
-      chartList.forEach(function (chartListItem) {
+      chartList.forEach(function(chartListItem) {
         chartListItem.height = chartListItem.dataset.height;
       });
 
@@ -983,7 +983,7 @@
   </script>
   <!-- ASSISTANT COMMUNICATION -->
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       // Define color variables
       const purpleColor = '#836AF9',
         yellowColor = '#ffe800',
@@ -1015,7 +1015,7 @@
 
       // Set height according to their data-height
       const chartList = document.querySelectorAll('.chartjs');
-      chartList.forEach(function (chartListItem) {
+      chartList.forEach(function(chartListItem) {
         chartListItem.height = chartListItem.dataset.height;
       });
 
@@ -1087,7 +1087,7 @@
     });
   </script>
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       // Define color variables
       const purpleColor = '#836AF9',
         yellowColor = '#ffe800',
@@ -1119,7 +1119,7 @@
 
       // Set height according to their data-height
       const chartList = document.querySelectorAll('.chartjs');
-      chartList.forEach(function (chartListItem) {
+      chartList.forEach(function(chartListItem) {
         chartListItem.height = chartListItem.dataset.height;
       });
 
@@ -1191,7 +1191,7 @@
     });
   </script>
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       // Define color variables
       const purpleColor = '#836AF9',
         yellowColor = '#ffe800',
@@ -1223,7 +1223,7 @@
 
       // Set height according to their data-height
       const chartList = document.querySelectorAll('.chartjs');
-      chartList.forEach(function (chartListItem) {
+      chartList.forEach(function(chartListItem) {
         chartListItem.height = chartListItem.dataset.height;
       });
 
@@ -1296,7 +1296,7 @@
   </script>
   <!-- SQL DATABASE -->
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       // Define color variables
       const purpleColor = '#836AF9',
         yellowColor = '#ffe800',
@@ -1328,7 +1328,7 @@
 
       // Set height according to their data-height
       const chartList = document.querySelectorAll('.chartjs');
-      chartList.forEach(function (chartListItem) {
+      chartList.forEach(function(chartListItem) {
         chartListItem.height = chartListItem.dataset.height;
       });
 
@@ -1400,7 +1400,7 @@
     });
   </script>
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       // Define color variables
       const purpleColor = '#836AF9',
         yellowColor = '#ffe800',
@@ -1432,7 +1432,7 @@
 
       // Set height according to their data-height
       const chartList = document.querySelectorAll('.chartjs');
-      chartList.forEach(function (chartListItem) {
+      chartList.forEach(function(chartListItem) {
         chartListItem.height = chartListItem.dataset.height;
       });
 
@@ -1504,7 +1504,7 @@
     });
   </script>
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       // Define color variables
       const purpleColor = '#836AF9',
         yellowColor = '#ffe800',
@@ -1536,7 +1536,7 @@
 
       // Set height according to their data-height
       const chartList = document.querySelectorAll('.chartjs');
-      chartList.forEach(function (chartListItem) {
+      chartList.forEach(function(chartListItem) {
         chartListItem.height = chartListItem.dataset.height;
       });
 
@@ -1609,7 +1609,7 @@
   </script>
   <!-- NoSQL DATABASE -->
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       // Define color variables
       const purpleColor = '#836AF9',
         yellowColor = '#ffe800',
@@ -1641,7 +1641,7 @@
 
       // Set height according to their data-height
       const chartList = document.querySelectorAll('.chartjs');
-      chartList.forEach(function (chartListItem) {
+      chartList.forEach(function(chartListItem) {
         chartListItem.height = chartListItem.dataset.height;
       });
 
@@ -1713,7 +1713,7 @@
     });
   </script>
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       // Define color variables
       const purpleColor = '#836AF9',
         yellowColor = '#ffe800',
@@ -1745,7 +1745,7 @@
 
       // Set height according to their data-height
       const chartList = document.querySelectorAll('.chartjs');
-      chartList.forEach(function (chartListItem) {
+      chartList.forEach(function(chartListItem) {
         chartListItem.height = chartListItem.dataset.height;
       });
 
@@ -1817,7 +1817,7 @@
     });
   </script>
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       // Define color variables
       const purpleColor = '#836AF9',
         yellowColor = '#ffe800',
@@ -1849,7 +1849,7 @@
 
       // Set height according to their data-height
       const chartList = document.querySelectorAll('.chartjs');
-      chartList.forEach(function (chartListItem) {
+      chartList.forEach(function(chartListItem) {
         chartListItem.height = chartListItem.dataset.height;
       });
 
@@ -1922,7 +1922,7 @@
   </script>
   <!-- FILE SYSTEMS -->
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       // Define color variables
       const purpleColor = '#836AF9',
         yellowColor = '#ffe800',
@@ -1954,7 +1954,7 @@
 
       // Set height according to their data-height
       const chartList = document.querySelectorAll('.chartjs');
-      chartList.forEach(function (chartListItem) {
+      chartList.forEach(function(chartListItem) {
         chartListItem.height = chartListItem.dataset.height;
       });
 
@@ -2027,7 +2027,7 @@
   </script>
   <!-- BROWSING -->
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       // Define color variables
       const purpleColor = '#836AF9',
         yellowColor = '#ffe800',
@@ -2059,7 +2059,7 @@
 
       // Set height according to their data-height
       const chartList = document.querySelectorAll('.chartjs');
-      chartList.forEach(function (chartListItem) {
+      chartList.forEach(function(chartListItem) {
         chartListItem.height = chartListItem.dataset.height;
       });
 
@@ -2132,7 +2132,7 @@
   </script>
   <!-- ML MODEL PREDICTIONS -->
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       // Define color variables
       const purpleColor = '#836AF9',
         yellowColor = '#ffe800',
@@ -2164,7 +2164,7 @@
 
       // Set height according to their data-height
       const chartList = document.querySelectorAll('.chartjs');
-      chartList.forEach(function (chartListItem) {
+      chartList.forEach(function(chartListItem) {
         chartListItem.height = chartListItem.dataset.height;
       });
 
@@ -2237,7 +2237,7 @@
   </script>
   <!-- MULTIMEDIA MANAGEMENT -->
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       // Define color variables
       const purpleColor = '#836AF9',
         yellowColor = '#ffe800',
@@ -2269,7 +2269,7 @@
 
       // Set height according to their data-height
       const chartList = document.querySelectorAll('.chartjs');
-      chartList.forEach(function (chartListItem) {
+      chartList.forEach(function(chartListItem) {
         chartListItem.height = chartListItem.dataset.height;
       });
 
@@ -2341,7 +2341,7 @@
     });
   </script>
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       // Define color variables
       const purpleColor = '#836AF9',
         yellowColor = '#ffe800',
@@ -2373,7 +2373,7 @@
 
       // Set height according to their data-height
       const chartList = document.querySelectorAll('.chartjs');
-      chartList.forEach(function (chartListItem) {
+      chartList.forEach(function(chartListItem) {
         chartListItem.height = chartListItem.dataset.height;
       });
 
@@ -2445,7 +2445,7 @@
     });
   </script>
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       // Define color variables
       const purpleColor = '#836AF9',
         yellowColor = '#ffe800',
@@ -2477,7 +2477,7 @@
 
       // Set height according to their data-height
       const chartList = document.querySelectorAll('.chartjs');
-      chartList.forEach(function (chartListItem) {
+      chartList.forEach(function(chartListItem) {
         chartListItem.height = chartListItem.dataset.height;
       });
 
@@ -2549,7 +2549,7 @@
     });
   </script>
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       // Define color variables
       const purpleColor = '#836AF9',
         yellowColor = '#ffe800',
@@ -2581,7 +2581,7 @@
 
       // Set height according to their data-height
       const chartList = document.querySelectorAll('.chartjs');
-      chartList.forEach(function (chartListItem) {
+      chartList.forEach(function(chartListItem) {
         chartListItem.height = chartListItem.dataset.height;
       });
 
@@ -2653,7 +2653,7 @@
     });
   </script>
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       // Define color variables
       const purpleColor = '#836AF9',
         yellowColor = '#ffe800',
@@ -2685,7 +2685,7 @@
 
       // Set height according to their data-height
       const chartList = document.querySelectorAll('.chartjs');
-      chartList.forEach(function (chartListItem) {
+      chartList.forEach(function(chartListItem) {
         chartListItem.height = chartListItem.dataset.height;
       });
 
@@ -2758,7 +2758,7 @@
   </script>
   <!-- KNOWLEDGE BASE SEARCHES -->
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       // Define color variables
       const purpleColor = '#836AF9',
         yellowColor = '#ffe800',
@@ -2790,7 +2790,7 @@
 
       // Set height according to their data-height
       const chartList = document.querySelectorAll('.chartjs');
-      chartList.forEach(function (chartListItem) {
+      chartList.forEach(function(chartListItem) {
         chartListItem.height = chartListItem.dataset.height;
       });
 
@@ -2863,7 +2863,7 @@
   </script>
   <!-- MEMORY MANAGEMENT -->
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       // Define color variables
       const purpleColor = '#836AF9',
         yellowColor = '#ffe800',
@@ -2895,7 +2895,7 @@
 
       // Set height according to their data-height
       const chartList = document.querySelectorAll('.chartjs');
-      chartList.forEach(function (chartListItem) {
+      chartList.forEach(function(chartListItem) {
         chartListItem.height = chartListItem.dataset.height;
       });
 
@@ -2967,7 +2967,7 @@
     });
   </script>
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       // Define color variables
       const purpleColor = '#836AF9',
         yellowColor = '#ffe800',
@@ -2999,7 +2999,7 @@
 
       // Set height according to their data-height
       const chartList = document.querySelectorAll('.chartjs');
-      chartList.forEach(function (chartListItem) {
+      chartList.forEach(function(chartListItem) {
         chartListItem.height = chartListItem.dataset.height;
       });
 
@@ -3072,7 +3072,7 @@
   </script>
   <!-- FUNCTIONS -->
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       // Define color variables
       const purpleColor = '#836AF9',
         yellowColor = '#ffe800',
@@ -3104,7 +3104,7 @@
 
       // Set height according to their data-height
       const chartList = document.querySelectorAll('.chartjs');
-      chartList.forEach(function (chartListItem) {
+      chartList.forEach(function(chartListItem) {
         chartListItem.height = chartListItem.dataset.height;
       });
 
@@ -3176,7 +3176,7 @@
     });
   </script>
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       // Define color variables
       const purpleColor = '#836AF9',
         yellowColor = '#ffe800',
@@ -3208,7 +3208,7 @@
 
       // Set height according to their data-height
       const chartList = document.querySelectorAll('.chartjs');
-      chartList.forEach(function (chartListItem) {
+      chartList.forEach(function(chartListItem) {
         chartListItem.height = chartListItem.dataset.height;
       });
 
@@ -3280,7 +3280,7 @@
     });
   </script>
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       // Define color variables
       const purpleColor = '#836AF9',
         yellowColor = '#ffe800',
@@ -3312,7 +3312,7 @@
 
       // Set height according to their data-height
       const chartList = document.querySelectorAll('.chartjs');
-      chartList.forEach(function (chartListItem) {
+      chartList.forEach(function(chartListItem) {
         chartListItem.height = chartListItem.dataset.height;
       });
 
@@ -3385,7 +3385,7 @@
   </script>
   <!-- APIS -->
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       // Define color variables
       const purpleColor = '#836AF9',
         yellowColor = '#ffe800',
@@ -3417,7 +3417,7 @@
 
       // Set height according to their data-height
       const chartList = document.querySelectorAll('.chartjs');
-      chartList.forEach(function (chartListItem) {
+      chartList.forEach(function(chartListItem) {
         chartListItem.height = chartListItem.dataset.height;
       });
 
@@ -3489,7 +3489,7 @@
     });
   </script>
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       // Define color variables
       const purpleColor = '#836AF9',
         yellowColor = '#ffe800',
@@ -3521,7 +3521,7 @@
 
       // Set height according to their data-height
       const chartList = document.querySelectorAll('.chartjs');
-      chartList.forEach(function (chartListItem) {
+      chartList.forEach(function(chartListItem) {
         chartListItem.height = chartListItem.dataset.height;
       });
 
@@ -3593,7 +3593,7 @@
     });
   </script>
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       // Define color variables
       const purpleColor = '#836AF9',
         yellowColor = '#ffe800',
@@ -3625,7 +3625,7 @@
 
       // Set height according to their data-height
       const chartList = document.querySelectorAll('.chartjs');
-      chartList.forEach(function (chartListItem) {
+      chartList.forEach(function(chartListItem) {
         chartListItem.height = chartListItem.dataset.height;
       });
 
@@ -3698,7 +3698,7 @@
   </script>
   <!-- SCRIPTS -->
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       // Define color variables
       const purpleColor = '#836AF9',
         yellowColor = '#ffe800',
@@ -3730,7 +3730,7 @@
 
       // Set height according to their data-height
       const chartList = document.querySelectorAll('.chartjs');
-      chartList.forEach(function (chartListItem) {
+      chartList.forEach(function(chartListItem) {
         chartListItem.height = chartListItem.dataset.height;
       });
 
@@ -3802,7 +3802,7 @@
     });
   </script>
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       // Define color variables
       const purpleColor = '#836AF9',
         yellowColor = '#ffe800',
@@ -3834,7 +3834,7 @@
 
       // Set height according to their data-height
       const chartList = document.querySelectorAll('.chartjs');
-      chartList.forEach(function (chartListItem) {
+      chartList.forEach(function(chartListItem) {
         chartListItem.height = chartListItem.dataset.height;
       });
 
@@ -3906,7 +3906,7 @@
     });
   </script>
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       // Define color variables
       const purpleColor = '#836AF9',
         yellowColor = '#ffe800',
@@ -3938,7 +3938,7 @@
 
       // Set height according to their data-height
       const chartList = document.querySelectorAll('.chartjs');
-      chartList.forEach(function (chartListItem) {
+      chartList.forEach(function(chartListItem) {
         chartListItem.height = chartListItem.dataset.height;
       });
 
@@ -4011,7 +4011,7 @@
   </script>
   <!-- CRON AND TRIGGER JOBS -->
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       // Define color variables
       const purpleColor = '#836AF9',
         yellowColor = '#ffe800',
@@ -4043,7 +4043,7 @@
 
       // Set height according to their data-height
       const chartList = document.querySelectorAll('.chartjs');
-      chartList.forEach(function (chartListItem) {
+      chartList.forEach(function(chartListItem) {
         chartListItem.height = chartListItem.dataset.height;
       });
 
@@ -4115,7 +4115,7 @@
     });
   </script>
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       // Define color variables
       const purpleColor = '#836AF9',
         yellowColor = '#ffe800',
@@ -4147,7 +4147,7 @@
 
       // Set height according to their data-height
       const chartList = document.querySelectorAll('.chartjs');
-      chartList.forEach(function (chartListItem) {
+      chartList.forEach(function(chartListItem) {
         chartListItem.height = chartListItem.dataset.height;
       });
 
@@ -4220,7 +4220,7 @@
   </script>
   <!-- USERS -->
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       // Define color variables
       const purpleColor = '#836AF9',
         yellowColor = '#ffe800',
@@ -4252,7 +4252,7 @@
 
       // Set height according to their data-height
       const chartList = document.querySelectorAll('.chartjs');
-      chartList.forEach(function (chartListItem) {
+      chartList.forEach(function(chartListItem) {
         chartListItem.height = chartListItem.dataset.height;
       });
 
@@ -4325,8 +4325,8 @@
   </script>
   <!-- ############################################################## -->
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      console.log('DOM loaded with JavaScript')
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('DOM loaded with JavaScript');
       const chatForm = document.getElementById('form-analysis');
       console.log(chatForm);
       const loadingBar = document.getElementById('loadingBar');
@@ -4335,7 +4335,7 @@
       console.log(loadingBarWarning);
       const submitMessageButton = document.getElementById('helperBotButton');
       console.log(submitMessageButton);
-      chatForm.addEventListener('submit', function (event) {
+      chatForm.addEventListener('submit', function(event) {
         event.preventDefault();
         // Show the loading bar
         loadingBar.classList.remove('d-none');
@@ -4349,15 +4349,15 @@
 {% endblock page_js %}
 <script src="https://cdn.jsdelivr.net/npm/showdown/dist/showdown.min.js"></script>
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
+  document.addEventListener('DOMContentLoaded', function() {
     const converter = new showdown.Converter();
     converter.setOption('tables', true);
     converter.setOption('ghCodeBlocks', true);
-    document.querySelectorAll('.markdown-content').forEach(function (element) {
+    document.querySelectorAll('.markdown-content').forEach(function(element) {
       element.innerHTML = converter.makeHtml(element.innerHTML);
     });
 
-    document.querySelectorAll('.markdown-content').forEach(function (element) {
+    document.querySelectorAll('.markdown-content').forEach(function(element) {
       element.innerHTML = converter.makeHtml(element.innerHTML);
     });
 
@@ -4369,7 +4369,7 @@
         .replace(/\b\d+(\.\d+)?\b/g, '<span class="number">$&</span>');
     }
 
-    document.querySelectorAll('.markdown-content pre code').forEach(function (block) {
+    document.querySelectorAll('.markdown-content pre code').forEach(function(block) {
       let text = block.innerText;
       // Only highlight JSON code blocks
       if (text.trim().startsWith('{') && text.trim().endsWith('}')) {
@@ -4494,7 +4494,8 @@
         <div class="row">
           <div class="col-12">
             <div class="d-flex justify-content-center">
-              <img src="{% static 'img/dashboard/ds-22.png' %}" class="rounded ms-6" style="width: 100%;" alt="Illustration for tips">
+              <img src="{% static 'img/dashboard/ds-22.png' %}" class="rounded ms-6" style="width: 100%;"
+                   alt="Illustration for tips">
             </div>
           </div>
           <form action="{% url 'dashboard:main-dashboard' %}" method="POST" id="form-analysis">
@@ -4523,8 +4524,9 @@
             </div>
           </form>
           <div class="col-12">
-            <div class="card-body bg-label-secondary p-12 ms-4 me-4 mt-2 mb-6 rounded overflow-scroll border border-label-dark rounded"
-                 style="min-height: 100px; max-height: 500px;">
+            <div
+              class="card-body bg-label-secondary p-12 ms-4 me-4 mt-2 mb-6 rounded overflow-scroll border border-label-dark rounded"
+              style="min-height: 100px; max-height: 500px;">
               {% if response %}
                 <div class="d-flex justify-content-center">
                   <h5 class="text-dark"><strong>Insights</strong></h5>
@@ -4586,21 +4588,21 @@
     <script>
       function downloadInsightsAsMarkdown() {
         // Get the insights content
-        var insightContent = "";
+        var insightContent = '';
         try {
           insightContent = document.getElementById('insight-content').innerText;
         } catch (e) {
-          insightContent = "";
+          insightContent = '';
         }
         if (!insightContent.trim()) {
           Swal.fire({
             title: '🚀 Slow Down Captain!',
-            text: "There are no insights yet to download as Markdown. Please analyze the statistics first.",
+            text: 'There are no insights yet to download as Markdown. Please analyze the statistics first.',
             icon: 'warning',
             showCancelButton: false,
             confirmButtonText: 'Got it!',
             customClass: {
-              confirmButton: 'btn btn-secondary me-2 waves-effect waves-light',
+              confirmButton: 'btn btn-secondary me-2 waves-effect waves-light'
             },
             buttonsStyling: false
           }).then((result) => {
@@ -4618,7 +4620,7 @@ ${insightContent}
     `;
 
         // Create a Blob object with the Markdown content
-        var blob = new Blob([markdownContent], {type: 'text/markdown'});
+        var blob = new Blob([markdownContent], { type: 'text/markdown' });
         // Create a link element and trigger a download
         var link = document.createElement('a');
         link.href = URL.createObjectURL(blob);
@@ -4631,22 +4633,22 @@ ${insightContent}
 
     <script>
       function downloadInsightsAsPDF() {
-        var insightContent = "";
+        var insightContent = '';
         try {
           insightContent = document.getElementById('insight-content').innerText;
         } catch (e) {
-          insightContent = "";
+          insightContent = '';
         }
 
         if (!insightContent.trim()) {
           Swal.fire({
             title: '🚀 Slow Down Captain!',
-            text: "There are no insights yet to download as PDF. Please analyze the statistics first.",
+            text: 'There are no insights yet to download as PDF. Please analyze the statistics first.',
             icon: 'warning',
             showCancelButton: false,
             confirmButtonText: 'Got it!',
             customClass: {
-              confirmButton: 'btn btn-secondary me-2 waves-effect waves-light',
+              confirmButton: 'btn btn-secondary me-2 waves-effect waves-light'
             },
             buttonsStyling: false
           }).then((result) => {
@@ -4658,7 +4660,7 @@ ${insightContent}
         }
 
         // Load jsPDF and generate the PDF
-        const {jsPDF} = window.jspdf;
+        const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
 
         // Define margins and page width
@@ -4694,22 +4696,22 @@ ${insightContent}
 
     <script>
       function downloadInsightsAsTxt() {
-        var insightContent = "";
+        var insightContent = '';
         try {
           insightContent = document.getElementById('insight-content').innerText;
         } catch (e) {
-          insightContent = "";
+          insightContent = '';
         }
 
         if (!insightContent.trim()) {
           Swal.fire({
             title: '🚀 Slow Down Captain!',
-            text: "There are no insights yet to download as Plain Text. Please analyze the statistics first.",
+            text: 'There are no insights yet to download as Plain Text. Please analyze the statistics first.',
             icon: 'warning',
             showCancelButton: false,
             confirmButtonText: 'Got it!',
             customClass: {
-              confirmButton: 'btn btn-secondary me-2 waves-effect waves-light',
+              confirmButton: 'btn btn-secondary me-2 waves-effect waves-light'
             },
             buttonsStyling: false
           }).then((result) => {
@@ -4724,7 +4726,7 @@ ${insightContent}
         var textContent = `Statistical Analysis Insights\n\n${insightContent}`;
 
         // Create a Blob object with the plain text content
-        var blob = new Blob([textContent], {type: 'text/plain'});
+        var blob = new Blob([textContent], { type: 'text/plain' });
 
         // Create a link element and trigger a download
         var link = document.createElement('a');
@@ -4774,7 +4776,7 @@ ${insightContent}
           <div class="card h-100">
             <div class="card-header">
               <img src="{% static 'img/dashboard/ds-1.png' %}" width="100%" style="border-radius:50px;"
-                     class="justify-content-end me-8 p-8 image" alt="dashboard illustration">
+                   class="justify-content-end me-8 p-8 image" alt="dashboard illustration">
               <h5 class="card-title mb-0">Cost per Organization</h5>
               <small class="text-muted">Total costs accumulated for a given organization, within the last {{ days }}
                 days,
@@ -4790,7 +4792,7 @@ ${insightContent}
           <div class="card h-100">
             <div class="card-header">
               <img src="{% static 'img/dashboard/ds-2.png' %}" width="100%" style="border-radius:50px;"
-                     class="justify-content-end me-8 p-8 image" alt="dashboard illustration">
+                   class="justify-content-end me-8 p-8 image" alt="dashboard illustration">
               <h5 class="card-title mb-0">Cost per Assistant</h5>
               <small class="text-muted">Total costs accumulated for each assistant, within the last {{ days }} days,
                 in United States Dollars ($). Please note that the statistics may not reflect a 1 to 1 ratio with the
@@ -4805,7 +4807,7 @@ ${insightContent}
           <div class="card h-100">
             <div class="card-header">
               <img src="{% static 'img/dashboard/ds-3.png' %}" width="100%" style="border-radius:50px;"
-                     class="justify-content-end me-8 p-8 image" alt="dashboard illustration">
+                   class="justify-content-end me-8 p-8 image" alt="dashboard illustration">
               <h5 class="card-title mb-0">Costs per User</h5>
               <small class="text-muted">Total costs accumulated for each user of the connected organizations, within the
                 last {{ days }} days,
@@ -4818,7 +4820,7 @@ ${insightContent}
           </div>
         </div>
         <img src="{% static 'img/dashboard/ds-20.png' %}" width="100%" style="border-radius:50px;"
-                     class="justify-content-end me-8 p-8 image" alt="dashboard illustration">
+             class="justify-content-end me-8 p-8 image" alt="dashboard illustration">
         <div class="col-4 mb-6">
           <div class="card h-100">
             <div class="card-header">
@@ -4894,7 +4896,7 @@ ${insightContent}
           <div class="card h-100">
             <div class="card-header">
               <img src="{% static 'img/dashboard/ds-4.png' %}" width="100%" style="border-radius:50px;"
-                     class="justify-content-end me-8 p-8 image" alt="dashboard illustration">
+                   class="justify-content-end me-8 p-8 image" alt="dashboard illustration">
               <h5 class="card-title mb-0">Token Usage per Organization</h5>
               <small class="text-muted">Total token usage accumulated for a given organization, within the
                 last {{ days }} days,
@@ -4910,7 +4912,7 @@ ${insightContent}
           <div class="card h-100">
             <div class="card-header">
               <img src="{% static 'img/dashboard/ds-5.png' %}" width="100%" style="border-radius:50px;"
-                     class="justify-content-end me-8 p-8 image" alt="dashboard illustration">
+                   class="justify-content-end me-8 p-8 image" alt="dashboard illustration">
               <h5 class="card-title mb-0">Token Usage per Assistant</h5>
               <small class="text-muted">Total token usage accumulated for each assistant, within the last {{ days }}
                 days,
@@ -4926,7 +4928,7 @@ ${insightContent}
           <div class="card h-100">
             <div class="card-header">
               <img src="{% static 'img/dashboard/ds-6.png' %}" width="100%" style="border-radius:50px;"
-                     class="justify-content-end me-8 p-8 image" alt="dashboard illustration">
+                   class="justify-content-end me-8 p-8 image" alt="dashboard illustration">
               <h5 class="card-title mb-0">Token Usage per User</h5>
               <small class="text-muted">Total token usage accumulated for each user of the connected organizations,
                 within the last {{ days }} days,
@@ -4939,7 +4941,7 @@ ${insightContent}
           </div>
         </div>
         <img src="{% static 'img/dashboard/ds-21.png' %}" width="100%" style="border-radius:50px;"
-                     class="justify-content-end me-8 p-8 image" alt="dashboard illustration">
+             class="justify-content-end me-8 p-8 image" alt="dashboard illustration">
         <div class="col-4 mb-6">
           <div class="card h-100">
             <div class="card-header">
@@ -5017,7 +5019,7 @@ ${insightContent}
           <div class="card h-100">
             <div class="card-header">
               <img src="{% static 'img/dashboard/ds-7.png' %}" width="100%" style="border-radius:50px;"
-                     class="justify-content-end me-8 p-8 image" alt="dashboard illustration">
+                   class="justify-content-end me-8 p-8 image" alt="dashboard illustration">
               <h5 class="card-title mb-0">Chats per Organization</h5>
               <small class="text-muted">Total chats started for each assistant, within the last {{ days }} days.</small>
             </div>
@@ -5030,7 +5032,7 @@ ${insightContent}
           <div class="card h-100">
             <div class="card-header">
               <img src="{% static 'img/dashboard/ds-8.png' %}" width="100%" style="border-radius:50px;"
-                     class="justify-content-end me-8 p-8 image" alt="dashboard illustration">
+                   class="justify-content-end me-8 p-8 image" alt="dashboard illustration">
               <h5 class="card-title mb-0">Chat Messages per Organization</h5>
               <small class="text-muted">Total chat messages sent for each assistant, within the last {{ days }}
                 days.</small>
@@ -5044,7 +5046,7 @@ ${insightContent}
           <div class="card h-100">
             <div class="card-header">
               <img src="{% static 'img/dashboard/ds-9.png' %}" width="100%" style="border-radius:50px;"
-                     class="justify-content-end me-8 p-8 image" alt="dashboard illustration">
+                   class="justify-content-end me-8 p-8 image" alt="dashboard illustration">
               <h5 class="card-title mb-0">Request Count per Exported Assistant</h5>
               <small class="text-muted">Total request count for each exported assistant, within the last {{ days }}
                 days.</small>
@@ -5094,7 +5096,7 @@ ${insightContent}
       </div>
       <div class="row mt-8">
         <img src="{% static 'img/dashboard/ds-10.png' %}" width="100%" style="border-radius:50px;"
-                     class="justify-content-end me-8 p-8 image" alt="dashboard illustration">
+             class="justify-content-end me-8 p-8 image" alt="dashboard illustration">
         <div class="col-4 mb-6">
           <div class="card h-100">
             <div class="card-header">
@@ -5152,7 +5154,8 @@ ${insightContent}
         <div class="d-flex flex-column ps-1">
           <h5 class="alert-heading mb-2">Tip</h5>
           <p class="mb-0">
-            In this section, you can view the total NoSQL database operations accumulated within the last {{ days }} days,
+            In this section, you can view the total NoSQL database operations accumulated within the last {{ days }}
+            days,
             stemming from
             your organization's usage of the platform. The NoSQL database operations are calculated based on the
             operations
@@ -5171,7 +5174,7 @@ ${insightContent}
       </div>
       <div class="row mt-8">
         <img src="{% static 'img/dashboard/ds-10.png' %}" width="100%" style="border-radius:50px;"
-                     class="justify-content-end me-8 p-8 image" alt="dashboard illustration">
+             class="justify-content-end me-8 p-8 image" alt="dashboard illustration">
         <div class="col-4 mb-6">
           <div class="card h-100">
             <div class="card-header">
@@ -5188,7 +5191,8 @@ ${insightContent}
           <div class="card h-100">
             <div class="card-header">
               <h5 class="card-title mb-0">NoSQL Write Queries per Assistant</h5>
-              <small class="text-muted">Total NoSQL write queries attempted by each assistant, within the last {{ days }}
+              <small class="text-muted">Total NoSQL write queries attempted by each assistant, within the
+                last {{ days }}
                 days.</small>
             </div>
             <div class="card-body">
@@ -5253,7 +5257,7 @@ ${insightContent}
       </div>
       <div class="row mt-8">
         <img src="{% static 'img/dashboard/ds-11.png' %}" width="100%" style="border-radius:50px;"
-                     class="justify-content-end me-8 p-8 image" alt="dashboard illustration">
+             class="justify-content-end me-8 p-8 image" alt="dashboard illustration">
         <div class="col-4 mb-6">
           <div class="card h-100">
             <div class="card-header">
@@ -5332,7 +5336,7 @@ ${insightContent}
       </div>
       <div class="row mt-8">
         <img src="{% static 'img/dashboard/ds-12.png' %}" width="100%" style="border-radius:50px;"
-                     class="justify-content-end me-8 p-8 image" alt="dashboard illustration">
+             class="justify-content-end me-8 p-8 image" alt="dashboard illustration">
         <div class="col-4 mb-6">
           <div class="card h-100">
             <div class="card-header">
@@ -5434,7 +5438,7 @@ ${insightContent}
       </div>
       <div class="row mt-8">
         <img src="{% static 'img/dashboard/ds-13.png' %}" width="100%" style="border-radius:50px;"
-                     class="justify-content-end me-8 p-8 image" alt="dashboard illustration">
+             class="justify-content-end me-8 p-8 image" alt="dashboard illustration">
         <div class="col-12 mb-6">
           <div class="card h-100">
             <div class="card-header">
@@ -5488,7 +5492,7 @@ ${insightContent}
       </div>
       <div class="row mt-8">
         <img src="{% static 'img/dashboard/ds-14.png' %}" width="100%" style="border-radius:50px;"
-                     class="justify-content-end me-8 p-8 image" alt="dashboard illustration">
+             class="justify-content-end me-8 p-8 image" alt="dashboard illustration">
         <div class="col-6 mb-6">
           <div class="card h-100">
             <div class="card-header">
@@ -5555,7 +5559,7 @@ ${insightContent}
       </div>
       <div class="row mt-8">
         <img src="{% static 'img/dashboard/ds-15.png' %}" width="100%" style="border-radius:50px;"
-                     class="justify-content-end me-8 p-8 image" alt="dashboard illustration">
+             class="justify-content-end me-8 p-8 image" alt="dashboard illustration">
         <div class="col-4 mb-6">
           <div class="card h-100">
             <div class="card-header">
@@ -5632,7 +5636,7 @@ ${insightContent}
       </div>
       <div class="row mt-8">
         <img src="{% static 'img/dashboard/ds-16.png' %}" width="100%" style="border-radius:50px;"
-                     class="justify-content-end me-8 p-8 image" alt="dashboard illustration">
+             class="justify-content-end me-8 p-8 image" alt="dashboard illustration">
         <div class="col-4 mb-6">
           <div class="card h-100">
             <div class="card-header">
@@ -5711,7 +5715,7 @@ ${insightContent}
       </div>
       <div class="row mt-8">
         <img src="{% static 'img/dashboard/ds-17.png' %}" width="100%" style="border-radius:50px;"
-                     class="justify-content-end me-8 p-8 image" alt="dashboard illustration">
+             class="justify-content-end me-8 p-8 image" alt="dashboard illustration">
         <div class="col-4 mb-6">
           <div class="card h-100">
             <div class="card-header">
@@ -5794,7 +5798,7 @@ ${insightContent}
       </div>
       <div class="row mt-8">
         <img src="{% static 'img/dashboard/ds-18.png' %}" width="100%" style="border-radius:50px;"
-                     class="justify-content-end me-8 p-8 image" alt="dashboard illustration">
+             class="justify-content-end me-8 p-8 image" alt="dashboard illustration">
         <div class="col-6 mb-6">
           <div class="card h-100">
             <div class="card-header">
@@ -5859,7 +5863,7 @@ ${insightContent}
       </div>
       <div class="row mt-8">
         <img src="{% static 'img/dashboard/ds-19.png' %}" width="100%" style="border-radius:50px;"
-                     class="justify-content-end me-8 p-8 image" alt="dashboard illustration">
+             class="justify-content-end me-8 p-8 image" alt="dashboard illustration">
         <div class="col-12 mb-6">
           <div class="card h-100">
             <div class="card-header">

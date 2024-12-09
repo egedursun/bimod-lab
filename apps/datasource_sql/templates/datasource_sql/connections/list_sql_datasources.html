@@ -1,21 +1,21 @@
-  <!--
-  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
-  ~
-  ~ Project: Bimod.io™
-  ~ File: list_sql_datasources.html
-  ~ Last Modified: 2024-10-05 01:39:48
-  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-05 14:42:41
-  ~
-  ~ This software is proprietary and confidential. Unauthorized copying,
-  ~ distribution, modification, or use of this software, whether for
-  ~ commercial, academic, or any other purpose, is strictly prohibited
-  ~ without the prior express written permission of BMD™ Autonomous
-  ~ Holdings.
-  ~
-  ~  For permission inquiries, please contact: admin@Bimod.io.
-  ~
-  -->
+<!--
+~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+~
+~ Project: Bimod.io™
+~ File: list_sql_datasources.html
+~ Last Modified: 2024-10-05 01:39:48
+~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+~ Created: 2024-10-05 14:42:41
+~
+~ This software is proprietary and confidential. Unauthorized copying,
+~ distribution, modification, or use of this software, whether for
+~ commercial, academic, or any other purpose, is strictly prohibited
+~ without the prior express written permission of BMD™ Autonomous
+~ Holdings.
+~
+~  For permission inquiries, please contact: admin@Bimod.io.
+~
+-->
 
 {% extends layout_path %}
 
@@ -27,9 +27,9 @@
 
 {% block vendor_css %}
   {{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}"/>
-  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
-  <link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}" />
   <style>
     .text-wrap {
       white-space: normal;
@@ -100,6 +100,7 @@
            aria-expanded="false" aria-controls="collapse-org-{{ organization.id }}">
           <div class="d-flex">
             <img src="
+
               {% if organization.organization_image %}{{ organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
                  class="rounded me-4" width="60" alt="Organization image">
           </div>
@@ -118,6 +119,7 @@
           <div class="assistant-group m-8 card card-border-shadow-primary p-8">
             <div class="d-flex">
               <img src="
+
                 {% if assistant.assistant_image %}{{ assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
                    class="rounded me-4" width="80" alt="Assistant image">
               <h5 class="assistant-title">
@@ -215,7 +217,8 @@
                       </ul>
                       <hr>
                       <div class="d-flex justify-content-center">
-                        <a href="{% url 'datasource_sql:refresh_schema' connection.id %}" class="btn btn-warning me-3"><i
+                        <a href="{% url 'datasource_sql:refresh_schema' connection.id %}"
+                           class="btn btn-warning me-3"><i
                           class="ti ti-refresh me-2"></i><strong>Refresh Schema</strong></a>
                         <a href="{% url 'datasource_sql:update' connection.id %}" class="btn btn-primary me-3"><i
                           class="ti ti-edit me-2"></i><strong>Edit Connection</strong></a>
@@ -242,9 +245,9 @@
   {% endfor %}
 
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      document.querySelectorAll('.toggle-icon').forEach(function (icon) {
-        icon.addEventListener('click', function () {
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('.toggle-icon').forEach(function(icon) {
+        icon.addEventListener('click', function() {
           var target = document.querySelector(this.getAttribute('data-target'));
           var bootstrapCollapse = new bootstrap.Collapse(target, {
             toggle: false
@@ -257,8 +260,8 @@
         });
       });
 
-      document.querySelectorAll('.collapse').forEach(function (collapse) {
-        collapse.addEventListener('show.bs.collapse', function () {
+      document.querySelectorAll('.collapse').forEach(function(collapse) {
+        collapse.addEventListener('show.bs.collapse', function() {
           var icon = document.querySelector(`.toggle-icon[data-target="#${this.id}"]`);
           if (icon) {
             icon.classList.remove('fa-arrow-alt-circle-down');
@@ -266,7 +269,7 @@
           }
         });
 
-        collapse.addEventListener('hide.bs.collapse', function () {
+        collapse.addEventListener('hide.bs.collapse', function() {
           var icon = document.querySelector(`.toggle-icon[data-target="#${this.id}"]`);
           if (icon) {
             icon.classList.remove('fa-arrow-alt-circle-up');
@@ -275,14 +278,14 @@
         });
       });
 
-      document.querySelectorAll('.btn-danger').forEach(function (button) {
-        button.addEventListener('click', function (event) {
+      document.querySelectorAll('.btn-danger').forEach(function(button) {
+        button.addEventListener('click', function(event) {
           event.preventDefault();
           const form = button.closest('a').getAttribute('href');
 
           Swal.fire({
             title: 'Are you sure?',
-            text: "You won't be able to revert this action.",
+            text: 'You won\'t be able to revert this action.',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonText: 'Yes, delete it!',

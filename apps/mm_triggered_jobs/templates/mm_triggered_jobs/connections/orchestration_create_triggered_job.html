@@ -26,7 +26,7 @@
 
 {% block vendor_css %}
   {{ block.super }}
-  <link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}" />
 {% endblock vendor_css %}
 
 {% block vendor_js %}
@@ -54,7 +54,8 @@
           <small class="text-muted float-end"></small>
         </div>
         <div class="card-body">
-          <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+          <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center"
+               role="alert">
             <img src="{% static 'img/custom-illustrations-v2/i2-65.png' %}" width="25%" style="border-radius: 25px;"
                  class="justify-content-end me-8" alt="Illustration for tips">
             <span class="alert-icon rounded">
@@ -63,8 +64,10 @@
             <div class="d-flex flex-column ps-1">
               <h5 class="alert-heading mb-2">Tip</h5>
               <p class="mb-0">
-                In this page, you can create a new orchestration triggered job. You can set the job name, description, step guide,
-                assistant, orchestration trigger source, event type, and maximum runs. Once you fill in the required fields, click the
+                In this page, you can create a new orchestration triggered job. You can set the job name, description,
+                step guide,
+                assistant, orchestration trigger source, event type, and maximum runs. Once you fill in the required
+                fields, click the
                 "Create Orchestration Triggered Job" button to create the job.
               </p>
               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
@@ -94,7 +97,7 @@
               </div>
               <div class="mb-6 col-4">
                 <label class="form-label" for="name">Name</label>
-                <input type="text" class="form-control" id="name" name="name" placeholder="Enter job name" required/>
+                <input type="text" class="form-control" id="name" name="name" placeholder="Enter job name" required />
               </div>
               <div class="mb-6 col-4">
                 <label class="form-label" for="task_description">Description</label>
@@ -128,7 +131,7 @@
               <div class="mb-6 col-4">
                 <label class="form-label" for="trigger_source">Trigger Source</label>
                 <input type="text" class="form-control" id="trigger_source" name="trigger_source"
-                       placeholder="Enter trigger source" required/>
+                       placeholder="Enter trigger source" required />
                 <div class="tips-section alert alert-solid-info d-flex align-items-center mt-6" role="alert">
                 <span class="alert-icon rounded">
                   <i class="ti ti-info-circle"></i>
@@ -141,7 +144,7 @@
               <div class="mb-6 col-4">
                 <label class="form-label" for="event_type">When does this event get triggered?</label>
                 <input type="text" class="form-control" id="event_type" name="event_type"
-                       placeholder="Enter your response in natural language" required/>
+                       placeholder="Enter your response in natural language" required />
                 <div class="tips-section alert alert-solid-info d-flex align-items-center mt-6" role="alert">
                 <span class="alert-icon rounded">
                   <i class="ti ti-info-circle"></i>
@@ -154,13 +157,14 @@
               <div class="mb-6 col-4">
                 <label class="form-label" for="maximum_runs">Maximum Runs</label>
                 <input type="number" class="form-control" id="maximum_runs" name="maximum_runs" min="1" max="1000"
-                       value="100" required/>
+                       value="100" required />
                 <div class="alert alert-solid-warning d-flex align-items-center mt-6" role="alert">
                 <span class="alert-icon rounded">
                   <i class="ti ti-info-circle"></i>
                 </span>
                   It can take up to 15 minutes for the triggered job to be processed and integrated into the system to
-                  start getting executed properly. If the orchestration triggered job is not integrated even after a long while,
+                  start getting executed properly. If the orchestration triggered job is not integrated even after a
+                  long while,
                   please feel free to contact the support team to get help.
                 </div>
               </div>
@@ -177,8 +181,8 @@
   </div>
 
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      document.querySelectorAll('#minute, #hour, #day_of_week, #day_of_month, #month_of_year').forEach(function (element) {
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('#minute, #hour, #day_of_week, #day_of_month, #month_of_year').forEach(function(element) {
         updateLabels(element.id);
       });
     });

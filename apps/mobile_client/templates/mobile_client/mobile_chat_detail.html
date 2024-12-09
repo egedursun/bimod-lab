@@ -23,192 +23,196 @@
 {% block title %}Fermion Copilot - Chat{% endblock %}
 
 {% block vendor_css %}
-{{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/libs/bootstrap-maxlength/bootstrap-maxlength.css' %}" />
-<link rel="stylesheet" href="{% static 'vendor/css/pages/app-chat.css' %}" />
-<link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}" />
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/bootstrap-maxlength/bootstrap-maxlength.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/css/pages/app-chat.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}" />
 {% endblock vendor_css %}
 
 {% block page_css %}
-<style>
-  html {
-    zoom: 143%;
-    display: flex;
-    flex-direction: column;
-  }
-</style>
+  <style>
+    html {
+      zoom: 143%;
+      display: flex;
+      flex-direction: column;
+    }
+  </style>
 {% endblock page_css %}
 
 {% block vendor_js %}
-{{ block.super }}
-<script src="{% static 'vendor/libs/sweetalert2/sweetalert2.js' %}"></script>
-<script src="{% static 'vendor/libs/bootstrap-maxlength/bootstrap-maxlength.js' %}"></script>
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/sweetalert2/sweetalert2.js' %}"></script>
+  <script src="{% static 'vendor/libs/bootstrap-maxlength/bootstrap-maxlength.js' %}"></script>
 {% endblock vendor_js %}
 
 {% block content %}
-<nav class="layout-navbar navbar navbar-expand-xl align-items-center bg-navbar-theme" id="layout-navbar" style="min-height: 80px;">
-  <div class="container-fluid pt-2">
-    <!-- Brand -->
-    <div class="navbar-brand app-brand demo d-flex align-items-center py-0">
-      <a href="{% url 'mobile_client:chat_list' %}" class="app-brand-link">
-        <img src="{% static 'img/logo.png' %}" alt="logo" style="width: 30px;" class="me-2">
-        <span class="app-brand-text demo fw-bold" style="font-size: 1rem;">Bimod Fermion Copilot</span>
-      </a>
+  <nav class="layout-navbar navbar navbar-expand-xl align-items-center bg-navbar-theme" id="layout-navbar"
+       style="min-height: 80px;">
+    <div class="container-fluid pt-2">
+      <!-- Brand -->
+      <div class="navbar-brand app-brand demo d-flex align-items-center py-0">
+        <a href="{% url 'mobile_client:chat_list' %}" class="app-brand-link">
+          <img src="{% static 'img/logo.png' %}" alt="logo" style="width: 30px;" class="me-2">
+          <span class="app-brand-text demo fw-bold" style="font-size: 1rem;">Bimod Fermion Copilot</span>
+        </a>
+      </div>
+
+      <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
+        <ul class="navbar-nav flex-row align-items-center ms-auto">
+
+          <!-- Back to Chat List Icon -->
+          <li class="nav-item p-1 me-2">
+            <a onclick="goBackToChatList()" class="nav-link">
+              <i class="fa fa-md fa-home text-white"></i>
+            </a>
+          </li>
+
+          <!-- Refresh Icon -->
+          <li class="nav-item p-1 me-2">
+            <a class="nav-link text-info" onclick="window.location.reload();">
+              <i class="fa fa-md fa-refresh p-1"></i>
+            </a>
+          </li>
+
+          <!-- Delete Chat Icon -->
+          <li class="nav-item p-1 me-4">
+            <a id="delete-chat-menu" class="nav-link">
+              <i class="fa fa-md fa-trash text-danger"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="app-chat card overflow-hidden d-flex flex-column vh-100" style="height: 100vh; padding-top: 20%;">
+
+    <div
+      class="chat-header d-flex justify-content-between align-items-center bg-label-primary text-white px-3 py-3 rounded border border-primary-subtle border-2 rounded"
+      style="min-height: 160px; max-height: 160px; background-color: #2D4092; background-image: linear-gradient(135deg, #2D4092 0%, #532D74 25%, #8D2484 50%, #9E2382 75%, #A62D57 100%);">
+      <div class="p-3" style="min-width: 70%;">
+        <h6 id="chat-header-subtitle"
+            class="mb-2 fw-bold text-white bg-body p-2 rounded border border-primary rounded"
+            style="font-size: 10px;"></h6>
+        <h6 id="chat-header-title"
+            class="mb-2 fw-bold text-white bg-body p-2 rounded border border-primary rounded"
+            style="font-size: 10px;"></h6>
+        <div class="bg-body pb-2 ps-2 pe-1 pt-1 rounded border border-primary rounded"><i class="fa fa-robot me-2"
+                                                                                          style="font-size: 10px;"></i>
+          <small id="chat-connection-type" class="fw-bold text-white" style="font-size: 10px;"></small></div>
+      </div>
     </div>
 
-    <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
-      <ul class="navbar-nav flex-row align-items-center ms-auto">
+    <hr>
 
-        <!-- Back to Chat List Icon -->
-        <li class="nav-item p-1 me-2">
-          <a onclick="goBackToChatList()" class="nav-link">
-            <i class="fa fa-md fa-home text-white"></i>
-          </a>
-        </li>
+    <div id="chat-messages" class="chat-messages p-3 flex-grow-1 overflow-auto">
+      <!-- Chat messages dynamically injected here -->
+      <!-- ... -->
+      <!-- ... -->
+      <!-- ... -->
+    </div>
 
-        <!-- Refresh Icon -->
-        <li class="nav-item p-1 me-2">
-          <a class="nav-link text-info" onclick="window.location.reload();">
-            <i class="fa fa-md fa-refresh p-1"></i>
-          </a>
-        </li>
+    <div
+      class="card card-border-shadow-primary bg-label-primary ms-2 me-2 p-1 mt-4 mb-2 border border-1 border-primary rounded"
+      style="max-height: 400px;">
+      <button class="btn d-flex ms-auto p-1 mb-0" style="float: right;"
+              onclick="if(this.parentElement.style.maxHeight === '120px') {this.parentElement.style.maxHeight = '33px'; this.parentElement.classList.add('overflow-hidden'); this.parentElement.classList.remove('overflow-auto');} else {this.parentElement.style.maxHeight = '120px'; this.parentElement.classList.add('overflow-auto'); this.parentElement.classList.remove('overflow-hidden');}">
+        <i class="fa fa-dot-circle fa-md text-white"></i>
+      </button>
+      <small class="text-white p-1 mb-1" style="font-size: 10px;"><strong>
+        <i class="fa fa-bolt-lightning me-2"></i>
+        Response Streamer
+      </strong></small>
+      <div id="non-tool-markdown-content"
+           class="bg-white text-black p-4 markdown-content border border-primary border-4 rounded overflow-auto">
+      </div>
+    </div>
 
-        <!-- Delete Chat Icon -->
-        <li class="nav-item p-1 me-4">
-          <a id="delete-chat-menu" class="nav-link">
-            <i class="fa fa-md fa-trash text-danger"></i>
-          </a>
-        </li>
-      </ul>
+    <div
+      class="chat-input p-2 border-top bg-body p-2 rounded border border-primary-subtle border-1 d-flex align-items-center"
+      style="min-height: 100px;">
+      <textarea id="message-input" class="form-control me-2" rows="1"
+                placeholder="Type your message here..."></textarea>
+      <button id="send-message-button" class="btn btn-primary p-3"
+              style="background-color: #2D4092; background-image: linear-gradient(135deg, #2D4092 0%, #532D74 25%, #8D2484 50%, #9E2382 75%, #A62D57 100%);">
+        <i class="fa fa-paper-plane" style="font-size: 12px;"></i>
+      </button>
     </div>
   </div>
-</nav>
-
-<div class="app-chat card overflow-hidden d-flex flex-column vh-100" style="height: 100vh; padding-top: 20%;">
-
-  <div
-    class="chat-header d-flex justify-content-between align-items-center bg-label-primary text-white px-3 py-3 rounded border border-primary-subtle border-2 rounded"
-    style="min-height: 160px; max-height: 160px; background-color: #2D4092; background-image: linear-gradient(135deg, #2D4092 0%, #532D74 25%, #8D2484 50%, #9E2382 75%, #A62D57 100%);">
-    <div class="p-3" style="min-width: 70%;">
-      <h6 id="chat-header-subtitle"
-          class="mb-2 fw-bold text-white bg-body p-2 rounded border border-primary rounded"
-          style="font-size: 10px;"></h6>
-      <h6 id="chat-header-title"
-          class="mb-2 fw-bold text-white bg-body p-2 rounded border border-primary rounded"
-          style="font-size: 10px;"></h6>
-      <div class="bg-body pb-2 ps-2 pe-1 pt-1 rounded border border-primary rounded"><i class="fa fa-robot me-2" style="font-size: 10px;"></i>
-        <small id="chat-connection-type" class="fw-bold text-white" style="font-size: 10px;"></small></div>
-    </div>
-  </div>
-
-  <hr>
-
-  <div id="chat-messages" class="chat-messages p-3 flex-grow-1 overflow-auto">
-    <!-- Chat messages dynamically injected here -->
-    <!-- ... -->
-    <!-- ... -->
-    <!-- ... -->
-  </div>
-
-  <div
-    class="card card-border-shadow-primary bg-label-primary ms-2 me-2 p-1 mt-4 mb-2 border border-1 border-primary rounded" style="max-height: 400px;">
-    <button class="btn d-flex ms-auto p-1 mb-0" style="float: right;"
-            onclick="if(this.parentElement.style.maxHeight === '120px') {this.parentElement.style.maxHeight = '33px'; this.parentElement.classList.add('overflow-hidden'); this.parentElement.classList.remove('overflow-auto');} else {this.parentElement.style.maxHeight = '120px'; this.parentElement.classList.add('overflow-auto'); this.parentElement.classList.remove('overflow-hidden');}">
-      <i class="fa fa-dot-circle fa-md text-white"></i>
-    </button>
-    <small class="text-white p-1 mb-1" style="font-size: 10px;"><strong>
-      <i class="fa fa-bolt-lightning me-2"></i>
-      Response Streamer
-    </strong></small>
-    <div id="non-tool-markdown-content"
-         class="bg-white text-black p-4 markdown-content border border-primary border-4 rounded overflow-auto">
-    </div>
-  </div>
-
-  <div
-    class="chat-input p-2 border-top bg-body p-2 rounded border border-primary-subtle border-1 d-flex align-items-center"
-    style="min-height: 100px;">
-    <textarea id="message-input" class="form-control me-2" rows="1" placeholder="Type your message here..."></textarea>
-    <button id="send-message-button" class="btn btn-primary p-3"
-            style="background-color: #2D4092; background-image: linear-gradient(135deg, #2D4092 0%, #532D74 25%, #8D2484 50%, #9E2382 75%, #A62D57 100%);">
-      <i class="fa fa-paper-plane" style="font-size: 12px;"></i>
-    </button>
-  </div>
-</div>
 {% endblock content %}
 
 {% block page_js %}
-<script>
-  function goBackToChatList() {
-    window.location.href = '/app/mobile_client/chat/list/';
-  }
-
-  document.addEventListener('DOMContentLoaded', function() {
-    const storageKey = 'bimod_connections';
-    const urlParams = new URLSearchParams(window.location.search);
-    const connectionUuid = urlParams.get('connectionUuid');
-    const chatUuid = urlParams.get('chatUuid');
-
-    const chatHeaderTitle = document.getElementById('chat-header-title');
-    const chatHeaderSubtitle = document.getElementById('chat-header-subtitle');
-    const chatConnectionType = document.getElementById('chat-connection-type');
-    const chatMessagesContainer = document.getElementById('chat-messages');
-    const sendMessageButton = document.getElementById('send-message-button');
-    const deleteChatMenu = document.getElementById('delete-chat-menu');
-    const messageInput = document.getElementById('message-input');
-
-    const connections = JSON.parse(localStorage.getItem(storageKey)) || {};
-    const connectionCategory = Object.keys(connections).find((category) =>
-      connections[category].some((conn) => conn.uuid === connectionUuid)
-    );
-
-    const connection = connections[connectionCategory]?.find(
-      (conn) => conn.uuid === connectionUuid
-    );
-
-    const chat = connection?.chats.find((chat) => chat.uuid === chatUuid);
-
-    if (!connection || !chat) {
+  <script>
+    function goBackToChatList() {
       window.location.href = '/app/mobile_client/chat/list/';
-      return;
     }
 
-    chatHeaderTitle.textContent = `CID-${chatUuid.slice(0, 20)}-TRC`;
-    chatHeaderSubtitle.textContent = `AID-${connection.uuid.slice(0, 20)}-TRC`;
-    chatConnectionType.textContent = `${connection.type}`;
+    document.addEventListener('DOMContentLoaded', function() {
+      const storageKey = 'bimod_connections';
+      const urlParams = new URLSearchParams(window.location.search);
+      const connectionUuid = urlParams.get('connectionUuid');
+      const chatUuid = urlParams.get('chatUuid');
 
-    function loadMessages() {
-      chatMessagesContainer.innerHTML = '';
+      const chatHeaderTitle = document.getElementById('chat-header-title');
+      const chatHeaderSubtitle = document.getElementById('chat-header-subtitle');
+      const chatConnectionType = document.getElementById('chat-connection-type');
+      const chatMessagesContainer = document.getElementById('chat-messages');
+      const sendMessageButton = document.getElementById('send-message-button');
+      const deleteChatMenu = document.getElementById('delete-chat-menu');
+      const messageInput = document.getElementById('message-input');
 
-      if (chat.messages.length === 0) {
-        chatMessagesContainer.innerHTML = `
+      const connections = JSON.parse(localStorage.getItem(storageKey)) || {};
+      const connectionCategory = Object.keys(connections).find((category) =>
+        connections[category].some((conn) => conn.uuid === connectionUuid)
+      );
+
+      const connection = connections[connectionCategory]?.find(
+        (conn) => conn.uuid === connectionUuid
+      );
+
+      const chat = connection?.chats.find((chat) => chat.uuid === chatUuid);
+
+      if (!connection || !chat) {
+        window.location.href = '/app/mobile_client/chat/list/';
+        return;
+      }
+
+      chatHeaderTitle.textContent = `CID-${chatUuid.slice(0, 20)}-TRC`;
+      chatHeaderSubtitle.textContent = `AID-${connection.uuid.slice(0, 20)}-TRC`;
+      chatConnectionType.textContent = `${connection.type}`;
+
+      function loadMessages() {
+        chatMessagesContainer.innerHTML = '';
+
+        if (chat.messages.length === 0) {
+          chatMessagesContainer.innerHTML = `
           <div class="alert alert-warning text-center border border-warning border-1 rounded mt-1 p-6 ms-3 me-3">
             <strong><small>
             <i class="fa fa-info-circle me-2 "></i>
             No messages yet. You can start the chat by sending a message to your agent.
             </small></strong>
           </div>`;
-        return;
-      }
+          return;
+        }
 
-      const connectionTypeLower = connection.type.toLowerCase();
+        const connectionTypeLower = connection.type.toLowerCase();
 
-      chat.messages.forEach((msg) => {
-        const isUser = msg.role === 'user';
-        const msgDiv = document.createElement('div');
-        msgDiv.className = `chat-message d-flex ${
-          isUser ? 'justify-content-end' : 'justify-content-start'
-        } mb-2`;
+        chat.messages.forEach((msg) => {
+          const isUser = msg.role === 'user';
+          const msgDiv = document.createElement('div');
+          msgDiv.className = `chat-message d-flex ${
+            isUser ? 'justify-content-end' : 'justify-content-start'
+          } mb-2`;
 
-        // Dynamically set the agent avatar based on connection type
-        const agentAvatar = isUser
-          ? ''
-          : `<img src="{% static 'img/mobile_client/' %}${connectionTypeLower}-avatar.png"
+          // Dynamically set the agent avatar based on connection type
+          const agentAvatar = isUser
+            ? ''
+            : `<img src="{% static 'img/mobile_client/' %}${connectionTypeLower}-avatar.png"
                  alt="Agent Avatar"
                  class="rounded border border-primary border-2 rounded"
                  style="width: 70px; height: 70px;">`;
 
-        msgDiv.innerHTML = `
+          msgDiv.innerHTML = `
           <div class="d-flex align-items-start">
             <!-- Agent Avatar -->
             <div class="${isUser ? 'd-none' : 'me-4'}">
@@ -216,8 +220,8 @@
             </div>
             <!-- Message Content -->
             <div class="message-content p-2 rounded ${
-              isUser ? 'bg-primary text-white' : 'bg-light text-dark'
-            }">
+            isUser ? 'bg-primary text-white' : 'bg-light text-dark'
+          }">
               ${msg.content}
               <hr>
               <div class="text-white small mt-2 d-flex align-items-center">
@@ -234,202 +238,198 @@
             </div>
           </div>
         `;
-        chatMessagesContainer.appendChild(msgDiv);
-      });
-
-      chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
-    }
-
-
-    sendMessageButton.addEventListener('click', async () => {
-      const userMessage = messageInput.value.trim();
-      if (!userMessage) {
-        Swal.fire({
-          title: 'Warning',
-          text: 'Please enter a message.',
-          icon: 'warning',
-          showCancelButton: false,
-          confirmButtonText: 'OK',
-          customClass: {
-            confirmButton: 'btn btn-primary w-100 btn-lg fw-bolder m-2'
-          },
-          buttonsStyling: false
+          chatMessagesContainer.appendChild(msgDiv);
         });
-        return;
+
+        chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
       }
 
-      const newUserMessage = {
-        role: 'user',
-        content: userMessage,
-        sentAt: new Date().toISOString()
-      };
 
-      chat.messages.push(newUserMessage);
-      localStorage.setItem(storageKey, JSON.stringify(connections));
-      loadMessages();
-      messageInput.value = '';
+      sendMessageButton.addEventListener('click', async () => {
+        const userMessage = messageInput.value.trim();
+        if (!userMessage) {
+          Swal.fire({
+            title: 'Warning',
+            text: 'Please enter a message.',
+            icon: 'warning',
+            showCancelButton: false,
+            confirmButtonText: 'OK',
+            customClass: {
+              confirmButton: 'btn btn-primary w-100 btn-lg fw-bolder m-2'
+            },
+            buttonsStyling: false
+          });
+          return;
+        }
 
-      try {
-        const response = await fetch(connection.endpoint, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            ...(connection.apiKey && { Authorization: `Bearer ${connection.apiKey}` })
-          },
-          body: JSON.stringify({
-            chat_history: chat.messages.map((m) => ({
-              role: m.role,
-              content: m.content
-            })),
-            options: {
-              streaming_options: {
-                process_log_streaming: true,
-              }
-            }
-          })
-        });
-
-        if (!response.ok) throw new Error('Error fetching response.');
-
-        const data = await response.json();
-        const assistantMessage = {
-          role: 'assistant',
-          content: data.data.message.content,
+        const newUserMessage = {
+          role: 'user',
+          content: userMessage,
           sentAt: new Date().toISOString()
         };
 
-        chat.messages.push(assistantMessage);
+        chat.messages.push(newUserMessage);
         localStorage.setItem(storageKey, JSON.stringify(connections));
         loadMessages();
+        messageInput.value = '';
 
-      } catch (error) {
+        try {
+          const response = await fetch(connection.endpoint, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              ...(connection.apiKey && { Authorization: `Bearer ${connection.apiKey}` })
+            },
+            body: JSON.stringify({
+              chat_history: chat.messages.map((m) => ({
+                role: m.role,
+                content: m.content
+              })),
+              options: {
+                streaming_options: {
+                  process_log_streaming: true
+                }
+              }
+            })
+          });
+
+          if (!response.ok) throw new Error('Error fetching response.');
+
+          const data = await response.json();
+          const assistantMessage = {
+            role: 'assistant',
+            content: data.data.message.content,
+            sentAt: new Date().toISOString()
+          };
+
+          chat.messages.push(assistantMessage);
+          localStorage.setItem(storageKey, JSON.stringify(connections));
+          loadMessages();
+
+        } catch (error) {
+          Swal.fire({
+            title: 'Error',
+            text: 'Failed to send the message.',
+            icon: 'error',
+            showCancelButton: false,
+            confirmButtonText: 'OK',
+            customClass: {
+              confirmButton: 'btn btn-primary w-100 btn-lg fw-bolder m-2'
+            },
+            buttonsStyling: false
+          });
+        }
+      });
+
+      deleteChatMenu.addEventListener('click', () => {
         Swal.fire({
-          title: 'Error',
-          text: 'Failed to send the message.',
-          icon: 'error',
-          showCancelButton: false,
-          confirmButtonText: 'OK',
+          title: 'Are you sure?',
+          text: 'This will delete the chat permanently.',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Yes, delete it!',
+          cancelButtonText: 'Cancel',
           customClass: {
-            confirmButton: 'btn btn-primary w-100 btn-lg fw-bolder m-2'
+            confirmButton: 'btn btn-danger w-100 btn-lg fw-bolder m-2',
+            cancelButton: 'btn btn-secondary w-100 btn-lg fw-bolder m-2'
           },
           buttonsStyling: false
-        });
-      }
-    });
+        }).then((result) => {
+          if (!result.isConfirmed) return;
 
-    deleteChatMenu.addEventListener('click', () => {
-      Swal.fire({
-        title: 'Are you sure?',
-        text: 'This will delete the chat permanently.',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Yes, delete it!',
-        cancelButtonText: 'Cancel',
-        customClass: {
-          confirmButton: 'btn btn-danger w-100 btn-lg fw-bolder m-2',
-          cancelButton: 'btn btn-secondary w-100 btn-lg fw-bolder m-2'
-        },
-        buttonsStyling: false
-      }).then((result) => {
-        if (!result.isConfirmed) return;
-
-        connection.chats = connection.chats.filter((c) => c.uuid !== chatUuid);
-        localStorage.setItem(storageKey, JSON.stringify(connections));
-        Swal.fire({
-          title: 'Deleted!',
-          text: 'Chat has been deleted successfully.',
-          icon: 'success',
-          confirmButtonText: 'OK',
-          customClass: {
-            confirmButton: 'btn btn-primary w-100 btn-lg fw-bolder m-2'
-          },
-          buttonsStyling: false
-        }).then(() => {
-          window.location.href = '/app/mobile_client/chat/list/';
+          connection.chats = connection.chats.filter((c) => c.uuid !== chatUuid);
+          localStorage.setItem(storageKey, JSON.stringify(connections));
+          Swal.fire({
+            title: 'Deleted!',
+            text: 'Chat has been deleted successfully.',
+            icon: 'success',
+            confirmButtonText: 'OK',
+            customClass: {
+              confirmButton: 'btn btn-primary w-100 btn-lg fw-bolder m-2'
+            },
+            buttonsStyling: false
+          }).then(() => {
+            window.location.href = '/app/mobile_client/chat/list/';
+          });
         });
       });
+
+      loadMessages();
     });
+  </script>
 
-    loadMessages();
-  });
-</script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const element = document.getElementById('non-tool-markdown-content');
+      let accumulatedContent = '';
+      let socket = null;
+      const maxRetries = 1000;
+      let retryCount = 0;
 
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const element = document.getElementById('non-tool-markdown-content');
-    let accumulatedContent = '';
-    let socket = null;
-    const maxRetries = 1000;
-    let retryCount = 0;
+      const storageKey = 'bimod_connections';
+      const urlParams = new URLSearchParams(window.location.search);
 
-    const storageKey = 'bimod_connections';
-    const urlParams = new URLSearchParams(window.location.search);
+      const connectionUuid = urlParams.get('connectionUuid');
+      const chatUuid = urlParams.get('chatUuid');
 
-    const connectionUuid = urlParams.get('connectionUuid');
-    const chatUuid = urlParams.get('chatUuid');
+      const connections = JSON.parse(localStorage.getItem(storageKey)) || {};
 
-    const connections = JSON.parse(localStorage.getItem(storageKey)) || {};
-
-    const connectionTypeRaw = Object.keys(connections).find((category) =>
-      connections[category].some(
-        (conn) => conn.uuid === connectionUuid
-      )
-    );
-
-    function connectWebSocket() {
-      let protocol = window.location.protocol === 'https:' ? 'wss://' : 'ws://';
-
-      const connection = connections[connectionTypeRaw]?.find(
-        (conn) => conn.uuid === connectionUuid
+      const connectionTypeRaw = Object.keys(connections).find((category) =>
+        connections[category].some(
+          (conn) => conn.uuid === connectionUuid
+        )
       );
 
-      // Get the endpoint from the connection object
-      const rawEndpoint = connection.endpoint;
+      function connectWebSocket() {
+        let protocol = window.location.protocol === 'https:' ? 'wss://' : 'ws://';
 
-      // Split from "app/" and get the second part
-      let endpointClean = rawEndpoint.split('/app')[1];
-      let connectionType = connectionTypeRaw;
+        const connection = connections[connectionTypeRaw]?.find(
+          (conn) => conn.uuid === connectionUuid
+        );
 
-      if (connectionType === 'VoidForger') {
-        connectionType = 'voidforger';
-        endpointClean = endpointClean.replace('/export_voidforger/exported/voidforger_assistants', '');
-      }
-      else if (connectionType === 'Assistant') {
-        connectionType = 'assistant';
-        endpointClean = endpointClean.replace('/export_assistants/exported/voidforger_assistants', '');
-      }
-      else if (connectionType === 'LeanMod') {
-        connectionType = 'leanmod';
-        endpointClean = endpointClean.replace('/export_leanmods/exported/voidforger_assistants', '');
-      }
-      else if (connectionType === 'Orchestrator') {
-        connectionType = 'orchestration';
-        endpointClean = endpointClean.replace('/export_orchestrations/exported/voidforger_assistants', '');
-      }
-      else {
-        console.error('Invalid connection type.');
-        return;
-      }
+        // Get the endpoint from the connection object
+        const rawEndpoint = connection.endpoint;
 
-      if (endpointClean.startsWith('/')) {
-        endpointClean = endpointClean.substring(1);
-      }
-      if (endpointClean.endsWith('/')) {
-        endpointClean = endpointClean.substring(0, endpointClean.length - 1);
-      }
-      endpointClean = endpointClean.replaceAll('/', '-');
-      let endpointSlug = endpointClean;
+        // Split from "app/" and get the second part
+        let endpointClean = rawEndpoint.split('/app')[1];
+        let connectionType = connectionTypeRaw;
 
-      socket = new WebSocket(protocol + window.location.host + `/ws/fermion_logs/${connectionType}/`);
+        if (connectionType === 'VoidForger') {
+          connectionType = 'voidforger';
+          endpointClean = endpointClean.replace('/export_voidforger/exported/voidforger_assistants', '');
+        } else if (connectionType === 'Assistant') {
+          connectionType = 'assistant';
+          endpointClean = endpointClean.replace('/export_assistants/exported/voidforger_assistants', '');
+        } else if (connectionType === 'LeanMod') {
+          connectionType = 'leanmod';
+          endpointClean = endpointClean.replace('/export_leanmods/exported/voidforger_assistants', '');
+        } else if (connectionType === 'Orchestrator') {
+          connectionType = 'orchestration';
+          endpointClean = endpointClean.replace('/export_orchestrations/exported/voidforger_assistants', '');
+        } else {
+          console.error('Invalid connection type.');
+          return;
+        }
 
-      socket.onmessage = function(event) {
+        if (endpointClean.startsWith('/')) {
+          endpointClean = endpointClean.substring(1);
+        }
+        if (endpointClean.endsWith('/')) {
+          endpointClean = endpointClean.substring(0, endpointClean.length - 1);
+        }
+        endpointClean = endpointClean.replaceAll('/', '-');
+        let endpointSlug = endpointClean;
 
-        const data = JSON.parse(event.data);
-        let newChunk = data.log;
+        socket = new WebSocket(protocol + window.location.host + `/ws/fermion_logs/${connectionType}/`);
 
-        if (newChunk.includes('<[bimod_streaming_end]>')) {
+        socket.onmessage = function(event) {
 
-          element.innerHTML += `
+          const data = JSON.parse(event.data);
+          let newChunk = data.log;
+
+          if (newChunk.includes('<[bimod_streaming_end]>')) {
+
+            element.innerHTML += `
             <div class="bg-label-primary rounded m-1 p-2">
               <strong class="text-white" style="font-size: 10px;">
                 ${accumulatedContent}
@@ -437,46 +437,46 @@
             </div>
           `;
 
-          element.scrollTo({
-            top: element.scrollHeight + 1000,
-            behavior: 'smooth'
-          });
-          accumulatedContent = '';
+            element.scrollTo({
+              top: element.scrollHeight + 1000,
+              behavior: 'smooth'
+            });
+            accumulatedContent = '';
 
-        } else if (newChunk.includes('<[bimod_process_end]>')) {
-          console.log('End of processing detected...');
+          } else if (newChunk.includes('<[bimod_process_end]>')) {
+            console.log('End of processing detected...');
 
-          // clean the stream after waiting for 2 seconds
-          setTimeout(() => {
-            element.innerHTML = '';
-          }, 2000);
+            // clean the stream after waiting for 2 seconds
+            setTimeout(() => {
+              element.innerHTML = '';
+            }, 2000);
 
-        } else {
-          accumulatedContent += newChunk;
-        }
-      };
+          } else {
+            accumulatedContent += newChunk;
+          }
+        };
 
-      socket.onerror = function(event) {
-        console.error('WebSocket error', event);
-        socket.close();
-      };
+        socket.onerror = function(event) {
+          console.error('WebSocket error', event);
+          socket.close();
+        };
 
-      socket.onclose = function(event) {
+        socket.onclose = function(event) {
 
-        console.log('WebSocket connection closed', event);
-        if (retryCount < maxRetries) {
-          retryCount++;
-          console.log(`Reconnecting... attempt ${retryCount}`);
-          setTimeout(connectWebSocket, 2000);
-        } else {
-          console.error('Max reconnection attempts reached. Unable to reconnect.');
-        }
-      };
-    }
+          console.log('WebSocket connection closed', event);
+          if (retryCount < maxRetries) {
+            retryCount++;
+            console.log(`Reconnecting... attempt ${retryCount}`);
+            setTimeout(connectWebSocket, 2000);
+          } else {
+            console.error('Max reconnection attempts reached. Unable to reconnect.');
+          }
+        };
+      }
 
-    connectWebSocket();
-    console.log('WebSocket connection established successfully.');
-  });
-</script>
+      connectWebSocket();
+      console.log('WebSocket connection established successfully.');
+    });
+  </script>
 
 {% endblock page_js %}

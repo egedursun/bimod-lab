@@ -1,21 +1,21 @@
-  <!--
-  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
-  ~
-  ~ Project: Bimod.io™
-  ~ File: detail_media.html
-  ~ Last Modified: 2024-10-05 01:39:48
-  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-05 14:42:48
-  ~
-  ~ This software is proprietary and confidential. Unauthorized copying,
-  ~ distribution, modification, or use of this software, whether for
-  ~ commercial, academic, or any other purpose, is strictly prohibited
-  ~ without the prior express written permission of BMD™ Autonomous
-  ~ Holdings.
-  ~
-  ~  For permission inquiries, please contact: admin@Bimod.io.
-  ~
-  -->
+<!--
+~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+~
+~ Project: Bimod.io™
+~ File: detail_media.html
+~ Last Modified: 2024-10-05 01:39:48
+~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+~ Created: 2024-10-05 14:42:48
+~
+~ This software is proprietary and confidential. Unauthorized copying,
+~ distribution, modification, or use of this software, whether for
+~ commercial, academic, or any other purpose, is strictly prohibited
+~ without the prior express written permission of BMD™ Autonomous
+~ Holdings.
+~
+~  For permission inquiries, please contact: admin@Bimod.io.
+~
+-->
 
 {% extends layout_path %}
 
@@ -27,7 +27,7 @@
 
 {% block vendor_css %}
   {{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/libs/plyr/plyr.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/plyr/plyr.css' %}" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/default.min.css">
 {% endblock vendor_css %}
 
@@ -41,7 +41,7 @@
 {% block page_js %}
   {{ block.super }}
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       const audioPlayer = new Plyr('#plyr-audio-player');
       const videoPlayer = new Plyr('#plyr-video-player');
     });
@@ -69,8 +69,9 @@
 
   {% if messages %}
     {% for message in messages %}
-      <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
-           role="alert">
+      <div
+        class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
+        role="alert">
         {{ message }}
       </div>
     {% endfor %}
@@ -117,7 +118,8 @@
           <p><strong>
             <i class="fa fa-route me-4"></i>
             Path:
-          </strong> &nbsp;&nbsp; <a href="{{ media_item.full_file_path }}" target="_blank">{{ media_item.full_file_path }}</a></p>
+          </strong> &nbsp;&nbsp; <a href="{{ media_item.full_file_path }}"
+                                    target="_blank">{{ media_item.full_file_path }}</a></p>
         </div>
       </div>
     </div>
@@ -131,7 +133,7 @@
           <hr>
           <div class="card-body">
             <audio class="w-100" id="plyr-audio-player" controls>
-              <source src="{{ media_item.full_file_path }}" type="audio/mp3"/>
+              <source src="{{ media_item.full_file_path }}" type="audio/mp3" />
             </audio>
           </div>
         </div>
@@ -146,7 +148,7 @@
           <hr>
           <div class="card-body">
             <video class="w-100" id="plyr-video-player" playsinline controls>
-              <source src="{{ media_item.full_file_path }}" type="video/mp4"/>
+              <source src="{{ media_item.full_file_path }}" type="video/mp4" />
             </video>
           </div>
         </div>
@@ -240,14 +242,14 @@
   </div>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       const generateDescriptionForm = document.querySelector('.generate-description-form');
       const generateDescriptionButton = document.querySelector('.btn-generate-description');
 
       const loadingBarGenerateDescription = document.getElementById('loadingBarGenerateDescription');
       const loadingBarWarningGenerateDescription = document.getElementById('loadingBarWarningGenerateDescription');
 
-      generateDescriptionForm.addEventListener('submit', function (event) {
+      generateDescriptionForm.addEventListener('submit', function(event) {
         // Show the loading bar
         loadingBarGenerateDescription.classList.remove('d-none');
         loadingBarWarningGenerateDescription.classList.remove('d-none');

@@ -1,21 +1,21 @@
-  <!--
-  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
-  ~
-  ~ Project: Bimod.io™
-  ~ File: function_store.html
-  ~ Last Modified: 2024-10-05 01:39:48
-  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-05 14:42:40
-  ~
-  ~ This software is proprietary and confidential. Unauthorized copying,
-  ~ distribution, modification, or use of this software, whether for
-  ~ commercial, academic, or any other purpose, is strictly prohibited
-  ~ without the prior express written permission of BMD™ Autonomous
-  ~ Holdings.
-  ~
-  ~  For permission inquiries, please contact: admin@Bimod.io.
-  ~
-  -->
+<!--
+~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+~
+~ Project: Bimod.io™
+~ File: function_store.html
+~ Last Modified: 2024-10-05 01:39:48
+~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+~ Created: 2024-10-05 14:42:40
+~
+~ This software is proprietary and confidential. Unauthorized copying,
+~ distribution, modification, or use of this software, whether for
+~ commercial, academic, or any other purpose, is strictly prohibited
+~ without the prior express written permission of BMD™ Autonomous
+~ Holdings.
+~
+~  For permission inquiries, please contact: admin@Bimod.io.
+~
+-->
 
 {% extends layout_path %}
 
@@ -27,13 +27,13 @@
 
 {% block vendor_css %}
   {{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}"/>
-  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}"/>
-  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css' %}" />
   <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/font/bootstrap-icons.min.css">
-  <link rel="stylesheet" href="{% static 'vendor/libs/bootstrap-select/bootstrap-select.css' %}"/>
-  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/bootstrap-select/bootstrap-select.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
 {% endblock vendor_css %}
 
 {% block vendor_js %}
@@ -46,7 +46,7 @@
 {% block page_js %}
   {{ block.super }}
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       const multiSelect = document.getElementById('categoriesSelect');
       const selectedCategories = new Set('{{ selected_categories|join:" " }}'.split(' '));
 
@@ -117,7 +117,8 @@
 
   <!-- Search and Filter Form -->
   <div class="row g-4 mb-4 card card-border-shadow-primary p-4 mt-8">
-    <img src="{% static 'img/functions/fun-2.png' %}" class="rounded mt-4 mb-4" style="width: 100%;" alt="Illustration for tips">
+    <img src="{% static 'img/functions/fun-2.png' %}" class="rounded mt-4 mb-4" style="width: 100%;"
+         alt="Illustration for tips">
     <div class="col-xl-12">
       <h5 class="text-muted"><strong>Filter Functions</strong></h5>
       <div class="card text-center mb-4">
@@ -180,6 +181,7 @@
               <td>
                 <img src="
 
+
                   {% if function.function_picture %}{{ function.function_picture.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
                      alt="{{ function.name }}" class="avatar rounded border border-2 border-warning">
               </td>
@@ -241,6 +243,7 @@
             <td></td>
             <td>
               <img src="
+
                 {% if function.function_picture %}{{ function.function_picture.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
                    alt="{{ function.name }}"
                    class="avatar rounded border border-2 {% if function.is_featured %}border-warning{% else %}border-secondary{% endif %}"
@@ -329,6 +332,7 @@
 
 
 
+
                 {{ page_obj.previous_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}{% for cat in selected_categories %}&categories={{ cat }}{% endfor %}"><i
                 class="bi bi-chevron-left"></i></a>
             </li>
@@ -336,6 +340,7 @@
           {% for page_num in page_obj.paginator.page_range %}
             <li class="page-item {% if page_obj.number == page_num %}active{% endif %}">
               <a class="page-link" href="?page=
+
 
 
 
@@ -348,11 +353,13 @@
 
 
 
+
                 {{ page_obj.next_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}{% for cat in selected_categories %}&categories={{ cat }}{% endfor %}"><i
                 class="bi bi-chevron-right"></i></a>
             </li>
             <li class="page-item">
               <a class="page-link" href="?page=
+
 
 
 

@@ -1,21 +1,21 @@
-  <!--
-  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
-  ~
-  ~ Project: Bimod.io™
-  ~ File: list_medias.html
-  ~ Last Modified: 2024-10-05 01:39:48
-  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-05 14:42:48
-  ~
-  ~ This software is proprietary and confidential. Unauthorized copying,
-  ~ distribution, modification, or use of this software, whether for
-  ~ commercial, academic, or any other purpose, is strictly prohibited
-  ~ without the prior express written permission of BMD™ Autonomous
-  ~ Holdings.
-  ~
-  ~  For permission inquiries, please contact: admin@Bimod.io.
-  ~
-  -->
+<!--
+~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+~
+~ Project: Bimod.io™
+~ File: list_medias.html
+~ Last Modified: 2024-10-05 01:39:48
+~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+~ Created: 2024-10-05 14:42:48
+~
+~ This software is proprietary and confidential. Unauthorized copying,
+~ distribution, modification, or use of this software, whether for
+~ commercial, academic, or any other purpose, is strictly prohibited
+~ without the prior express written permission of BMD™ Autonomous
+~ Holdings.
+~
+~  For permission inquiries, please contact: admin@Bimod.io.
+~
+-->
 
 {% extends layout_path %}
 
@@ -26,10 +26,10 @@
 
 {% block vendor_css %}
   {{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}"/>
-  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}"/>
-  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css' %}"/>
-  <link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}" />
   <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/font/bootstrap-icons.min.css">
 {% endblock vendor_css %}
@@ -44,7 +44,7 @@
 {% block page_js %}
   {{ block.super }}
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener('DOMContentLoaded', function() {
       // Function to store the collapsed tab state
       function storeCollapsedTabState() {
         const collapsedTabs = [];
@@ -79,8 +79,8 @@
       restoreCollapsedTabState();
 
       // Toggle icon logic
-      document.querySelectorAll('.toggle-icon').forEach(function (icon) {
-        icon.addEventListener('click', function () {
+      document.querySelectorAll('.toggle-icon').forEach(function(icon) {
+        icon.addEventListener('click', function() {
           var target = document.querySelector(this.getAttribute('data-target'));
           var bootstrapCollapse = new bootstrap.Collapse(target, {
             toggle: true
@@ -98,8 +98,8 @@
       });
 
       // Update toggle icons based on collapse state
-      document.querySelectorAll('.collapse').forEach(function (collapse) {
-        collapse.addEventListener('show.bs.collapse', function () {
+      document.querySelectorAll('.collapse').forEach(function(collapse) {
+        collapse.addEventListener('show.bs.collapse', function() {
           var icon = document.querySelector(`.toggle-icon[data-target="#${this.id}"]`);
           if (icon) {
             icon.classList.remove('fa-arrow-alt-circle-down');
@@ -107,7 +107,7 @@
           }
         });
 
-        collapse.addEventListener('hide.bs.collapse', function () {
+        collapse.addEventListener('hide.bs.collapse', function() {
           var icon = document.querySelector(`.toggle-icon[data-target="#${this.id}"]`);
           if (icon) {
             icon.classList.remove('fa-arrow-alt-circle-up');
@@ -117,8 +117,8 @@
       });
 
       // Select all checkboxes
-      document.querySelectorAll('.select-all-checkbox').forEach(function (checkbox) {
-        checkbox.addEventListener('change', function () {
+      document.querySelectorAll('.select-all-checkbox').forEach(function(checkbox) {
+        checkbox.addEventListener('change', function() {
           const storageId = this.getAttribute('data-storage-id');
           const checkboxes = document.querySelectorAll(`.select-item-checkbox[data-storage-id="${storageId}"]`);
           checkboxes.forEach(cb => cb.checked = this.checked);
@@ -126,14 +126,14 @@
       });
 
       // Confirmation dialog for delete buttons
-      document.querySelectorAll('.delete-selected-btn, .delete-all-btn').forEach(function (button) {
-        button.addEventListener('click', function (event) {
+      document.querySelectorAll('.delete-selected-btn, .delete-all-btn').forEach(function(button) {
+        button.addEventListener('click', function(event) {
           event.preventDefault();
           const form = button.closest('form');
 
           Swal.fire({
             title: 'Are you sure?',
-            text: "You won't be able to revert this action.",
+            text: 'You won\'t be able to revert this action.',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonText: 'Yes, delete the documents.',
@@ -153,53 +153,53 @@
   </script>
   <script>
     function triggerArchiveUpload(storageId) {
-        const fileInput = document.getElementById(`archive-file-${storageId}`);
-        fileInput.click();
+      const fileInput = document.getElementById(`archive-file-${storageId}`);
+      fileInput.click();
 
-        fileInput.addEventListener('change', function () {
-            if (this.files && this.files.length > 0) {
-                const file = this.files[0];
-                const supportedExtensions = ['zip', 'tar', 'tar.gz', 'rar'];
-                const fileExtension = file.name.split('.').pop().toLowerCase();
+      fileInput.addEventListener('change', function() {
+        if (this.files && this.files.length > 0) {
+          const file = this.files[0];
+          const supportedExtensions = ['zip', 'tar', 'tar.gz', 'rar'];
+          const fileExtension = file.name.split('.').pop().toLowerCase();
 
-                if (!supportedExtensions.includes(fileExtension)) {
-                    Swal.fire({
-                        title: 'Unsupported File',
-                        text: `The uploaded file type is not supported. Please upload a file with one of the following extensions: ${supportedExtensions.join(', ')}`,
-                        icon: 'error',
-                        confirmButtonText: 'OK',
-                        customClass: {
-                            confirmButton: 'btn btn-danger fw-bolder waves-effect waves-light'
-                        },
-                        buttonsStyling: false
-                    });
-                    fileInput.value = '';
-                    return;
-                }
+          if (!supportedExtensions.includes(fileExtension)) {
+            Swal.fire({
+              title: 'Unsupported File',
+              text: `The uploaded file type is not supported. Please upload a file with one of the following extensions: ${supportedExtensions.join(', ')}`,
+              icon: 'error',
+              confirmButtonText: 'OK',
+              customClass: {
+                confirmButton: 'btn btn-danger fw-bolder waves-effect waves-light'
+              },
+              buttonsStyling: false
+            });
+            fileInput.value = '';
+            return;
+          }
 
-                Swal.fire({
-                    title: 'Confirm Upload',
-                    text: `You are about to upload an archive file (${file.name}). Do you wish to proceed?`,
-                    icon: 'question',
-                    showCancelButton: true,
-                    confirmButtonText: 'Yes, upload it',
-                    cancelButtonText: 'Cancel',
-                    customClass: {
-                        confirmButton: 'btn btn-primary me-2 fw-bolder waves-effect waves-light',
-                        cancelButton: 'btn btn-label-secondary fw-bolder waves-effect waves-light'
-                    },
-                    buttonsStyling: false
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        document.getElementById(`upload-archive-form-${storageId}`).submit();
-                    } else {
-                        fileInput.value = '';
-                    }
-                });
+          Swal.fire({
+            title: 'Confirm Upload',
+            text: `You are about to upload an archive file (${file.name}). Do you wish to proceed?`,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, upload it',
+            cancelButtonText: 'Cancel',
+            customClass: {
+              confirmButton: 'btn btn-primary me-2 fw-bolder waves-effect waves-light',
+              cancelButton: 'btn btn-label-secondary fw-bolder waves-effect waves-light'
+            },
+            buttonsStyling: false
+          }).then((result) => {
+            if (result.isConfirmed) {
+              document.getElementById(`upload-archive-form-${storageId}`).submit();
+            } else {
+              fileInput.value = '';
             }
-        });
+          });
+        }
+      });
     }
-</script>
+  </script>
 {% endblock page_js %}
 
 {% block content %}
@@ -252,6 +252,7 @@
                    aria-expanded="true" aria-controls="collapse-org-{{ organization_data.organization.id }}">
                   <div class="d-flex">
                     <img src="
+
                       {% if organization_data.organization.organization_image %}{{ organization_data.organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
                          class="rounded me-4" width="80" height="80" alt="Organization image">
                     <h4 class="mb-0 mt-4">
@@ -288,7 +289,8 @@
                 <div class="card mb-4">
                   <div class="card-header">
                     <div class="d-flex">
-                      <img src="{% if assistant_data.assistant.assistant_image %}{{ assistant_data.assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+                      <img src="
+                        {% if assistant_data.assistant.assistant_image %}{{ assistant_data.assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
                            class="rounded me-4" width="60" height="60" alt="Assistant image">
                       <h4 class="mb-0 ms-4"><strong>{{ assistant_data.assistant.name }}</strong></h4>
                       <br>
@@ -322,9 +324,11 @@
                             </strong></small>
                           <div class="row d-flex justify-content-between mt-4">
                             <div class="col-9">
-                              <form method="post" action="{% url 'datasource_media_storages:fetch_file_from_url' %}" class="d-flex align-items-center">
+                              <form method="post" action="{% url 'datasource_media_storages:fetch_file_from_url' %}"
+                                    class="d-flex align-items-center">
                                 {% csrf_token %}
-                                <input type="text" name="download_url" class="form-control w-100" placeholder="Enter URL to fetch media file">
+                                <input type="text" name="download_url" class="form-control w-100"
+                                       placeholder="Enter URL to fetch media file">
                                 <input type="hidden" name="storage_id" value="{{ storage_data.storage.id }}">
                                 <button type="submit" class="btn btn-success btn-sm w-50 ms-4" style="height: 38px;">
                                   <i class="fa fa-plus me-4"> </i>
@@ -335,15 +339,20 @@
                               </form>
                             </div>
                             <div class="col-3">
-                              <form id="upload-archive-form-{{ storage_data.storage.id }}" method="post" enctype="multipart/form-data" action="{% url 'datasource_media_storages:upload_archive' %}">
-                                  {% csrf_token %}
-                                  <input type="hidden" name="storage_id" value="{{ storage_data.storage.id }}">
-                                  <input type="file" name="archive_file" id="archive-file-{{ storage_data.storage.id }}" class="d-none" accept=".zip">
-                                  <button type="button" class="btn btn-primary btn-sm w-100 ms-0 pe-4" style="height: 38px;" onclick="triggerArchiveUpload('{{ storage_data.storage.id }}')">
-                                      <strong>
-                                        <i class="fa fa-file-zipper me-4"></i> Upload Archive
-                                      </strong>
-                                  </button>
+                              <form id="upload-archive-form-{{ storage_data.storage.id }}" method="post"
+                                    enctype="multipart/form-data"
+                                    action="{% url 'datasource_media_storages:upload_archive' %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="storage_id" value="{{ storage_data.storage.id }}">
+                                <input type="file" name="archive_file" id="archive-file-{{ storage_data.storage.id }}"
+                                       class="d-none" accept=".zip">
+                                <button type="button" class="btn btn-primary btn-sm w-100 ms-0 pe-4"
+                                        style="height: 38px;"
+                                        onclick="triggerArchiveUpload('{{ storage_data.storage.id }}')">
+                                  <strong>
+                                    <i class="fa fa-file-zipper me-4"></i> Upload Archive
+                                  </strong>
+                                </button>
                               </form>
                             </div>
                           </div>
@@ -381,12 +390,12 @@
                                       {% elif storage_data.storage.media_category == "audio" %}
                                         <audio class="plyr-audio-player pe-2 ps-2" controls>
                                           <source src="{{ item_data.item.full_file_path }}"
-                                                  type="audio/mp3"/>
+                                                  type="audio/mp3" />
                                         </audio>
                                       {% elif storage_data.storage.media_category == "video" %}
                                         <video class="plyr-video-player rounded" controls style="max-width: 250px;">
                                           <source src="{{ item_data.item.full_file_path }}"
-                                                  type="video/mp4"/>
+                                                  type="video/mp4" />
                                         </video>
                                       {% elif storage_data.storage.media_category == "compressed" %}
                                         <img

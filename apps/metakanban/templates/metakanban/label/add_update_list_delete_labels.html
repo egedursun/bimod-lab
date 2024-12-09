@@ -1,21 +1,21 @@
-  <!--
-  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
-  ~
-  ~ Project: Bimod.io™
-  ~ File: add_update_list_delete_labels.html
-  ~ Last Modified: 2024-10-27 22:47:34
-  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-27 22:48:46
-  ~
-  ~ This software is proprietary and confidential. Unauthorized copying,
-  ~ distribution, modification, or use of this software, whether for
-  ~ commercial, academic, or any other purpose, is strictly prohibited
-  ~ without the prior express written permission of BMD™ Autonomous
-  ~ Holdings.
-  ~
-  ~  For permission inquiries, please contact: admin@Bimod.io.
-  ~
-  -->
+<!--
+~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+~
+~ Project: Bimod.io™
+~ File: add_update_list_delete_labels.html
+~ Last Modified: 2024-10-27 22:47:34
+~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+~ Created: 2024-10-27 22:48:46
+~
+~ This software is proprietary and confidential. Unauthorized copying,
+~ distribution, modification, or use of this software, whether for
+~ commercial, academic, or any other purpose, is strictly prohibited
+~ without the prior express written permission of BMD™ Autonomous
+~ Holdings.
+~
+~  For permission inquiries, please contact: admin@Bimod.io.
+~
+-->
 
 {% extends layout_path %}
 {% load static %}
@@ -26,8 +26,8 @@
 {% block vendor_css %}
   {{ block.super }}
 
-  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
-  <link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}" />
 {% endblock vendor_css %}
 
 {% block vendor_js %}
@@ -38,86 +38,91 @@
 {% endblock vendor_js %}
 
 {% block content %}
-<div class="row g-6 mb-6">
-  <div class="col-sm-6 col-xl-4">
-    <h3 class="mb-0"><strong>Manage Task Labels</strong></h3>
-  </div>
-</div>
-
-<a href="{% url 'metakanban:board_detail' board.id %}">
-  <button class="btn btn-secondary mt-4 me-4 mb-4">
-    <i class="fa fa-chevron-left me-4"></i>
-    <strong> Back to MetaKanban™ Board</strong>
-  </button>
-</a>
-
-<hr>
-
-<div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
-  <img src="{% static 'img/custom-illustrations-v2/i2-32.png' %}" width="25%" class="me-8" alt="Illustration for tip">
-  <span class="alert-icon rounded"><i class="ti ti-bookmark"></i></span>
-  <div class="d-flex flex-column ps-1">
-    <h5 class="alert-heading mb-2">Tip</h5>
-    <p class="mb-0">Create, update, or delete task labels for your kanban board. Each label can be customized by name and color.</p>
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-  </div>
-</div>
-
-<hr>
-
-{% if messages %}
-  {% for message in messages %}
-    <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-info{% endif %}" role="alert">
-      {{ message }}
+  <div class="row g-6 mb-6">
+    <div class="col-sm-6 col-xl-4">
+      <h3 class="mb-0"><strong>Manage Task Labels</strong></h3>
     </div>
-  {% endfor %}
-{% endif %}
-
-<!-- Create New Label Form -->
-<div class="card mb-6">
-  <div class="card-header"><strong>
-    <i class="fa fa-plus-circle me-2"></i>
-    Create New Label
-  </strong></div>
-  <div class="card-body">
-    <form method="post" action="{% url 'metakanban:label_create' board.id %}">
-      {% csrf_token %}
-      <div class="row">
-        <div class="col-6">
-          <label for="label_name" class="form-label">Label Name</label>
-          <input type="text" name="label_name" id="label_name" class="form-control" placeholder="Enter label name" required>
-        </div>
-        <div class="col-6">
-          <label for="label_color" class="form-label">Label Color</label>
-          <select name="label_color" id="label_color" class="form-select select2">
-            {% for code, color in color_choices %}
-              <option value="{{ code }}">{{ color }}</option>
-            {% endfor %}
-          </select>
-        </div>
-      </div>
-      <button type="submit" class="btn btn-primary mt-4">
-        <i class="fa fa-plus me-2"></i><strong>Create Label</strong>
-      </button>
-    </form>
   </div>
-</div>
 
-<!-- Labels List -->
-<div class="card">
-  <div class="card-header"><strong>Existing Labels</strong></div>
-  <div class="card-body">
-    <img src="{% static 'img/metakanban/kbn-3.png' %}" class="rounded mb-8 mt-4" style="width: 100%;" alt="Illustration for tips">
-    <table class="table table-striped">
-      <thead>
+  <a href="{% url 'metakanban:board_detail' board.id %}">
+    <button class="btn btn-secondary mt-4 me-4 mb-4">
+      <i class="fa fa-chevron-left me-4"></i>
+      <strong> Back to MetaKanban™ Board</strong>
+    </button>
+  </a>
+
+  <hr>
+
+  <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+    <img src="{% static 'img/custom-illustrations-v2/i2-32.png' %}" width="25%" class="me-8" alt="Illustration for tip">
+    <span class="alert-icon rounded"><i class="ti ti-bookmark"></i></span>
+    <div class="d-flex flex-column ps-1">
+      <h5 class="alert-heading mb-2">Tip</h5>
+      <p class="mb-0">Create, update, or delete task labels for your kanban board. Each label can be customized by name
+        and color.</p>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  </div>
+
+  <hr>
+
+  {% if messages %}
+    {% for message in messages %}
+      <div
+        class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-info{% endif %}"
+        role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <!-- Create New Label Form -->
+  <div class="card mb-6">
+    <div class="card-header"><strong>
+      <i class="fa fa-plus-circle me-2"></i>
+      Create New Label
+    </strong></div>
+    <div class="card-body">
+      <form method="post" action="{% url 'metakanban:label_create' board.id %}">
+        {% csrf_token %}
+        <div class="row">
+          <div class="col-6">
+            <label for="label_name" class="form-label">Label Name</label>
+            <input type="text" name="label_name" id="label_name" class="form-control" placeholder="Enter label name"
+                   required>
+          </div>
+          <div class="col-6">
+            <label for="label_color" class="form-label">Label Color</label>
+            <select name="label_color" id="label_color" class="form-select select2">
+              {% for code, color in color_choices %}
+                <option value="{{ code }}">{{ color }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary mt-4">
+          <i class="fa fa-plus me-2"></i><strong>Create Label</strong>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Labels List -->
+  <div class="card">
+    <div class="card-header"><strong>Existing Labels</strong></div>
+    <div class="card-body">
+      <img src="{% static 'img/metakanban/kbn-3.png' %}" class="rounded mb-8 mt-4" style="width: 100%;"
+           alt="Illustration for tips">
+      <table class="table table-striped">
+        <thead>
         <tr>
           <th>Name</th>
           <th>Current Color</th>
           <th>Change Color</th>
           <th>Actions</th>
         </tr>
-      </thead>
-      <tbody>
+        </thead>
+        <tbody>
         {% for label in labels %}
           <tr>
             <!-- Update Label Form -->
@@ -127,7 +132,8 @@
                 <input type="text" name="label_name" value="{{ label.label_name }}" class="form-control" required>
               </td>
               <td>
-                <span class="bg-label-dark p-3 rounded"><i class="fa fa-circle fa-xl" style="color: {{ label.label_color }};"></i></span>
+                <span class="bg-label-dark p-3 rounded"><i class="fa fa-circle fa-xl"
+                                                           style="color: {{ label.label_color }};"></i></span>
               </td>
               <td>
                 <select name="label_color" class="form-select">
@@ -145,14 +151,15 @@
                 </button>
             </form>
 
-                <!-- Delete Label Form (Separate) -->
-                <form method="post" action="{% url 'metakanban:label_delete' board.id label.id %}" class="d-inline-block delete-label-form">
-                  {% csrf_token %}
-                  <button type="button" class="btn btn-sm btn-danger delete-label-btn">
-                    <i class="fa fa-trash me-2"></i><strong>Delete</strong>
-                  </button>
-                </form>
-              </td>
+            <!-- Delete Label Form (Separate) -->
+            <form method="post" action="{% url 'metakanban:label_delete' board.id label.id %}"
+                  class="d-inline-block delete-label-form">
+              {% csrf_token %}
+              <button type="button" class="btn btn-sm btn-danger delete-label-btn">
+                <i class="fa fa-trash me-2"></i><strong>Delete</strong>
+              </button>
+            </form>
+            </td>
           </tr>
         {% empty %}
           <tr>
@@ -164,42 +171,42 @@
             </td>
           </tr>
         {% endfor %}
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+    </div>
   </div>
-</div>
 {% endblock %}
 
 {% block page_js %}
   <script>
-  $(document).ready(function() {
-    $('.select2').select2({
-      width: '100%',
-      placeholder: 'Select a color',
-    });
+    $(document).ready(function() {
+      $('.select2').select2({
+        width: '100%',
+        placeholder: 'Select a color'
+      });
 
-    // Use delegated event to ensure it binds correctly
-    $(document).on('click', '.delete-label-btn', function(e) {
-      e.preventDefault();
-      const deleteForm = $(this).closest('.delete-label-form');
+      // Use delegated event to ensure it binds correctly
+      $(document).on('click', '.delete-label-btn', function(e) {
+        e.preventDefault();
+        const deleteForm = $(this).closest('.delete-label-form');
 
-      Swal.fire({
-        title: 'Delete this Label?',
-        text: "You won't be able to revert this action.",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Yes, delete it!',
-        customClass: {
-          confirmButton: 'btn btn-danger me-2 waves-effect waves-light',
-          cancelButton: 'btn btn-secondary waves-effect waves-light'
-        },
-        buttonsStyling: false
-      }).then((result) => {
-        if (result.isConfirmed) {
-          deleteForm.submit();  // Submit the form if confirmed
-        }
+        Swal.fire({
+          title: 'Delete this Label?',
+          text: 'You won\'t be able to revert this action.',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Yes, delete it!',
+          customClass: {
+            confirmButton: 'btn btn-danger me-2 waves-effect waves-light',
+            cancelButton: 'btn btn-secondary waves-effect waves-light'
+          },
+          buttonsStyling: false
+        }).then((result) => {
+          if (result.isConfirmed) {
+            deleteForm.submit();  // Submit the form if confirmed
+          }
+        });
       });
     });
-  });
-</script>
+  </script>
 {% endblock page_js %}

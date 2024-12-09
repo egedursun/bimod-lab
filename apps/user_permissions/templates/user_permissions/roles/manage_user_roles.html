@@ -1,21 +1,21 @@
-  <!--
-  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
-  ~
-  ~ Project: Bimod.io™
-  ~ File: manage_user_roles.html
-  ~ Last Modified: 2024-10-05 01:39:48
-  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-05 14:42:44
-  ~
-  ~ This software is proprietary and confidential. Unauthorized copying,
-  ~ distribution, modification, or use of this software, whether for
-  ~ commercial, academic, or any other purpose, is strictly prohibited
-  ~ without the prior express written permission of BMD™ Autonomous
-  ~ Holdings.
-  ~
-  ~  For permission inquiries, please contact: admin@Bimod.io.
-  ~
-  -->
+<!--
+~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+~
+~ Project: Bimod.io™
+~ File: manage_user_roles.html
+~ Last Modified: 2024-10-05 01:39:48
+~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+~ Created: 2024-10-05 14:42:44
+~
+~ This software is proprietary and confidential. Unauthorized copying,
+~ distribution, modification, or use of this software, whether for
+~ commercial, academic, or any other purpose, is strictly prohibited
+~ without the prior express written permission of BMD™ Autonomous
+~ Holdings.
+~
+~  For permission inquiries, please contact: admin@Bimod.io.
+~
+-->
 
 {% extends layout_path %}
 {% load static %}
@@ -24,7 +24,7 @@
 {% block title %}Manage Users in Roles{% endblock %}
 
 {% block content %}
-<div class="row">
+  <div class="row">
     <div class="col-xl mb-6">
       <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
@@ -89,7 +89,8 @@
             <i class="fa fa-user me-2"></i>
             <strong>Add User to Role</strong>
           </h5>
-           <img src="{% static 'img/user_permissions/pm-1.png' %}" class="rounded mb-6 mt-3" style="width: 100%;" alt="Illustration for tips">
+          <img src="{% static 'img/user_permissions/pm-1.png' %}" class="rounded mb-6 mt-3" style="width: 100%;"
+               alt="Illustration for tips">
           <form method="post">
             {% csrf_token %}
 
@@ -167,7 +168,7 @@
                         </strong>
                       </span>
                     {% empty %}
-                    <span class="text-muted">
+                      <span class="text-muted">
                       <strong>
                         <i class="fa fa-exclamation-triangle me-2"></i>
                         No Roles Assigned
@@ -214,32 +215,32 @@
 
 {% block page_js %}
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const organizationSelect = document.getElementById("organization");
-      const userSelect = document.getElementById("user");
-      const userOptions = userSelect.querySelectorAll("option");
+    document.addEventListener('DOMContentLoaded', function() {
+      const organizationSelect = document.getElementById('organization');
+      const userSelect = document.getElementById('user');
+      const userOptions = userSelect.querySelectorAll('option');
 
       // Hide all user options initially
       function hideAllUsers() {
         userOptions.forEach(option => {
-          option.style.display = "none";
+          option.style.display = 'none';
         });
       }
 
       // Show users belonging to selected organization
-      organizationSelect.addEventListener("change", function () {
+      organizationSelect.addEventListener('change', function() {
         const selectedOrgId = this.value;
         hideAllUsers(); // Hide all users
 
         // Show users for the selected organization
         userOptions.forEach(option => {
-          if (option.getAttribute("data-organization") === selectedOrgId) {
-            option.style.display = "block";
+          if (option.getAttribute('data-organization') === selectedOrgId) {
+            option.style.display = 'block';
           }
         });
 
         // Reset the user select value
-        userSelect.value = "";
+        userSelect.value = '';
       });
 
       // Initialize by hiding all users

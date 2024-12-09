@@ -1,21 +1,21 @@
-  <!--
-  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
-  ~
-  ~ Project: Bimod.io™
-  ~ File: create_scheduled_job.html
-  ~ Last Modified: 2024-10-05 01:39:48
-  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-05 14:42:45
-  ~
-  ~ This software is proprietary and confidential. Unauthorized copying,
-  ~ distribution, modification, or use of this software, whether for
-  ~ commercial, academic, or any other purpose, is strictly prohibited
-  ~ without the prior express written permission of BMD™ Autonomous
-  ~ Holdings.
-  ~
-  ~  For permission inquiries, please contact: admin@Bimod.io.
-  ~
-  -->
+<!--
+~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+~
+~ Project: Bimod.io™
+~ File: create_scheduled_job.html
+~ Last Modified: 2024-10-05 01:39:48
+~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+~ Created: 2024-10-05 14:42:45
+~
+~ This software is proprietary and confidential. Unauthorized copying,
+~ distribution, modification, or use of this software, whether for
+~ commercial, academic, or any other purpose, is strictly prohibited
+~ without the prior express written permission of BMD™ Autonomous
+~ Holdings.
+~
+~  For permission inquiries, please contact: admin@Bimod.io.
+~
+-->
 
 {% extends layout_path %}
 
@@ -26,7 +26,7 @@
 
 {% block vendor_css %}
   {{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}" />
 {% endblock vendor_css %}
 
 {% block vendor_js %}
@@ -54,7 +54,8 @@
           <small class="text-muted float-end"></small>
         </div>
         <div class="card-body">
-          <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+          <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center"
+               role="alert">
             <img src="{% static 'img/custom-illustrations-v2/i2-85.png' %}" width="25%" style="border-radius: 25px;"
                  class="justify-content-end me-8" alt="Illustration for tips">
             <span class="alert-icon rounded">
@@ -94,7 +95,7 @@
               </div>
               <div class="mb-6 col-4">
                 <label class="form-label" for="name">Name</label>
-                <input type="text" class="form-control" id="name" name="name" placeholder="Enter job name" required/>
+                <input type="text" class="form-control" id="name" name="name" placeholder="Enter job name" required />
               </div>
               <div class="mb-6 col-4">
                 <label class="form-label" for="task_description">Description</label>
@@ -132,7 +133,7 @@
                   <div class="col">
                     <label class="form-label" for="minute">Minute (* for every minute)</label>
                     <input type="text" class="form-control" id="minute" name="minute" placeholder="* for every minute"
-                           value="*" oninput="updateLabels('minute')"/>
+                           value="*" oninput="updateLabels('minute')" />
                     <div id="minuteLabels" class="mt-2"></div>
                     <div class="alert alert-solid-info align-items-center mt-4" role="alert">
                   <span class="alert-icon rounded mb-2">
@@ -148,7 +149,7 @@
                     <label class="form-label" for="hour">Hour (* for every hour)</label>
                     <input type="text" class="form-control" id="hour" name="hour" placeholder="* for every hour"
                            value="*"
-                           oninput="updateLabels('hour')"/>
+                           oninput="updateLabels('hour')" />
                     <div id="hourLabels" class="mt-2"></div>
                     <div class="alert alert-solid-info align-items-center mt-4" role="alert">
                   <span class="alert-icon rounded mb-2">
@@ -164,7 +165,7 @@
                   <div class="col">
                     <label class="form-label" for="day_of_week">Day of the Week (* for every week)</label>
                     <input type="text" class="form-control" id="day_of_week" name="day_of_week"
-                           placeholder="* for every week" value="*" oninput="updateLabels('day_of_week')"/>
+                           placeholder="* for every week" value="*" oninput="updateLabels('day_of_week')" />
                     <div id="day_of_weekLabels" class="mt-2"></div>
                     <div class="alert alert-solid-info align-items-center mt-4" role="alert">
                   <span class="alert-icon rounded mb-2">
@@ -178,7 +179,7 @@
                   <div class="col">
                     <label class="form-label" for="day_of_month">Day of the Month (* for every day)</label>
                     <input type="text" class="form-control" id="day_of_month" name="day_of_month"
-                           placeholder="* for every day" value="*" oninput="updateLabels('day_of_month')"/>
+                           placeholder="* for every day" value="*" oninput="updateLabels('day_of_month')" />
                     <div id="day_of_monthLabels" class="mt-2"></div>
                     <div class="alert alert-solid-info align-items-center mt-4" role="alert">
                   <span class="alert-icon rounded mb-2">
@@ -192,7 +193,7 @@
                   <div class="col">
                     <label class="form-label" for="month_of_year">Month of the Year (* for every month)</label>
                     <input type="text" class="form-control" id="month_of_year" name="month_of_year"
-                           placeholder="* for every month" value="*" oninput="updateLabels('month_of_year')"/>
+                           placeholder="* for every month" value="*" oninput="updateLabels('month_of_year')" />
                     <div id="month_of_yearLabels" class="mt-2"></div>
                     <div class="alert alert-solid-info align-items-center mt-4" role="alert">
                   <span class="alert-icon rounded mb-2">
@@ -231,8 +232,8 @@
   </div>
 
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      document.querySelectorAll('#minute, #hour, #day_of_week, #day_of_month, #month_of_year').forEach(function (element) {
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('#minute, #hour, #day_of_week, #day_of_month, #month_of_year').forEach(function(element) {
         updateLabels(element.id);
       });
     });
@@ -261,7 +262,7 @@
       const values = input.value.split(',');
       values.forEach(value => {
         const label = document.createElement('span');
-        label.classList.add('badge', 'bg-success', 'me-2', "mb-2", "fw-bold");
+        label.classList.add('badge', 'bg-success', 'me-2', 'mb-2', 'fw-bold');
         label.textContent = value.trim();
         labelsContainer.appendChild(label);
       });

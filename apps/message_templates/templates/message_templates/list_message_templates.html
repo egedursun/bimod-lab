@@ -1,21 +1,21 @@
-  <!--
-  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
-  ~
-  ~ Project: Bimod.io™
-  ~ File: list_message_templates.html
-  ~ Last Modified: 2024-10-05 01:39:48
-  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-05 14:42:44
-  ~
-  ~ This software is proprietary and confidential. Unauthorized copying,
-  ~ distribution, modification, or use of this software, whether for
-  ~ commercial, academic, or any other purpose, is strictly prohibited
-  ~ without the prior express written permission of BMD™ Autonomous
-  ~ Holdings.
-  ~
-  ~  For permission inquiries, please contact: admin@Bimod.io.
-  ~
-  -->
+<!--
+~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+~
+~ Project: Bimod.io™
+~ File: list_message_templates.html
+~ Last Modified: 2024-10-05 01:39:48
+~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+~ Created: 2024-10-05 14:42:44
+~
+~ This software is proprietary and confidential. Unauthorized copying,
+~ distribution, modification, or use of this software, whether for
+~ commercial, academic, or any other purpose, is strictly prohibited
+~ without the prior express written permission of BMD™ Autonomous
+~ Holdings.
+~
+~  For permission inquiries, please contact: admin@Bimod.io.
+~
+-->
 
 {% extends layout_path %}
 
@@ -26,8 +26,8 @@
 
 {% block page_css %}
   {{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/css/pages/page-profile.css' %}"/>
-  <link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/css/pages/page-profile.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}" />
 {% endblock page_css %}
 
 {% block vendor_js %}
@@ -95,7 +95,7 @@
               <div class="d-flex align-items-center">
                 <div class="me-4">
                   <img src="{{ message_template.user.profile.profile_picture.url }}" alt="Avatar" class="rounded"
-                       width="80px;"/>
+                       width="80px;" />
                 </div>
                 <div class="me-2">
                   <p class="ms-2 mb-0"><strong>
@@ -174,29 +174,29 @@
   <!-- Include a markdown library, for example, Showdown.js -->
   <script src="https://cdn.jsdelivr.net/npm/showdown/dist/showdown.min.js"></script>
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       const converter = new showdown.Converter();
-      document.querySelectorAll('.markdown-content').forEach(function (element) {
+      document.querySelectorAll('.markdown-content').forEach(function(element) {
         element.innerHTML = converter.makeHtml(element.innerHTML);
       });
 
-      document.querySelectorAll('.expand-btn').forEach(function (btn) {
-        btn.addEventListener('click', function () {
+      document.querySelectorAll('.expand-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
           const target = document.querySelector(this.getAttribute('data-bs-target'));
           const truncatedText = document.getElementById(`truncated-${this.getAttribute('data-bs-target').split('-')[2]}`);
 
-          target.addEventListener('shown.bs.collapse', function () {
+          target.addEventListener('shown.bs.collapse', function() {
             truncatedText.style.display = '';
           });
 
-          target.addEventListener('hidden.bs.collapse', function () {
+          target.addEventListener('hidden.bs.collapse', function() {
             truncatedText.style.display = 'block';
           });
         });
       });
 
-      document.querySelectorAll('.copy-btn').forEach(function (btn) {
-        btn.addEventListener('click', function () {
+      document.querySelectorAll('.copy-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
           const templateId = this.getAttribute('data-template-id');
           const templateTextElement = document.getElementById(`full-text-${templateId}`);
           const textToCopy = templateTextElement ? templateTextElement.innerText : '';
@@ -223,14 +223,14 @@
         });
       });
 
-      document.querySelectorAll('.text-danger').forEach(function (button) {
-        button.addEventListener('click', function (event) {
+      document.querySelectorAll('.text-danger').forEach(function(button) {
+        button.addEventListener('click', function(event) {
           event.preventDefault();
           const form = button.closest('a').getAttribute('href');
 
           Swal.fire({
             title: 'Are you sure?',
-            text: "You won't be able to revert this action.",
+            text: 'You won\'t be able to revert this action.',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonText: 'Yes, delete it!',

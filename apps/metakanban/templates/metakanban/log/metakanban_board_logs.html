@@ -1,4 +1,3 @@
-
 <!--
   ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
   ~
@@ -27,9 +26,9 @@
 
 {% block vendor_css %}
   {{ block.super }}
-  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}"/>
-  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}"/>
-  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css' %}" />
 {% endblock %}
 
 {% block content %}
@@ -51,7 +50,8 @@
         <hr>
 
         <!-- Tip Section -->
-        <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+        <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center"
+             role="alert">
           <img src="{% static 'img/custom-illustrations-v2/i2-52.png' %}" width="25%" style="border-radius:25px;"
                class="justify-content-end me-8" alt="Illustration for tip">
           <span class="alert-icon rounded">
@@ -70,7 +70,9 @@
         <!-- Display messages -->
         {% if messages %}
           {% for message in messages %}
-            <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-info{% endif %}" role="alert">
+            <div
+              class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-info{% endif %}"
+              role="alert">
               {{ message }}
             </div>
           {% endfor %}
@@ -79,7 +81,8 @@
 
         <!-- Logs Table -->
         <table class="table table-striped mt-4">
-          <img src="{% static 'img/metakanban/kbn-6.png' %}" class="rounded mb-4 mt-4" style="width: 100%;" alt="Illustration for tips">
+          <img src="{% static 'img/metakanban/kbn-6.png' %}" class="rounded mb-4 mt-4" style="width: 100%;"
+               alt="Illustration for tips">
           <thead>
           <tr>
             <th>Timestamp</th>
@@ -92,9 +95,14 @@
           {% for log in page_obj %}
             <tr>
               <td><strong>{{ log.timestamp|date:"Y-m-d H:i" }}</strong></td>
-              <td><strong><div class="btn-primary p-2 rounded">{{ log.get_action_type_display }}</div></strong></td>
+              <td><strong>
+                <div class="btn-primary p-2 rounded">{{ log.get_action_type_display }}</div>
+              </strong></td>
               <td><strong>{{ log.action_details }}</strong></td>
-              <td><strong>{% if log.change_by_user %}<div class="btn-dark p-1 rounded ps-4">{{ log.change_by_user.username }}</div>{% else %}<div class="btn-success p-1 rounded"><i class="fa fa-robot ms-2 me-2"></i>AI Agent</div>{% endif %}</strong></td>
+              <td><strong>{% if log.change_by_user %}
+                <div class="btn-dark p-1 rounded ps-4">{{ log.change_by_user.username }}</div>{% else %}
+                <div class="btn-success p-1 rounded"><i class="fa fa-robot ms-2 me-2"></i>AI Agent</div>{% endif %}
+              </strong></td>
             </tr>
           {% empty %}
             <tr>

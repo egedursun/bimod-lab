@@ -28,8 +28,8 @@
 {% block vendor_css %}
   {{ block.super }}
 
-<link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}"/>
-  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
 {% endblock vendor_css %}
 
 {% block vendor_js %}
@@ -65,7 +65,8 @@
           </h5> <small class="text-muted float-end"></small>
         </div>
         <div class="card-body">
-          <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+          <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center"
+               role="alert">
             <img src="{% static 'img/custom-illustrations-v2/i2-38.png' %}" width="25%" style="border-radius: 25px;"
                  class="justify-content-end me-8" alt="Illustration for tip">
             <span class="alert-icon rounded">
@@ -100,7 +101,8 @@
                   <option value="" disabled selected>Select VoidForger</option>
                   {% for assistant in assistants %}
                     <option value="{{ assistant.id }}"
-                            {% if export_assistant.voidforger_id == assistant.id %}selected{% endif %}>VoidForger - {{ assistant.llm_model.organization.name }} - {{ assistant.llm_model.nickname }}</option>
+                            {% if export_assistant.voidforger_id == assistant.id %}selected{% endif %}>VoidForger
+                      - {{ assistant.llm_model.organization.name }} - {{ assistant.llm_model.nickname }}</option>
                   {% endfor %}
                 </select>
               </div>
@@ -108,7 +110,7 @@
                 <label class="form-label" for="request_limit_per_hour">Request Limit Per Hour</label>
                 <input type="number" class="form-control" id="request_limit_per_hour" name="request_limit_per_hour"
                        value="{{ export_assistant.request_limit_per_hour }}"
-                       placeholder="Enter request limit per hour"/>
+                       placeholder="Enter request limit per hour" />
               </div>
               <div class="mb-6 col-2">
                 <label class="form-label" for="is_public">Public</label>

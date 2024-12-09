@@ -1,21 +1,21 @@
-  <!--
-  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
-  ~
-  ~ Project: Bimod.io™
-  ~ File: add_new_user.html
-  ~ Last Modified: 2024-10-05 01:39:48
-  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-05 14:42:43
-  ~
-  ~ This software is proprietary and confidential. Unauthorized copying,
-  ~ distribution, modification, or use of this software, whether for
-  ~ commercial, academic, or any other purpose, is strictly prohibited
-  ~ without the prior express written permission of BMD™ Autonomous
-  ~ Holdings.
-  ~
-  ~  For permission inquiries, please contact: admin@Bimod.io.
-  ~
-  -->
+<!--
+~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+~
+~ Project: Bimod.io™
+~ File: add_new_user.html
+~ Last Modified: 2024-10-05 01:39:48
+~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+~ Created: 2024-10-05 14:42:43
+~
+~ This software is proprietary and confidential. Unauthorized copying,
+~ distribution, modification, or use of this software, whether for
+~ commercial, academic, or any other purpose, is strictly prohibited
+~ without the prior express written permission of BMD™ Autonomous
+~ Holdings.
+~
+~  For permission inquiries, please contact: admin@Bimod.io.
+~
+-->
 
 {% extends layout_path %}
 
@@ -27,7 +27,7 @@
 
 {% block vendor_css %}
   {{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
 {% endblock vendor_css %}
 
 {% block vendor_js %}
@@ -104,26 +104,26 @@
               <div class="col-6 mb-6">
                 <label class="form-label" for="username">Username</label>
                 <input type="text" class="form-control" id="username" name="username" placeholder="Enter the username"
-                       required/>
+                       required />
                 <div class="form-text"></div>
               </div>
               <div class="col-6 mb-6">
                 <label class="form-label" for="email">Email</label>
                 <input type="email" class="form-control" id="email" name="email" placeholder="Enter the email"
-                       required/>
+                       required />
                 <div class="form-text"></div>
               </div>
               <div class="col-6 mb-2">
                 <label class="form-label" for="password">Set a Temporary Password for the User</label>
                 <input type="password" class="form-control" id="password" name="password"
                        placeholder="Enter the password"
-                       required/>
+                       required />
                 <div class="form-text"></div>
               </div>
               <div class="col-6 mb-2">
                 <label class="form-label" for="confirm_password">Confirm Password</label>
                 <input type="password" class="form-control" id="confirm_password" name="confirm_password"
-                       placeholder="Enter the password again" required/>
+                       placeholder="Enter the password again" required />
                 <div class="form-text"></div>
               </div>
               <div class="alert alert-solid-secondary d-flex align-items-center mt-6 text-small" role="alert">
@@ -136,7 +136,7 @@
                   - Contain at least one uppercase letter. (e.g. A, B, C, ..., Z) <br>
                   - Contain at least one lowercase letter. (e.g. a, b, c, ..., z) <br>
                   - Contain at least one digit (e.g. 0, 1, 2, 3, ..., 9) <br>
-                    - Contain at least one special character. (e.g. !, @, #, ..., *) <br>
+                  - Contain at least one special character. (e.g. !, @, #, ..., *) <br>
                 </small>
               </div>
               <div class="tips-section alert alert-solid-info d-flex align-items-center mt-6" role="alert">
@@ -148,40 +148,40 @@
               <div class="col-4 mb-6">
                 <label class="form-label" for="first_name">First Name</label>
                 <input type="text" class="form-control" id="first_name" name="first_name"
-                       placeholder="Enter the first name"/>
+                       placeholder="Enter the first name" />
                 <div class="form-text"></div>
               </div>
               <div class="col-4 mb-6">
                 <label class="form-label" for="last_name">Last Name</label>
                 <input type="text" class="form-control" id="last_name" name="last_name"
-                       placeholder="Enter the last name"/>
+                       placeholder="Enter the last name" />
                 <div class="form-text"></div>
               </div>
               <div class="col-4 mb-6">
                 <label class="form-label" for="phone_number">Phone Number</label>
                 <input type="text" class="form-control" id="phone_number" name="phone_number"
-                       placeholder="Enter the phone number"/>
+                       placeholder="Enter the phone number" />
                 <div class="form-text"></div>
               </div>
               <div class="col-4 mb-6">
                 <label class="form-label" for="address">Address</label>
-                <input type="text" class="form-control" id="address" name="address" placeholder="Enter the address"/>
+                <input type="text" class="form-control" id="address" name="address" placeholder="Enter the address" />
                 <div class="form-text"></div>
               </div>
               <div class="col-3 mb-6">
                 <label class="form-label" for="city">City</label>
-                <input type="text" class="form-control" id="city" name="city" placeholder="Enter the city"/>
+                <input type="text" class="form-control" id="city" name="city" placeholder="Enter the city" />
                 <div class="form-text"></div>
               </div>
               <div class="col-3 mb-6">
                 <label class="form-label" for="country">Country</label>
-                <input type="text" class="form-control" id="country" name="country" placeholder="Enter the country"/>
+                <input type="text" class="form-control" id="country" name="country" placeholder="Enter the country" />
                 <div class="form-text"></div>
               </div>
               <div class="col-2 mb-6">
                 <label class="form-label" for="postal_code">Postal Code</label>
                 <input type="text" class="form-control" id="postal_code" name="postal_code"
-                       placeholder="Enter the postal code"/>
+                       placeholder="Enter the postal code" />
                 <div class="form-text"></div>
               </div>
               <div class="col-4 mb-6 form-check bg-label-dark rounded ms-3 p-6 mt-4">

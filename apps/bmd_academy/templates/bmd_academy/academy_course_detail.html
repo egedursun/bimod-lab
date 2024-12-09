@@ -6,250 +6,261 @@
 {% block title %}Academy - Course Details - App{% endblock %}
 
 {% block vendor_css %}
-{{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/libs/plyr/plyr.css' %}" />
-<link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}" />
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/plyr/plyr.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}" />
 {% endblock vendor_css %}
 
 {% block vendor_js %}
-{{ block.super }}
-<script src="{% static 'vendor/libs/plyr/plyr.js' %}"></script>
-<script src="{% static 'vendor/libs/sweetalert2/sweetalert2.js' %}"></script>
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/plyr/plyr.js' %}"></script>
+  <script src="{% static 'vendor/libs/sweetalert2/sweetalert2.js' %}"></script>
 {% endblock vendor_js %}
 
 {% block page_css %}
-{{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/css/pages/app-academy-details.css' %}" />
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/css/pages/app-academy-details.css' %}" />
 {% endblock page_css %}
 
 {% block page_js %}
-{{ block.super }}
-<script src="{% static 'js/app-academy-course-details.js' %}"></script>
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const videoPlayer = document.getElementById('plyr-video-player');
-    const videoSource = videoPlayer.querySelector('source');
-    const plyrInstance = new Plyr(videoPlayer);
+  {{ block.super }}
+  <script src="{% static 'js/app-academy-course-details.js' %}"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const videoPlayer = document.getElementById('plyr-video-player');
+      const videoSource = videoPlayer.querySelector('source');
+      const plyrInstance = new Plyr(videoPlayer);
 
-    document.querySelectorAll('.video-link').forEach(function(link) {
-      link.addEventListener('click', function(e) {
+      document.querySelectorAll('.video-link').forEach(function(link) {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          const videoUrl = this.dataset.videoUrl;
+          const videoTitle = this.dataset.videoTitle;
+          const videoDescription = this.dataset.videoDescription;
+          const sectionSlug = this.dataset.sectionSlug;
+          const videoSlug = this.dataset.videoSlug;
+
+          if (videoUrl) {
+            videoSource.src = videoUrl;
+            videoPlayer.load();
+            plyrInstance.play();
+            document.getElementById('video-title').textContent = videoTitle;
+            document.getElementById('video-description').textContent = videoDescription;
+
+            // Update the URL with query parameters
+            const currentUrl = new URL(window.location.href);
+            currentUrl.searchParams.set('section_slug', sectionSlug);
+            currentUrl.searchParams.set('video_slug', videoSlug);
+            window.history.pushState({}, '', currentUrl);
+          }
+        });
+      });
+      document.querySelector('.video-link').click();
+    });
+  </script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Copy URL to clipboard functionality with SweetAlert
+      document.getElementById('share-button').addEventListener('click', function(e) {
         e.preventDefault();
-        const videoUrl = this.dataset.videoUrl;
-        const videoTitle = this.dataset.videoTitle;
-        const videoDescription = this.dataset.videoDescription;
-        const sectionSlug = this.dataset.sectionSlug;
-        const videoSlug = this.dataset.videoSlug;
+        const currentUrl = window.location.href;
 
-        if (videoUrl) {
-          videoSource.src = videoUrl;
-          videoPlayer.load();
-          plyrInstance.play();
-          document.getElementById('video-title').textContent = videoTitle;
-          document.getElementById('video-description').textContent = videoDescription;
-
-          // Update the URL with query parameters
-          const currentUrl = new URL(window.location.href);
-          currentUrl.searchParams.set('section_slug', sectionSlug);
-          currentUrl.searchParams.set('video_slug', videoSlug);
-          window.history.pushState({}, '', currentUrl);
-        }
+        navigator.clipboard.writeText(currentUrl)
+          .then(() => {
+            Swal.fire({
+              icon: 'success',
+              title: 'Copied!',
+              text: 'The URL has been copied to your clipboard.',
+              showConfirmButton: false,
+              timer: 1500,
+              customClass: {
+                popup: 'swal-popup-custom',
+                title: 'swal-title-custom',
+                content: 'swal-content-custom'
+              }
+            });
+          })
+          .catch(err => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'Failed to copy the URL. Please try again.',
+              customClass: {
+                popup: 'swal-popup-custom',
+                title: 'swal-title-custom',
+                content: 'swal-content-custom'
+              }
+            });
+          });
       });
     });
-    document.querySelector(".video-link").click();
-  });
-</script>
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-  // Copy URL to clipboard functionality with SweetAlert
-    document.getElementById('share-button').addEventListener('click', function(e) {
-      e.preventDefault();
-      const currentUrl = window.location.href;
-
-      navigator.clipboard.writeText(currentUrl)
-        .then(() => {
-          Swal.fire({
-            icon: 'success',
-            title: 'Copied!',
-            text: 'The URL has been copied to your clipboard.',
-            showConfirmButton: false,
-            timer: 1500,
-            customClass: {
-              popup: 'swal-popup-custom',
-              title: 'swal-title-custom',
-              content: 'swal-content-custom'
-            }
-          });
-        })
-        .catch(err => {
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'Failed to copy the URL. Please try again.',
-            customClass: {
-              popup: 'swal-popup-custom',
-              title: 'swal-title-custom',
-              content: 'swal-content-custom'
-            }
-          });
-        });
-    });
-  });
-</script>
+  </script>
 {% endblock page_js %}
 
 {% block content %}
-<div class="row g-6" style="margin-left: 10%; margin-right: 10%; margin-top: 5%; margin-bottom: 5%;">
-  <div class="col-lg-8">
-    <div class="card">
-      <div class="card-body">
-        <h5 class="mb-4">
-          <strong>
-            <i class="fa fa-trophy me-2"></i>
-            Course Information
-          </strong>
-        </h5>
-        <div class="d-flex bg-body rounded justify-content-between align-items-center flex-wrap mb-6 gap-2 p-8 border border-4 border-primary rounded">
-          <div class="row d-flex justify-content-start align-items-center">
-            <div class="col-3">
-              <img src="{% if course.course_thumbnail_image_url %}{{ course.course_thumbnail_image_url }}{% else %}{% static 'img/front-pages/landing-page/hero-dashboard-dark.png' %}{% endif %}" alt="Course Image" class="img-fluid w-100 rounded">
-            </div>
-            <div class="col-6">
-              <h3 class="mb-0">
-                <strong style="text-align: justify;">{{ course.course_title }}</strong>
-              </h3>
-              <hr>
-              <p class="mb-0"><span class="fw-medium text-heading">
+  <div class="row g-6" style="margin-left: 10%; margin-right: 10%; margin-top: 5%; margin-bottom: 5%;">
+    <div class="col-lg-8">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="mb-4">
+            <strong>
+              <i class="fa fa-trophy me-2"></i>
+              Course Information
+            </strong>
+          </h5>
+          <div
+            class="d-flex bg-body rounded justify-content-between align-items-center flex-wrap mb-6 gap-2 p-8 border border-4 border-primary rounded">
+            <div class="row d-flex justify-content-start align-items-center">
+              <div class="col-3">
+                <img src="
+                  {% if course.course_thumbnail_image_url %}{{ course.course_thumbnail_image_url }}{% else %}{% static 'img/front-pages/landing-page/hero-dashboard-dark.png' %}{% endif %}"
+                     alt="Course Image" class="img-fluid w-100 rounded">
+              </div>
+              <div class="col-6">
+                <h3 class="mb-0">
+                  <strong style="text-align: justify;">{{ course.course_title }}</strong>
+                </h3>
+                <hr>
+                <p class="mb-0"><span class="fw-medium text-heading">
                 <strong>
                   <i class="fa fa-user me-2"></i>
                   {{ course.course_instructor.full_name }}
                 </strong>
               </span></p>
-            </div>
-            <div class="col-3 align-top">
-              <div class="d-flex align-items-center">
+              </div>
+              <div class="col-3 align-top">
+                <div class="d-flex align-items-center">
                 <span class="badge btn-danger p-2 rounded me-2 w-100">
                   <strong>
                     <i class="fa fa-language me-2"></i>
                     {{ course.course_language }}
                   </strong>
                 </span>
-                <a href="#" id="share-button" class="btn btn-primary px-2 py-1 rounded w-100">
-                  <strong>
-                    <i class="fa fa-share-alt me-2"></i>
-                    Share
-                  </strong>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-        <a href="{% url 'bmd_academy:course_list' %}" class="text-white btn btn-primary btn-icon w-25">
-          <strong>
-            <i class="fa fa-mortar-board me-2"></i>
-            Turn Back to Course List
-          </strong>
-        </a>
-        <hr class="my-6">
-        <h5 class="mb-4">
-          <strong>
-            <i class="fa fa-play-circle me-2"></i>
-            Currently Playing
-          </strong>
-        </h5>
-        <div class="bg-body p-8 rounded">
-          <h4>📺 &nbsp;
-          <strong id="video-title">
-              {% if course.sections.all %}
-                {% with course.sections.all.0 as first_section %}
-                  {% if first_section.videos.all %}
-                    {{ first_section.videos.all.0.video_title }}
-                  {% endif %}
-                {% endwith %}
-              {% endif %}
-            </strong>
-          </h4>
-          <p>
-            <i class="fa fa-info-circle me-2"></i>
-            <strong id="video-description">
-              {% if course.sections.all %}
-                {% with course.sections.all.0 as first_section %}
-                  {% if first_section.videos.all %}
-                    {{ first_section.videos.all.0.video_description }}
-                  {% endif %}
-                {% endwith %}
-              {% endif %}
-            </strong>
-          </p>
-        </div>
-        <hr class="my-6">
-        <div class="card academy-content shadow-none border">
-          <div class="p-2">
-            <div class="cursor-pointer">
-              {% if course.sections.all %}
-                {% with course.sections.all.0 as first_section %}
-                  {% if first_section.videos.all %}
-                    <video class="w-100" id="plyr-video-player" playsinline controls>
-                      <source src="{{ first_section.videos.all.0.video_content_url }}" type="video/mp4" />
-                    </video>
-                  {% endif %}
-                {% endwith %}
-              {% endif %}
-            </div>
-          </div>
-          <div class="card-body pt-4">
-            <h5>
-              <strong>
-                <i class="fa fa-info-circle me-2"></i>
-                About the Course
-              </strong>
-            </h5>
-            <p class="mb-0">{{ course.course_description }}</p>
-            <hr class="my-6">
-            <h5>
-              <strong>
-                <i class="fa fa-list me-2"></i>
-                Sections &amp; Teaching Language
-              </strong>
-            </h5>
-            <div class="d-flex flex-wrap row-gap-2">
-              <div class="me-12">
-                <p class="text-nowrap mb-2"><i class="ti ti-world me-2 align-bottom"></i><strong>{{ course.course_language }}</strong></p>
-              </div>
-              <div>
-                <p class="text-nowrap mb-2"><i class="ti ti-section me-2 align-top ms-50"></i><strong>{{ course.sections.count }} Course Chapters</strong></p>
-              </div>
-            </div>
-            <hr class="my-6">
-            <h5>
-              <strong>
-                <i class="fa fa-user me-2"></i>
-                About the Instructor
-              </strong>
-            </h5>
-            <div class="d-flex justify-content-start align-items-center bg-body p-12 rounded user-name">
-              <div class="avatar-wrapper">
-                <div class="avatar avatar-lg me-4 border border-primary border-3 rounded-circle me-12">
-                  <img src="{% if course.course_instructor.user.profile.profile_picture %}{{ course.course_instructor.user.profile.profile_picture.url }}{% else %}{% static 'img/avatars/0.png' %}{% endif %}" alt="Instructor Image" class="rounded-circle">
+                  <a href="#" id="share-button" class="btn btn-primary px-2 py-1 rounded w-100">
+                    <strong>
+                      <i class="fa fa-share-alt me-2"></i>
+                      Share
+                    </strong>
+                  </a>
                 </div>
               </div>
-              <div class="d-flex flex-column">
-                <h6 class="mb-1">
-                  <strong>{{ course.course_instructor.full_name }}</strong>
-                </h6>
-                <small>{{ course.course_instructor.course_instructor_bio|linebreaksbr }}</small>
+            </div>
+          </div>
+          <a href="{% url 'bmd_academy:course_list' %}" class="text-white btn btn-primary btn-icon w-25">
+            <strong>
+              <i class="fa fa-mortar-board me-2"></i>
+              Turn Back to Course List
+            </strong>
+          </a>
+          <hr class="my-6">
+          <h5 class="mb-4">
+            <strong>
+              <i class="fa fa-play-circle me-2"></i>
+              Currently Playing
+            </strong>
+          </h5>
+          <div class="bg-body p-8 rounded">
+            <h4>📺 &nbsp;
+              <strong id="video-title">
+                {% if course.sections.all %}
+                  {% with course.sections.all.0 as first_section %}
+                    {% if first_section.videos.all %}
+                      {{ first_section.videos.all.0.video_title }}
+                    {% endif %}
+                  {% endwith %}
+                {% endif %}
+              </strong>
+            </h4>
+            <p>
+              <i class="fa fa-info-circle me-2"></i>
+              <strong id="video-description">
+                {% if course.sections.all %}
+                  {% with course.sections.all.0 as first_section %}
+                    {% if first_section.videos.all %}
+                      {{ first_section.videos.all.0.video_description }}
+                    {% endif %}
+                  {% endwith %}
+                {% endif %}
+              </strong>
+            </p>
+          </div>
+          <hr class="my-6">
+          <div class="card academy-content shadow-none border">
+            <div class="p-2">
+              <div class="cursor-pointer">
+                {% if course.sections.all %}
+                  {% with course.sections.all.0 as first_section %}
+                    {% if first_section.videos.all %}
+                      <video class="w-100" id="plyr-video-player" playsinline controls>
+                        <source src="{{ first_section.videos.all.0.video_content_url }}" type="video/mp4" />
+                      </video>
+                    {% endif %}
+                  {% endwith %}
+                {% endif %}
+              </div>
+            </div>
+            <div class="card-body pt-4">
+              <h5>
+                <strong>
+                  <i class="fa fa-info-circle me-2"></i>
+                  About the Course
+                </strong>
+              </h5>
+              <p class="mb-0">{{ course.course_description }}</p>
+              <hr class="my-6">
+              <h5>
+                <strong>
+                  <i class="fa fa-list me-2"></i>
+                  Sections &amp; Teaching Language
+                </strong>
+              </h5>
+              <div class="d-flex flex-wrap row-gap-2">
+                <div class="me-12">
+                  <p class="text-nowrap mb-2"><i
+                    class="ti ti-world me-2 align-bottom"></i><strong>{{ course.course_language }}</strong></p>
+                </div>
+                <div>
+                  <p class="text-nowrap mb-2"><i
+                    class="ti ti-section me-2 align-top ms-50"></i><strong>{{ course.sections.count }} Course
+                    Chapters</strong></p>
+                </div>
+              </div>
+              <hr class="my-6">
+              <h5>
+                <strong>
+                  <i class="fa fa-user me-2"></i>
+                  About the Instructor
+                </strong>
+              </h5>
+              <div class="d-flex justify-content-start align-items-center bg-body p-12 rounded user-name">
+                <div class="avatar-wrapper">
+                  <div class="avatar avatar-lg me-4 border border-primary border-3 rounded-circle me-12">
+                    <img src="
+                      {% if course.course_instructor.user.profile.profile_picture %}{{ course.course_instructor.user.profile.profile_picture.url }}{% else %}{% static 'img/avatars/0.png' %}{% endif %}"
+                         alt="Instructor Image" class="rounded-circle">
+                  </div>
+                </div>
+                <div class="d-flex flex-column">
+                  <h6 class="mb-1">
+                    <strong>{{ course.course_instructor.full_name }}</strong>
+                  </h6>
+                  <small>{{ course.course_instructor.course_instructor_bio|linebreaksbr }}</small>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  <div class="col-lg-4">
-    <div class="accordion stick-top accordion-custom-button" id="courseContent">
-      {% for section in course.sections.all %}
-      <div class="accordion-item{% if forloop.first %} active mb-0{% endif %}">
-        <div class="accordion-header" id="heading{{ forloop.counter }}">
-          <button type="button" class="accordion-button{% if not forloop.first %} collapsed{% endif %}" data-bs-toggle="collapse" data-bs-target="#chapter{{ forloop.counter }}" aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}" aria-controls="chapter{{ forloop.counter }}">
+    <div class="col-lg-4">
+      <div class="accordion stick-top accordion-custom-button" id="courseContent">
+        {% for section in course.sections.all %}
+          <div class="accordion-item{% if forloop.first %} active mb-0{% endif %}">
+            <div class="accordion-header" id="heading{{ forloop.counter }}">
+              <button type="button" class="accordion-button{% if not forloop.first %} collapsed{% endif %}"
+                      data-bs-toggle="collapse" data-bs-target="#chapter{{ forloop.counter }}"
+                      aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}"
+                      aria-controls="chapter{{ forloop.counter }}">
             <span class="d-flex flex-column">
               <span class="h5 mb-2">
                 <strong>
@@ -257,28 +268,35 @@
                   {{ section.section_name }}
                 </strong>
               </span>
-              <span class="text-body fw-normal"><strong>{{ section.videos.count }} videos in this chapter.</strong></span>
+              <span
+                class="text-body fw-normal"><strong>{{ section.videos.count }} videos in this chapter.</strong></span>
             </span>
-          </button>
-        </div>
-        <div id="chapter{{ forloop.counter }}" class="accordion-collapse collapse{% if forloop.first %} show{% endif %}" data-bs-parent="#courseContent">
-          <div class="accordion-body py-4">
-            {% for video in section.videos.all %}
-              <a href="#" class="video-link d-block mb-4 btn-label-primary p-4 rounded d-flex align-items-center" data-video-url="{{ video.video_content_url }}" data-video-title="{{ video.video_title }}" data-video-description="{{ video.video_description }}" data-section-slug="{{ video.section.section_slug }}" data-video-slug="{{ video.video_slug }}">
-                <video class="me-3" width="160" height="90" muted playsinline style="pointer-events: none;" preload="metadata">
-                  <source src="{{ video.video_content_url }}" type="video/mp4">
-                </video>
-                <div class="flex-grow-1">
-                  <span class="mb-2 h5 d-block"><strong>{{ video.video_title }}</strong></span>
-                  <small class="d-block text-dark"><strong>🟢&nbsp; {{ video.video_description }}</strong></small>
-                </div>
-              </a>
-            {% endfor %}
+              </button>
+            </div>
+            <div id="chapter{{ forloop.counter }}"
+                 class="accordion-collapse collapse{% if forloop.first %} show{% endif %}"
+                 data-bs-parent="#courseContent">
+              <div class="accordion-body py-4">
+                {% for video in section.videos.all %}
+                  <a href="#" class="video-link d-block mb-4 btn-label-primary p-4 rounded d-flex align-items-center"
+                     data-video-url="{{ video.video_content_url }}" data-video-title="{{ video.video_title }}"
+                     data-video-description="{{ video.video_description }}"
+                     data-section-slug="{{ video.section.section_slug }}" data-video-slug="{{ video.video_slug }}">
+                    <video class="me-3" width="160" height="90" muted playsinline style="pointer-events: none;"
+                           preload="metadata">
+                      <source src="{{ video.video_content_url }}" type="video/mp4">
+                    </video>
+                    <div class="flex-grow-1">
+                      <span class="mb-2 h5 d-block"><strong>{{ video.video_title }}</strong></span>
+                      <small class="d-block text-dark"><strong>🟢&nbsp; {{ video.video_description }}</strong></small>
+                    </div>
+                  </a>
+                {% endfor %}
+              </div>
+            </div>
           </div>
-        </div>
+        {% endfor %}
       </div>
-      {% endfor %}
     </div>
   </div>
-</div>
 {% endblock %}

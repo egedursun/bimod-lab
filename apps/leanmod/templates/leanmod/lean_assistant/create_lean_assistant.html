@@ -1,21 +1,21 @@
-  <!--
-  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
-  ~
-  ~ Project: Bimod.io™
-  ~ File: create_lean_assistant.html
-  ~ Last Modified: 2024-10-05 01:39:48
-  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-05 14:42:33
-  ~
-  ~ This software is proprietary and confidential. Unauthorized copying,
-  ~ distribution, modification, or use of this software, whether for
-  ~ commercial, academic, or any other purpose, is strictly prohibited
-  ~ without the prior express written permission of BMD™ Autonomous
-  ~ Holdings.
-  ~
-  ~  For permission inquiries, please contact: admin@Bimod.io.
-  ~
-  -->
+<!--
+~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+~
+~ Project: Bimod.io™
+~ File: create_lean_assistant.html
+~ Last Modified: 2024-10-05 01:39:48
+~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+~ Created: 2024-10-05 14:42:33
+~
+~ This software is proprietary and confidential. Unauthorized copying,
+~ distribution, modification, or use of this software, whether for
+~ commercial, academic, or any other purpose, is strictly prohibited
+~ without the prior express written permission of BMD™ Autonomous
+~ Holdings.
+~
+~  For permission inquiries, please contact: admin@Bimod.io.
+~
+-->
 
 {% extends layout_path %}
 
@@ -27,8 +27,8 @@
 
 {% block vendor_css %}
   {{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}"/>
-  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
 {% endblock vendor_css %}
 
 {% block vendor_js %}
@@ -73,7 +73,8 @@
             <h5 class="alert-heading mb-2">Tip</h5>
             <p class="mb-0">
               In this page, you can create a new lean assistant. You can select the organization, LLM model, expert
-              networks, name, image, and instructions for the lean assistant. To create a new lean assistant, fill in the
+              networks, name, image, and instructions for the lean assistant. To create a new lean assistant, fill in
+              the
               required fields and click on the "Create Lean Assistant" button.
             </p>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
@@ -94,7 +95,8 @@
           <hr>
           <form method="post" enctype="multipart/form-data" class="mt-4">
             {% csrf_token %}
-            <img src="{% static 'img/leanmod/lm-1.png' %}" class="rounded mb-8" style="width: 100%;" alt="Illustration for tips">
+            <img src="{% static 'img/leanmod/lm-1.png' %}" class="rounded mb-8" style="width: 100%;"
+                 alt="Illustration for tips">
             <div class="row p-8">
               <div class="col-4 mb-6">
                 <label class="form-label" for="organization">Organization</label>
@@ -125,11 +127,11 @@
               <div class="col-6 mb-6">
                 <label class="form-label" for="name">Name</label>
                 <input type="text" class="form-control" id="name" name="name" placeholder="Enter lean assistant name"
-                       required/>
+                       required />
               </div>
               <div class="col-6 mb-6">
                 <label class="form-label" for="lean_assistant_image">Lean Assistant Image</label>
-                <input type="file" class="form-control" id="lean_assistant_image" name="lean_assistant_image"/>
+                <input type="file" class="form-control" id="lean_assistant_image" name="lean_assistant_image" />
               </div>
               <div class="col-12 mb-6">
                 <label class="form-label" for="instructions">Instructions</label>
@@ -165,7 +167,7 @@
   </div>
   <script>
     // Initialize Select2 for Expert Networks
-    $(document).ready(function () {
+    $(document).ready(function() {
       $('.select2').select2({
         placeholder: 'Select Expert Networks',
         allowClear: true,

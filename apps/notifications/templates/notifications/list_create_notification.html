@@ -1,21 +1,21 @@
-  <!--
-  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
-  ~
-  ~ Project: Bimod.io™
-  ~ File: list_create_notification.html
-  ~ Last Modified: 2024-10-20 14:37:37
-  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-20 15:59:39
-  ~
-  ~ This software is proprietary and confidential. Unauthorized copying,
-  ~ distribution, modification, or use of this software, whether for
-  ~ commercial, academic, or any other purpose, is strictly prohibited
-  ~ without the prior express written permission of BMD™ Autonomous
-  ~ Holdings.
-  ~
-  ~  For permission inquiries, please contact: admin@Bimod.io.
-  ~
-  -->
+<!--
+~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+~
+~ Project: Bimod.io™
+~ File: list_create_notification.html
+~ Last Modified: 2024-10-20 14:37:37
+~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+~ Created: 2024-10-20 15:59:39
+~
+~ This software is proprietary and confidential. Unauthorized copying,
+~ distribution, modification, or use of this software, whether for
+~ commercial, academic, or any other purpose, is strictly prohibited
+~ without the prior express written permission of BMD™ Autonomous
+~ Holdings.
+~
+~  For permission inquiries, please contact: admin@Bimod.io.
+~
+-->
 
 {% extends layout_path %}
 
@@ -27,7 +27,7 @@
 {% block vendor_css %}
   {{ block.super }}
 
-<link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}" />
   <link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}" />
   <link rel="stylesheet" href="{% static 'vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css' %}" />
   <link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}" />
@@ -47,8 +47,10 @@
       <div class="card-body">
 
         <!-- Tip Section -->
-        <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
-          <img src="{% static 'img/custom-illustrations-v2/i2-49.png' %}" width="25%" class="me-8" alt="Illustration for tip">
+        <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center"
+             role="alert">
+          <img src="{% static 'img/custom-illustrations-v2/i2-49.png' %}" width="25%" class="me-8"
+               alt="Illustration for tip">
           <div class="d-flex flex-column ps-1">
             <h5 class="alert-heading mb-2">Tip</h5>
             <p class="mb-0">
@@ -64,7 +66,9 @@
         <!-- Display Messages -->
         {% if messages %}
           {% for message in messages %}
-            <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% endif %}" role="alert">
+            <div
+              class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% endif %}"
+              role="alert">
               {{ message }}
             </div>
           {% endfor %}
@@ -74,7 +78,8 @@
         <div class="mb-4">
           <h5><strong>Create Notification</strong></h5>
           <hr>
-          <img src="{% static 'img/notification_manager/ntf-1.png' %}" class="rounded mt-4 mb-4" style="width: 100%;" alt="Illustration for tips">
+          <img src="{% static 'img/notification_manager/ntf-1.png' %}" class="rounded mt-4 mb-4" style="width: 100%;"
+               alt="Illustration for tips">
           <hr>
           <form method="post" action="{% url 'notifications:list_create' %}">
             {% csrf_token %}
@@ -131,12 +136,15 @@
               <tr>
                 <td><strong>{{ notification.organization.name }}</strong></td>
                 <td><strong>{{ notification.get_notification_title_category_display }}</strong></td>
-                <td><p style="max-width: 300px; min-width: 300px; max-height: 80px; min-height: 80px; overflow: auto;">{{ notification.notification_message }}</p></td>
+                <td><p
+                  style="max-width: 300px; min-width: 300px; max-height: 80px; min-height: 80px; overflow: auto;">{{ notification.notification_message }}</p>
+                </td>
                 <td>{{ notification.created_at|date:"Y-m-d H:i" }}</td>
                 <td><strong class="btn-info p-2 rounded">{{ notification.readers.all|length }}</strong></td>
                 <td>
                   <!-- DELETE BUTTON -->
-                  <button type="button" class="btn btn-danger btn-sm item-delete-btn" data-url="{% url 'notifications:delete' pk=notification.id %}">
+                  <button type="button" class="btn btn-danger btn-sm item-delete-btn"
+                          data-url="{% url 'notifications:delete' pk=notification.id %}">
                     <i class="fa fa-trash me-2"></i> <strong>Delete</strong>
                   </button>
                 </td>
@@ -160,7 +168,8 @@
               <ul class="pagination justify-content-center mt-4">
                 {% if internal_notifications.has_previous %}
                   <li class="page-item">
-                    <a class="page-link" href="?page={{ internal_notifications.previous_page_number }}" aria-label="Previous">
+                    <a class="page-link" href="?page={{ internal_notifications.previous_page_number }}"
+                       aria-label="Previous">
                       <span aria-hidden="true">&laquo;</span>
                     </a>
                   </li>
@@ -244,45 +253,45 @@
   {{ block.super }}
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-  // DELETE BUTTON LOGIC
-  document.querySelectorAll('.item-delete-btn').forEach(function(button) {
-    button.addEventListener('click', function(event) {
-      event.preventDefault();
-      const deleteUrl = button.getAttribute('data-url');  // Get the URL with the correct pk
+      // DELETE BUTTON LOGIC
+      document.querySelectorAll('.item-delete-btn').forEach(function(button) {
+        button.addEventListener('click', function(event) {
+          event.preventDefault();
+          const deleteUrl = button.getAttribute('data-url');  // Get the URL with the correct pk
 
-      Swal.fire({
-        title: 'Are you sure?',
-        text: 'This notification will be permanently deleted.',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Yes, delete it!',
-        cancelButtonText: 'No, cancel!',
-        customClass: {
-          confirmButton: 'btn btn-danger me-2 waves-effect waves-light',
-          cancelButton: 'btn btn-label-secondary waves-effect waves-light'
-        },
-        buttonsStyling: false
-      }).then((result) => {
-        if (result.isConfirmed) {
-          const form = document.createElement('form');
-          form.method = 'POST';
-          form.action = deleteUrl;
-          const csrfInput = document.createElement('input');
-          csrfInput.type = 'hidden';
-          csrfInput.name = 'csrfmiddlewaretoken';
-          csrfInput.value = '{{ csrf_token }}';
-          form.appendChild(csrfInput);
-          const notificationIdInput = document.createElement('input');
-          notificationIdInput.type = 'hidden';
-          notificationIdInput.name = 'notification_id';
-          notificationIdInput.value = button.getAttribute('data-notification-id');  // Pass notification_id here
-          form.appendChild(notificationIdInput);
-          document.body.appendChild(form);
-          form.submit();
-        }
+          Swal.fire({
+            title: 'Are you sure?',
+            text: 'This notification will be permanently deleted.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'No, cancel!',
+            customClass: {
+              confirmButton: 'btn btn-danger me-2 waves-effect waves-light',
+              cancelButton: 'btn btn-label-secondary waves-effect waves-light'
+            },
+            buttonsStyling: false
+          }).then((result) => {
+            if (result.isConfirmed) {
+              const form = document.createElement('form');
+              form.method = 'POST';
+              form.action = deleteUrl;
+              const csrfInput = document.createElement('input');
+              csrfInput.type = 'hidden';
+              csrfInput.name = 'csrfmiddlewaretoken';
+              csrfInput.value = '{{ csrf_token }}';
+              form.appendChild(csrfInput);
+              const notificationIdInput = document.createElement('input');
+              notificationIdInput.type = 'hidden';
+              notificationIdInput.name = 'notification_id';
+              notificationIdInput.value = button.getAttribute('data-notification-id');  // Pass notification_id here
+              form.appendChild(notificationIdInput);
+              document.body.appendChild(form);
+              form.submit();
+            }
+          });
+        });
       });
     });
-  });
-});
   </script>
 {% endblock %}

@@ -1,4 +1,3 @@
-
 <!--
   ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
   ~
@@ -27,7 +26,7 @@
 
 {% block vendor_css %}
   {{ block.super }}
-  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
 {% endblock vendor_css %}
 
 {% block vendor_js %}
@@ -37,7 +36,7 @@
     $(document).ready(function() {
       // Initialize Select2 for contract template with search enabled
       $('#contract_template').select2({
-        placeholder: "Select a Contract Template",
+        placeholder: 'Select a Contract Template',
         allowClear: true,
         width: '100%'  // Ensures full width for the dropdown
       });
@@ -68,7 +67,8 @@
               <strong> Manage Smart Contracts</strong>
             </button>
           </a>
-          <div class="tips-section alert alert-secondary alert-dismissible d-flex p-4 col-lg-12 align-items-center" role="alert">
+          <div class="tips-section alert alert-secondary alert-dismissible d-flex p-4 col-lg-12 align-items-center"
+               role="alert">
             <img src="{% static 'img/custom-illustrations-v2/i2-36.png' %}" width="25%" style="border-radius:25px;"
                  class="justify-content-end me-8" alt="Illustration for tip">
             <span class="alert-icon rounded">
@@ -77,15 +77,18 @@
             <div class="d-flex flex-column ps-1">
               <h5 class="alert-heading mb-2">Tip</h5>
               <p class="mb-0">
-                In this page, you can create a new smart contract by selecting the relevant wallet, category, and template.
+                In this page, you can create a new smart contract by selecting the relevant wallet, category, and
+                template.
                 You can also specify the number of refinement iterations to adjust the contract generation process.
               </p>
               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
           </div>
-           {% if messages %}
+          {% if messages %}
             {% for message in messages %}
-              <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}" role="alert">
+              <div
+                class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
+                role="alert">
                 {{ message }}
               </div>
             {% endfor %}
@@ -95,7 +98,8 @@
         <div class="card-body mt-4">
           <form method="post" action="{% url 'smart_contracts:contract_create' %}">
             {% csrf_token %}
-            <img src="{% static 'img/smart_contracts/wal-1.png' %}" class="rounded" style="width: 100%;" alt="Illustration for tips">
+            <img src="{% static 'img/smart_contracts/wal-1.png' %}" class="rounded" style="width: 100%;"
+                 alt="Illustration for tips">
             <div class="row p-8">
               <div class="col-4 mb-6">
                 <label class="form-label" for="wallet">Wallet</label>
@@ -129,28 +133,33 @@
 
               <div class="col-6 mb-6">
                 <label class="form-label" for="nickname">Nickname</label>
-                <input type="text" class="form-control" id="nickname" name="nickname" placeholder="Enter nickname for the contract." required>
+                <input type="text" class="form-control" id="nickname" name="nickname"
+                       placeholder="Enter nickname for the contract." required>
               </div>
 
               <div class="col-6 mb-6">
                 <label class="form-label" for="description">Description</label>
-                <textarea class="form-control" id="description" name="description" rows="1" placeholder="Enter a description for this Smart Contract in natural language."></textarea>
+                <textarea class="form-control" id="description" name="description" rows="1"
+                          placeholder="Enter a description for this Smart Contract in natural language."></textarea>
               </div>
 
               <div class="col-12 mb-6">
                 <label class="form-label" for="offchain_contract_seed">Off-Chain Contract Seed (Optional)</label>
-                <textarea class="form-control" id="offchain_contract_seed" name="offchain_contract_seed" rows="4" placeholder="Enter the content of an off-chain (real-world) contract if you want to generate a smart contract from it."></textarea>
+                <textarea class="form-control" id="offchain_contract_seed" name="offchain_contract_seed" rows="4"
+                          placeholder="Enter the content of an off-chain (real-world) contract if you want to generate a smart contract from it."></textarea>
               </div>
 
               <div class="col-6 mb-6">
                 <label class="form-label" for="maximum_gas_limit">Maximum Gas Limit</label>
-                <input type="number" class="form-control" id="maximum_gas_limit" name="maximum_gas_limit" min="20000" step="1000" placeholder="Enter the maximum possible Gas you can spend.">
+                <input type="number" class="form-control" id="maximum_gas_limit" name="maximum_gas_limit" min="20000"
+                       step="1000" placeholder="Enter the maximum possible Gas you can spend.">
               </div>
 
-               <div class="col-6 mb-6">
+              <div class="col-6 mb-6">
                 <label class="form-label" for="gas_price_gwei">Offer Gas Price (GWEI)</label>
-                <input type="number" class="form-control" id="gas_price_gwei" name="gas_price_gwei" min="1" step="1" placeholder="Enter the Gas Price you are willing to pay in Gwei.">
-               </div>
+                <input type="number" class="form-control" id="gas_price_gwei" name="gas_price_gwei" min="1" step="1"
+                       placeholder="Enter the Gas Price you are willing to pay in Gwei.">
+              </div>
 
               <div class="col-12 mb-6">
                 <label class="form-label" for="refinement_iterations">Refinement Iterations</label>
@@ -166,9 +175,12 @@
                     contract drafts are costful. Each iteration of refinement will increase the cost of the contract
                     generation process.
                     <br><br>
-                    The unit cost of each contract generation is <span class="bg-danger p-1 rounded ms-2 me-2">${{ SMART_CONTRACT_CREATION }}</span> and
-                    each refinement will be billed for the same amount. For example, if you set the refinement iterations
-                    to 10, the total cost of the contract generation process will be ${% widthratio SMART_CONTRACT_CREATION 1 10 %}.
+                    The unit cost of each contract generation is <span
+                    class="bg-danger p-1 rounded ms-2 me-2">${{ SMART_CONTRACT_CREATION }}</span> and
+                    each refinement will be billed for the same amount. For example, if you set the refinement
+                    iterations
+                    to 10, the total cost of the contract generation process will be
+                    ${% widthratio SMART_CONTRACT_CREATION 1 10 %}.
                   </strong>
                 </div>
                 <!-- Switch box for cost understanding -->

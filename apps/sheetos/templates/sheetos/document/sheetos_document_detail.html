@@ -25,57 +25,60 @@
 {% block title %}Drafting Editor{% endblock %}
 
 {% block vendor_css %}
-{{ block.super }}
+  {{ block.super }}
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css">
-<link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}">
-<link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}">
-<link rel="stylesheet" href="{% static 'vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css' %}">
-<link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}">
-<link rel="stylesheet" href="{% static 'vendor/libs/@form-validation/form-validation.css' %}">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/font/bootstrap-icons.min.css">
-<link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css">
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}">
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}">
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css' %}">
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}">
+  <link rel="stylesheet" href="{% static 'vendor/libs/@form-validation/form-validation.css' %}">
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}" />
 {% endblock vendor_css %}
 
 {% block page_css %}
-{{ block.super }}
-<style>
-  .handsontable-container {
-    background-color: whitesmoke !important;
-    color: black !important;
-    min-height: 80vh;
-    max-height: 80vh;
-    overflow: auto;
-    border-radius: 10px;
-  }
-  .bg-label-warning {
-    min-width: 150px;
-  }
-  .btn-icon {
-    font-size: 24px;
-  }
-</style>
+  {{ block.super }}
+  <style>
+    .handsontable-container {
+      background-color: whitesmoke !important;
+      color: black !important;
+      min-height: 80vh;
+      max-height: 80vh;
+      overflow: auto;
+      border-radius: 10px;
+    }
+
+    .bg-label-warning {
+      min-width: 150px;
+    }
+
+    .btn-icon {
+      font-size: 24px;
+    }
+  </style>
 {% endblock page_css %}
 
 {% block vendor_js %}
-{{ block.super }}
-<script src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
-<script src="{% static 'vendor/libs/datatables-bs5/datatables-bootstrap5.js' %}"></script>
-<script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
-<script src="{% static 'vendor/libs/@form-validation/popular.js' %}"></script>
-<script src="{% static 'vendor/libs/@form-validation/bootstrap5.js' %}"></script>
-<script src="{% static 'vendor/libs/@form-validation/auto-focus.js' %}"></script>
-<script src="{% static 'vendor/libs/cleavejs/cleave.js' %}"></script>
-<script src="{% static 'vendor/libs/cleavejs/cleave-phone.js' %}"></script>
-<script src="{% static 'vendor/libs/sweetalert2/sweetalert2.js' %}"></script>
+  {{ block.super }}
+  <script src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
+  <script src="{% static 'vendor/libs/datatables-bs5/datatables-bootstrap5.js' %}"></script>
+  <script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+  <script src="{% static 'vendor/libs/@form-validation/popular.js' %}"></script>
+  <script src="{% static 'vendor/libs/@form-validation/bootstrap5.js' %}"></script>
+  <script src="{% static 'vendor/libs/@form-validation/auto-focus.js' %}"></script>
+  <script src="{% static 'vendor/libs/cleavejs/cleave.js' %}"></script>
+  <script src="{% static 'vendor/libs/cleavejs/cleave-phone.js' %}"></script>
+  <script src="{% static 'vendor/libs/sweetalert2/sweetalert2.js' %}"></script>
 {% endblock vendor_js %}
 
 {% block page_js %}
   {{ block.super }}
 
   <script>
-  var unsavedChanges = false;
-  const container = document.getElementById('editor');
+    var unsavedChanges = false;
+    const container = document.getElementById('editor');
     hot = new Handsontable(container, {
       rowHeaders: true,
       colHeaders: true,
@@ -98,7 +101,7 @@
       undo: true,
       search: true,
       formulas: true,
-      allowInvalid: false,
+      allowInvalid: false
     });
 
     function saveContent() {
@@ -131,11 +134,12 @@
         return cells;
       });
     }
+
     function stringifyCsv(data) {
       return data.map(row => row.map(cell => `"${cell || ''}"`).join(',')).join('\n');
     }
 
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       const documentId = "{{ document.id }}";
       const localStorageKey = `hotContent_${documentId}`;
       let initialDocumentContent;
@@ -212,193 +216,358 @@
         }
       });
     }
-</script>
+  </script>
 
-<script>
-document.getElementById('deleteButton').addEventListener('click', function (event) {
-    event.preventDefault();
-    Swal.fire({
+  <script>
+    document.getElementById('deleteButton').addEventListener('click', function(event) {
+      event.preventDefault();
+      Swal.fire({
         title: 'Are you sure?',
-        text: "You won't be able to revert this action!",
+        text: 'You won\'t be able to revert this action!',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonText: 'Yes, delete it!',
         cancelButtonText: 'No, cancel!',
         customClass: {
-            confirmButton: 'btn btn-danger me-2',
-            cancelButton: 'btn btn-secondary'
+          confirmButton: 'btn btn-danger me-2',
+          cancelButton: 'btn btn-secondary'
         },
         buttonsStyling: false
-    }).then((result) => {
+      }).then((result) => {
         if (result.isConfirmed) {
-            document.getElementById('deleteForm').submit();
+          document.getElementById('deleteForm').submit();
         }
+      });
     });
-});
-</script>
-<script>
-  document.getElementById('downloadCSV').addEventListener('click', function () {
-    const data = hot.getData();
-    const csvContent = convertArrayToCsv(data);
-    const blob = new Blob([csvContent], { type: 'text/csv' });
-    const downloadLink = document.createElement('a');
-    downloadLink.href = URL.createObjectURL(blob);
-    downloadLink.download = 'document.csv';
-    downloadLink.click();
-    URL.revokeObjectURL(downloadLink.href);
-  });
-</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
-<script>
-  document.getElementById('downloadXLSX').addEventListener('click', function () {
-    const data = hot.getData();
-    const worksheet = XLSX.utils.aoa_to_sheet(data);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-    XLSX.writeFile(workbook, 'sheetosDocument.xlsx');
-  });
-</script>
-<script>
-  // ##############################################################################################################
-  // Multi-Modalities
-  // ##############################################################################################################
-  var isModalOpen = false;
-  var currentCommand = "";
-  let savedRange = null;
+  </script>
+  <script>
+    document.getElementById('downloadCSV').addEventListener('click', function() {
+      const data = hot.getData();
+      const csvContent = convertArrayToCsv(data);
+      const blob = new Blob([csvContent], { type: 'text/csv' });
+      const downloadLink = document.createElement('a');
+      downloadLink.href = URL.createObjectURL(blob);
+      downloadLink.download = 'document.csv';
+      downloadLink.click();
+      URL.revokeObjectURL(downloadLink.href);
+    });
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
+  <script>
+    document.getElementById('downloadXLSX').addEventListener('click', function() {
+      const data = hot.getData();
+      const worksheet = XLSX.utils.aoa_to_sheet(data);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
+      XLSX.writeFile(workbook, 'sheetosDocument.xlsx');
+    });
+  </script>
+  <script>
+    // ##############################################################################################################
+    // Multi-Modalities
+    // ##############################################################################################################
+    var isModalOpen = false;
+    var currentCommand = '';
+    let savedRange = null;
 
-  hot.addHook('afterChange', function(changes, source) {
-    if (source !== 'edit' || !changes) return;
+    hot.addHook('afterChange', function(changes, source) {
+      if (source !== 'edit' || !changes) return;
 
-    const [row, col, oldValue, newValue] = changes[0];
-    const commands = {
-      "//ai": { title: "Consult AI Assistant", placeholder: "Ask something to the AI assistant...", buttonText: "Consult" },
-      "//web": { title: "Make AI Browse", placeholder: "Write what you want to browse...", buttonText: "Browse" },
-      "//sql": { title: "Check SQL with AI", placeholder: "Query your database files with AI...", buttonText: "Check SQL" },
-      "//nosql": { title: "Check NoSQL with AI", placeholder: "Query your NoSQL database files with AI...", buttonText: "Check NoSQL" },
-      "//img": { title: "Generate Image with AI", placeholder: "Write the details of the image you want...", buttonText: "Generate Image" },
-      "//ssh": { title: "Check SSH Server with AI", placeholder: "Query your SSH servers with AI...", buttonText: "Check SSH" },
-      "//vect": { title: "Check Knowledge with AI", placeholder: "Query knowledge bases with AI...", buttonText: "Check Knowledge" },
-      "//repo": { title: "Search Code with AI", placeholder: "Query your code repositories with AI...", buttonText: "Query Repository" },
-      "//auto": { title: "", placeholder: "", buttonText: "" },  // No modal, just handling.
-    };
+      const [row, col, oldValue, newValue] = changes[0];
+      const commands = {
+        '//ai': {
+          title: 'Consult AI Assistant',
+          placeholder: 'Ask something to the AI assistant...',
+          buttonText: 'Consult'
+        },
+        '//web': { title: 'Make AI Browse', placeholder: 'Write what you want to browse...', buttonText: 'Browse' },
+        '//sql': {
+          title: 'Check SQL with AI',
+          placeholder: 'Query your database files with AI...',
+          buttonText: 'Check SQL'
+        },
+        '//nosql': {
+          title: 'Check NoSQL with AI',
+          placeholder: 'Query your NoSQL database files with AI...',
+          buttonText: 'Check NoSQL'
+        },
+        '//img': {
+          title: 'Generate Image with AI',
+          placeholder: 'Write the details of the image you want...',
+          buttonText: 'Generate Image'
+        },
+        '//ssh': {
+          title: 'Check SSH Server with AI',
+          placeholder: 'Query your SSH servers with AI...',
+          buttonText: 'Check SSH'
+        },
+        '//vect': {
+          title: 'Check Knowledge with AI',
+          placeholder: 'Query knowledge bases with AI...',
+          buttonText: 'Check Knowledge'
+        },
+        '//repo': {
+          title: 'Search Code with AI',
+          placeholder: 'Query your code repositories with AI...',
+          buttonText: 'Query Repository'
+        },
+        '//auto': { title: '', placeholder: '', buttonText: '' }  // No modal, just handling.
+      };
 
-    // Check each command in the new cell value
-    for (const command in commands) {
-      if (newValue.includes(command)) {
-        currentCommand = command;
-        const cleanedValue = newValue.replace(command, '').trim();
-        hot.setDataAtCell(row, col, cleanedValue);
-        if (command === "//auto") {
-          handleAutoCommand();
-        } else if (!isModalOpen) {
-          showModal(commands[command]);
-        }
-        break;
-      }
-    }
-  });
-
-  function showModal(commandDetails) {
-    isModalOpen = true;
-    const modal = document.getElementById('aiAssistantModal');
-
-    document.getElementById('modalTitle').innerText = commandDetails.title;
-    document.getElementById('aiPrompt').placeholder = commandDetails.placeholder;
-    document.getElementById('consultButton').innerHTML = `<i class="fa fa-magic-wand-sparkles me-2"></i><strong>${commandDetails.buttonText}</strong>`;
-
-    modal.style.position = 'fixed';
-    modal.style.top = '118%';
-    modal.style.left = '72%';
-    modal.style.transform = 'translate(-50%, -50%)';
-    modal.style.display = 'block';
-  }
-  function closeModal() {
-    isModalOpen = false;
-    document.getElementById('aiAssistantModal').style.display = 'none';
-  }
-
-
-  let lastSelectedCells = [];
-  function consultAI() {
-    const aiPrompt = document.getElementById('aiPrompt').value;
-    if (aiPrompt.trim() !== "") {
-      closeModal();
-      if (!lastSelectedCells.length) {
-        console.warn("No active selection when consulting AI.");
-        return;
-      }
-      lastSelectedCells.forEach(([row, col]) => {
-        const cellValue = hot.getDataAtCell(row, col);
-        if (cellValue && cellValue.includes(currentCommand)) {
-          const cleanedValue = cellValue.replace(currentCommand, '').trim();
+      // Check each command in the new cell value
+      for (const command in commands) {
+        if (newValue.includes(command)) {
+          currentCommand = command;
+          const cleanedValue = newValue.replace(command, '').trim();
           hot.setDataAtCell(row, col, cleanedValue);
+          if (command === '//auto') {
+            handleAutoCommand();
+          } else if (!isModalOpen) {
+            showModal(commands[command]);
+          }
+          break;
+        }
+      }
+    });
+
+    function showModal(commandDetails) {
+      isModalOpen = true;
+      const modal = document.getElementById('aiAssistantModal');
+
+      document.getElementById('modalTitle').innerText = commandDetails.title;
+      document.getElementById('aiPrompt').placeholder = commandDetails.placeholder;
+      document.getElementById('consultButton').innerHTML = `<i class="fa fa-magic-wand-sparkles me-2"></i><strong>${commandDetails.buttonText}</strong>`;
+
+      modal.style.position = 'fixed';
+      modal.style.top = '118%';
+      modal.style.left = '72%';
+      modal.style.transform = 'translate(-50%, -50%)';
+      modal.style.display = 'block';
+    }
+
+    function closeModal() {
+      isModalOpen = false;
+      document.getElementById('aiAssistantModal').style.display = 'none';
+    }
+
+
+    let lastSelectedCells = [];
+
+    function consultAI() {
+      const aiPrompt = document.getElementById('aiPrompt').value;
+      if (aiPrompt.trim() !== '') {
+        closeModal();
+        if (!lastSelectedCells.length) {
+          console.warn('No active selection when consulting AI.');
+          return;
+        }
+        lastSelectedCells.forEach(([row, col]) => {
+          const cellValue = hot.getDataAtCell(row, col);
+          if (cellValue && cellValue.includes(currentCommand)) {
+            const cleanedValue = cellValue.replace(currentCommand, '').trim();
+            hot.setDataAtCell(row, col, cleanedValue);
+          }
+        });
+        console.log(`Consulting AI for ${currentCommand} with prompt:`, aiPrompt);
+        console.log('Selected cells:', lastSelectedCells);
+        if (currentCommand === '//ai') {
+          handleAiConsult(aiPrompt, lastSelectedCells);
+        } else if (currentCommand === '//web') {
+          handleWebConsult(aiPrompt, lastSelectedCells);
+        } else if (currentCommand === '//sql') {
+          handleSqlConsult(aiPrompt, lastSelectedCells);
+        } else if (currentCommand === '//nosql') {
+          handleNoSqlConsult(aiPrompt, lastSelectedCells);
+        } else if (currentCommand === '//img') {
+          handleImageConsult(aiPrompt, lastSelectedCells);
+        } else if (currentCommand === '//ssh') {
+          handleSshConsult(aiPrompt, lastSelectedCells);
+        } else if (currentCommand === '//vect') {
+          handleVectConsult(aiPrompt, lastSelectedCells);
+        } else if (currentCommand === '//repo') {
+          handleRepoConsult(aiPrompt, lastSelectedCells);
+        }
+      }
+    }
+
+    // Hook to capture multiple selected cells and save their coordinates
+    hot.addHook('afterSelection', function(row1, col1, row2, col2) {
+      lastSelectedCells = [];
+
+      // Loop through all cells in the selected range
+      for (let row = row1; row <= row2; row++) {
+        for (let col = col1; col <= col2; col++) {
+          lastSelectedCells.push([row, col]);
+        }
+      }
+    });
+
+    // Listen for the 'F2' key after cell selection
+    document.addEventListener('keydown', function(event) {
+      if (lastSelectedCells.length && event.key === 'F2') {
+        showModal({
+          title: 'Manipulate Data with AI',
+          placeholder: 'Describe how you want to modify the selected data...',
+          buttonText: 'Submit'
+        });
+        document.getElementById('consultButton').onclick = function() {
+          const aiPrompt = document.getElementById('aiPrompt').value;
+          if (aiPrompt.trim() !== '') {
+            closeModal();
+            const documentId = "{{ document.id }}";
+            const selectedData = lastSelectedCells.map(([row, col]) => ({
+              row,
+              col,
+              value: hot.getDataAtCell(row, col) || ''
+            }));
+
+            fetch("{% url 'sheetos:generate_select' %}", {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRFToken': "{{ csrf_token }}"
+              },
+              body: new URLSearchParams({
+                document_id: documentId,
+                command: aiPrompt,
+                selected_text: JSON.stringify(selectedData)
+              })
+            })
+              .then(response => response.json())
+              .then(data => {
+                if (data.output) {
+                  const rows = data.output.trim().split('\n').map(row => row.split(','));
+                  lastSelectedCells.forEach(([row, col], index) => {
+                    const rowData = rows[index] || [];
+                    rowData.forEach((cellData, colIndex) => {
+                      const cleanedData = cellData.trim();
+                      if (cleanedData !== '') {
+                        hot.setDataAtCell(row, col + colIndex, cleanedData);
+                      }
+                    });
+                  });
+                }
+                if (data.error) {
+                  console.error('Error while manipulating data:', data.error);
+                }
+              })
+              .catch(error => {
+                console.error('Error fetching AI response:', error);
+              });
+          }
+        };
+      }
+    });
+
+    // Handle the //auto command
+    function handleAutoCommand() {
+      const documentId = "{{ document.id }}";
+      lastSelectedCells.forEach(([row, col], index) => {
+        if (index === 0) {
+          hot.setDataAtCell(row, col, '');
         }
       });
-      console.log(`Consulting AI for ${currentCommand} with prompt:`, aiPrompt);
-      console.log("Selected cells:", lastSelectedCells);
-      if (currentCommand === "//ai") {
-        handleAiConsult(aiPrompt, lastSelectedCells);
-      } else if (currentCommand === "//web") {
-        handleWebConsult(aiPrompt, lastSelectedCells);
-      } else if (currentCommand === "//sql") {
-        handleSqlConsult(aiPrompt, lastSelectedCells);
-      } else if (currentCommand === "//nosql") {
-        handleNoSqlConsult(aiPrompt, lastSelectedCells);
-      } else if (currentCommand === "//img") {
-        handleImageConsult(aiPrompt, lastSelectedCells);
-      } else if (currentCommand === "//ssh") {
-        handleSshConsult(aiPrompt, lastSelectedCells);
-      } else if (currentCommand === "//vect") {
-        handleVectConsult(aiPrompt, lastSelectedCells);
-      } else if (currentCommand === "//repo") {
-        handleRepoConsult(aiPrompt, lastSelectedCells);
-      }
+      fetch("{% url 'sheetos:generate_auto' %}", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'X-CSRFToken': "{{ csrf_token }}"
+        },
+        body: new URLSearchParams({
+          document_id: documentId
+        })
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.output) {
+            const rows = data.output.trim().split('\n').map(row => row.split(','));
+            lastSelectedCells.forEach(([row, col], index) => {
+              const rowData = rows[index] || [];
+              rowData.forEach((cellData, colIndex) => {
+                const cleanedData = cellData.trim();
+                if (cleanedData !== '') {
+                  hot.setDataAtCell(row, col + colIndex, cleanedData);
+                }
+              });
+            });
+          }
+          if (data.error) {
+            console.error('Error while auto-completing:', data.error);
+          }
+        })
+        .catch(error => {
+          console.error('Error fetching AI response:', error);
+        });
     }
-  }
 
-  // Hook to capture multiple selected cells and save their coordinates
-  hot.addHook('afterSelection', function(row1, col1, row2, col2) {
-    lastSelectedCells = [];
+    function handleAiConsult() {
+      const aiPrompt = document.getElementById('aiPrompt').value;
+      if (aiPrompt.trim() !== '') {
+        closeModal();
 
-    // Loop through all cells in the selected range
-    for (let row = row1; row <= row2; row++) {
-      for (let col = col1; col <= col2; col++) {
-        lastSelectedCells.push([row, col]);
-      }
-    }
-  });
-
-  // Listen for the 'F2' key after cell selection
-  document.addEventListener('keydown', function(event) {
-    if (lastSelectedCells.length && event.key === 'F2') {
-      showModal({
-        title: "Manipulate Data with AI",
-        placeholder: "Describe how you want to modify the selected data...",
-        buttonText: "Submit"
-      });
-      document.getElementById('consultButton').onclick = function() {
-        const aiPrompt = document.getElementById('aiPrompt').value;
-        if (aiPrompt.trim() !== "") {
-          closeModal();
-          const documentId = "{{ document.id }}";
-          const selectedData = lastSelectedCells.map(([row, col]) => ({
-            row,
-            col,
-            value: hot.getDataAtCell(row, col) || ""
-          }));
-
-          fetch("{% url 'sheetos:generate_select' %}", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/x-www-form-urlencoded",
-              "X-CSRFToken": "{{ csrf_token }}"
-            },
-            body: new URLSearchParams({
-              document_id: documentId,
-              command: aiPrompt,
-              selected_text: JSON.stringify(selectedData)
-            })
+        const documentId = "{{ document.id }}";
+        fetch("{% url 'sheetos:generate_ai' %}", {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRFToken': "{{ csrf_token }}"
+          },
+          body: new URLSearchParams({
+            document_id: documentId,
+            command: aiPrompt
           })
+        })
+          .then(response => response.json())
+          .then(data => {
+            if (data.output) {
+              // Parse the CSV output and split into rows
+              const rows = data.output.trim().split('\n').map(row => row.split(','));
+
+              // Insert parsed CSV data into Handsontable, starting from the first selected cell
+              lastSelectedCells.forEach(([startRow, startCol]) => {
+                rows.forEach((rowData, rowIndex) => {
+                  rowData.forEach((cellData, colIndex) => {
+                    const trimmedData = cellData.trim();
+                    // Only set cell data if it's not an empty string
+                    if (trimmedData !== '') {
+                      hot.setDataAtCell(startRow + rowIndex, startCol + colIndex, trimmedData);
+                    }
+                  });
+                });
+              });
+            }
+
+            if (data.error) {
+              console.error('Error while consulting AI:', data.error);
+            }
+          })
+          .catch(error => {
+            console.error('Error fetching AI response:', error);
+          });
+      }
+    }
+
+    function handleWebConsult() {
+      const webPrompt = document.getElementById('aiPrompt').value;
+      if (webPrompt.trim() !== '') {
+        closeModal();
+        const documentId = "{{ document.id }}";
+        lastSelectedCells.forEach(([row, col], index) => {
+          if (index === 0) {
+            hot.setDataAtCell(row, col, '');
+          }
+        });
+        fetch("{% url 'sheetos:generate_web' %}", {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRFToken': "{{ csrf_token }}"
+          },
+          body: new URLSearchParams({
+            document_id: documentId,
+            command: webPrompt
+          })
+        })
           .then(response => response.json())
           .then(data => {
             if (data.output) {
@@ -407,646 +576,514 @@ document.getElementById('deleteButton').addEventListener('click', function (even
                 const rowData = rows[index] || [];
                 rowData.forEach((cellData, colIndex) => {
                   const cleanedData = cellData.trim();
-                  if (cleanedData !== "") {
+                  if (cleanedData !== '') {
                     hot.setDataAtCell(row, col + colIndex, cleanedData);
                   }
                 });
               });
             }
             if (data.error) {
-              console.error("Error while manipulating data:", data.error);
+              console.error('Error while browsing the web:', data.error);
             }
           })
           .catch(error => {
-            console.error("Error fetching AI response:", error);
+            console.error('Error fetching AI response:', error);
           });
-        }
-      };
-    }
-  });
-
-  // Handle the //auto command
-  function handleAutoCommand() {
-    const documentId = "{{ document.id }}";
-    lastSelectedCells.forEach(([row, col], index) => {
-      if (index === 0) {
-        hot.setDataAtCell(row, col, "");
       }
-    });
-    fetch("{% url 'sheetos:generate_auto' %}", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-        "X-CSRFToken": "{{ csrf_token }}"
-      },
-      body: new URLSearchParams({
-        document_id: documentId
-      })
-    })
-    .then(response => response.json())
-    .then(data => {
-      if (data.output) {
-        const rows = data.output.trim().split('\n').map(row => row.split(','));
+    }
+
+    function handleSqlConsult() {
+      const sqlPrompt = document.getElementById('aiPrompt').value;
+      if (sqlPrompt.trim() !== '') {
+        closeModal();
+        const documentId = "{{ document.id }}";
         lastSelectedCells.forEach(([row, col], index) => {
-          const rowData = rows[index] || [];
-          rowData.forEach((cellData, colIndex) => {
-            const cleanedData = cellData.trim();
-            if (cleanedData !== "") {
-              hot.setDataAtCell(row, col + colIndex, cleanedData);
+          if (index === 0) {
+            hot.setDataAtCell(row, col, ''); // Clear the command
+          }
+        });
+        fetch("{% url 'sheetos:generate_sql' %}", {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRFToken': "{{ csrf_token }}"
+          },
+          body: new URLSearchParams({
+            document_id: documentId,
+            command: sqlPrompt
+          })
+        })
+          .then(response => response.json())
+          .then(data => {
+            if (data.output) {
+              const rows = data.output.trim().split('\n').map(row => row.split(','));
+              lastSelectedCells.forEach(([row, col], index) => {
+                const rowData = rows[index] || [];
+                rowData.forEach((cellData, colIndex) => {
+                  const cleanedData = cellData.trim();
+                  if (cleanedData !== '') {
+                    hot.setDataAtCell(row, col + colIndex, cleanedData);
+                  }
+                });
+              });
             }
+            if (data.error) {
+              console.error('Error while processing SQL query:', data.error);
+            }
+          })
+          .catch(error => {
+            console.error('Error fetching AI SQL response:', error);
           });
+      }
+    }
+
+    function handleNoSqlConsult() {
+      const noSqlPrompt = document.getElementById('aiPrompt').value;
+      if (noSqlPrompt.trim() !== '') {
+        closeModal();
+        const documentId = "{{ document.id }}";
+        lastSelectedCells.forEach(([row, col], index) => {
+          if (index === 0) {
+            hot.setDataAtCell(row, col, '');
+          }
         });
-      }
-      if (data.error) {
-        console.error("Error while auto-completing:", data.error);
-      }
-    })
-    .catch(error => {
-      console.error("Error fetching AI response:", error);
-    });
-  }
-
-  function handleAiConsult() {
-  const aiPrompt = document.getElementById('aiPrompt').value;
-  if (aiPrompt.trim() !== "") {
-    closeModal();
-
-    const documentId = "{{ document.id }}";
-    fetch("{% url 'sheetos:generate_ai' %}", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-        "X-CSRFToken": "{{ csrf_token }}"
-      },
-      body: new URLSearchParams({
-        document_id: documentId,
-        command: aiPrompt
-      })
-    })
-    .then(response => response.json())
-    .then(data => {
-      if (data.output) {
-        // Parse the CSV output and split into rows
-        const rows = data.output.trim().split('\n').map(row => row.split(','));
-
-        // Insert parsed CSV data into Handsontable, starting from the first selected cell
-        lastSelectedCells.forEach(([startRow, startCol]) => {
-          rows.forEach((rowData, rowIndex) => {
-            rowData.forEach((cellData, colIndex) => {
-              const trimmedData = cellData.trim();
-              // Only set cell data if it's not an empty string
-              if (trimmedData !== "") {
-                hot.setDataAtCell(startRow + rowIndex, startCol + colIndex, trimmedData);
-              }
-            });
+        fetch("{% url 'sheetos:generate_nosql' %}", {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRFToken': "{{ csrf_token }}"
+          },
+          body: new URLSearchParams({
+            document_id: documentId,
+            command: noSqlPrompt
+          })
+        })
+          .then(response => response.json())
+          .then(data => {
+            if (data.output) {
+              const rows = data.output.trim().split('\n').map(row => row.split(','));
+              lastSelectedCells.forEach(([row, col], index) => {
+                const rowData = rows[index] || [];
+                rowData.forEach((cellData, colIndex) => {
+                  const cleanedData = cellData.trim();
+                  if (cleanedData !== '') {
+                    hot.setDataAtCell(row, col + colIndex, cleanedData);
+                  }
+                });
+              });
+            }
+            if (data.error) {
+              console.error('Error while searching NoSQL:', data.error);
+            }
+          })
+          .catch(error => {
+            console.error('Error fetching AI NoSQL response:', error);
           });
+      }
+    }
+
+    function handleSshConsult() {
+      const sshPrompt = document.getElementById('aiPrompt').value;
+      if (sshPrompt.trim() !== '') {
+        closeModal();
+        const documentId = "{{ document.id }}";
+        lastSelectedCells.forEach(([row, col], index) => {
+          if (index === 0) {
+            hot.setDataAtCell(row, col, ''); // Clear the command
+          }
         });
+        fetch("{% url 'sheetos:generate_ssh' %}", {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRFToken': "{{ csrf_token }}"
+          },
+          body: new URLSearchParams({
+            document_id: documentId,
+            command: sshPrompt
+          })
+        })
+          .then(response => response.json())
+          .then(data => {
+            if (data.output) {
+              const rows = data.output.trim().split('\n').map(row => row.split(','));
+              lastSelectedCells.forEach(([row, col], index) => {
+                const rowData = rows[index] || [];
+                rowData.forEach((cellData, colIndex) => {
+                  const cleanedData = cellData.trim();
+                  if (cleanedData !== '') {
+                    hot.setDataAtCell(row, col + colIndex, cleanedData);
+                  }
+                });
+              });
+            }
+            if (data.error) {
+              console.error('Error while checking SSH servers:', data.error);
+            }
+          })
+          .catch(error => {
+            console.error('Error fetching AI SSH response:', error);
+          });
+      }
+    }
+
+    function handleVectConsult() {
+      const vectPrompt = document.getElementById('aiPrompt').value;
+      if (vectPrompt.trim() !== '') {
+        closeModal();
+        const documentId = "{{ document.id }}";
+        lastSelectedCells.forEach(([row, col], index) => {
+          if (index === 0) {
+            hot.setDataAtCell(row, col, ''); // Clear the command
+          }
+        });
+        fetch("{% url 'sheetos:generate_vect' %}", {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRFToken': "{{ csrf_token }}"
+          },
+          body: new URLSearchParams({
+            document_id: documentId,
+            command: vectPrompt
+          })
+        })
+          .then(response => response.json())
+          .then(data => {
+            if (data.output) {
+              const rows = data.output.trim().split('\n').map(row => row.split(','));
+              lastSelectedCells.forEach(([row, col], index) => {
+                const rowData = rows[index] || [];
+                rowData.forEach((cellData, colIndex) => {
+                  const cleanedData = cellData.trim();
+                  if (cleanedData !== '') {
+                    hot.setDataAtCell(row, col + colIndex, cleanedData);
+                  }
+                });
+              });
+            }
+            if (data.error) {
+              console.error('Error while querying knowledge bases:', data.error);
+            }
+          })
+          .catch(error => {
+            console.error('Error fetching AI Vect response:', error);
+          });
+      }
+    }
+
+    function handleRepoConsult() {
+      const repoPrompt = document.getElementById('aiPrompt').value;
+      if (repoPrompt.trim() !== '') {
+        closeModal();
+        const documentId = "{{ document.id }}";
+        lastSelectedCells.forEach(([row, col], index) => {
+          if (index === 0) {
+            hot.setDataAtCell(row, col, '');
+          }
+        });
+        fetch("{% url 'sheetos:generate_repo' %}", {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRFToken': "{{ csrf_token }}"
+          },
+          body: new URLSearchParams({
+            document_id: documentId,
+            command: repoPrompt
+          })
+        })
+          .then(response => response.json())
+          .then(data => {
+            if (data.output) {
+              const rows = data.output.trim().split('\n').map(row => row.split(','));
+              lastSelectedCells.forEach(([row, col], index) => {
+                const rowData = rows[index] || [];
+                rowData.forEach((cellData, colIndex) => {
+                  const cleanedData = cellData.trim();
+                  if (cleanedData !== '') {
+                    hot.setDataAtCell(row, col + colIndex, cleanedData);
+                  }
+                });
+              });
+            }
+            if (data.error) {
+              console.error('Error while querying repository:', data.error);
+            }
+          })
+          .catch(error => {
+            console.error('Error fetching AI repository response:', error);
+          });
+      }
+    }
+
+    // ####################################################################################################
+    // Make modal draggable
+    // ####################################################################################################
+
+    function makeDraggable(modal, handle) {
+      let offsetX = 0, offsetY = 0, initialX = 0, initialY = 0;
+      handle.onmousedown = dragMouseDown;
+
+      function dragMouseDown(e) {
+        e = e || window.event;
+        e.preventDefault();
+        initialX = e.clientX;
+        initialY = e.clientY;
+        document.onmouseup = closeDragElement;
+        document.onmousemove = elementDrag;
       }
 
-      if (data.error) {
-        console.error("Error while consulting AI:", data.error);
+      function elementDrag(e) {
+        e = e || window.event;
+        e.preventDefault();
+        offsetX = initialX - e.clientX;
+        offsetY = initialY - e.clientY;
+        initialX = e.clientX;
+        initialY = e.clientY;
+        modal.style.top = (modal.offsetTop - offsetY) + 'px';
+        modal.style.left = (modal.offsetLeft - offsetX) + 'px';
       }
-    })
-    .catch(error => {
-      console.error("Error fetching AI response:", error);
+
+      function closeDragElement() {
+        document.onmouseup = null;
+        document.onmousemove = null;
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const modal = document.getElementById('aiAssistantModal');
+      const handle = document.getElementById('modalHeader');
+      makeDraggable(modal, handle);
     });
-  }
-}
 
-  function handleWebConsult() {
-    const webPrompt = document.getElementById('aiPrompt').value;
-    if (webPrompt.trim() !== "") {
-      closeModal();
-      const documentId = "{{ document.id }}";
-      lastSelectedCells.forEach(([row, col], index) => {
-        if (index === 0) {
-          hot.setDataAtCell(row, col, "");
-        }
-      });
-      fetch("{% url 'sheetos:generate_web' %}", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-          "X-CSRFToken": "{{ csrf_token }}"
-        },
-        body: new URLSearchParams({
-          document_id: documentId,
-          command: webPrompt
-        })
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data.output) {
-          const rows = data.output.trim().split('\n').map(row => row.split(','));
-          lastSelectedCells.forEach(([row, col], index) => {
-            const rowData = rows[index] || [];
-            rowData.forEach((cellData, colIndex) => {
-              const cleanedData = cellData.trim();
-              if (cleanedData !== "") {
-                hot.setDataAtCell(row, col + colIndex, cleanedData);
-              }
-            });
-          });
-        }
-        if (data.error) {
-          console.error("Error while browsing the web:", data.error);
-        }
-      })
-      .catch(error => {
-        console.error("Error fetching AI response:", error);
-      });
-    }
-  }
-
-  function handleSqlConsult() {
-    const sqlPrompt = document.getElementById('aiPrompt').value;
-    if (sqlPrompt.trim() !== "") {
-      closeModal();
-      const documentId = "{{ document.id }}";
-      lastSelectedCells.forEach(([row, col], index) => {
-        if (index === 0) {
-          hot.setDataAtCell(row, col, ""); // Clear the command
-        }
-      });
-      fetch("{% url 'sheetos:generate_sql' %}", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-          "X-CSRFToken": "{{ csrf_token }}"
-        },
-        body: new URLSearchParams({
-          document_id: documentId,
-          command: sqlPrompt
-        })
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data.output) {
-          const rows = data.output.trim().split('\n').map(row => row.split(','));
-          lastSelectedCells.forEach(([row, col], index) => {
-            const rowData = rows[index] || [];
-            rowData.forEach((cellData, colIndex) => {
-              const cleanedData = cellData.trim();
-              if (cleanedData !== "") {
-                hot.setDataAtCell(row, col + colIndex, cleanedData);
-              }
-            });
-          });
-        }
-        if (data.error) {
-          console.error("Error while processing SQL query:", data.error);
-        }
-      })
-      .catch(error => {
-        console.error("Error fetching AI SQL response:", error);
-      });
-    }
-  }
-
-  function handleNoSqlConsult() {
-    const noSqlPrompt = document.getElementById('aiPrompt').value;
-    if (noSqlPrompt.trim() !== "") {
-      closeModal();
-      const documentId = "{{ document.id }}";
-      lastSelectedCells.forEach(([row, col], index) => {
-        if (index === 0) {
-          hot.setDataAtCell(row, col, "");
-        }
-      });
-      fetch("{% url 'sheetos:generate_nosql' %}", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-          "X-CSRFToken": "{{ csrf_token }}"
-        },
-        body: new URLSearchParams({
-          document_id: documentId,
-          command: noSqlPrompt
-        })
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data.output) {
-          const rows = data.output.trim().split('\n').map(row => row.split(','));
-          lastSelectedCells.forEach(([row, col], index) => {
-            const rowData = rows[index] || [];
-            rowData.forEach((cellData, colIndex) => {
-              const cleanedData = cellData.trim();
-              if (cleanedData !== "") {
-                hot.setDataAtCell(row, col + colIndex, cleanedData);
-              }
-            });
-          });
-        }
-        if (data.error) {
-          console.error("Error while searching NoSQL:", data.error);
-        }
-      })
-      .catch(error => {
-        console.error("Error fetching AI NoSQL response:", error);
-      });
-    }
-  }
-
-  function handleSshConsult() {
-    const sshPrompt = document.getElementById('aiPrompt').value;
-    if (sshPrompt.trim() !== "") {
-      closeModal();
-      const documentId = "{{ document.id }}";
-      lastSelectedCells.forEach(([row, col], index) => {
-        if (index === 0) {
-          hot.setDataAtCell(row, col, ""); // Clear the command
-        }
-      });
-      fetch("{% url 'sheetos:generate_ssh' %}", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-          "X-CSRFToken": "{{ csrf_token }}"
-        },
-        body: new URLSearchParams({
-          document_id: documentId,
-          command: sshPrompt
-        })
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data.output) {
-          const rows = data.output.trim().split('\n').map(row => row.split(','));
-          lastSelectedCells.forEach(([row, col], index) => {
-            const rowData = rows[index] || [];
-            rowData.forEach((cellData, colIndex) => {
-              const cleanedData = cellData.trim();
-              if (cleanedData !== "") {
-                hot.setDataAtCell(row, col + colIndex, cleanedData);
-              }
-            });
-          });
-        }
-        if (data.error) {
-          console.error("Error while checking SSH servers:", data.error);
-        }
-      })
-      .catch(error => {
-        console.error("Error fetching AI SSH response:", error);
-      });
-    }
-  }
-
-  function handleVectConsult() {
-    const vectPrompt = document.getElementById('aiPrompt').value;
-    if (vectPrompt.trim() !== "") {
-      closeModal();
-      const documentId = "{{ document.id }}";
-      lastSelectedCells.forEach(([row, col], index) => {
-        if (index === 0) {
-          hot.setDataAtCell(row, col, ""); // Clear the command
-        }
-      });
-      fetch("{% url 'sheetos:generate_vect' %}", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-          "X-CSRFToken": "{{ csrf_token }}"
-        },
-        body: new URLSearchParams({
-          document_id: documentId,
-          command: vectPrompt
-        })
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data.output) {
-          const rows = data.output.trim().split('\n').map(row => row.split(','));
-          lastSelectedCells.forEach(([row, col], index) => {
-            const rowData = rows[index] || [];
-            rowData.forEach((cellData, colIndex) => {
-              const cleanedData = cellData.trim();
-              if (cleanedData !== "") {
-                hot.setDataAtCell(row, col + colIndex, cleanedData);
-              }
-            });
-          });
-        }
-        if (data.error) {
-          console.error("Error while querying knowledge bases:", data.error);
-        }
-      })
-      .catch(error => {
-        console.error("Error fetching AI Vect response:", error);
-      });
-    }
-  }
-
-  function handleRepoConsult() {
-    const repoPrompt = document.getElementById('aiPrompt').value;
-    if (repoPrompt.trim() !== "") {
-      closeModal();
-      const documentId = "{{ document.id }}";
-      lastSelectedCells.forEach(([row, col], index) => {
-        if (index === 0) {
-          hot.setDataAtCell(row, col, "");
-        }
-      });
-      fetch("{% url 'sheetos:generate_repo' %}", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-          "X-CSRFToken": "{{ csrf_token }}"
-        },
-        body: new URLSearchParams({
-          document_id: documentId,
-          command: repoPrompt
-        })
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data.output) {
-          const rows = data.output.trim().split('\n').map(row => row.split(','));
-          lastSelectedCells.forEach(([row, col], index) => {
-            const rowData = rows[index] || [];
-            rowData.forEach((cellData, colIndex) => {
-              const cleanedData = cellData.trim();
-              if (cleanedData !== "") {
-                hot.setDataAtCell(row, col + colIndex, cleanedData);
-              }
-            });
-          });
-        }
-        if (data.error) {
-          console.error("Error while querying repository:", data.error);
-        }
-      })
-      .catch(error => {
-        console.error("Error fetching AI repository response:", error);
-      });
-    }
-  }
-
-  // ####################################################################################################
-  // Make modal draggable
-  // ####################################################################################################
-
-  function makeDraggable(modal, handle) {
-    let offsetX = 0, offsetY = 0, initialX = 0, initialY = 0;
-    handle.onmousedown = dragMouseDown;
-
-    function dragMouseDown(e) {
-      e = e || window.event;
-      e.preventDefault();
-      initialX = e.clientX;
-      initialY = e.clientY;
-      document.onmouseup = closeDragElement;
-      document.onmousemove = elementDrag;
-    }
-
-    function elementDrag(e) {
-      e = e || window.event;
-      e.preventDefault();
-      offsetX = initialX - e.clientX;
-      offsetY = initialY - e.clientY;
-      initialX = e.clientX;
-      initialY = e.clientY;
-      modal.style.top = (modal.offsetTop - offsetY) + "px";
-      modal.style.left = (modal.offsetLeft - offsetX) + "px";
-    }
-
-    function closeDragElement() {
-      document.onmouseup = null;
-      document.onmousemove = null;
-    }
-  }
-
-  document.addEventListener('DOMContentLoaded', function () {
-    const modal = document.getElementById('aiAssistantModal');
-    const handle = document.getElementById('modalHeader');
-    makeDraggable(modal, handle);
-  });
-
-</script>
+  </script>
 {% endblock page_js %}
 
 {% block content %}
-<div class="container md-4">
-  <h2 class="mb-12">
-    <i class="fa fa-magic-wand-sparkles me-2"></i>
-    <strong>Sheetos Spreadsheet Editor</strong>
-  </h2>
+  <div class="container md-4">
+    <h2 class="mb-12">
+      <i class="fa fa-magic-wand-sparkles me-2"></i>
+      <strong>Sheetos Spreadsheet Editor</strong>
+    </h2>
 
-  <a href="{% url 'sheetos:documents_list' folder_id=document.document_folder.id %}">
-    <button class="btn btn-secondary mt-0 mb-4">
-      <i class="fa fa-folder me-4"></i>
-      <strong> Turn Back to Folder</strong>
-    </button>
-  </a>
+    <a href="{% url 'sheetos:documents_list' folder_id=document.document_folder.id %}">
+      <button class="btn btn-secondary mt-0 mb-4">
+        <i class="fa fa-folder me-4"></i>
+        <strong> Turn Back to Folder</strong>
+      </button>
+    </a>
 
-  <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
-    <img src="{% static 'img/custom-illustrations-v2/i2-32.png' %}" width="25%" style="border-radius: 25px;"
-         class="justify-content-end me-8" alt="Illustration for tip">
-    <span class="alert-icon rounded">
+    <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+      <img src="{% static 'img/custom-illustrations-v2/i2-32.png' %}" width="25%" style="border-radius: 25px;"
+           class="justify-content-end me-8" alt="Illustration for tip">
+      <span class="alert-icon rounded">
     <i class="ti ti-bookmark"></i>
   </span>
-    <div class="d-flex flex-column ps-1">
-      <h5 class="alert-heading mb-2">Tip</h5>
-      <p class="mb-0">
-        In this page, you can draft spreadsheets by using the power of your AI assistants, which enables you to
-        take advantage of your previous documents as well as the general configurations of your assistant, and
-        you can download your spreadsheets as CSV, or XLSX files. AI can help you auto-complete your drafts,
-        suggest and auto-generate the data for you, and more.
-      </p>
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-  </div>
-
-  {% if messages %}
-    {% for message in messages %}
-      <div
-        class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
-        role="alert">
-        {{ message }}
+      <div class="d-flex flex-column ps-1">
+        <h5 class="alert-heading mb-2">Tip</h5>
+        <p class="mb-0">
+          In this page, you can draft spreadsheets by using the power of your AI assistants, which enables you to
+          take advantage of your previous documents as well as the general configurations of your assistant, and
+          you can download your spreadsheets as CSV, or XLSX files. AI can help you auto-complete your drafts,
+          suggest and auto-generate the data for you, and more.
+        </p>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
-    {% endfor %}
-  {% endif %}
+    </div>
 
-  <hr>
-  <div class="d-flex justify-content-start align-content-center">
-    <div class="d-flex justify-content-between align-items-center mt-1 me-4">
+    {% if messages %}
+      {% for message in messages %}
+        <div
+          class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
+          role="alert">
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endif %}
+
+    <hr>
+    <div class="d-flex justify-content-start align-content-center">
+      <div class="d-flex justify-content-between align-items-center mt-1 me-4">
       <span class="form-control bg-lightest text-bg-light" style="font-weight: bold; min-width: 200px; overflow: auto;">
         {{ document.document_folder.name }}
       </span>
-    </div>
-    <div class="d-flex justify-content-between align-items-center mt-1 me-4">
+      </div>
+      <div class="d-flex justify-content-between align-items-center mt-1 me-4">
       <span class="form-control bg-lightest text-bg-light" style="font-weight: bold; min-width: 200px; overflow: auto;">
         {{ document.copilot_assistant.name }}
       </span>
-    </div>
-    <div class="d-flex justify-content-between align-items-center mt-1">
+      </div>
+      <div class="d-flex justify-content-between align-items-center mt-1">
       <span class="form-control bg-lightest text-bg-light" style="font-weight: bold; min-width: 380px; overflow: auto;">
         {{ document.document_title }}
       </span>
-      <span class="bg-label-warning rounded p-1 ms-4" role="alert" style="min-width: 150px; visibility: hidden;">
+        <span class="bg-label-warning rounded p-1 ms-4" role="alert" style="min-width: 150px; visibility: hidden;">
         <small>
           <i class="fa fa-exclamation-triangle me-1 ms-2"></i>
           <strong>Unsaved Changes</strong>
         </small>
       </span>
-    </div>
-    <form id="saveForm" method="post" action="{% url 'sheetos:documents_save' folder_id=document.document_folder.id document_id=document.id %}">
-      {% csrf_token %}
-      <div class="d-flex justify-content-between align-items-center mt-1">
-        <input type="hidden" name="draft_text" value="">
-        <button type="button" class="btn btn-link p-0 ms-2" onclick="saveContent()">
-          <i class="fa fa-save ms-2 mt-1_5 text-dark" style="font-size: 24px;"></i>
+      </div>
+      <form id="saveForm" method="post"
+            action="{% url 'sheetos:documents_save' folder_id=document.document_folder.id document_id=document.id %}">
+        {% csrf_token %}
+        <div class="d-flex justify-content-between align-items-center mt-1">
+          <input type="hidden" name="draft_text" value="">
+          <button type="button" class="btn btn-link p-0 ms-2" onclick="saveContent()">
+            <i class="fa fa-save ms-2 mt-1_5 text-dark" style="font-size: 24px;"></i>
+          </button>
+        </div>
+      </form>
+      <button type="button" class="btn btn-link p-0 ms-12" id="downloadCSV">
+        <i class="fa fa-file-csv ms-2 mt-1_5 text-dark" style="font-size: 24px;"></i>
+      </button>
+      <button type="button" class="btn btn-link p-0 ms-2" id="downloadXLSX">
+        <i class="ti ti-file-type-xls ms-2 mt-1_5 text-dark" style="font-size: 30px;"></i>
+      </button>
+      <div class="d-flex justify-content-between align-items-center mt-1 ms-12">
+        <button type="button" class="btn btn-link p-0 ms-2" onclick="resetChanges()">
+          <i class="fa fa-refresh ms-2 mt-1_5 text-warning" style="font-size: 24px;"></i>
         </button>
       </div>
-    </form>
-    <button type="button" class="btn btn-link p-0 ms-12" id="downloadCSV">
-      <i class="fa fa-file-csv ms-2 mt-1_5 text-dark" style="font-size: 24px;"></i>
-    </button>
-    <button type="button" class="btn btn-link p-0 ms-2" id="downloadXLSX">
-      <i class="ti ti-file-type-xls ms-2 mt-1_5 text-dark" style="font-size: 30px;"></i>
-    </button>
-    <div class="d-flex justify-content-between align-items-center mt-1 ms-12">
-      <button type="button" class="btn btn-link p-0 ms-2" onclick="resetChanges()">
-        <i class="fa fa-refresh ms-2 mt-1_5 text-warning" style="font-size: 24px;"></i>
-      </button>
-    </div>
-    <form id="deleteForm" method="post" action="{% url 'sheetos:documents_delete' folder_id=document.document_folder.id document_id=document.id %}">
+      <form id="deleteForm" method="post"
+            action="{% url 'sheetos:documents_delete' folder_id=document.document_folder.id document_id=document.id %}">
         {% csrf_token %}
         <div class="d-flex justify-content-between align-items-center mt-1 ms-2">
-            <input type="hidden" name="delete_document" value="{{ document.id }}">
-            <button type="button" class="btn btn-link p-0 ms-2" id="deleteButton">
-                <i class="fa fa-trash ms-2 mt-2 text-danger" style="font-size: 24px;"></i>
-            </button>
+          <input type="hidden" name="delete_document" value="{{ document.id }}">
+          <button type="button" class="btn btn-link p-0 ms-2" id="deleteButton">
+            <i class="fa fa-trash ms-2 mt-2 text-danger" style="font-size: 24px;"></i>
+          </button>
         </div>
-    </form>
-  </div>
-  <hr>
-  <div id="editor" class="mt-4 overflow-auto" style="border-radius: 10px;">
-    <!-- ... -->
-  </div>
-  <div class="tips-section card card-border-shadow-primary p-8 mt-12">
-            <h4>
-              <strong>
-                <i class="fa fa-magic-wand-sparkles me-2"></i>
-                AI Commands
-              </strong>
-            </h4>
-            <small class="text-muted">
-              You can use the following commands to consult your AI assistant for various tasks. This can be
-              really helpful for you to speed up your spreadsheet designing process and get suggestions from your AI
-              assistant. If you have trouble in using these commands, please contact us for further assistance,
-              and remember that you can always avoid using these commands and draft your documents manually.
-            </small>
-            <hr>
-            <div class="row align-items-center justify-content-start">
-              <div class="col-lg-2 badge bg-lighter d-flex align-items-center mb-2 mx-2">
-                <div class="">
-                  <i class="fa fa-robot me-2"></i>
-                  <span class="h6 mb-2 text-body"><strong>//ai</strong></span>
-                  <span class="text-dark ms-4">
+      </form>
+    </div>
+    <hr>
+    <div id="editor" class="mt-4 overflow-auto" style="border-radius: 10px;">
+      <!-- ... -->
+    </div>
+    <div class="tips-section card card-border-shadow-primary p-8 mt-12">
+      <h4>
+        <strong>
+          <i class="fa fa-magic-wand-sparkles me-2"></i>
+          AI Commands
+        </strong>
+      </h4>
+      <small class="text-muted">
+        You can use the following commands to consult your AI assistant for various tasks. This can be
+        really helpful for you to speed up your spreadsheet designing process and get suggestions from your AI
+        assistant. If you have trouble in using these commands, please contact us for further assistance,
+        and remember that you can always avoid using these commands and draft your documents manually.
+      </small>
+      <hr>
+      <div class="row align-items-center justify-content-start">
+        <div class="col-lg-2 badge bg-lighter d-flex align-items-center mb-2 mx-2">
+          <div class="">
+            <i class="fa fa-robot me-2"></i>
+            <span class="h6 mb-2 text-body"><strong>//ai</strong></span>
+            <span class="text-dark ms-4">
                     <strong>Consult AI Assistant</strong>
                   </span>
-                </div>
-              </div>
-              <div class="col-lg-2 badge bg-lighter d-flex align-items-center mb-2 mx-2">
-                <div class="">
-                  <i class="fa fa-pencil me-2"></i>
-                  <span class="h6 mb-2 text-body"><strong>//auto</strong></span>
-                  <span class="text-dark ms-4">
+          </div>
+        </div>
+        <div class="col-lg-2 badge bg-lighter d-flex align-items-center mb-2 mx-2">
+          <div class="">
+            <i class="fa fa-pencil me-2"></i>
+            <span class="h6 mb-2 text-body"><strong>//auto</strong></span>
+            <span class="text-dark ms-4">
                     <strong>Auto-Completion</strong>
                   </span>
-                </div>
-              </div>
-              <div class="col-lg-2 badge bg-lighter d-flex align-items-center mb-2 mx-2">
-                <div class="">
-                  <i class="fa fa-database me-2"></i>
-                  <span class="h6 mb-2 text-body"><strong>//sql</strong></span>
-                  <span class="text-dark ms-4">
+          </div>
+        </div>
+        <div class="col-lg-2 badge bg-lighter d-flex align-items-center mb-2 mx-2">
+          <div class="">
+            <i class="fa fa-database me-2"></i>
+            <span class="h6 mb-2 text-body"><strong>//sql</strong></span>
+            <span class="text-dark ms-4">
                     <strong>Search SQL</strong>
                   </span>
-                </div>
-              </div>
-              <div class="col-lg-2 badge bg-lighter d-flex align-items-center mb-2 mx-2">
-                <div class="">
-                  <i class="fa fa-search me-2"></i>
-                  <span class="h6 mb-2 text-body"><strong>//nosql</strong></span>
-                  <span class="text-dark ms-4">
+          </div>
+        </div>
+        <div class="col-lg-2 badge bg-lighter d-flex align-items-center mb-2 mx-2">
+          <div class="">
+            <i class="fa fa-search me-2"></i>
+            <span class="h6 mb-2 text-body"><strong>//nosql</strong></span>
+            <span class="text-dark ms-4">
                     <strong>Search NoSQL</strong>
                   </span>
-                </div>
-              </div>
-              <div class="col-lg-2 badge bg-lighter d-flex align-items-center mb-2 mx-2">
-                <div class="">
-                  <i class="fa fa-i-cursor me-2"></i>
-                  <span class="h6 mb-2 text-body"><strong>[Pick+F2]</strong></span>
-                  <span class="text-dark ms-4">
+          </div>
+        </div>
+        <div class="col-lg-2 badge bg-lighter d-flex align-items-center mb-2 mx-2">
+          <div class="">
+            <i class="fa fa-i-cursor me-2"></i>
+            <span class="h6 mb-2 text-body"><strong>[Pick+F2]</strong></span>
+            <span class="text-dark ms-4">
                     <strong>Change Text</strong>
                   </span>
-                </div>
-              </div>
-              <div class="col-lg-2 badge bg-lighter d-flex align-items-center mb-2 mx-2">
-                <div class="">
-                  <i class="fa fa-server me-2"></i>
-                  <span class="h6 mb-2 text-body"><strong>//ssh</strong></span>
-                  <span class="text-dark ms-4">
+          </div>
+        </div>
+        <div class="col-lg-2 badge bg-lighter d-flex align-items-center mb-2 mx-2">
+          <div class="">
+            <i class="fa fa-server me-2"></i>
+            <span class="h6 mb-2 text-body"><strong>//ssh</strong></span>
+            <span class="text-dark ms-4">
                     <strong>Search SSH</strong>
                   </span>
-                </div>
-              </div>
-              <div class="col-lg-2 badge bg-lighter d-flex align-items-center mb-2 mx-2">
-                <div class="">
-                  <i class="fa fa-vector-square me-2"></i>
-                  <span class="h6 mb-2 text-body"><strong>//vect</strong></span>
-                  <span class="text-dark ms-4">
+          </div>
+        </div>
+        <div class="col-lg-2 badge bg-lighter d-flex align-items-center mb-2 mx-2">
+          <div class="">
+            <i class="fa fa-vector-square me-2"></i>
+            <span class="h6 mb-2 text-body"><strong>//vect</strong></span>
+            <span class="text-dark ms-4">
                     <strong>Search Documents</strong>
                   </span>
-                </div>
-              </div>
-              <div class="col-lg-2 badge bg-lighter d-flex align-items-center mb-2 mx-2">
-                <div class="">
-                  <i class="fa fa-code me-2"></i>
-                  <span class="h6 mb-2 text-body"><strong>//repo</strong></span>
-                  <span class="text-dark ms-4">
+          </div>
+        </div>
+        <div class="col-lg-2 badge bg-lighter d-flex align-items-center mb-2 mx-2">
+          <div class="">
+            <i class="fa fa-code me-2"></i>
+            <span class="h6 mb-2 text-body"><strong>//repo</strong></span>
+            <span class="text-dark ms-4">
                     <strong>Search Codebase</strong>
                   </span>
-                </div>
-              </div>
-              <div class="col-lg-2 badge bg-lighter d-flex align-items-center mb-2 mx-2">
-                <div class="">
-                  <i class="fa fa-globe me-2"></i>
-                  <span class="h6 mb-2 text-body"><strong>//web</strong></span>
-                  <span class="text-dark ms-4">
+          </div>
+        </div>
+        <div class="col-lg-2 badge bg-lighter d-flex align-items-center mb-2 mx-2">
+          <div class="">
+            <i class="fa fa-globe me-2"></i>
+            <span class="h6 mb-2 text-body"><strong>//web</strong></span>
+            <span class="text-dark ms-4">
                     <strong>Search Web</strong>
                   </span>
-                </div>
-              </div>
-            </div>
           </div>
-</div>
-
-<!-- AI Assistant Modal -->
-<div class="modal draggable-modal" tabindex="-1" id="aiAssistantModal" style="display: none; position: absolute;">
-  <div class="modal-dialog border border-primary border-3" style="border-radius: 12px;">
-    <div class="modal-content">
-      <div class="modal-header" id="modalHeader" style="cursor: move;">
-        <h5 class="modal-title" id="modalTitle">
-          <i class="fa fa-magic-wand-sparkles me-2"></i>
-          <strong>Consult AI Assistant</strong>
-        </h5>
-        <button type="button" class="btn-close" onclick="closeModal()"></button>
-      </div>
-      <div class="modal-body">
-        <input type="text" id="aiPrompt" class="form-control" placeholder="Request something from your AI assistant...">
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary" id="consultButton" onclick="consultAI()">
-          <i class="fa fa-magic-wand-sparkles me-2"></i>
-          <strong>Consult</strong>
-        </button>
+        </div>
       </div>
     </div>
   </div>
-</div>
+
+  <!-- AI Assistant Modal -->
+  <div class="modal draggable-modal" tabindex="-1" id="aiAssistantModal" style="display: none; position: absolute;">
+    <div class="modal-dialog border border-primary border-3" style="border-radius: 12px;">
+      <div class="modal-content">
+        <div class="modal-header" id="modalHeader" style="cursor: move;">
+          <h5 class="modal-title" id="modalTitle">
+            <i class="fa fa-magic-wand-sparkles me-2"></i>
+            <strong>Consult AI Assistant</strong>
+          </h5>
+          <button type="button" class="btn-close" onclick="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+          <input type="text" id="aiPrompt" class="form-control"
+                 placeholder="Request something from your AI assistant...">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" id="consultButton" onclick="consultAI()">
+            <i class="fa fa-magic-wand-sparkles me-2"></i>
+            <strong>Consult</strong>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 {% endblock content %}

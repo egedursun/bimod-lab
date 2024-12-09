@@ -1,4 +1,3 @@
-
 <!--
   ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
   ~
@@ -28,7 +27,7 @@
 
 {% block vendor_css %}
   {{ block.super }}
-  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
 {% endblock vendor_css %}
 
 {% block vendor_js %}
@@ -62,7 +61,8 @@
             <div class="d-flex flex-column ps-1">
               <h5 class="alert-heading mb-2">Tip</h5>
               <p class="mb-0">
-                In this page, you can update the details of the selected Hadron Topic. Modify the fields below and click "Update" to save changes.
+                In this page, you can update the details of the selected Hadron Topic. Modify the fields below and click
+                "Update" to save changes.
               </p>
               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
               </button>
@@ -92,22 +92,26 @@
               </div>
               <div class="col-6 mb-6">
                 <label class="form-label" for="topic_name">Topic Name</label>
-                <input type="text" class="form-control" id="topic_name" name="topic_name" value="{{ hadron_topic.topic_name }}" required>
+                <input type="text" class="form-control" id="topic_name" name="topic_name"
+                       value="{{ hadron_topic.topic_name }}" required>
               </div>
               <div class="col-12 mb-6">
                 <label class="form-label" for="topic_description">Topic Description</label>
-                <textarea class="form-control" id="topic_description" name="topic_description" rows="3">{{ hadron_topic.topic_description }}</textarea>
+                <textarea class="form-control" id="topic_description" name="topic_description"
+                          rows="3">{{ hadron_topic.topic_description }}</textarea>
               </div>
               <div class="col-12 mb-6">
                 <label class="form-label" for="topic_purpose">Topic Purpose</label>
-                <textarea class="form-control" id="topic_purpose" name="topic_purpose" rows="3">{{ hadron_topic.topic_purpose }}</textarea>
+                <textarea class="form-control" id="topic_purpose" name="topic_purpose"
+                          rows="3">{{ hadron_topic.topic_purpose }}</textarea>
               </div>
               <div class="col-6 mb-6">
                 <label class="form-label" for="topic_category">Topic Category</label>
                 <select class="form-select" id="topic_category" name="topic_category" disabled>
                   <option value="" disabled>Select Category</option>
                   {% for category_key, category_value in topic_categories %}
-                    <option value="{{ category_key }}" {% if hadron_topic.topic_category == category_key %}selected{% endif %}>
+                    <option value="{{ category_key }}"
+                            {% if hadron_topic.topic_category == category_key %}selected{% endif %}>
                       {{ category_value }}
                     </option>
                   {% endfor %}

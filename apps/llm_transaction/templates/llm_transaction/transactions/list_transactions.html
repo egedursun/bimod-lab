@@ -1,21 +1,21 @@
-  <!--
-  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
-  ~
-  ~ Project: Bimod.io™
-  ~ File: list_transactions.html
-  ~ Last Modified: 2024-10-05 01:39:48
-  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-05 14:42:43
-  ~
-  ~ This software is proprietary and confidential. Unauthorized copying,
-  ~ distribution, modification, or use of this software, whether for
-  ~ commercial, academic, or any other purpose, is strictly prohibited
-  ~ without the prior express written permission of BMD™ Autonomous
-  ~ Holdings.
-  ~
-  ~  For permission inquiries, please contact: admin@Bimod.io.
-  ~
-  -->
+<!--
+~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+~
+~ Project: Bimod.io™
+~ File: list_transactions.html
+~ Last Modified: 2024-10-05 01:39:48
+~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+~ Created: 2024-10-05 14:42:43
+~
+~ This software is proprietary and confidential. Unauthorized copying,
+~ distribution, modification, or use of this software, whether for
+~ commercial, academic, or any other purpose, is strictly prohibited
+~ without the prior express written permission of BMD™ Autonomous
+~ Holdings.
+~
+~  For permission inquiries, please contact: admin@Bimod.io.
+~
+-->
 
 {% extends layout_path %}
 
@@ -26,10 +26,10 @@
 
 {% block vendor_css %}
   {{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}"/>
-  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}"/>
-  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css' %}"/>
-  <link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}" />
   <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/font/bootstrap-icons.min.css">
 {% endblock vendor_css %}
@@ -86,8 +86,8 @@
   {% endif %}
   <div class="row mb-6 mt-8 card card-border-shadow-primary p-8">
     <div class="col-sm-12 col-xl-12">
-       <img src="{% static 'img/llm_transactions/tx-3.png' %}"
-                   class="rounded" style="width: 100%;" alt="Illustration for tips">
+      <img src="{% static 'img/llm_transactions/tx-3.png' %}"
+           class="rounded" style="width: 100%;" alt="Illustration for tips">
       <h5 class="text-muted mt-8"><strong>Transfer Balance</strong></h5>
       <hr>
       <form method="post" action="{% url 'organization:balance_transfer' %}">
@@ -143,7 +143,7 @@
                   <strong class="me-4">Last</strong>
                   <label class="me-4">
                     <input type="number" name="delta_specifier" value="{{ delta_specifier }}" class="form-control"
-                           id="delta_specifier"/>
+                           id="delta_specifier" />
                   </label>
                   <label class="me-4">
                     <select class="form-select" id="time_specifier" name="time_specifier">
@@ -172,6 +172,7 @@
                     </strong>
                     </button>
                     <button type="submit" class="nav-link waves-effect waves-light
+
 
                       {% if filter %}{% if filter == 'all' %}active{% endif %}{% else %}{% if filter != 'specific' %}active{% endif %}{% endif %}"
                             name="filter" value="all"><strong>
@@ -229,9 +230,10 @@
                  aria-expanded="true" aria-controls="collapse-{{ organization_data.organization.id }}">
                 <div class="d-flex">
                   <img src="
+
                     {% if organization_data.organization.organization_image %}{{ organization_data.organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
                        class="rounded" width="60" height="60" alt="Organization Image">
-                    <h4 class="mb-0 mt-4"><strong>{{ organization_data.organization.name }}</strong></h4>
+                  <h4 class="mb-0 mt-4"><strong>{{ organization_data.organization.name }}</strong></h4>
                 </div>
                 <small class="text-muted"><strong>{{ organization_data.organization.email }}</strong></small>
               </a>
@@ -259,7 +261,7 @@
                         <small class="text-primary"></small>
                       </div>
                     </div>
-                </span>
+                    </span>
                   </div>
                 </div>
               </div>
@@ -272,7 +274,7 @@
                 </strong></h6>
                 <div class="card">
                   <img src="{% static 'img/llm_transactions/tx-1.png' %}"
-                   class="rounded w-100" alt="Illustration for tips">
+                       class="rounded w-100" alt="Illustration for tips">
                   <div class="card-header">
                     <a href="{% url 'llm_transaction:auto_top_up_create' %}">
                       <button class="btn btn-primary w-100" type="submit">
@@ -295,14 +297,18 @@
                       <form method="post" action="{% url 'organization:add_credits' %}" class="w-100">
                         {% csrf_token %}
                         <input type="hidden" name="org_id" value="{{ organization_data.organization.id }}">
-                        <label for="promo_code" class="form-label mb-2"><strong>Do you have a promo code?</strong></label>
-                        <input type="text" class="form-control mb-2" name="promo_code" value="" placeholder="You have a referral or promo code?">
-                        <label for="topup_amount" class="form-label mb-2"><strong>Enter amount in USD to add to the balance.</strong></label>
+                        <label for="promo_code" class="form-label mb-2"><strong>Do you have a promo
+                          code?</strong></label>
+                        <input type="text" class="form-control mb-2" name="promo_code" value=""
+                               placeholder="You have a referral or promo code?">
+                        <label for="topup_amount" class="form-label mb-2"><strong>Enter amount in USD to add to the
+                          balance.</strong></label>
                         <div class="input-group">
                           <div class="input-group-prepend">
                             <span class="input-group-text pt-2 pb-2 me-2"><strong>$ (USD)</strong></span>
                           </div>
-                          <input type="number" class="form-control rounded me-2" name="topup_amount" placeholder="Enter amount to add to the balance" required>
+                          <input type="number" class="form-control rounded me-2" name="topup_amount"
+                                 placeholder="Enter amount to add to the balance" required>
                           <button class="btn btn-success rounded" type="submit">
                             <strong><i class="fa fa-plus me-2"></i> Add Balance</strong>
                           </button>
@@ -320,7 +326,9 @@
                             <span class="alert-icon rounded">
                               <i class="ti ti-bell"></i>
                             </span>
-                            <strong>You have <span class="p-1 bg-label-primary rounded">${{ user.profile.free_credits }}</span> 'FREE' credits available. Would you want to add them to this organization?</strong>
+                            <strong>You have <span
+                              class="p-1 bg-label-primary rounded">${{ user.profile.free_credits }}</span> 'FREE'
+                              credits available. Would you want to add them to this organization?</strong>
                             <button type="submit" class="btn btn-primary ms-4">
                               <i class="fa fa-exchange me-2"></i><strong>Add Free Credits</strong>
                             </button>
@@ -457,7 +465,7 @@
   {% endfor %}
 
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener('DOMContentLoaded', function() {
       // Function to store the collapsed tab state
       function storeCollapsedTabState() {
         const collapsedTabs = [];
@@ -492,8 +500,8 @@
       restoreCollapsedTabState();
 
       // Toggle icon logic
-      document.querySelectorAll('.toggle-icon').forEach(function (icon) {
-        icon.addEventListener('click', function () {
+      document.querySelectorAll('.toggle-icon').forEach(function(icon) {
+        icon.addEventListener('click', function() {
           var target = document.querySelector(this.getAttribute('data-target'));
           var bootstrapCollapse = new bootstrap.Collapse(target, {
             toggle: true
@@ -511,8 +519,8 @@
       });
 
       // Update toggle icons based on collapse state
-      document.querySelectorAll('.collapse').forEach(function (collapse) {
-        collapse.addEventListener('show.bs.collapse', function () {
+      document.querySelectorAll('.collapse').forEach(function(collapse) {
+        collapse.addEventListener('show.bs.collapse', function() {
           var icon = document.querySelector(`.toggle-icon[data-target="#${this.id}"]`);
           if (icon) {
             icon.classList.remove('fa-arrow-alt-circle-down');
@@ -520,7 +528,7 @@
           }
         });
 
-        collapse.addEventListener('hide.bs.collapse', function () {
+        collapse.addEventListener('hide.bs.collapse', function() {
           var icon = document.querySelector(`.toggle-icon[data-target="#${this.id}"]`);
           if (icon) {
             icon.classList.remove('fa-arrow-alt-circle-up');

@@ -34,210 +34,214 @@
 {% block title %}Documents for Folder{% endblock %}
 
 {% block content %}
-<div class="container mt-4">
+  <div class="container mt-4">
 
-  <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
-    <img src="{% static 'img/custom-illustrations-v2/i2-45.png' %}" width="25%" style="border-radius: 25px;"
-         class="justify-content-end me-8" alt="Illustration for tip">
-    <span class="alert-icon rounded">
+    <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+      <img src="{% static 'img/custom-illustrations-v2/i2-45.png' %}" width="25%" style="border-radius: 25px;"
+           class="justify-content-end me-8" alt="Illustration for tip">
+      <span class="alert-icon rounded">
     <i class="ti ti-bookmark"></i>
   </span>
-    <div class="d-flex flex-column ps-1">
-      <h5 class="alert-heading mb-2">Tip</h5>
-      <p class="mb-0">
-        On this page, you can create a new document and manage existing documents in the folder.
-      </p>
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-  </div>
-
-  <a href="{% url 'drafting:folders_list' %}">
-    <button class="btn btn-secondary mt-0 mb-4">
-      <i class="fa fa-folder me-4"></i>
-      <strong> Turn Back to List of Folders</strong>
-    </button>
-  </a>
-
-  {% if messages %}
-    {% for message in messages %}
-      <div
-        class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
-        role="alert">
-        {{ message }}
-      </div>
-    {% endfor %}
-  {% endif %}
-
-  <hr>
-
-  <!-- Document Creation Form at the Top -->
-  <div class="row">
-    <div class="col-md-12">
-      <div class="card">
-        <div class="card-header">
-          <h4>
-            <i class="fa fa-plus-circle me-2"></i>
-            <strong>Create New Document</strong>
-          </h4>
-        </div>
-        <div class="card-body">
-          <form method="post" action="{% url 'drafting:documents_create' folder.id %}">
-            {% csrf_token %}
-
-            <div class="row">
-              <!-- Assistant Picker -->
-              <div class="col-4 mb-3">
-                <label for="copilot_assistant" class="form-label">Co-Pilot Assistant</label>
-                <select id="copilot_assistant" name="copilot_assistant" class="form-control" required>
-                  <option value="" disabled selected>Select an Assistant</option>
-                  {% for assistant in assistants %}
-                    <option value="{{ assistant.id }}">{{ assistant.name }}</option>
-                  {% endfor %}
-                </select>
-              </div>
-
-              <!-- Document Title -->
-              <div class="col-4 mb-3">
-                <label for="document_title" class="form-label">Document Title</label>
-                <input type="text" class="form-control" id="document_title" name="document_title" required>
-              </div>
-
-              <!-- Context Instructions -->
-              <div class="col-4 mb-3">
-                <label for="context_instructions" class="form-label">Context Instructions</label>
-                <textarea class="form-control" id="context_instructions" name="context_instructions" rows="1"></textarea>
-              </div>
-
-              <!-- Target Audience -->
-              <div class="col-6 mb-3">
-                <label for="target_audience" class="form-label">Target Audience</label>
-                <input type="text" class="form-control" id="target_audience" name="target_audience"></input>
-              </div>
-
-              <!-- Tone -->
-              <div class="col-6 mb-3">
-                <label for="tone" class="form-label">Tone</label>
-                <input type="text" class="form-control" id="tone" name="tone"></input>
-              </div>
-            </div>
-
-            <button type="submit" class="btn btn-success mt-4 w-25">
-              <i class="fa fa-file-upload me-2"></i>
-              <strong>Create Document</strong>
-            </button>
-          </form>
-        </div>
+      <div class="d-flex flex-column ps-1">
+        <h5 class="alert-heading mb-2">Tip</h5>
+        <p class="mb-0">
+          On this page, you can create a new document and manage existing documents in the folder.
+        </p>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
     </div>
-  </div>
 
-  <hr>
+    <a href="{% url 'drafting:folders_list' %}">
+      <button class="btn btn-secondary mt-0 mb-4">
+        <i class="fa fa-folder me-4"></i>
+        <strong> Turn Back to List of Folders</strong>
+      </button>
+    </a>
 
-  <h4 class="mb-4">
-    <i class="fa fa-magic-wand-sparkles me-2"></i>
-    <strong>Your Documents for Folder</strong>
-  </h4>
-
-  <hr>
-
-  <!-- Document Listing -->
-  <div class="card mb-6 mt-4">
-  <div class="card-header border-bottom">
-    <h4>
-      <strong>{{ folder.name }}</strong>
-    </h4>
-  </div>
-  <div class="card-body p-8 overflow-auto">
-    {% if documents %}
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Enter Document</th>
-            <th>Document Title</th>
-            <th>Target Audience</th>
-            <th>Tone</th>
-            <th>Created At</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for document in documents %}
-            <tr>
-              <!-- Document Details -->
-              <td>
-                <a href="{% url 'drafting:documents_detail' folder.id document.id %}" class="d-flex">
-                  <i class="fa fa-file-alt fa-2x"></i>
-                  <i class="fa fa-eye fa-1x"></i>
-                </a>
-              </td>
-              <td><strong>{{ document.document_title }}</strong></td>
-              <td>{{ document.target_audience|default:'N/A' }}</td>
-              <td>{{ document.tone|default:'N/A' }}</td>
-              <td>{{ document.created_at|date:"Y-m-d H:i" }}</td>
-              <td>
-                <a href="{% url 'drafting:documents_update' folder.id document.id %}" class="btn btn-sm btn-warning me-4">
-                  <i class="fa fa-edit me-2"></i> <strong>Update Config</strong>
-                </a>
-                <a href="{% url 'drafting:documents_delete' folder.id document.id %}" class="btn btn-sm btn-danger document-delete-btn me-4" data-folder-id="{{ folder.id }}" data-document-id="{{ document.id }}">
-                  <i class="fa fa-trash me-2"></i> <strong>Delete</strong>
-                </a>
-              </td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-
-      <!-- Pagination Controls -->
-      <nav aria-label="Document list pagination">
-        <ul class="pagination justify-content-center mt-6">
-          {% if documents.has_previous %}
-            <li class="page-item">
-              <a class="page-link" href="?page=1" aria-label="First">
-                <span aria-hidden="true">&laquo;&laquo;</span>
-              </a>
-            </li>
-            <li class="page-item">
-              <a class="page-link" href="?page={{ documents.previous_page_number }}" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-              </a>
-            </li>
-          {% endif %}
-
-          {% for num in documents.paginator.page_range %}
-            {% if documents.number == num %}
-              <li class="page-item active" aria-current="page">
-                <span class="page-link">{{ num }}</span>
-              </li>
-            {% elif num > documents.number|add:'-3' and num < documents.number|add:'3' %}
-              <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
-            {% endif %}
-          {% endfor %}
-
-          {% if documents.has_next %}
-            <li class="page-item">
-              <a class="page-link" href="?page={{ documents.next_page_number }}" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-              </a>
-            </li>
-            <li class="page-item">
-              <a class="page-link" href="?page={{ documents.paginator.num_pages }}" aria-label="Last">
-                <span aria-hidden="true">&raquo;&raquo;</span>
-              </a>
-            </li>
-          {% endif %}
-        </ul>
-      </nav>
-
-    {% else %}
-      <div class="alert alert-warning">
-        <i class="fa fa-exclamation-triangle me-2"></i>
-        <strong>No documents available in this folder.</strong>
-      </div>
+    {% if messages %}
+      {% for message in messages %}
+        <div
+          class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
+          role="alert">
+          {{ message }}
+        </div>
+      {% endfor %}
     {% endif %}
-  </div>
-</div>
 
-</div>
+    <hr>
+
+    <!-- Document Creation Form at the Top -->
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <h4>
+              <i class="fa fa-plus-circle me-2"></i>
+              <strong>Create New Document</strong>
+            </h4>
+          </div>
+          <div class="card-body">
+            <form method="post" action="{% url 'drafting:documents_create' folder.id %}">
+              {% csrf_token %}
+
+              <div class="row">
+                <!-- Assistant Picker -->
+                <div class="col-4 mb-3">
+                  <label for="copilot_assistant" class="form-label">Co-Pilot Assistant</label>
+                  <select id="copilot_assistant" name="copilot_assistant" class="form-control" required>
+                    <option value="" disabled selected>Select an Assistant</option>
+                    {% for assistant in assistants %}
+                      <option value="{{ assistant.id }}">{{ assistant.name }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+
+                <!-- Document Title -->
+                <div class="col-4 mb-3">
+                  <label for="document_title" class="form-label">Document Title</label>
+                  <input type="text" class="form-control" id="document_title" name="document_title" required>
+                </div>
+
+                <!-- Context Instructions -->
+                <div class="col-4 mb-3">
+                  <label for="context_instructions" class="form-label">Context Instructions</label>
+                  <textarea class="form-control" id="context_instructions" name="context_instructions"
+                            rows="1"></textarea>
+                </div>
+
+                <!-- Target Audience -->
+                <div class="col-6 mb-3">
+                  <label for="target_audience" class="form-label">Target Audience</label>
+                  <input type="text" class="form-control" id="target_audience" name="target_audience"></input>
+                </div>
+
+                <!-- Tone -->
+                <div class="col-6 mb-3">
+                  <label for="tone" class="form-label">Tone</label>
+                  <input type="text" class="form-control" id="tone" name="tone"></input>
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-success mt-4 w-25">
+                <i class="fa fa-file-upload me-2"></i>
+                <strong>Create Document</strong>
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr>
+
+    <h4 class="mb-4">
+      <i class="fa fa-magic-wand-sparkles me-2"></i>
+      <strong>Your Documents for Folder</strong>
+    </h4>
+
+    <hr>
+
+    <!-- Document Listing -->
+    <div class="card mb-6 mt-4">
+      <div class="card-header border-bottom">
+        <h4>
+          <strong>{{ folder.name }}</strong>
+        </h4>
+      </div>
+      <div class="card-body p-8 overflow-auto">
+        {% if documents %}
+          <table class="table">
+            <thead>
+            <tr>
+              <th>Enter Document</th>
+              <th>Document Title</th>
+              <th>Target Audience</th>
+              <th>Tone</th>
+              <th>Created At</th>
+              <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for document in documents %}
+              <tr>
+                <!-- Document Details -->
+                <td>
+                  <a href="{% url 'drafting:documents_detail' folder.id document.id %}" class="d-flex">
+                    <i class="fa fa-file-alt fa-2x"></i>
+                    <i class="fa fa-eye fa-1x"></i>
+                  </a>
+                </td>
+                <td><strong>{{ document.document_title }}</strong></td>
+                <td>{{ document.target_audience|default:'N/A' }}</td>
+                <td>{{ document.tone|default:'N/A' }}</td>
+                <td>{{ document.created_at|date:"Y-m-d H:i" }}</td>
+                <td>
+                  <a href="{% url 'drafting:documents_update' folder.id document.id %}"
+                     class="btn btn-sm btn-warning me-4">
+                    <i class="fa fa-edit me-2"></i> <strong>Update Config</strong>
+                  </a>
+                  <a href="{% url 'drafting:documents_delete' folder.id document.id %}"
+                     class="btn btn-sm btn-danger document-delete-btn me-4" data-folder-id="{{ folder.id }}"
+                     data-document-id="{{ document.id }}">
+                    <i class="fa fa-trash me-2"></i> <strong>Delete</strong>
+                  </a>
+                </td>
+              </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+
+          <!-- Pagination Controls -->
+          <nav aria-label="Document list pagination">
+            <ul class="pagination justify-content-center mt-6">
+              {% if documents.has_previous %}
+                <li class="page-item">
+                  <a class="page-link" href="?page=1" aria-label="First">
+                    <span aria-hidden="true">&laquo;&laquo;</span>
+                  </a>
+                </li>
+                <li class="page-item">
+                  <a class="page-link" href="?page={{ documents.previous_page_number }}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                  </a>
+                </li>
+              {% endif %}
+
+              {% for num in documents.paginator.page_range %}
+                {% if documents.number == num %}
+                  <li class="page-item active" aria-current="page">
+                    <span class="page-link">{{ num }}</span>
+                  </li>
+                {% elif num > documents.number|add:'-3' and num < documents.number|add:'3' %}
+                  <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                {% endif %}
+              {% endfor %}
+
+              {% if documents.has_next %}
+                <li class="page-item">
+                  <a class="page-link" href="?page={{ documents.next_page_number }}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                  </a>
+                </li>
+                <li class="page-item">
+                  <a class="page-link" href="?page={{ documents.paginator.num_pages }}" aria-label="Last">
+                    <span aria-hidden="true">&raquo;&raquo;</span>
+                  </a>
+                </li>
+              {% endif %}
+            </ul>
+          </nav>
+
+        {% else %}
+          <div class="alert alert-warning">
+            <i class="fa fa-exclamation-triangle me-2"></i>
+            <strong>No documents available in this folder.</strong>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+  </div>
 {% endblock %}
 
 

@@ -5,12 +5,12 @@
 {% block title %}Storage Integration Overview{% endblock %}
 
 {% block page_css %}
-{{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/css/pages/storage-integration.css' %}" />
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/css/pages/storage-integration.css' %}" />
 {% endblock page_css %}
 
 {% block content %}
-<div class="storage-integration-categories">
+  <div class="storage-integration-categories">
   <h3>
     <strong>
       <i class="fa fa-database me-4"></i>
@@ -39,13 +39,13 @@
   </div>
   <div class="card-body">
     {% if messages %}
-    {% for message in messages %}
-    <div
-      class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-info{% endif %}"
-      role="alert">
-      {{ message }}
-    </div>
-    {% endfor %}
+      {% for message in messages %}
+        <div
+          class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-info{% endif %}"
+          role="alert">
+          {{ message }}
+        </div>
+      {% endfor %}
     {% endif %}
 
     <hr>
@@ -177,4 +177,4 @@
       </div>
     </div>
   </div>
-  {% endblock %}
+{% endblock %}

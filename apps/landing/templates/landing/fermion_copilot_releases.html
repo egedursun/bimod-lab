@@ -28,69 +28,74 @@
 {% block vendor_css %}
   {{ block.super }}
 
-<link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}"/>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/font/bootstrap-icons.min.css"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}" />
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/font/bootstrap-icons.min.css" />
 {% endblock vendor_css %}
 
 {% block content %}
-<div class="container mt-4">
-  <div class="row g-6 mb-6">
-    <div class="col-12 mt-12">
-      <h3 class="mb-0"><strong>
-        <i class="fa fa-download me-2"></i>
-        Bimod Fermion Copilot (Mobile Device Client) Official Releases
-      </strong></h3>
+  <div class="container mt-4">
+    <div class="row g-6 mb-6">
+      <div class="col-12 mt-12">
+        <h3 class="mb-0"><strong>
+          <i class="fa fa-download me-2"></i>
+          Bimod Fermion Copilot (Mobile Device Client) Official Releases
+        </strong></h3>
+      </div>
+
+      <hr>
+
+      <div class="col-12 text-start">
+        <a href="{% url 'landing:index' %}" class="btn btn-secondary w-25">
+          <i class="fa fa-home me-2"></i> <strong>Return to Home</strong>
+        </a>
+      </div>
+    </div>
+
+    <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+      <img src="{% static 'img/custom-illustrations-v2/i2-59.png' %}" width="25%" style="border-radius:25px;"
+           class="me-8" alt="Illustration for tip">
+      <span class="alert-icon rounded">
+      <i class="ti ti-bookmark"></i>
+    </span>
+      <div class="d-flex flex-column ps-1">
+        <h5 class="alert-heading mb-2">Tip</h5>
+        <p class="mb-0">
+          In this page, you can download the latest version of BimodLab Fermion Copilot for your mobile devices. Choose
+          the
+          appropriate format for your phone's operating system and enjoy the seamless AI workflows. We recommend you to
+          check the release notes (if there is any) before downloading the application. If you have any questions or
+          need assistance, please contact our support team by creating a ticket within your user account
+        </p>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
     </div>
 
     <hr>
 
-    <div class="col-12 text-start">
-      <a href="{% url 'landing:index' %}" class="btn btn-secondary w-25">
-        <i class="fa fa-home me-2"></i> <strong>Return to Home</strong>
-      </a>
-    </div>
-  </div>
+    <img src="{% static 'img/electron-copilot/b-1.png' %}" class="rounded"
+         style="width: 100%; display: block; filter: contrast(120%);" />
 
-  <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
-    <img src="{% static 'img/custom-illustrations-v2/i2-59.png' %}" width="25%" style="border-radius:25px;" class="me-8" alt="Illustration for tip">
-    <span class="alert-icon rounded">
-      <i class="ti ti-bookmark"></i>
-    </span>
-    <div class="d-flex flex-column ps-1">
-      <h5 class="alert-heading mb-2">Tip</h5>
-      <p class="mb-0">
-        In this page, you can download the latest version of BimodLab Fermion Copilot for your mobile devices. Choose the
-        appropriate format for your phone's operating system and enjoy the seamless AI workflows. We recommend you to
-        check the release notes (if there is any) before downloading the application. If you have any questions or
-        need assistance, please contact our support team by creating a ticket within your user account
-      </p>
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-  </div>
+    <hr>
 
-  <hr>
-
-  <img src="{% static 'img/electron-copilot/b-1.png' %}" class="rounded" style="width: 100%; display: block; filter: contrast(120%);"/>
-
-  <hr>
-
-  <!-- Release Version v1.0.0 -->
-  <div class="card mb-6 mt-12">
-    <div class="card-header border-bottom">
-      <a class="collapsed" data-bs-toggle="collapse" href="#release-v1-0-0" role="button" aria-expanded="false" aria-controls="release-v1-0-0">
-        <div class="d-flex">
-          <h4><strong>Version 1.0.0 (LTS)</strong></h4>
-        </div>
-      </a>
-      <span href="#release-v1-0-0" role="button" aria-expanded="true" aria-controls="release-v1-0-0">
+    <!-- Release Version v1.0.0 -->
+    <div class="card mb-6 mt-12">
+      <div class="card-header border-bottom">
+        <a class="collapsed" data-bs-toggle="collapse" href="#release-v1-0-0" role="button" aria-expanded="false"
+           aria-controls="release-v1-0-0">
+          <div class="d-flex">
+            <h4><strong>Version 1.0.0 (LTS)</strong></h4>
+          </div>
+        </a>
+        <span href="#release-v1-0-0" role="button" aria-expanded="true" aria-controls="release-v1-0-0">
         <i class="fa fa-info-circle me-2"></i><strong>Available Formats</strong>
       </span>
-    </div>
+      </div>
 
-    <div id="release-v1-0-0">
-      <div class="card-body">
-        <table class="table table-striped mt-4">
-          <thead>
+      <div id="release-v1-0-0">
+        <div class="card-body">
+          <table class="table table-striped mt-4">
+            <thead>
             <tr>
               <th></th>
               <th>File Name</th>
@@ -99,39 +104,46 @@
               <th>Size</th>
               <th>Download</th>
             </tr>
-          </thead>
-          <tbody>
+            </thead>
+            <tbody>
             <tr>
               <td>
-                <img src="{% static 'img/fermion-copilot/apk-file-icon.png' %}" class="rounded" style="width: 150px; display: block;"/>
+                <img src="{% static 'img/fermion-copilot/apk-file-icon.png' %}" class="rounded"
+                     style="width: 150px; display: block;" />
               </td>
               <td><strong>Bimod Fermion Copilot, Android Installation .APK File</strong></td>
               <td>Android OS</td>
               <td>November 29, 2024, 19:51:03 (UTC-03:00)</td>
               <td>7.10 MB</td>
               <td>
-                <a href="https://bimod-fermion-releases-eu.s3.eu-central-1.amazonaws.com/v1_0_0/bimod-fermion-copilot-v1-0-0-android.apk" class="btn btn-primary">
+                <a
+                  href="https://bimod-fermion-releases-eu.s3.eu-central-1.amazonaws.com/v1_0_0/bimod-fermion-copilot-v1-0-0-android.apk"
+                  class="btn btn-primary">
                   <i class="fa fa-download me-2"></i> <strong>Download</strong>
                 </a>
               </td>
             </tr>
             <tr>
               <td>
-                <img src="{% static 'img/fermion-copilot/aab-file-icon.png' %}" class="rounded" style="width: 150px; display: block;"/>
+                <img src="{% static 'img/fermion-copilot/aab-file-icon.png' %}" class="rounded"
+                     style="width: 150px; display: block;" />
               </td>
               <td><strong>Bimod Fermion Copilot, Android Installation .AAB File</strong></td>
               <td>Android OS</td>
               <td>November 29, 2024, 19:51:03 (UTC-03:00)</td>
               <td>6.60 MB</td>
               <td>
-                <a href="https://bimod-fermion-releases-eu.s3.eu-central-1.amazonaws.com/v1_0_0/bimod-fermion-copilot-v1-0-0-android.aab" class="btn btn-primary">
+                <a
+                  href="https://bimod-fermion-releases-eu.s3.eu-central-1.amazonaws.com/v1_0_0/bimod-fermion-copilot-v1-0-0-android.aab"
+                  class="btn btn-primary">
                   <i class="fa fa-download me-2"></i> <strong>Download</strong>
                 </a>
               </td>
             </tr>
             <tr>
               <td>
-                <img src="{% static 'img/fermion-copilot/playstore-icon.png' %}" class="rounded" style="width: 150px; display: block;"/>
+                <img src="{% static 'img/fermion-copilot/playstore-icon.png' %}" class="rounded"
+                     style="width: 150px; display: block;" />
               </td>
               <td><strong>Bimod Fermion Copilot, Android Google Play Store Link</strong></td>
               <td>Android OS</td>
@@ -145,7 +157,8 @@
             </tr>
             <tr>
               <td>
-                <img src="{% static 'img/fermion-copilot/appstore-icon.png' %}" class="rounded" style="width: 150px; display: block;"/>
+                <img src="{% static 'img/fermion-copilot/appstore-icon.png' %}" class="rounded"
+                     style="width: 150px; display: block;" />
               </td>
               <td><strong>Bimod Fermion Copilot, iOS App Store Link</strong></td>
               <td>Apple iOS</td>
@@ -157,10 +170,10 @@
                 </a>
               </td>
             </tr>
-          </tbody>
-        </table>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
-</div>
 {% endblock %}

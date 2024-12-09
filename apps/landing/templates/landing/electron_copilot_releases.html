@@ -1,21 +1,21 @@
-  <!--
-  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
-  ~
-  ~ Project: Bimod.io™
-  ~ File: electron_copilot_releases.html
-  ~ Last Modified: 2024-11-12 00:48:32
-  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-11-29 19:49:17
-  ~
-  ~ This software is proprietary and confidential. Unauthorized copying,
-  ~ distribution, modification, or use of this software, whether for
-  ~ commercial, academic, or any other purpose, is strictly prohibited
-  ~ without the prior express written permission of BMD™ Autonomous
-  ~ Holdings.
-  ~
-  ~  For permission inquiries, please contact: admin@Bimod.io.
-  ~
-  -->
+<!--
+~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+~
+~ Project: Bimod.io™
+~ File: electron_copilot_releases.html
+~ Last Modified: 2024-11-12 00:48:32
+~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+~ Created: 2024-11-29 19:49:17
+~
+~ This software is proprietary and confidential. Unauthorized copying,
+~ distribution, modification, or use of this software, whether for
+~ commercial, academic, or any other purpose, is strictly prohibited
+~ without the prior express written permission of BMD™ Autonomous
+~ Holdings.
+~
+~  For permission inquiries, please contact: admin@Bimod.io.
+~
+-->
 
 {% extends layout_path %}
 
@@ -27,70 +27,75 @@
 {% block vendor_css %}
   {{ block.super }}
 
-<link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}"/>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/font/bootstrap-icons.min.css"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}" />
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/font/bootstrap-icons.min.css" />
 {% endblock vendor_css %}
 
 {% block content %}
-<div class="container mt-4">
-  <div class="row g-6 mb-6">
-    <div class="col-12 mt-12">
-      <h3 class="mb-0"><strong>
-        <i class="fa fa-download me-2"></i>
-        Bimod Electron Copilot (Desktop Client) Official Releases
-      </strong></h3>
+  <div class="container mt-4">
+    <div class="row g-6 mb-6">
+      <div class="col-12 mt-12">
+        <h3 class="mb-0"><strong>
+          <i class="fa fa-download me-2"></i>
+          Bimod Electron Copilot (Desktop Client) Official Releases
+        </strong></h3>
+      </div>
+
+      <hr>
+
+      <div class="col-12 text-start">
+        <a href="{% url 'landing:index' %}" class="btn btn-secondary w-25">
+          <i class="fa fa-home me-2"></i> <strong>Return to Home</strong>
+        </a>
+      </div>
+    </div>
+
+    <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+      <img src="{% static 'img/custom-illustrations-v2/i2-63.png' %}" width="25%" style="border-radius:25px;"
+           class="me-8" alt="Illustration for tip">
+      <span class="alert-icon rounded">
+      <i class="ti ti-bookmark"></i>
+    </span>
+      <div class="d-flex flex-column ps-1">
+        <h5 class="alert-heading mb-2">Tip</h5>
+        <p class="mb-0">
+          In this page, you can download the latest version of BimodLab Electron Copilot for your desktop. Choose the
+          appropriate format for your operating system and enjoy the seamless AI workflows. We recommend you to check
+          the
+          release notes (if there is any) before downloading the application. If you have any questions or need
+          assistance,
+          please contact our support team by creating a ticket within your user account
+        </p>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
     </div>
 
     <hr>
 
-    <div class="col-12 text-start">
-      <a href="{% url 'landing:index' %}" class="btn btn-secondary w-25">
-        <i class="fa fa-home me-2"></i> <strong>Return to Home</strong>
-      </a>
-    </div>
-  </div>
+    <img src="{% static 'img/electron-copilot/b-1.png' %}" class="rounded"
+         style="width: 100%; display: block; filter: contrast(120%);" />
 
-  <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
-    <img src="{% static 'img/custom-illustrations-v2/i2-63.png' %}" width="25%" style="border-radius:25px;" class="me-8" alt="Illustration for tip">
-    <span class="alert-icon rounded">
-      <i class="ti ti-bookmark"></i>
-    </span>
-    <div class="d-flex flex-column ps-1">
-      <h5 class="alert-heading mb-2">Tip</h5>
-      <p class="mb-0">
-        In this page, you can download the latest version of BimodLab Electron Copilot for your desktop. Choose the
-        appropriate format for your operating system and enjoy the seamless AI workflows. We recommend you to check the
-        release notes (if there is any) before downloading the application. If you have any questions or need assistance,
-        please contact our support team by creating a ticket within your user account
-      </p>
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-  </div>
+    <hr>
 
-  <hr>
-
-  <img src="{% static 'img/electron-copilot/b-1.png' %}" class="rounded"
-                 style="width: 100%; display: block; filter: contrast(120%);"/>
-
-  <hr>
-
-  <!-- Release Version v1.0.0 -->
-  <div class="card mb-6 mt-12">
-    <div class="card-header border-bottom">
-      <a class="collapsed" data-bs-toggle="collapse" href="#release-v1-0-0" role="button" aria-expanded="false" aria-controls="release-v1-0-0">
-        <div class="d-flex">
-          <h4><strong>Version 1.0.0 (LTS)</strong></h4>
-        </div>
-      </a>
-      <span href="#release-v1-0-0" role="button" aria-expanded="true" aria-controls="release-v1-0-0">
+    <!-- Release Version v1.0.0 -->
+    <div class="card mb-6 mt-12">
+      <div class="card-header border-bottom">
+        <a class="collapsed" data-bs-toggle="collapse" href="#release-v1-0-0" role="button" aria-expanded="false"
+           aria-controls="release-v1-0-0">
+          <div class="d-flex">
+            <h4><strong>Version 1.0.0 (LTS)</strong></h4>
+          </div>
+        </a>
+        <span href="#release-v1-0-0" role="button" aria-expanded="true" aria-controls="release-v1-0-0">
         <i class="fa fa-info-circle me-2"></i><strong>Available Formats</strong>
       </span>
-    </div>
+      </div>
 
-    <div id="release-v1-0-0">
-      <div class="card-body">
-        <table class="table table-striped mt-4">
-          <thead>
+      <div id="release-v1-0-0">
+        <div class="card-body">
+          <table class="table table-striped mt-4">
+            <thead>
             <tr>
               <th></th>
               <th>File Name</th>
@@ -99,82 +104,97 @@
               <th>Size</th>
               <th>Download</th>
             </tr>
-          </thead>
-          <tbody>
+            </thead>
+            <tbody>
             <tr>
               <td>
-                <img src="{% static 'img/electron-copilot/exe-file-icon.png' %}" class="rounded" style="width: 150px; display: block;"/>
+                <img src="{% static 'img/electron-copilot/exe-file-icon.png' %}" class="rounded"
+                     style="width: 150px; display: block;" />
               </td>
               <td><strong>Bimod-Electron-Copilot Setup 1.0.0.exe</strong></td>
               <td>Windows / EXE</td>
               <td>October 30, 2024, 16:41:38 (UTC-03:00)</td>
               <td>780.6 MB</td>
               <td>
-                <a href="https://bimod-electron-builds-eu.s3.eu-central-1.amazonaws.com/v1_0_0/Bimod-Electron-Copilot+Setup+1.0.0.exe" class="btn btn-primary">
+                <a
+                  href="https://bimod-electron-builds-eu.s3.eu-central-1.amazonaws.com/v1_0_0/Bimod-Electron-Copilot+Setup+1.0.0.exe"
+                  class="btn btn-primary">
                   <i class="fa fa-download me-2"></i> <strong>Download</strong>
                 </a>
               </td>
             </tr>
             <tr>
               <td>
-                <img src="{% static 'img/electron-copilot/dmg-file-icon.png' %}" class="rounded" style="width: 150px; display: block;"/>
+                <img src="{% static 'img/electron-copilot/dmg-file-icon.png' %}" class="rounded"
+                     style="width: 150px; display: block;" />
               </td>
               <td><strong>Bimod-Electron-Copilot-1.0.0-arm64.dmg</strong></td>
               <td>MacOS / DMG</td>
               <td>October 30, 2024, 16:41:38 (UTC-03:00)</td>
               <td>816.1 MB</td>
               <td>
-                <a href="https://bimod-electron-builds-eu.s3.eu-central-1.amazonaws.com/v1_0_0/Bimod-Electron-Copilot-1.0.0-arm64.dmg" class="btn btn-primary">
+                <a
+                  href="https://bimod-electron-builds-eu.s3.eu-central-1.amazonaws.com/v1_0_0/Bimod-Electron-Copilot-1.0.0-arm64.dmg"
+                  class="btn btn-primary">
                   <i class="fa fa-download me-2"></i> <strong>Download</strong>
                 </a>
               </td>
             </tr>
             <tr>
               <td>
-                <img src="{% static 'img/electron-copilot/deb-file-icon.png' %}" class="rounded" style="width: 150px; display: block;"/>
+                <img src="{% static 'img/electron-copilot/deb-file-icon.png' %}" class="rounded"
+                     style="width: 150px; display: block;" />
               </td>
               <td><strong>bimod-electron-copilot_1.0.0_arm64.deb</strong></td>
               <td>Linux / DEB</td>
               <td>October 30, 2024, 16:41:38 (UTC-03:00)</td>
               <td>740.4 MB</td>
               <td>
-                <a href="https://bimod-electron-builds-eu.s3.eu-central-1.amazonaws.com/v1_0_0/bimod-electron-copilot_1.0.0_arm64.deb" class="btn btn-primary">
+                <a
+                  href="https://bimod-electron-builds-eu.s3.eu-central-1.amazonaws.com/v1_0_0/bimod-electron-copilot_1.0.0_arm64.deb"
+                  class="btn btn-primary">
                   <i class="fa fa-download me-2"></i> <strong>Download</strong>
                 </a>
               </td>
             </tr>
             <tr>
               <td>
-                <img src="{% static 'img/electron-copilot/appimage-file-icon.png' %}" class="rounded" style="width: 150px; display: block;"/>
+                <img src="{% static 'img/electron-copilot/appimage-file-icon.png' %}" class="rounded"
+                     style="width: 150px; display: block;" />
               </td>
               <td><strong>Bimod-Electron-Copilot-1.0.0-arm64.AppImage</strong></td>
               <td>Linux / AppImage</td>
               <td>October 30, 2024, 16:41:38 (UTC-03:00)</td>
               <td>478.4 MB</td>
               <td>
-                <a href="https://bimod-electron-builds-eu.s3.eu-central-1.amazonaws.com/v1_0_0/Bimod-Electron-Copilot-1.0.0-arm64.AppImage" class="btn btn-primary">
+                <a
+                  href="https://bimod-electron-builds-eu.s3.eu-central-1.amazonaws.com/v1_0_0/Bimod-Electron-Copilot-1.0.0-arm64.AppImage"
+                  class="btn btn-primary">
                   <i class="fa fa-download me-2"></i> <strong>Download</strong>
                 </a>
               </td>
             </tr>
             <tr>
               <td>
-                <img src="{% static 'img/electron-copilot/targz-file-icon.png' %}" class="rounded" style="width: 150px; display: block;"/>
+                <img src="{% static 'img/electron-copilot/targz-file-icon.png' %}" class="rounded"
+                     style="width: 150px; display: block;" />
               </td>
               <td><strong>bimod-electron-copilot-1.0.0-arm64.tar.gz</strong></td>
               <td>Linux / tar.gz</td>
               <td>October 30, 2024, 16:41:38 (UTC-03:00)</td>
               <td>817.8 MB</td>
               <td>
-                <a href="https://bimod-electron-builds-eu.s3.eu-central-1.amazonaws.com/v1_0_0/bimod-electron-copilot-1.0.0-arm64.tar.gz" class="btn btn-primary">
+                <a
+                  href="https://bimod-electron-builds-eu.s3.eu-central-1.amazonaws.com/v1_0_0/bimod-electron-copilot-1.0.0-arm64.tar.gz"
+                  class="btn btn-primary">
                   <i class="fa fa-download me-2"></i> <strong>Download</strong>
                 </a>
               </td>
             </tr>
-          </tbody>
-        </table>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
-</div>
 {% endblock %}

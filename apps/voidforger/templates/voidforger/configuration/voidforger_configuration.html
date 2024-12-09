@@ -25,343 +25,360 @@
 {% block title %}VoidForger Configuration{% endblock %}
 
 {% block vendor_css %}
-    {{ block.super }}
-    <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
-    <link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}"/>
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}" />
 {% endblock vendor_css %}
 
 {% block vendor_js %}
-    {{ block.super }}
-    <script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
-    <script src="{% static 'vendor/libs/sweetalert2/sweetalert2.js' %}"></script>
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+  <script src="{% static 'vendor/libs/sweetalert2/sweetalert2.js' %}"></script>
 {% endblock vendor_js %}
 
 {% block content %}
-<div class="row">
+  <div class="row">
     <div class="col-xl mb-6">
 
-      <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center mb-8" role="alert">
-          <img src="{% static 'img/custom-illustrations-v2/i2-28.png' %}" width="25%" style="border-radius:25px;" class="me-4" alt="Illustration for tip">
-          <span class="alert-icon rounded"><i class="ti ti-bookmark"></i></span>
-          <div class="d-flex flex-column ps-1">
-              <h5 class="alert-heading mb-2">Tip</h5>
-              <p class="mb-0">
-                Configure your VoidForger settings here. Adjust parameters like LLM models, and runtime behavior.
-                Click "Save Configuration" to apply your changes.
-              </p>
-              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-          </div>
+      <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center mb-8"
+           role="alert">
+        <img src="{% static 'img/custom-illustrations-v2/i2-28.png' %}" width="25%" style="border-radius:25px;"
+             class="me-4" alt="Illustration for tip">
+        <span class="alert-icon rounded"><i class="ti ti-bookmark"></i></span>
+        <div class="d-flex flex-column ps-1">
+          <h5 class="alert-heading mb-2">Tip</h5>
+          <p class="mb-0">
+            Configure your VoidForger settings here. Adjust parameters like LLM models, and runtime behavior.
+            Click "Save Configuration" to apply your changes.
+          </p>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
       </div>
 
-        {% if messages %}
-            {% for message in messages %}
-                <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-info{% endif %}" role="alert">
-                    {{ message }}
-                </div>
-            {% endfor %}
-        {% endif %}
-
-        <hr>
-
-        <div class="card mb-8">
-          <div class="card-header d-flex justify-content-between align-items-center">
-            <h4 class="mb-0">
-              <strong>
-                <i class="fa fa-magic-wand-sparkles me-4"></i>
-                VoidForger Command Panel
-              </strong>
-            </h4>
+      {% if messages %}
+        {% for message in messages %}
+          <div
+            class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-info{% endif %}"
+            role="alert">
+            {{ message }}
           </div>
-          <div class="card-body">
-            <hr>
-            <img src="{% static 'img/voidforger/vf-1.png' %}" class="rounded mb-4 mt-4" style="width: 100%;" alt="Illustration for tips">
-            <hr>
+        {% endfor %}
+      {% endif %}
 
-            <!-- VoidForger Actions -->
-            <div class="row mb-4 mt-4">
-                <div class="col-md-12">
-                  <div class="text-center bg-body border border-primary-subtle border-2 rounded p-8" style="margin-left: 0; margin-right: 0;">
-                      <h5>
+      <hr>
+
+      <div class="card mb-8">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h4 class="mb-0">
+            <strong>
+              <i class="fa fa-magic-wand-sparkles me-4"></i>
+              VoidForger Command Panel
+            </strong>
+          </h4>
+        </div>
+        <div class="card-body">
+          <hr>
+          <img src="{% static 'img/voidforger/vf-1.png' %}" class="rounded mb-4 mt-4" style="width: 100%;"
+               alt="Illustration for tips">
+          <hr>
+
+          <!-- VoidForger Actions -->
+          <div class="row mb-4 mt-4">
+            <div class="col-md-12">
+              <div class="text-center bg-body border border-primary-subtle border-2 rounded p-8"
+                   style="margin-left: 0; margin-right: 0;">
+                <h5>
+                  <strong>
+                    <i class="fa fa-bolt-lightning me-4"></i>
+                    Automated Runner Configuration
+                  </strong>
+                </h5>
+                <p class="alert alert-secondary p-4 mt-4 mb-4">
+                  <i class="fa fa-info-circle me-2"></i>
+                  <strong>Automated Runner</strong> is currently set to run every
+                  <strong>{{ config.auto_run_trigger_interval_minutes }}</strong> minutes.
+                  You can change this setting by updating the configurations within this page.
+                </p>
+                <p class="alert alert-secondary p-4 mt-4 mb-4">
+                  <i class="fa fa-info-circle me-2"></i>
+                  <strong>Automated Runner</strong> is currently set to run a maximum of
+                  <strong>{{ config.maximum_actions_per_cycle }}</strong> actions per cycle.
+                  You can change this setting by updating the configurations within this page.
+                </p>
+                <hr>
+
+                <div class="mt-4">
+                  <!-- Life Cycle Progress Card -->
+                  <div class="card">
+                    <div class="m-6 bg-body rounded border border-primary-subtle border-2 rounded">
+                      <h5 class="mt-4 mb-4">
                         <strong>
-                          <i class="fa fa-bolt-lightning me-4"></i>
-                          Automated Runner Configuration
+                          <i class="fa fa-industry me-4"></i>
+                          Life Cycle Progress
                         </strong>
                       </h5>
-                      <p class="alert alert-secondary p-4 mt-4 mb-4">
-                        <i class="fa fa-info-circle me-2"></i>
-                        <strong>Automated Runner</strong> is currently set to run every <strong>{{ config.auto_run_trigger_interval_minutes }}</strong> minutes.
-                        You can change this setting by updating the configurations within this page.
-                      </p>
-                      <p class="alert alert-secondary p-4 mt-4 mb-4">
-                        <i class="fa fa-info-circle me-2"></i>
-                        <strong>Automated Runner</strong> is currently set to run a maximum of <strong>{{ config.maximum_actions_per_cycle }}</strong> actions per cycle.
-                        You can change this setting by updating the configurations within this page.
-                      </p>
-                      <hr>
-
-                      <div class="mt-4">
-                        <!-- Life Cycle Progress Card -->
-                        <div class="card">
-                            <div class="m-6 bg-body rounded border border-primary-subtle border-2 rounded">
-                              <h5 class="mt-4 mb-4">
-                                <strong>
-                                  <i class="fa fa-industry me-4"></i>
-                                  Life Cycle Progress
-                                </strong>
-                              </h5>
-                            </div>
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <!-- Remaining Life Cycles -->
-                                    <div class="bg-body p-8 rounded border border-2 border-primary-subtle rounded me-4 w-100">
-                                        <h5 class="mb-1">
-                                            <strong>
-                                              <i class="fa fa-battery-three-quarters me-2"></i>
-                                              Remaining Life Cycles
-                                            </strong>
-                                        </h5>
-                                        <h4 class="mb-0 mt-2">
-                                            <span class="badge p-4 {% if remaining_lifetime_pct > 67 %}bg-success{% elif remaining_lifetime_pct > 33 %}bg-warning{% else %}bg-danger{% endif %}">
+                    </div>
+                    <div class="card-body">
+                      <div class="d-flex justify-content-between align-items-center">
+                        <!-- Remaining Life Cycles -->
+                        <div class="bg-body p-8 rounded border border-2 border-primary-subtle rounded me-4 w-100">
+                          <h5 class="mb-1">
+                            <strong>
+                              <i class="fa fa-battery-three-quarters me-2"></i>
+                              Remaining Life Cycles
+                            </strong>
+                          </h5>
+                          <h4 class="mb-0 mt-2">
+                                            <span
+                                              class="badge p-4 {% if remaining_lifetime_pct > 67 %}bg-success{% elif remaining_lifetime_pct > 33 %}bg-warning{% else %}bg-danger{% endif %}">
                                               <strong>{{ remaining_lifetime_cycles }} / {{ config.auto_run_max_lifetime_cycles }}</strong>
                                             </span>
-                                        </h4>
-                                    </div>
+                          </h4>
+                        </div>
 
-                                    <!-- Remaining Percentage -->
-                                    <div class="bg-body p-8 rounded border border-2 border-primary-subtle rounded ms-4 w-100">
-                                        <h5 class="mb-1">
-                                            <strong>
-                                              <i class="fa fa-percent me-2"></i>
-                                              Remaining Life Cycle Percentage
-                                            </strong>
-                                        </h5>
-                                        <h4 class="mb-0 mt-2">
-                                            <span class="badge p-4 {% if remaining_lifetime_pct > 67 %}bg-success{% elif remaining_lifetime_pct > 33 %}bg-warning{% else %}bg-danger{% endif %}">
+                        <!-- Remaining Percentage -->
+                        <div class="bg-body p-8 rounded border border-2 border-primary-subtle rounded ms-4 w-100">
+                          <h5 class="mb-1">
+                            <strong>
+                              <i class="fa fa-percent me-2"></i>
+                              Remaining Life Cycle Percentage
+                            </strong>
+                          </h5>
+                          <h4 class="mb-0 mt-2">
+                                            <span
+                                              class="badge p-4 {% if remaining_lifetime_pct > 67 %}bg-success{% elif remaining_lifetime_pct > 33 %}bg-warning{% else %}bg-danger{% endif %}">
                                               <strong>{{ remaining_lifetime_pct|floatformat:2 }}%</strong>
                                             </span>
-                                        </h4>
-                                    </div>
-                                </div>
-                            </div>
-
-                          <!-- Progress Bar -->
-                          <div class="bg-body p-8 rounded border border-2 border-primary-subtle rounded m-6">
-                            <div class="progress mt-3" style="height: 40px;">
-                              <div
-                                  class="progress-bar progress-bar-striped progress-bar-animated bg-{% if remaining_lifetime_pct > 67 %}success{% elif remaining_lifetime_pct > 33 %}warning{% else %}danger{% endif %}"
-                                  role="progressbar"
-                                  style="width: {{ remaining_lifetime_pct }}%;"
-                                  aria-valuenow="{{ remaining_lifetime_cycles }}"
-                                  aria-valuemin="0"
-                                  aria-valuemax="{{ config.auto_run_max_lifetime_cycles }}">
-                                <strong>{{ remaining_lifetime_pct|floatformat:2 }}%</strong>
-                              </div>
-                            </div>
-                          </div>
+                          </h4>
                         </div>
                       </div>
+                    </div>
+
+                    <!-- Progress Bar -->
+                    <div class="bg-body p-8 rounded border border-2 border-primary-subtle rounded m-6">
+                      <div class="progress mt-3" style="height: 40px;">
+                        <div
+                          class="progress-bar progress-bar-striped progress-bar-animated bg-{% if remaining_lifetime_pct > 67 %}success{% elif remaining_lifetime_pct > 33 %}warning{% else %}danger{% endif %}"
+                          role="progressbar"
+                          style="width: {{ remaining_lifetime_pct }}%;"
+                          aria-valuenow="{{ remaining_lifetime_cycles }}"
+                          aria-valuemin="0"
+                          aria-valuemax="{{ config.auto_run_max_lifetime_cycles }}">
+                          <strong>{{ remaining_lifetime_pct|floatformat:2 }}%</strong>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
 
 
-                      <hr>
-                      {% if config.runtime_status == "paused" %}
-                          <h5 class="badge card p-12 text-dark mt-4 mb-4 w-100 border border-primary border-4 rounded">
+                <hr>
+                {% if config.runtime_status == "paused" %}
+                  <h5 class="badge card p-12 text-dark mt-4 mb-4 w-100 border border-primary border-4 rounded">
                             <span class="btn-danger p-4 rounded w-75">
                               <i class="fa fa-pause-circle me-2"></i>
                               <strong class="text-white">VOIDFORGER IS CURRENTLY PAUSED</strong>
                             </span>
-                          </h5>
-                          <hr>
-                          <a href="{% url 'voidforger:auto_run' config.id %}" class="btn btn-success w-50 mt-4">
-                              <i class="fa fa-play-circle me-2"></i> Activate
-                          </a>
-                      {% elif config.runtime_status == "active" %}
-                          <h5 class="badge card text-dark p-12 mt-4 mb-4 w-100 border border-primary border-4 rounded">
+                  </h5>
+                  <hr>
+                  <a href="{% url 'voidforger:auto_run' config.id %}" class="btn btn-success w-50 mt-4">
+                    <i class="fa fa-play-circle me-2"></i> Activate
+                  </a>
+                {% elif config.runtime_status == "active" %}
+                  <h5 class="badge card text-dark p-12 mt-4 mb-4 w-100 border border-primary border-4 rounded">
                             <span class="btn-success p-4 rounded w-75">
                               <i class="fa fa-play-circle me-2"></i>
                               <strong class="text-white">VOIDFORGER IS CURRENTLY ACTIVE</strong>
                             </span>
-                          </h5>
-                          <hr>
-                          <a href="{% url 'voidforger:auto_run' config.id %}" class="btn btn-warning w-50 mt-4">
-                              <i class="fa fa-pause-circle me-2"></i><strong>Pause</strong>
-                          </a>
-                      {% elif config.runtime_status == "working" %}
-                          <h5 class="badge card text-dark p-12 mt-4 mb-4 w-100 border border-primary border-4 rounded">
+                  </h5>
+                  <hr>
+                  <a href="{% url 'voidforger:auto_run' config.id %}" class="btn btn-warning w-50 mt-4">
+                    <i class="fa fa-pause-circle me-2"></i><strong>Pause</strong>
+                  </a>
+                {% elif config.runtime_status == "working" %}
+                  <h5 class="badge card text-dark p-12 mt-4 mb-4 w-100 border border-primary border-4 rounded">
                             <span class="btn-info p-4 rounded w-75">
                               <i class="fa fa-cog fa-spin me-2"></i>
                               <strong class="text-white">VOIDFORGER IS CURRENTLY WORKING...</strong>
                             </span>
-                          </h5>
-                          <hr>
-                          <button class="btn btn-secondary w-50 mt-4" disabled>
-                              <i class="fa fa-ban me-2"></i> Cannot Pause While Working
-                          </button>
-                      {% else %}
-                          <span class="badge bg-danger">
+                  </h5>
+                  <hr>
+                  <button class="btn btn-secondary w-50 mt-4" disabled>
+                    <i class="fa fa-ban me-2"></i> Cannot Pause While Working
+                  </button>
+                {% else %}
+                  <span class="badge bg-danger">
                               <i class="fa fa-exclamation-circle me-2"></i> Unknown
                           </span>
-                      {% endif %}
-                    <h6 class="mt-2">
-                      <strong>
-                        <i class="fa fa-cogs me-4"></i>
-                        Update Automated Runner Status
-                      </strong>
-                    </h6>
-                  </div>
-              </div>
-            </div>
-
-            <div class="row bg-body border border-2 border-primary-subtle rounded mt-8 p-8" style="margin-left: 0; margin-right: 0;">
-              <div class="col-6" >
-                  <a href="{% url 'voidforger:refresh_connections' config.id %}" class="btn btn-success w-100">
-                    <i class="fa fa-sync-alt me-2"></i> <strong>Refresh Connections</strong>
-                  </a>
-              </div>
-              <div class="col-6">
-                <a href="{% url 'voidforger:manual_run' config.id %}" class="btn btn-warning w-100">
-                  <i class="fa fa-bolt me-2"></i><strong>Manual Trigger</strong>
-                </a>
+                {% endif %}
+                <h6 class="mt-2">
+                  <strong>
+                    <i class="fa fa-cogs me-4"></i>
+                    Update Automated Runner Status
+                  </strong>
+                </h6>
               </div>
             </div>
           </div>
-        </div>
 
-        <hr>
-
-        <div class="card">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <h4 class="mb-0"><strong>
-                  <i class="fa fa-cogs me-4"></i>
-                  VoidForger Configuration
-                </strong></h4>
+          <div class="row bg-body border border-2 border-primary-subtle rounded mt-8 p-8"
+               style="margin-left: 0; margin-right: 0;">
+            <div class="col-6">
+              <a href="{% url 'voidforger:refresh_connections' config.id %}" class="btn btn-success w-100">
+                <i class="fa fa-sync-alt me-2"></i> <strong>Refresh Connections</strong>
+              </a>
             </div>
-            <div class="card-body">
-                <form method="post" class="mt-8">
-                    {% csrf_token %}
-
-                    <div class="row">
-                      <!-- LLM Core -->
-                      <div class="col-4 mb-4">
-                          <label for="llm_model_id" class="form-label">
-                            <strong>Select LLM Model</strong>
-                          </label>
-                          <select class="form-select" id="llm_model_id" name="llm_model_id">
-                              {% for llm in llm_cores %}
-                                  <option value="{{ llm.id }}" {% if config.llm_model == llm %}selected{% endif %}>
-                                      {{ llm.nickname }}
-                                  </option>
-                              {% endfor %}
-                          </select>
-                      </div>
-
-                      <!-- Tone -->
-                      <div class="col-4 mb-4">
-                          <label for="tone" class="form-label">
-                            <strong>Response Tone</strong>
-                          </label>
-                          <input type="text" class="form-control" id="tone" name="tone" value="{{ config.tone }}">
-                      </div>
-
-                      <!-- Response Language -->
-                      <div class="col-4 mb-4">
-                          <label for="response_language" class="form-label">
-                            <strong>Response Language</strong>
-                          </label>
-                          <select class="form-select" id="response_language" name="response_language">
-                              {% for lang_code, lang_name in AGENT_SPEECH_LANGUAGES %}
-                                  <option value="{{ lang_code }}" {% if config.response_language == lang_code %}selected{% endif %}>
-                                      {{ lang_name }}
-                                  </option>
-                              {% endfor %}
-                          </select>
-                      </div>
-
-                      <!-- Additional Instructions -->
-                      <div class="col-12 mb-4">
-                          <label for="additional_instructions" class="form-label">
-                            <strong>Additional Instructions</strong>
-                          </label>
-                          <textarea class="form-control" id="additional_instructions" name="additional_instructions" rows="3">{{ config.additional_instructions }}</textarea>
-                      </div>
-
-                      <!-- Runtime Settings -->
-                      <div class="row mb-4">
-                          <div class="col-3">
-                              <label for="maximum_actions_per_cycle" class="form-label">
-                                <strong>Max Actions Per Cycle</strong>
-                              </label>
-                              <input type="number" class="form-control" min="1" max="25" id="maximum_actions_per_cycle" name="maximum_actions_per_cycle" value="{{ config.maximum_actions_per_cycle }}">
-                          </div>
-                          <div class="col-3">
-                              <label for="auto_run_max_lifetime_cycles" class="form-label">
-                                <strong>Max Lifetime Cycles</strong>
-                              </label>
-                              <input type="number" class="form-control" id="auto_run_max_lifetime_cycles" name="auto_run_max_lifetime_cycles" value="{{ config.auto_run_max_lifetime_cycles }}">
-                          </div>
-                          <div class="col-3">
-                              <label for="auto_run_trigger_interval_minutes" class="form-label">
-                                <strong>Trigger Interval (Minutes)</strong>
-                              </label>
-                              <input type="number" class="form-control" min="15" id="auto_run_trigger_interval_minutes" name="auto_run_trigger_interval_minutes" value="{{ config.auto_run_trigger_interval_minutes }}">
-                          </div>
-                        <!-- Short-Term Memory -->
-                        <div class="col-3 mb-4">
-                            <label for="short_term_memory_max_messages" class="form-label">
-                              <strong>Short-Term Memory Max Messages</strong>
-                            </label>
-                            <input type="number" class="form-control" id="short_term_memory_max_messages" max="100" min="20" name="short_term_memory_max_messages" value="{{ config.short_term_memory_max_messages }}">
-                        </div>
-
-                      </div>
-                    </div>
-
-                    <hr>
-
-                    <!-- Save Button -->
-                    <button type="submit" class="btn btn-primary w-50 mt-4">
-                        <strong><i class="fa fa-save me-2"></i> Save VoidForger Configuration</strong>
-                    </button>
-                </form>
+            <div class="col-6">
+              <a href="{% url 'voidforger:manual_run' config.id %}" class="btn btn-warning w-100">
+                <i class="fa fa-bolt me-2"></i><strong>Manual Trigger</strong>
+              </a>
             </div>
+          </div>
         </div>
+      </div>
+
+      <hr>
+
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h4 class="mb-0"><strong>
+            <i class="fa fa-cogs me-4"></i>
+            VoidForger Configuration
+          </strong></h4>
+        </div>
+        <div class="card-body">
+          <form method="post" class="mt-8">
+            {% csrf_token %}
+
+            <div class="row">
+              <!-- LLM Core -->
+              <div class="col-4 mb-4">
+                <label for="llm_model_id" class="form-label">
+                  <strong>Select LLM Model</strong>
+                </label>
+                <select class="form-select" id="llm_model_id" name="llm_model_id">
+                  {% for llm in llm_cores %}
+                    <option value="{{ llm.id }}" {% if config.llm_model == llm %}selected{% endif %}>
+                      {{ llm.nickname }}
+                    </option>
+                  {% endfor %}
+                </select>
+              </div>
+
+              <!-- Tone -->
+              <div class="col-4 mb-4">
+                <label for="tone" class="form-label">
+                  <strong>Response Tone</strong>
+                </label>
+                <input type="text" class="form-control" id="tone" name="tone" value="{{ config.tone }}">
+              </div>
+
+              <!-- Response Language -->
+              <div class="col-4 mb-4">
+                <label for="response_language" class="form-label">
+                  <strong>Response Language</strong>
+                </label>
+                <select class="form-select" id="response_language" name="response_language">
+                  {% for lang_code, lang_name in AGENT_SPEECH_LANGUAGES %}
+                    <option value="{{ lang_code }}" {% if config.response_language == lang_code %}selected{% endif %}>
+                      {{ lang_name }}
+                    </option>
+                  {% endfor %}
+                </select>
+              </div>
+
+              <!-- Additional Instructions -->
+              <div class="col-12 mb-4">
+                <label for="additional_instructions" class="form-label">
+                  <strong>Additional Instructions</strong>
+                </label>
+                <textarea class="form-control" id="additional_instructions" name="additional_instructions"
+                          rows="3">{{ config.additional_instructions }}</textarea>
+              </div>
+
+              <!-- Runtime Settings -->
+              <div class="row mb-4">
+                <div class="col-3">
+                  <label for="maximum_actions_per_cycle" class="form-label">
+                    <strong>Max Actions Per Cycle</strong>
+                  </label>
+                  <input type="number" class="form-control" min="1" max="25" id="maximum_actions_per_cycle"
+                         name="maximum_actions_per_cycle" value="{{ config.maximum_actions_per_cycle }}">
+                </div>
+                <div class="col-3">
+                  <label for="auto_run_max_lifetime_cycles" class="form-label">
+                    <strong>Max Lifetime Cycles</strong>
+                  </label>
+                  <input type="number" class="form-control" id="auto_run_max_lifetime_cycles"
+                         name="auto_run_max_lifetime_cycles" value="{{ config.auto_run_max_lifetime_cycles }}">
+                </div>
+                <div class="col-3">
+                  <label for="auto_run_trigger_interval_minutes" class="form-label">
+                    <strong>Trigger Interval (Minutes)</strong>
+                  </label>
+                  <input type="number" class="form-control" min="15" id="auto_run_trigger_interval_minutes"
+                         name="auto_run_trigger_interval_minutes"
+                         value="{{ config.auto_run_trigger_interval_minutes }}">
+                </div>
+                <!-- Short-Term Memory -->
+                <div class="col-3 mb-4">
+                  <label for="short_term_memory_max_messages" class="form-label">
+                    <strong>Short-Term Memory Max Messages</strong>
+                  </label>
+                  <input type="number" class="form-control" id="short_term_memory_max_messages" max="100" min="20"
+                         name="short_term_memory_max_messages" value="{{ config.short_term_memory_max_messages }}">
+                </div>
+
+              </div>
+            </div>
+
+            <hr>
+
+            <!-- Save Button -->
+            <button type="submit" class="btn btn-primary w-50 mt-4">
+              <strong><i class="fa fa-save me-2"></i> Save VoidForger Configuration</strong>
+            </button>
+          </form>
+        </div>
+      </div>
     </div>
-</div>
+  </div>
 
 {% endblock %}
 
 {% block page_js %}
   {{ block.super }}
   <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
       // Initialize Select2
       $('.select2').select2({
         placeholder: 'Select Organizations',
         allowClear: true,
-        dropdownAutoWidth: true,
+        dropdownAutoWidth: true
       });
 
       // Handle change event to ensure the form reflects changes
-      $('#organization_ids').on('change', function () {
+      $('#organization_ids').on('change', function() {
         if ($(this).val() === null) {
           $(this).val([]).trigger('change'); // Ensure empty list submission
         }
       });
     });
   </script>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
       // Attach event listener to the "Pause" button
       const pauseButton = document.querySelector('a.btn-warning');
 
       if (pauseButton) {
-        pauseButton.addEventListener('click', function (event) {
+        pauseButton.addEventListener('click', function(event) {
           event.preventDefault();
 
           const url = this.getAttribute('href');
 
           Swal.fire({
             title: 'Pause VoidForger?',
-            text: "Pausing will reset the life cycle parameters. Do you wish to proceed?",
+            text: 'Pausing will reset the life cycle parameters. Do you wish to proceed?',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonText: 'Yes, Pause',

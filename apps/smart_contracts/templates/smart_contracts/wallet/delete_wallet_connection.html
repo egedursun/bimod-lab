@@ -1,4 +1,3 @@
-
 <!--
   ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
   ~
@@ -26,7 +25,7 @@
 {% block title %}Delete Wallet Connection{% endblock %}
 
 {% block content %}
-<div class="row">
+  <div class="row">
     <div class="col-xl mb-6">
       <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
@@ -44,17 +43,21 @@
           {% endif %}
           <form method="post">
             {% csrf_token %}
-            <p>Are you sure you want to delete the wallet connection <strong>"{{ wallet_connection.nickname }}"</strong>?</p><br>
+            <p>Are you sure you want to delete the wallet connection <strong>"{{ wallet_connection.nickname }}"</strong>?
+            </p><br>
             <h6><strong>
               • This operation will result in the complete removal of the wallet connection from the platform.
               <br>
-              • This deletion is irreversible and will completely remove the wallet connection and all its associated data.
+              • This deletion is irreversible and will completely remove the wallet connection and all its associated
+              data.
             </strong></h6>
-            <img src="{% static 'img/custom-illustrations-v2/i2-59.png' %}" width="25%" style="border-radius:25px;" class="justify-content-end" alt="Illustration for confirming deletion">
+            <img src="{% static 'img/custom-illustrations-v2/i2-59.png' %}" width="25%" style="border-radius:25px;"
+                 class="justify-content-end" alt="Illustration for confirming deletion">
             <hr>
             <button type="submit" class="btn btn-danger mt-4 me-4"><strong>
               <i class="fa fa-skull-crossbones me-4"></i>
-              DELETE &nbsp;</strong> the Wallet Connection.</button>
+              DELETE &nbsp;</strong> the Wallet Connection.
+            </button>
             <a href="{% url 'smart_contracts:wallet_connection_list' %}" class="btn btn-secondary mt-4"><strong>
               <i class="fa fa-cancel me-4"></i>
               CANCEL &nbsp;</strong> the deletion

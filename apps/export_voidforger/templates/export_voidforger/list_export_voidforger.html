@@ -28,9 +28,9 @@
 {% block vendor_css %}
   {{ block.super }}
 
-<link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}"/>
-  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
-  <link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}" />
   <style>
     .text-wrap {
       white-space: normal;
@@ -104,6 +104,7 @@
             <div class="card-title mb-0">
               <div class="d-flex">
                 <img src="
+
                   {% if data.organization.organization_image %}{{ data.organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
                      alt="Organization Logo" class="rounded me-4" width="60">
                 <h5 class="mb-1">
@@ -136,7 +137,8 @@
                 <li class="mb-4 d-flex">
                   <div class="d-flex w-50 align-items-center me-4">
                     <div>
-                      <h6 class="mb-0"><strong>ID: {{ export_assistant.id }} - {{ export_assistant.voidforger.llm_model.organization.name }}</strong></h6>
+                      <h6 class="mb-0"><strong>ID: {{ export_assistant.id }}
+                        - {{ export_assistant.voidforger.llm_model.organization.name }}</strong></h6>
                       <small class="text-body">{{ export_assistant.voidforger.llm_model.nickname }}</small>
                     </div>
                   </div>
@@ -180,7 +182,8 @@
     {% for export_assistant in export_assistants %}
       <div class="card col-5 mb-6 ms-6">
         <div class="card-body text-center">
-          <h5 class="mb-0 card-title"><strong>ID: {{ export_assistant.id }} - {{ export_assistant.voidforger.llm_model.organization.name }}</strong></h5>
+          <h5 class="mb-0 card-title"><strong>ID: {{ export_assistant.id }}
+            - {{ export_assistant.voidforger.llm_model.organization.name }}</strong></h5>
           <span>{{ export_assistant.voidforger.llm_model.nickname }}</span>
           <div class="align-items-center justify-content-center my-6 gap-2">
             <label class="text">
@@ -262,34 +265,34 @@
   </div>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
 
-      document.querySelectorAll('.btn-danger').forEach(function (button) {
-         button.addEventListener('click', function (event) {
-            event.preventDefault();
-            const form = button.closest('a').getAttribute('href');
+      document.querySelectorAll('.btn-danger').forEach(function(button) {
+        button.addEventListener('click', function(event) {
+          event.preventDefault();
+          const form = button.closest('a').getAttribute('href');
 
-            Swal.fire({
-               title: 'Are you sure?',
-               text: "You won't be able to revert this action.",
-               icon: 'warning',
-               showCancelButton: true,
-               confirmButtonText: 'Yes, delete it!',
-               customClass: {
-                  confirmButton: 'btn btn-danger me-2 waves-effect waves-light',
-                  cancelButton: 'btn btn-label-secondary waves-effect waves-light'
-               },
-               buttonsStyling: false
-            }).then((result) => {
-               if (result.isConfirmed) {
-                  window.location.href = form;
-               }
-            });
-         });
+          Swal.fire({
+            title: 'Are you sure?',
+            text: 'You won\'t be able to revert this action.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            customClass: {
+              confirmButton: 'btn btn-danger me-2 waves-effect waves-light',
+              cancelButton: 'btn btn-label-secondary waves-effect waves-light'
+            },
+            buttonsStyling: false
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.href = form;
+            }
+          });
+        });
       });
 
-      document.querySelectorAll('.toggle-api-key').forEach(function (btn) {
-        btn.addEventListener('click', function () {
+      document.querySelectorAll('.toggle-api-key').forEach(function(btn) {
+        btn.addEventListener('click', function() {
           const apiKey = this.getAttribute('data-key');
           const id = this.getAttribute('data-id');
           const apiKeySpan = document.querySelector(`#api-key-${id}`);
@@ -305,8 +308,8 @@
         });
       });
 
-      document.querySelectorAll('.copy-btn-endpoint').forEach(function (btn) {
-        btn.addEventListener('click', function () {
+      document.querySelectorAll('.copy-btn-endpoint').forEach(function(btn) {
+        btn.addEventListener('click', function() {
           const endpoint = this.getAttribute('data-endpoint');
           const textToCopy = endpoint ? endpoint : '';
 
@@ -332,8 +335,8 @@
         });
       });
 
-      document.querySelectorAll('.copy-btn-key').forEach(function (btn) {
-        btn.addEventListener('click', function () {
+      document.querySelectorAll('.copy-btn-key').forEach(function(btn) {
+        btn.addEventListener('click', function() {
           const apiKey = this.getAttribute('data-key');
           const textToCopy = apiKey ? apiKey : '';
 
@@ -359,14 +362,14 @@
         });
       });
 
-      document.querySelectorAll('.btn-danger').forEach(function (button) {
-        button.addEventListener('click', function (event) {
+      document.querySelectorAll('.btn-danger').forEach(function(button) {
+        button.addEventListener('click', function(event) {
           event.preventDefault();
           const form = button.closest('a').getAttribute('href');
 
           Swal.fire({
             title: 'Are you sure?',
-            text: "You won't be able to revert this action.",
+            text: 'You won\'t be able to revert this action.',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonText: 'Yes, delete it!',

@@ -1,21 +1,21 @@
-  <!--
-  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
-  ~
-  ~ Project: Bimod.io™
-  ~ File: not_accredited_admin.html
-  ~ Last Modified: 2024-10-05 01:39:48
-  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-05 14:42:33
-  ~
-  ~ This software is proprietary and confidential. Unauthorized copying,
-  ~ distribution, modification, or use of this software, whether for
-  ~ commercial, academic, or any other purpose, is strictly prohibited
-  ~ without the prior express written permission of BMD™ Autonomous
-  ~ Holdings.
-  ~
-  ~  For permission inquiries, please contact: admin@Bimod.io.
-  ~
-  -->
+<!--
+~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+~
+~ Project: Bimod.io™
+~ File: not_accredited_admin.html
+~ Last Modified: 2024-10-05 01:39:48
+~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+~ Created: 2024-10-05 14:42:33
+~
+~ This software is proprietary and confidential. Unauthorized copying,
+~ distribution, modification, or use of this software, whether for
+~ commercial, academic, or any other purpose, is strictly prohibited
+~ without the prior express written permission of BMD™ Autonomous
+~ Holdings.
+~
+~  For permission inquiries, please contact: admin@Bimod.io.
+~
+-->
 
 {% extends layout_path %}
 
@@ -26,7 +26,7 @@
 
 {% block page_css %}
   {{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/css/pages/page-misc.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/css/pages/page-misc.css' %}" />
 {% endblock page_css %}
 
 {% block content %}
@@ -41,7 +41,8 @@
         <strong>"Your application as an administrator is currently under review by our team."</strong>
       </h4>
       <p class="mb-6 mx-2">
-        We absolutely know that you are very excited to get started with your new account and try the features <strong>{% get_theme_variables 'template_name' %}</strong>
+        We absolutely know that you are very excited to get started with your new account and try the features
+        <strong>{% get_theme_variables 'template_name' %}</strong>
         offers, and we would like to share that we are truly sorry for making you wait for the manual approval process.
       </p>
       <p class="mb-6 mx-2">

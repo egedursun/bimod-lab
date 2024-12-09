@@ -1,21 +1,21 @@
-  <!--
-  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
-  ~
-  ~ Project: Bimod.io™
-  ~ File: list_scheduled_jobs.html
-  ~ Last Modified: 2024-10-05 01:39:48
-  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-05 14:42:45
-  ~
-  ~ This software is proprietary and confidential. Unauthorized copying,
-  ~ distribution, modification, or use of this software, whether for
-  ~ commercial, academic, or any other purpose, is strictly prohibited
-  ~ without the prior express written permission of BMD™ Autonomous
-  ~ Holdings.
-  ~
-  ~  For permission inquiries, please contact: admin@Bimod.io.
-  ~
-  -->
+<!--
+~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+~
+~ Project: Bimod.io™
+~ File: list_scheduled_jobs.html
+~ Last Modified: 2024-10-05 01:39:48
+~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+~ Created: 2024-10-05 14:42:45
+~
+~ This software is proprietary and confidential. Unauthorized copying,
+~ distribution, modification, or use of this software, whether for
+~ commercial, academic, or any other purpose, is strictly prohibited
+~ without the prior express written permission of BMD™ Autonomous
+~ Holdings.
+~
+~  For permission inquiries, please contact: admin@Bimod.io.
+~
+-->
 
 {% extends layout_path %}
 
@@ -26,9 +26,9 @@
 
 {% block vendor_css %}
   {{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}"/>
-  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}"/>
-  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css' %}" />
   <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/font/bootstrap-icons.min.css">
 {% endblock vendor_css %}
@@ -111,7 +111,8 @@
       <h5 class="card-title">
         <strong>Your Scheduled Jobs</strong>
       </h5>
-      <img src="{% static 'img/scheduled_jobs/sch-3.png' %}" class="rounded mt-4 mb-4" style="width: 100%;" alt="Illustration for tips">
+      <img src="{% static 'img/scheduled_jobs/sch-3.png' %}" class="rounded mt-4 mb-4" style="width: 100%;"
+           alt="Illustration for tips">
     </div>
     <div class="card-datatable table-responsive">
       <a href="{% url 'mm_scheduled_jobs:create' %}">
@@ -140,7 +141,9 @@
             <td style="min-width: 200px; max-width: 200px;"><strong>{{ job.name }}</strong></td>
             <td style="min-width: 300px; max-width: 200px;">{{ job.task_description }}</td>
             <td style="min-width: 150px; max-width: 150px;"><strong>{{ job.created_by_user }}</strong></td>
-            <td style="min-width: 250px; max-width: 250px;"><div class="btn-info rounded p-1"><strong>{{ job.assistant.name }}</strong></div></td>
+            <td style="min-width: 250px; max-width: 250px;">
+              <div class="btn-info rounded p-1"><strong>{{ job.assistant.name }}</strong></div>
+            </td>
             <td style="min-width: 380px; max-width: 380px;">
               <p class="bg-label-secondary rounded p-2 m-1">
                 <i class="bi bi-calendar-month me-4"></i>

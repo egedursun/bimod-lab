@@ -28,9 +28,9 @@
 
 {% block vendor_css %}
   {{ block.super }}
-  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}"/>
-  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}"/>
-  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css' %}" />
   <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/font/bootstrap-icons.min.css">
 {% endblock vendor_css %}
@@ -45,17 +45,17 @@
   <script src="{% static 'js/triggered-jobs-list.js' %}"></script>
   <script>
     function copyToClipboard(text) {
-      navigator.clipboard.writeText(text).then(function () {
+      navigator.clipboard.writeText(text).then(function() {
         console.log('Text copied to clipboard');
-      }, function (err) {
+      }, function(err) {
         console.error('Could not copy text: ', err);
       });
     }
 
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       const copyButtons = document.querySelectorAll('.copy-url-btn');
       copyButtons.forEach(button => {
-        button.addEventListener('click', function () {
+        button.addEventListener('click', function() {
           const url = this.getAttribute('data-url');
           copyToClipboard(url);
           button.parentElement.insertAdjacentHTML('beforeend', '' +
@@ -79,7 +79,8 @@
   </div>
 
   <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
-    <img src="{% static 'img/custom-illustrations-v2/i2-18.png' %}" width="25%" style="border-radius: 25px;" class="justify-content-end me-8" alt="Illustration for tip">
+    <img src="{% static 'img/custom-illustrations-v2/i2-18.png' %}" width="25%" style="border-radius: 25px;"
+         class="justify-content-end me-8" alt="Illustration for tip">
     <span class="alert-icon rounded ms-4">
     <i class="bi bi-info-circle"></i>
   </span>
@@ -134,7 +135,8 @@
       <h5 class="card-title">
         <strong>Your Triggered Jobs</strong>
       </h5>
-      <img src="{% static 'img/triggered_jobs/trg-1.png' %}" class="rounded mt-4 mb-4" style="width: 100%;" alt="Illustration for tips">
+      <img src="{% static 'img/triggered_jobs/trg-1.png' %}" class="rounded mt-4 mb-4" style="width: 100%;"
+           alt="Illustration for tips">
     </div>
     <div class="card-datatable table-responsive">
       <a href="{% url 'mm_triggered_jobs:create' %}">
@@ -176,7 +178,8 @@
               </button>
             </td>
             <td style="min-width: 400px; max-width: 400px;">
-              <strong class="btn-info rounded p-1" style="min-width: 200px; max-width: 200px;">{{ job.trigger_source }}</strong>
+              <strong class="btn-info rounded p-1"
+                      style="min-width: 200px; max-width: 200px;">{{ job.trigger_source }}</strong>
             </td>
             <td style="min-width: 200px;">{{ job.event_type }}</td>
             <td style="min-width: 60px; max-width: 60px;">

@@ -34,102 +34,105 @@
 {% block title %}Manage eLLMa Scripts{% endblock %}
 
 {% block content %}
-<div class="container mt-4">
+  <div class="container mt-4">
 
-  <!-- Creation Tips Section -->
-  <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
-    <img src="{% static 'img/custom-illustrations-v2/i2-72.png' %}" width="25%" style="border-radius:25px;" class="me-8" alt="Illustration for tip">
-    <span class="alert-icon rounded">
+    <!-- Creation Tips Section -->
+    <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+      <img src="{% static 'img/custom-illustrations-v2/i2-72.png' %}" width="25%" style="border-radius:25px;"
+           class="me-8" alt="Illustration for tip">
+      <span class="alert-icon rounded">
       <i class="ti ti-bookmark"></i>
     </span>
-    <div class="d-flex flex-column ps-1">
-      <h5 class="alert-heading mb-2">Tip</h5>
-      <p class="mb-0">
-        In this page, you can manage and create your eLLMa scripts. eLLMa scripts are very powerful tools with which
-        you can design your code with minimal effort and save time by letting AI transcribe your code for you.
-        You can create new scripts, edit existing ones, and delete them as you wish by using the buttons provided.
-      </p>
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-  </div>
-
-  <hr>
-
-  {% if messages %}
-    {% for message in messages %}
-      <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-info{% endif %}" role="alert">
-        {{ message }}
+      <div class="d-flex flex-column ps-1">
+        <h5 class="alert-heading mb-2">Tip</h5>
+        <p class="mb-0">
+          In this page, you can manage and create your eLLMa scripts. eLLMa scripts are very powerful tools with which
+          you can design your code with minimal effort and save time by letting AI transcribe your code for you.
+          You can create new scripts, edit existing ones, and delete them as you wish by using the buttons provided.
+        </p>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
-    {% endfor %}
-  {% endif %}
-
-  <hr>
-
-  <!-- New Script Creation Form -->
-  <div class="card mb-4">
-    <div class="card-header">
-      <h4><i class="fa fa-plus-circle me-2"></i>Create New Script</h4>
     </div>
-    <div class="card-body">
-      <form method="post" action="{% url 'ellma:create-script' %}">
-        {% csrf_token %}
 
-        <div class="row">
-          <!-- Organization Picker -->
-          <div class="col-md-4 mb-3">
-            <label for="organization" class="form-label">Organization</label>
-            <select id="organization" name="organization" class="form-control" required>
-              <option value="" disabled selected>Select an Organization</option>
-              {% for org in organizations %}
-                <option value="{{ org.id }}">{{ org.name }}</option>
-              {% endfor %}
-            </select>
-          </div>
+    <hr>
 
-          <!-- LLM Model Picker -->
-          <div class="col-md-4 mb-3">
-            <label for="llm_model" class="form-label">LLM Model</label>
-            <select id="llm_model" name="llm_model" class="form-control" required>
-              <option value="" disabled selected>Select an LLM Model</option>
-              {% for model in llm_models %}
-                <option value="{{ model.id }}">{{ model.nickname }}</option>
-              {% endfor %}
-            </select>
-          </div>
-
-          <!-- Script Name -->
-          <div class="col-md-4 mb-3">
-            <label for="script_name" class="form-label">Script Name</label>
-            <input type="text" id="script_name" name="script_name" class="form-control" required>
-          </div>
+    {% if messages %}
+      {% for message in messages %}
+        <div
+          class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-info{% endif %}"
+          role="alert">
+          {{ message }}
         </div>
+      {% endfor %}
+    {% endif %}
 
-        <button type="submit" class="btn btn-success mt-3 w-25">
-          <i class="fa fa-file-upload me-2"></i>
-          <strong>Create New Script</strong>
-        </button>
-      </form>
-    </div>
-  </div>
+    <hr>
 
-  <!-- Existing Scripts Listing -->
-  {% for organization, scripts in org_scripts.items %}
+    <!-- New Script Creation Form -->
     <div class="card mb-4">
       <div class="card-header">
-        <h4>{{ organization.name }} Scripts</h4>
+        <h4><i class="fa fa-plus-circle me-2"></i>Create New Script</h4>
       </div>
       <div class="card-body">
-        {% if scripts %}
-          <table class="table">
-            <thead>
+        <form method="post" action="{% url 'ellma:create-script' %}">
+          {% csrf_token %}
+
+          <div class="row">
+            <!-- Organization Picker -->
+            <div class="col-md-4 mb-3">
+              <label for="organization" class="form-label">Organization</label>
+              <select id="organization" name="organization" class="form-control" required>
+                <option value="" disabled selected>Select an Organization</option>
+                {% for org in organizations %}
+                  <option value="{{ org.id }}">{{ org.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <!-- LLM Model Picker -->
+            <div class="col-md-4 mb-3">
+              <label for="llm_model" class="form-label">LLM Model</label>
+              <select id="llm_model" name="llm_model" class="form-control" required>
+                <option value="" disabled selected>Select an LLM Model</option>
+                {% for model in llm_models %}
+                  <option value="{{ model.id }}">{{ model.nickname }}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <!-- Script Name -->
+            <div class="col-md-4 mb-3">
+              <label for="script_name" class="form-label">Script Name</label>
+              <input type="text" id="script_name" name="script_name" class="form-control" required>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-success mt-3 w-25">
+            <i class="fa fa-file-upload me-2"></i>
+            <strong>Create New Script</strong>
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Existing Scripts Listing -->
+    {% for organization, scripts in org_scripts.items %}
+      <div class="card mb-4">
+        <div class="card-header">
+          <h4>{{ organization.name }} Scripts</h4>
+        </div>
+        <div class="card-body">
+          {% if scripts %}
+            <table class="table">
+              <thead>
               <tr>
                 <th>Script Name</th>
                 <th>Transcription Language</th>
                 <th>Created At</th>
                 <th>Actions</th>
               </tr>
-            </thead>
-            <tbody>
+              </thead>
+              <tbody>
               {% for script in scripts %}
                 <tr>
                   <td><strong>{{ script.script_name }}</strong></td>
@@ -145,8 +148,9 @@
                       <strong>Delete</strong>
                     </button>
                     <!-- Download and Copy Buttons -->
-                    <button class="btn btn-sm btn-success me-2 {% if not script.ellma_transcribed_content %}disabled{% endif %}"
-                            onclick="downloadScript('{{ script.id }}', '{{ script.script_name }}')">
+                    <button
+                      class="btn btn-sm btn-success me-2 {% if not script.ellma_transcribed_content %}disabled{% endif %}"
+                      onclick="downloadScript('{{ script.id }}', '{{ script.script_name }}')">
                       <i class="fa fa-download me-2"></i><strong>Download</strong>
                     </button>
                     <button class="btn btn-sm btn-info {% if not script.ellma_transcribed_content %}disabled{% endif %}"
@@ -156,22 +160,23 @@
 
                     <!-- Hidden textarea for script content -->
                     {% if script.ellma_transcribed_content %}
-                      <textarea id="script-content-{{ script.id }}" style="display:none;">{{ script.ellma_transcribed_content }}</textarea>
+                      <textarea id="script-content-{{ script.id }}"
+                                style="display:none;">{{ script.ellma_transcribed_content }}</textarea>
                     {% endif %}
                   </td>
                 </tr>
               {% endfor %}
-            </tbody>
-          </table>
-        {% else %}
-          <div class="alert alert-warning">
-            <i class="fa fa-exclamation-triangle me-2"></i>No scripts available for {{ organization.name }}.
-          </div>
-        {% endif %}
+              </tbody>
+            </table>
+          {% else %}
+            <div class="alert alert-warning">
+              <i class="fa fa-exclamation-triangle me-2"></i>No scripts available for {{ organization.name }}.
+            </div>
+          {% endif %}
+        </div>
       </div>
-    </div>
-  {% endfor %}
-</div>
+    {% endfor %}
+  </div>
 {% endblock %}
 
 {% block page_js %}
@@ -215,15 +220,15 @@
       });
     });
   </script>
-<script>
+  <script>
     // Function to download the script content as a .txt file
     function downloadScript(scriptId, scriptName) {
       const scriptContent = document.getElementById(`script-content-${scriptId}`).value;
       if (!scriptContent) return;
 
-      const blob = new Blob([scriptContent], { type: "text/plain" });
+      const blob = new Blob([scriptContent], { type: 'text/plain' });
       const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
+      const a = document.createElement('a');
       a.href = url;
       a.download = `${scriptName}.txt`;
       document.body.appendChild(a);

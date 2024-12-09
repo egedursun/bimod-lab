@@ -1,21 +1,21 @@
-  <!--
-  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
-  ~
-  ~ Project: Bimod.io™
-  ~ File: manage_google_apps_connections.html
-  ~ Last Modified: 2024-10-31 05:36:06
-  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-11-01 00:43:30
-  ~
-  ~ This software is proprietary and confidential. Unauthorized copying,
-  ~ distribution, modification, or use of this software, whether for
-  ~ commercial, academic, or any other purpose, is strictly prohibited
-  ~ without the prior express written permission of BMD™ Autonomous
-  ~ Holdings.
-  ~
-  ~  For permission inquiries, please contact: admin@Bimod.io.
-  ~
-  -->
+<!--
+~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+~
+~ Project: Bimod.io™
+~ File: manage_google_apps_connections.html
+~ Last Modified: 2024-10-31 05:36:06
+~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+~ Created: 2024-11-01 00:43:30
+~
+~ This software is proprietary and confidential. Unauthorized copying,
+~ distribution, modification, or use of this software, whether for
+~ commercial, academic, or any other purpose, is strictly prohibited
+~ without the prior express written permission of BMD™ Autonomous
+~ Holdings.
+~
+~  For permission inquiries, please contact: admin@Bimod.io.
+~
+-->
 
 {% extends layout_path %}
 {% load static %}
@@ -24,7 +24,7 @@
 {% block vendor_css %}
   {{ block.super }}
 
-<link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}" />
 {% endblock %}
 
 {% block vendor_js %}
@@ -35,202 +35,204 @@
 {% block title %}Google Apps Connections{% endblock %}
 
 {% block content %}
-<div class="container mt-4">
+  <div class="container mt-4">
 
-  <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
-    <img src="{% static 'img/custom-illustrations-v2/i2-58.png' %}" width="25%" style="border-radius: 25px;"
-         class="justify-content-end me-8" alt="Illustration for tip">
-    <span class="alert-icon rounded">
+    <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+      <img src="{% static 'img/custom-illustrations-v2/i2-58.png' %}" width="25%" style="border-radius: 25px;"
+           class="justify-content-end me-8" alt="Illustration for tip">
+      <span class="alert-icon rounded">
       <i class="ti ti-bookmark"></i>
     </span>
-    <div class="d-flex flex-column ps-1">
-      <h5 class="alert-heading mb-2">Tip</h5>
-      <p class="mb-0">
-        Manage your Google Apps connections here. You can create a new connection or update an existing one with a new
-        API key. You can also delete a connection if you no longer need it. There is a strict limit on the number of
-        connections you can create, which is enforced by the system. You can have one connection per Assistant.
-      </p>
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-  </div>
-
-  {% if messages %}
-    {% for message in messages %}
-      <div
-        class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
-        role="alert">
-        {{ message }}
+      <div class="d-flex flex-column ps-1">
+        <h5 class="alert-heading mb-2">Tip</h5>
+        <p class="mb-0">
+          Manage your Google Apps connections here. You can create a new connection or update an existing one with a new
+          API key. You can also delete a connection if you no longer need it. There is a strict limit on the number of
+          connections you can create, which is enforced by the system. You can have one connection per Assistant.
+        </p>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
-    {% endfor %}
-  {% endif %}
+    </div>
 
-  <hr>
-
-  <h3 class="p-8 rounded bg-card">
-    <strong>
-      <i class="fa fa-pencil me-2"></i>
-      Sheetos <> Google Sheets Synchronization
-    </strong>
-  </h3>
-
-  <hr>
-
-  <!-- Connection Creation Form at the Top -->
-  <div class="row">
-    <div class="col-md-12">
-      <div class="card">
-        <div class="card-header">
-          <h4>
-            <i class="fa fa-plus-circle me-2"></i>
-            <strong>Create New Google Apps Connection</strong>
-          </h4>
+    {% if messages %}
+      {% for message in messages %}
+        <div
+          class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
+          role="alert">
+          {{ message }}
         </div>
-        <div class="card-body">
-          <form method="post" action="{% url 'sheetos:google_apps_connections_create' %}">
-            {% csrf_token %}
-            <div class="row">
-              <!-- Assistant Picker -->
-              <div class="col-12 mb-3">
-                <label for="assistant" class="form-label">Select Assistant</label>
-                <select id="assistant" name="assistant" class="form-control" required>
-                  <option value="" disabled selected>Select an Assistant</option>
-                  {% for assistant in assistants %}
-                    <option value="{{ assistant.id }}">{{ assistant.name }}</option>
-                  {% endfor %}
-                </select>
+      {% endfor %}
+    {% endif %}
+
+    <hr>
+
+    <h3 class="p-8 rounded bg-card">
+      <strong>
+        <i class="fa fa-pencil me-2"></i>
+        Sheetos <> Google Sheets Synchronization
+      </strong>
+    </h3>
+
+    <hr>
+
+    <!-- Connection Creation Form at the Top -->
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <h4>
+              <i class="fa fa-plus-circle me-2"></i>
+              <strong>Create New Google Apps Connection</strong>
+            </h4>
+          </div>
+          <div class="card-body">
+            <form method="post" action="{% url 'sheetos:google_apps_connections_create' %}">
+              {% csrf_token %}
+              <div class="row">
+                <!-- Assistant Picker -->
+                <div class="col-12 mb-3">
+                  <label for="assistant" class="form-label">Select Assistant</label>
+                  <select id="assistant" name="assistant" class="form-control" required>
+                    <option value="" disabled selected>Select an Assistant</option>
+                    {% for assistant in assistants %}
+                      <option value="{{ assistant.id }}">{{ assistant.name }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
               </div>
-            </div>
 
-            <button type="submit" class="btn btn-success mt-4 w-25">
-              <i class="fa fa-link me-2"></i>
-              <strong>Create Connection</strong>
-            </button>
-          </form>
+              <button type="submit" class="btn btn-success mt-4 w-25">
+                <i class="fa fa-link me-2"></i>
+                <strong>Create Connection</strong>
+              </button>
+            </form>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <hr>
+    <hr>
 
-  <h4 class="mb-4">
-    <i class="fa fa-cogs me-2"></i>
-    <strong>Your Google Apps Connections</strong>
-  </h4>
+    <h4 class="mb-4">
+      <i class="fa fa-cogs me-2"></i>
+      <strong>Your Google Apps Connections</strong>
+    </h4>
 
-  <hr>
+    <hr>
 
-  <!-- Connections Listing -->
-  <div class="card-body p-8 overflow-auto">
-  {% if connections %}
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Assistant</th>
-          <th>Owner</th>
-          <th>Authentication Key</th>
-          <th>Created At</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for connection in connections %}
+    <!-- Connections Listing -->
+    <div class="card-body p-8 overflow-auto">
+      {% if connections %}
+        <table class="table">
+          <thead>
           <tr>
-            <td style="min-width: 400px; max-width: 400px;">
-              <form method="post" action="{% url 'sheetos:google_apps_connections_update' connection.id %}">
-                {% csrf_token %}
-                <select name="assistant" class="form-control form-select-sm">
-                  {% for assistant in assistants %}
-                    <option value="{{ assistant.id }}" {% if assistant.id == connection.sheetos_assistant.id %}selected{% endif %}>
-                      {{ assistant.name }}
-                    </option>
-                  {% endfor %}
-                </select>
-            </td>
-            <td style="min-width: 150px; max-width: 150px;">{{ connection.owner_user.username }}</td>
-            <td style="min-width: 400px; max-width: 400px;">
+            <th>Assistant</th>
+            <th>Owner</th>
+            <th>Authentication Key</th>
+            <th>Created At</th>
+            <th>Actions</th>
+          </tr>
+          </thead>
+          <tbody>
+          {% for connection in connections %}
+            <tr>
+              <td style="min-width: 400px; max-width: 400px;">
+                <form method="post" action="{% url 'sheetos:google_apps_connections_update' connection.id %}">
+                  {% csrf_token %}
+                  <select name="assistant" class="form-control form-select-sm">
+                    {% for assistant in assistants %}
+                      <option value="{{ assistant.id }}"
+                              {% if assistant.id == connection.sheetos_assistant.id %}selected{% endif %}>
+                        {{ assistant.name }}
+                      </option>
+                    {% endfor %}
+                  </select>
+              </td>
+              <td style="min-width: 150px; max-width: 150px;">{{ connection.owner_user.username }}</td>
+              <td style="min-width: 400px; max-width: 400px;">
               <textarea name="connection_api_key" class="form-control form-control-sm" rows="3"
                         placeholder="Enter API Key">{{ connection.connection_api_key|default:'' }}</textarea>
-            </td>
-            <td style="min-width: 100px; max-width: 100px;">{{ connection.created_at|date:"Y-m-d H:i" }}</td>
-            <td style="min-width: 350px; max-width: 350px;">
+              </td>
+              <td style="min-width: 100px; max-width: 100px;">{{ connection.created_at|date:"Y-m-d H:i" }}</td>
+              <td style="min-width: 350px; max-width: 350px;">
                 <button type="submit" class="btn btn-sm btn-warning me-4">
                   <i class="fa fa-sync-alt me-2"></i> <strong>Update</strong>
                 </button>
                 </form>
-                <a href="{% url 'sheetos:google_apps_connections_delete' connection.id %}" class="btn btn-sm btn-danger connection-delete-btn me-4" data-connection-id="{{ connection.id }}">
+                <a href="{% url 'sheetos:google_apps_connections_delete' connection.id %}"
+                   class="btn btn-sm btn-danger connection-delete-btn me-4" data-connection-id="{{ connection.id }}">
                   <i class="fa fa-trash me-2"></i> <strong>Delete</strong>
                 </a>
-            </td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+              </td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
 
-    <hr>
+        <hr>
 
-    <!-- Pagination Controls -->
-    <nav aria-label="Page navigation">
-      <ul class="pagination mt-8">
-        {% if connections.has_previous %}
-          <li class="page-item">
-            <a class="page-link" href="?page=1" aria-label="First">
-              <span aria-hidden="true">&laquo;&laquo;</span>
-            </a>
-          </li>
-          <li class="page-item">
-            <a class="page-link" href="?page={{ connections.previous_page_number }}" aria-label="Previous">
-              <span aria-hidden="true">&laquo;</span>
-            </a>
-          </li>
-        {% else %}
-          <li class="page-item disabled">
-            <span class="page-link">&laquo;&laquo;</span>
-          </li>
-          <li class="page-item disabled">
-            <span class="page-link">&laquo;</span>
-          </li>
-        {% endif %}
+        <!-- Pagination Controls -->
+        <nav aria-label="Page navigation">
+          <ul class="pagination mt-8">
+            {% if connections.has_previous %}
+              <li class="page-item">
+                <a class="page-link" href="?page=1" aria-label="First">
+                  <span aria-hidden="true">&laquo;&laquo;</span>
+                </a>
+              </li>
+              <li class="page-item">
+                <a class="page-link" href="?page={{ connections.previous_page_number }}" aria-label="Previous">
+                  <span aria-hidden="true">&laquo;</span>
+                </a>
+              </li>
+            {% else %}
+              <li class="page-item disabled">
+                <span class="page-link">&laquo;&laquo;</span>
+              </li>
+              <li class="page-item disabled">
+                <span class="page-link">&laquo;</span>
+              </li>
+            {% endif %}
 
-        {% for num in connections.paginator.page_range %}
-          {% if connections.number == num %}
-            <li class="page-item active"><span class="page-link">{{ num }}</span></li>
-          {% elif num > connections.number|add:'-3' and num < connections.number|add:'3' %}
-            <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
-          {% endif %}
-        {% endfor %}
+            {% for num in connections.paginator.page_range %}
+              {% if connections.number == num %}
+                <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+              {% elif num > connections.number|add:'-3' and num < connections.number|add:'3' %}
+                <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+              {% endif %}
+            {% endfor %}
 
-        {% if connections.has_next %}
-          <li class="page-item">
-            <a class="page-link" href="?page={{ connections.next_page_number }}" aria-label="Next">
-              <span aria-hidden="true">&raquo;</span>
-            </a>
-          </li>
-          <li class="page-item">
-            <a class="page-link" href="?page={{ connections.paginator.num_pages }}" aria-label="Last">
-              <span aria-hidden="true">&raquo;&raquo;</span>
-            </a>
-          </li>
-        {% else %}
-          <li class="page-item disabled">
-            <span class="page-link">&raquo;</span>
-          </li>
-          <li class="page-item disabled">
-            <span class="page-link">&raquo;&raquo;</span>
-          </li>
-        {% endif %}
-      </ul>
-    </nav>
-  {% else %}
-    <div class="alert alert-warning">
-      <i class="fa fa-exclamation-triangle me-2"></i>
-      <strong>No connections available.</strong>
+            {% if connections.has_next %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ connections.next_page_number }}" aria-label="Next">
+                  <span aria-hidden="true">&raquo;</span>
+                </a>
+              </li>
+              <li class="page-item">
+                <a class="page-link" href="?page={{ connections.paginator.num_pages }}" aria-label="Last">
+                  <span aria-hidden="true">&raquo;&raquo;</span>
+                </a>
+              </li>
+            {% else %}
+              <li class="page-item disabled">
+                <span class="page-link">&raquo;</span>
+              </li>
+              <li class="page-item disabled">
+                <span class="page-link">&raquo;&raquo;</span>
+              </li>
+            {% endif %}
+          </ul>
+        </nav>
+      {% else %}
+        <div class="alert alert-warning">
+          <i class="fa fa-exclamation-triangle me-2"></i>
+          <strong>No connections available.</strong>
+        </div>
+      {% endif %}
     </div>
-  {% endif %}
-</div>
 
 
-</div>
+  </div>
 {% endblock %}
 
 {% block page_js %}

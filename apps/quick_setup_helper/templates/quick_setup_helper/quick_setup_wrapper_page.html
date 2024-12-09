@@ -1,4 +1,3 @@
-
 <!--
   ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
   ~
@@ -26,305 +25,319 @@
 {% block title %}Quick Setup Helper{% endblock %}
 
 {% block vendor_css %}
-{{ block.super }}
+  {{ block.super }}
 
-<link rel="stylesheet" href="{% static 'vendor/libs/bs-stepper/bs-stepper.css' %}" />
-<link rel="stylesheet" href="{% static 'vendor/libs/bootstrap-select/bootstrap-select.css' %}" />
-<link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
-<style>
-  .bs-stepper-header {
+  <link rel="stylesheet" href="{% static 'vendor/libs/bs-stepper/bs-stepper.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/bootstrap-select/bootstrap-select.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
+  <style>
+    .bs-stepper-header {
       display: flex;
       flex-wrap: wrap;
       gap: 0.5rem;
       justify-content: center;
-  }
-</style>
+    }
+  </style>
 {% endblock vendor_css %}
 
 {% block vendor_js %}
-{{ block.super }}
-<script src="{% static 'vendor/libs/bs-stepper/bs-stepper.js' %}"></script>
-<script src="{% static 'vendor/libs/bootstrap-select/bootstrap-select.js' %}"></script>
-<script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/bs-stepper/bs-stepper.js' %}"></script>
+  <script src="{% static 'vendor/libs/bootstrap-select/bootstrap-select.js' %}"></script>
+  <script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
 {% endblock vendor_js %}
 
 
 {% block content %}
-<!-- Modern -->
-<div class="row">
-  <div class="col-12">
-    <h4>
-      <strong>
-        <i class="fa fa-magic-wand-sparkles me-2"></i>
-        Quick Setup Helper
-      </strong>
-    </h4>
-  </div>
+  <!-- Modern -->
+  <div class="row">
+    <div class="col-12">
+      <h4>
+        <strong>
+          <i class="fa fa-magic-wand-sparkles me-2"></i>
+          Quick Setup Helper
+        </strong>
+      </h4>
+    </div>
 
-  <hr>
+    <hr>
 
-  {% if messages %}
-    {% for message in messages %}
-      <div
-        class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
-        role="alert">
-        {{ message }}
-      </div>
-    {% endfor %}
-  {% endif %}
+    {% if messages %}
+      {% for message in messages %}
+        <div
+          class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
+          role="alert">
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endif %}
 
-  <hr>
+    <hr>
 
-  <!-- Modern Icons Wizard -->
-  <div class="col-12 mb-6">
-    <div class="bs-stepper wizard-icons wizard-modern wizard-modern-icons-example mt-2">
-      <div class="bs-stepper-header bg-card rounded mb-8 p-8">
-        <!-- Step 1 / Header: Organization Information -->
-        <div class="step" data-target="#organization-modern">
-          <button type="button" class="step-trigger">
+    <!-- Modern Icons Wizard -->
+    <div class="col-12 mb-6">
+      <div class="bs-stepper wizard-icons wizard-modern wizard-modern-icons-example mt-2">
+        <div class="bs-stepper-header bg-card rounded mb-8 p-8">
+          <!-- Step 1 / Header: Organization Information -->
+          <div class="step" data-target="#organization-modern">
+            <button type="button" class="step-trigger">
             <span class="bs-stepper-icon">
               <i class="fa fa-building"></i>
             </span>
-            <span class="bs-stepper-label">
+              <span class="bs-stepper-label">
               <strong>Organization</strong>
             </span>
-          </button>
-        </div>
-        <div class="line">
-          <i class="ti ti-chevron-right"></i>
-        </div>
-        <!-- Step 2 / Header: LLM Model -->
-        <div class="step" data-target="#llm-model-modern">
-          <button type="button" class="step-trigger">
+            </button>
+          </div>
+          <div class="line">
+            <i class="ti ti-chevron-right"></i>
+          </div>
+          <!-- Step 2 / Header: LLM Model -->
+          <div class="step" data-target="#llm-model-modern">
+            <button type="button" class="step-trigger">
             <span class="bs-stepper-icon">
               <i class="fa fa-cogs"></i>
             </span>
-            <span class="bs-stepper-label">
+              <span class="bs-stepper-label">
               <strong>LLM Model</strong>
             </span>
-          </button>
-        </div>
-        <div class="line">
-          <i class="ti ti-chevron-right"></i>
-        </div>
-        <!-- Step 3 / Header: Assistants -->
-        <div class="step" data-target="#assistants-modern">
-          <button type="button" class="step-trigger">
+            </button>
+          </div>
+          <div class="line">
+            <i class="ti ti-chevron-right"></i>
+          </div>
+          <!-- Step 3 / Header: Assistants -->
+          <div class="step" data-target="#assistants-modern">
+            <button type="button" class="step-trigger">
             <span class="bs-stepper-icon">
               <i class="fa fa-robot"></i>
             </span>
-            <span class="bs-stepper-label">
+              <span class="bs-stepper-label">
               <strong>Assistants</strong>
             </span>
-          </button>
-        </div>
-        <div class="line">
-          <i class="ti ti-chevron-right"></i>
-        </div>
-        <!-- Step 4 / Header: Memories -->
-        <div class="step" data-target="#memories-modern">
-          <button type="button" class="step-trigger">
+            </button>
+          </div>
+          <div class="line">
+            <i class="ti ti-chevron-right"></i>
+          </div>
+          <!-- Step 4 / Header: Memories -->
+          <div class="step" data-target="#memories-modern">
+            <button type="button" class="step-trigger">
             <span class="bs-stepper-icon">
               <i class="fa fa-memory"></i>
             </span>
-            <span class="bs-stepper-label">
+              <span class="bs-stepper-label">
               <strong>Memories</strong>
             </span>
-          </button>
-        </div>
-        <div class="line">
-          <i class="ti ti-chevron-right"></i>
-        </div>
-        <!-- Step 4a / Header: Orchestration Scheduled Jobs -->
-        <div class="step" data-target="#orchestration-scheduled-jobs-modern">
-          <button type="button" class="step-trigger">
+            </button>
+          </div>
+          <div class="line">
+            <i class="ti ti-chevron-right"></i>
+          </div>
+          <!-- Step 4a / Header: Orchestration Scheduled Jobs -->
+          <div class="step" data-target="#orchestration-scheduled-jobs-modern">
+            <button type="button" class="step-trigger">
             <span class="bs-stepper-icon">
               <i class="fa fa-hourglass-start"></i>
             </span>
-            <span class="bs-stepper-label">Scheduled Jobs</span>
-          </button>
-        </div>
-        <div class="line">
-          <i class="ti ti-chevron-right"></i>
-        </div>
-        <!-- Step 5 / Header: Office Tools -->
-        <div class="step" data-target="#office-tools-modern">
-          <button type="button" class="step-trigger">
+              <span class="bs-stepper-label">Scheduled Jobs</span>
+            </button>
+          </div>
+          <div class="line">
+            <i class="ti ti-chevron-right"></i>
+          </div>
+          <!-- Step 5 / Header: Office Tools -->
+          <div class="step" data-target="#office-tools-modern">
+            <button type="button" class="step-trigger">
             <span class="bs-stepper-icon">
               <i class="fa fa-briefcase"></i>
             </span>
-            <span class="bs-stepper-label">
+              <span class="bs-stepper-label">
               <strong>Office Tools</strong>
             </span>
-          </button>
-        </div>
-        <div class="line">
-          <i class="ti ti-chevron-right"></i>
-        </div>
-        <!-- Step 6 / Header: Payment Method -->
-        <div class="step" data-target="#payment-method-modern">
-          <button type="button" class="step-trigger">
+            </button>
+          </div>
+          <div class="line">
+            <i class="ti ti-chevron-right"></i>
+          </div>
+          <!-- Step 6 / Header: Payment Method -->
+          <div class="step" data-target="#payment-method-modern">
+            <button type="button" class="step-trigger">
             <span class="bs-stepper-icon">
               <i class="fa fa-credit-card"></i>
             </span>
-            <span class="bs-stepper-label">
+              <span class="bs-stepper-label">
               <strong>Payment Method</strong>
             </span>
-          </button>
-        </div>
-        <div class="line">
-          <i class="ti ti-chevron-right"></i>
-        </div>
-        <!-- Step 7 / Header: Balance Plans -->
-        <div class="step" data-target="#balance-plans-modern">
-          <button type="button" class="step-trigger">
+            </button>
+          </div>
+          <div class="line">
+            <i class="ti ti-chevron-right"></i>
+          </div>
+          <!-- Step 7 / Header: Balance Plans -->
+          <div class="step" data-target="#balance-plans-modern">
+            <button type="button" class="step-trigger">
             <span class="bs-stepper-icon">
               <i class="fa fa-coins"></i>
             </span>
-            <span class="bs-stepper-label">
+              <span class="bs-stepper-label">
               <strong>Balance Plans</strong>
             </span>
-          </button>
-        </div>
-        <div class="line">
-          <i class="ti ti-chevron-right"></i>
-        </div>
-        <!-- Step 8 / Header: Blockchain Wallet -->
-        <div class="step" data-target="#blockchain-wallet-modern">
-          <button type="button" class="step-trigger">
+            </button>
+          </div>
+          <div class="line">
+            <i class="ti ti-chevron-right"></i>
+          </div>
+          <!-- Step 8 / Header: Blockchain Wallet -->
+          <div class="step" data-target="#blockchain-wallet-modern">
+            <button type="button" class="step-trigger">
             <span class="bs-stepper-icon">
               <i class="fa fa-bitcoin-sign"></i>
             </span>
-            <span class="bs-stepper-label">
+              <span class="bs-stepper-label">
               <strong>Blockchain Wallet</strong>
             </span>
-          </button>
-        </div>
-        <div class="line">
-          <i class="ti ti-chevron-right"></i>
-        </div>
-        <!-- Step 9 / Header: Sharing Assistants -->
-        <div class="step" data-target="#sharing-assistants-modern">
-          <button type="button" class="step-trigger">
+            </button>
+          </div>
+          <div class="line">
+            <i class="ti ti-chevron-right"></i>
+          </div>
+          <!-- Step 9 / Header: Sharing Assistants -->
+          <div class="step" data-target="#sharing-assistants-modern">
+            <button type="button" class="step-trigger">
             <span class="bs-stepper-icon">
               <i class="fa fa-share-nodes"></i>
             </span>
-            <span class="bs-stepper-label">
+              <span class="bs-stepper-label">
               <strong>Sharing Assistants</strong>
             </span>
-          </button>
-        </div>
-        <div class="line">
-          <i class="ti ti-chevron-right"></i>
-        </div>
-        <!-- Step 10 / Header: Data Sources -->
-        <div class="step" data-target="#data-sources-modern">
-          <button type="button" class="step-trigger">
+            </button>
+          </div>
+          <div class="line">
+            <i class="ti ti-chevron-right"></i>
+          </div>
+          <!-- Step 10 / Header: Data Sources -->
+          <div class="step" data-target="#data-sources-modern">
+            <button type="button" class="step-trigger">
             <span class="bs-stepper-icon">
               <i class="fa fa-database"></i>
             </span>
-            <span class="bs-stepper-label">
+              <span class="bs-stepper-label">
               <strong>Data Sources</strong>
             </span>
-          </button>
-        </div>
-        <div class="line">
-          <i class="ti ti-chevron-right"></i>
-        </div>
-        <!-- Step 11 / Header: Invite Users -->
-        <div class="step" data-target="#invite-users-modern">
-          <button type="button" class="step-trigger">
+            </button>
+          </div>
+          <div class="line">
+            <i class="ti ti-chevron-right"></i>
+          </div>
+          <!-- Step 11 / Header: Invite Users -->
+          <div class="step" data-target="#invite-users-modern">
+            <button type="button" class="step-trigger">
             <span class="bs-stepper-icon">
               <i class="fa fa-users"></i>
             </span>
-            <span class="bs-stepper-label">
+              <span class="bs-stepper-label">
               <strong>Invite Users</strong>
             </span>
-          </button>
-        </div>
-        <div class="line">
-          <i class="ti ti-chevron-right"></i>
-        </div>
-        <!-- Step 12 / Header: Roles & Permissions -->
-        <div class="step" data-target="#roles-and-permissions-modern">
-          <button type="button" class="step-trigger">
+            </button>
+          </div>
+          <div class="line">
+            <i class="ti ti-chevron-right"></i>
+          </div>
+          <!-- Step 12 / Header: Roles & Permissions -->
+          <div class="step" data-target="#roles-and-permissions-modern">
+            <button type="button" class="step-trigger">
             <span class="bs-stepper-icon">
               <i class="fa fa-shield"></i>
             </span>
-            <span class="bs-stepper-label">
+              <span class="bs-stepper-label">
               <strong>Permissions</strong>
             </span>
-          </button>
-        </div>
-        <div class="line">
-          <i class="ti ti-chevron-right"></i>
-        </div>
-        <!-- Step N / Header: Review & Submit -->
-        <div class="step" data-target="#review-submit-modern">
-          <button type="button" class="step-trigger">
+            </button>
+          </div>
+          <div class="line">
+            <i class="ti ti-chevron-right"></i>
+          </div>
+          <!-- Step N / Header: Review & Submit -->
+          <div class="step" data-target="#review-submit-modern">
+            <button type="button" class="step-trigger">
             <span class="bs-stepper-icon">
               <i class="fa fa-check-square"></i>
             </span>
-            <span class="bs-stepper-label">
+              <span class="bs-stepper-label">
               <strong>Review</strong>
             </span>
-          </button>
+            </button>
+          </div>
         </div>
-      </div>
 
-      <hr>
+        <hr>
 
-      <div class="bs-stepper-content mt-8 p-12">
-        <form method="post" action="{% url 'quick_setup_helper:execute' %}">
-          {% csrf_token %}
-          <!-- Step 1 / Data: Organization Information -->
-          <div id="organization-modern" class="content">
-            <img src="{% static 'img/quick_setup_helper/step-1.png' %}" class="rounded mb-4" style="width: 100%;" alt="Illustration for tips">
-            <hr>
-            <img src="{% static 'img/quick_setup_helper/banner-step-1.png' %}" class="rounded mb-4" style="width: 100%;" alt="Illustration for tips">
-            <hr>
-            <div class="row g-6">
-              <!-- Q1: What is the name of your organization? -->
-              <h5 class="mb-0">
-                <strong>🟢 &nbsp; Organization Name<sup><i class="fa fa-asterisk text-danger ms-1 fa-xs"></i></sup></strong>
-              </h5>
-              <div class="col-12">
-                <input type="text" id="response__organization_name" name="response__organization_name" class="form-control"  placeholder="Acme INC" />
-              </div>
-              <!-- Q2: Can you please describe your organization and what operations your organization is involved in? -->
-              <h5 class="mb-0">
-                <strong>🟢 &nbsp; Shortly describe the operations and focus areas of your organization.<sup><i class="fa fa-asterisk text-danger ms-1 fa-xs"></i></sup></strong>
-              </h5>
-              <div class="col-12">
-                <textarea id="response__organization_description" name="response__organization_description" class="form-control" rows="3" placeholder="Please tell us about your organization. You can mention the focus areas, mission, vision or whatever you think is important for us to know."></textarea>
-              </div>
+        <div class="bs-stepper-content mt-8 p-12">
+          <form method="post" action="{% url 'quick_setup_helper:execute' %}">
+            {% csrf_token %}
+            <!-- Step 1 / Data: Organization Information -->
+            <div id="organization-modern" class="content">
+              <img src="{% static 'img/quick_setup_helper/step-1.png' %}" class="rounded mb-4" style="width: 100%;"
+                   alt="Illustration for tips">
               <hr>
-              <div class="col-12 mt-4 d-flex justify-content-between">
-                <button type="button" class="btn btn-label-secondary btn-prev" disabled> <i class="ti ti-arrow-left ti-xs me-sm-2"></i>
-                  <span class="align-middle d-sm-inline-block d-none"><strong>Previous</strong></span>
-                </button>
-                <button type="button" class="btn btn-success btn-next"> <span class="align-middle d-sm-inline-block d-none me-sm-2">
+              <img src="{% static 'img/quick_setup_helper/banner-step-1.png' %}" class="rounded mb-4"
+                   style="width: 100%;" alt="Illustration for tips">
+              <hr>
+              <div class="row g-6">
+                <!-- Q1: What is the name of your organization? -->
+                <h5 class="mb-0">
+                  <strong>🟢 &nbsp; Organization Name<sup><i
+                    class="fa fa-asterisk text-danger ms-1 fa-xs"></i></sup></strong>
+                </h5>
+                <div class="col-12">
+                  <input type="text" id="response__organization_name" name="response__organization_name"
+                         class="form-control" placeholder="Acme INC" />
+                </div>
+                <!-- Q2: Can you please describe your organization and what operations your organization is involved in? -->
+                <h5 class="mb-0">
+                  <strong>🟢 &nbsp; Shortly describe the operations and focus areas of your organization.<sup><i
+                    class="fa fa-asterisk text-danger ms-1 fa-xs"></i></sup></strong>
+                </h5>
+                <div class="col-12">
+                  <textarea id="response__organization_description" name="response__organization_description"
+                            class="form-control" rows="3"
+                            placeholder="Please tell us about your organization. You can mention the focus areas, mission, vision or whatever you think is important for us to know."></textarea>
+                </div>
+                <hr>
+                <div class="col-12 mt-4 d-flex justify-content-between">
+                  <button type="button" class="btn btn-label-secondary btn-prev" disabled><i
+                    class="ti ti-arrow-left ti-xs me-sm-2"></i>
+                    <span class="align-middle d-sm-inline-block d-none"><strong>Previous</strong></span>
+                  </button>
+                  <button type="button" class="btn btn-success btn-next"> <span
+                    class="align-middle d-sm-inline-block d-none me-sm-2">
                   <strong>Next</strong></span> <i class="ti ti-arrow-right ti-xs"></i>
-                </button>
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-          <!-- Step 2 / Data: LLM Model -->
-          <div id="llm-model-modern" class="content">
-              <img src="{% static 'img/quick_setup_helper/step-2.png' %}" class="rounded mb-4" style="width: 100%;" alt="Illustration for tips">
+            <!-- Step 2 / Data: LLM Model -->
+            <div id="llm-model-modern" class="content">
+              <img src="{% static 'img/quick_setup_helper/step-2.png' %}" class="rounded mb-4" style="width: 100%;"
+                   alt="Illustration for tips">
               <hr>
-              <img src="{% static 'img/quick_setup_helper/banner-step-2.png' %}" class="rounded mb-4" style="width: 100%;" alt="Illustration for tips">
+              <img src="{% static 'img/quick_setup_helper/banner-step-2.png' %}" class="rounded mb-4"
+                   style="width: 100%;" alt="Illustration for tips">
               <hr>
               <!-- Q3: Please enter your OpenAI API key -->
               <h5 class="mb-6">
-                <strong>🟢 &nbsp; Paste your OpenAI API key below.<sup><i class="fa fa-asterisk text-danger ms-1 fa-xs"></i></sup></strong>
+                <strong>🟢 &nbsp; Paste your OpenAI API key below.<sup><i
+                  class="fa fa-asterisk text-danger ms-1 fa-xs"></i></sup></strong>
               </h5>
               <div class="col-12">
-                <input type="text" id="response__llm_core_openai_api_key" name="response__llm_core_openai_api_key" class="form-control" placeholder="sk-xxxxxxxxxxxxxxx" />
+                <input type="text" id="response__llm_core_openai_api_key" name="response__llm_core_openai_api_key"
+                       class="form-control" placeholder="sk-xxxxxxxxxxxxxxx" />
               </div>
               <!-- Q4: Which would be more important for your assistants? (Don't worry, you can always change you mind and update later on.) -->
               <h5 class="mt-6 mb-6">
-                <strong>🟢 &nbsp; How do you want your assistants to act?<sup><i class="fa fa-asterisk text-danger ms-1 fa-xs"></i></sup></strong>
+                <strong>🟢 &nbsp; How do you want your assistants to act?<sup><i
+                  class="fa fa-asterisk text-danger ms-1 fa-xs"></i></sup></strong>
               </h5>
               <div class="col-12 mb-8">
                 <!-- single-choice question -->
@@ -338,895 +351,1059 @@
               </div>
               <hr>
               <div class="col-12 mt-4 d-flex justify-content-between">
-                <button type="button" class="btn btn-secondary btn-prev"> <i class="ti ti-arrow-left ti-xs me-sm-2"></i>
+                <button type="button" class="btn btn-secondary btn-prev"><i class="ti ti-arrow-left ti-xs me-sm-2"></i>
                   <span class="align-middle d-sm-inline-block d-none"><strong>Previous</strong></span>
                 </button>
-                <button type="button" class="btn btn-success btn-next"> <span class="align-middle d-sm-inline-block d-none me-sm-2">
+                <button type="button" class="btn btn-success btn-next"> <span
+                  class="align-middle d-sm-inline-block d-none me-sm-2">
                   <strong>Next</strong></span> <i class="ti ti-arrow-right ti-xs"></i>
                 </button>
               </div>
-          </div>
-          <!-- Step 3 / Data: Assistants -->
-          <div id="assistants-modern" class="content">
-              <img src="{% static 'img/quick_setup_helper/step-3.png' %}" class="rounded mb-4" style="width: 100%;" alt="Illustration for tips">
+            </div>
+            <!-- Step 3 / Data: Assistants -->
+            <div id="assistants-modern" class="content">
+              <img src="{% static 'img/quick_setup_helper/step-3.png' %}" class="rounded mb-4" style="width: 100%;"
+                   alt="Illustration for tips">
               <hr>
-              <img src="{% static 'img/quick_setup_helper/banner-step-3.png' %}" class="rounded mb-4" style="width: 100%;" alt="Illustration for tips">
+              <img src="{% static 'img/quick_setup_helper/banner-step-3.png' %}" class="rounded mb-4"
+                   style="width: 100%;" alt="Illustration for tips">
               <hr>
               <!-- Q5: Can you list the use cases you plan to use your AI agents? -->
               <h5 class="mb-6">
                 <strong>Please shortly explain the potential use cases you plan to use your assistants.</strong>
               </h5>
               <div class="alert alert-dark rounded p-4">
-                  <strong>
-                    <i class="fa fa-info-circle"></i>
-                    <span class="ms-2">Don't worry, you can add more use cases later on if you want to.</span>
-                  </strong>
+                <strong>
+                  <i class="fa fa-info-circle"></i>
+                  <span class="ms-2">Don't worry, you can add more use cases later on if you want to.</span>
+                </strong>
               </div>
               <hr>
               <h6 class="mb-6">
                 <strong>🟢 &nbsp; Use Case #1<sup><i class="fa fa-asterisk text-danger ms-1 fa-xs"></i></sup></strong>
               </h6>
               <div class="col-12 mb-6">
-                <textarea id="response__assistant_use_case_1" name="response__assistant_use_case_1" class="form-control" rows="2" placeholder="Please enter at least one use case." required></textarea>
+                <textarea id="response__assistant_use_case_1" name="response__assistant_use_case_1" class="form-control"
+                          rows="2" placeholder="Please enter at least one use case." required></textarea>
               </div>
               <h6 class="mb-6">
-                  <strong>🟡 &nbsp; Use Case #2</strong>
+                <strong>🟡 &nbsp; Use Case #2</strong>
               </h6>
               <div class="col-12 mb-6">
-                <textarea id="response__assistant_use_case_2" name="response__assistant_use_case_2" class="form-control" rows="2" placeholder="(Optional)"></textarea>
+                <textarea id="response__assistant_use_case_2" name="response__assistant_use_case_2" class="form-control"
+                          rows="2" placeholder="(Optional)"></textarea>
               </div>
               <h6 class="mb-6">
                 <strong>🟡 &nbsp; Use Case #3</strong>
               </h6>
               <div class="col-12 mb-6">
-                <textarea id="response__assistant_use_case_3" name="response__assistant_use_case_3" class="form-control" rows="2" placeholder="(Optional)"></textarea>
+                <textarea id="response__assistant_use_case_3" name="response__assistant_use_case_3" class="form-control"
+                          rows="2" placeholder="(Optional)"></textarea>
               </div>
               <h6 class="mb-6">
                 <strong>🟡 &nbsp; Use Case #4</strong>
               </h6>
-                <div class="col-12 mb-6">
-                <textarea id="response__assistant_use_case_4" name="response__assistant_use_case_4" class="form-control" rows="2" placeholder="(Optional)"></textarea>
+              <div class="col-12 mb-6">
+                <textarea id="response__assistant_use_case_4" name="response__assistant_use_case_4" class="form-control"
+                          rows="2" placeholder="(Optional)"></textarea>
               </div>
               <h6 class="mb-6">
                 <strong>🟡 &nbsp; Use Case #5</strong>
               </h6>
-                <div class="col-12 mb-6">
-                <textarea id="response__assistant_use_case_5" name="response__assistant_use_case_5" class="form-control" rows="2" placeholder="(Optional)"></textarea>
+              <div class="col-12 mb-6">
+                <textarea id="response__assistant_use_case_5" name="response__assistant_use_case_5" class="form-control"
+                          rows="2" placeholder="(Optional)"></textarea>
               </div>
               <hr>
               <div class="col-12 mt-4 d-flex justify-content-between">
-                <button type="button" class="btn btn-secondary btn-prev"> <i class="ti ti-arrow-left ti-xs me-sm-2"></i>
+                <button type="button" class="btn btn-secondary btn-prev"><i class="ti ti-arrow-left ti-xs me-sm-2"></i>
                   <span class="align-middle d-sm-inline-block d-none"><strong>Previous</strong></span>
                 </button>
-                <button type="button" class="btn btn-success btn-next"> <span class="align-middle d-sm-inline-block d-none me-sm-2">
+                <button type="button" class="btn btn-success btn-next"> <span
+                  class="align-middle d-sm-inline-block d-none me-sm-2">
                   <strong>Next</strong></span> <i class="ti ti-arrow-right ti-xs"></i>
                 </button>
               </div>
-          </div>
-          <!-- Step 4 / Data: Memories -->
-          <div id="memories-modern" class="content">
-            <img src="{% static 'img/quick_setup_helper/step-4.png' %}" class="rounded mb-4" style="width: 100%;" alt="Illustration for tips">
-            <hr>
-            <img src="{% static 'img/quick_setup_helper/banner-step-4.png' %}" class="rounded mb-4" style="width: 100%;" alt="Illustration for tips">
-            <hr>
-            <h5 class="mt-6 mb-6">
-              <strong>Do you want to leave any reminders, warnings, or notes to your assistants?<sup><i class="fa fa-asterisk text-danger ms-1 fa-xs"></i></sup></strong>
-            </h5>
-            <div class="col-12 mb-8">
-              <!-- single-choice question -->
-              <select class="form-select" id="response__assistant_notes_decision" name="response__assistant_notes_decision" onchange="toggleNotes(this.value)">
-                <option value="yes">Yes, I want to add a few notes or reminders.</option>
-                <option value="no" selected>No, I don't think I need it right now.</option>
-              </select>
             </div>
-            <div id="notes-container" style="display: none;">
+            <!-- Step 4 / Data: Memories -->
+            <div id="memories-modern" class="content">
+              <img src="{% static 'img/quick_setup_helper/step-4.png' %}" class="rounded mb-4" style="width: 100%;"
+                   alt="Illustration for tips">
+              <hr>
+              <img src="{% static 'img/quick_setup_helper/banner-step-4.png' %}" class="rounded mb-4"
+                   style="width: 100%;" alt="Illustration for tips">
+              <hr>
+              <h5 class="mt-6 mb-6">
+                <strong>Do you want to leave any reminders, warnings, or notes to your assistants?<sup><i
+                  class="fa fa-asterisk text-danger ms-1 fa-xs"></i></sup></strong>
+              </h5>
+              <div class="col-12 mb-8">
+                <!-- single-choice question -->
+                <select class="form-select" id="response__assistant_notes_decision"
+                        name="response__assistant_notes_decision" onchange="toggleNotes(this.value)">
+                  <option value="yes">Yes, I want to add a few notes or reminders.</option>
+                  <option value="no" selected>No, I don't think I need it right now.</option>
+                </select>
+              </div>
+              <div id="notes-container" style="display: none;">
+                <hr>
+                <h5 class="mb-6">
+                  <strong>You can list the important notes you want to share with your assistants here.</strong>
+                </h5>
+                <div class="alert alert-dark rounded p-4">
+                  <strong>
+                    <i class="fa fa-info-circle"></i>
+                    <span class="ms-2">Don't worry, you can add more memories for your assistants later on if you want to.</span>
+                  </strong>
+                </div>
+                <hr>
+                <h6 class="mb-6">
+                  <strong>🟡 &nbsp; Memory #1</strong>
+                </h6>
+                <div class="col-12 mb-6">
+                  <textarea id="response__assistant_note_1" name="response__assistant_note_1" class="form-control"
+                            rows="2" placeholder="e.g. Please don't write long answers."></textarea>
+                </div>
+                <h6 class="mb-6">
+                  <strong>🟡 &nbsp; Memory #2</strong>
+                </h6>
+                <div class="col-12 mb-6">
+                  <textarea id="response__assistant_note_2" name="response__assistant_note_2" class="form-control"
+                            rows="2"
+                            placeholder="e.g. Don't ask for my permission before running a tool, you can simply go ahead and run it."></textarea>
+                </div>
+                <h6 class="mb-6">
+                  <strong>🟡 &nbsp; Memory #3</strong>
+                </h6>
+                <div class="col-12 mb-6">
+                  <textarea id="response__assistant_note_3" name="response__assistant_note_3" class="form-control"
+                            rows="2"
+                            placeholder="e.g. Never mention my internal company or database data to users."></textarea>
+                </div>
+                <h6 class="mb-6">
+                  <strong>🟡 &nbsp; Memory #4</strong>
+                </h6>
+                <div class="col-12 mb-6">
+                  <textarea id="response__assistant_note_4" name="response__assistant_note_4" class="form-control"
+                            rows="2" placeholder="e.g. Don't use bullet points in your answers."></textarea>
+                </div>
+                <h6 class="mb-6">
+                  <strong>🟡 &nbsp; Memory #5</strong>
+                </h6>
+                <div class="col-12 mb-6">
+                  <textarea id="response__assistant_note_5" name="response__assistant_note_5" class="form-control"
+                            rows="2" placeholder="e.g. Refer to users with their username, not their name."></textarea>
+                </div>
+              </div>
+              <hr>
+              <div class="col-12 mt-4 d-flex justify-content-between">
+                <button type="button" class="btn btn-secondary btn-prev"><i class="ti ti-arrow-left ti-xs me-sm-2"></i>
+                  <span class="align-middle d-sm-inline-block d-none"><strong>Previous</strong></span>
+                </button>
+                <button type="button" class="btn btn-success btn-next"> <span
+                  class="align-middle d-sm-inline-block d-none me-sm-2">
+                <strong>Next</strong></span> <i class="ti ti-arrow-right ti-xs"></i>
+                </button>
+              </div>
+            </div>
+            <!-- Step 4a / Data: Orchestration Scheduled Jobs -->
+            <div id="orchestration-scheduled-jobs-modern" class="content">
+              <img src="{% static 'img/quick_setup_helper/step-4a.png' %}" class="rounded mb-4" style="width: 100%;"
+                   alt="Illustration for tips">
+              <hr>
+              <img src="{% static 'img/quick_setup_helper/banner-step-4a.png' %}" class="rounded mb-4"
+                   style="width: 100%;" alt="Illustration for tips">
+              <hr>
+              <h5 class="mt-6 mb-6">
+                <strong>Do you want to create automated execution schedules for your assistant teams?<sup><i
+                  class="fa fa-asterisk text-danger ms-1 fa-xs"></i></sup></strong>
+              </h5>
+              <div class="col-12 mb-8">
+                <!-- single-choice question -->
+                <select class="form-select" id="response__assistant_scheduled_jobs_decision"
+                        name="response__assistant_scheduled_jobs_decision"
+                        onchange="toggleScheduledJobsFields(this.value)">
+                  <option value="yes">Yes, I want to automate my assistants to automatically get triggered regularly.
+                  </option>
+                  <option value="no" selected>No, I don't need this kind of automation right now.</option>
+                </select>
+              </div>
+              <hr>
+              <div id="scheduled-jobs-container" style="display: none;">
+                <hr>
+                <h5 class="mb-6">
+                  <strong>🟡 &nbsp; How often do you want your orchestration operations to run?</strong>
+                </h5>
+                <!-- single-choice question -->
+                <select class="form-select" id="response__scheduled_job_interval"
+                        name="response__scheduled_job_interval">
+                  <option value="per_minute">Every Minute</option>
+                  <option value="per_hour">Every Hour</option>
+                  <option value="per_day" selected>Every Day</option>
+                  <option value="per_week">Every Week</option>
+                  <option value="per_month">Every Month</option>
+                  <option value="per_year">Every Year</option>
+                </select>
+                <hr>
+                <h5 class="mb-6">
+                  <strong>🟡 &nbsp; Please concisely describe the action(s) you want your orchestrators to
+                    perform.</strong>
+                </h5>
+                <div class="col-12 mb-6">
+                  <textarea id="response__scheduled_job_description" name="response__scheduled_job_description" rows="2"
+                            class="form-control"
+                            placeholder="e.g. I want you to check the news about legal industry every day and create a report based on the recent updates. Store the reports in PDF format in my media storage, and also send it as an email to team members."></textarea>
+                </div>
+                <hr>
+                <h5 class="mb-6">
+                  <strong>In simple words, describe the primary steps of the processes that will be handled by your
+                    orchestrators.</strong>
+                </h5>
+                <hr>
+                <h6 class="mb-6">
+                  <strong>🟢 &nbsp; Process Step #1</strong>
+                </h6>
+                <div class="col-12 mb-6">
+                  <textarea id="response__scheduled_job_step_1" name="response__scheduled_job_step_1"
+                            class="form-control" rows="1"
+                            placeholder="e.g. Use browsing to find the relevant news about the recent updates in legal industry."></textarea>
+                </div>
+                <h6 class="mb-6">
+                  <strong>🟡 &nbsp; Process Step #2</strong>
+                </h6>
+                <div class="col-12 mb-6">
+                  <textarea id="response__scheduled_job_step_2" name="response__scheduled_job_step_2"
+                            class="form-control" rows="1"
+                            placeholder="e.g. Generate analysis, insights and recommendations based on the updates."></textarea>
+                </div>
+                <h6 class="mb-6">
+                  <strong>🟡 &nbsp; Process Step #3</strong>
+                </h6>
+                <div class="col-12 mb-6">
+                  <textarea id="response__scheduled_job_step_3" name="response__scheduled_job_step_3"
+                            class="form-control" rows="1"
+                            placeholder="e.g. Generate a report in PDF format."></textarea>
+                </div>
+                <h6 class="mb-6">
+                  <strong>🟡 &nbsp; Process Step #4</strong>
+                </h6>
+                <div class="col-12 mb-6">
+                  <textarea id="response__scheduled_job_step_4" name="response__scheduled_job_step_4"
+                            class="form-control" rows="1"
+                            placeholder="e.g. Save the report in media storage."></textarea>
+                </div>
+                <h6 class="mb-6">
+                  <strong>🟡 &nbsp; Process Step #5</strong>
+                </h6>
+                <div class="col-12 mb-6">
+                  <textarea id="response__scheduled_job_step_5" name="response__scheduled_job_step_5"
+                            class="form-control" rows="1"
+                            placeholder="e.g. Send the report to team members as an email."></textarea>
+                </div>
+              </div>
+              <hr>
+              <div class="col-12 mt-4 d-flex justify-content-between">
+                <button type="button" class="btn btn-secondary btn-prev"><i class="ti ti-arrow-left ti-xs me-sm-2"></i>
+                  <span class="align-middle d-sm-inline-block d-none"><strong>Previous</strong></span>
+                </button>
+                <button type="button" class="btn btn-success btn-next"> <span
+                  class="align-middle d-sm-inline-block d-none me-sm-2">
+                <strong>Next</strong></span> <i class="ti ti-arrow-right ti-xs"></i>
+                </button>
+              </div>
+            </div>
+            <!-- Step 5 / Data: Office Tools -->
+            <div id="office-tools-modern" class="content">
+              <img src="{% static 'img/quick_setup_helper/step-5.png' %}" class="rounded mb-4" style="width: 100%;"
+                   alt="Illustration for tips">
+              <hr>
+              <img src="{% static 'img/quick_setup_helper/banner-step-5.png' %}" class="rounded mb-4"
+                   style="width: 100%;" alt="Illustration for tips">
+              <hr>
+              <!-- Q4: Do you want to use BimodLab AI Office tools & apps (e.g. Drafting, Spreadsheets, Slides, Forms, Kanban & Tempo)? -->
+              <h5 class="mt-6 mb-6">
+                <strong> Do you want to use BimodLab AI Office tools & apps (e.g. Drafting, Spreadsheets, Slides, Forms,
+                  Kanban & Tempo)?<sup><i class="fa fa-asterisk text-danger ms-1 fa-xs"></i></sup></strong>
+              </h5>
+              <div class="col-12 mb-8">
+                <!-- single-choice question -->
+                <select class="form-select" id="response__bimodlab_tools_decision"
+                        name="response__bimodlab_tools_decision">
+                  <option value="yes" selected>Yes, I want to integrate BimodLab Office.</option>
+                  <option value="no">No, I don't want to use BimodLab Office now.</option>
+                </select>
+              </div>
+              <hr>
+              <div class="col-12 mt-4 d-flex justify-content-between">
+                <button type="button" class="btn btn-secondary btn-prev"><i class="ti ti-arrow-left ti-xs me-sm-2"></i>
+                  <span class="align-middle d-sm-inline-block d-none"><strong>Previous</strong></span>
+                </button>
+                <button type="button" class="btn btn-success btn-next"> <span
+                  class="align-middle d-sm-inline-block d-none me-sm-2">
+                <strong>Next</strong></span> <i class="ti ti-arrow-right ti-xs"></i>
+                </button>
+              </div>
+            </div>
+            <!-- Step 6 / Data: Payment Method -->
+            <div id="payment-method-modern" class="content">
+              <img src="{% static 'img/quick_setup_helper/step-6.png' %}" class="rounded mb-4" style="width: 100%;"
+                   alt="Illustration for tips">
+              <hr>
+              <img src="{% static 'img/quick_setup_helper/banner-step-6.png' %}" class="rounded mb-4"
+                   style="width: 100%;" alt="Illustration for tips">
+              <hr>
+              <h5 class="mt-6 mb-6">
+                <strong>Do you want to add a payment method to your account now?<sup><i
+                  class="fa fa-asterisk text-danger ms-1 fa-xs"></i></sup></strong>
+              </h5>
+              <div class="col-12 mb-8">
+                <!-- single-choice question -->
+                <select class="form-select" id="response__payment_method_decision"
+                        name="response__payment_method_decision" onchange="togglePaymentForm(this.value)">
+                  <option value="yes">Yes, I want to add a payment method.</option>
+                  <option value="no" selected>No, I don't want to add my payment method now, maybe later.</option>
+                </select>
+              </div>
+              <div id="payment-form-container" style="display: none;">
+                <hr>
+                <h5 class="mb-6">
+                  <strong>Please fill in the form to add a new credit card to your account.</strong>
+                </h5>
+                <div class="row mb-6">
+                  <div class="mb-4 col-sm-6">
+                    <label for="response__payment_method_credit_card_name" class="form-label">Name on Card</label>
+                    <input type="text" id="response__payment_method_credit_card_name"
+                           name="response__payment_method_credit_card_name" class="form-control"
+                           placeholder="John Doe" />
+                  </div>
+                  <div class="mb-4 col-sm-6">
+                    <label for="response__payment_method_credit_card_number" class="form-label">Card Number</label>
+                    <input type="text" id="response__payment_method_credit_card_number"
+                           name="response__payment_method_credit_card_number" class="form-control" maxlength="19"
+                           placeholder="0000-0000-0000-0000" />
+                  </div>
+                  <div class="mb-4 col-sm-2">
+                    <label for="response__payment_method_credit_card_expiration_month" class="form-label">Expiration
+                      Month</label>
+                    <input type="text" id="response__payment_method_credit_card_expiration_month"
+                           name="response__payment_method_credit_card_expiration_month" placeholder="MM"
+                           class="form-control" maxlength="2" />
+                  </div>
+                  <div class="mb-4 col-sm-2">
+                    <label for="response__payment_method_credit_card_expiration_year" class="form-label">Expiration
+                      Year</label>
+                    <input type="text" id="response__payment_method_credit_card_expiration_year"
+                           name="response__payment_method_credit_card_expiration_year" placeholder="YY"
+                           class="form-control" maxlength="2" />
+                  </div>
+                  <div class="mb-4 col-sm-2">
+                    <label for="response__payment_method_credit_card_cvc" class="form-label">CVC</label>
+                    <input type="text" id="response__payment_method_credit_card_cvc"
+                           name="response__payment_method_credit_card_cvc" class="form-control" placeholder="000X"
+                           maxlength="4" />
+                  </div>
+                </div>
+              </div>
+              <hr>
+              <div class="col-12 mt-4 d-flex justify-content-between">
+                <button type="button" class="btn btn-secondary btn-prev">
+                  <i class="ti ti-arrow-left ti-xs me-sm-2"></i>
+                  <span class="align-middle d-sm-inline-block d-none"><strong>Previous</strong></span>
+                </button>
+                <button type="button" class="btn btn-success btn-next">
+                  <span class="align-middle d-sm-inline-block d-none me-sm-2"><strong>Next</strong></span>
+                  <i class="ti ti-arrow-right ti-xs"></i>
+                </button>
+              </div>
+            </div>
+            <!-- Step 7 / Data: Balance Plans -->
+            <div id="balance-plans-modern" class="content">
+              <img src="{% static 'img/quick_setup_helper/step-7.png' %}" class="rounded mb-4" style="width: 100%;"
+                   alt="Illustration for tips">
+              <hr>
+              <img src="{% static 'img/quick_setup_helper/banner-step-7.png' %}" class="rounded mb-4"
+                   style="width: 100%;" alt="Illustration for tips">
+              <hr>
+              <h5 class="mt-6 mb-6">
+                <strong>Do you want to create an automated balance top-up plan to prevent any service
+                  interruptions?<sup><i class="fa fa-asterisk text-danger ms-1 fa-xs"></i></sup></strong>
+              </h5>
+              <div class="col-12 mb-8">
+                <select class="form-select" id="response__balance_top_up_decision"
+                        name="response__balance_top_up_decision" onchange="toggleTopUpPlan(this.value)">
+                  <option value="yes">Yes, I want to use automated balance top-ups.</option>
+                  <option value="no" selected>No, I want to manually add balance for my account.</option>
+                </select>
+              </div>
+
+              <div id="top-up-plan-container" style="display: none;">
+                <h5 class="mt-6 mb-6">
+                  <strong>Which one seems to be a better option for you to top up your balance?</strong>
+                </h5>
+                <div class="col-12 mb-8">
+                  <select class="form-select" id="response__balance_top_up_option"
+                          name="response__balance_top_up_option" onchange="toggleTopUpFields(this.value)">
+                    <option value="regular_interval" selected>Regular updates every once in a while.</option>
+                    <option value="threshold_trigger">Additions when the balance goes below a certain value.</option>
+                  </select>
+                </div>
+
+                <h5 class="mt-6 mb-6">
+                  <strong>How much do you want to add when the conditions are met?</strong>
+                </h5>
+                <div class="col-12">
+                  <strong><i class="fa fa-dollar"></i> / USD</strong>
+                  <input type="number" min="10" id="response__balance_top_up_amount"
+                         name="response__balance_top_up_amount" class="form-control" placeholder="e.g. 50" />
+                </div>
+
+                <h5 class="mt-6 mb-6">
+                  <strong>What is the maximum limit for top-ups within a calendar month?</strong>
+                </h5>
+                <div class="col-12">
+                  <strong><i class="fa fa-dollar"></i> / USD</strong>
+                  <input type="number" id="response__balance_top_up_hard_limit"
+                         name="response__balance_top_up_hard_limit" class="form-control" placeholder="e.g. 1000" />
+                </div>
+
+                <div id="interval-days-container" style="display: block;">
+                  <hr>
+                  <h5 class="mt-6 mb-6">
+                    <strong>How often do you want the balance to be incremented?</strong>
+                  </h5>
+                  <div class="col-12">
+                    <strong><i class="fa fa-calendar"></i> / DAYS</strong>
+                    <input type="number" min="1" max="30" value="7" id="response__balance_top_up_interval_days"
+                           name="response__balance_top_up_interval_days" class="form-control mt-1" />
+                  </div>
+                </div>
+
+                <div id="threshold-value-container" style="display: none;">
+                  <hr>
+                  <h5 class="mt-6 mb-6">
+                    <strong>Set the threshold value for when balance gets lower than that, an automatic top-up will be
+                      triggered.</strong>
+                  </h5>
+                  <div class="col-12">
+                    <strong><i class="fa fa-dollar"></i> / USD</strong>
+                    <input type="number" id="response__balance_top_up_threshold_value"
+                           name="response__balance_top_up_threshold_value" class="form-control"
+                           placeholder="e.g. 100" />
+                  </div>
+                </div>
+              </div>
+
+              <hr>
+
+              <div class="col-12 mt-4 d-flex justify-content-between">
+                <button type="button" class="btn btn-secondary btn-prev">
+                  <i class="ti ti-arrow-left ti-xs me-sm-2"></i>
+                  <span class="align-middle d-sm-inline-block d-none"><strong>Previous</strong></span>
+                </button>
+                <button type="button" class="btn btn-success btn-next">
+                  <span class="align-middle d-sm-inline-block d-none me-sm-2"><strong>Next</strong></span>
+                  <i class="ti ti-arrow-right ti-xs"></i>
+                </button>
+              </div>
+            </div>
+            <!-- Step 8 / Data: Blockchain Wallet -->
+            <div id="blockchain-wallet-modern" class="content">
+              <img src="{% static 'img/quick_setup_helper/step-8.png' %}" class="rounded mb-4" style="width: 100%;"
+                   alt="Illustration for tips">
+              <hr>
+              <img src="{% static 'img/quick_setup_helper/banner-step-8.png' %}" class="rounded mb-4"
+                   style="width: 100%;" alt="Illustration for tips">
+              <hr>
+              <h5 class="mt-6 mb-6">
+                <strong>Do you want to connect your Blockchain wallet to let your assistants manage & create smart
+                  contracts?<sup><i class="fa fa-asterisk text-danger ms-1 fa-xs"></i></sup></strong>
+              </h5>
+              <div class="col-12 mb-8">
+                <select class="form-select" id="response__blockchain_wallet_decision"
+                        name="response__blockchain_wallet_decision" onchange="toggleWalletFields(this.value)">
+                  <option value="yes">Yes, I want to connect my Ethereum chain wallet.</option>
+                  <option value="no" selected>No, I don't want to connect my wallet now.</option>
+                </select>
+              </div>
+
+              <div id="wallet-fields-container" style="display: none;">
+                <hr>
+                <h5 class="mt-6 mb-6">
+                  <strong>🟡 &nbsp; Wallet Address</strong>
+                </h5>
+                <div class="col-12">
+                  <input type="text" id="response__blockchain_wallet_address" name="response__blockchain_wallet_address"
+                         class="form-control" placeholder="0x000000000000..." />
+                </div>
+                <h5 class="mt-6 mb-6">
+                  <strong>🟡 &nbsp; Wallet Private Key</strong>
+                </h5>
+                <div class="col-12">
+                  <input type="text" id="response__blockchain_wallet_private_key"
+                         name="response__blockchain_wallet_private_key" class="form-control"
+                         placeholder="We need your private key to deploy your smart contracts to Ethereum blockchain." />
+                </div>
+              </div>
+
+              <hr>
+              <div class="col-12 mt-4 d-flex justify-content-between">
+                <button type="button" class="btn btn-secondary btn-prev">
+                  <i class="ti ti-arrow-left ti-xs me-sm-2"></i>
+                  <span class="align-middle d-sm-inline-block d-none"><strong>Previous</strong></span>
+                </button>
+                <button type="button" class="btn btn-success btn-next">
+                  <span class="align-middle d-sm-inline-block d-none me-sm-2"><strong>Next</strong></span>
+                  <i class="ti ti-arrow-right ti-xs"></i>
+                </button>
+              </div>
+            </div>
+            <!-- Step 9 / Data: Sharing Assistants -->
+            <div id="sharing-assistants-modern" class="content">
+              <img src="{% static 'img/quick_setup_helper/step-9.png' %}" class="rounded mb-4" style="width: 100%;"
+                   alt="Illustration for tips">
+              <hr>
+              <img src="{% static 'img/quick_setup_helper/banner-step-9.png' %}" class="rounded mb-4"
+                   style="width: 100%;" alt="Illustration for tips">
+              <hr>
+              <!-- Q14: Do you plan to use your assistants externally (e.g. in your own website, applications, or platforms)? -->
+              <h5 class="mt-6 mb-6">
+                <strong>Do you plan to use your assistants externally (e.g. in your own website, applications, or
+                  platforms)?<sup><i class="fa fa-asterisk text-danger ms-1 fa-xs"></i></sup></strong>
+              </h5>
+              <div class="col-12 mb-8">
+                <!-- single-choice question -->
+                <select class="form-select" id="response__external_usage_decision"
+                        name="response__external_usage_decision">
+                  <option value="yes" selected>Yes, please safely create RESTful API endpoints for my assistants.
+                  </option>
+                  <option value="no">No, I won't use my assistants externally.</option>
+                </select>
+              </div>
+              <div class="col-12 mt-4 d-flex justify-content-between">
+                <button type="button" class="btn btn-secondary btn-prev"><i class="ti ti-arrow-left ti-xs me-sm-2"></i>
+                  <span class="align-middle d-sm-inline-block d-none"><strong>Previous</strong></span>
+                </button>
+                <button type="button" class="btn btn-success btn-next"> <span
+                  class="align-middle d-sm-inline-block d-none me-sm-2">
+                <strong>Next</strong></span> <i class="ti ti-arrow-right ti-xs"></i>
+                </button>
+              </div>
+            </div>
+            <!-- Step 10 / Data: Data Sources -->
+            <div id="data-sources-modern" class="content">
+              <img src="{% static 'img/quick_setup_helper/step-10.png' %}" class="rounded mb-4" style="width: 100%;"
+                   alt="Illustration for tips">
+              <hr>
+              <img src="{% static 'img/quick_setup_helper/banner-step-10.png' %}" class="rounded mb-4"
+                   style="width: 100%;" alt="Illustration for tips">
+              <hr>
+              <!-- Do you want to integrate the data sources for your assistants (e.g. SQL/NoSQL databases, Document Knowledge Bases, GitHub Code Repositories, Servers/Computers) now? -->
+              <h5 class="mt-6 mb-6">
+                <strong>Do you want to integrate the data sources for your assistants (e.g. SQL/NoSQL databases,
+                  Document Knowledge Bases, GitHub Code Repositories, Servers/Computers) now?<sup><i
+                    class="fa fa-asterisk text-danger ms-1 fa-xs"></i></sup></strong>
+              </h5>
+              <div class="col-12 mb-8">
+                <!-- single-choice question -->
+                <select class="form-select" id="response__internal_data_sources_decision"
+                        name="response__internal_data_sources_decision" onchange="toggleDataSourceFields(this.value)">
+                  <option value="yes">Yes, I would like to connect at least one of them.</option>
+                  <option value="no" selected>No, I won't integrate my data sources for now.</option>
+                </select>
+
+                <div id="data-sources-container" style="display: none;">
+                  <hr>
+                  <!-- Common -->
+                  <h5 class="mt-6 mb-6">
+                    <strong>Do you want your assistants to be able to manipulate the data in your data sources?</strong>
+                  </h5>
+                  <select class="form-select" id="response__internal_data_sources__data_source_is_read_only"
+                          name="response__internal_data_sources__data_source_is_read_only">
+                    <option value="no">Yes, let them have write permissions for my data sources.</option>
+                    <option value="yes" selected>No, I don't want my assistants to have write permissions, only let them
+                      read.
+                    </option>
+                  </select>
+                  <hr>
+                  <!-- SQL Information -->
+                  <h6 class="mt-6">
+                    <strong>
+                      <i class="fa fa-database"></i>
+                      <span class="ms-2">SQL Information</span>
+                    </strong>
+                  </h6>
+                  <div class="row">
+                    <div class="mb-6 col-2">
+                      <label class="form-label" for="response__internal_data_sources__sql_dbms_type">DBMS Type</label>
+                      <select class="form-select" id="response__internal_data_sources__sql_dbms_type"
+                              name="response__internal_data_sources__sql_dbms_type">
+                        <option value="" disabled selected>Select DBMS Type</option>
+                        {% for key, value in sql_dbms_choices %}
+                          <option value="{{ key }}">{{ value }}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                    <div class="col-2 mb-6">
+                      <label class="form-label" for="response__internal_data_sources__sql_host">Host</label>
+                      <input type="text" class="form-control" id="response__internal_data_sources__sql_host"
+                             name="response__internal_data_sources__sql_host" placeholder="Enter host" />
+                    </div>
+                    <div class="col-2 mb-6">
+                      <label class="form-label" for="response__internal_data_sources__sql_port">Port</label>
+                      <input type="number" class="form-control" id="response__internal_data_sources__sql_port"
+                             name="response__internal_data_sources__sql_port" placeholder="Enter port" />
+                    </div>
+                    <div class="col-2 mb-6">
+                      <label class="form-label" for="response__internal_data_sources__sql_database_name">Database
+                        Name</label>
+                      <input type="text" class="form-control" id="response__internal_data_sources__sql_database_name"
+                             name="response__internal_data_sources__sql_database_name"
+                             placeholder="Enter database name" />
+                    </div>
+                    <div class="col-2 mb-6">
+                      <label class="form-label" for="response__internal_data_sources__sql_username">Username</label>
+                      <input type="text" class="form-control" id="response__internal_data_sources__sql_username"
+                             name="response__internal_data_sources__sql_username" placeholder="Enter username" />
+                    </div>
+                    <div class="col-2 mb-6">
+                      <label class="form-label" for="response__internal_data_sources__sql_password">Password</label>
+                      <input type="password" class="form-control" id="response__internal_data_sources__sql_password"
+                             name="response__internal_data_sources__sql_password" placeholder="Enter password" />
+                    </div>
+                  </div>
+                  <hr>
+                  <!-- NoSQL Information -->
+                  <h6 class="mt-6">
+                    <strong>
+                      <i class="fa fa-database"></i>
+                      <span class="ms-2">NoSQL Information</span>
+                    </strong>
+                  </h6>
+                  <div class="row">
+                    <div class="mb-6 col-2">
+                      <label class="form-label" for="response__internal_data_sources__nosql_db_type">DBMS Type</label>
+                      <select class="form-select" id="response__internal_data_sources__nosql_db_type"
+                              name="response__internal_data_sources__nosql_db_type">
+                        <option value="" disabled selected>Select DBMS Type</option>
+                        {% for key, value in nosql_dbms_choices %}
+                          <option value="{{ key }}">{{ value }}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                    <div class="mb-6 col-3">
+                      <label class="form-label" for="response__internal_data_sources__nosql_host">Host</label>
+                      <input type="text" class="form-control" id="response__internal_data_sources__nosql_host"
+                             name="response__internal_data_sources__nosql_host" placeholder="Enter host" />
+                    </div>
+                    <div class="mb-6 col-3">
+                      <label class="form-label" for="response__internal_data_sources__nosql_bucket_name">Bucket
+                        Name</label>
+                      <input type="text" class="form-control" id="response__internal_data_sources__nosql_bucket_name"
+                             name="response__internal_data_sources__nosql_bucket_name"
+                             placeholder="Enter bucket name" />
+                    </div>
+                    <div class="mb-6 col-2">
+                      <label class="form-label" for="response__internal_data_sources__nosql_username">Username</label>
+                      <input type="text" class="form-control" id="response__internal_data_sources__nosql_username"
+                             name="response__internal_data_sources__nosql_username" placeholder="Enter username" />
+                    </div>
+                    <div class="mb-6 col-2">
+                      <label class="form-label" for="response__internal_data_sources__nosql_password">Password</label>
+                      <input type="password" class="form-control" id="response__internal_data_sources__nosql_password"
+                             name="response__internal_data_sources__nosql_password" placeholder="Enter password" />
+                    </div>
+                  </div>
+                  <hr>
+                  <!-- SSH File System Information -->
+                  <h6 class="mt-6">
+                    <strong>
+                      <i class="fa fa-server"></i>
+                      <span class="ms-2">File System / Server Information</span>
+                    </strong>
+                  </h6>
+                  <div class="row">
+                    <div class="mb-6 col-2">
+                      <label class="form-label" for="response__internal_data_sources__file_base_os_type">OS Type</label>
+                      <select class="form-select" id="response__internal_data_sources__file_base_os_type"
+                              name="response__internal_data_sources__file_base_os_type">
+                        <option value="" disabled selected>Select OS Type</option>
+                        {% for key, value in file_system_os_choices %}
+                          <option value="{{ key }}">{{ value }}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                    <div class="mb-6 col-3">
+                      <label class="form-label" for="response__internal_data_sources__file_base_host_url">Host</label>
+                      <input type="text" class="form-control" id="response__internal_data_sources__file_base_host_url"
+                             name="response__internal_data_sources__file_base_host_url" placeholder="Enter host" />
+                    </div>
+                    <div class="mb-6 col-3">
+                      <label class="form-label" for="response__internal_data_sources__file_base_port">Port</label>
+                      <input type="number" class="form-control" id="response__internal_data_sources__file_base_port"
+                             name="response__internal_data_sources__file_base_port" placeholder="Enter port" />
+                    </div>
+                    <div class="mb-6 col-2">
+                      <label class="form-label"
+                             for="response__internal_data_sources__file_base_username">Username</label>
+                      <input type="text" class="form-control" id="response__internal_data_sources__file_base_username"
+                             name="response__internal_data_sources__file_base_username" placeholder="Enter username" />
+                    </div>
+                    <div class="mb-6 col-2">
+                      <label class="form-label"
+                             for="response__internal_data_sources__file_base_password">Password</label>
+                      <input type="password" class="form-control"
+                             id="response__internal_data_sources__file_base_password"
+                             name="response__internal_data_sources__file_base_password" placeholder="Enter password" />
+                    </div>
+                  </div>
+                  <hr>
+                  <!-- Knowledge Base Information -->
+                  <h6 class="mt-6">
+                    <strong>
+                      <i class="fa fa-vector-square"></i>
+                      <span class="ms-2">Document Knowledge Base</span>
+                    </strong>
+                  </h6>
+                  <div class="row">
+                    <div class="mb-6 col-4">
+                      <label class="form-label" for="response__internal_data_sources__knowledge_base_provider">Knowledge
+                        Base Provider</label>
+                      <select class="form-select" id="response__internal_data_sources__knowledge_base_provider"
+                              name="response__internal_data_sources__knowledge_base_provider">
+                        <option value="weaviate" selected>Weaviate</option>
+                      </select>
+                    </div>
+                    <div class="mb-6 col-4">
+                      <label class="form-label" for="response__internal_data_sources__knowledge_base_host_url">Host
+                        URL</label>
+                      <input type="text" class="form-control"
+                             id="response__internal_data_sources__knowledge_base_host_url"
+                             name="response__internal_data_sources__knowledge_base_host_url"
+                             placeholder="Enter host URL" />
+                    </div>
+                    <div class="mb-6 col-4">
+                      <label class="form-label" for="response__internal_data_sources__knowledge_base_provider_api_key">Provider
+                        API Key</label>
+                      <input type="text" class="form-control"
+                             id="response__internal_data_sources__knowledge_base_provider_api_key"
+                             name="response__internal_data_sources__knowledge_base_provider_api_key"
+                             placeholder="Enter provider API key" />
+                    </div>
+                  </div>
+                  <hr>
+                  <!-- Code Base Information -->
+                  <h6 class="mt-6">
+                    <strong>
+                      <i class="fa fa-code"></i>
+                      <span class="ms-2">Code Storage Base Information</span>
+                    </strong>
+                  </h6>
+                  <div class="row">
+                    <div class="mb-6 col-4">
+                      <label class="form-label" for="response__internal_data_sources__code_base_provider">Knowledge Base
+                        Provider</label>
+                      <select class="form-select" id="response__internal_data_sources__code_base_provider"
+                              name="response__internal_data_sources__code_base_provider">
+                        <option value="weaviate" selected>Weaviate</option>
+                      </select>
+                    </div>
+                    <div class="mb-6 col-4">
+                      <label class="form-label" for="response__internal_data_sources__code_base_host_url">Host
+                        URL</label>
+                      <input type="text" class="form-control" id="response__internal_data_sources__code_base_host_url"
+                             name="response__internal_data_sources__code_base_host_url" placeholder="Enter host URL" />
+                    </div>
+                    <div class="mb-6 col-4">
+                      <label class="form-label" for="response__internal_data_sources__code_base_provider_api_key">Provider
+                        API Key</label>
+                      <input type="text" class="form-control"
+                             id="response__internal_data_sources__code_base_provider_api_key"
+                             name="response__internal_data_sources__code_base_provider_api_key"
+                             placeholder="Enter provider API key" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <hr>
+              <div class="col-12 mt-4 d-flex justify-content-between">
+                <button type="button" class="btn btn-secondary btn-prev"><i class="ti ti-arrow-left ti-xs me-sm-2"></i>
+                  <span class="align-middle d-sm-inline-block d-none"><strong>Previous</strong></span>
+                </button>
+                <button type="button" class="btn btn-success btn-next"> <span
+                  class="align-middle d-sm-inline-block d-none me-sm-2">
+                <strong>Next</strong></span> <i class="ti ti-arrow-right ti-xs"></i>
+                </button>
+              </div>
+            </div>
+            <!-- Step 11 / Data: Invite Users -->
+            <div id="invite-users-modern" class="content">
+              <img src="{% static 'img/quick_setup_helper/step-11.png' %}" class="rounded mb-4" style="width: 100%;"
+                   alt="Illustration for tips">
+              <hr>
+              <img src="{% static 'img/quick_setup_helper/banner-step-11.png' %}" class="rounded mb-4"
+                   style="width: 100%;" alt="Illustration for tips">
               <hr>
               <h5 class="mb-6">
-                <strong>You can list the important notes you want to share with your assistants here.</strong>
+                <strong>Do you want to invite users to your organization now?<sup><i
+                  class="fa fa-asterisk text-danger ms-1 fa-xs"></i></sup></strong>
               </h5>
               <div class="alert alert-dark rounded p-4">
                 <strong>
                   <i class="fa fa-info-circle"></i>
-                  <span class="ms-2">Don't worry, you can add more memories for your assistants later on if you want to.</span>
+                  <span
+                    class="ms-2">Don't worry, you can add more users to your organization later on, if you want to.</span>
                 </strong>
               </div>
-              <hr>
-              <h6 class="mb-6">
-                <strong>🟡 &nbsp; Memory #1</strong>
-              </h6>
-              <div class="col-12 mb-6">
-                <textarea id="response__assistant_note_1" name="response__assistant_note_1" class="form-control" rows="2" placeholder="e.g. Please don't write long answers."></textarea>
-              </div>
-              <h6 class="mb-6">
-                <strong>🟡 &nbsp; Memory #2</strong>
-              </h6>
-              <div class="col-12 mb-6">
-                <textarea id="response__assistant_note_2" name="response__assistant_note_2" class="form-control" rows="2" placeholder="e.g. Don't ask for my permission before running a tool, you can simply go ahead and run it."></textarea>
-              </div>
-              <h6 class="mb-6">
-                <strong>🟡 &nbsp; Memory #3</strong>
-              </h6>
-              <div class="col-12 mb-6">
-                <textarea id="response__assistant_note_3" name="response__assistant_note_3" class="form-control" rows="2" placeholder="e.g. Never mention my internal company or database data to users."></textarea>
-              </div>
-              <h6 class="mb-6">
-                <strong>🟡 &nbsp; Memory #4</strong>
-              </h6>
-              <div class="col-12 mb-6">
-                <textarea id="response__assistant_note_4" name="response__assistant_note_4" class="form-control" rows="2" placeholder="e.g. Don't use bullet points in your answers."></textarea>
-              </div>
-              <h6 class="mb-6">
-                <strong>🟡 &nbsp; Memory #5</strong>
-              </h6>
-              <div class="col-12 mb-6">
-                <textarea id="response__assistant_note_5" name="response__assistant_note_5" class="form-control" rows="2" placeholder="e.g. Refer to users with their username, not their name."></textarea>
-              </div>
-            </div>
-            <hr>
-            <div class="col-12 mt-4 d-flex justify-content-between">
-              <button type="button" class="btn btn-secondary btn-prev"> <i class="ti ti-arrow-left ti-xs me-sm-2"></i>
-                <span class="align-middle d-sm-inline-block d-none"><strong>Previous</strong></span>
-              </button>
-              <button type="button" class="btn btn-success btn-next"> <span class="align-middle d-sm-inline-block d-none me-sm-2">
-                <strong>Next</strong></span> <i class="ti ti-arrow-right ti-xs"></i>
-              </button>
-            </div>
-          </div>
-          <!-- Step 4a / Data: Orchestration Scheduled Jobs -->
-          <div id="orchestration-scheduled-jobs-modern" class="content">
-            <img src="{% static 'img/quick_setup_helper/step-4a.png' %}" class="rounded mb-4" style="width: 100%;" alt="Illustration for tips">
-            <hr>
-            <img src="{% static 'img/quick_setup_helper/banner-step-4a.png' %}" class="rounded mb-4" style="width: 100%;" alt="Illustration for tips">
-            <hr>
-            <h5 class="mt-6 mb-6">
-              <strong>Do you want to create automated execution schedules for your assistant teams?<sup><i class="fa fa-asterisk text-danger ms-1 fa-xs"></i></sup></strong>
-            </h5>
-            <div class="col-12 mb-8">
-              <!-- single-choice question -->
-              <select class="form-select" id="response__assistant_scheduled_jobs_decision" name="response__assistant_scheduled_jobs_decision" onchange="toggleScheduledJobsFields(this.value)">
-                <option value="yes">Yes, I want to automate my assistants to automatically get triggered regularly.</option>
-                <option value="no" selected>No, I don't need this kind of automation right now.</option>
-              </select>
-            </div>
-            <hr>
-            <div id="scheduled-jobs-container" style="display: none;">
-              <hr>
-              <h5 class="mb-6">
-                <strong>🟡 &nbsp; How often do you want your orchestration operations to run?</strong>
-              </h5>
-              <!-- single-choice question -->
-              <select class="form-select" id="response__scheduled_job_interval" name="response__scheduled_job_interval">
-                <option value="per_minute">Every Minute</option>
-                <option value="per_hour">Every Hour</option>
-                <option value="per_day" selected>Every Day</option>
-                <option value="per_week">Every Week</option>
-                <option value="per_month">Every Month</option>
-                <option value="per_year">Every Year</option>
-              </select>
-              <hr>
-              <h5 class="mb-6">
-                <strong>🟡 &nbsp; Please concisely describe the action(s) you want your orchestrators to perform.</strong>
-              </h5>
-              <div class="col-12 mb-6">
-                <textarea id="response__scheduled_job_description" name="response__scheduled_job_description" rows="2" class="form-control" placeholder="e.g. I want you to check the news about legal industry every day and create a report based on the recent updates. Store the reports in PDF format in my media storage, and also send it as an email to team members."></textarea>
-              </div>
-              <hr>
-              <h5 class="mb-6">
-                <strong>In simple words, describe the primary steps of the processes that will be handled by your orchestrators.</strong>
-              </h5>
-              <hr>
-              <h6 class="mb-6">
-                <strong>🟢 &nbsp; Process Step #1</strong>
-              </h6>
-              <div class="col-12 mb-6">
-                <textarea id="response__scheduled_job_step_1" name="response__scheduled_job_step_1" class="form-control" rows="1" placeholder="e.g. Use browsing to find the relevant news about the recent updates in legal industry."></textarea>
-              </div>
-              <h6 class="mb-6">
-                <strong>🟡 &nbsp; Process Step #2</strong>
-              </h6>
-              <div class="col-12 mb-6">
-                <textarea id="response__scheduled_job_step_2" name="response__scheduled_job_step_2" class="form-control" rows="1" placeholder="e.g. Generate analysis, insights and recommendations based on the updates."></textarea>
-              </div>
-              <h6 class="mb-6">
-                <strong>🟡 &nbsp; Process Step #3</strong>
-              </h6>
-              <div class="col-12 mb-6">
-                <textarea id="response__scheduled_job_step_3" name="response__scheduled_job_step_3" class="form-control" rows="1" placeholder="e.g. Generate a report in PDF format."></textarea>
-              </div>
-              <h6 class="mb-6">
-                <strong>🟡 &nbsp; Process Step #4</strong>
-              </h6>
-              <div class="col-12 mb-6">
-                <textarea id="response__scheduled_job_step_4" name="response__scheduled_job_step_4" class="form-control" rows="1" placeholder="e.g. Save the report in media storage."></textarea>
-              </div>
-              <h6 class="mb-6">
-                <strong>🟡 &nbsp; Process Step #5</strong>
-              </h6>
-              <div class="col-12 mb-6">
-                <textarea id="response__scheduled_job_step_5" name="response__scheduled_job_step_5" class="form-control" rows="1" placeholder="e.g. Send the report to team members as an email."></textarea>
-              </div>
-            </div>
-            <hr>
-            <div class="col-12 mt-4 d-flex justify-content-between">
-              <button type="button" class="btn btn-secondary btn-prev"> <i class="ti ti-arrow-left ti-xs me-sm-2"></i>
-                <span class="align-middle d-sm-inline-block d-none"><strong>Previous</strong></span>
-              </button>
-              <button type="button" class="btn btn-success btn-next"> <span class="align-middle d-sm-inline-block d-none me-sm-2">
-                <strong>Next</strong></span> <i class="ti ti-arrow-right ti-xs"></i>
-              </button>
-            </div>
-          </div>
-          <!-- Step 5 / Data: Office Tools -->
-          <div id="office-tools-modern" class="content">
-            <img src="{% static 'img/quick_setup_helper/step-5.png' %}" class="rounded mb-4" style="width: 100%;" alt="Illustration for tips">
-            <hr>
-            <img src="{% static 'img/quick_setup_helper/banner-step-5.png' %}" class="rounded mb-4" style="width: 100%;" alt="Illustration for tips">
-            <hr>
-            <!-- Q4: Do you want to use BimodLab AI Office tools & apps (e.g. Drafting, Spreadsheets, Slides, Forms, Kanban & Tempo)? -->
-            <h5 class="mt-6 mb-6">
-              <strong> Do you want to use BimodLab AI Office tools & apps (e.g. Drafting, Spreadsheets, Slides, Forms, Kanban & Tempo)?<sup><i class="fa fa-asterisk text-danger ms-1 fa-xs"></i></sup></strong>
-            </h5>
-            <div class="col-12 mb-8">
-              <!-- single-choice question -->
-              <select class="form-select" id="response__bimodlab_tools_decision" name="response__bimodlab_tools_decision">
-                <option value="yes" selected>Yes, I want to integrate BimodLab Office.</option>
-                <option value="no">No, I don't want to use BimodLab Office now.</option>
-              </select>
-            </div>
-            <hr>
-            <div class="col-12 mt-4 d-flex justify-content-between">
-              <button type="button" class="btn btn-secondary btn-prev"> <i class="ti ti-arrow-left ti-xs me-sm-2"></i>
-                <span class="align-middle d-sm-inline-block d-none"><strong>Previous</strong></span>
-              </button>
-              <button type="button" class="btn btn-success btn-next"> <span class="align-middle d-sm-inline-block d-none me-sm-2">
-                <strong>Next</strong></span> <i class="ti ti-arrow-right ti-xs"></i>
-              </button>
-            </div>
-          </div>
-          <!-- Step 6 / Data: Payment Method -->
-          <div id="payment-method-modern" class="content">
-            <img src="{% static 'img/quick_setup_helper/step-6.png' %}" class="rounded mb-4" style="width: 100%;" alt="Illustration for tips">
-            <hr>
-            <img src="{% static 'img/quick_setup_helper/banner-step-6.png' %}" class="rounded mb-4" style="width: 100%;" alt="Illustration for tips">
-            <hr>
-            <h5 class="mt-6 mb-6">
-              <strong>Do you want to add a payment method to your account now?<sup><i class="fa fa-asterisk text-danger ms-1 fa-xs"></i></sup></strong>
-            </h5>
-            <div class="col-12 mb-8">
-              <!-- single-choice question -->
-              <select class="form-select" id="response__payment_method_decision" name="response__payment_method_decision" onchange="togglePaymentForm(this.value)">
-                <option value="yes">Yes, I want to add a payment method.</option>
-                <option value="no" selected>No, I don't want to add my payment method now, maybe later.</option>
-              </select>
-            </div>
-            <div id="payment-form-container" style="display: none;">
-              <hr>
-              <h5 class="mb-6">
-                <strong>Please fill in the form to add a new credit card to your account.</strong>
-              </h5>
-              <div class="row mb-6">
-                <div class="mb-4 col-sm-6">
-                  <label for="response__payment_method_credit_card_name" class="form-label">Name on Card</label>
-                  <input type="text" id="response__payment_method_credit_card_name" name="response__payment_method_credit_card_name" class="form-control" placeholder="John Doe"/>
-                </div>
-                <div class="mb-4 col-sm-6">
-                  <label for="response__payment_method_credit_card_number" class="form-label">Card Number</label>
-                  <input type="text" id="response__payment_method_credit_card_number" name="response__payment_method_credit_card_number" class="form-control" maxlength="19" placeholder="0000-0000-0000-0000"/>
-                </div>
-                <div class="mb-4 col-sm-2">
-                  <label for="response__payment_method_credit_card_expiration_month" class="form-label">Expiration Month</label>
-                  <input type="text" id="response__payment_method_credit_card_expiration_month" name="response__payment_method_credit_card_expiration_month" placeholder="MM" class="form-control" maxlength="2"/>
-                </div>
-                <div class="mb-4 col-sm-2">
-                  <label for="response__payment_method_credit_card_expiration_year" class="form-label">Expiration Year</label>
-                  <input type="text" id="response__payment_method_credit_card_expiration_year" name="response__payment_method_credit_card_expiration_year" placeholder="YY" class="form-control" maxlength="2"/>
-                </div>
-                <div class="mb-4 col-sm-2">
-                  <label for="response__payment_method_credit_card_cvc" class="form-label">CVC</label>
-                  <input type="text" id="response__payment_method_credit_card_cvc" name="response__payment_method_credit_card_cvc" class="form-control" placeholder="000X" maxlength="4"/>
-                </div>
-              </div>
-            </div>
-            <hr>
-            <div class="col-12 mt-4 d-flex justify-content-between">
-              <button type="button" class="btn btn-secondary btn-prev">
-                <i class="ti ti-arrow-left ti-xs me-sm-2"></i>
-                <span class="align-middle d-sm-inline-block d-none"><strong>Previous</strong></span>
-              </button>
-              <button type="button" class="btn btn-success btn-next">
-                <span class="align-middle d-sm-inline-block d-none me-sm-2"><strong>Next</strong></span>
-                <i class="ti ti-arrow-right ti-xs"></i>
-              </button>
-            </div>
-          </div>
-          <!-- Step 7 / Data: Balance Plans -->
-          <div id="balance-plans-modern" class="content">
-            <img src="{% static 'img/quick_setup_helper/step-7.png' %}" class="rounded mb-4" style="width: 100%;" alt="Illustration for tips">
-            <hr>
-            <img src="{% static 'img/quick_setup_helper/banner-step-7.png' %}" class="rounded mb-4" style="width: 100%;" alt="Illustration for tips">
-            <hr>
-            <h5 class="mt-6 mb-6">
-              <strong>Do you want to create an automated balance top-up plan to prevent any service interruptions?<sup><i class="fa fa-asterisk text-danger ms-1 fa-xs"></i></sup></strong>
-            </h5>
-            <div class="col-12 mb-8">
-              <select class="form-select" id="response__balance_top_up_decision" name="response__balance_top_up_decision" onchange="toggleTopUpPlan(this.value)">
-                <option value="yes">Yes, I want to use automated balance top-ups.</option>
-                <option value="no" selected>No, I want to manually add balance for my account.</option>
-              </select>
-            </div>
-
-            <div id="top-up-plan-container" style="display: none;">
-              <h5 class="mt-6 mb-6">
-                <strong>Which one seems to be a better option for you to top up your balance?</strong>
-              </h5>
               <div class="col-12 mb-8">
-                <select class="form-select" id="response__balance_top_up_option" name="response__balance_top_up_option" onchange="toggleTopUpFields(this.value)">
-                  <option value="regular_interval" selected>Regular updates every once in a while.</option>
-                  <option value="threshold_trigger">Additions when the balance goes below a certain value.</option>
+                <select class="form-select" id="response__invite_users_decision" name="response__invite_users_decision"
+                        onchange="toggleInviteFields(this.value)">
+                  <option value="yes">Yes, I would like to invite users for my organization</option>
+                  <option value="no" selected>No, I don't want to invite the users now.</option>
                 </select>
               </div>
 
-              <h5 class="mt-6 mb-6">
-                <strong>How much do you want to add when the conditions are met?</strong>
-              </h5>
-              <div class="col-12">
-                <strong><i class="fa fa-dollar"></i> / USD</strong>
-                <input type="number" min="10" id="response__balance_top_up_amount" name="response__balance_top_up_amount" class="form-control" placeholder="e.g. 50" />
-              </div>
-
-              <h5 class="mt-6 mb-6">
-                <strong>What is the maximum limit for top-ups within a calendar month?</strong>
-              </h5>
-              <div class="col-12">
-                <strong><i class="fa fa-dollar"></i> / USD</strong>
-                <input type="number" id="response__balance_top_up_hard_limit" name="response__balance_top_up_hard_limit" class="form-control" placeholder="e.g. 1000" />
-              </div>
-
-              <div id="interval-days-container" style="display: block;">
+              <div id="invite-fields-container" style="display: none;">
                 <hr>
-                <h5 class="mt-6 mb-6">
-                  <strong>How often do you want the balance to be incremented?</strong>
-                </h5>
-                <div class="col-12">
-                  <strong><i class="fa fa-calendar"></i> / DAYS</strong>
-                  <input type="number" min="1" max="30" value="7" id="response__balance_top_up_interval_days" name="response__balance_top_up_interval_days" class="form-control mt-1" />
+                <h6 class="mb-6">
+                  <strong>🟡 &nbsp; User Email #1</strong>
+                </h6>
+                <div class="col-12 mb-6">
+                  <input type="text" id="response__invite_users_email_address_1"
+                         name="response__invite_users_email_address_1" class="form-control"
+                         placeholder="e.g. some_user1@gmail.com" />
+                </div>
+                <h6 class="mb-6">
+                  <strong>🟡 &nbsp; User Email #2</strong>
+                </h6>
+                <div class="col-12 mb-6">
+                  <input type="text" id="response__invite_users_email_address_2"
+                         name="response__invite_users_email_address_2" class="form-control"
+                         placeholder="e.g. some_user2@gmail.com" />
+                </div>
+                <h6 class="mb-6">
+                  <strong>🟡 &nbsp; User Email #3</strong>
+                </h6>
+                <div class="col-12 mb-6">
+                  <input type="text" id="response__invite_users_email_address_3"
+                         name="response__invite_users_email_address_3" class="form-control"
+                         placeholder="e.g. some_user3@gmail.com" />
+                </div>
+                <h6 class="mb-6">
+                  <strong>🟡 &nbsp; User Email #4</strong>
+                </h6>
+                <div class="col-12 mb-6">
+                  <input type="text" id="response__invite_users_email_address_4"
+                         name="response__invite_users_email_address_4" class="form-control"
+                         placeholder="e.g. some_user4@gmail.com" />
+                </div>
+                <h6 class="mb-6">
+                  <strong>🟡 &nbsp; User Email #5</strong>
+                </h6>
+                <div class="col-12 mb-6">
+                  <input type="text" id="response__invite_users_email_address_5"
+                         name="response__invite_users_email_address_5" class="form-control"
+                         placeholder="e.g. some_user5@gmail.com" />
                 </div>
               </div>
 
-              <div id="threshold-value-container" style="display: none;">
-                <hr>
-                <h5 class="mt-6 mb-6">
-                  <strong>Set the threshold value for when balance gets lower than that, an automatic top-up will be triggered.</strong>
-                </h5>
-                <div class="col-12">
-                  <strong><i class="fa fa-dollar"></i> / USD</strong>
-                  <input type="number" id="response__balance_top_up_threshold_value" name="response__balance_top_up_threshold_value" class="form-control" placeholder="e.g. 100" />
-                </div>
-              </div>
-            </div>
-
-            <hr>
-
-            <div class="col-12 mt-4 d-flex justify-content-between">
-              <button type="button" class="btn btn-secondary btn-prev">
-                <i class="ti ti-arrow-left ti-xs me-sm-2"></i>
-                <span class="align-middle d-sm-inline-block d-none"><strong>Previous</strong></span>
-              </button>
-              <button type="button" class="btn btn-success btn-next">
-                <span class="align-middle d-sm-inline-block d-none me-sm-2"><strong>Next</strong></span>
-                <i class="ti ti-arrow-right ti-xs"></i>
-              </button>
-            </div>
-          </div>
-          <!-- Step 8 / Data: Blockchain Wallet -->
-          <div id="blockchain-wallet-modern" class="content">
-            <img src="{% static 'img/quick_setup_helper/step-8.png' %}" class="rounded mb-4" style="width: 100%;" alt="Illustration for tips">
-            <hr>
-            <img src="{% static 'img/quick_setup_helper/banner-step-8.png' %}" class="rounded mb-4" style="width: 100%;" alt="Illustration for tips">
-            <hr>
-            <h5 class="mt-6 mb-6">
-              <strong>Do you want to connect your Blockchain wallet to let your assistants manage & create smart contracts?<sup><i class="fa fa-asterisk text-danger ms-1 fa-xs"></i></sup></strong>
-            </h5>
-            <div class="col-12 mb-8">
-              <select class="form-select" id="response__blockchain_wallet_decision" name="response__blockchain_wallet_decision" onchange="toggleWalletFields(this.value)">
-                <option value="yes">Yes, I want to connect my Ethereum chain wallet.</option>
-                <option value="no" selected>No, I don't want to connect my wallet now.</option>
-              </select>
-            </div>
-
-            <div id="wallet-fields-container" style="display: none;">
               <hr>
-              <h5 class="mt-6 mb-6">
-                <strong>🟡 &nbsp; Wallet Address</strong>
-              </h5>
-              <div class="col-12">
-                <input type="text" id="response__blockchain_wallet_address" name="response__blockchain_wallet_address" class="form-control" placeholder="0x000000000000..." />
-              </div>
-              <h5 class="mt-6 mb-6">
-                <strong>🟡 &nbsp; Wallet Private Key</strong>
-              </h5>
-              <div class="col-12">
-                <input type="text" id="response__blockchain_wallet_private_key" name="response__blockchain_wallet_private_key" class="form-control" placeholder="We need your private key to deploy your smart contracts to Ethereum blockchain." />
+              <div class="col-12 mt-4 d-flex justify-content-between">
+                <button type="button" class="btn btn-secondary btn-prev">
+                  <i class="ti ti-arrow-left ti-xs me-sm-2"></i>
+                  <span class="align-middle d-sm-inline-block d-none"><strong>Previous</strong></span>
+                </button>
+                <button type="button" class="btn btn-success btn-next">
+                  <span class="align-middle d-sm-inline-block d-none me-sm-2"><strong>Next</strong></span>
+                  <i class="ti ti-arrow-right ti-xs"></i>
+                </button>
               </div>
             </div>
-
-            <hr>
-            <div class="col-12 mt-4 d-flex justify-content-between">
-              <button type="button" class="btn btn-secondary btn-prev">
-                <i class="ti ti-arrow-left ti-xs me-sm-2"></i>
-                <span class="align-middle d-sm-inline-block d-none"><strong>Previous</strong></span>
-              </button>
-              <button type="button" class="btn btn-success btn-next">
-                <span class="align-middle d-sm-inline-block d-none me-sm-2"><strong>Next</strong></span>
-                <i class="ti ti-arrow-right ti-xs"></i>
-              </button>
-            </div>
-          </div>
-          <!-- Step 9 / Data: Sharing Assistants -->
-          <div id="sharing-assistants-modern" class="content">
-            <img src="{% static 'img/quick_setup_helper/step-9.png' %}" class="rounded mb-4" style="width: 100%;" alt="Illustration for tips">
-            <hr>
-            <img src="{% static 'img/quick_setup_helper/banner-step-9.png' %}" class="rounded mb-4" style="width: 100%;" alt="Illustration for tips">
-            <hr>
-            <!-- Q14: Do you plan to use your assistants externally (e.g. in your own website, applications, or platforms)? -->
-            <h5 class="mt-6 mb-6">
-              <strong>Do you plan to use your assistants externally (e.g. in your own website, applications, or platforms)?<sup><i class="fa fa-asterisk text-danger ms-1 fa-xs"></i></sup></strong>
-            </h5>
-            <div class="col-12 mb-8">
-              <!-- single-choice question -->
-              <select class="form-select" id="response__external_usage_decision" name="response__external_usage_decision">
-                <option value="yes" selected>Yes, please safely create RESTful API endpoints for my assistants.</option>
-                <option value="no">No, I won't use my assistants externally.</option>
-              </select>
-            </div>
-            <div class="col-12 mt-4 d-flex justify-content-between">
-              <button type="button" class="btn btn-secondary btn-prev"> <i class="ti ti-arrow-left ti-xs me-sm-2"></i>
-                <span class="align-middle d-sm-inline-block d-none"><strong>Previous</strong></span>
-              </button>
-              <button type="button" class="btn btn-success btn-next"> <span class="align-middle d-sm-inline-block d-none me-sm-2">
-                <strong>Next</strong></span> <i class="ti ti-arrow-right ti-xs"></i>
-              </button>
-            </div>
-          </div>
-          <!-- Step 10 / Data: Data Sources -->
-          <div id="data-sources-modern" class="content">
-            <img src="{% static 'img/quick_setup_helper/step-10.png' %}" class="rounded mb-4" style="width: 100%;" alt="Illustration for tips">
-            <hr>
-            <img src="{% static 'img/quick_setup_helper/banner-step-10.png' %}" class="rounded mb-4" style="width: 100%;" alt="Illustration for tips">
-            <hr>
-            <!-- Do you want to integrate the data sources for your assistants (e.g. SQL/NoSQL databases, Document Knowledge Bases, GitHub Code Repositories, Servers/Computers) now? -->
-            <h5 class="mt-6 mb-6">
-              <strong>Do you want to integrate the data sources for your assistants (e.g. SQL/NoSQL databases, Document Knowledge Bases, GitHub Code Repositories, Servers/Computers) now?<sup><i class="fa fa-asterisk text-danger ms-1 fa-xs"></i></sup></strong>
-            </h5>
-            <div class="col-12 mb-8">
-              <!-- single-choice question -->
-              <select class="form-select" id="response__internal_data_sources_decision" name="response__internal_data_sources_decision" onchange="toggleDataSourceFields(this.value)">
-                <option value="yes">Yes, I would like to connect at least one of them.</option>
-                <option value="no" selected>No, I won't integrate my data sources for now.</option>
-              </select>
-
-              <div id="data-sources-container" style="display: none;">
-                <hr>
-                <!-- Common -->
-                <h5 class="mt-6 mb-6">
-                  <strong>Do you want your assistants to be able to manipulate the data in your data sources?</strong>
-                </h5>
-                <select class="form-select" id="response__internal_data_sources__data_source_is_read_only" name="response__internal_data_sources__data_source_is_read_only">
-                  <option value="no">Yes, let them have write permissions for my data sources.</option>
-                  <option value="yes" selected>No, I don't want my assistants to have write permissions, only let them read.</option>
-                </select>
-                <hr>
-                <!-- SQL Information -->
-                <h6 class="mt-6">
-                  <strong>
-                    <i class="fa fa-database"></i>
-                    <span class="ms-2">SQL Information</span>
-                  </strong>
-                </h6>
-                <div class="row">
-                  <div class="mb-6 col-2">
-                    <label class="form-label" for="response__internal_data_sources__sql_dbms_type">DBMS Type</label>
-                    <select class="form-select" id="response__internal_data_sources__sql_dbms_type" name="response__internal_data_sources__sql_dbms_type">
-                      <option value="" disabled selected>Select DBMS Type</option>
-                      {% for key, value in sql_dbms_choices %}
-                        <option value="{{ key }}">{{ value }}</option>
-                      {% endfor %}
-                    </select>
-                  </div>
-                  <div class="col-2 mb-6">
-                    <label class="form-label" for="response__internal_data_sources__sql_host">Host</label>
-                    <input type="text" class="form-control" id="response__internal_data_sources__sql_host" name="response__internal_data_sources__sql_host" placeholder="Enter host"/>
-                  </div>
-                  <div class="col-2 mb-6">
-                    <label class="form-label" for="response__internal_data_sources__sql_port">Port</label>
-                    <input type="number" class="form-control" id="response__internal_data_sources__sql_port" name="response__internal_data_sources__sql_port" placeholder="Enter port"/>
-                  </div>
-                  <div class="col-2 mb-6">
-                    <label class="form-label" for="response__internal_data_sources__sql_database_name">Database Name</label>
-                    <input type="text" class="form-control" id="response__internal_data_sources__sql_database_name" name="response__internal_data_sources__sql_database_name"
-                           placeholder="Enter database name"/>
-                  </div>
-                  <div class="col-2 mb-6">
-                    <label class="form-label" for="response__internal_data_sources__sql_username">Username</label>
-                    <input type="text" class="form-control" id="response__internal_data_sources__sql_username" name="response__internal_data_sources__sql_username" placeholder="Enter username"/>
-                  </div>
-                  <div class="col-2 mb-6">
-                    <label class="form-label" for="response__internal_data_sources__sql_password">Password</label>
-                    <input type="password" class="form-control" id="response__internal_data_sources__sql_password" name="response__internal_data_sources__sql_password" placeholder="Enter password"/>
-                  </div>
-                </div>
-                <hr>
-                <!-- NoSQL Information -->
-                <h6 class="mt-6">
-                  <strong>
-                    <i class="fa fa-database"></i>
-                    <span class="ms-2">NoSQL Information</span>
-                  </strong>
-                </h6>
-                <div class="row">
-                  <div class="mb-6 col-2">
-                    <label class="form-label" for="response__internal_data_sources__nosql_db_type">DBMS Type</label>
-                    <select class="form-select" id="response__internal_data_sources__nosql_db_type" name="response__internal_data_sources__nosql_db_type">
-                      <option value="" disabled selected>Select DBMS Type</option>
-                      {% for key, value in nosql_dbms_choices %}
-                      <option value="{{ key }}">{{ value }}</option>
-                      {% endfor %}
-                    </select>
-                  </div>
-                  <div class="mb-6 col-3">
-                  <label class="form-label" for="response__internal_data_sources__nosql_host">Host</label>
-                  <input type="text" class="form-control" id="response__internal_data_sources__nosql_host" name="response__internal_data_sources__nosql_host" placeholder="Enter host" />
-                </div>
-                  <div class="mb-6 col-3">
-                    <label class="form-label" for="response__internal_data_sources__nosql_bucket_name">Bucket Name</label>
-                    <input type="text" class="form-control" id="response__internal_data_sources__nosql_bucket_name" name="response__internal_data_sources__nosql_bucket_name"
-                           placeholder="Enter bucket name" />
-                  </div>
-                  <div class="mb-6 col-2">
-                    <label class="form-label" for="response__internal_data_sources__nosql_username">Username</label>
-                    <input type="text" class="form-control" id="response__internal_data_sources__nosql_username" name="response__internal_data_sources__nosql_username" placeholder="Enter username" />
-                  </div>
-                  <div class="mb-6 col-2">
-                    <label class="form-label" for="response__internal_data_sources__nosql_password">Password</label>
-                    <input type="password" class="form-control" id="response__internal_data_sources__nosql_password" name="response__internal_data_sources__nosql_password" placeholder="Enter password" />
-                  </div>
-                </div>
-                <hr>
-                <!-- SSH File System Information -->
-                <h6 class="mt-6">
-                  <strong>
-                    <i class="fa fa-server"></i>
-                    <span class="ms-2">File System / Server Information</span>
-                  </strong>
-                </h6>
-                <div class="row">
-                  <div class="mb-6 col-2">
-                  <label class="form-label" for="response__internal_data_sources__file_base_os_type">OS Type</label>
-                    <select class="form-select" id="response__internal_data_sources__file_base_os_type" name="response__internal_data_sources__file_base_os_type">
-                      <option value="" disabled selected>Select OS Type</option>
-                      {% for key, value in file_system_os_choices %}
-                        <option value="{{ key }}">{{ value }}</option>
-                      {% endfor %}
-                    </select>
-                  </div>
-                  <div class="mb-6 col-3">
-                    <label class="form-label" for="response__internal_data_sources__file_base_host_url">Host</label>
-                    <input type="text" class="form-control" id="response__internal_data_sources__file_base_host_url" name="response__internal_data_sources__file_base_host_url" placeholder="Enter host"/>
-                  </div>
-                  <div class="mb-6 col-3">
-                    <label class="form-label" for="response__internal_data_sources__file_base_port">Port</label>
-                    <input type="number" class="form-control" id="response__internal_data_sources__file_base_port" name="response__internal_data_sources__file_base_port" placeholder="Enter port"/>
-                  </div>
-                  <div class="mb-6 col-2">
-                    <label class="form-label" for="response__internal_data_sources__file_base_username">Username</label>
-                    <input type="text" class="form-control" id="response__internal_data_sources__file_base_username" name="response__internal_data_sources__file_base_username" placeholder="Enter username"/>
-                  </div>
-                  <div class="mb-6 col-2">
-                    <label class="form-label" for="response__internal_data_sources__file_base_password">Password</label>
-                    <input type="password" class="form-control" id="response__internal_data_sources__file_base_password" name="response__internal_data_sources__file_base_password" placeholder="Enter password"/>
-                  </div>
-                </div>
-                <hr>
-                <!-- Knowledge Base Information -->
-                <h6 class="mt-6">
-                  <strong>
-                    <i class="fa fa-vector-square"></i>
-                    <span class="ms-2">Document Knowledge Base</span>
-                  </strong>
-                </h6>
-                <div class="row">
-                  <div class="mb-6 col-4">
-                    <label class="form-label" for="response__internal_data_sources__knowledge_base_provider">Knowledge Base Provider</label>
-                    <select class="form-select" id="response__internal_data_sources__knowledge_base_provider" name="response__internal_data_sources__knowledge_base_provider">
-                      <option value="weaviate" selected>Weaviate</option>
-                    </select>
-                  </div>
-                  <div class="mb-6 col-4">
-                    <label class="form-label" for="response__internal_data_sources__knowledge_base_host_url">Host URL</label>
-                    <input type="text" class="form-control" id="response__internal_data_sources__knowledge_base_host_url" name="response__internal_data_sources__knowledge_base_host_url" placeholder="Enter host URL"/>
-                  </div>
-                  <div class="mb-6 col-4">
-                    <label class="form-label" for="response__internal_data_sources__knowledge_base_provider_api_key">Provider API Key</label>
-                    <input type="text" class="form-control" id="response__internal_data_sources__knowledge_base_provider_api_key" name="response__internal_data_sources__knowledge_base_provider_api_key"
-                           placeholder="Enter provider API key"/>
-                  </div>
-                </div>
-                <hr>
-                <!-- Code Base Information -->
-                <h6 class="mt-6">
-                  <strong>
-                    <i class="fa fa-code"></i>
-                    <span class="ms-2">Code Storage Base Information</span>
-                  </strong>
-                </h6>
-                <div class="row">
-                  <div class="mb-6 col-4">
-                    <label class="form-label" for="response__internal_data_sources__code_base_provider">Knowledge Base Provider</label>
-                    <select class="form-select" id="response__internal_data_sources__code_base_provider" name="response__internal_data_sources__code_base_provider">
-                      <option value="weaviate" selected>Weaviate</option>
-                    </select>
-                  </div>
-                  <div class="mb-6 col-4">
-                    <label class="form-label" for="response__internal_data_sources__code_base_host_url">Host URL</label>
-                    <input type="text" class="form-control" id="response__internal_data_sources__code_base_host_url" name="response__internal_data_sources__code_base_host_url" placeholder="Enter host URL"/>
-                  </div>
-                  <div class="mb-6 col-4">
-                    <label class="form-label" for="response__internal_data_sources__code_base_provider_api_key">Provider API Key</label>
-                    <input type="text" class="form-control" id="response__internal_data_sources__code_base_provider_api_key" name="response__internal_data_sources__code_base_provider_api_key"
-                           placeholder="Enter provider API key"/>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <hr>
-            <div class="col-12 mt-4 d-flex justify-content-between">
-              <button type="button" class="btn btn-secondary btn-prev"> <i class="ti ti-arrow-left ti-xs me-sm-2"></i>
-                <span class="align-middle d-sm-inline-block d-none"><strong>Previous</strong></span>
-              </button>
-              <button type="button" class="btn btn-success btn-next"> <span class="align-middle d-sm-inline-block d-none me-sm-2">
-                <strong>Next</strong></span> <i class="ti ti-arrow-right ti-xs"></i>
-              </button>
-            </div>
-          </div>
-          <!-- Step 11 / Data: Invite Users -->
-          <div id="invite-users-modern" class="content">
-            <img src="{% static 'img/quick_setup_helper/step-11.png' %}" class="rounded mb-4" style="width: 100%;" alt="Illustration for tips">
-            <hr>
-            <img src="{% static 'img/quick_setup_helper/banner-step-11.png' %}" class="rounded mb-4" style="width: 100%;" alt="Illustration for tips">
-            <hr>
-            <h5 class="mb-6">
-              <strong>Do you want to invite users to your organization now?<sup><i class="fa fa-asterisk text-danger ms-1 fa-xs"></i></sup></strong>
-            </h5>
-            <div class="alert alert-dark rounded p-4">
-              <strong>
-                <i class="fa fa-info-circle"></i>
-                <span class="ms-2">Don't worry, you can add more users to your organization later on, if you want to.</span>
-              </strong>
-            </div>
-            <div class="col-12 mb-8">
-              <select class="form-select" id="response__invite_users_decision" name="response__invite_users_decision" onchange="toggleInviteFields(this.value)">
-                <option value="yes">Yes, I would like to invite users for my organization</option>
-                <option value="no" selected>No, I don't want to invite the users now.</option>
-              </select>
-            </div>
-
-            <div id="invite-fields-container" style="display: none;">
+            <!-- Step 12 / Data: Roles & Permissions -->
+            <div id="roles-and-permissions-modern" class="content">
+              <img src="{% static 'img/quick_setup_helper/step-12.png' %}" class="rounded mb-4" style="width: 100%;"
+                   alt="Illustration for tips">
               <hr>
-              <h6 class="mb-6">
-                <strong>🟡 &nbsp; User Email #1</strong>
-              </h6>
-              <div class="col-12 mb-6">
-                <input type="text" id="response__invite_users_email_address_1" name="response__invite_users_email_address_1" class="form-control" placeholder="e.g. some_user1@gmail.com" />
-              </div>
-              <h6 class="mb-6">
-                <strong>🟡 &nbsp; User Email #2</strong>
-              </h6>
-              <div class="col-12 mb-6">
-                <input type="text" id="response__invite_users_email_address_2" name="response__invite_users_email_address_2" class="form-control" placeholder="e.g. some_user2@gmail.com" />
-              </div>
-              <h6 class="mb-6">
-                <strong>🟡 &nbsp; User Email #3</strong>
-              </h6>
-              <div class="col-12 mb-6">
-                <input type="text" id="response__invite_users_email_address_3" name="response__invite_users_email_address_3" class="form-control" placeholder="e.g. some_user3@gmail.com" />
-              </div>
-              <h6 class="mb-6">
-                <strong>🟡 &nbsp; User Email #4</strong>
-              </h6>
-              <div class="col-12 mb-6">
-                <input type="text" id="response__invite_users_email_address_4" name="response__invite_users_email_address_4" class="form-control" placeholder="e.g. some_user4@gmail.com" />
-              </div>
-              <h6 class="mb-6">
-                <strong>🟡 &nbsp; User Email #5</strong>
-              </h6>
-              <div class="col-12 mb-6">
-                <input type="text" id="response__invite_users_email_address_5" name="response__invite_users_email_address_5" class="form-control" placeholder="e.g. some_user5@gmail.com" />
-              </div>
-            </div>
-
-            <hr>
-            <div class="col-12 mt-4 d-flex justify-content-between">
-              <button type="button" class="btn btn-secondary btn-prev">
-                <i class="ti ti-arrow-left ti-xs me-sm-2"></i>
-                <span class="align-middle d-sm-inline-block d-none"><strong>Previous</strong></span>
-              </button>
-              <button type="button" class="btn btn-success btn-next">
-                <span class="align-middle d-sm-inline-block d-none me-sm-2"><strong>Next</strong></span>
-                <i class="ti ti-arrow-right ti-xs"></i>
-              </button>
-            </div>
-          </div>
-          <!-- Step 12 / Data: Roles & Permissions -->
-          <div id="roles-and-permissions-modern" class="content">
-            <img src="{% static 'img/quick_setup_helper/step-12.png' %}" class="rounded mb-4" style="width: 100%;" alt="Illustration for tips">
-            <hr>
-            <img src="{% static 'img/quick_setup_helper/banner-step-12.png' %}" class="rounded mb-4" style="width: 100%;" alt="Illustration for tips">
-            <hr>
-            <h5 class="mb-6">
-              <strong>As the final step, do you want to adjust the permissions / member roles for the users you invited?<sup><i class="fa fa-asterisk text-danger ms-1 fa-xs"></i></sup></strong>
-            </h5>
-            <div class="alert alert-dark rounded p-4">
-              <strong>
-                <i class="fa fa-info-circle"></i>
-                <span class="ms-2">Don't worry, you can modify the user permissions and user roles for the users associated with your organization later on, if you want to.</span>
-              </strong>
-            </div>
-            <div class="col-12 mb-8">
-              <select class="form-select" id="response__user_roles_decision" name="response__user_roles_decision" onchange="toggleRolesQuestion(this.value)">
-                <option value="yes">Yes, I would like to set roles.</option>
-                <option value="no" selected>I don't want to add user permissions or roles right now, I will do that later.</option>
-              </select>
-            </div>
-
-            <div id="roles-question-container" style="display: none;">
+              <img src="{% static 'img/quick_setup_helper/banner-step-12.png' %}" class="rounded mb-4"
+                   style="width: 100%;" alt="Illustration for tips">
+              <hr>
               <h5 class="mb-6">
-                <strong>How much authorization do you want to grant your users?</strong>
+                <strong>As the final step, do you want to adjust the permissions / member roles for the users you
+                  invited?<sup><i class="fa fa-asterisk text-danger ms-1 fa-xs"></i></sup></strong>
               </h5>
+              <div class="alert alert-dark rounded p-4">
+                <strong>
+                  <i class="fa fa-info-circle"></i>
+                  <span class="ms-2">Don't worry, you can modify the user permissions and user roles for the users associated with your organization later on, if you want to.</span>
+                </strong>
+              </div>
               <div class="col-12 mb-8">
-                <select class="form-select" id="response__user_roles_option" name="response__user_roles_option">
-                  <option value="full_access">I want my users to be able to design organization's BimodLab workspace freely (except administrator-level permissions)</option>
-                  <option value="moderation_access" selected>I want my users to be able to create &amp; modify assistants, add &amp; update data sources and tools, but prevent them from operating on my organization-level data.</option>
-                  <option value="limited_access">I want my users to use the chats and standard interactive functionalities within BimodLab environment, but prevent them from modifying sensitive data.</option>
+                <select class="form-select" id="response__user_roles_decision" name="response__user_roles_decision"
+                        onchange="toggleRolesQuestion(this.value)">
+                  <option value="yes">Yes, I would like to set roles.</option>
+                  <option value="no" selected>I don't want to add user permissions or roles right now, I will do that
+                    later.
+                  </option>
                 </select>
               </div>
-            </div>
 
-            <hr>
-            <div class="col-12 mt-4 d-flex justify-content-between">
-              <button type="button" class="btn btn-secondary btn-prev">
-                <i class="ti ti-arrow-left ti-xs me-sm-2"></i>
-                <span class="align-middle d-sm-inline-block d-none"><strong>Previous</strong></span>
-              </button>
-              <button type="button" class="btn btn-success btn-next">
-                <span class="align-middle d-sm-inline-block d-none me-sm-2"><strong>Next</strong></span>
-                <i class="ti ti-arrow-right ti-xs"></i>
-              </button>
+              <div id="roles-question-container" style="display: none;">
+                <h5 class="mb-6">
+                  <strong>How much authorization do you want to grant your users?</strong>
+                </h5>
+                <div class="col-12 mb-8">
+                  <select class="form-select" id="response__user_roles_option" name="response__user_roles_option">
+                    <option value="full_access">I want my users to be able to design organization's BimodLab workspace
+                      freely (except administrator-level permissions)
+                    </option>
+                    <option value="moderation_access" selected>I want my users to be able to create &amp; modify
+                      assistants, add &amp; update data sources and tools, but prevent them from operating on my
+                      organization-level data.
+                    </option>
+                    <option value="limited_access">I want my users to use the chats and standard interactive
+                      functionalities within BimodLab environment, but prevent them from modifying sensitive data.
+                    </option>
+                  </select>
+                </div>
+              </div>
+
+              <hr>
+              <div class="col-12 mt-4 d-flex justify-content-between">
+                <button type="button" class="btn btn-secondary btn-prev">
+                  <i class="ti ti-arrow-left ti-xs me-sm-2"></i>
+                  <span class="align-middle d-sm-inline-block d-none"><strong>Previous</strong></span>
+                </button>
+                <button type="button" class="btn btn-success btn-next">
+                  <span class="align-middle d-sm-inline-block d-none me-sm-2"><strong>Next</strong></span>
+                  <i class="ti ti-arrow-right ti-xs"></i>
+                </button>
+              </div>
             </div>
-          </div>
-          <!-- Review & Submit -->
-          <div id="review-submit-modern" class="content">
-            <img src="{% static 'img/quick_setup_helper/step-13.png' %}" class="rounded mb-4" style="width: 100%;" alt="Illustration for tips">
-            <hr>
-            <img src="{% static 'img/quick_setup_helper/banner-step-13.png' %}" class="rounded mb-4" style="width: 100%;" alt="Illustration for tips">
-            <hr>
-            <div class="col-12 d-flex justify-content-between mt-6">
-              <button type="button" class="btn btn-secondary btn-prev"> <i class="ti ti-arrow-left ti-xs me-sm-2"></i>
-                <span class="align-middle d-sm-inline-block d-none">
+            <!-- Review & Submit -->
+            <div id="review-submit-modern" class="content">
+              <img src="{% static 'img/quick_setup_helper/step-13.png' %}" class="rounded mb-4" style="width: 100%;"
+                   alt="Illustration for tips">
+              <hr>
+              <img src="{% static 'img/quick_setup_helper/banner-step-13.png' %}" class="rounded mb-4"
+                   style="width: 100%;" alt="Illustration for tips">
+              <hr>
+              <div class="col-12 d-flex justify-content-between mt-6">
+                <button type="button" class="btn btn-secondary btn-prev"><i class="ti ti-arrow-left ti-xs me-sm-2"></i>
+                  <span class="align-middle d-sm-inline-block d-none">
                   <strong>Previous</strong>
                 </span>
-              </button>
-              <button type="submit" class="btn btn-lg btn-instagram btn-submit w-50">
-                <strong>
-                  <i class="fa fa-magic-wand-sparkles me-2"></i>
-                  Submit &amp; Start Integration
-                </strong>
-              </button>
+                </button>
+                <button type="submit" class="btn btn-lg btn-instagram btn-submit w-50">
+                  <strong>
+                    <i class="fa fa-magic-wand-sparkles me-2"></i>
+                    Submit &amp; Start Integration
+                  </strong>
+                </button>
+              </div>
             </div>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
     </div>
+    <!-- /Modern Icons Wizard -->
   </div>
-  <!-- /Modern Icons Wizard -->
-</div>
 
 {% endblock %}
 
 
 {% block page_js %}
-{{ block.super }}
-<script src="{% static 'js/form-wizard-icons.js' %}"></script>
-<script>
-  function toggleNotes(value) {
-    var notesContainer = document.getElementById('notes-container');
-    if (value === 'yes') {
-      notesContainer.style.display = 'block';
-    } else {
-      notesContainer.style.display = 'none';
+  {{ block.super }}
+  <script src="{% static 'js/form-wizard-icons.js' %}"></script>
+  <script>
+    function toggleNotes(value) {
+      var notesContainer = document.getElementById('notes-container');
+      if (value === 'yes') {
+        notesContainer.style.display = 'block';
+      } else {
+        notesContainer.style.display = 'none';
+      }
     }
-  }
-</script>
-<script>
-  function togglePaymentForm(value) {
-    var paymentForm = document.getElementById('payment-form-container');
-    if (value === 'yes') {
-      paymentForm.style.display = 'block';
-    } else {
-      paymentForm.style.display = 'none';
+  </script>
+  <script>
+    function togglePaymentForm(value) {
+      var paymentForm = document.getElementById('payment-form-container');
+      if (value === 'yes') {
+        paymentForm.style.display = 'block';
+      } else {
+        paymentForm.style.display = 'none';
+      }
     }
-  }
-</script>
-<script>
-  function toggleTopUpPlan(value) {
-    var topUpPlanContainer = document.getElementById('top-up-plan-container');
-    if (value === 'yes') {
-      topUpPlanContainer.style.display = 'block';
-    } else {
-      topUpPlanContainer.style.display = 'none';
+  </script>
+  <script>
+    function toggleTopUpPlan(value) {
+      var topUpPlanContainer = document.getElementById('top-up-plan-container');
+      if (value === 'yes') {
+        topUpPlanContainer.style.display = 'block';
+      } else {
+        topUpPlanContainer.style.display = 'none';
+      }
     }
-  }
 
-  function toggleTopUpFields(value) {
-    var intervalDaysContainer = document.getElementById('interval-days-container');
-    var thresholdValueContainer = document.getElementById('threshold-value-container');
+    function toggleTopUpFields(value) {
+      var intervalDaysContainer = document.getElementById('interval-days-container');
+      var thresholdValueContainer = document.getElementById('threshold-value-container');
 
-    if (value === 'regular_interval') {
-      intervalDaysContainer.style.display = 'block';
-      thresholdValueContainer.style.display = 'none';
-    } else if (value === 'threshold_trigger') {
-      intervalDaysContainer.style.display = 'none';
-      thresholdValueContainer.style.display = 'block';
+      if (value === 'regular_interval') {
+        intervalDaysContainer.style.display = 'block';
+        thresholdValueContainer.style.display = 'none';
+      } else if (value === 'threshold_trigger') {
+        intervalDaysContainer.style.display = 'none';
+        thresholdValueContainer.style.display = 'block';
+      }
     }
-  }
-</script>
-<script>
-  function toggleWalletFields(value) {
-    var walletFieldsContainer = document.getElementById('wallet-fields-container');
-    if (value === 'yes') {
-      walletFieldsContainer.style.display = 'block';
-    } else {
-      walletFieldsContainer.style.display = 'none';
+  </script>
+  <script>
+    function toggleWalletFields(value) {
+      var walletFieldsContainer = document.getElementById('wallet-fields-container');
+      if (value === 'yes') {
+        walletFieldsContainer.style.display = 'block';
+      } else {
+        walletFieldsContainer.style.display = 'none';
+      }
     }
-  }
-</script>
-<script>
-  function toggleDataSourceFields(value) {
-    var dataSourcesContainer = document.getElementById('data-sources-container');
-    if (value === 'yes') {
-      dataSourcesContainer.style.display = 'block';
-    } else {
-      dataSourcesContainer.style.display = 'none';
+  </script>
+  <script>
+    function toggleDataSourceFields(value) {
+      var dataSourcesContainer = document.getElementById('data-sources-container');
+      if (value === 'yes') {
+        dataSourcesContainer.style.display = 'block';
+      } else {
+        dataSourcesContainer.style.display = 'none';
+      }
     }
-  }
-</script>
-<script>
-  function toggleInviteFields(value) {
-    var inviteFieldsContainer = document.getElementById('invite-fields-container');
-    if (value === 'yes') {
-      inviteFieldsContainer.style.display = 'block';
-    } else {
-      inviteFieldsContainer.style.display = 'none';
+  </script>
+  <script>
+    function toggleInviteFields(value) {
+      var inviteFieldsContainer = document.getElementById('invite-fields-container');
+      if (value === 'yes') {
+        inviteFieldsContainer.style.display = 'block';
+      } else {
+        inviteFieldsContainer.style.display = 'none';
+      }
     }
-  }
-</script>
-<script>
-  function toggleRolesQuestion(value) {
-    var rolesQuestionContainer = document.getElementById('roles-question-container');
-    if (value === 'yes') {
-      rolesQuestionContainer.style.display = 'block';
-    } else {
-      rolesQuestionContainer.style.display = 'none';
+  </script>
+  <script>
+    function toggleRolesQuestion(value) {
+      var rolesQuestionContainer = document.getElementById('roles-question-container');
+      if (value === 'yes') {
+        rolesQuestionContainer.style.display = 'block';
+      } else {
+        rolesQuestionContainer.style.display = 'none';
+      }
     }
-  }
-</script>
-<script>
-  function toggleScheduledJobsFields(value) {
-    var scheduledJobsContainer = document.getElementById('scheduled-jobs-container');
-    if (value === 'yes') {
-      scheduledJobsContainer.style.display = 'block';
-    } else {
-      scheduledJobsContainer.style.display = 'none';
+  </script>
+  <script>
+    function toggleScheduledJobsFields(value) {
+      var scheduledJobsContainer = document.getElementById('scheduled-jobs-container');
+      if (value === 'yes') {
+        scheduledJobsContainer.style.display = 'block';
+      } else {
+        scheduledJobsContainer.style.display = 'none';
+      }
     }
-  }
-</script>
+  </script>
 {% endblock page_js %}

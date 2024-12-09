@@ -26,9 +26,9 @@
 
 {% block vendor_css %}
   {{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}"/>
-  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}"/>
-  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css' %}" />
   <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/font/bootstrap-icons.min.css">
 {% endblock vendor_css %}
@@ -42,7 +42,7 @@
 {% block page_js %}
   {{ block.super }}
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener('DOMContentLoaded', function() {
       // Function to store the collapsed tab state
       function storeCollapsedTabState() {
         const collapsedTabs = [];
@@ -77,8 +77,8 @@
       restoreCollapsedTabState();
 
       // Toggle icon logic
-      document.querySelectorAll('.toggle-icon').forEach(function (icon) {
-        icon.addEventListener('click', function () {
+      document.querySelectorAll('.toggle-icon').forEach(function(icon) {
+        icon.addEventListener('click', function() {
           var target = document.querySelector(this.getAttribute('data-target'));
           var bootstrapCollapse = new bootstrap.Collapse(target, {
             toggle: true
@@ -96,8 +96,8 @@
       });
 
       // Update toggle icons based on collapse state
-      document.querySelectorAll('.collapse').forEach(function (collapse) {
-        collapse.addEventListener('show.bs.collapse', function () {
+      document.querySelectorAll('.collapse').forEach(function(collapse) {
+        collapse.addEventListener('show.bs.collapse', function() {
           var icon = document.querySelector(`.toggle-icon[data-target="#${this.id}"]`);
           if (icon) {
             icon.classList.remove('fa-arrow-alt-circle-down');
@@ -105,7 +105,7 @@
           }
         });
 
-        collapse.addEventListener('hide.bs.collapse', function () {
+        collapse.addEventListener('hide.bs.collapse', function() {
           var icon = document.querySelector(`.toggle-icon[data-target="#${this.id}"]`);
           if (icon) {
             icon.classList.remove('fa-arrow-alt-circle-up');
@@ -166,6 +166,7 @@
                    aria-expanded="true" aria-controls="collapse-org-{{ organization_data.id }}">
                   <div class="d-flex">
                     <img src="
+
                       {% if organization_data.organization_image %}{{ organization_data.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
                          class="rounded me-4" width="80" height="80" alt="Organization image">
                     <h4 class="mb-0 mt-4">
@@ -186,7 +187,8 @@
               <hr>
               <i class="fa fa-arrow-alt-circle-up toggle-icon mt-5"
                  data-target="#collapse-org-{{ organization_data.id }}"></i>
-              <span data-bs-toggle="collapse" href="#collapse-org-{{ organization_data.id }}" role="button" aria-expanded="true" aria-controls="collapse-org-{{ organization_data.id }}">
+              <span data-bs-toggle="collapse" href="#collapse-org-{{ organization_data.id }}" role="button"
+                    aria-expanded="true" aria-controls="collapse-org-{{ organization_data.id }}">
                         <strong>&nbsp; See Complete List of Assistants</strong>
               </span>
             </div>
@@ -195,7 +197,8 @@
                 <div class="card mb-4 bg-body">
                   <div class="card-header">
                     <div class="d-flex">
-                      <img src="{% if assistant_data.assistant_image %}{{ assistant_data.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+                      <img src="
+                        {% if assistant_data.assistant_image %}{{ assistant_data.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
                            class="rounded me-4" width="60" height="60" alt="Assistant image">
                       <h4 class="mb-0 ms-4"><strong>{{ assistant_data.name }}</strong></h4>
                       <br>
@@ -222,18 +225,23 @@
                               <div class="col-md-6">
                                 <!-- Website URL Input -->
                                 <div class="mb-3">
-                                  <label for="website_url_{{ storage_data.id }}" class="form-label"><strong>Website Root URL</strong></label>
-                                  <input type="url" id="website_url_{{ storage_data.id }}" name="website_url" class="form-control" placeholder="Enter website root URL" required>
+                                  <label for="website_url_{{ storage_data.id }}" class="form-label"><strong>Website Root
+                                    URL</strong></label>
+                                  <input type="url" id="website_url_{{ storage_data.id }}" name="website_url"
+                                         class="form-control" placeholder="Enter website root URL" required>
                                 </div>
                               </div>
                               <div class="col-md-3">
                                 <!-- Crawling Methodology Input -->
                                 <div class="mb-3">
-                                  <label for="crawling_methodology_{{ storage_data.id }}" class="form-label"><strong>Crawling Methodology</strong></label>
-                                  <select id="crawling_methodology_{{ storage_data.id }}" name="crawling_methodology" class="form-select" required>
+                                  <label for="crawling_methodology_{{ storage_data.id }}" class="form-label"><strong>Crawling
+                                    Methodology</strong></label>
+                                  <select id="crawling_methodology_{{ storage_data.id }}" name="crawling_methodology"
+                                          class="form-select" required>
                                     <option value="" disabled selected>Select Crawling Methodology</option>
                                     {% for method in website_crawling_methodology_choices %}
-                                      <option value="{{ method.0 }}" {% if forloop.first %}selected{% endif %}>{{ method.1 }}</option>
+                                      <option value="{{ method.0 }}"
+                                              {% if forloop.first %}selected{% endif %}>{{ method.1 }}</option>
                                     {% endfor %}
                                   </select>
                                 </div>
@@ -255,93 +263,95 @@
                           </form>
                         </div>
                       </div>
-                        <hr>
-                        <div class="card mb-4">
-                          <div class="card-header">
-                            <h5 class="mb-0"><strong>{{ storage_data.name }}</strong></h5>
-                            <small class="text-muted">
-                              <strong>{{ storage_data.description }}</strong>
-                            </small>
-                          </div>
-                          <div class="card-body" style="overflow-x: auto;">
-                            <table class="table">
-                              <thead>
-                                <tr>
-                                  <th>ID</th>
-                                  <th>Website URL</th>
-                                  <th>Crawling Methodology</th>
-                                  <th>Processed Chunks</th>
-                                  <th>Total Chunks</th>
-                                  <th>Actions</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {% for item in storage_data.storage_items.all %}
-                                  <tr>
-                                    <td>{{ item.id }}</td>
-                                    <td style="min-width: 300px;">
-                                      <div class="btn-primary p-2 rounded text-white">
-                                        <strong>
-                                          <i class="fa fa-link me-2"></i>
-                                          {{ item.website_url }}
-                                        </strong>
-                                      </div>
-                                    </td>
-                                    <td>
-                                      <div class="bg-label-info p-2 rounded border border-info border-2 rounded">
-                                        <strong>
-                                          <i class="fa fa-spider me-2"></i>
-                                          {{ item.get_crawling_methodology_display }}
-                                        </strong>
-                                      </div>
-                                    </td>
-                                    <td style="min-width: 200px;">
-                                      <div class="btn-success p-4 rounded">
-                                        <strong>
-                                          <i class="fa fa-check me-2"></i>
-                                          {{ item.n_chunks_indexed_status }}
-                                        </strong>
-                                      </div>
-                                    </td>
-                                    <td style="min-width: 200px;">
-                                      <div class="btn-dark p-4 rounded">
-                                        <strong>
-                                          <i class="fa fa-cubes me-2"></i>
-                                          {{ item.n_chunks }}
-                                        </strong>
-                                      </div>
-                                    </td>
-                                    <td style="min-width: 500px;">
-                                      <a href="{% url 'datasource_website:website_item_refresh' pk=item.id %}" class="btn btn-sm btn-warning me-4">
-                                        <strong>
-                                          <i class="fa fa-refresh me-2"></i>
-                                          Update Indexes
-                                        </strong>
-                                      </a>
-                                      <a href="{% url 'datasource_website:website_item_delete' pk=item.id %}" class="btn btn-sm btn-danger">
-                                        <strong>
-                                          <i class="fa fa-trash me-2"></i>
-                                          Delete Website
-                                        </strong>
-                                      </a>
-                                    </td>
-                                  </tr>
-                                {% empty %}
-                                  <tr>
-                                    <td colspan="4" class="">
-                                      <div class="alert alert-warning p-8" role="alert">
-                                        <i class="fa fa-exclamation-triangle me-4"></i>
-                                        <strong>
-                                          No website items are found in this storage (yet).
-                                        </strong>
-                                      </div>
-                                    </td>
-                                  </tr>
-                                {% endfor %}
-                              </tbody>
-                            </table>
-                          </div>
+                      <hr>
+                      <div class="card mb-4">
+                        <div class="card-header">
+                          <h5 class="mb-0"><strong>{{ storage_data.name }}</strong></h5>
+                          <small class="text-muted">
+                            <strong>{{ storage_data.description }}</strong>
+                          </small>
                         </div>
+                        <div class="card-body" style="overflow-x: auto;">
+                          <table class="table">
+                            <thead>
+                            <tr>
+                              <th>ID</th>
+                              <th>Website URL</th>
+                              <th>Crawling Methodology</th>
+                              <th>Processed Chunks</th>
+                              <th>Total Chunks</th>
+                              <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for item in storage_data.storage_items.all %}
+                              <tr>
+                                <td>{{ item.id }}</td>
+                                <td style="min-width: 300px;">
+                                  <div class="btn-primary p-2 rounded text-white">
+                                    <strong>
+                                      <i class="fa fa-link me-2"></i>
+                                      {{ item.website_url }}
+                                    </strong>
+                                  </div>
+                                </td>
+                                <td>
+                                  <div class="bg-label-info p-2 rounded border border-info border-2 rounded">
+                                    <strong>
+                                      <i class="fa fa-spider me-2"></i>
+                                      {{ item.get_crawling_methodology_display }}
+                                    </strong>
+                                  </div>
+                                </td>
+                                <td style="min-width: 200px;">
+                                  <div class="btn-success p-4 rounded">
+                                    <strong>
+                                      <i class="fa fa-check me-2"></i>
+                                      {{ item.n_chunks_indexed_status }}
+                                    </strong>
+                                  </div>
+                                </td>
+                                <td style="min-width: 200px;">
+                                  <div class="btn-dark p-4 rounded">
+                                    <strong>
+                                      <i class="fa fa-cubes me-2"></i>
+                                      {{ item.n_chunks }}
+                                    </strong>
+                                  </div>
+                                </td>
+                                <td style="min-width: 500px;">
+                                  <a href="{% url 'datasource_website:website_item_refresh' pk=item.id %}"
+                                     class="btn btn-sm btn-warning me-4">
+                                    <strong>
+                                      <i class="fa fa-refresh me-2"></i>
+                                      Update Indexes
+                                    </strong>
+                                  </a>
+                                  <a href="{% url 'datasource_website:website_item_delete' pk=item.id %}"
+                                     class="btn btn-sm btn-danger">
+                                    <strong>
+                                      <i class="fa fa-trash me-2"></i>
+                                      Delete Website
+                                    </strong>
+                                  </a>
+                                </td>
+                              </tr>
+                            {% empty %}
+                              <tr>
+                                <td colspan="4" class="">
+                                  <div class="alert alert-warning p-8" role="alert">
+                                    <i class="fa fa-exclamation-triangle me-4"></i>
+                                    <strong>
+                                      No website items are found in this storage (yet).
+                                    </strong>
+                                  </div>
+                                </td>
+                              </tr>
+                            {% endfor %}
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
                     {% empty %}
                       <div class="card-body">
                         <div class="alert alert-warning p-8" role="alert">

@@ -1,21 +1,21 @@
-  <!--
-  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
-  ~
-  ~ Project: Bimod.io™
-  ~ File: update_llm_core.html
-  ~ Last Modified: 2024-10-05 01:39:48
-  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-05 14:42:34
-  ~
-  ~ This software is proprietary and confidential. Unauthorized copying,
-  ~ distribution, modification, or use of this software, whether for
-  ~ commercial, academic, or any other purpose, is strictly prohibited
-  ~ without the prior express written permission of BMD™ Autonomous
-  ~ Holdings.
-  ~
-  ~  For permission inquiries, please contact: admin@Bimod.io.
-  ~
-  -->
+<!--
+~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+~
+~ Project: Bimod.io™
+~ File: update_llm_core.html
+~ Last Modified: 2024-10-05 01:39:48
+~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+~ Created: 2024-10-05 14:42:34
+~
+~ This software is proprietary and confidential. Unauthorized copying,
+~ distribution, modification, or use of this software, whether for
+~ commercial, academic, or any other purpose, is strictly prohibited
+~ without the prior express written permission of BMD™ Autonomous
+~ Holdings.
+~
+~  For permission inquiries, please contact: admin@Bimod.io.
+~
+-->
 
 {% extends layout_path %}
 
@@ -29,8 +29,8 @@
 
 {% block vendor_css %}
   {{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}"/>
-  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
 {% endblock vendor_css %}
 
 {% block vendor_js %}
@@ -64,7 +64,8 @@
           <h5 class="mb-0"><strong>Update Model Configuration</strong></h5> <small class="text-muted float-end"></small>
         </div>
         <div class="card-body">
-          <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+          <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center"
+               role="alert">
             <img src="{% static 'img/custom-illustrations-v2/i2-9.png' %}" width="25%" style="border-radius:25px;"
                  class="justify-content-end me-8" alt="Illustration for tip">
             <span class="alert-icon rounded">
@@ -112,7 +113,7 @@
               <div class="col-6 mb-6">
                 <label class="form-label" for="nickname">Edit Model Nickname</label>
                 <input type="text" class="form-control" id="nickname" name="nickname" placeholder="Enter nickname"
-                       value="{{ llm_core.nickname }}"/>
+                       value="{{ llm_core.nickname }}" />
                 <div class="form-text"></div>
               </div>
               <div class="col-12 mb-6">
@@ -132,7 +133,7 @@
               <div class="col-6 mb-6">
                 <label class="form-label" for="api_key">Edit Provider API Key</label>
                 <input type="text" class="form-control" id="api_key" name="api_key" placeholder="Enter API Key"
-                       value="{{ llm_core.api_key }}"/>
+                       value="{{ llm_core.api_key }}" />
                 <div class="form-text"></div>
               </div>
               <div class="col-3 mb-6">
@@ -148,20 +149,20 @@
                 <label class="form-label" for="temperature">Edit Temperature</label>
                 <input type="number" class="form-control" id="temperature" name="temperature"
                        placeholder="Enter temperature"
-                       min="0" max="2" step="0.05" value="{{ llm_core.temperature }}"/>
+                       min="0" max="2" step="0.05" value="{{ llm_core.temperature }}" />
                 <div class="form-text"></div>
               </div>
               <div class="col-3 mb-6">
                 <label class="form-label" for="maximum_tokens">Edit Maximum Tokens</label>
                 <input type="number" class="form-control" id="maximum_tokens" name="maximum_tokens"
                        placeholder="Enter maximum tokens"
-                       min="256" max="4032" step="64" value="{{ llm_core.maximum_tokens }}"/>
+                       min="256" max="4032" step="64" value="{{ llm_core.maximum_tokens }}" />
                 <div class="form-text"></div>
               </div>
               <div class="col-3 mb-6">
                 <label class="form-label" for="top_p">Edit Top P</label>
                 <input type="number" class="form-control" id="top_p" name="top_p" placeholder="Enter top P"
-                       step="0.025" min="0" max="1" value="{{ llm_core.top_p }}"/>
+                       step="0.025" min="0" max="1" value="{{ llm_core.top_p }}" />
                 <div class="form-text"></div>
               </div>
               <div class="col-6 mb-6">
@@ -174,14 +175,14 @@
                 <label class="form-label" for="frequency_penalty">Edit Frequency Penalty</label>
                 <input type="number" class="form-control" id="frequency_penalty" name="frequency_penalty"
                        step="0.025" min="0" max="2" placeholder="Enter frequency penalty"
-                       value="{{ llm_core.frequency_penalty }}"/>
+                       value="{{ llm_core.frequency_penalty }}" />
                 <div class="form-text"></div>
               </div>
               <div class="col-3 mb-6">
                 <label class="form-label" for="presence_penalty">Edit Presence Penalty</label>
                 <input type="number" class="form-control" id="presence_penalty"
                        step="0.025" min="0" max="2" name="presence_penalty" placeholder="Enter presence penalty"
-                       value="{{ llm_core.presence_penalty }}"/>
+                       value="{{ llm_core.presence_penalty }}" />
                 <div class="form-text"></div>
               </div>
             </div>

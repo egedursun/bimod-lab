@@ -1,21 +1,21 @@
-  <!--
-  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
-  ~
-  ~ Project: Bimod.io™
-  ~ File: faq.html
-  ~ Last Modified: 2024-10-05 01:39:48
-  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-05 14:42:33
-  ~
-  ~ This software is proprietary and confidential. Unauthorized copying,
-  ~ distribution, modification, or use of this software, whether for
-  ~ commercial, academic, or any other purpose, is strictly prohibited
-  ~ without the prior express written permission of BMD™ Autonomous
-  ~ Holdings.
-  ~
-  ~  For permission inquiries, please contact: admin@Bimod.io.
-  ~
-  -->
+<!--
+~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+~
+~ Project: Bimod.io™
+~ File: faq.html
+~ Last Modified: 2024-10-05 01:39:48
+~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+~ Created: 2024-10-05 14:42:33
+~
+~ This software is proprietary and confidential. Unauthorized copying,
+~ distribution, modification, or use of this software, whether for
+~ commercial, academic, or any other purpose, is strictly prohibited
+~ without the prior express written permission of BMD™ Autonomous
+~ Holdings.
+~
+~  For permission inquiries, please contact: admin@Bimod.io.
+~
+-->
 
 {% extends layout_path %}
 
@@ -26,7 +26,7 @@
 
 {% block page_css %}
   {{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/css/pages/page-faq.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/css/pages/page-faq.css' %}" />
 {% endblock page_css %}
 
 {% block content %}
@@ -38,7 +38,7 @@
       </button>
     </a>
     <img src="{% static 'img/pages/header.png' %}" class="scaleX-n1-rtl faq-banner-img z-n1 rounded"
-         alt="background image"/>
+         alt="background image" />
     <h4 class="text-center mb-2"><strong>Frequently Asked Questions</strong></h4>
     <p class="text-center mb-0 px-4">Answers to your questions about our services. If you can't find what
       you're looking for, you can reach out to us via phone or email.</p>
@@ -251,7 +251,7 @@
               </h2>
               <div id="accordionGeneral-6" class="accordion-collapse collapse">
                 <div class="accordion-body">
-                 {% get_theme_variables 'template_name' %} enables users to schedule tasks using cron jobs or
+                  {% get_theme_variables 'template_name' %} enables users to schedule tasks using cron jobs or
                   trigger them through webhooks. Furthermore, the orchestration feature allows users to link
                   multiple assistants via a master assistant, enabling the seamless execution of complex tasks.
                 </div>
@@ -267,7 +267,8 @@
               </h2>
               <div id="accordionGeneral-7" class="accordion-collapse collapse">
                 <div class="accordion-body">
-                  The agent integration feature allows organizations to rapidly deploy pre-built assistants with pre-configured
+                  The agent integration feature allows organizations to rapidly deploy pre-built assistants with
+                  pre-configured
                   functions, APIs, and data sources. The meta-integration feature goes a step further
                   by enabling users to integrate systems with multiple optimized assistants for executing complex
                   tasks.
@@ -284,7 +285,8 @@
               </h2>
               <div id="accordionGeneral-8" class="accordion-collapse collapse">
                 <div class="accordion-body">
-                  {% get_theme_variables 'template_name' %} places a strong emphasis on data security through the use of advanced
+                  {% get_theme_variables 'template_name' %} places a strong emphasis on data security through the use of
+                  advanced
                   encryption, secure storage systems, and regular audits. Users can further control the assistant's
                   access to information by whitelisting or blacklisting specific websites and regulating the depth
                   of research performed by the assistant.
@@ -526,7 +528,8 @@
               <div id="accordionPayment-3" class="accordion-collapse collapse">
                 <div class="accordion-body">
                   If you experience any issues while topping up your balance, please contact our support team via
-                  the <a href="{% url "landing:index" %}#landingContact">support form</a>. Don't hesitate to reach out if you
+                  the <a href="{% url "landing:index" %}#landingContact">support form</a>. Don't hesitate to reach out
+                  if you
                   have any questions or concerns.
                 </div>
               </div>
@@ -623,7 +626,8 @@
                   No, you cannot withdraw your credits. Once you've topped up your balance, refunds for the topped-up
                   amount are not available. However, your balance never expires and can be used at any time. In
                   rare cases, such as accidentally topping up a large amount, we may offer a refund. In such
-                  instances, please contact our support team via the <a href="{% url "landing:index" %}#landingContact">support form</a>.
+                  instances, please contact our support team via the <a href="{% url "landing:index" %}#landingContact">support
+                  form</a>.
                 </div>
               </div>
             </div>
@@ -704,7 +708,8 @@
               <div id="accordionCancellation-6" class="accordion-collapse collapse">
                 <div class="accordion-body">
                   Currently, credits cannot be transferred between accounts. However, since your credits never
-                  expire, you can use them at any time if you decide to return to {% get_theme_variables 'template_name' %}.
+                  expire, you can use them at any time if you decide to return
+                  to {% get_theme_variables 'template_name' %}.
                 </div>
               </div>
             </div>
@@ -751,10 +756,12 @@
               <div id="accordionTerms-1" class="accordion-collapse collapse show">
                 <div class="accordion-body">
                   <p>Welcome to {% get_theme_variables 'template_name' %}!</p>
-                  <p>These terms and conditions outline the rules and regulations for the use of {% get_theme_variables 'template_name' %}'s Website,
+                  <p>These terms and conditions outline the rules and regulations for the use
+                    of {% get_theme_variables 'template_name' %}'s Website,
                     located at www.{% get_theme_variables 'template_name' %}.</p>
                   <p>By accessing this website we assume you accept these terms and conditions. Do not continue to use
-                    {% get_theme_variables 'template_name' %} if you do not agree to take all of the terms and conditions stated on this page.</p>
+                    {% get_theme_variables 'template_name' %} if you do not agree to take all of the terms and
+                    conditions stated on this page.</p>
                   <p>The following terminology applies to these Terms and Conditions, Privacy Statement and Disclaimer
                     Notice and all Agreements: "Client", "You" and "Your" refers to you, the person log on this website
                     and compliant to the Company's terms and conditions. "The Company", "Ourselves", "We", "Our" and
@@ -766,15 +773,19 @@
                     singular, plural, capitalization and/or he/she or they, are taken as interchangeable and therefore
                     as referring to same.</p>
                   <h5><strong>Cookies</strong></h5>
-                  <p>We employ the use of cookies. By accessing {% get_theme_variables 'template_name' %}, you agreed to use cookies in agreement with
+                  <p>We employ the use of cookies. By accessing {% get_theme_variables 'template_name' %}, you agreed to
+                    use cookies in agreement with
                     the {% get_theme_variables 'template_name' %}'s Privacy Policy. </p>
                   <p>Most interactive websites use cookies to let us retrieve the user's details for each visit. Cookies
                     are used by our website to enable the functionality of certain areas to make it easier for people
                     visiting our website. Some of our affiliate/advertising partners may also use cookies.</p>
                   <h5><strong>License</strong></h5>
-                  <p>Unless otherwise stated, {% get_theme_variables 'template_name' %} and/or its licensors own the intellectual property rights for all
-                    material on {% get_theme_variables 'template_name' %}. All intellectual property rights are reserved. You may access this from
-                    {% get_theme_variables 'template_name' %} for your own personal use subjected to restrictions set in these terms and conditions.</p>
+                  <p>Unless otherwise stated, {% get_theme_variables 'template_name' %} and/or its licensors own the
+                    intellectual property rights for all
+                    material on {% get_theme_variables 'template_name' %}. All intellectual property rights are
+                    reserved. You may access this from
+                    {% get_theme_variables 'template_name' %} for your own personal use subjected to restrictions set in
+                    these terms and conditions.</p>
                   <p>You must not:</p>
                   <ul>
                     <li>Republish material from {% get_theme_variables 'template_name' %}</li>
@@ -786,13 +797,17 @@
                     of the <a href="https://www.termsandconditionsgenerator.com/">Free Terms and Conditions
                       Generator</a>.</p>
                   <p>Parts of this website offer an opportunity for users to post and exchange opinions and information
-                    in certain areas of the website. {% get_theme_variables 'template_name' %} does not filter, edit, publish or review Comments prior to
-                    their presence on the website. Comments do not reflect the views and opinions of {% get_theme_variables 'template_name' %},its agents
+                    in certain areas of the website. {% get_theme_variables 'template_name' %} does not filter, edit,
+                    publish or review Comments prior to
+                    their presence on the website. Comments do not reflect the views and opinions
+                    of {% get_theme_variables 'template_name' %},its agents
                     and/or affiliates. Comments reflect the views and opinions of the person who post their views and
-                    opinions. To the extent permitted by applicable laws, {% get_theme_variables 'template_name' %} shall not be liable for the Comments
+                    opinions. To the extent permitted by applicable laws, {% get_theme_variables 'template_name' %}
+                    shall not be liable for the Comments
                     or for any liability, damages or expenses caused and/or suffered as a result of any use of and/or
                     posting of and/or appearance of the Comments on this website.</p>
-                  <p>{% get_theme_variables 'template_name' %} reserves the right to monitor all Comments and to remove any Comments which can be
+                  <p>{% get_theme_variables 'template_name' %} reserves the right to monitor all Comments and to remove
+                    any Comments which can be
                     considered inappropriate, offensive or causes breach of these Terms and Conditions.</p>
                   <p>You warrant and represent that:</p>
                   <ul>
@@ -809,7 +824,8 @@
                       activities or unlawful activity.
                     </li>
                   </ul>
-                  <p>You hereby grant {% get_theme_variables 'template_name' %} a non-exclusive license to use, reproduce, edit and authorize others to
+                  <p>You hereby grant {% get_theme_variables 'template_name' %} a non-exclusive license to use,
+                    reproduce, edit and authorize others to
                     use, reproduce and edit any of your Comments in any and all forms, formats or media.</p>
                   <h5><strong>Hyperlinking to our Content</strong></h5>
                   <p>The following organizations may link to our Website without prior written approval:</p>
@@ -841,13 +857,15 @@
                   <p>We will approve link requests from these organizations if we decide that: (a) the link would not
                     make us look unfavorably to ourselves or to our accredited businesses; (b) the organization does not
                     have any negative records with us; (c) the benefit to us from the visibility of the hyperlink
-                    compensates the absence of {% get_theme_variables 'template_name' %}; and (d) the link is in the context of general resource
+                    compensates the absence of {% get_theme_variables 'template_name' %}; and (d) the link is in the
+                    context of general resource
                     information.</p>
                   <p>These organizations may link to our home page so long as the link: (a) is not in any way deceptive;
                     (b) does not falsely imply sponsorship, endorsement or approval of the linking party and its
                     products or services; and (c) fits within the context of the linking party's site.</p>
                   <p>If you are one of the organizations listed in paragraph 2 above and are interested in linking to
-                    our website, you must inform us by sending an e-mail to {% get_theme_variables 'template_name' %}. Please include your name, your
+                    our website, you must inform us by sending an e-mail to {% get_theme_variables 'template_name' %}.
+                    Please include your name, your
                     organization name, contact information as well as the URL of your site, a list of any URLs from
                     which you intend to link to our Website, and a list of the URLs on our site to which you would like
                     to link. Wait 2-3 weeks for a response.</p>
@@ -859,7 +877,8 @@
                       context and format of content on the linking party's site.
                     </li>
                   </ul>
-                  <p>No use of {% get_theme_variables 'template_name' %}'s logo or other artwork will be allowed for linking absent a trademark license
+                  <p>No use of {% get_theme_variables 'template_name' %}'s logo or other artwork will be allowed for
+                    linking absent a trademark license
                     agreement.</p>
                   <h5><strong>iFrames</strong></h5>
                   <p>Without prior approval and written permission, you may not create frames around our Webpages that
@@ -992,9 +1011,10 @@
                         visit).</p>
                     </li>
                     <li>
-                      <p><strong>Website</strong> refers to Bimod, accessible from <a href="{% get_theme_variables 'template_name' %}"
-                                                                                      rel="external nofollow noopener"
-                                                                                      target="_blank">{% get_theme_variables 'template_name' %}</a></p>
+                      <p><strong>Website</strong> refers to Bimod, accessible from <a
+                        href="{% get_theme_variables 'template_name' %}"
+                        rel="external nofollow noopener"
+                        target="_blank">{% get_theme_variables 'template_name' %}</a></p>
                     </li>
                     <li>
                       <p><strong>You</strong> means the individual accessing or using the Service, or the company, or
@@ -1407,7 +1427,7 @@
               <h2 class="accordion-header">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                         aria-controls="accordionTroubleshooting-7" data-bs-target="#accordionTroubleshooting-7">
-                 What should I do if I encounter an error message?
+                  What should I do if I encounter an error message?
                 </button>
               </h2>
               <div id="accordionTroubleshooting-7" class="accordion-collapse collapse">
@@ -1527,7 +1547,8 @@
               <div id="accordionSupport-6" class="accordion-collapse collapse">
                 <div class="accordion-body">
                   We welcome feedback and suggestions! You can submit your ideas using the feedback form on our
-                  website or include them in your support request. Your input is valuable and helps us enhance our services.
+                  website or include them in your support request. Your input is valuable and helps us enhance our
+                  services.
                 </div>
               </div>
             </div>
@@ -1568,7 +1589,7 @@
               <h2 class="accordion-header">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#accordionUpdates-2" aria-controls="accordionUpdates-2">
-                 Will I be notified before any major changes are made?
+                  Will I be notified before any major changes are made?
                 </button>
               </h2>
               <div id="accordionUpdates-2" class="accordion-collapse collapse">
@@ -1583,7 +1604,7 @@
               <h2 class="accordion-header">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                         aria-controls="accordionUpdates-3" data-bs-target="#accordionUpdates-3">
-                 How do updates affect my existing agents?
+                  How do updates affect my existing agents?
                 </button>
               </h2>
               <div id="accordionUpdates-3" class="accordion-collapse collapse">
@@ -1666,7 +1687,8 @@
           <i class="ti ti-phone ti-26px"></i>
         </span>
         </div>
-        <h5 class="mt-8 mb-1"><a class="text-heading" href="tel:+90-546-538-70-99"><strong>+90-546-538-70-99</strong></a></h5>
+        <h5 class="mt-8 mb-1"><a class="text-heading"
+                                 href="tel:+90-546-538-70-99"><strong>+90-546-538-70-99</strong></a></h5>
         <p class="mb-0">Available between <strong>9:00 am - 5:00 pm (UTC+3).</strong></p>
       </div>
     </div>
@@ -1677,7 +1699,9 @@
           <i class="ti ti-mail ti-26px"></i>
         </span>
         </div>
-        <h5 class="mt-4 mb-1"><a class="text-heading" href="mailto:admin@{% get_theme_variables 'template_name' %}"><strong>admin@{% get_theme_variables 'template_name' %}</strong></a></h5>
+        <h5 class="mt-4 mb-1"><a class="text-heading"
+                                 href="mailto:admin@{% get_theme_variables 'template_name' %}"><strong>admin@{% get_theme_variables 'template_name' %}</strong></a>
+        </h5>
         <p class="mb-0">Best way to get a quick response, <strong>available 24/7.</strong></p>
       </div>
     </div>

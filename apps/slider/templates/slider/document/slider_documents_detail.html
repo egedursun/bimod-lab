@@ -25,162 +25,110 @@
 {% block title %}Drafting Editor{% endblock %}
 
 {% block vendor_css %}
-{{ block.super }}
-<link rel="stylesheet" href="https://cdn.quilljs.com/1.3.6/quill.snow.css">
-<link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}">
-<link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}">
-<link rel="stylesheet" href="{% static 'vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css' %}">
-<link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}">
-<link rel="stylesheet" href="{% static 'vendor/libs/@form-validation/form-validation.css' %}">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/font/bootstrap-icons.min.css">
-<link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}" />
+  {{ block.super }}
+  <link rel="stylesheet" href="https://cdn.quilljs.com/1.3.6/quill.snow.css">
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}">
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}">
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css' %}">
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}">
+  <link rel="stylesheet" href="{% static 'vendor/libs/@form-validation/form-validation.css' %}">
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}" />
 {% endblock vendor_css %}
 
 {% block page_css %}
-{{ block.super }}
-<style>
-  .ql-editor {
-    background-color: whitesmoke !important;
-    color: black !important; /* Text color */
-    min-height: 80vh;
-    max-height: 80vh;
-    overflow: auto;
-  }
+  {{ block.super }}
+  <style>
+    .ql-editor {
+      background-color: whitesmoke !important;
+      color: black !important; /* Text color */
+      min-height: 80vh;
+      max-height: 80vh;
+      overflow: auto;
+    }
 
-  .ql-toolbar {
-    background-color: whitesmoke !important;
-    border-radius: 10px;
-  }
+    .ql-toolbar {
+      background-color: whitesmoke !important;
+      border-radius: 10px;
+    }
 
-  .ql-editor h1 {
-    color: black;
-    font-weight: bolder;
-  }
+    .ql-editor h1 {
+      color: black;
+      font-weight: bolder;
+    }
 
-  .ql-editor h2 {
-    color: black;
-    font-weight: bolder;
-  }
+    .ql-editor h2 {
+      color: black;
+      font-weight: bolder;
+    }
 
-  .ql-editor h3 {
-    color: black;
-    font-weight: bold;
-  }
-</style>
+    .ql-editor h3 {
+      color: black;
+      font-weight: bold;
+    }
+  </style>
 {% endblock page_css %}
 
 {% block vendor_js %}
-{{ block.super }}
-<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
-<script src="{% static 'vendor/libs/datatables-bs5/datatables-bootstrap5.js' %}"></script>
-<script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
-<script src="{% static 'vendor/libs/@form-validation/popular.js' %}"></script>
-<script src="{% static 'vendor/libs/@form-validation/bootstrap5.js' %}"></script>
-<script src="{% static 'vendor/libs/@form-validation/auto-focus.js' %}"></script>
-<script src="{% static 'vendor/libs/cleavejs/cleave.js' %}"></script>
-<script src="{% static 'vendor/libs/cleavejs/cleave-phone.js' %}"></script>
-<script src="{% static 'vendor/libs/sweetalert2/sweetalert2.js' %}"></script>
+  {{ block.super }}
+  <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+  <script src="{% static 'vendor/libs/datatables-bs5/datatables-bootstrap5.js' %}"></script>
+  <script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+  <script src="{% static 'vendor/libs/@form-validation/popular.js' %}"></script>
+  <script src="{% static 'vendor/libs/@form-validation/bootstrap5.js' %}"></script>
+  <script src="{% static 'vendor/libs/@form-validation/auto-focus.js' %}"></script>
+  <script src="{% static 'vendor/libs/cleavejs/cleave.js' %}"></script>
+  <script src="{% static 'vendor/libs/cleavejs/cleave-phone.js' %}"></script>
+  <script src="{% static 'vendor/libs/sweetalert2/sweetalert2.js' %}"></script>
 {% endblock vendor_js %}
 
 {% block page_js %}
   {{ block.super }}
 
   <script>
-  var unsavedChanges = false;
-  var quill = new Quill('#editor', {
-    theme: 'snow',
-    placeholder: 'Start drafting your document...',
-    modules: {
-      toolbar: [
-        ['bold', 'italic', 'underline', 'strike'],
-        ['blockquote', 'code-block'],
-        [{ 'header': 1 }, { 'header': 2 }],
-        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-        [{ 'script': 'sub' }, { 'script': 'super' }],
-        [{ 'indent': '-1' }, { 'indent': '+1' }],
-        [{ 'direction': 'rtl' }],
-        [{ 'size': ['small', false, 'large', 'huge'] }],
-        ['link', 'image', 'video', 'formula'],
-        [{ 'color': [] }, { 'background': [] }],
-        [{ 'font': [] }],
-        [{ 'align': [] }],
-        ['clean']
-      ],
-      clipboard: true,
-      history: {
-        delay: 2000,
-        maxStack: 500,
-        userOnly: true
+    var unsavedChanges = false;
+    var quill = new Quill('#editor', {
+      theme: 'snow',
+      placeholder: 'Start drafting your document...',
+      modules: {
+        toolbar: [
+          ['bold', 'italic', 'underline', 'strike'],
+          ['blockquote', 'code-block'],
+          [{ 'header': 1 }, { 'header': 2 }],
+          [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+          [{ 'script': 'sub' }, { 'script': 'super' }],
+          [{ 'indent': '-1' }, { 'indent': '+1' }],
+          [{ 'direction': 'rtl' }],
+          [{ 'size': ['small', false, 'large', 'huge'] }],
+          ['link', 'image', 'video', 'formula'],
+          [{ 'color': [] }, { 'background': [] }],
+          [{ 'font': [] }],
+          [{ 'align': [] }],
+          ['clean']
+        ],
+        clipboard: true,
+        history: {
+          delay: 2000,
+          maxStack: 500,
+          userOnly: true
+        }
       }
+    });
+
+
+    function saveContent() {
+      let deltaContent = quill.getContents();
+      const documentId = "{{ document.id }}";
+      document.querySelector('input[name="draft_text"]').value = JSON.stringify(deltaContent);
+      localStorage.setItem(`unsavedChanges_${documentId}`, false);
+      document.querySelector('#saveForm').submit();
     }
-  });
 
-
-function saveContent() {
-  let deltaContent = quill.getContents();
-  const documentId = "{{ document.id }}";
-  document.querySelector('input[name="draft_text"]').value = JSON.stringify(deltaContent);
-  localStorage.setItem(`unsavedChanges_${documentId}`, false);
-  document.querySelector('#saveForm').submit();
-}
-
-// Page load initialization
-document.addEventListener('DOMContentLoaded', function () {
-  const documentId = "{{ document.id }}";
-  const localStorageKey = `quillContent_${documentId}`;
-  let initialDocumentContent;
-  try {
-    initialDocumentContent = JSON.parse('{{ content|escapejs }}');
-  } catch (e) {
-    console.error('Initial content parsing error:', e);
-    initialDocumentContent = '{}';
-  }
-  let savedContent = localStorage.getItem(localStorageKey);
-  if (savedContent) {
-    try {
-      quill.setContents(JSON.parse(savedContent));
-    } catch (e) {
-      console.error('Saved content parsing error:', e);
-      quill.setContents(initialDocumentContent);
-    }
-  } else {
-    quill.setContents(initialDocumentContent);
-    localStorage.setItem(localStorageKey, JSON.stringify(initialDocumentContent));
-  }
-  let unsavedChanges = localStorage.getItem(`unsavedChanges_${documentId}`);
-  document.querySelector('.bg-label-warning').hidden = (unsavedChanges !== 'true');
-});
-
-quill.on('text-change', function() {
-  const documentId = "{{ document.id }}";
-  let currentContent = quill.getContents();
-  let currentContentString = JSON.stringify(currentContent);
-  let initialDocumentContent = localStorage.getItem(`quillContent_${documentId}`);
-  localStorage.setItem(`quillContent_${documentId}`, currentContentString);
-  if (currentContentString === initialDocumentContent) {
-    document.querySelector('.bg-label-warning').hidden = true;
-  } else {
-    localStorage.setItem(`unsavedChanges_${documentId}`, true);
-    document.querySelector('.bg-label-warning').hidden = false;
-  }
-});
-
-// Refresh function for reset button
-function resetChanges() {
-  Swal.fire({
-    title: 'Are you sure?',
-    text: 'This will reset the document to its initial state, and all unsaved changes will be lost.',
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonText: 'Yes, reset it!',
-    cancelButtonText: 'No, cancel!',
-    customClass: {
-      confirmButton: 'btn btn-warning me-2',
-      cancelButton: 'btn btn-secondary'
-    },
-    buttonsStyling: false
-  }).then((result) => {
-    if (result.isConfirmed) {
+    // Page load initialization
+    document.addEventListener('DOMContentLoaded', function() {
+      const documentId = "{{ document.id }}";
+      const localStorageKey = `quillContent_${documentId}`;
       let initialDocumentContent;
       try {
         initialDocumentContent = JSON.parse('{{ content|escapejs }}');
@@ -188,821 +136,905 @@ function resetChanges() {
         console.error('Initial content parsing error:', e);
         initialDocumentContent = '{}';
       }
-      quill.setContents(initialDocumentContent);
-      localStorage.setItem(`quillContent_${documentId}`, JSON.stringify(initialDocumentContent));
-      localStorage.setItem(`unsavedChanges_${documentId}`, false);
-      document.querySelector('.bg-label-warning').hidden = true;
-    }
-  });
-}
-</script>
+      let savedContent = localStorage.getItem(localStorageKey);
+      if (savedContent) {
+        try {
+          quill.setContents(JSON.parse(savedContent));
+        } catch (e) {
+          console.error('Saved content parsing error:', e);
+          quill.setContents(initialDocumentContent);
+        }
+      } else {
+        quill.setContents(initialDocumentContent);
+        localStorage.setItem(localStorageKey, JSON.stringify(initialDocumentContent));
+      }
+      let unsavedChanges = localStorage.getItem(`unsavedChanges_${documentId}`);
+      document.querySelector('.bg-label-warning').hidden = (unsavedChanges !== 'true');
+    });
 
-<script>
-document.getElementById('deleteButton').addEventListener('click', function (event) {
-    event.preventDefault();
+    quill.on('text-change', function() {
+      const documentId = "{{ document.id }}";
+      let currentContent = quill.getContents();
+      let currentContentString = JSON.stringify(currentContent);
+      let initialDocumentContent = localStorage.getItem(`quillContent_${documentId}`);
+      localStorage.setItem(`quillContent_${documentId}`, currentContentString);
+      if (currentContentString === initialDocumentContent) {
+        document.querySelector('.bg-label-warning').hidden = true;
+      } else {
+        localStorage.setItem(`unsavedChanges_${documentId}`, true);
+        document.querySelector('.bg-label-warning').hidden = false;
+      }
+    });
 
-    Swal.fire({
+    // Refresh function for reset button
+    function resetChanges() {
+      Swal.fire({
         title: 'Are you sure?',
-        text: "You won't be able to revert this action!",
+        text: 'This will reset the document to its initial state, and all unsaved changes will be lost.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, reset it!',
+        cancelButtonText: 'No, cancel!',
+        customClass: {
+          confirmButton: 'btn btn-warning me-2',
+          cancelButton: 'btn btn-secondary'
+        },
+        buttonsStyling: false
+      }).then((result) => {
+        if (result.isConfirmed) {
+          let initialDocumentContent;
+          try {
+            initialDocumentContent = JSON.parse('{{ content|escapejs }}');
+          } catch (e) {
+            console.error('Initial content parsing error:', e);
+            initialDocumentContent = '{}';
+          }
+          quill.setContents(initialDocumentContent);
+          localStorage.setItem(`quillContent_${documentId}`, JSON.stringify(initialDocumentContent));
+          localStorage.setItem(`unsavedChanges_${documentId}`, false);
+          document.querySelector('.bg-label-warning').hidden = true;
+        }
+      });
+    }
+  </script>
+
+  <script>
+    document.getElementById('deleteButton').addEventListener('click', function(event) {
+      event.preventDefault();
+
+      Swal.fire({
+        title: 'Are you sure?',
+        text: 'You won\'t be able to revert this action!',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonText: 'Yes, delete it!',
         cancelButtonText: 'No, cancel!',
         customClass: {
-            confirmButton: 'btn btn-danger me-2',
-            cancelButton: 'btn btn-secondary'
+          confirmButton: 'btn btn-danger me-2',
+          cancelButton: 'btn btn-secondary'
         },
         buttonsStyling: false
-    }).then((result) => {
+      }).then((result) => {
         if (result.isConfirmed) {
-            document.getElementById('deleteForm').submit();
+          document.getElementById('deleteForm').submit();
         }
+      });
     });
-});
-</script>
-<script>
-  document.getElementById('downloadHTML').addEventListener('click', function () {
-    const editorContent = quill.root.innerHTML;
-    const blob = new Blob([editorContent], { type: 'text/html' });
-    const downloadLink = document.createElement('a');
-    downloadLink.href = URL.createObjectURL(blob);
-    downloadLink.download = 'document.html';
-    downloadLink.click();
-    URL.revokeObjectURL(downloadLink.href);
-  });
-</script>
-<script>
-  document.getElementById('downloadTXT').addEventListener('click', function () {
-    const editorContent = quill.getText();
-    const blob = new Blob([editorContent], { type: 'text/plain' });
-    const downloadLink = document.createElement('a');
-    downloadLink.href = URL.createObjectURL(blob);
-    downloadLink.download = 'document.txt';
-    downloadLink.click();
-    URL.revokeObjectURL(downloadLink.href);
-  });
-</script>
-<script src="https://unpkg.com/turndown/dist/turndown.js"></script>
-<script>
-  function convertHtmlToMarkdown(htmlContent) {
-    const turndownService = new TurndownService();
-    const markdown = turndownService.turndown(htmlContent);
-    return markdown;
-  }
-  document.getElementById('downloadMD').addEventListener('click', function () {
-    const editorContentHTML = quill.root.innerHTML; // HTML content of the Quill editor
-    const editorContentMD = convertHtmlToMarkdown(editorContentHTML);
-    const blob = new Blob([editorContentMD], { type: 'text/markdown' });
-    const downloadLink = document.createElement('a');
-    downloadLink.href = URL.createObjectURL(blob);
-    downloadLink.download = 'document.md';
-    downloadLink.click();
-    URL.revokeObjectURL(downloadLink.href);
-  });
-</script>
-<script>
-  var isModalOpen = false;
-var currentCommand = "";
-var savedRange = null;  // Store the selected range
+  </script>
+  <script>
+    document.getElementById('downloadHTML').addEventListener('click', function() {
+      const editorContent = quill.root.innerHTML;
+      const blob = new Blob([editorContent], { type: 'text/html' });
+      const downloadLink = document.createElement('a');
+      downloadLink.href = URL.createObjectURL(blob);
+      downloadLink.download = 'document.html';
+      downloadLink.click();
+      URL.revokeObjectURL(downloadLink.href);
+    });
+  </script>
+  <script>
+    document.getElementById('downloadTXT').addEventListener('click', function() {
+      const editorContent = quill.getText();
+      const blob = new Blob([editorContent], { type: 'text/plain' });
+      const downloadLink = document.createElement('a');
+      downloadLink.href = URL.createObjectURL(blob);
+      downloadLink.download = 'document.txt';
+      downloadLink.click();
+      URL.revokeObjectURL(downloadLink.href);
+    });
+  </script>
+  <script src="https://unpkg.com/turndown/dist/turndown.js"></script>
+  <script>
+    function convertHtmlToMarkdown(htmlContent) {
+      const turndownService = new TurndownService();
+      const markdown = turndownService.turndown(htmlContent);
+      return markdown;
+    }
 
-// Quill text change event to detect commands and show modals
-quill.on('text-change', function(delta, oldDelta, source) {
-  const quillEditor = quill.getText();
-  const cursorPosition = quill.getSelection()?.index;
-  const commands = {
-    "//ai": { title: "Consult AI Assistant", placeholder: "Ask something to the AI assistant...", buttonText: "Consult" },
-    "//web": { title: "Make AI Browse", placeholder: "Write what you want to browse...", buttonText: "Browse" },
-    "//sql": { title: "Check SQL with AI", placeholder: "Query your database files with AI...", buttonText: "Check SQL" },
-    "//nosql": { title: "Check NoSQL with AI", placeholder: "Query your NoSQL database files with AI...", buttonText: "Check NoSQL" },
-    "//img": { title: "Generate Image with AI", placeholder: "Write the details of the image you want...", buttonText: "Generate Image" },
-    "//ssh": { title: "Check SSH Server with AI", placeholder: "Query your SSH servers with AI...", buttonText: "Check SSH" },
-    "//vect": { title: "Check Knowledge with AI", placeholder: "Query knowledge bases with AI...", buttonText: "Check Knowledge" },
-    "//repo": { title: "Search Code with AI", placeholder: "Query your code repositories with AI...", buttonText: "Query Repository" },
-    "//auto": { title: "", placeholder: "", buttonText: "" },  // No modal, just handling.
-  };
+    document.getElementById('downloadMD').addEventListener('click', function() {
+      const editorContentHTML = quill.root.innerHTML; // HTML content of the Quill editor
+      const editorContentMD = convertHtmlToMarkdown(editorContentHTML);
+      const blob = new Blob([editorContentMD], { type: 'text/markdown' });
+      const downloadLink = document.createElement('a');
+      downloadLink.href = URL.createObjectURL(blob);
+      downloadLink.download = 'document.md';
+      downloadLink.click();
+      URL.revokeObjectURL(downloadLink.href);
+    });
+  </script>
+  <script>
+    var isModalOpen = false;
+    var currentCommand = '';
+    var savedRange = null;  // Store the selected range
 
-  for (const command in commands) {
-    const triggerStart = cursorPosition - command.length;
-    const lastTypedText = quillEditor.slice(triggerStart, cursorPosition);
+    // Quill text change event to detect commands and show modals
+    quill.on('text-change', function(delta, oldDelta, source) {
+      const quillEditor = quill.getText();
+      const cursorPosition = quill.getSelection()?.index;
+      const commands = {
+        '//ai': {
+          title: 'Consult AI Assistant',
+          placeholder: 'Ask something to the AI assistant...',
+          buttonText: 'Consult'
+        },
+        '//web': { title: 'Make AI Browse', placeholder: 'Write what you want to browse...', buttonText: 'Browse' },
+        '//sql': {
+          title: 'Check SQL with AI',
+          placeholder: 'Query your database files with AI...',
+          buttonText: 'Check SQL'
+        },
+        '//nosql': {
+          title: 'Check NoSQL with AI',
+          placeholder: 'Query your NoSQL database files with AI...',
+          buttonText: 'Check NoSQL'
+        },
+        '//img': {
+          title: 'Generate Image with AI',
+          placeholder: 'Write the details of the image you want...',
+          buttonText: 'Generate Image'
+        },
+        '//ssh': {
+          title: 'Check SSH Server with AI',
+          placeholder: 'Query your SSH servers with AI...',
+          buttonText: 'Check SSH'
+        },
+        '//vect': {
+          title: 'Check Knowledge with AI',
+          placeholder: 'Query knowledge bases with AI...',
+          buttonText: 'Check Knowledge'
+        },
+        '//repo': {
+          title: 'Search Code with AI',
+          placeholder: 'Query your code repositories with AI...',
+          buttonText: 'Query Repository'
+        },
+        '//auto': { title: '', placeholder: '', buttonText: '' }  // No modal, just handling.
+      };
 
-    if (lastTypedText === command) {
-      currentCommand = command;
-      if (command === "//auto") {
-        handleAutoCommand();  // Handle auto command directly without a modal.
-      } else if (!isModalOpen) {
-        showModal(commands[command]);
+      for (const command in commands) {
+        const triggerStart = cursorPosition - command.length;
+        const lastTypedText = quillEditor.slice(triggerStart, cursorPosition);
+
+        if (lastTypedText === command) {
+          currentCommand = command;
+          if (command === '//auto') {
+            handleAutoCommand();  // Handle auto command directly without a modal.
+          } else if (!isModalOpen) {
+            showModal(commands[command]);
+          }
+          break;
+        }
       }
-      break;
-    }
-  }
 
-  // Close modal if the text doesn't include the command anymore
-  if (isModalOpen && !quillEditor.includes(currentCommand)) {
-    closeModal();
-  }
-});
+      // Close modal if the text doesn't include the command anymore
+      if (isModalOpen && !quillEditor.includes(currentCommand)) {
+        closeModal();
+      }
+    });
 
-// Function to show the modal with appropriate details based on the command
-function showModal(commandDetails) {
-  isModalOpen = true;
-  const modal = document.getElementById('aiAssistantModal');
+    // Function to show the modal with appropriate details based on the command
+    function showModal(commandDetails) {
+      isModalOpen = true;
+      const modal = document.getElementById('aiAssistantModal');
 
-  // Save the current selection range before showing the modal
-  savedRange = quill.getSelection();
+      // Save the current selection range before showing the modal
+      savedRange = quill.getSelection();
 
-  document.getElementById('modalTitle').innerText = commandDetails.title;
-  document.getElementById('aiPrompt').placeholder = commandDetails.placeholder;
-  document.getElementById('consultButton').innerHTML = `<i class="fa fa-magic-wand-sparkles me-2"></i><strong>${commandDetails.buttonText}</strong>`;
-  modal.style.position = 'fixed';
-  modal.style.top = '118%';
-  modal.style.left = '72%';
-  modal.style.transform = 'translate(-50%, -50%)';
-  modal.style.display = 'block';
-}
-
-// Function to close the modal
-function closeModal() {
-  isModalOpen = false;
-  document.getElementById('aiAssistantModal').style.display = 'none';
-}
-
-// Function to handle AI consultation
-function consultAI() {
-  const aiPrompt = document.getElementById('aiPrompt').value;
-  if (aiPrompt.trim() !== "") {
-    closeModal();
-
-    // Restore the selection when the user consults AI
-    if (savedRange) {
-      quill.setSelection(savedRange);
+      document.getElementById('modalTitle').innerText = commandDetails.title;
+      document.getElementById('aiPrompt').placeholder = commandDetails.placeholder;
+      document.getElementById('consultButton').innerHTML = `<i class="fa fa-magic-wand-sparkles me-2"></i><strong>${commandDetails.buttonText}</strong>`;
+      modal.style.position = 'fixed';
+      modal.style.top = '118%';
+      modal.style.left = '72%';
+      modal.style.transform = 'translate(-50%, -50%)';
+      modal.style.display = 'block';
     }
 
-    quill.focus();
-    const selection = quill.getSelection(true);
-    if (!selection) {
-      console.warn("No active selection when consulting AI.");
-      return;
+    // Function to close the modal
+    function closeModal() {
+      isModalOpen = false;
+      document.getElementById('aiAssistantModal').style.display = 'none';
     }
-    const cursorPosition = selection.index;
-    const triggerPhraseLength = currentCommand.length;
-    if (cursorPosition >= triggerPhraseLength) {
-      quill.deleteText(cursorPosition - triggerPhraseLength, triggerPhraseLength);
+
+    // Function to handle AI consultation
+    function consultAI() {
+      const aiPrompt = document.getElementById('aiPrompt').value;
+      if (aiPrompt.trim() !== '') {
+        closeModal();
+
+        // Restore the selection when the user consults AI
+        if (savedRange) {
+          quill.setSelection(savedRange);
+        }
+
+        quill.focus();
+        const selection = quill.getSelection(true);
+        if (!selection) {
+          console.warn('No active selection when consulting AI.');
+          return;
+        }
+        const cursorPosition = selection.index;
+        const triggerPhraseLength = currentCommand.length;
+        if (cursorPosition >= triggerPhraseLength) {
+          quill.deleteText(cursorPosition - triggerPhraseLength, triggerPhraseLength);
+        }
+        console.log(`Consulting AI for ${currentCommand} with prompt:`, aiPrompt);
+
+        // Call the respective function based on the current command
+        if (currentCommand === '//ai') {
+          handleAiConsult();
+        } else if (currentCommand === '//web') {
+          handleWebConsult();
+        } else if (currentCommand === '//sql') {
+          handleSqlConsult();
+        } else if (currentCommand === '//nosql') {
+          handleNoSqlConsult();
+        } else if (currentCommand === '//img') {
+          handleImageConsult();
+        } else if (currentCommand === '//ssh') {
+          handleSshConsult();
+        } else if (currentCommand === '//vect') {
+          handleVectConsult();
+        } else if (currentCommand === '//repo') {
+          handleRepoConsult();
+        }
+      }
     }
-    console.log(`Consulting AI for ${currentCommand} with prompt:`, aiPrompt);
 
-    // Call the respective function based on the current command
-    if (currentCommand === "//ai") {
-      handleAiConsult();
-    } else if (currentCommand === "//web") {
-      handleWebConsult();
-    } else if (currentCommand === "//sql") {
-      handleSqlConsult();
-    } else if (currentCommand === "//nosql") {
-      handleNoSqlConsult();
-    } else if (currentCommand === "//img") {
-      handleImageConsult();
-    } else if (currentCommand === "//ssh") {
-      handleSshConsult();
-    } else if (currentCommand === "//vect") {
-      handleVectConsult();
-    } else if (currentCommand === "//repo") {
-      handleRepoConsult();
-    }
-  }
-}
+    // Event listener for backspace to close the modal
+    quill.root.addEventListener('keydown', function(event) {
+      const cursorPosition = quill.getSelection()?.index;
+      const quillEditor = quill.getText();
+      if (event.key === 'Backspace') {
+        const lastTypedText = quillEditor.slice(cursorPosition - currentCommand.length, cursorPosition);
+        if (isModalOpen && lastTypedText !== currentCommand) {
+          closeModal();
+        }
+      }
+    });
 
-// Event listener for backspace to close the modal
-quill.root.addEventListener('keydown', function(event) {
-  const cursorPosition = quill.getSelection()?.index;
-  const quillEditor = quill.getText();
-  if (event.key === "Backspace") {
-    const lastTypedText = quillEditor.slice(cursorPosition - currentCommand.length, cursorPosition);
-    if (isModalOpen && lastTypedText !== currentCommand) {
-      closeModal();
-    }
-  }
-});
+    let selectedText = '';
+    let selectionMade = false;  // Flag to track if text was selected
 
-let selectedText = '';
-let selectionMade = false;  // Flag to track if text was selected
-
-quill.on('selection-change', function(range) {
-    if (range && range.length > 0) {
+    quill.on('selection-change', function(range) {
+      if (range && range.length > 0) {
         savedRange = range;
         selectedText = quill.getText(range.index, range.length);
         selectionMade = true;  // Set flag to true when text is selected
-    } else {
+      } else {
         selectionMade = false;  // Reset flag when no selection is made
-    }
-});
+      }
+    });
 
-// Listen for the 'q' key after text selection
-document.addEventListener('keydown', function(event) {
-    if (selectionMade && event.key === 'F2') {
+    // Listen for the 'q' key after text selection
+    document.addEventListener('keydown', function(event) {
+      if (selectionMade && event.key === 'F2') {
         showModal({
-            title: "Manipulate Text with AI",
-            placeholder: "Write how do you want to change the text...",
-            buttonText: "Submit"
+          title: 'Manipulate Text with AI',
+          placeholder: 'Write how do you want to change the text...',
+          buttonText: 'Submit'
         });
 
         document.getElementById('consultButton').onclick = function() {
-            const aiPrompt = document.getElementById('aiPrompt').value;
-            if (aiPrompt.trim() !== "") {
-                closeModal();
+          const aiPrompt = document.getElementById('aiPrompt').value;
+          if (aiPrompt.trim() !== '') {
+            closeModal();
 
-                const documentId = "{{ document.id }}";
-                fetch("{% url 'drafting:generate_select' %}", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/x-www-form-urlencoded",
-                        "X-CSRFToken": "{{ csrf_token }}"
-                    },
-                    body: new URLSearchParams({
-                        document_id: documentId,
-                        selected_text: selectedText,
-                        command: aiPrompt
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.output) {
-                        const cleanedOutput = data.output.replace(/\r?\n|\r/g, " ");
-                        if (savedRange) {
-                            quill.deleteText(savedRange.index, savedRange.length);
-                            quill.insertText(savedRange.index, cleanedOutput);
-                        }
-                    }
-                    if (data.error) {
-                        console.error("Error while manipulating text:", data.error);
-                    }
-                });
-            }
+            const documentId = "{{ document.id }}";
+            fetch("{% url 'drafting:generate_select' %}", {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRFToken': "{{ csrf_token }}"
+              },
+              body: new URLSearchParams({
+                document_id: documentId,
+                selected_text: selectedText,
+                command: aiPrompt
+              })
+            })
+              .then(response => response.json())
+              .then(data => {
+                if (data.output) {
+                  const cleanedOutput = data.output.replace(/\r?\n|\r/g, ' ');
+                  if (savedRange) {
+                    quill.deleteText(savedRange.index, savedRange.length);
+                    quill.insertText(savedRange.index, cleanedOutput);
+                  }
+                }
+                if (data.error) {
+                  console.error('Error while manipulating text:', data.error);
+                }
+              });
+          }
         };
+      }
+    });
+
+    // Handle the //auto command
+    function handleAutoCommand() {
+      const selection = quill.getSelection(true);
+      if (!selection) return;
+      let cursorPosition = selection.index;
+      const triggerPhraseLength = '//auto'.length;
+      if (cursorPosition >= triggerPhraseLength) {
+        quill.deleteText(cursorPosition - triggerPhraseLength, triggerPhraseLength);
+        cursorPosition -= triggerPhraseLength;
+      }
+
+      const documentId = "{{ document.id }}";
+      fetch("{% url 'drafting:generate_auto' %}", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'X-CSRFToken': "{{ csrf_token }}"
+        },
+        body: new URLSearchParams({
+          document_id: documentId
+        })
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.output) {
+            const cleanedOutput = data.output.replace(/\r?\n|\r/g, ' ');
+            quill.insertText(cursorPosition, cleanedOutput, 'user');
+            quill.setSelection(cursorPosition + cleanedOutput.length);
+          }
+          if (data.error) {
+            console.error('Error while auto-completing:', data.error);
+          }
+        });
     }
-});
 
-// Handle the //auto command
-function handleAutoCommand() {
-  const selection = quill.getSelection(true);
-  if (!selection) return;
-  let cursorPosition = selection.index;
-  const triggerPhraseLength = "//auto".length;
-  if (cursorPosition >= triggerPhraseLength) {
-    quill.deleteText(cursorPosition - triggerPhraseLength, triggerPhraseLength);
-    cursorPosition -= triggerPhraseLength;
-  }
-
-  const documentId = "{{ document.id }}";
-  fetch("{% url 'drafting:generate_auto' %}", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-      "X-CSRFToken": "{{ csrf_token }}"
-    },
-    body: new URLSearchParams({
-      document_id: documentId
-    })
-  })
-  .then(response => response.json())
-  .then(data => {
-    if (data.output) {
-      const cleanedOutput = data.output.replace(/\r?\n|\r/g, " ");
-      quill.insertText(cursorPosition, cleanedOutput, 'user');
-      quill.setSelection(cursorPosition + cleanedOutput.length);
+    // Functions for handling each command's submission (empty handlers for now)
+    function handleAiConsult() {
+      const aiPrompt = document.getElementById('aiPrompt').value;
+      if (aiPrompt.trim() !== '') {
+        closeModal();
+        const selection = quill.getSelection(true);
+        if (!selection) return;
+        const cursorPosition = selection.index;
+        const triggerPhraseLength = currentCommand.length;
+        const documentId = "{{ document.id }}";
+        fetch("{% url 'drafting:generate_ai' %}", {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRFToken': "{{ csrf_token }}"
+          },
+          body: new URLSearchParams({
+            document_id: documentId,
+            command: aiPrompt
+          })
+        })
+          .then(response => response.json())
+          .then(data => {
+            if (data.output) {
+              quill.insertText(cursorPosition, data.output, 'user');
+            }
+            if (data.error) {
+              console.error('Error while consulting AI:', data.error);
+            }
+          });
+      }
     }
-    if (data.error) {
-      console.error("Error while auto-completing:", data.error);
+
+    function handleWebConsult() {
+      const webPrompt = document.getElementById('aiPrompt').value;
+      if (webPrompt.trim() !== '') {
+        closeModal();
+        const selection = quill.getSelection(true);
+        if (!selection) return;
+        const cursorPosition = selection.index;
+        const triggerPhraseLength = currentCommand.length;
+        const documentId = "{{ document.id }}";
+        fetch("{% url 'drafting:generate_web' %}", {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRFToken': "{{ csrf_token }}"
+          },
+          body: new URLSearchParams({
+            document_id: documentId,
+            command: webPrompt
+          })
+        })
+          .then(response => response.json())
+          .then(data => {
+            if (data.output) {
+              quill.insertText(cursorPosition, data.output, 'user');
+            }
+            if (data.error) {
+              console.error('Error while browsing the web:', data.error);
+            }
+          });
+      }
     }
-  });
-}
 
-// Functions for handling each command's submission (empty handlers for now)
-function handleAiConsult() {
-  const aiPrompt = document.getElementById('aiPrompt').value;
-  if (aiPrompt.trim() !== "") {
-    closeModal();
-    const selection = quill.getSelection(true);
-    if (!selection) return;
-    const cursorPosition = selection.index;
-    const triggerPhraseLength = currentCommand.length;
-    const documentId = "{{ document.id }}";
-    fetch("{% url 'drafting:generate_ai' %}", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-        "X-CSRFToken": "{{ csrf_token }}"
-      },
-      body: new URLSearchParams({
-        document_id: documentId,
-        command: aiPrompt
-      })
-    })
-    .then(response => response.json())
-    .then(data => {
-      if (data.output) {
-        quill.insertText(cursorPosition, data.output, 'user');
+    function handleSqlConsult() {
+      const sqlPrompt = document.getElementById('aiPrompt').value;
+      if (sqlPrompt.trim() !== '') {
+        closeModal();
+        const selection = quill.getSelection(true);
+        if (!selection) return;
+        const cursorPosition = selection.index;
+        const triggerPhraseLength = currentCommand.length;
+        const documentId = "{{ document.id }}";
+        fetch("{% url 'drafting:generate_sql' %}", {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRFToken': "{{ csrf_token }}"
+          },
+          body: new URLSearchParams({
+            document_id: documentId,
+            command: sqlPrompt
+          })
+        })
+          .then(response => response.json())
+          .then(data => {
+            if (data.output) {
+              quill.insertText(cursorPosition, data.output, 'user');
+            }
+          });
       }
-      if (data.error) {
-        console.error("Error while consulting AI:", data.error);
+    }
+
+    function handleNoSqlConsult() {
+      const noSqlPrompt = document.getElementById('aiPrompt').value;
+      if (noSqlPrompt.trim() !== '') {
+        closeModal();
+        const selection = quill.getSelection(true);
+        if (!selection) return;
+        const cursorPosition = selection.index;
+        const triggerPhraseLength = currentCommand.length;
+        const documentId = "{{ document.id }}";
+        fetch("{% url 'drafting:generate_nosql' %}", {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRFToken': "{{ csrf_token }}"
+          },
+          body: new URLSearchParams({
+            document_id: documentId,
+            command: noSqlPrompt
+          })
+        })
+          .then(response => response.json())
+          .then(data => {
+            if (data.output) {
+              quill.insertText(cursorPosition, data.output, 'user');
+            }
+            if (data.error) {
+              console.error('Error while searching NoSQL:', data.error);
+            }
+          });
       }
+    }
+
+    function handleImageConsult() {
+      console.log('Handling image consultation...');
+      const imgPrompt = document.getElementById('aiPrompt').value;
+      if (imgPrompt.trim() !== '') {
+        closeModal();
+        const selection = quill.getSelection(true);
+        if (!selection) return;
+        const cursorPosition = selection.index;
+        const triggerPhraseLength = currentCommand.length;
+        const documentId = "{{ document.id }}";
+        fetch("{% url 'drafting:generate_img' %}", {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRFToken': "{{ csrf_token }}"
+          },
+          body: new URLSearchParams({
+            document_id: documentId,
+            command: imgPrompt
+          })
+        })
+          .then(response => response.json())
+          .then(data => {
+            if (data.output) {
+              quill.insertEmbed(cursorPosition, 'image', data.output);
+            }
+            if (data.error) {
+              console.error('Error while generating image:', data.error);
+            }
+          });
+      }
+    }
+
+    function handleSshConsult() {
+      const sshPrompt = document.getElementById('aiPrompt').value;
+      if (sshPrompt.trim() !== '') {
+        closeModal();
+        const selection = quill.getSelection(true);
+        if (!selection) return;
+        const cursorPosition = selection.index;
+        const triggerPhraseLength = currentCommand.length;
+        const documentId = "{{ document.id }}";
+        fetch("{% url 'drafting:generate_ssh' %}", {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRFToken': "{{ csrf_token }}"
+          },
+          body: new URLSearchParams({
+            document_id: documentId,
+            command: sshPrompt
+          })
+        })
+          .then(response => response.json())
+          .then(data => {
+            if (data.output) {
+              quill.insertText(cursorPosition, data.output, 'user');
+            }
+            if (data.error) {
+              console.error('Error while checking SSH servers:', data.error);
+            }
+          });
+      }
+    }
+
+    function handleVectConsult() {
+      const vectPrompt = document.getElementById('aiPrompt').value;
+      if (vectPrompt.trim() !== '') {
+        closeModal();
+        const selection = quill.getSelection(true);
+        if (!selection) return;
+        const cursorPosition = selection.index;
+        const triggerPhraseLength = currentCommand.length;
+        const documentId = "{{ document.id }}";
+        fetch("{% url 'drafting:generate_vect' %}", {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRFToken': "{{ csrf_token }}"
+          },
+          body: new URLSearchParams({
+            document_id: documentId,
+            command: vectPrompt
+          })
+        })
+          .then(response => response.json())
+          .then(data => {
+            if (data.output) {
+              quill.insertText(cursorPosition, data.output, 'user');
+            }
+            if (data.error) {
+              console.error('Error while querying knowledge bases:', data.error);
+            }
+          });
+      }
+    }
+
+    function handleRepoConsult() {
+      const repoPrompt = document.getElementById('aiPrompt').value;
+      if (repoPrompt.trim() !== '') {
+        closeModal();
+        const selection = quill.getSelection(true);
+        if (!selection) return;
+        const cursorPosition = selection.index;
+        const triggerPhraseLength = currentCommand.length;
+        const documentId = "{{ document.id }}";
+        fetch("{% url 'drafting:generate_repo' %}", {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRFToken': "{{ csrf_token }}"
+          },
+          body: new URLSearchParams({
+            document_id: documentId,
+            command: repoPrompt
+          })
+        })
+          .then(response => response.json())
+          .then(data => {
+            if (data.output) {
+              quill.insertText(cursorPosition, data.output, 'user');
+            }
+            if (data.error) {
+              console.error('Error while querying knowledge bases:', data.error);
+            }
+          });
+      }
+    }
+
+    // Make modal draggable
+    function makeDraggable(modal, handle) {
+      let offsetX = 0, offsetY = 0, initialX = 0, initialY = 0;
+      handle.onmousedown = dragMouseDown;
+
+      function dragMouseDown(e) {
+        e = e || window.event;
+        e.preventDefault();
+        initialX = e.clientX;
+        initialY = e.clientY;
+        document.onmouseup = closeDragElement;
+        document.onmousemove = elementDrag;
+      }
+
+      function elementDrag(e) {
+        e = e || window.event;
+        e.preventDefault();
+        offsetX = initialX - e.clientX;
+        offsetY = initialY - e.clientY;
+        initialX = e.clientX;
+        initialY = e.clientY;
+        modal.style.top = (modal.offsetTop - offsetY) + 'px';
+        modal.style.left = (modal.offsetLeft - offsetX) + 'px';
+      }
+
+      function closeDragElement() {
+        document.onmouseup = null;
+        document.onmousemove = null;
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const modal = document.getElementById('aiAssistantModal');
+      const handle = document.getElementById('modalHeader');
+      makeDraggable(modal, handle);
     });
-  }
-}
-
-function handleWebConsult() {
-  const webPrompt = document.getElementById('aiPrompt').value;
-  if (webPrompt.trim() !== "") {
-    closeModal();
-    const selection = quill.getSelection(true);
-    if (!selection) return;
-    const cursorPosition = selection.index;
-    const triggerPhraseLength = currentCommand.length;
-    const documentId = "{{ document.id }}";
-    fetch("{% url 'drafting:generate_web' %}", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-        "X-CSRFToken": "{{ csrf_token }}"
-      },
-      body: new URLSearchParams({
-        document_id: documentId,
-        command: webPrompt
-      })
-    })
-    .then(response => response.json())
-    .then(data => {
-      if (data.output) {
-        quill.insertText(cursorPosition, data.output, 'user');
-      }
-      if (data.error) {
-        console.error("Error while browsing the web:", data.error);
-      }
-    });
-  }
-}
-
-function handleSqlConsult() {
-  const sqlPrompt = document.getElementById('aiPrompt').value;
-  if (sqlPrompt.trim() !== "") {
-    closeModal();
-    const selection = quill.getSelection(true);
-    if (!selection) return;
-    const cursorPosition = selection.index;
-    const triggerPhraseLength = currentCommand.length;
-    const documentId = "{{ document.id }}";
-    fetch("{% url 'drafting:generate_sql' %}", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-        "X-CSRFToken": "{{ csrf_token }}"
-      },
-      body: new URLSearchParams({
-        document_id: documentId,
-        command: sqlPrompt
-      })
-    })
-    .then(response => response.json())
-    .then(data => {
-      if (data.output) {
-        quill.insertText(cursorPosition, data.output, 'user');
-      }
-    });
-  }
-}
-
-function handleNoSqlConsult() {
-  const noSqlPrompt = document.getElementById('aiPrompt').value;
-  if (noSqlPrompt.trim() !== "") {
-    closeModal();
-    const selection = quill.getSelection(true);
-    if (!selection) return;
-    const cursorPosition = selection.index;
-    const triggerPhraseLength = currentCommand.length;
-    const documentId = "{{ document.id }}";
-    fetch("{% url 'drafting:generate_nosql' %}", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-        "X-CSRFToken": "{{ csrf_token }}"
-      },
-      body: new URLSearchParams({
-        document_id: documentId,
-        command: noSqlPrompt
-      })
-    })
-    .then(response => response.json())
-    .then(data => {
-      if (data.output) {
-        quill.insertText(cursorPosition, data.output, 'user');
-      }
-      if (data.error) {
-        console.error("Error while searching NoSQL:", data.error);
-      }
-    });
-  }
-}
-
-function handleImageConsult() {
-  console.log("Handling image consultation...");
-  const imgPrompt = document.getElementById('aiPrompt').value;
-  if (imgPrompt.trim() !== "") {
-    closeModal();
-    const selection = quill.getSelection(true);
-    if (!selection) return;
-    const cursorPosition = selection.index;
-    const triggerPhraseLength = currentCommand.length;
-    const documentId = "{{ document.id }}";
-    fetch("{% url 'drafting:generate_img' %}", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-        "X-CSRFToken": "{{ csrf_token }}"
-      },
-      body: new URLSearchParams({
-        document_id: documentId,
-        command: imgPrompt
-      })
-    })
-    .then(response => response.json())
-    .then(data => {
-      if (data.output) {
-        quill.insertEmbed(cursorPosition, 'image', data.output);
-      }
-      if (data.error) {
-        console.error("Error while generating image:", data.error);
-      }
-    });
-  }
-}
-
-function handleSshConsult() {
-  const sshPrompt = document.getElementById('aiPrompt').value;
-  if (sshPrompt.trim() !== "") {
-    closeModal();
-    const selection = quill.getSelection(true);
-    if (!selection) return;
-    const cursorPosition = selection.index;
-    const triggerPhraseLength = currentCommand.length;
-    const documentId = "{{ document.id }}";
-    fetch("{% url 'drafting:generate_ssh' %}", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-        "X-CSRFToken": "{{ csrf_token }}"
-      },
-      body: new URLSearchParams({
-        document_id: documentId,
-        command: sshPrompt
-      })
-    })
-    .then(response => response.json())
-    .then(data => {
-      if (data.output) {
-        quill.insertText(cursorPosition, data.output, 'user');
-      }
-      if (data.error) {
-        console.error("Error while checking SSH servers:", data.error);
-      }
-    });
-  }
-}
-
-function handleVectConsult() {
-  const vectPrompt = document.getElementById('aiPrompt').value;
-  if (vectPrompt.trim() !== "") {
-    closeModal();
-    const selection = quill.getSelection(true);
-    if (!selection) return;
-    const cursorPosition = selection.index;
-    const triggerPhraseLength = currentCommand.length;
-    const documentId = "{{ document.id }}";
-    fetch("{% url 'drafting:generate_vect' %}", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-        "X-CSRFToken": "{{ csrf_token }}"
-      },
-      body: new URLSearchParams({
-        document_id: documentId,
-        command: vectPrompt
-      })
-    })
-    .then(response => response.json())
-    .then(data => {
-      if (data.output) {
-        quill.insertText(cursorPosition, data.output, 'user');
-      }
-      if (data.error) {
-        console.error("Error while querying knowledge bases:", data.error);
-      }
-    });
-  }
-}
-
-function handleRepoConsult() {
-  const repoPrompt = document.getElementById('aiPrompt').value;
-  if (repoPrompt.trim() !== "") {
-    closeModal();
-    const selection = quill.getSelection(true);
-    if (!selection) return;
-    const cursorPosition = selection.index;
-    const triggerPhraseLength = currentCommand.length;
-    const documentId = "{{ document.id }}";
-    fetch("{% url 'drafting:generate_repo' %}", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-        "X-CSRFToken": "{{ csrf_token }}"
-      },
-      body: new URLSearchParams({
-        document_id: documentId,
-        command: repoPrompt
-      })
-    })
-    .then(response => response.json())
-    .then(data => {
-      if (data.output) {
-        quill.insertText(cursorPosition, data.output, 'user');
-      }
-      if (data.error) {
-        console.error("Error while querying knowledge bases:", data.error);
-      }
-    });
-  }
-}
-
-// Make modal draggable
-function makeDraggable(modal, handle) {
-  let offsetX = 0, offsetY = 0, initialX = 0, initialY = 0;
-  handle.onmousedown = dragMouseDown;
-
-  function dragMouseDown(e) {
-    e = e || window.event;
-    e.preventDefault();
-    initialX = e.clientX;
-    initialY = e.clientY;
-    document.onmouseup = closeDragElement;
-    document.onmousemove = elementDrag;
-  }
-
-  function elementDrag(e) {
-    e = e || window.event;
-    e.preventDefault();
-    offsetX = initialX - e.clientX;
-    offsetY = initialY - e.clientY;
-    initialX = e.clientX;
-    initialY = e.clientY;
-    modal.style.top = (modal.offsetTop - offsetY) + "px";
-    modal.style.left = (modal.offsetLeft - offsetX) + "px";
-  }
-
-  function closeDragElement() {
-    document.onmouseup = null;
-    document.onmousemove = null;
-  }
-}
-
-document.addEventListener('DOMContentLoaded', function () {
-  const modal = document.getElementById('aiAssistantModal');
-  const handle = document.getElementById('modalHeader');
-  makeDraggable(modal, handle);
-});
-</script>
+  </script>
 {% endblock page_js %}
 
 {% block content %}
-<div class="container md-4">
-  <h2 class="mb-12">
-    <i class="fa fa-magic-wand-sparkles me-2"></i>
-    <strong>Drafting Editor</strong>
-  </h2>
+  <div class="container md-4">
+    <h2 class="mb-12">
+      <i class="fa fa-magic-wand-sparkles me-2"></i>
+      <strong>Drafting Editor</strong>
+    </h2>
 
-  <a href="{% url 'drafting:documents_list' folder_id=document.document_folder.id %}">
-    <button class="btn btn-secondary mt-0 mb-4">
-      <i class="fa fa-folder me-4"></i>
-      <strong> Turn Back to Folder</strong>
-    </button>
-  </a>
+    <a href="{% url 'drafting:documents_list' folder_id=document.document_folder.id %}">
+      <button class="btn btn-secondary mt-0 mb-4">
+        <i class="fa fa-folder me-4"></i>
+        <strong> Turn Back to Folder</strong>
+      </button>
+    </a>
 
-  <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
-    <img src="{% static 'img/custom-illustrations-v2/i2-16.png' %}" width="25%" style="border-radius: 25px;"
-         class="justify-content-end me-8" alt="Illustration for tip">
-    <span class="alert-icon rounded">
+    <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+      <img src="{% static 'img/custom-illustrations-v2/i2-16.png' %}" width="25%" style="border-radius: 25px;"
+           class="justify-content-end me-8" alt="Illustration for tip">
+      <span class="alert-icon rounded">
     <i class="ti ti-bookmark"></i>
   </span>
-    <div class="d-flex flex-column ps-1">
-      <h5 class="alert-heading mb-2">Tip</h5>
-      <p class="mb-0">
-        In this page, you can draft documents by using the power of your AI assistants, which enables you to
-        take advantage of your previous documents as well as the general configurations of your assistant, and
-        you can download your drafts as PDF, HTML, or TXT files. AI can help you auto-complete your drafts,
-        suggest you the best possible words, and correct your grammar mistakes.
-      </p>
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-  </div>
-
-  {% if messages %}
-    {% for message in messages %}
-      <div
-        class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
-        role="alert">
-        {{ message }}
+      <div class="d-flex flex-column ps-1">
+        <h5 class="alert-heading mb-2">Tip</h5>
+        <p class="mb-0">
+          In this page, you can draft documents by using the power of your AI assistants, which enables you to
+          take advantage of your previous documents as well as the general configurations of your assistant, and
+          you can download your drafts as PDF, HTML, or TXT files. AI can help you auto-complete your drafts,
+          suggest you the best possible words, and correct your grammar mistakes.
+        </p>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
-    {% endfor %}
-  {% endif %}
+    </div>
 
-  <hr>
-  <div class="d-flex justify-content-start align-content-center">
-    <div class="d-flex justify-content-between align-items-center mt-1 me-4">
+    {% if messages %}
+      {% for message in messages %}
+        <div
+          class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
+          role="alert">
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endif %}
+
+    <hr>
+    <div class="d-flex justify-content-start align-content-center">
+      <div class="d-flex justify-content-between align-items-center mt-1 me-4">
       <span class="form-control bg-lightest text-bg-light" style="font-weight: bold; min-width: 200px; overflow: auto;">
         {{ document.document_folder.name }}
       </span>
-    </div>
-    <div class="d-flex justify-content-between align-items-center mt-1 me-4">
+      </div>
+      <div class="d-flex justify-content-between align-items-center mt-1 me-4">
       <span class="form-control bg-lightest text-bg-light" style="font-weight: bold; min-width: 200px; overflow: auto;">
         {{ document.copilot_assistant.name }}
       </span>
-    </div>
-    <div class="d-flex justify-content-between align-items-center mt-1">
+      </div>
+      <div class="d-flex justify-content-between align-items-center mt-1">
       <span class="form-control bg-lightest text-bg-light" style="font-weight: bold; min-width: 380px; overflow: auto;">
         {{ document.document_title }}
       </span>
-      <span class="bg-label-warning rounded p-1 ms-4" role="alert" style="min-width: 150px;">
+        <span class="bg-label-warning rounded p-1 ms-4" role="alert" style="min-width: 150px;">
         <small>
           <i class="fa fa-exclamation-triangle me-1 ms-2"></i>
           <strong>Unsaved Changes</strong>
         </small>
       </span>
-    </div>
-    <form id="saveForm" method="post" action="{% url 'drafting:documents_save' folder_id=document.document_folder.id document_id=document.id %}">
-      {% csrf_token %}
-      <div class="d-flex justify-content-between align-items-center mt-1">
-        <input type="hidden" name="draft_text" value="">
-        <button type="button" class="btn btn-link p-0 ms-2" onclick="saveContent()">
-          <i class="fa fa-save ms-2 mt-1_5 text-dark" style="font-size: 24px;"></i>
+      </div>
+      <form id="saveForm" method="post"
+            action="{% url 'drafting:documents_save' folder_id=document.document_folder.id document_id=document.id %}">
+        {% csrf_token %}
+        <div class="d-flex justify-content-between align-items-center mt-1">
+          <input type="hidden" name="draft_text" value="">
+          <button type="button" class="btn btn-link p-0 ms-2" onclick="saveContent()">
+            <i class="fa fa-save ms-2 mt-1_5 text-dark" style="font-size: 24px;"></i>
+          </button>
+        </div>
+      </form>
+      <button type="button" class="btn btn-link p-0 ms-12" id="downloadHTML">
+        <i class="fa fa-code ms-2 mt-1_5 text-dark" style="font-size: 24px;"></i>
+      </button>
+      <button type="button" class="btn btn-link p-0 ms-2" id="downloadMD">
+        <i class="ti ti-markdown ti-xl ms-2 mt-1_5 text-dark" style="font-size: 24px;"></i>
+      </button>
+      <button type="button" class="btn btn-link p-0 ms-2" id="downloadTXT">
+        <i class="fa fa-file-text ms-2 mt-1_5 text-dark" style="font-size: 24px;"></i>
+      </button>
+      <div class="d-flex justify-content-between align-items-center mt-1 ms-12">
+        <button type="button" class="btn btn-link p-0 ms-2" onclick="resetChanges()">
+          <i class="fa fa-refresh ms-2 mt-1_5 text-warning" style="font-size: 24px;"></i>
         </button>
       </div>
-    </form>
-    <button type="button" class="btn btn-link p-0 ms-12" id="downloadHTML">
-      <i class="fa fa-code ms-2 mt-1_5 text-dark" style="font-size: 24px;"></i>
-    </button>
-    <button type="button" class="btn btn-link p-0 ms-2" id="downloadMD">
-      <i class="ti ti-markdown ti-xl ms-2 mt-1_5 text-dark" style="font-size: 24px;"></i>
-    </button>
-    <button type="button" class="btn btn-link p-0 ms-2" id="downloadTXT">
-      <i class="fa fa-file-text ms-2 mt-1_5 text-dark" style="font-size: 24px;"></i>
-    </button>
-    <div class="d-flex justify-content-between align-items-center mt-1 ms-12">
-      <button type="button" class="btn btn-link p-0 ms-2" onclick="resetChanges()">
-        <i class="fa fa-refresh ms-2 mt-1_5 text-warning" style="font-size: 24px;"></i>
-      </button>
-    </div>
-    <form id="deleteForm" method="post" action="{% url 'drafting:documents_delete' folder_id=document.document_folder.id document_id=document.id %}">
+      <form id="deleteForm" method="post"
+            action="{% url 'drafting:documents_delete' folder_id=document.document_folder.id document_id=document.id %}">
         {% csrf_token %}
         <div class="d-flex justify-content-between align-items-center mt-1 ms-2">
-            <input type="hidden" name="delete_document" value="{{ document.id }}">
-            <button type="button" class="btn btn-link p-0 ms-2" id="deleteButton">
-                <i class="fa fa-trash ms-2 mt-2 text-danger" style="font-size: 24px;"></i>
-            </button>
+          <input type="hidden" name="delete_document" value="{{ document.id }}">
+          <button type="button" class="btn btn-link p-0 ms-2" id="deleteButton">
+            <i class="fa fa-trash ms-2 mt-2 text-danger" style="font-size: 24px;"></i>
+          </button>
         </div>
-    </form>
-  </div>
-  <hr>
-  <div id="editor" class="mt-4 overflow-auto" style="border-radius: 10px;">
-    <!-- ... -->
-  </div>
-  <div class="tips-section card card-border-shadow-primary p-8 mt-12">
-            <h4>
-              <strong>
-                <i class="fa fa-magic-wand-sparkles me-2"></i>
-                AI Commands
-              </strong>
-            </h4>
-            <small class="text-muted">
-              You can use the following commands to consult your AI assistant for various tasks. This can be
-              really helpful for you to speed up your drafting process and get suggestions from your AI assistant.
-              If you have trouble in using these commands, please contact us for further assistance, and remember
-              that you can always avoid using these commands and draft your documents manually.
-            </small>
-            <hr>
-            <div class="row align-items-center justify-content-start">
-              <div class="col-lg-2 badge bg-lighter d-flex align-items-center mb-2 mx-2">
-                <div class="">
-                  <i class="fa fa-robot me-2"></i>
-                  <span class="h6 mb-2 text-body"><strong>//ai</strong></span>
-                  <span class="text-dark ms-4">
+      </form>
+    </div>
+    <hr>
+    <div id="editor" class="mt-4 overflow-auto" style="border-radius: 10px;">
+      <!-- ... -->
+    </div>
+    <div class="tips-section card card-border-shadow-primary p-8 mt-12">
+      <h4>
+        <strong>
+          <i class="fa fa-magic-wand-sparkles me-2"></i>
+          AI Commands
+        </strong>
+      </h4>
+      <small class="text-muted">
+        You can use the following commands to consult your AI assistant for various tasks. This can be
+        really helpful for you to speed up your drafting process and get suggestions from your AI assistant.
+        If you have trouble in using these commands, please contact us for further assistance, and remember
+        that you can always avoid using these commands and draft your documents manually.
+      </small>
+      <hr>
+      <div class="row align-items-center justify-content-start">
+        <div class="col-lg-2 badge bg-lighter d-flex align-items-center mb-2 mx-2">
+          <div class="">
+            <i class="fa fa-robot me-2"></i>
+            <span class="h6 mb-2 text-body"><strong>//ai</strong></span>
+            <span class="text-dark ms-4">
                     <strong>Consult AI Assistant</strong>
                   </span>
-                </div>
-              </div>
-              <div class="col-lg-2 badge bg-lighter d-flex align-items-center mb-2 mx-2">
-                <div class="">
-                  <i class="fa fa-pencil me-2"></i>
-                  <span class="h6 mb-2 text-body"><strong>//auto</strong></span>
-                  <span class="text-dark ms-4">
+          </div>
+        </div>
+        <div class="col-lg-2 badge bg-lighter d-flex align-items-center mb-2 mx-2">
+          <div class="">
+            <i class="fa fa-pencil me-2"></i>
+            <span class="h6 mb-2 text-body"><strong>//auto</strong></span>
+            <span class="text-dark ms-4">
                     <strong>Auto-Completion</strong>
                   </span>
-                </div>
-              </div>
-              <div class="col-lg-2 badge bg-lighter d-flex align-items-center mb-2 mx-2">
-                <div class="">
-                  <i class="fa fa-robot me-2"></i>
-                  <span class="h6 mb-2 text-body"><strong>//img</strong></span>
-                  <span class="text-dark ms-4">
+          </div>
+        </div>
+        <div class="col-lg-2 badge bg-lighter d-flex align-items-center mb-2 mx-2">
+          <div class="">
+            <i class="fa fa-robot me-2"></i>
+            <span class="h6 mb-2 text-body"><strong>//img</strong></span>
+            <span class="text-dark ms-4">
                     <strong>Generate Image</strong>
                   </span>
-                </div>
-              </div>
-              <div class="col-lg-2 badge bg-lighter d-flex align-items-center mb-2 mx-2">
-                <div class="">
-                  <i class="fa fa-database me-2"></i>
-                  <span class="h6 mb-2 text-body"><strong>//sql</strong></span>
-                  <span class="text-dark ms-4">
+          </div>
+        </div>
+        <div class="col-lg-2 badge bg-lighter d-flex align-items-center mb-2 mx-2">
+          <div class="">
+            <i class="fa fa-database me-2"></i>
+            <span class="h6 mb-2 text-body"><strong>//sql</strong></span>
+            <span class="text-dark ms-4">
                     <strong>Search SQL</strong>
                   </span>
-                </div>
-              </div>
-              <div class="col-lg-2 badge bg-lighter d-flex align-items-center mb-2 mx-2">
-                <div class="">
-                  <i class="fa fa-search me-2"></i>
-                  <span class="h6 mb-2 text-body"><strong>//nosql</strong></span>
-                  <span class="text-dark ms-4">
+          </div>
+        </div>
+        <div class="col-lg-2 badge bg-lighter d-flex align-items-center mb-2 mx-2">
+          <div class="">
+            <i class="fa fa-search me-2"></i>
+            <span class="h6 mb-2 text-body"><strong>//nosql</strong></span>
+            <span class="text-dark ms-4">
                     <strong>Search NoSQL</strong>
                   </span>
-                </div>
-              </div>
-              <div class="col-lg-2 badge bg-lighter d-flex align-items-center mb-2 mx-2">
-                <div class="">
-                  <i class="fa fa-i-cursor me-2"></i>
-                  <span class="h6 mb-2 text-body"><strong>[Pick+F2]</strong></span>
-                  <span class="text-dark ms-4">
+          </div>
+        </div>
+        <div class="col-lg-2 badge bg-lighter d-flex align-items-center mb-2 mx-2">
+          <div class="">
+            <i class="fa fa-i-cursor me-2"></i>
+            <span class="h6 mb-2 text-body"><strong>[Pick+F2]</strong></span>
+            <span class="text-dark ms-4">
                     <strong>Change Text</strong>
                   </span>
-                </div>
-              </div>
-              <div class="col-lg-2 badge bg-lighter d-flex align-items-center mb-2 mx-2">
-                <div class="">
-                  <i class="fa fa-server me-2"></i>
-                  <span class="h6 mb-2 text-body"><strong>//ssh</strong></span>
-                  <span class="text-dark ms-4">
+          </div>
+        </div>
+        <div class="col-lg-2 badge bg-lighter d-flex align-items-center mb-2 mx-2">
+          <div class="">
+            <i class="fa fa-server me-2"></i>
+            <span class="h6 mb-2 text-body"><strong>//ssh</strong></span>
+            <span class="text-dark ms-4">
                     <strong>Search SSH</strong>
                   </span>
-                </div>
-              </div>
-              <div class="col-lg-2 badge bg-lighter d-flex align-items-center mb-2 mx-2">
-                <div class="">
-                  <i class="fa fa-vector-square me-2"></i>
-                  <span class="h6 mb-2 text-body"><strong>//vect</strong></span>
-                  <span class="text-dark ms-4">
+          </div>
+        </div>
+        <div class="col-lg-2 badge bg-lighter d-flex align-items-center mb-2 mx-2">
+          <div class="">
+            <i class="fa fa-vector-square me-2"></i>
+            <span class="h6 mb-2 text-body"><strong>//vect</strong></span>
+            <span class="text-dark ms-4">
                     <strong>Search Documents</strong>
                   </span>
-                </div>
-              </div>
-              <div class="col-lg-2 badge bg-lighter d-flex align-items-center mb-2 mx-2">
-                <div class="">
-                  <i class="fa fa-code me-2"></i>
-                  <span class="h6 mb-2 text-body"><strong>//repo</strong></span>
-                  <span class="text-dark ms-4">
+          </div>
+        </div>
+        <div class="col-lg-2 badge bg-lighter d-flex align-items-center mb-2 mx-2">
+          <div class="">
+            <i class="fa fa-code me-2"></i>
+            <span class="h6 mb-2 text-body"><strong>//repo</strong></span>
+            <span class="text-dark ms-4">
                     <strong>Search Codebase</strong>
                   </span>
-                </div>
-              </div>
-              <div class="col-lg-2 badge bg-lighter d-flex align-items-center mb-2 mx-2">
-                <div class="">
-                  <i class="fa fa-globe me-2"></i>
-                  <span class="h6 mb-2 text-body"><strong>//web</strong></span>
-                  <span class="text-dark ms-4">
+          </div>
+        </div>
+        <div class="col-lg-2 badge bg-lighter d-flex align-items-center mb-2 mx-2">
+          <div class="">
+            <i class="fa fa-globe me-2"></i>
+            <span class="h6 mb-2 text-body"><strong>//web</strong></span>
+            <span class="text-dark ms-4">
                     <strong>Search Web</strong>
                   </span>
-                </div>
-              </div>
-            </div>
           </div>
-</div>
-
-<!-- AI Assistant Modal -->
-<div class="modal draggable-modal" tabindex="-1" id="aiAssistantModal" style="display: none; position: absolute;">
-  <div class="modal-dialog border border-primary border-3" style="border-radius: 12px;">
-    <div class="modal-content">
-      <div class="modal-header" id="modalHeader" style="cursor: move;">
-        <h5 class="modal-title" id="modalTitle">
-          <i class="fa fa-magic-wand-sparkles me-2"></i>
-          <strong>Consult AI Assistant</strong>
-        </h5>
-        <button type="button" class="btn-close" onclick="closeModal()"></button>
-      </div>
-      <div class="modal-body">
-        <input type="text" id="aiPrompt" class="form-control" placeholder="Ask something to the AI assistant...">
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary" id="consultButton" onclick="consultAI()">
-          <i class="fa fa-magic-wand-sparkles me-2"></i>
-          <strong>Consult</strong>
-        </button>
+        </div>
       </div>
     </div>
   </div>
-</div>
+
+  <!-- AI Assistant Modal -->
+  <div class="modal draggable-modal" tabindex="-1" id="aiAssistantModal" style="display: none; position: absolute;">
+    <div class="modal-dialog border border-primary border-3" style="border-radius: 12px;">
+      <div class="modal-content">
+        <div class="modal-header" id="modalHeader" style="cursor: move;">
+          <h5 class="modal-title" id="modalTitle">
+            <i class="fa fa-magic-wand-sparkles me-2"></i>
+            <strong>Consult AI Assistant</strong>
+          </h5>
+          <button type="button" class="btn-close" onclick="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+          <input type="text" id="aiPrompt" class="form-control" placeholder="Ask something to the AI assistant...">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" id="consultButton" onclick="consultAI()">
+            <i class="fa fa-magic-wand-sparkles me-2"></i>
+            <strong>Consult</strong>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 {% endblock content %}

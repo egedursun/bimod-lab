@@ -27,8 +27,8 @@
 
 {% block vendor_css %}
   {{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}"/>
-  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
 {% endblock vendor_css %}
 
 {% block vendor_js %}
@@ -65,7 +65,8 @@
           <small class="text-muted float-end"></small>
         </div>
         <div class="card-body">
-          <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+          <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center"
+               role="alert">
             <img src="{% static 'img/custom-illustrations-v2/i2-63.png' %}" width="25%" style="border-radius: 25px;"
                  class="justify-content-end me-8" alt="Illustration for tip">
             <span class="alert-icon rounded">
@@ -93,7 +94,8 @@
           <hr>
           <form method="post" enctype="multipart/form-data" class="mt-4">
             {% csrf_token %}
-            <img src="{% static 'img/nosql_databases/nosql-1.png' %}" class="rounded mt-4" style="width: 100%;" alt="Illustration for tips">
+            <img src="{% static 'img/nosql_databases/nosql-1.png' %}" class="rounded mt-4" style="width: 100%;"
+                 alt="Illustration for tips">
             <div class="row p-8">
               <div class="mb-6 col-6">
                 <label class="form-label" for="nosql_db_type">DBMS Type</label>
@@ -117,7 +119,7 @@
               </div>
               <div class="mb-6 col-3">
                 <label class="form-label" for="name">Name</label>
-                <input type="text" class="form-control" id="name" name="name" value="{{ connection.name }}"/>
+                <input type="text" class="form-control" id="name" name="name" value="{{ connection.name }}" />
               </div>
               <div class="mb-6 col-3">
                 <label class="form-label" for="description">Description</label>
@@ -126,22 +128,22 @@
               </div>
               <div class="mb-6 col-3">
                 <label class="form-label me-4" for="host">Host</label>
-                <input type="text" class="form-control" id="host" name="host" value="{{ connection.host }}"/>
+                <input type="text" class="form-control" id="host" name="host" value="{{ connection.host }}" />
               </div>
               <div class="mb-6 col-3">
                 <label class="form-label" for="bucket_name">Bucket Name</label>
                 <input type="text" class="form-control" id="bucket_name" name="bucket_name"
-                       value="{{ connection.bucket_name }}"/>
+                       value="{{ connection.bucket_name }}" />
               </div>
               <div class="mb-6 col-3">
                 <label class="form-label" for="username">Username</label>
                 <input type="text" class="form-control" id="username" name="username"
-                       value="{{ connection.username }}"/>
+                       value="{{ connection.username }}" />
               </div>
               <div class="mb-6 col-3">
                 <label class="form-label" for="password">Password</label>
                 <input type="password" class="form-control" id="password" name="password"
-                       value="{{ connection.password }}"/>
+                       value="{{ connection.password }}" />
               </div>
               <div class="mb-6 col-3">
                 <label class="form-label" for="is_read_only">Read-Only</label>
@@ -187,11 +189,11 @@
   </div>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       const checkbox = document.getElementById('isReadOnlyCheckbox');
       const isReadOnlyField = document.getElementById('is-read-only');
 
-      checkbox.addEventListener('change', function () {
+      checkbox.addEventListener('change', function() {
         isReadOnlyField.value = checkbox.checked ? 'on' : 'off';
       });
     });

@@ -1,21 +1,21 @@
-  <!--
-  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
-  ~
-  ~ Project: Bimod.io™
-  ~ File: index.html
-  ~ Last Modified: 2024-10-05 14:39:48
-  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-05 14:42:33
-  ~
-  ~ This software is proprietary and confidential. Unauthorized copying,
-  ~ distribution, modification, or use of this software, whether for
-  ~ commercial, academic, or any other purpose, is strictly prohibited
-  ~ without the prior express written permission of BMD™ Autonomous
-  ~ Holdings.
-  ~
-  ~  For permission inquiries, please contact: admin@Bimod.io.
-  ~
-  -->
+<!--
+~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+~
+~ Project: Bimod.io™
+~ File: index.html
+~ Last Modified: 2024-10-05 14:39:48
+~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+~ Created: 2024-10-05 14:42:33
+~
+~ This software is proprietary and confidential. Unauthorized copying,
+~ distribution, modification, or use of this software, whether for
+~ commercial, academic, or any other purpose, is strictly prohibited
+~ without the prior express written permission of BMD™ Autonomous
+~ Holdings.
+~
+~  For permission inquiries, please contact: admin@Bimod.io.
+~
+-->
 
 {% extends layout_path %}
 
@@ -26,8 +26,8 @@
 
 {% block vendor_css %}
   {{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/libs/nouislider/nouislider.css' %}"/>
-  <link rel="stylesheet" href="{% static 'vendor/libs/swiper/swiper.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/nouislider/nouislider.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/swiper/swiper.css' %}" />
 {% endblock vendor_css %}
 
 {% block vendor_js %}
@@ -52,7 +52,7 @@
     <section id="hero-animation">
       <div id="landingHero" class="section-py landing-hero position-relative">
         <img src="{% static 'img/front-pages/backgrounds/hero-bg.png' %}" alt="hero background"
-             class="position-absolute top-0 start-50 translate-middle-x object-fit-cover w-100 h-100" data-speed="1"/>
+             class="position-absolute top-0 start-50 translate-middle-x object-fit-cover w-100 h-100" data-speed="1" />
         <div class="container">
           <img src="{% static 'img/custom-illustrations-v2/banners/i2-b1.png' %}" class="" width="25%"
                style="position: absolute; top: 150px; left:4%;" alt="Main page illustration 1">
@@ -61,50 +61,60 @@
           <img src="{% static 'img/custom-illustrations-v2/heros/i2-h2.png' %}" class="" width="35%"
                style="position: absolute; top: 150px; left:100px; opacity: 0.35;" alt="Main page illustration 3">
           <img src="{% static 'img/custom-illustrations-v2/heros/i2-h2.png' %}" class="" width="35%"
-               style="position: absolute; top: 150px; right:100px; opacity: 0.35; rotate: 270deg" alt="Main page illustration 4">
+               style="position: absolute; top: 150px; right:100px; opacity: 0.35; rotate: 270deg"
+               alt="Main page illustration 4">
           <img src="{% static 'img/custom-illustrations-v2/heros/i2-h2.png' %}" class="" width="35%"
-               style="position: absolute; top: 2000px; left:50px; opacity: 0.20; rotate: 180deg" alt="Main page illustration 5">
+               style="position: absolute; top: 2000px; left:50px; opacity: 0.20; rotate: 180deg"
+               alt="Main page illustration 5">
           <img src="{% static 'img/custom-illustrations-v2/heros/i2-h2.png' %}" class="" width="35%"
-               style="position: absolute; top: 3000px; left:200px; opacity: 0.20; rotate: 180deg" alt="Main page illustration 6">
+               style="position: absolute; top: 3000px; left:200px; opacity: 0.20; rotate: 180deg"
+               alt="Main page illustration 6">
           <img src="{% static 'img/custom-illustrations-v2/heros/i2-h2.png' %}" class="" width="50%"
-               style="position: absolute; top: 2600px; left:100px; opacity: 0.20; rotate: 300deg" alt="Main page illustration 7">
+               style="position: absolute; top: 2600px; left:100px; opacity: 0.20; rotate: 300deg"
+               alt="Main page illustration 7">
           <img src="{% static 'img/custom-illustrations-v2/heros/i2-h2.png' %}" class="" width="50%"
-               style="position: absolute; top: 4000px; right:400px; opacity: 0.20; rotate: 210deg" alt="Main page illustration 8">
+               style="position: absolute; top: 4000px; right:400px; opacity: 0.20; rotate: 210deg"
+               alt="Main page illustration 8">
           <img src="{% static 'img/custom-illustrations-v2/heros/i2-h3.png' %}" class="" width="70%"
-               style="position: absolute; top: 1500px; right:100px; opacity: 0.15; rotate: 0deg" alt="Main page illustration 9">
+               style="position: absolute; top: 1500px; right:100px; opacity: 0.15; rotate: 0deg"
+               alt="Main page illustration 9">
 
           <div class="hero-text-box text-center position-relative" style="min-width: 50vw;">
             <h1 class="text-primary hero-title display-1 fw-extrabold" style="font-size: 7.5vw;">
               <strong>{% get_theme_variables 'template_name' %}</strong></h1>
             <hr>
-             <h1 class="text-primary hero-title display-1 fw-extrabold mt-12 mb-12" style="font-size: 2.5vw;">
-                <u><strong>
-                  "A Single Chat, to Rule Them All"
-                </strong></u>
-             </h1>
+            <h1 class="text-primary hero-title display-1 fw-extrabold mt-12 mb-12" style="font-size: 2.5vw;">
+              <u><strong>
+                "A Single Chat, to Rule Them All"
+              </strong></u>
+            </h1>
             <h2 class="hero-sub-title h6 mb-6 mt-12" style="text-align: justify-all; font-size: 1vw;">
-             With a single chat, manage an entire army of AI assistants <br> and automate your workflows at every scale.
+              With a single chat, manage an entire army of AI assistants <br> and automate your workflows at every
+              scale.
             </h2>
             <hr>
             <h1 class="text-primary hero-title display-6 fw-extrabold" style="font-size: 3.0vw;">
               Build your AI workforce <br> with the most flexible <br> multimodal assistant platform.
             </h1>
             <h2 class="hero-sub-title h6 mb-6 mt-12" style="text-align: justify-all; font-size: 1vw;">
-              We are empowering businesses by providing a highly customizable <br> and flexible <strong>AIaaS (Artificial
+              We are empowering businesses by providing a highly customizable <br> and flexible <strong>AIaaS
+              (Artificial
               Intelligence as a Service)</strong> platform for <br> managing multimodal AI assistants. Utilize hundreds
               of different <br> multi-modality tools and tailor-made integrations to automate workflows at every scale.
             </h2>
-            <a href="{% url 'multimodal_chat:main_workspace' %}" class="btn btn-instagram btn-lg mt-8 mx-2" style="min-width: 20vw;">
-                <strong>
-                  <i class="fa fa-brain me-2"></i>
-                  Launch Bimod Workspace
-                </strong>
+            <a href="{% url 'multimodal_chat:main_workspace' %}" class="btn btn-instagram btn-lg mt-8 mx-2"
+               style="min-width: 20vw;">
+              <strong>
+                <i class="fa fa-brain me-2"></i>
+                Launch Bimod Workspace
+              </strong>
             </a>
-            <a href="{% url 'dashboard:lab-landing' %}" class="btn btn-success btn-lg mt-8 mx-2" style="min-width: 20vw;">
-                <strong>
-                  <i class="fa fa-rocket me-2"></i>
-                  Launch BimodLab<span style="vertical-align: super; font-size: small; font-family: Arial, sans-serif;">&#8482;</span>
-                </strong>
+            <a href="{% url 'dashboard:lab-landing' %}" class="btn btn-success btn-lg mt-8 mx-2"
+               style="min-width: 20vw;">
+              <strong>
+                <i class="fa fa-rocket me-2"></i>
+                Launch BimodLab<span style="vertical-align: super; font-size: small; font-family: Arial, sans-serif;">&#8482;</span>
+              </strong>
             </a>
             <hr class="mt-4">
             <a href="{% url 'bmd_academy:course_list' %}" target="_blank" class="btn btn-instagram mt-8 mx-2"
@@ -150,7 +160,8 @@
                   src="{% static 'img/front-pages/landing-page/hero-dashboard-' %}{{ COOKIES.style|default:style }}.png"
                   alt="hero dashboard" data-app-light-img="front-pages/landing-page/hero-dashboard-light.png"
                   data-app-dark-img="front-pages/landing-page/hero-dashboard-dark.png"
-                  class="animation-img border border-2 border-primary" style="border-radius: 25px; margin-top: 80px; opacity: 0.9;"/>
+                  class="animation-img border border-2 border-primary"
+                  style="border-radius: 25px; margin-top: 80px; opacity: 0.9;" />
               </div>
             </a>
           </div>
@@ -167,7 +178,8 @@
           <span class="badge bg-label-primary"><strong>Services</strong></span>
         </div>
         <h4 class="text-center mb-1">
-        <span class="position-relative fw-extrabold z-1">BimodLab<span style="vertical-align: super; font-size: small; font-family: Arial, sans-serif;">&#8482;</span>: Everything you need to build
+        <span class="position-relative fw-extrabold z-1">BimodLab<span
+          style="vertical-align: super; font-size: small; font-family: Arial, sans-serif;">&#8482;</span>: Everything you need to build
           <img src="{% static 'img/front-pages/icons/section-title-icon.png' %}" alt="laptop charging"
                class="section-title-img position-absolute object-fit-contain bottom-0 z-n1">
         </span>
@@ -179,7 +191,7 @@
           <div class="col-lg-3 col-sm-6 text-center features-icon-box">
             <div class="text-center mb-4">
               <img src="{% static 'img/custom-illustrations-v2/i2-53.png' %}" class="border border-2 border-primary"
-                   style="width: 150px; border-radius: 25px;" alt="laptop charging"/>
+                   style="width: 150px; border-radius: 25px;" alt="laptop charging" />
             </div>
             <h5 class="mb-2"><strong>All in One Service You Need</strong></h5>
             <p class="features-icon-description">Access all the tools you need to build and manage AI assistants in one
@@ -188,7 +200,7 @@
           <div class="col-lg-3 col-sm-6 text-center features-icon-box">
             <div class="text-center mb-4">
               <img src="{% static 'img/custom-illustrations-v2/i2-86.png' %}" class="border border-2 border-primary"
-                   style="width: 150px; border-radius: 25px;" alt="transition up"/>
+                   style="width: 150px; border-radius: 25px;" alt="transition up" />
             </div>
             <h5 class="mb-2"><strong>Tenants, Users, Permissions</strong></h5>
             <p class="features-icon-description">Easily manage multiple organizations and AI assistants from a single
@@ -197,7 +209,7 @@
           <div class="col-lg-3 col-sm-6 text-center features-icon-box">
             <div class="text-center mb-4">
               <img src="{% static 'img/custom-illustrations-v2/i2-66.png' %}" class="border border-2 border-primary"
-                   style="width: 150px; border-radius: 25px;" alt="edit"/>
+                   style="width: 150px; border-radius: 25px;" alt="edit" />
             </div>
             <h5 class="mb-2"><strong>Fully Customizable LLM Models</strong></h5>
             <p class="features-icon-description">Customize LLM models depending on your organization's needs.</p>
@@ -205,7 +217,7 @@
           <div class="col-lg-3 col-sm-6 text-center features-icon-box">
             <div class="text-center mb-4">
               <img src="{% static 'img/custom-illustrations-v2/i2-15.png' %}" class="border border-2 border-primary"
-                   style="width: 150px; border-radius: 25px;" alt="lifebelt"/>
+                   style="width: 150px; border-radius: 25px;" alt="lifebelt" />
             </div>
             <h5 class="mb-2"><strong>Unlimited Assistant Flexibility</strong></h5>
             <p class="features-icon-description">Create multiple AI assistants that can handle a wide range of tasks and
@@ -214,7 +226,7 @@
           <div class="col-lg-3 col-sm-6 text-center features-icon-box">
             <div class="text-center mb-4">
               <img src="{% static 'img/custom-illustrations-v2/i2-5.png' %}" class="border border-2 border-primary"
-                   style="width: 150px; border-radius: 25px;" alt="google docs"/>
+                   style="width: 150px; border-radius: 25px;" alt="google docs" />
             </div>
             <h5 class="mb-2"><strong>Make Assistants Remember</strong></h5>
             <p class="features-icon-description">Add a memory to your AI assistants, so they can remember important
@@ -223,7 +235,7 @@
           <div class="col-lg-3 col-sm-6 text-center features-icon-box">
             <div class="text-center mb-4">
               <img src="{% static 'img/custom-illustrations-v2/i2-68.png' %}" class="border border-2 border-primary"
-                   style="width: 150px; border-radius: 25px;" alt="google docs"/>
+                   style="width: 150px; border-radius: 25px;" alt="google docs" />
             </div>
             <h5 class="mb-2"><strong>Create An AI Workforce</strong></h5>
             <p class="features-icon-description">Build a workforce of AI assistants that can handle a wide range of
@@ -232,7 +244,7 @@
           <div class="col-lg-3 col-sm-6 text-center features-icon-box">
             <div class="text-center mb-4">
               <img src="{% static 'img/custom-illustrations-v2/i2-4.png' %}" class="border border-2 border-primary"
-                   style="width: 150px; border-radius: 25px;" alt="google docs"/>
+                   style="width: 150px; border-radius: 25px;" alt="google docs" />
             </div>
             <h5 class="mb-2"><strong>Connect Your Databases</strong></h5>
             <p class="features-icon-description">Connect your database to your AI assistants to make them reach your
@@ -241,7 +253,7 @@
           <div class="col-lg-3 col-sm-6 text-center features-icon-box">
             <div class="text-center mb-4">
               <img src="{% static 'img/custom-illustrations-v2/i2-61.png' %}" class="border border-2 border-primary"
-                   style="width: 150px; border-radius: 25px;" alt="google docs"/>
+                   style="width: 150px; border-radius: 25px;" alt="google docs" />
             </div>
             <h5 class="mb-2"><strong>Chat with Your Documents &amp; Files</strong></h5>
             <p class="features-icon-description">Upload documents, files, images, audios, videos and much more to your
@@ -250,7 +262,7 @@
           <div class="col-lg-3 col-sm-6 text-center features-icon-box">
             <div class="text-center mb-4">
               <img src="{% static 'img/custom-illustrations-v2/i2-23.png' %}" class="border border-2 border-primary"
-                   style="width: 150px; border-radius: 25px;" alt="google docs"/>
+                   style="width: 150px; border-radius: 25px;" alt="google docs" />
             </div>
             <h5 class="mb-2"><strong>Functions, APIs, Kernels, Scripts</strong></h5>
             <p class="features-icon-description">Make AI use functions, APIs, and remote servers via SSH to provide
@@ -259,7 +271,7 @@
           <div class="col-lg-3 col-sm-6 text-center features-icon-box">
             <div class="text-center mb-4">
               <img src="{% static 'img/custom-illustrations-v2/i2-44.png' %}" class="border border-2 border-primary"
-                   style="width: 150px; border-radius: 25px;" alt="google docs"/>
+                   style="width: 150px; border-radius: 25px;" alt="google docs" />
             </div>
             <h5 class="mb-2"><strong>Scheduled Tasks &amp; Custom Triggers</strong></h5>
             <p class="features-icon-description">Schedule timed tasks and custom triggers for your AI assistants to
@@ -268,7 +280,7 @@
           <div class="col-lg-3 col-sm-6 text-center features-icon-box">
             <div class="text-center mb-4">
               <img src="{% static 'img/custom-illustrations-v2/i2-43.png' %}" class="border border-2 border-primary"
-                   style="width: 150px; border-radius: 25px;" alt="google docs"/>
+                   style="width: 150px; border-radius: 25px;" alt="google docs" />
             </div>
             <h5 class="mb-2"><strong>Generate Creative Media Materials</strong></h5>
             <p class="features-icon-description">Generate images, presentations, documents, and much
@@ -277,7 +289,7 @@
           <div class="col-lg-3 col-sm-6 text-center features-icon-box">
             <div class="text-center mb-4">
               <img src="{% static 'img/custom-illustrations-v2/i2-48.png' %}" class="border border-2 border-primary"
-                   style="width: 150px; border-radius: 25px;" alt="google docs"/>
+                   style="width: 150px; border-radius: 25px;" alt="google docs" />
             </div>
             <h5 class="mb-2"><strong>Chat with Your Code</strong></h5>
             <p class="features-icon-description">
@@ -288,7 +300,7 @@
           <div class="col-lg-3 col-sm-6 text-center features-icon-box">
             <div class="text-center mb-4">
               <img src="{% static 'img/custom-illustrations-v2/i2-58.png' %}" class="border border-2 border-primary"
-                   style="width: 150px; border-radius: 25px;" alt="google docs"/>
+                   style="width: 150px; border-radius: 25px;" alt="google docs" />
             </div>
             <h5 class="mb-2"><strong>Draft with AI</strong></h5>
             <p class="features-icon-description">
@@ -299,7 +311,7 @@
           <div class="col-lg-3 col-sm-6 text-center features-icon-box">
             <div class="text-center mb-4">
               <img src="{% static 'img/custom-illustrations-v2/i2-56.png' %}" class="border border-2 border-primary"
-                   style="width: 150px; border-radius: 25px;" alt="google docs"/>
+                   style="width: 150px; border-radius: 25px;" alt="google docs" />
             </div>
             <h5 class="mb-2"><strong>AI Brainstorming</strong></h5>
             <p class="features-icon-description">
@@ -310,7 +322,7 @@
           <div class="col-lg-3 col-sm-6 text-center features-icon-box">
             <div class="text-center mb-4">
               <img src="{% static 'img/custom-illustrations-v2/i2-60.png' %}" class="border border-2 border-primary"
-                   style="width: 150px; border-radius: 25px;" alt="google docs"/>
+                   style="width: 150px; border-radius: 25px;" alt="google docs" />
             </div>
             <h5 class="mb-2"><strong>Expert Networks</strong></h5>
             <p class="features-icon-description">
@@ -321,7 +333,7 @@
           <div class="col-lg-3 col-sm-6 text-center features-icon-box">
             <div class="text-center mb-4">
               <img src="{% static 'img/custom-illustrations-v2/i2-104.png' %}" class="border border-2 border-primary"
-                   style="width: 150px; border-radius: 25px;" alt="google docs"/>
+                   style="width: 150px; border-radius: 25px;" alt="google docs" />
             </div>
             <h5 class="mb-2"><strong>Tailor-made, Custom Integrations</strong></h5>
             <p class="features-icon-description">With a single click, integrate tools and assistants you need for
@@ -330,7 +342,7 @@
           <div class="col-lg-3 col-sm-6 text-center features-icon-box">
             <div class="text-center mb-4">
               <img src="{% static 'img/custom-illustrations-v2/i2-66.png' %}" class="border border-2 border-primary"
-                   style="width: 150px; border-radius: 25px;" alt="google docs"/>
+                   style="width: 150px; border-radius: 25px;" alt="google docs" />
             </div>
             <h5 class="mb-2"><strong>Robotic / Industrial Control</strong></h5>
             <p class="features-icon-description">The ultimate tool to grant life &amp; mind to robots and industrial
@@ -339,7 +351,7 @@
           <div class="col-lg-3 col-sm-6 text-center features-icon-box">
             <div class="text-center mb-4">
               <img src="{% static 'img/binexus/bx-5.png' %}" class="border border-2 border-primary"
-                   style="width: 150px; border-radius: 25px;" alt="google docs"/>
+                   style="width: 150px; border-radius: 25px;" alt="google docs" />
             </div>
             <h5 class="mb-2"><strong>Self-Optimizing Evolutionary Agents</strong></h5>
             <p class="features-icon-description">Create self-optimizing evolutionary agents that can evolve themselves
@@ -348,7 +360,7 @@
           <div class="col-lg-3 col-sm-6 text-center features-icon-box">
             <div class="text-center mb-4">
               <img src="{% static 'img/custom-illustrations-v2/i2-96.png' %}" class="border border-2 border-primary"
-                   style="width: 150px; border-radius: 25px;" alt="google docs"/>
+                   style="width: 150px; border-radius: 25px;" alt="google docs" />
             </div>
             <h5 class="mb-2"><strong>Smart Contracts</strong></h5>
             <p class="features-icon-description">Create smart contracts with the power of AI and let your assistants
@@ -357,7 +369,7 @@
           <div class="col-lg-3 col-sm-6 text-center features-icon-box">
             <div class="text-center mb-4">
               <img src="{% static 'img/custom-illustrations-v2/i2-46.png' %}" class="border border-2 border-primary"
-                   style="width: 150px; border-radius: 25px;" alt="google docs"/>
+                   style="width: 150px; border-radius: 25px;" alt="google docs" />
             </div>
             <h5 class="mb-2"><strong>MIS and ERP</strong></h5>
             <p class="features-icon-description">Manage your organization's MIS &amp; ERP systems with the power of AI
@@ -366,7 +378,7 @@
           <div class="col-lg-4 col-sm-6 text-center features-icon-box">
             <div class="text-center mb-4">
               <img src="{% static 'img/custom-illustrations-v2/i2-100.png' %}" class="border border-2 border-primary"
-                   style="width: 150px; border-radius: 25px;" alt="google docs"/>
+                   style="width: 150px; border-radius: 25px;" alt="google docs" />
             </div>
             <h5 class="mb-2"><strong>MetaKanban and MetaTempo</strong></h5>
             <p class="features-icon-description">
@@ -377,7 +389,7 @@
           <div class="col-lg-4 col-sm-6 text-center features-icon-box">
             <div class="text-center mb-4">
               <img src="{% static 'img/custom-illustrations-v2/i2-22.png' %}" class="border border-2 border-primary"
-                   style="width: 150px; border-radius: 25px;" alt="google docs"/>
+                   style="width: 150px; border-radius: 25px;" alt="google docs" />
             </div>
             <h5 class="mb-2"><strong>Meta-PL: eLLMa</strong></h5>
             <p class="features-icon-description">
@@ -388,7 +400,7 @@
           <div class="col-lg-4 col-sm-6 text-center features-icon-box">
             <div class="text-center mb-4">
               <img src="{% static 'img/custom-illustrations-v2/i2-103.png' %}" class="border border-2 border-primary"
-                   style="width: 150px; border-radius: 25px;" alt="google docs"/>
+                   style="width: 150px; border-radius: 25px;" alt="google docs" />
             </div>
             <h5 class="mb-2"><strong>In-App Office Suite</strong></h5>
             <p class="features-icon-description">
@@ -426,7 +438,7 @@
                style="width: 100%;">
             <div style="overflow: hidden; border-radius: 15px; max-width: 65%;" class="border border-4 border-primary">
               <img src="{% static 'img/integrations/ig-1.png' %}"
-                   style="margin-top: -3px; width: 100%; opacity: 0.85; display: block; filter: contrast(120%);"/>
+                   style="margin-top: -3px; width: 100%; opacity: 0.85; display: block; filter: contrast(120%);" />
             </div>
           </div>
         </a>
@@ -437,7 +449,7 @@
         <div class="col-lg-4 col-sm-6 text-center features-icon-box">
           <div class="text-center mb-4">
             <img src="{% static 'img/integration-assistant-avatars/41.png' %}" class="border border-2 border-primary"
-                 style="width: 150px; border-radius: 25px;" alt=""/>
+                 style="width: 150px; border-radius: 25px;" alt="" />
           </div>
           <h5 class="mb-2"><strong>Boilerplate AI Assistants</strong></h5>
           <p class="features-icon-description">
@@ -449,11 +461,12 @@
         <div class="col-lg-4 col-sm-6 text-center features-icon-box">
           <div class="text-center mb-4">
             <img src="{% static 'img/integration-teams-avatars/m3.png' %}" class="border border-2 border-primary"
-                 style="width: 150px; border-radius: 25px;" alt="transition up"/>
+                 style="width: 150px; border-radius: 25px;" alt="transition up" />
           </div>
           <h5 class="mb-2"><strong>Boilerplate AI Teams</strong></h5>
           <p class="features-icon-description">
-            Just with 2 clicks, integrate an entire team of AI assistants, along with their orchestrator, expert network,
+            Just with 2 clicks, integrate an entire team of AI assistants, along with their orchestrator, expert
+            network,
             and LeanMod agent, without losing time with the configuration. We provide you with a wide range of
             boilerplate AI teams to choose from: 400+ teams in 40 different industries.
           </p>
@@ -461,19 +474,20 @@
         <div class="col-lg-4 col-sm-6 text-center features-icon-box">
           <div class="text-center mb-4">
             <img src="{% static 'img/integration-teams-avatars/m32.png' %}" class="border border-2 border-primary"
-                 style="width: 150px; border-radius: 25px;" alt="edit"/>
+                 style="width: 150px; border-radius: 25px;" alt="edit" />
           </div>
           <h5 class="mb-2"><strong>Modify Them / Create from Scratch</strong></h5>
           <p class="features-icon-description">
             Don't worry, you can still modify and optimize your agents at any time, and shape them however you see fit.
-            Or you can create your own agents from scratch, and integrate them with your favorite tools and services. You
+            Or you can create your own agents from scratch, and integrate them with your favorite tools and services.
+            You
             have unlimited flexibility with BimodLab.
           </p>
         </div>
         <div class="col-lg-12 col-sm-12 text-center features-icon-box">
           <div class="text-center mb-4">
             <img src="{% static 'img/integrations/ig-beamguard-1.png' %}" class="border border-2 border-primary"
-                 style="width: 55%; border-radius: 25px;" alt="edit"/>
+                 style="width: 55%; border-radius: 25px;" alt="edit" />
           </div>
           <h5 class="mb-2"><strong>Protect your Data with BeamGuard™</strong></h5>
           <p class="features-icon-description">
@@ -494,7 +508,8 @@
       <span class="badge bg-label-primary"><strong>AI Office Suite</strong></span>
     </div>
     <h4 class="text-center mb-1">
-        <span class="position-relative fw-extrabold z-1">Astrobelt<span style="vertical-align: super; font-size: small; font-family: Arial, sans-serif;">&#8482;</span>:
+        <span class="position-relative fw-extrabold z-1">Astrobelt<span
+          style="vertical-align: super; font-size: small; font-family: Arial, sans-serif;">&#8482;</span>:
           <img src="{% static 'img/front-pages/icons/section-title-icon.png' %}" alt="laptop charging"
                class="section-title-img position-absolute object-fit-contain bottom-0 z-n1">
         </span>
@@ -513,7 +528,7 @@
                style="width: 100%;">
             <div style="overflow: hidden; border-radius: 15px; max-width: 65%;" class="border border-4 border-primary">
               <img src="{% static 'img/office-suite/suite-1.png' %}"
-                   style="margin-top: -3px; width: 100%; opacity: 0.85; display: block; filter: contrast(120%);"/>
+                   style="margin-top: -3px; width: 100%; opacity: 0.85; display: block; filter: contrast(120%);" />
             </div>
           </div>
         </a>
@@ -524,11 +539,12 @@
         <div class="col-lg-3 col-sm-6 text-center features-icon-box">
           <div class="text-center mb-4">
             <img src="{% static 'img/office-suite/drafting-1.png' %}" class="border border-2 border-primary"
-                 style="width: 150px; border-radius: 25px;" alt=""/>
+                 style="width: 150px; border-radius: 25px;" alt="" />
           </div>
           <h5 class="mb-2"><strong>Drafting: Google Docs</strong></h5>
           <p class="features-icon-description">
-            Give your AI assistants the power to draft your documents, search through the web, your documents, databases,
+            Give your AI assistants the power to draft your documents, search through the web, your documents,
+            databases,
             and make them generate creative content, even auto-complete the text for you, all with a single click of a
             button without interrupting your workflows on Google Docs platform thanks to our plugin.
           </p>
@@ -536,7 +552,7 @@
         <div class="col-lg-3 col-sm-6 text-center features-icon-box">
           <div class="text-center mb-4">
             <img src="{% static 'img/office-suite/sheets-1.png' %}" class="border border-2 border-primary"
-                 style="width: 150px; border-radius: 25px;" alt="transition up"/>
+                 style="width: 150px; border-radius: 25px;" alt="transition up" />
           </div>
           <h5 class="mb-2"><strong>Sheetos: Google Sheets</strong></h5>
           <p class="features-icon-description">
@@ -548,7 +564,7 @@
         <div class="col-lg-3 col-sm-6 text-center features-icon-box">
           <div class="text-center mb-4">
             <img src="{% static 'img/office-suite/slides-1.png' %}" class="border border-2 border-primary"
-                 style="width: 150px; border-radius: 25px;" alt="edit"/>
+                 style="width: 150px; border-radius: 25px;" alt="edit" />
           </div>
           <h5 class="mb-2"><strong>Slider: Google Slides</strong></h5>
           <p class="features-icon-description">
@@ -560,7 +576,7 @@
         <div class="col-lg-3 col-sm-6 text-center features-icon-box">
           <div class="text-center mb-4">
             <img src="{% static 'img/office-suite/forms-1.png' %}" class="border border-2 border-primary"
-                 style="width: 150px; border-radius: 25px;" alt="edit"/>
+                 style="width: 150px; border-radius: 25px;" alt="edit" />
           </div>
           <h5 class="mb-2"><strong>Formica: Google Forms</strong></h5>
           <p class="features-icon-description">
@@ -578,7 +594,8 @@
       <span class="badge bg-label-primary"><strong>Meta-Orchestration</strong></span>
     </div>
     <h4 class="text-center mb-1">
-        <span class="position-relative fw-extrabold z-1">VoidForger<span style="vertical-align: super; font-size: small; font-family: Arial, sans-serif;">&#8482;</span>:
+        <span class="position-relative fw-extrabold z-1">VoidForger<span
+          style="vertical-align: super; font-size: small; font-family: Arial, sans-serif;">&#8482;</span>:
           <img src="{% static 'img/front-pages/icons/section-title-icon.png' %}" alt="laptop charging"
                class="section-title-img position-absolute object-fit-contain bottom-0 z-n1">
         </span>
@@ -595,7 +612,7 @@
                style="width: 100%;">
             <div style="overflow: hidden; border-radius: 15px; max-width: 65%;" class="border border-4 border-primary">
               <img src="{% static 'img/voidforger/voidforger-animated.gif' %}"
-                   style="margin-top: -3px; width: 100%; display: block; filter: contrast(120%);"/>
+                   style="margin-top: -3px; width: 100%; display: block; filter: contrast(120%);" />
             </div>
           </div>
         </a>
@@ -606,7 +623,7 @@
         <div class="col-lg-3 col-sm-6 text-center features-icon-box">
           <div class="text-center mb-4">
             <img src="{% static 'img/voidforger/voidforger-avatar.png' %}" class="border border-2 border-primary"
-                 style="width: 150px; border-radius: 25px;" alt=""/>
+                 style="width: 150px; border-radius: 25px;" alt="" />
           </div>
           <h5 class="mb-2"><strong>Overlord of Your Enterprise</strong></h5>
           <p class="features-icon-description">VoidForger is the ultimate AI Meta Orchestrator that can manage all your
@@ -615,7 +632,7 @@
         <div class="col-lg-3 col-sm-6 text-center features-icon-box">
           <div class="text-center mb-4">
             <img src="{% static 'img/voidforger/legion-node-avatar.png' %}" class="border border-2 border-primary"
-                 style="width: 150px; border-radius: 25px;" alt="transition up"/>
+                 style="width: 150px; border-radius: 25px;" alt="transition up" />
           </div>
           <h5 class="mb-2"><strong>24/7 Active Orchestration Nodes</strong></h5>
           <p class="features-icon-description">Your Orchestration processes are connected to the matrix of legion
@@ -624,7 +641,7 @@
         <div class="col-lg-3 col-sm-6 text-center features-icon-box">
           <div class="text-center mb-4">
             <img src="{% static 'img/voidforger/subnode-assistant.png' %}" class="border border-2 border-primary"
-                 style="width: 150px; border-radius: 25px;" alt="edit"/>
+                 style="width: 150px; border-radius: 25px;" alt="edit" />
           </div>
           <h5 class="mb-2"><strong>Powerful Assistant Nodes</strong></h5>
           <p class="features-icon-description">Your assistants are seamlessly connected to the Orchestration Nodes
@@ -633,7 +650,7 @@
         <div class="col-lg-3 col-sm-6 text-center features-icon-box">
           <div class="text-center mb-4">
             <img src="{% static 'img/voidforger/subnode-function.png' %}" class="border border-2 border-primary"
-                 style="width: 150px; border-radius: 25px;" alt="lifebelt"/>
+                 style="width: 150px; border-radius: 25px;" alt="lifebelt" />
           </div>
           <h5 class="mb-2"><strong>Multi-Modal Tools at Service</strong></h5>
           <p class="features-icon-description">All multi-modality tools are connected to the matrix of the legion
@@ -648,7 +665,8 @@
       <span class="badge bg-label-primary"><strong>Boundless Network of Assistants</strong></span>
     </div>
     <h4 class="text-center mb-1">
-        <span class="position-relative fw-extrabold z-1">Semantor<span style="vertical-align: super; font-size: small; font-family: Arial, sans-serif;">&#8482;</span>:
+        <span class="position-relative fw-extrabold z-1">Semantor<span
+          style="vertical-align: super; font-size: small; font-family: Arial, sans-serif;">&#8482;</span>:
           <img src="{% static 'img/front-pages/icons/section-title-icon.png' %}" alt="laptop charging"
                class="section-title-img position-absolute object-fit-contain bottom-0 z-n1">
         </span>
@@ -665,7 +683,7 @@
                style="width: 100%;">
             <div style="overflow: hidden; border-radius: 15px; max-width: 50%;" class="border border-4 border-primary">
               <img src="{% static 'img/semantor/semantor-banner.gif' %}"
-                   style="margin-top: -3px; width: 100%; display: block; filter: contrast(120%);"/>
+                   style="margin-top: -3px; width: 100%; display: block; filter: contrast(120%);" />
             </div>
           </div>
         </a>
@@ -677,11 +695,12 @@
           <div class="text-center mb-4">
             <img id="hadron-prime-anim" src="{% static 'img/semantor/semantor-1.png' %}"
                  class="border border-2 border-primary"
-                 style="width: 150px; border-radius: 25px;" alt=""/>
+                 style="width: 150px; border-radius: 25px;" alt="" />
           </div>
           <h5 class="mb-2"><strong>Local Network</strong></h5>
           <p class="features-icon-description">
-            Your internal AI assistants can openly communicate to each other, share information and request consultations
+            Your internal AI assistants can openly communicate to each other, share information and request
+            consultations
             from each other to provide the best solution to solve their problems, without requiring any input on your
             end in a 100% automated infrastructure.
           </p>
@@ -689,12 +708,13 @@
         <div class="col-lg-6 col-sm-6 text-center features-icon-box">
           <div class="text-center mb-4">
             <img src="{% static 'img/semantor/semantor-2.png' %}" class="border border-2 border-primary"
-                 style="width: 150px; border-radius: 25px;" alt="transition up"/>
+                 style="width: 150px; border-radius: 25px;" alt="transition up" />
           </div>
           <h5 class="mb-2"><strong>Global network</strong></h5>
           <p class="features-icon-description">
             Your assistants can communicate with all boilerplate BimodLab assistants &amp; teams, and share intel
-            to help you in the best way, even if you don't have the assistant in your organization, our large arsenal of AI
+            to help you in the best way, even if you don't have the assistant in your organization, our large arsenal of
+            AI
             assistants is always there to help you.
           </p>
         </div>
@@ -707,7 +727,8 @@
       <span class="badge bg-label-primary"><strong>Robotic Control</strong></span>
     </div>
     <h4 class="text-center mb-1">
-        <span class="position-relative fw-extrabold z-1">Hadron Prime<span style="vertical-align: super; font-size: small; font-family: Arial, sans-serif;">&#8482;</span>:
+        <span class="position-relative fw-extrabold z-1">Hadron Prime<span
+          style="vertical-align: super; font-size: small; font-family: Arial, sans-serif;">&#8482;</span>:
           <img src="{% static 'img/front-pages/icons/section-title-icon.png' %}" alt="laptop charging"
                class="section-title-img position-absolute object-fit-contain bottom-0 z-n1">
         </span>
@@ -724,7 +745,7 @@
                style="width: 100%;">
             <div style="overflow: hidden; border-radius: 15px; max-width: 50%;" class="border border-4 border-primary">
               <img src="{% static 'img/hadron_prime/hadron_prime_animated.gif' %}"
-                   style="margin-top: -3px; width: 100%; display: block; filter: contrast(120%);"/>
+                   style="margin-top: -3px; width: 100%; display: block; filter: contrast(120%);" />
             </div>
           </div>
         </a>
@@ -736,7 +757,7 @@
           <div class="text-center mb-4">
             <img id="hadron-prime-animated" src="{% static 'img/hadron_prime/communicate_node.png' %}"
                  class="border border-2 border-primary"
-                 style="width: 150px; border-radius: 25px;" alt=""/>
+                 style="width: 150px; border-radius: 25px;" alt="" />
           </div>
           <h5 class="mb-2"><strong>Communicate</strong></h5>
           <p class="features-icon-description">Your nodes can communicate with others in the environment and
@@ -746,7 +767,7 @@
         <div class="col-lg-3 col-sm-6 text-center features-icon-box">
           <div class="text-center mb-4">
             <img src="{% static 'img/hadron_prime/measure_node.png' %}" class="border border-2 border-primary"
-                 style="width: 150px; border-radius: 25px;" alt="transition up"/>
+                 style="width: 150px; border-radius: 25px;" alt="transition up" />
           </div>
           <h5 class="mb-2"><strong>Measure</strong></h5>
           <p class="features-icon-description">Your nodes can take in sensory data and measurements based on the
@@ -756,7 +777,7 @@
         <div class="col-lg-3 col-sm-6 text-center features-icon-box">
           <div class="text-center mb-4">
             <img src="{% static 'img/hadron_prime/process_node.png' %}" class="border border-2 border-primary"
-                 style="width: 150px; border-radius: 25px;" alt="edit"/>
+                 style="width: 150px; border-radius: 25px;" alt="edit" />
           </div>
           <h5 class="mb-2"><strong>Process</strong></h5>
           <p class="features-icon-description">The nodes process all the data they receive from various resources,
@@ -767,7 +788,7 @@
         <div class="col-lg-3 col-sm-6 text-center features-icon-box">
           <div class="text-center mb-4">
             <img src="{% static 'img/hadron_prime/act_node.png' %}" class="border border-2 border-primary"
-                 style="width: 150px; border-radius: 25px;" alt="lifebelt"/>
+                 style="width: 150px; border-radius: 25px;" alt="lifebelt" />
           </div>
           <h5 class="mb-2"><strong>Act</strong></h5>
           <p class="features-icon-description">The nodes take actions based on the possible action space, and take the
@@ -783,7 +804,8 @@
       <span class="badge bg-label-primary"><strong>Swarm Intelligence</strong></span>
     </div>
     <h4 class="text-center mb-1">
-        <span class="position-relative fw-extrabold z-1">Binexus<span style="vertical-align: super; font-size: small; font-family: Arial, sans-serif;">&#8482;</span>:
+        <span class="position-relative fw-extrabold z-1">Binexus<span
+          style="vertical-align: super; font-size: small; font-family: Arial, sans-serif;">&#8482;</span>:
           <img src="{% static 'img/front-pages/icons/section-title-icon.png' %}" alt="laptop charging"
                class="section-title-img position-absolute object-fit-contain bottom-0 z-n1">
         </span>
@@ -800,7 +822,7 @@
                style="width: 100%;">
             <div style="overflow: hidden; border-radius: 15px; max-width: 50%;" class="border border-4 border-primary">
               <img src="{% static 'img/binexus/binexus-animated.png' %}"
-                   style="margin-top: -3px; width: 100%; display: block; opacity: 0.9; filter: contrast(120%);"/>
+                   style="margin-top: -3px; width: 100%; display: block; opacity: 0.9; filter: contrast(120%);" />
             </div>
           </div>
         </a>
@@ -812,7 +834,7 @@
           <div class="text-center mb-4">
             <img id="hadron-prime-animation" src="{% static 'img/binexus/divide-node.png' %}"
                  class="border border-2 border-primary"
-                 style="width: 150px; border-radius: 25px;" alt=""/>
+                 style="width: 150px; border-radius: 25px;" alt="" />
           </div>
           <h5 class="mb-2"><strong>Divide</strong></h5>
           <p class="features-icon-description">The network divides your tasks into smaller atoms of more basic nature
@@ -822,7 +844,7 @@
         <div class="col-lg-4 col-sm-6 text-center features-icon-box">
           <div class="text-center mb-4">
             <img src="{% static 'img/binexus/replicate-node.png' %}" class="border border-2 border-primary"
-                 style="width: 150px; border-radius: 25px;" alt="transition up"/>
+                 style="width: 150px; border-radius: 25px;" alt="transition up" />
           </div>
           <h5 class="mb-2"><strong>Replicate</strong></h5>
           <p class="features-icon-description">A group of stem nodes replicate themselves to create a swarm of worker
@@ -831,7 +853,7 @@
         <div class="col-lg-4 col-sm-6 text-center features-icon-box">
           <div class="text-center mb-4">
             <img src="{% static 'img/binexus/conquer-node.png' %}" class="border border-2 border-primary"
-                 style="width: 150px; border-radius: 25px;" alt="edit"/>
+                 style="width: 150px; border-radius: 25px;" alt="edit" />
           </div>
           <h5 class="mb-2"><strong>Conquer</strong></h5>
           <p class="features-icon-description">The swarm of worker nodes complete the individual atoms of the tasks,
@@ -848,14 +870,16 @@
       <span class="badge bg-label-primary"><strong>Lean Assistants &amp; Bulk Assistants</strong></span>
     </div>
     <h4 class="text-center mb-1">
-        <span class="position-relative fw-extrabold z-1">Leanmod<span style="vertical-align: super; font-size: small; font-family: Arial, sans-serif;">&#8482;</span>:
+        <span class="position-relative fw-extrabold z-1">Leanmod<span
+          style="vertical-align: super; font-size: small; font-family: Arial, sans-serif;">&#8482;</span>:
           <img src="{% static 'img/front-pages/icons/section-title-icon.png' %}" alt="laptop charging"
                class="section-title-img position-absolute object-fit-contain bottom-0 z-n1">
         </span>
       Lean, Cost-Effective Assistants for High-Scale Automations
     </h4>
     <p class="text-center mb-md-11 pb-0 pb-xl-12">
-      {% get_theme_variables 'template_name' %} allows you to always have cost-effective solutions depending on your needs and prevent you from paying
+      {% get_theme_variables 'template_name' %} allows you to always have cost-effective solutions depending on your
+      needs and prevent you from paying
       more
       than you need for tasks of more simplistic nature.
     </p>
@@ -866,7 +890,7 @@
                style="width: 100%;">
             <div style="overflow: hidden; border-radius: 15px; max-width: 50%;" class="border border-4 border-primary">
               <img src="{% static 'img/leanmod/leanmod-image.png' %}"
-                   style="margin-top: -3px; width: 100%; display: block; opacity: 0.9; filter: contrast(120%);"/>
+                   style="margin-top: -3px; width: 100%; display: block; opacity: 0.9; filter: contrast(120%);" />
             </div>
           </div>
         </a>
@@ -877,9 +901,11 @@
         <div class="col-lg-4 col-sm-6 text-center features-icon-box">
           <div class="text-center mb-4">
             <img src="{% static 'img/custom-illustrations-v2/i2-75.png' %}" class="border border-2 border-primary"
-                 style="width: 150px; border-radius: 25px;" alt="transition up"/>
+                 style="width: 150px; border-radius: 25px;" alt="transition up" />
           </div>
-          <h5 class="mb-2"><strong>BimodLab<span style="vertical-align: super; font-size: small; font-family: Arial, sans-serif;">&#8482;</span> Assistants</strong></h5>
+          <h5 class="mb-2"><strong>BimodLab<span
+            style="vertical-align: super; font-size: small; font-family: Arial, sans-serif;">&#8482;</span>
+            Assistants</strong></h5>
           <p class="features-icon-description">
             Heavyweight, powerful, customizable AI assistants that can handle a wide range of tasks, enable for managing
             multiple different tools, data sources and integrations, and designed for providing maximum precision and
@@ -889,9 +915,11 @@
         <div class="col-lg-4 col-sm-6 text-center features-icon-box">
           <div class="text-center mb-4">
             <img src="{% static 'img/custom-illustrations-v2/i2-85.png' %}" class="border border-2 border-primary"
-                 style="width: 150px; border-radius: 25px;" alt="edit"/>
+                 style="width: 150px; border-radius: 25px;" alt="edit" />
           </div>
-          <h5 class="mb-2"><strong>Leanmod<span style="vertical-align: super; font-size: small; font-family: Arial, sans-serif;">&#8482;</span> Assistants</strong></h5>
+          <h5 class="mb-2"><strong>Leanmod<span
+            style="vertical-align: super; font-size: small; font-family: Arial, sans-serif;">&#8482;</span>
+            Assistants</strong></h5>
           <p class="features-icon-description">
             Lightweight, cost-effective, and still highly efficient and precise AI assistants that are carefully
             designed for
@@ -903,11 +931,12 @@
         <div class="col-lg-4 col-sm-6 text-center features-icon-box">
           <div class="text-center mb-4">
             <img src="{% static 'img/custom-illustrations-v2/i2-95.png' %}" class="border border-2 border-primary"
-                 style="width: 150px; border-radius: 25px;" alt="edit"/>
+                 style="width: 150px; border-radius: 25px;" alt="edit" />
           </div>
           <h5 class="mb-2"><strong>Expert Networks</strong></h5>
           <p class="features-icon-description">
-            Although LeanMod<span style="vertical-align: super; font-size: small; font-family: Arial, sans-serif;">&#8482;</span> Assistants are designed that are less complex and more
+            Although LeanMod<span style="vertical-align: super; font-size: small; font-family: Arial, sans-serif;">&#8482;</span>
+            Assistants are designed that are less complex and more
             cost-effective, they can still consult the bulkier BimodLab
             <span style="vertical-align: super; font-size: small; font-family: Arial, sans-serif;">&#8482;</span>
             Assistants when they get stuck or need help with more complex tasks, thanks to the expert network
@@ -921,174 +950,181 @@
 
     <!-- Desktop Application: Start -->
     <section id="landingDesktopApp" class="section-py landing-desktop-app bg-body">
-        <div class="container">
-          <div class="text-center mb-4">
-            <span class="badge bg-label-primary"><strong>Desktop Client</strong></span>
-          </div>
-          <h4 class="text-center mb-1">
-            <span class="position-relative fw-extrabold z-1">BimodLab<span style="vertical-align: super; font-size: small; font-family: Arial, sans-serif;">&#8482;</span> Electron Copilot:
+      <div class="container">
+        <div class="text-center mb-4">
+          <span class="badge bg-label-primary"><strong>Desktop Client</strong></span>
+        </div>
+        <h4 class="text-center mb-1">
+            <span class="position-relative fw-extrabold z-1">BimodLab<span
+              style="vertical-align: super; font-size: small; font-family: Arial, sans-serif;">&#8482;</span> Electron Copilot:
               <img src="{% static 'img/front-pages/icons/section-title-icon.png' %}" alt="laptop charging"
                    class="section-title-img position-absolute object-fit-contain bottom-0 z-n1">
             </span>
-            Your AI Desktop Companion
-          </h4>
-          <p class="text-center pb-2 mb-12">
-            Manage your AI tasks with a powerful, streamlined desktop application. Enjoy enhanced security, real-time
-            control, and full integration with BimodLab Web Application.
-          </p>
+          Your AI Desktop Companion
+        </h4>
+        <p class="text-center pb-2 mb-12">
+          Manage your AI tasks with a powerful, streamlined desktop application. Enjoy enhanced security, real-time
+          control, and full integration with BimodLab Web Application.
+        </p>
 
-          <div class="d-flex justify-content-center align-items-center">
-            <div style="overflow: hidden; border-radius: 15px; max-width: 80%;" class="border border-4 border-primary mb-12 mt-12">
-              <img src="{% static 'img/electron-copilot/b-2.png' %}"
-                   style="margin-top: -3px; width: 100%; opacity: 0.9; display: block; filter: contrast(120%);"/>
-            </div>
-          </div>
-
-          <div class="row g-6 pt-lg-5 text-center">
-            <!-- Real-Time Control -->
-            <div class="col-lg-4 col-sm-6">
-              <div class="text-center mb-4">
-                <img src="{% static 'img/electron-copilot/cpl-1.png' %}" class="border border-2 border-primary"
-                     style="width: 150px; border-radius: 25px;" alt="Real-time Control"/>
-              </div>
-              <h5 class="mb-2"><strong>Real-Time AI Control</strong></h5>
-              <p>
-                Control your AI workflows with precision and speed from your desktop, ensuring real-time communication
-                with your AI assistants and orchestrations. Manage your tasks with ease and efficiency in a familiar
-                environment.
-              </p>
-            </div>
-
-            <!-- Automated Meeting Tracking & Analysis -->
-            <div class="col-lg-4 col-sm-6">
-              <div class="text-center mb-4">
-                <img src="{% static 'img/electron-copilot/cpl-2.png' %}" class="border border-2 border-primary"
-                     style="width: 150px; border-radius: 25px;" alt="Meeting Tracking"/>
-              </div>
-              <h5 class="mb-2"><strong>Automated Meeting Tracking & Analysis</strong></h5>
-              <p>
-                Capture, analyze, and interpret meeting discussions in real-time. Our AI assistant identifies action
-                points, summaries, and insights, enabling your team to stay aligned and productive without manual
-                note-taking.
-              </p>
-            </div>
-
-            <!-- Tempo Tracking & Performance Analysis -->
-            <div class="col-lg-4 col-sm-6">
-              <div class="text-center mb-4">
-                <img src="{% static 'img/electron-copilot/cpl-3.png' %}" class="border border-2 border-primary"
-                     style="width: 150px; border-radius: 25px;" alt="Tempo Tracking"/>
-              </div>
-              <h5 class="mb-2"><strong>Automated Tempo Tracking & Team Performance</strong></h5>
-              <p>
-                Monitor your team’s performance and project status with advanced tempo tracking. Our AI provides
-                insights into productivity patterns, task progress, and overall project health to keep everyone on
-                track.
-              </p>
-            </div>
-
-            <!-- Secure Local Data Access -->
-            <div class="col-lg-6 col-sm-6">
-              <div class="text-center mb-4">
-                <img src="{% static 'img/electron-copilot/cpl-4.png' %}" class="border border-2 border-primary"
-                     style="width: 150px; border-radius: 25px;" alt="Secure Local Access"/>
-              </div>
-              <h5 class="mb-2"><strong>Secure Local Data Access</strong></h5>
-              <p>Enhanced security and privacy are at your fingertips, with local access to sensitive data and seamless integration with the BimodLab web platform.</p>
-            </div>
-
-            <!-- Smooth Integration -->
-            <div class="col-lg-6 col-sm-6">
-              <div class="text-center mb-4">
-                <img src="{% static 'img/electron-copilot/cpl-5.png' %}" class="border border-2 border-primary"
-                     style="width: 150px; border-radius: 25px;" alt="Smooth Integration"/>
-              </div>
-              <h5 class="mb-2"><strong>Smooth Integration</strong></h5>
-              <p>Seamlessly track your tempo, manage projects, and log meeting records, ensuring efficient workflows in sync with BimodLab Web Application.</p>
-            </div>
-          </div>
-
-          <div class="text-center mt-12">
-            <a href="{% url 'landing:electron_copilot_releases' %}" class="btn btn-lg btn-primary"><strong>
-              <i class="ti ti-download me-2"></i>
-              Download BimodLab™ Electron Copilot
-            </strong></a>
+        <div class="d-flex justify-content-center align-items-center">
+          <div style="overflow: hidden; border-radius: 15px; max-width: 80%;"
+               class="border border-4 border-primary mb-12 mt-12">
+            <img src="{% static 'img/electron-copilot/b-2.png' %}"
+                 style="margin-top: -3px; width: 100%; opacity: 0.9; display: block; filter: contrast(120%);" />
           </div>
         </div>
-      </section>
+
+        <div class="row g-6 pt-lg-5 text-center">
+          <!-- Real-Time Control -->
+          <div class="col-lg-4 col-sm-6">
+            <div class="text-center mb-4">
+              <img src="{% static 'img/electron-copilot/cpl-1.png' %}" class="border border-2 border-primary"
+                   style="width: 150px; border-radius: 25px;" alt="Real-time Control" />
+            </div>
+            <h5 class="mb-2"><strong>Real-Time AI Control</strong></h5>
+            <p>
+              Control your AI workflows with precision and speed from your desktop, ensuring real-time communication
+              with your AI assistants and orchestrations. Manage your tasks with ease and efficiency in a familiar
+              environment.
+            </p>
+          </div>
+
+          <!-- Automated Meeting Tracking & Analysis -->
+          <div class="col-lg-4 col-sm-6">
+            <div class="text-center mb-4">
+              <img src="{% static 'img/electron-copilot/cpl-2.png' %}" class="border border-2 border-primary"
+                   style="width: 150px; border-radius: 25px;" alt="Meeting Tracking" />
+            </div>
+            <h5 class="mb-2"><strong>Automated Meeting Tracking & Analysis</strong></h5>
+            <p>
+              Capture, analyze, and interpret meeting discussions in real-time. Our AI assistant identifies action
+              points, summaries, and insights, enabling your team to stay aligned and productive without manual
+              note-taking.
+            </p>
+          </div>
+
+          <!-- Tempo Tracking & Performance Analysis -->
+          <div class="col-lg-4 col-sm-6">
+            <div class="text-center mb-4">
+              <img src="{% static 'img/electron-copilot/cpl-3.png' %}" class="border border-2 border-primary"
+                   style="width: 150px; border-radius: 25px;" alt="Tempo Tracking" />
+            </div>
+            <h5 class="mb-2"><strong>Automated Tempo Tracking & Team Performance</strong></h5>
+            <p>
+              Monitor your team’s performance and project status with advanced tempo tracking. Our AI provides
+              insights into productivity patterns, task progress, and overall project health to keep everyone on
+              track.
+            </p>
+          </div>
+
+          <!-- Secure Local Data Access -->
+          <div class="col-lg-6 col-sm-6">
+            <div class="text-center mb-4">
+              <img src="{% static 'img/electron-copilot/cpl-4.png' %}" class="border border-2 border-primary"
+                   style="width: 150px; border-radius: 25px;" alt="Secure Local Access" />
+            </div>
+            <h5 class="mb-2"><strong>Secure Local Data Access</strong></h5>
+            <p>Enhanced security and privacy are at your fingertips, with local access to sensitive data and seamless
+              integration with the BimodLab web platform.</p>
+          </div>
+
+          <!-- Smooth Integration -->
+          <div class="col-lg-6 col-sm-6">
+            <div class="text-center mb-4">
+              <img src="{% static 'img/electron-copilot/cpl-5.png' %}" class="border border-2 border-primary"
+                   style="width: 150px; border-radius: 25px;" alt="Smooth Integration" />
+            </div>
+            <h5 class="mb-2"><strong>Smooth Integration</strong></h5>
+            <p>Seamlessly track your tempo, manage projects, and log meeting records, ensuring efficient workflows in
+              sync with BimodLab Web Application.</p>
+          </div>
+        </div>
+
+        <div class="text-center mt-12">
+          <a href="{% url 'landing:electron_copilot_releases' %}" class="btn btn-lg btn-primary"><strong>
+            <i class="ti ti-download me-2"></i>
+            Download BimodLab™ Electron Copilot
+          </strong></a>
+        </div>
+      </div>
+    </section>
     <!-- Desktop Application: End -->
 
     <!-- Mobile Application: Start -->
     <section id="landingMobileApp" class="section-py lading-mobile-app bg-body">
-        <div class="container">
-          <div class="text-center mb-4">
-            <span class="badge bg-label-primary"><strong>Mobile Client</strong></span>
-          </div>
-          <h4 class="text-center mb-1">
-            <span class="position-relative fw-extrabold z-1">BimodLab<span style="vertical-align: super; font-size: small; font-family: Arial, sans-serif;">&#8482;</span> Fermion Copilot:
+      <div class="container">
+        <div class="text-center mb-4">
+          <span class="badge bg-label-primary"><strong>Mobile Client</strong></span>
+        </div>
+        <h4 class="text-center mb-1">
+            <span class="position-relative fw-extrabold z-1">BimodLab<span
+              style="vertical-align: super; font-size: small; font-family: Arial, sans-serif;">&#8482;</span> Fermion Copilot:
               <img src="{% static 'img/front-pages/icons/section-title-icon.png' %}" alt="laptop charging"
                    class="section-title-img position-absolute object-fit-contain bottom-0 z-n1">
             </span>
-            Your Loyal Mobile Cockpit
-          </h4>
-          <p class="text-center pb-2 mb-12">
-            Manage your AI tasks, communicate with your agents, deliver your orders to VoidForger to automate your
-            enterprise, all in the palm of your hand with our mobile client.
-          </p>
+          Your Loyal Mobile Cockpit
+        </h4>
+        <p class="text-center pb-2 mb-12">
+          Manage your AI tasks, communicate with your agents, deliver your orders to VoidForger to automate your
+          enterprise, all in the palm of your hand with our mobile client.
+        </p>
 
-          <div class="d-flex justify-content-center align-items-center">
-            <div style="overflow: hidden; border-radius: 15px; max-width: 80%;" class="border border-4 border-primary mb-12 mt-12">
-              <img src="{% static 'img/fermion-copilot/b-1.png' %}"
-                   style="margin-top: -3px; width: 100%; opacity: 0.9; display: block; filter: contrast(120%);"/>
-            </div>
-          </div>
-
-          <div class="row g-6 pt-lg-5 text-center">
-            <div class="col-lg-4 col-sm-6">
-              <div class="text-center mb-4">
-                <img src="{% static 'img/fermion-copilot/fmc-1.png' %}" class="border border-2 border-primary"
-                     style="width: 150px; border-radius: 25px;" alt="Control Your Agents"/>
-              </div>
-              <h5 class="mb-2"><strong>Control Your Agents</strong></h5>
-              <p>
-                Manage your AI agents, orchestrate your tasks, and communicate with your orchestrators and meta-orchestrator
-                in real-time. Our mobile client provides you with the tools to stay in control, no matter where you are.
-              </p>
-            </div>
-
-            <div class="col-lg-4 col-sm-6">
-              <div class="text-center mb-4">
-                <img src="{% static 'img/fermion-copilot/fmc-2.png' %}" class="border border-2 border-primary"
-                     style="width: 150px; border-radius: 25px;" alt="Simple and Efficient"/>
-              </div>
-              <h5 class="mb-2"><strong>Simple &amp; Efficient</strong></h5>
-              <p>
-                Simply connect your endpoints, and start chatting with your agents, deliver your orders to VoidForger,
-                and manage your tasks with ease and efficiency in a familiar environment.
-              </p>
-            </div>
-
-            <div class="col-lg-4 col-sm-6">
-              <div class="text-center mb-4">
-                <img src="{% static 'img/fermion-copilot/fmc-3.png' %}" class="border border-2 border-primary"
-                     style="width: 150px; border-radius: 25px;" alt="Everything in One Place"/>
-              </div>
-              <h5 class="mb-2"><strong>Everything in One Place</strong></h5>
-              <p>
-                Your BimodLab assistants, LeanMod oracles, orchestration Maestros, and your VoidForger meta-orchestrator,
-                all in one place, and 24/7 ready for having a chat with you, and to take your orders.
-              </p>
-            </div>
-          </div>
-
-          <div class="text-center mt-12">
-            <a href="{% url 'landing:fermion_copilot_releases' %}" class="btn btn-lg btn-primary"><strong>
-              <i class="ti ti-download me-2"></i>
-              Download BimodLab™ Fermion Copilot
-            </strong></a>
+        <div class="d-flex justify-content-center align-items-center">
+          <div style="overflow: hidden; border-radius: 15px; max-width: 80%;"
+               class="border border-4 border-primary mb-12 mt-12">
+            <img src="{% static 'img/fermion-copilot/b-1.png' %}"
+                 style="margin-top: -3px; width: 100%; opacity: 0.9; display: block; filter: contrast(120%);" />
           </div>
         </div>
-      </section>
+
+        <div class="row g-6 pt-lg-5 text-center">
+          <div class="col-lg-4 col-sm-6">
+            <div class="text-center mb-4">
+              <img src="{% static 'img/fermion-copilot/fmc-1.png' %}" class="border border-2 border-primary"
+                   style="width: 150px; border-radius: 25px;" alt="Control Your Agents" />
+            </div>
+            <h5 class="mb-2"><strong>Control Your Agents</strong></h5>
+            <p>
+              Manage your AI agents, orchestrate your tasks, and communicate with your orchestrators and
+              meta-orchestrator
+              in real-time. Our mobile client provides you with the tools to stay in control, no matter where you are.
+            </p>
+          </div>
+
+          <div class="col-lg-4 col-sm-6">
+            <div class="text-center mb-4">
+              <img src="{% static 'img/fermion-copilot/fmc-2.png' %}" class="border border-2 border-primary"
+                   style="width: 150px; border-radius: 25px;" alt="Simple and Efficient" />
+            </div>
+            <h5 class="mb-2"><strong>Simple &amp; Efficient</strong></h5>
+            <p>
+              Simply connect your endpoints, and start chatting with your agents, deliver your orders to VoidForger,
+              and manage your tasks with ease and efficiency in a familiar environment.
+            </p>
+          </div>
+
+          <div class="col-lg-4 col-sm-6">
+            <div class="text-center mb-4">
+              <img src="{% static 'img/fermion-copilot/fmc-3.png' %}" class="border border-2 border-primary"
+                   style="width: 150px; border-radius: 25px;" alt="Everything in One Place" />
+            </div>
+            <h5 class="mb-2"><strong>Everything in One Place</strong></h5>
+            <p>
+              Your BimodLab assistants, LeanMod oracles, orchestration Maestros, and your VoidForger meta-orchestrator,
+              all in one place, and 24/7 ready for having a chat with you, and to take your orders.
+            </p>
+          </div>
+        </div>
+
+        <div class="text-center mt-12">
+          <a href="{% url 'landing:fermion_copilot_releases' %}" class="btn btn-lg btn-primary"><strong>
+            <i class="ti ti-download me-2"></i>
+            Download BimodLab™ Fermion Copilot
+          </strong></a>
+        </div>
+      </div>
+    </section>
     <!-- Mobile Application: End -->
 
     <!-- Astrolith X1: Start -->
@@ -1097,7 +1133,8 @@
       <span class="badge bg-label-primary"><strong>Local Integrations</strong></span>
     </div>
     <h4 class="text-center mb-1">
-        <span class="position-relative fw-extrabold z-1">Astrolith X1<span style="vertical-align: super; font-size: small; font-family: Arial, sans-serif;">&#8482;</span>:
+        <span class="position-relative fw-extrabold z-1">Astrolith X1<span
+          style="vertical-align: super; font-size: small; font-family: Arial, sans-serif;">&#8482;</span>:
           <img src="{% static 'img/front-pages/icons/section-title-icon.png' %}" alt="laptop charging"
                class="section-title-img position-absolute object-fit-contain bottom-0 z-n1">
         </span>
@@ -1117,7 +1154,7 @@
                style="width: 100%;">
             <div style="overflow: hidden; border-radius: 15px; max-width: 50%;" class="border border-4 border-primary">
               <img src="{% static 'img/astrolith-x1/astrolith-x1-image.png' %}"
-                   style="margin-top: -3px; width: 100%; opacity: 0.9; display: block; filter: contrast(120%);"/>
+                   style="margin-top: -3px; width: 100%; opacity: 0.9; display: block; filter: contrast(120%);" />
             </div>
           </div>
         </a>
@@ -1128,7 +1165,7 @@
         <div class="col-lg-6 col-sm-6 text-center features-icon-box">
           <div class="text-center mb-4">
             <img src="{% static 'img/custom-illustrations-v2/i2-20.png' %}" class="border border-2 border-primary"
-                 style="width: 150px; border-radius: 25px;" alt="transition up"/>
+                 style="width: 150px; border-radius: 25px;" alt="transition up" />
           </div>
           <h5 class="mb-2"><strong>Embedded Firmware</strong></h5>
           <p class="features-icon-description">
@@ -1140,7 +1177,7 @@
         <div class="col-lg-6 col-sm-6 text-center features-icon-box">
           <div class="text-center mb-4">
             <img src="{% static 'img/custom-illustrations-v2/i2-10.png' %}" class="border border-2 border-primary"
-                 style="width: 150px; border-radius: 25px;" alt="transition up"/>
+                 style="width: 150px; border-radius: 25px;" alt="transition up" />
           </div>
           <h5 class="mb-2"><strong>Standalone Native Software</strong></h5>
           <p class="features-icon-description">
@@ -1167,7 +1204,8 @@
         </span>
           by passion and perseverance.
         </h4>
-        <p class="text-center mb-md-11 pb-0 pb-xl-12">Meet the dedicated team behind <strong>{% get_theme_variables 'template_name' %}</strong></p>
+        <p class="text-center mb-md-11 pb-0 pb-xl-12">Meet the dedicated team behind
+          <strong>{% get_theme_variables 'template_name' %}</strong></p>
         <div class="row gy-12 mt-12">
           <div class="col-lg-6 col-sm-12 mb-8" style="margin-top: 150px;">
             <div class="card mt-3 mt-lg-0 shadow-none border border-4 border-primary">
@@ -1175,7 +1213,7 @@
                 class="bg-label-primary border border-bottom-0 border-label-primary position-relative team-image-box">
                 <img src="{% static 'img/front-pages/landing-page/team-member-ege.png' %}"
                      class="position-absolute card-img-position bottom-0 start-50 scaleX-n1-rtl" style="height: 350px;"
-                     alt="human image"/>
+                     alt="human image" />
               </div>
               <div class="card-body border border-top-0 border-label-primary text-center">
                 <h5 class="card-title mb-0"><strong>Ege Doğan DURSUN</strong></h5>
@@ -1188,7 +1226,8 @@
               <div class="card-body mx-auto">
                 <ul class="list-unstyled align-items-center">
                   <li class="d-flex align-items-center mx-auto mb-2"><i class="ti ti-mail ti-lg"></i><span
-                    class="fw-medium mx-2"><strong>Email:</strong></span> <span> ege@{% get_theme_variables 'template_name' %}</span></li>
+                    class="fw-medium mx-2"><strong>Email:</strong></span>
+                    <span> ege@{% get_theme_variables 'template_name' %}</span></li>
                   <li class="d-flex align-items-center mx-auto mb-2"><i class="ti ti-brand-linkedin ti-lg"></i><span
                     class="fw-medium mx-2"><strong>LinkedIn:</strong></span> <span><a target="_blank"
                                                                                       href="https://www.linkedin.com/in/egedogandursun">/in/egedogandursun</a></span>
@@ -1202,7 +1241,7 @@
               <div class="bg-label-info border border-bottom-0 border-label-info position-relative team-image-box">
                 <img src="{% static 'img/front-pages/landing-page/team-member-huseyin.png' %}"
                      class="position-absolute card-img-position bottom-0 start-50 scaleX-n1-rtl" style="height: 350px;"
-                     alt="human image"/>
+                     alt="human image" />
               </div>
               <div class="card-body border border-top-0 border-label-info text-center">
                 <h5 class="card-title mb-0"><strong>Hüseyin ERSAY</strong></h5>
@@ -1214,7 +1253,8 @@
               <div class="card-body mx-auto">
                 <ul class="list-unstyled align-items-center">
                   <li class="d-flex align-items-center mx-auto mb-2"><i class="ti ti-mail ti-lg"></i><span
-                    class="fw-medium mx-2"><strong>Email:</strong></span> <span> huseyin@{% get_theme_variables 'template_name' %}</span></li>
+                    class="fw-medium mx-2"><strong>Email:</strong></span>
+                    <span> huseyin@{% get_theme_variables 'template_name' %}</span></li>
                   <li class="d-flex align-items-center mx-auto mb-2"><i class="ti ti-brand-linkedin ti-lg"></i><span
                     class="fw-medium mx-2"><strong>LinkedIn:</strong></span> <span><a target="_blank"
                                                                                       href="https://www.linkedin.com/in/huseyinersay">/in/huseyinersay</a></span>
@@ -1228,7 +1268,7 @@
               <div class="bg-label-danger border border-bottom-0 border-label-danger position-relative team-image-box">
                 <img src="{% static 'img/front-pages/landing-page/team-member-mert.png' %}"
                      class="position-absolute card-img-position bottom-0 start-50 scaleX-n1-rtl" style="height: 300px;"
-                     alt="human image"/>
+                     alt="human image" />
               </div>
               <div class="card-body border border-top-0 border-label-danger text-center">
                 <h5 class="card-title mb-0"><strong>Mert TEKİN</strong></h5>
@@ -1239,7 +1279,8 @@
               <div class="card-body mx-auto">
                 <ul class="list-unstyled align-items-center">
                   <li class="d-flex align-items-center mx-auto mb-2"><i class="ti ti-mail ti-lg"></i><span
-                    class="fw-medium mx-2"><strong>Email:</strong></span> <span> mert@{% get_theme_variables 'template_name' %}</span></li>
+                    class="fw-medium mx-2"><strong>Email:</strong></span>
+                    <span> mert@{% get_theme_variables 'template_name' %}</span></li>
                   <li class="d-flex align-items-center mx-auto mb-2"><i class="ti ti-brand-linkedin ti-lg"></i><span
                     class="fw-medium mx-2"><strong>LinkedIn:</strong></span> <span><a target="_blank"
                                                                                       href="https://www.linkedin.com/in/merttekin0">/in/merttekin0</a></span>
@@ -1253,7 +1294,7 @@
               <div class="bg-label-success border border-bottom-0 border-label-danger position-relative team-image-box">
                 <img src="{% static 'img/front-pages/landing-page/team-member-selin.png' %}"
                      class="position-absolute card-img-position bottom-0 start-50 scaleX-n1-rtl" style="height: 300px;"
-                     alt="human image"/>
+                     alt="human image" />
               </div>
               <div class="card-body border border-top-0 border-label-danger text-center">
                 <h5 class="card-title mb-0"><strong>Selin Ceren CANBULUT</strong></h5>
@@ -1264,7 +1305,8 @@
               <div class="card-body mx-auto">
                 <ul class="list-unstyled align-items-center">
                   <li class="d-flex align-items-center mx-auto mb-2"><i class="ti ti-mail ti-lg"></i><span
-                    class="fw-medium mx-2"><strong>Email:</strong></span> <span> selin@{% get_theme_variables 'template_name' %}</span></li>
+                    class="fw-medium mx-2"><strong>Email:</strong></span>
+                    <span> selin@{% get_theme_variables 'template_name' %}</span></li>
                   <li class="d-flex align-items-center mx-auto mb-2"><i class="ti ti-brand-linkedin ti-lg"></i><span
                     class="fw-medium mx-2"><strong>LinkedIn:</strong></span> <span><a target="_blank"
                                                                                       href="https://www.linkedin.com/in/selinccanbulut">/in/selinccanbulut</a></span>
@@ -1278,7 +1320,7 @@
               <div class="bg-label-danger border border-bottom-0 border-label-success position-relative team-image-box">
                 <img src="{% static 'img/front-pages/landing-page/team-member-emre.png' %}"
                      class="position-absolute card-img-position bottom-0 start-50 scaleX-n1-rtl" style="height: 300px;"
-                     alt="human image"/>
+                     alt="human image" />
               </div>
               <div class="card-body border border-top-0 border-label-success text-center">
                 <h5 class="card-title mb-0"><strong>Emre ÖĞE</strong></h5>
@@ -1289,7 +1331,8 @@
               <div class="card-body mx-auto">
                 <ul class="list-unstyled align-items-center">
                   <li class="d-flex align-items-center mx-auto mb-2"><i class="ti ti-mail ti-lg"></i><span
-                    class="fw-medium mx-2"><strong>Email:</strong></span> <span> emre@{% get_theme_variables 'template_name' %}</span></li>
+                    class="fw-medium mx-2"><strong>Email:</strong></span>
+                    <span> emre@{% get_theme_variables 'template_name' %}</span></li>
                   <li class="d-flex align-items-center mx-auto mb-2"><i class="ti ti-brand-linkedin ti-lg"></i><span
                     class="fw-medium mx-2"><strong>LinkedIn:</strong></span> <span><a target="_blank"
                                                                                       href="https://www.linkedin.com/in/emre-%C3%B6%C4%9Fe-6367861b4/">/in/emreoge</a></span>
@@ -1300,10 +1343,11 @@
           </div>
           <div class="col-lg-6 col-sm-12" style="margin-top: 150px;">
             <div class="card mt-3 mt-lg-0 shadow-none border border-4 border-primary">
-              <div class="bg-label-success border border-bottom-0 border-label-success position-relative team-image-box">
+              <div
+                class="bg-label-success border border-bottom-0 border-label-success position-relative team-image-box">
                 <img src="{% static 'img/front-pages/landing-page/team-member-can.png' %}"
                      class="position-absolute card-img-position bottom-0 start-50 scaleX-n1-rtl" style="height: 300px;"
-                     alt="human image"/>
+                     alt="human image" />
               </div>
               <div class="card-body border border-top-0 border-label-success text-center">
                 <h5 class="card-title mb-0"><strong>Can AKACUN</strong></h5>
@@ -1314,7 +1358,8 @@
               <div class="card-body mx-auto">
                 <ul class="list-unstyled align-items-center">
                   <li class="d-flex align-items-center mx-auto mb-2"><i class="ti ti-mail ti-lg"></i><span
-                    class="fw-medium mx-2"><strong>Email:</strong></span> <span> can@{% get_theme_variables 'template_name' %}</span></li>
+                    class="fw-medium mx-2"><strong>Email:</strong></span>
+                    <span> can@{% get_theme_variables 'template_name' %}</span></li>
                   <li class="d-flex align-items-center mx-auto mb-2"><i class="ti ti-brand-linkedin ti-lg"></i><span
                     class="fw-medium mx-2"><strong>LinkedIn:</strong></span> <span><a target="_blank"
                                                                                       href="https://www.linkedin.com/in/can-akacun-41334a146">/in/can-akacun</a></span>
@@ -1397,7 +1442,7 @@
                   <img src="{% static 'img/custom-illustrations-v2/subscription/i2-s1.png' %}"
                        style="border-radius: 25px;" width="250px;"
                        alt="paper airplane icon"
-                       class="mb-8 pb-2"/>
+                       class="mb-8 pb-2" />
                   <h4 class="mb-0"><strong>Starter</strong></h4>
                   <div class="d-flex align-items-center justify-content-center">
                     <strong class="me-12">Purchase </strong>
@@ -1421,7 +1466,7 @@
                 <div class="text-center">
                   <img src="{% static 'img/custom-illustrations-v2/subscription/i2-s2.png' %}" alt="paper airplane icon"
                        style="border-radius: 25px;" width="250px;"
-                       class="mb-8 pb-2"/>
+                       class="mb-8 pb-2" />
                   <h4 class="mb-0"><strong>Grower</strong></h4>
                   <div class="d-flex align-items-center justify-content-center">
                     <strong class="me-12">Purchase </strong>
@@ -1445,7 +1490,7 @@
                 <div class="text-center">
                   <img src="{% static 'img/custom-illustrations-v2/subscription/i2-s3.png' %}"
                        style="border-radius: 25px;" width="250px;" alt="paper airplane icon"
-                       class="mb-8 pb-2"/>
+                       class="mb-8 pb-2" />
                   <h4 class="mb-0"><strong>Professional</strong></h4>
                   <div class="d-flex align-items-center justify-content-center">
                     <strong class="me-7">Purchase </strong>
@@ -1468,7 +1513,7 @@
                 <div class="text-center">
                   <img src="{% static 'img/custom-illustrations-v2/subscription/i2-s4.png' %}"
                        style="border-radius: 25px;" width="250px;" alt="paper airplane icon"
-                       class="mb-8 pb-2"/>
+                       class="mb-8 pb-2" />
                   <h4 class="mb-0"><strong>Enterprise</strong></h4>
                   <div class="d-flex align-items-center justify-content-center">
                     <strong style="margin-right: 90px;">Purchase </strong>
@@ -1494,7 +1539,7 @@
       <img src="{% static 'img/front-pages/backgrounds/cta-bg-' %}{{ COOKIES.style|default:style }}.png"
            class="position-absolute bottom-0 end-0 scaleX-n1-rtl h-100 w-100 z-n1" alt="cta image"
            data-app-light-img="front-pages/backgrounds/cta-bg-light.png"
-           data-app-dark-img="front-pages/backgrounds/cta-bg-dark.png"/>
+           data-app-dark-img="front-pages/backgrounds/cta-bg-dark.png" />
       <div class="container">
         <div class="row align-items-center gy-12">
           <div class="col-lg-6 text-start text-sm-center text-lg-start">
@@ -1509,7 +1554,7 @@
           </div>
           <div class="col-lg-6 pt-lg-12 text-center text-lg-end">
             <img src="{% static 'img/front-pages/landing-page/hero-dashboard-dark.png' %}" alt="cta dashboard"
-                 class="img-fluid mt-lg-4 mb-12" style="border-radius: 15px;"/>
+                 class="img-fluid mt-lg-4 mb-12" style="border-radius: 15px;" />
           </div>
         </div>
       </div>
@@ -1535,9 +1580,9 @@
           <div class="col-lg-5">
             <div class="contact-img-box position-relative border p-2 h-100">
               <img src="{% static 'img/front-pages/icons/contact-border.png' %}" alt="contact border"
-                   class="contact-border-img position-absolute d-none d-lg-block scaleX-n1-rtl"/>
+                   class="contact-border-img position-absolute d-none d-lg-block scaleX-n1-rtl" />
               <img src="{% static 'img/custom-illustrations-v2/i2-38.png' %}"
-                   alt="contact customer service" class="contact-img w-100 scaleX-n1-rtl"/>
+                   alt="contact customer service" class="contact-img w-100 scaleX-n1-rtl" />
               <div class="p-4 pb-2">
                 <div class="row g-4">
                   <div class="col-md-6 col-lg-12 col-xl-6">
@@ -1545,7 +1590,9 @@
                       <div class="badge bg-label-primary rounded p-1_5 me-3"><i class="ti ti-mail ti-lg"></i></div>
                       <div>
                         <p class="mb-0"><strong>Contact E-mail</strong></p>
-                        <h6 class="mb-0"><a href="mailto:admin@{% get_theme_variables 'template_name' %}" class="text-heading">admin@{% get_theme_variables 'template_name' %}</a></h6>
+                        <h6 class="mb-0"><a href="mailto:admin@{% get_theme_variables 'template_name' %}"
+                                            class="text-heading">admin@{% get_theme_variables 'template_name' %}</a>
+                        </h6>
                       </div>
                     </div>
                   </div>
@@ -1569,9 +1616,9 @@
                 <h4 class="mb-2"><strong>Leave a Message</strong></h4>
                 <p class="mb-6">
                   If you would like to discuss anything related to payment, account, licensing,<br
-                  class="d-none d-lg-block"/>
+                  class="d-none d-lg-block" />
                   partnerships, or have any questions regarding the application or its features,<br
-                  class="d-none d-lg-block"/>
+                  class="d-none d-lg-block" />
                   please fill out the form below.
                 </p>
                 <form action="{% url 'landing:contact_form_submit' %}" method="post">
@@ -1584,17 +1631,17 @@
                       <small class="text-muted mb-2"><strong>You can leave this field blank if you are currently not an
                         active customer.</strong></small>
                       <input type="text" class="form-control mb-4" id="contact-form-username" name="username"
-                             placeholder="janedoe85"/>
+                             placeholder="janedoe85" />
                     </div>
                     <div class="col-md-6">
                       <label class="form-label" for="contact-form-fullname"><strong>Full Name</strong></label>
                       <input type="text" class="form-control" id="contact-form-fullname" name="fullname"
-                             placeholder="john"/>
+                             placeholder="john" />
                     </div>
                     <div class="col-md-6">
                       <label class="form-label" for="contact-form-email"><strong>Your Email</strong></label>
                       <input type="email" id="contact-form-email" class="form-control" name="email"
-                             placeholder="johndoe@gmail.com"/>
+                             placeholder="johndoe@gmail.com" />
                     </div>
                     <div class="col-12">
                       <label class="form-label" for="contact-form-message"><strong>Your Message</strong></label>

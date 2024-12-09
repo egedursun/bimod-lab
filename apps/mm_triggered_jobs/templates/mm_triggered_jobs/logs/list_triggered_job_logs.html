@@ -27,9 +27,9 @@
 
 {% block vendor_css %}
   {{ block.super }}
-  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}"/>
-  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}"/>
-  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css' %}" />
   <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/font/bootstrap-icons.min.css">
 {% endblock vendor_css %}
@@ -66,7 +66,8 @@
   </div>
 
   <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
-    <img src="{% static 'img/custom-illustrations-v2/i2-20.png' %}" width="25%" style="border-radius: 25px;" class="justify-content-end me-8" alt="Illustration for tip">
+    <img src="{% static 'img/custom-illustrations-v2/i2-20.png' %}" width="25%" style="border-radius: 25px;"
+         class="justify-content-end me-8" alt="Illustration for tip">
     <span class="alert-icon rounded ms-4">
     <i class="bi bi-info-circle"></i>
   </span>
@@ -74,7 +75,8 @@
       <h5 class="alert-heading mb-2">Tip</h5>
       <p class="mb-0">
         Use the search box to find specific execution logs by status. You can view the details of each log to understand
-        the execution flow and status. The execution logs are used to track the status of the executions of the triggered
+        the execution flow and status. The execution logs are used to track the status of the executions of the
+        triggered
         jobs.
       </p>
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
@@ -96,7 +98,8 @@
 
   <!-- Search and Filter Form -->
   <div class="row g-4 mb-4 mt-4 card card-border-shadow-primary p-4">
-    <img src="{% static 'img/triggered_jobs/trg-2.png' %}" class="rounded mt-4 mb-4" style="width: 100%;" alt="Illustration for tips">
+    <img src="{% static 'img/triggered_jobs/trg-2.png' %}" class="rounded mt-4 mb-4" style="width: 100%;"
+         alt="Illustration for tips">
     <div class="col-xl-12">
       <h5 class="text-muted"><strong>Filter Execution Logs</strong></h5>
       <div class="card text-center mb-4">

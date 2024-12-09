@@ -25,7 +25,7 @@
 {% block title %}Delete Website Item{% endblock %}
 
 {% block content %}
-<div class="row">
+  <div class="row">
     <div class="col-xl mb-6">
       <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
@@ -40,9 +40,11 @@
             <h6><strong>
               • This operation will result in the complete removal of the website storage item and any associated data.
               <br>
-              • This deletion operation is irreversible and will permanently remove the website storage item from the system.
+              • This deletion operation is irreversible and will permanently remove the website storage item from the
+              system.
             </strong></h6>
-            <img src="{% static 'img/custom-illustrations-v2/i2-47.png' %}" width="25%" style="border-radius: 25px;" class="justify-content-end me-8" alt="Illustration for confirming deletion">
+            <img src="{% static 'img/custom-illustrations-v2/i2-47.png' %}" width="25%" style="border-radius: 25px;"
+                 class="justify-content-end me-8" alt="Illustration for confirming deletion">
             <hr>
             <button type="submit" class="btn btn-danger mt-4 me-4"><strong>
               <i class="fa fa-skull-crossbones me-4"></i>

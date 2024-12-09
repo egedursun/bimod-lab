@@ -26,9 +26,9 @@
 
 {% block vendor_css %}
   {{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}"/>
-  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}"/>
-  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css' %}" />
   <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/font/bootstrap-icons.min.css">
 {% endblock vendor_css %}
@@ -62,7 +62,8 @@
       <h5 class="alert-heading mb-2">Tip</h5>
       <p class="mb-0">
         Use the search box to find specific jobs by name or description. You can delete the jobs if you no longer need
-        them. The LeanMod scheduled jobs are used to automate the tasks that you want to run at specific times and intervals.
+        them. The LeanMod scheduled jobs are used to automate the tasks that you want to run at specific times and
+        intervals.
         The assistants can be assigned to the jobs to run the tasks for you. The jobs can be scheduled to run at
         specific times and intervals, and you can view the execution logs to understand the flow and status of the
         executions.
@@ -111,7 +112,8 @@
       <h5 class="card-title">
         <strong>Your LeanMod Scheduled Jobs</strong>
       </h5>
-      <img src="{% static 'img/scheduled_jobs/sch-3.png' %}" class="rounded mt-4 mb-4" style="width: 100%;" alt="Illustration for tips">
+      <img src="{% static 'img/scheduled_jobs/sch-3.png' %}" class="rounded mt-4 mb-4" style="width: 100%;"
+           alt="Illustration for tips">
     </div>
     <div class="card-datatable table-responsive">
       <a href="{% url 'mm_scheduled_jobs:leanmod_create' %}">
@@ -140,7 +142,9 @@
             <td style="min-width: 200px; max-width: 200px;"><strong>{{ job.name }}</strong></td>
             <td style="min-width: 300px; max-width: 200px;">{{ job.task_description }}</td>
             <td style="min-width: 150px; max-width: 150px;"><strong>{{ job.created_by_user }}</strong></td>
-            <td style="min-width: 250px; max-width: 250px;"><div class="btn-info rounded p-1"><strong>{{ job.leanmod.name }}</strong></div></td>
+            <td style="min-width: 250px; max-width: 250px;">
+              <div class="btn-info rounded p-1"><strong>{{ job.leanmod.name }}</strong></div>
+            </td>
             <td style="min-width: 380px; max-width: 380px;">
               <p class="bg-label-secondary rounded p-2 m-1">
                 <i class="bi bi-calendar-month me-4"></i>

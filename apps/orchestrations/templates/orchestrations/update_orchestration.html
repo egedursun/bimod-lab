@@ -1,21 +1,21 @@
-  <!--
-  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
-  ~
-  ~ Project: Bimod.io™
-  ~ File: update_orchestration.html
-  ~ Last Modified: 2024-10-05 01:39:48
-  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-05 14:42:41
-  ~
-  ~ This software is proprietary and confidential. Unauthorized copying,
-  ~ distribution, modification, or use of this software, whether for
-  ~ commercial, academic, or any other purpose, is strictly prohibited
-  ~ without the prior express written permission of BMD™ Autonomous
-  ~ Holdings.
-  ~
-  ~  For permission inquiries, please contact: admin@Bimod.io.
-  ~
-  -->
+<!--
+~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+~
+~ Project: Bimod.io™
+~ File: update_orchestration.html
+~ Last Modified: 2024-10-05 01:39:48
+~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+~ Created: 2024-10-05 14:42:41
+~
+~ This software is proprietary and confidential. Unauthorized copying,
+~ distribution, modification, or use of this software, whether for
+~ commercial, academic, or any other purpose, is strictly prohibited
+~ without the prior express written permission of BMD™ Autonomous
+~ Holdings.
+~
+~  For permission inquiries, please contact: admin@Bimod.io.
+~
+-->
 
 {% extends layout_path %}
 
@@ -27,8 +27,8 @@
 
 {% block vendor_css %}
   {{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}"/>
-  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
 {% endblock vendor_css %}
 
 {% block vendor_js %}
@@ -99,7 +99,8 @@
         </div>
 
         <div class="card-body">
-          <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+          <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center"
+               role="alert">
             <img src="{% static 'img/custom-illustrations-v2/i2-43.png' %}" width="25%" style="border-radius:25px;"
                  class="justify-content-end me-8" alt="Illustration for tip">
             <span class="alert-icon rounded">
@@ -108,7 +109,8 @@
             <div class="d-flex flex-column ps-1">
               <h5 class="alert-heading mb-2">Tip</h5>
               <p class="mb-0">
-                On this page, you can update the information of an orchestration. You can change the name, description, instructions,
+                On this page, you can update the information of an orchestration. You can change the name, description,
+                instructions,
                 audience, tone, and the image of the orchestration. Once you have updated the information, click on the
                 "Update Information" button to save the changes.
               </p>
@@ -119,7 +121,8 @@
 
           {% if error_messages %}
             {% for key, message in error_messages.items %}
-              <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
+              <div
+                class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
                 role="alert">
                 <strong>{{ key | field_name_to_label }}:</strong> {{ message }}
               </div>
@@ -128,7 +131,8 @@
 
           {% if messages %}
             {% for message in messages %}
-              <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
+              <div
+                class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
                 role="alert">
                 {{ message }}
               </div>
@@ -137,20 +141,21 @@
 
           <form method="post" enctype="multipart/form-data" class="mt-4">
             {% csrf_token %}
-             <img src="{% static 'img/orchestration/or-1.png' %}" class="rounded mt-4 mb-4" style="width: 100%;" alt="Illustration for tips">
+            <img src="{% static 'img/orchestration/or-1.png' %}" class="rounded mt-4 mb-4" style="width: 100%;"
+                 alt="Illustration for tips">
             <input type="hidden" name="organization" value="{{ orchestration.organization.id }}">
             <input type="hidden" name="llm_model" value="{{ orchestration.llm_model.id }}">
             <div class="row p-8">
               <div class="col-3 mb-6">
                 <label class="form-label" for="name">Name</label>
                 <input type="text" class="form-control" id="name" name="name" placeholder="Enter orchestration name"
-                       value="{{ orchestration.name }}"/>
+                       value="{{ orchestration.name }}" />
                 <div class="form-text"></div>
               </div>
               <div class="col-3 mb-6">
                 <label class="form-label" for="description">Description</label>
                 <input type="text" class="form-control" id="description" name="description"
-                       placeholder="Enter orchestration description" value="{{ orchestration.description }}"/>
+                       placeholder="Enter orchestration description" value="{{ orchestration.description }}" />
                 <div class="form-text"></div>
               </div>
               <div class="col-3 mb-6">
@@ -162,7 +167,8 @@
               <div class="col-3 mb-6">
                 <label class="form-label" for="maximum_assistant_limits">Maximum Assistants Limit</label>
                 <input type="number" class="form-control" id="maximum_assistant_limits" name="maximum_assistant_limits"
-                       placeholder="Enter the maximum assistant limits" value="{{ orchestration.maximum_assistant_limits }}"/>
+                       placeholder="Enter the maximum assistant limits"
+                       value="{{ orchestration.maximum_assistant_limits }}" />
               </div>
               <div class="col-4 mb-6">
                 <label class="form-label" for="workflow_step_guide">Step by Step Description</label>
@@ -173,18 +179,20 @@
               <div class="col-3 mb-6">
                 <label class="form-label" for="audience">Audience</label>
                 <input type="text" class="form-control" id="audience" name="audience"
-                       placeholder="Enter the target audience of your orchestration" value="{{ orchestration.audience }}"/>
+                       placeholder="Enter the target audience of your orchestration"
+                       value="{{ orchestration.audience }}" />
               </div>
               <div class="col-3 mb-6">
                 <label class="form-label" for="tone">Tone</label>
                 <input type="text" class="form-control" id="tone" name="tone"
-                       placeholder="Enter the tone to be used in responses" value="{{ orchestration.tone }}"/>
+                       placeholder="Enter the tone to be used in responses" value="{{ orchestration.tone }}" />
               </div>
               <div class="col-2 mb-6">
                 <label class="form-label" for="response_language">Response Language</label>
                 <select class="form-select select2" id="response_language" name="response_language">
                   {% for lang_code, lang_name in form.response_language.field.choices %}
-                    <option value="{{ lang_code }}" {% if lang_code == orchestration.response_language %}selected{% endif %}>
+                    <option value="{{ lang_code }}"
+                            {% if lang_code == orchestration.response_language %}selected{% endif %}>
                       {{ lang_name }}
                     </option>
                   {% endfor %}
@@ -192,7 +200,7 @@
               </div>
               <div class="col-4 mb-6">
                 <label class="form-label" for="maestro_image">Maestro Image</label>
-                <input type="file" class="form-control" id="maestro_image" name="maestro_image"/>
+                <input type="file" class="form-control" id="maestro_image" name="maestro_image" />
                 <div class="form-text">Upload an image to represent this orchestration.</div>
               </div>
               <div class="col-8 mb-6">
@@ -219,12 +227,12 @@
   </div>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       const organizationSelect = document.getElementById('organization');
       const llmModelSelect = document.getElementById('llm_model');
       const llmModelOptions = Array.from(llmModelSelect.options);
 
-      organizationSelect.addEventListener('change', function () {
+      organizationSelect.addEventListener('change', function() {
         const selectedOrgId = this.value;
 
         // Clear current options

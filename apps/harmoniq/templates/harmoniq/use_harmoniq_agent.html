@@ -24,146 +24,146 @@
 {% block title %}Communicate with Harmoniq™ Agent{% endblock %}
 
 {% block vendor_css %}
-{{ block.super }}
+  {{ block.super }}
 
-<link rel="stylesheet" href="{% static 'vendor/libs/plyr/plyr.css' %}" />
-<style>
-  .video-container {
-    width: 100%;
-    height: auto;
-    margin: 0 auto;
-  }
+  <link rel="stylesheet" href="{% static 'vendor/libs/plyr/plyr.css' %}" />
+  <style>
+    .video-container {
+      width: 100%;
+      height: auto;
+      margin: 0 auto;
+    }
 
-  video {
-    pointer-events: none;
-  }
+    video {
+      pointer-events: none;
+    }
 
-  .message-input-container {
-    width: 100%;
-    margin: 0 auto;
-  }
+    .message-input-container {
+      width: 100%;
+      margin: 0 auto;
+    }
 
-  .transcription-card {
-    margin: 0 auto 20px auto;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  }
+    .transcription-card {
+      margin: 0 auto 20px auto;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
 
-  .transcription-text {
-    font-size: 16px;
-    line-height: 1.6;
-  }
+    .transcription-text {
+      font-size: 16px;
+      line-height: 1.6;
+    }
 
-  .alert-warning {
-    margin: 0 auto;
-  }
-</style>
+    .alert-warning {
+      margin: 0 auto;
+    }
+  </style>
 {% endblock vendor_css %}
 
 {% block vendor_js %}
-{{ block.super }}
-<script src="{% static 'vendor/libs/plyr/plyr.js' %}"></script>
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/plyr/plyr.js' %}"></script>
 {% endblock vendor_js %}
 
 {% block page_js %}
-{{ block.super }}
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-  const agentPicker = document.getElementById('agentPicker');
-  const sendButton = document.getElementById('sendButton');
-  const messageInput = document.getElementById('messageInput');
-  const transcriptionText = document.getElementById('transcriptionText');
-  const video = document.getElementById('plyr-video-player');
-  const videoSource = document.getElementById('videoSource');
+  {{ block.super }}
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const agentPicker = document.getElementById('agentPicker');
+      const sendButton = document.getElementById('sendButton');
+      const messageInput = document.getElementById('messageInput');
+      const transcriptionText = document.getElementById('transcriptionText');
+      const video = document.getElementById('plyr-video-player');
+      const videoSource = document.getElementById('videoSource');
 
-  let audioPlayer;
+      let audioPlayer;
 
-  // Start on load
-  video.play();
-  video.loop = true;
+      // Start on load
+      video.play();
+      video.loop = true;
 
-  agentPicker.addEventListener('change', function() {
-    const agentDeity = this.options[this.selectedIndex].getAttribute('data-deity').charAt(0).toUpperCase();
-    const videoFile = `harmoniq_speech_${agentDeity}.mp4`;
+      agentPicker.addEventListener('change', function() {
+        const agentDeity = this.options[this.selectedIndex].getAttribute('data-deity').charAt(0).toUpperCase();
+        const videoFile = `harmoniq_speech_${agentDeity}.mp4`;
 
-    videoSource.src = `{% static 'video/' %}` + videoFile;
-    video.load();
-    video.pause();
-    video.currentTime = 0;
-  });
+        videoSource.src = `{% static 'video/' %}` + videoFile;
+        video.load();
+        video.pause();
+        video.currentTime = 0;
+      });
 
-  // Mesaj gönderildiğinde Fetch ile veriyi gönder ve sonucu al
-  sendButton.addEventListener('click', function(event) {
-    event.preventDefault();
+      // Mesaj gönderildiğinde Fetch ile veriyi gönder ve sonucu al
+      sendButton.addEventListener('click', function(event) {
+        event.preventDefault();
 
-    const agentId = agentPicker.value;
-    const message = messageInput.value;
+        const agentId = agentPicker.value;
+        const message = messageInput.value;
 
-    if (!agentId || !message) {
-      alert('Please select an agent and enter a message.');
-      return;
-    }
-
-    fetch("/app/harmoniq/api/communicate/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-        "X-CSRFToken": "{{ csrf_token }}"
-      },
-      body: new URLSearchParams({
-        agentPicker: agentId,
-        messageInput: message
-      })
-    })
-    .then(response => response.json())
-    .then(data => {
-      transcriptionText.innerHTML = `<strong><i class="fa fa-file-text me-2"></i>Transcription:</strong><br><br>${data.transcript}`;
-      if (data.audio) {
-        const audioData = data.audio;
-        const audioBlob = b64toBlob(audioData, 'audio/wav');
-        const audioUrl = URL.createObjectURL(audioBlob);
-        if (audioPlayer) {
-          audioPlayer.pause();
-          audioPlayer.currentTime = 0;
+        if (!agentId || !message) {
+          alert('Please select an agent and enter a message.');
+          return;
         }
-        audioPlayer = new Audio(audioUrl);
-        audioPlayer.play().catch(error => console.error("Audio playback error:", error));
-        audioPlayer.onplay = () => {
-          video.loop = true;
-          video.play();
-        };
-        audioPlayer.onended = () => {
-          video.pause();
-          video.currentTime = 0;
-        };
-      }
-    })
-    .catch(error => console.error('Error:', error));
-  });
 
-  // Base64 to Blob helper function
-  function b64toBlob(b64Data, contentType = '', sliceSize = 512) {
-    const byteCharacters = atob(b64Data);
-    const byteArrays = [];
+        fetch('/app/harmoniq/api/communicate/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRFToken': "{{ csrf_token }}"
+          },
+          body: new URLSearchParams({
+            agentPicker: agentId,
+            messageInput: message
+          })
+        })
+          .then(response => response.json())
+          .then(data => {
+            transcriptionText.innerHTML = `<strong><i class="fa fa-file-text me-2"></i>Transcription:</strong><br><br>${data.transcript}`;
+            if (data.audio) {
+              const audioData = data.audio;
+              const audioBlob = b64toBlob(audioData, 'audio/wav');
+              const audioUrl = URL.createObjectURL(audioBlob);
+              if (audioPlayer) {
+                audioPlayer.pause();
+                audioPlayer.currentTime = 0;
+              }
+              audioPlayer = new Audio(audioUrl);
+              audioPlayer.play().catch(error => console.error('Audio playback error:', error));
+              audioPlayer.onplay = () => {
+                video.loop = true;
+                video.play();
+              };
+              audioPlayer.onended = () => {
+                video.pause();
+                video.currentTime = 0;
+              };
+            }
+          })
+          .catch(error => console.error('Error:', error));
+      });
 
-    for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-      const slice = byteCharacters.slice(offset, offset + sliceSize);
-      const byteNumbers = new Array(slice.length);
-      for (let i = 0; i < slice.length; i++) {
-        byteNumbers[i] = slice.charCodeAt(i);
+      // Base64 to Blob helper function
+      function b64toBlob(b64Data, contentType = '', sliceSize = 512) {
+        const byteCharacters = atob(b64Data);
+        const byteArrays = [];
+
+        for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+          const slice = byteCharacters.slice(offset, offset + sliceSize);
+          const byteNumbers = new Array(slice.length);
+          for (let i = 0; i < slice.length; i++) {
+            byteNumbers[i] = slice.charCodeAt(i);
+          }
+          const byteArray = new Uint8Array(byteNumbers);
+          byteArrays.push(byteArray);
+        }
+        return new Blob(byteArrays, { type: contentType });
       }
-      const byteArray = new Uint8Array(byteNumbers);
-      byteArrays.push(byteArray);
-    }
-    return new Blob(byteArrays, { type: contentType });
-  }
-});
-</script>
+    });
+  </script>
 {% endblock page_js %}
 
 {% block content %}
-<div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+  <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
     <img src="{% static 'img/custom-illustrations-v2/i2-44.png' %}" width="25%" style="border-radius:25px;"
          class="justify-content-end me-8" alt="Illustration for tip">
     <span class="alert-icon rounded">
@@ -193,77 +193,82 @@ document.addEventListener('DOMContentLoaded', function() {
       </div>
     {% endfor %}
   {% endif %}
-<div class="row">
-  <div class="col-12 mb-4">
-    <label for="agentPicker" class="form-label">Select Harmoniq™ Agent</label>
-    <select id="agentPicker" name="agentPicker" class="form-select mb-4">
-      <option value="" disabled selected>Select an Agent</option>
-      {% for agent in agents %}
-      <option value="{{ agent.id }}" data-deity="{{ agent.harmoniq_deity }}">
-        {{ agent.name }}
-      </option>
-      {% endfor %}
-    </select>
-  </div>
+  <div class="row">
+    <div class="col-12 mb-4">
+      <label for="agentPicker" class="form-label">Select Harmoniq™ Agent</label>
+      <select id="agentPicker" name="agentPicker" class="form-select mb-4">
+        <option value="" disabled selected>Select an Agent</option>
+        {% for agent in agents %}
+          <option value="{{ agent.id }}" data-deity="{{ agent.harmoniq_deity }}">
+            {{ agent.name }}
+          </option>
+        {% endfor %}
+      </select>
+    </div>
 
-  <hr>
+    <hr>
 
-  <div class="col-12 mb-6">
-    <div class="card video-container border border-primary border-3 rounded mt-8">
-      <h4 class="card-header">
-        <i class="fa fa-magic-wand-sparkles me-2"></i>
-        <strong>Communication Portal</strong>
-      </h4>
-      <div class="tips-section alert alert-secondary d-flex align-items-center mt-0 ms-6 me-6" role="alert">
+    <div class="col-12 mb-6">
+      <div class="card video-container border border-primary border-3 rounded mt-8">
+        <h4 class="card-header">
+          <i class="fa fa-magic-wand-sparkles me-2"></i>
+          <strong>Communication Portal</strong>
+        </h4>
+        <div class="tips-section alert alert-secondary d-flex align-items-center mt-0 ms-6 me-6" role="alert">
         <span class="alert-icon rounded">
           <i class="ti ti-info-circle"></i>
         </span>
-        Please pick an agent from the dropdown list above and type a message to communicate with the agent.
-        The agent will respond with a transcription of the message and an audio.
-      </div>
-      <hr>
-      <div class="d-flex align-items-stretch justify-content-center">
-        <img src="{% static 'img/harmoniq/pillar.png' %}" alt="Pillar Image" style="width: 15%; object-fit: cover; height: auto;" class="img-fluid ms-6 mt-6 mb-6 rounded border border-4 border-primary rounded" />
-
-        <div class="card-body rounded" style="width: 60%;">
-          <video id="plyr-video-player" class="w-100 border border-primary border-3 rounded" muted playsinline style="height: 100%;">
-            <source id="videoSource" src="{% static 'video/cosmic_void_default.mp4' %}" type="video/mp4" />
-          </video>
+          Please pick an agent from the dropdown list above and type a message to communicate with the agent.
+          The agent will respond with a transcription of the message and an audio.
         </div>
+        <hr>
+        <div class="d-flex align-items-stretch justify-content-center">
+          <img src="{% static 'img/harmoniq/pillar.png' %}" alt="Pillar Image"
+               style="width: 15%; object-fit: cover; height: auto;"
+               class="img-fluid ms-6 mt-6 mb-6 rounded border border-4 border-primary rounded" />
 
-        <img src="{% static 'img/harmoniq/pillar.png' %}" alt="Pillar Image" style="width: 15%; object-fit: cover; height: auto;" class="img-fluid me-6 mt-6 mb-6 rounded border border-4 border-primary rounded" />
+          <div class="card-body rounded" style="width: 60%;">
+            <video id="plyr-video-player" class="w-100 border border-primary border-3 rounded" muted playsinline
+                   style="height: 100%;">
+              <source id="videoSource" src="{% static 'video/cosmic_void_default.mp4' %}" type="video/mp4" />
+            </video>
+          </div>
+
+          <img src="{% static 'img/harmoniq/pillar.png' %}" alt="Pillar Image"
+               style="width: 15%; object-fit: cover; height: auto;"
+               class="img-fluid me-6 mt-6 mb-6 rounded border border-4 border-primary rounded" />
+        </div>
       </div>
     </div>
-  </div>
 
 
-
-  <hr>
-
-  <div id="transcriptionCard" class="transcription-card mt-8 mb-8 border border-2 card-border-shadow-secondary">
-    <div id="transcriptionText" class="transcription-text p-4"></div>
-  </div>
-
-  <hr>
-
-  <div class="col-12 mb-4 message-input-container mt-4 mb-8">
-    <label for="messageInput" class="form-label"><strong>Type Your Message</strong></label>
-    <textarea id="messageInput" name="messageInput" class="form-control mb-8 mt-2" rows="3" placeholder="Write your message here..."></textarea>
     <hr>
-    <button id="sendButton" class="btn btn-primary mt-4 w-25">
-      <strong>
-        <i class="fa fa-paper-plane me-2"></i>
-        Send Message
-      </strong>
-    </button>
-    <button class="btn btn-danger mt-4 ms-4 w-25" onclick="location.reload()">
-      <strong>
-        <i class="fa fa-sync-alt me-2"></i>
-        Reset
-      </strong>
-    </button>
-  </div>
 
-  <hr>
-</div>
+    <div id="transcriptionCard" class="transcription-card mt-8 mb-8 border border-2 card-border-shadow-secondary">
+      <div id="transcriptionText" class="transcription-text p-4"></div>
+    </div>
+
+    <hr>
+
+    <div class="col-12 mb-4 message-input-container mt-4 mb-8">
+      <label for="messageInput" class="form-label"><strong>Type Your Message</strong></label>
+      <textarea id="messageInput" name="messageInput" class="form-control mb-8 mt-2" rows="3"
+                placeholder="Write your message here..."></textarea>
+      <hr>
+      <button id="sendButton" class="btn btn-primary mt-4 w-25">
+        <strong>
+          <i class="fa fa-paper-plane me-2"></i>
+          Send Message
+        </strong>
+      </button>
+      <button class="btn btn-danger mt-4 ms-4 w-25" onclick="location.reload()">
+        <strong>
+          <i class="fa fa-sync-alt me-2"></i>
+          Reset
+        </strong>
+      </button>
+    </div>
+
+    <hr>
+  </div>
 {% endblock content %}

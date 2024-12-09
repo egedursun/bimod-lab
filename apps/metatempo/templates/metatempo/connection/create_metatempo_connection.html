@@ -6,137 +6,144 @@
 {% block title %}Create MetaTempo™ Connection{% endblock %}
 
 {% block vendor_css %}
-    {{ block.super }}
-    <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
 {% endblock vendor_css %}
 
 {% block vendor_js %}
-    {{ block.super }}
-    <script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
 {% endblock vendor_js %}
 
 {% block content %}
-<div class="row">
+  <div class="row">
     <div class="col-xl mb-6">
-        <div class="card">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <h5 class="mb-0"><strong>Create New MetaTempo™ Connection</strong></h5>
-            </div>
-
-            <a href="{% url 'metatempo:connection_list' %}">
-                <button class="btn btn-secondary mt-4 ms-8 mb-4">
-                    <i class="fa fa-dashboard me-4"></i>
-                    <strong>Manage MetaTempo™ Connections</strong>
-                </button>
-            </a>
-
-            <div class="tips-section alert alert-secondary alert-dismissible d-flex align-items-center ms-8 me-8" role="alert">
-                <img src="{% static 'img/custom-illustrations-v2/i2-45.png' %}" width="25%" style="border-radius:25px;" class="me-4" alt="Illustration for tip">
-                <span class="alert-icon rounded"><i class="ti ti-bookmark"></i></span>
-                <div class="d-flex flex-column">
-                    <h5 class="alert-heading mb-2">Tip</h5>
-                    <p class="mb-0">
-                        Fill out all fields to create a MetaTempo™ connection for tracking. Select the board,
-                      tracking intervals, and set active hours.
-                    </p>
-                </div>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-
-            <hr>
-
-            <div class="card-body">
-
-                <img src="{% static 'img/metatempo/mtmp-1.png' %}" class="rounded mb-8 mt-4" style="width: 100%;" alt="Illustration for tips">
-
-                {% if messages %}
-                    {% for message in messages %}
-                        <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-info{% endif %}" role="alert">
-                            {{ message }}
-                        </div>
-                    {% endfor %}
-                {% endif %}
-
-                <form method="post" class="mt-4">
-                    {% csrf_token %}
-                    <div class="row">
-                        <div class="col-3 mb-4">
-                            <label for="board" class="form-label">Board</label>
-                            <select class="form-select select2" id="board" name="board" required>
-                                <option value="" disabled selected>Select Board</option>
-                                {% for board in boards %}
-                                    <option value="{{ board.id }}">{{ board.title }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <div class="col-3 mb-4">
-                            <label for="is_tracking_active" class="form-label">Tracking Active</label>
-                            <select class="form-select" id="is_tracking_active" name="is_tracking_active" required>
-                                <option value="True">Active</option>
-                                <option value="False">Inactive</option>
-                            </select>
-                        </div>
-                        <div class="col-3 mb-4">
-                            <label for="overall_log_intervals" class="form-label">Overall Log Intervals</label>
-                            <select class="form-select select2" id="overall_log_intervals" name="overall_log_intervals" required>
-                                {% for interval in METATEMPO_OVERALL_LOG_INTERVALS %}
-                                    <option value="{{ interval.0 }}">{{ interval.1 }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <div class="col-3 mb-4">
-                            <label for="member_log_intervals" class="form-label">Member Log Intervals</label>
-                            <select class="form-select select2" id="member_log_intervals" name="member_log_intervals" required>
-                                {% for key, value in METATEMPO_MEMBER_LOG_INTERVALS %}
-                                    <option value="{{ key }}">{{ value }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <div class="col-6 mb-4">
-                            <label for="tracked_weekdays" class="form-label">Tracked Weekdays</label>
-                            <select class="form-select select2" id="tracked_weekdays" name="tracked_weekdays" multiple="multiple">
-                                <option value="Monday" selected>Monday</option>
-                                <option value="Tuesday" selected>Tuesday</option>
-                                <option value="Wednesday" selected>Wednesday</option>
-                                <option value="Thursday" selected>Thursday</option>
-                                <option value="Friday" selected>Friday</option>
-                                <option value="Saturday">Saturday</option>
-                                <option value="Sunday">Sunday</option>
-                            </select>
-                        </div>
-                        <div class="col-3 mb-4">
-                            <label for="tracking_start_time" class="form-label">Tracking Start Time (UTC)</label>
-                            <input type="time" class="form-control" id="tracking_start_time" name="tracking_start_time" value="09:00">
-                        </div>
-                        <div class="col-3 mb-4">
-                            <label for="tracking_end_time" class="form-label">Tracking End Time (UTC)</label>
-                            <input type="time" class="form-control" id="tracking_end_time" name="tracking_end_time" value="18:00">
-                        </div>
-                        <div class="col-12 mb-4">
-                            <label for="optional_context_instructions" class="form-label">Optional Instructions</label>
-                            <textarea rows="3" class="form-control" id="optional_context_instructions" name="optional_context_instructions">
-                            </textarea>
-                        </div>
-                    </div>
-                    <button type="submit" class="btn btn-primary mt-4 d-grid w-25">
-                        <strong><i class="fa fa-plus me-2"></i>Create Connection</strong>
-                    </button>
-                </form>
-            </div>
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="mb-0"><strong>Create New MetaTempo™ Connection</strong></h5>
         </div>
+
+        <a href="{% url 'metatempo:connection_list' %}">
+          <button class="btn btn-secondary mt-4 ms-8 mb-4">
+            <i class="fa fa-dashboard me-4"></i>
+            <strong>Manage MetaTempo™ Connections</strong>
+          </button>
+        </a>
+
+        <div class="tips-section alert alert-secondary alert-dismissible d-flex align-items-center ms-8 me-8"
+             role="alert">
+          <img src="{% static 'img/custom-illustrations-v2/i2-45.png' %}" width="25%" style="border-radius:25px;"
+               class="me-4" alt="Illustration for tip">
+          <span class="alert-icon rounded"><i class="ti ti-bookmark"></i></span>
+          <div class="d-flex flex-column">
+            <h5 class="alert-heading mb-2">Tip</h5>
+            <p class="mb-0">
+              Fill out all fields to create a MetaTempo™ connection for tracking. Select the board,
+              tracking intervals, and set active hours.
+            </p>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <hr>
+
+        <div class="card-body">
+
+          <img src="{% static 'img/metatempo/mtmp-1.png' %}" class="rounded mb-8 mt-4" style="width: 100%;"
+               alt="Illustration for tips">
+
+          {% if messages %}
+            {% for message in messages %}
+              <div
+                class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-info{% endif %}"
+                role="alert">
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+
+          <form method="post" class="mt-4">
+            {% csrf_token %}
+            <div class="row">
+              <div class="col-3 mb-4">
+                <label for="board" class="form-label">Board</label>
+                <select class="form-select select2" id="board" name="board" required>
+                  <option value="" disabled selected>Select Board</option>
+                  {% for board in boards %}
+                    <option value="{{ board.id }}">{{ board.title }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-3 mb-4">
+                <label for="is_tracking_active" class="form-label">Tracking Active</label>
+                <select class="form-select" id="is_tracking_active" name="is_tracking_active" required>
+                  <option value="True">Active</option>
+                  <option value="False">Inactive</option>
+                </select>
+              </div>
+              <div class="col-3 mb-4">
+                <label for="overall_log_intervals" class="form-label">Overall Log Intervals</label>
+                <select class="form-select select2" id="overall_log_intervals" name="overall_log_intervals" required>
+                  {% for interval in METATEMPO_OVERALL_LOG_INTERVALS %}
+                    <option value="{{ interval.0 }}">{{ interval.1 }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-3 mb-4">
+                <label for="member_log_intervals" class="form-label">Member Log Intervals</label>
+                <select class="form-select select2" id="member_log_intervals" name="member_log_intervals" required>
+                  {% for key, value in METATEMPO_MEMBER_LOG_INTERVALS %}
+                    <option value="{{ key }}">{{ value }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-6 mb-4">
+                <label for="tracked_weekdays" class="form-label">Tracked Weekdays</label>
+                <select class="form-select select2" id="tracked_weekdays" name="tracked_weekdays" multiple="multiple">
+                  <option value="Monday" selected>Monday</option>
+                  <option value="Tuesday" selected>Tuesday</option>
+                  <option value="Wednesday" selected>Wednesday</option>
+                  <option value="Thursday" selected>Thursday</option>
+                  <option value="Friday" selected>Friday</option>
+                  <option value="Saturday">Saturday</option>
+                  <option value="Sunday">Sunday</option>
+                </select>
+              </div>
+              <div class="col-3 mb-4">
+                <label for="tracking_start_time" class="form-label">Tracking Start Time (UTC)</label>
+                <input type="time" class="form-control" id="tracking_start_time" name="tracking_start_time"
+                       value="09:00">
+              </div>
+              <div class="col-3 mb-4">
+                <label for="tracking_end_time" class="form-label">Tracking End Time (UTC)</label>
+                <input type="time" class="form-control" id="tracking_end_time" name="tracking_end_time" value="18:00">
+              </div>
+              <div class="col-12 mb-4">
+                <label for="optional_context_instructions" class="form-label">Optional Instructions</label>
+                <textarea rows="3" class="form-control" id="optional_context_instructions"
+                          name="optional_context_instructions">
+                            </textarea>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary mt-4 d-grid w-25">
+              <strong><i class="fa fa-plus me-2"></i>Create Connection</strong>
+            </button>
+          </form>
+        </div>
+      </div>
     </div>
-</div>
+  </div>
 {% endblock %}
 
 {% block page_js %}
-<script>
+  <script>
     $(document).ready(function() {
-        // Initialize select2 for multi-select on weekdays
-        $('#tracked_weekdays').select2({
-            width: '100%',
-            multiple: true,
-            placeholder: 'Select Weekdays',
-        });
+      // Initialize select2 for multi-select on weekdays
+      $('#tracked_weekdays').select2({
+        width: '100%',
+        multiple: true,
+        placeholder: 'Select Weekdays'
+      });
     });
-</script>
+  </script>
 {% endblock page_js %}
