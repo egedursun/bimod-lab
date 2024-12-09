@@ -6,42 +6,27 @@
 {% block title %}Content navbar + Sidebar - Layouts{% endblock %}
 
 {% block content %}
-<!--
-  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
-  ~
-  ~ Project: Bimod.io™
-  ~ File: layouts_content_navbar_with_sidebar.html
-  ~ Last Modified: 2024-10-05 01:39:48
-  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-05 14:42:31
-  ~
-  ~ This software is proprietary and confidential. Unauthorized copying,
-  ~ distribution, modification, or use of this software, whether for
-  ~ commercial, academic, or any other purpose, is strictly prohibited
-  ~ without the prior express written permission of BMD™ Autonomous
-  ~ Holdings.
-  ~
-  ~  For permission inquiries, please contact: admin@Bimod.io.
-  ~
-  -->
 
-<div class="flex-shrink-1 flex-grow-0 w-px-350 border-end container-p-x container-p-y">
-  <div class="layout-example-sidebar layout-example-content-inner">
-    Sidebar
-  </div>
-</div>
-
-<div class="flex-shrink-1 flex-grow-1 container-p-x container-p-y">
-  <!-- Layout Demo -->
-  <div class="layout-demo-wrapper">
-    <div class="layout-demo-placeholder">
-      <img src="{% static 'img/layouts/layout-content-navbar-and-sidebar-' %}{{ COOKIES.style|default:style }}.png" class="img-fluid" alt="Layout content navbar + sidebar" data-app-light-img="layouts/layout-content-navbar-and-sidebar-light.png" data-app-dark-img="layouts/layout-content-navbar-and-sidebar-dark.png">
-    </div>
-    <div class="layout-demo-info">
-      <h4>Layout content navbar + sidebar</h4>
-      <p>Container layout sets a <code>max-width</code> at each responsive breakpoint.</p>
+  <div class="flex-shrink-1 flex-grow-0 w-px-350 border-end container-p-x container-p-y">
+    <div class="layout-example-sidebar layout-example-content-inner">
+      Sidebar
     </div>
   </div>
-  <!--/ Layout Demo -->
-</div>
+
+  <div class="flex-shrink-1 flex-grow-1 container-p-x container-p-y">
+    <!-- Layout Demo -->
+    <div class="layout-demo-wrapper">
+      <div class="layout-demo-placeholder">
+        <img src="{% static 'img/layouts/layout-content-navbar-and-sidebar-' %}{{ COOKIES.style|default:style }}.png"
+             class="img-fluid" alt="Layout content navbar + sidebar"
+             data-app-light-img="layouts/layout-content-navbar-and-sidebar-light.png"
+             data-app-dark-img="layouts/layout-content-navbar-and-sidebar-dark.png">
+      </div>
+      <div class="layout-demo-info">
+        <h4>Layout content navbar + sidebar</h4>
+        <p>Container layout sets a <code>max-width</code> at each responsive breakpoint.</p>
+      </div>
+    </div>
+    <!--/ Layout Demo -->
+  </div>
 {% endblock %}

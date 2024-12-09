@@ -6,51 +6,33 @@
 {% block title %}DataTables - Tables{% endblock %}
 
 {% block vendor_css %}
-{{ block.super }}
-<!--
-  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
-  ~
-  ~ Project: Bimod.io™
-  ~ File: tables_datatables_extensions.html
-  ~ Last Modified: 2024-10-05 01:39:48
-  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-05 14:42:31
-  ~
-  ~ This software is proprietary and confidential. Unauthorized copying,
-  ~ distribution, modification, or use of this software, whether for
-  ~ commercial, academic, or any other purpose, is strictly prohibited
-  ~ without the prior express written permission of BMD™ Autonomous
-  ~ Holdings.
-  ~
-  ~  For permission inquiries, please contact: admin@Bimod.io.
-  ~
-  -->
+  {{ block.super }}
 
-<link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}" />
-<link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}" />
-<link rel="stylesheet" href="{% static 'vendor/libs/datatables-select-bs5/select.bootstrap5.css' %}" />
-<link rel="stylesheet" href="{% static 'vendor/libs/datatables-checkboxes-jquery/datatables.checkboxes.css' %}" />
-<link rel="stylesheet" href="{% static 'vendor/libs/datatables-fixedcolumns-bs5/fixedcolumns.bootstrap5.css' %}" />
-<link rel="stylesheet" href="{% static 'vendor/libs/datatables-fixedheader-bs5/fixedheader.bootstrap5.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-select-bs5/select.bootstrap5.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-checkboxes-jquery/datatables.checkboxes.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-fixedcolumns-bs5/fixedcolumns.bootstrap5.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/datatables-fixedheader-bs5/fixedheader.bootstrap5.css' %}" />
 {% endblock vendor_css %}
 
 {% block vendor_js %}
-{{ block.super }}
-<script src="{% static 'vendor/libs/datatables-bs5/datatables-bootstrap5.js' %}"></script>
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/datatables-bs5/datatables-bootstrap5.js' %}"></script>
 {% endblock vendor_js %}
 
 {% block page_js %}
-{{ block.super }}
-<script src="{% static 'js/tables-datatables-extensions.js' %}"></script>
+  {{ block.super }}
+  <script src="{% static 'js/tables-datatables-extensions.js' %}"></script>
 {% endblock page_js %}
 
 {% block content %}
-<!-- Scrollable -->
-<div class="card">
-  <h5 class="card-header">Scrollable Table</h5>
-  <div class="card-datatable text-nowrap">
-    <table class="dt-scrollableTable table">
-      <thead>
+  <!-- Scrollable -->
+  <div class="card">
+    <h5 class="card-header">Scrollable Table</h5>
+    <div class="card-datatable text-nowrap">
+      <table class="dt-scrollableTable table">
+        <thead>
         <tr>
           <th>Name</th>
           <th>Position</th>
@@ -63,20 +45,20 @@
           <th>Status</th>
           <th>Action</th>
         </tr>
-      </thead>
-    </table>
+        </thead>
+      </table>
+    </div>
   </div>
-</div>
-<!--/ Scrollable -->
+  <!--/ Scrollable -->
 
-<hr class="my-12">
+  <hr class="my-12">
 
-<!-- Fixed Header -->
-<div class="card">
-  <h5 class="card-header">Fixed Header</h5>
-  <div class="card-datatable table-responsive">
-    <table class="dt-fixedheader table">
-      <thead>
+  <!-- Fixed Header -->
+  <div class="card">
+    <h5 class="card-header">Fixed Header</h5>
+    <div class="card-datatable table-responsive">
+      <table class="dt-fixedheader table">
+        <thead>
         <tr>
           <th></th>
           <th></th>
@@ -88,8 +70,8 @@
           <th>Status</th>
           <th>Action</th>
         </tr>
-      </thead>
-      <tfoot>
+        </thead>
+        <tfoot>
         <tr>
           <th></th>
           <th></th>
@@ -101,20 +83,20 @@
           <th>Status</th>
           <th>Action</th>
         </tr>
-      </tfoot>
-    </table>
+        </tfoot>
+      </table>
+    </div>
   </div>
-</div>
-<!--/ Fixed Header -->
+  <!--/ Fixed Header -->
 
-<hr class="my-12">
+  <hr class="my-12">
 
-<!-- Fixed Columns -->
-<div class="card">
-  <h5 class="card-header">Fixed Columns</h5>
-  <div class="card-datatable text-nowrap">
-    <table class="dt-fixedcolumns table table-bordered">
-      <thead>
+  <!-- Fixed Columns -->
+  <div class="card">
+    <h5 class="card-header">Fixed Columns</h5>
+    <div class="card-datatable text-nowrap">
+      <table class="dt-fixedcolumns table table-bordered">
+        <thead>
         <tr>
           <th>Name</th>
           <th>Position</th>
@@ -127,20 +109,20 @@
           <th>Status</th>
           <th>Action</th>
         </tr>
-      </thead>
-    </table>
+        </thead>
+      </table>
+    </div>
   </div>
-</div>
-<!--/ Fixed Columns -->
+  <!--/ Fixed Columns -->
 
-<hr class="my-12">
+  <hr class="my-12">
 
-<!-- Select -->
-<div class="card">
-  <h5 class="card-header">Select</h5>
-  <div class="card-datatable dataTable_select text-nowrap">
-    <table class="dt-select-table table">
-      <thead>
+  <!-- Select -->
+  <div class="card">
+    <h5 class="card-header">Select</h5>
+    <div class="card-datatable dataTable_select text-nowrap">
+      <table class="dt-select-table table">
+        <thead>
         <tr>
           <th></th>
           <th>Name</th>
@@ -151,9 +133,9 @@
           <th>Salary</th>
           <th>Status</th>
         </tr>
-      </thead>
-    </table>
+        </thead>
+      </table>
+    </div>
   </div>
-</div>
-<!--/ Select -->
+  <!--/ Select -->
 {% endblock %}

@@ -6,65 +6,48 @@
 {% block title %}Plyr - Extended UI{% endblock %}
 
 {% block vendor_css %}
-{{ block.super }}
-<!--
-  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
-  ~
-  ~ Project: Bimod.io™
-  ~ File: extended_ui_media_player.html
-  ~ Last Modified: 2024-10-05 01:39:48
-  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-05 14:42:32
-  ~
-  ~ This software is proprietary and confidential. Unauthorized copying,
-  ~ distribution, modification, or use of this software, whether for
-  ~ commercial, academic, or any other purpose, is strictly prohibited
-  ~ without the prior express written permission of BMD™ Autonomous
-  ~ Holdings.
-  ~
-  ~  For permission inquiries, please contact: admin@Bimod.io.
-  ~
-  -->
+  {{ block.super }}
 
-<link rel="stylesheet" href="{% static 'vendor/libs/plyr/plyr.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/plyr/plyr.css' %}" />
 {% endblock vendor_css %}
 
 {% block vendor_js %}
-{{ block.super }}
-<script src="{% static 'vendor/libs/plyr/plyr.js' %}"></script>
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/plyr/plyr.js' %}"></script>
 {% endblock vendor_js %}
 
 {% block page_js %}
-{{ block.super }}
-<script src="{% static 'js/extended-ui-media-player.js' %}"></script>
+  {{ block.super }}
+  <script src="{% static 'js/extended-ui-media-player.js' %}"></script>
 {% endblock page_js %}
 
 {% block content %}
-<div class="row">
-  <!-- Video Player -->
-  <div class="col-12 mb-6">
-    <div class="card">
-      <h5 class="card-header">Video</h5>
-      <div class="card-body">
-        <video class="w-100" poster="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.jpg" id="plyr-video-player" playsinline controls>
-          <source src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-576p.mp4" type="video/mp4" />
-        </video>
+  <div class="row">
+    <!-- Video Player -->
+    <div class="col-12 mb-6">
+      <div class="card">
+        <h5 class="card-header">Video</h5>
+        <div class="card-body">
+          <video class="w-100" poster="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.jpg"
+                 id="plyr-video-player" playsinline controls>
+            <source src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-576p.mp4" type="video/mp4" />
+          </video>
+        </div>
       </div>
     </div>
-  </div>
-  <!-- /Video Player -->
+    <!-- /Video Player -->
 
-  <!-- Audio Player -->
-  <div class="col-12">
-    <div class="card">
-      <h5 class="card-header">Audio</h5>
-      <div class="card-body">
-        <audio class="w-100" id="plyr-audio-player" controls>
-          <source src="{% static 'audio/Water_Lily.mp3' %}" type="audio/mp3" />
-        </audio>
+    <!-- Audio Player -->
+    <div class="col-12">
+      <div class="card">
+        <h5 class="card-header">Audio</h5>
+        <div class="card-body">
+          <audio class="w-100" id="plyr-audio-player" controls>
+            <source src="{% static 'audio/Water_Lily.mp3' %}" type="audio/mp3" />
+          </audio>
+        </div>
       </div>
     </div>
+    <!-- /Audio Player -->
   </div>
-  <!-- /Audio Player -->
-</div>
 {% endblock %}

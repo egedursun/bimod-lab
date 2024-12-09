@@ -6,44 +6,30 @@
 {% block title %}Not Authorized - Pages{% endblock %}
 
 {% block page_css %}
-{{ block.super }}
-<!--
-  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
-  ~
-  ~ Project: Bimod.io™
-  ~ File: pages_misc_not_authorized.html
-  ~ Last Modified: 2024-10-05 01:39:48
-  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-05 14:42:31
-  ~
-  ~ This software is proprietary and confidential. Unauthorized copying,
-  ~ distribution, modification, or use of this software, whether for
-  ~ commercial, academic, or any other purpose, is strictly prohibited
-  ~ without the prior express written permission of BMD™ Autonomous
-  ~ Holdings.
-  ~
-  ~  For permission inquiries, please contact: admin@Bimod.io.
-  ~
-  -->
+  {{ block.super }}
 
-<link rel="stylesheet" href="{% static 'vendor/css/pages/page-misc.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/css/pages/page-misc.css' %}" />
 {% endblock page_css %}
 
 {% block content %}
-<!-- Not Authorized -->
-<div class="container-xxl container-p-y">
-  <div class="misc-wrapper">
-    <h1 class="mb-2 mx-2" style="line-height: 6rem;font-size: 6rem;"><strong>401</strong></h1>
-    <h4 class="mb-2 mx-2"><strong>You are not authorized! 🔐</strong></h4>
-    <p class="mb-6 mx-2">Unfortunately, you don’t have permission to access this page.</p>
-    <a href="{% url 'landing:index' %}" class="btn btn-primary"><strong><i class="fa fa-chevron-left me-4"></i>Back</strong></a>
-    <div class="mt-12">
-      <img src="{% static 'img/custom-illustrations-v2/i2-66.png' %}" alt="page-misc-not-authorized" width="500" style="border-radius: 25px;" class="img-fluid">
+  <!-- Not Authorized -->
+  <div class="container-xxl container-p-y">
+    <div class="misc-wrapper">
+      <h1 class="mb-2 mx-2" style="line-height: 6rem;font-size: 6rem;"><strong>401</strong></h1>
+      <h4 class="mb-2 mx-2"><strong>You are not authorized! 🔐</strong></h4>
+      <p class="mb-6 mx-2">Unfortunately, you don’t have permission to access this page.</p>
+      <a href="{% url 'landing:index' %}" class="btn btn-primary"><strong><i
+        class="fa fa-chevron-left me-4"></i>Back</strong></a>
+      <div class="mt-12">
+        <img src="{% static 'img/custom-illustrations-v2/i2-66.png' %}" alt="page-misc-not-authorized" width="500"
+             style="border-radius: 25px;" class="img-fluid">
+      </div>
     </div>
   </div>
-</div>
-<div class="container-fluid misc-bg-wrapper">
-  <img src="{% static 'img/illustrations/bg-shape-image-' %}{{ COOKIES.style|default:style }}.png" height="355" alt="page-misc-not-authorized" data-app-light-img="illustrations/bg-shape-image-light.png" data-app-dark-img="illustrations/bg-shape-image-dark.png">
-</div>
-<!-- /Not Authorized -->
+  <div class="container-fluid misc-bg-wrapper">
+    <img src="{% static 'img/illustrations/bg-shape-image-' %}{{ COOKIES.style|default:style }}.png" height="355"
+         alt="page-misc-not-authorized" data-app-light-img="illustrations/bg-shape-image-light.png"
+         data-app-dark-img="illustrations/bg-shape-image-dark.png">
+  </div>
+  <!-- /Not Authorized -->
 {% endblock %}

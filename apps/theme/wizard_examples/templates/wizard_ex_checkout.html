@@ -6,58 +6,40 @@
 {% block title %}Checkout - Wizard Examples{% endblock %}
 
 {% block vendor_css %}
-{{ block.super }}
-<!--
-  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
-  ~
-  ~ Project: Bimod.io™
-  ~ File: wizard_ex_checkout.html
-  ~ Last Modified: 2024-10-05 01:39:48
-  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-05 14:42:33
-  ~
-  ~ This software is proprietary and confidential. Unauthorized copying,
-  ~ distribution, modification, or use of this software, whether for
-  ~ commercial, academic, or any other purpose, is strictly prohibited
-  ~ without the prior express written permission of BMD™ Autonomous
-  ~ Holdings.
-  ~
-  ~  For permission inquiries, please contact: admin@Bimod.io.
-  ~
-  -->
+  {{ block.super }}
 
-<link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
-<link rel="stylesheet" href="{% static 'vendor/libs/bs-stepper/bs-stepper.css' %}" />
-<link rel="stylesheet" href="{% static 'vendor/libs/rateyo/rateyo.css' %}" />
-<link rel="stylesheet" href="{% static 'vendor/libs/@form-validation/form-validation.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/bs-stepper/bs-stepper.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/rateyo/rateyo.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/@form-validation/form-validation.css' %}" />
 {% endblock vendor_css %}
 
 {% block vendor_js %}
-{{ block.super }}
-<script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
-<script src="{% static 'vendor/libs/bs-stepper/bs-stepper.js' %}"></script>
-<script src="{% static 'vendor/libs/rateyo/rateyo.js' %}"></script>
-<script src="{% static 'vendor/libs/cleavejs/cleave.js' %}"></script>
-<script src="{% static 'vendor/libs/cleavejs/cleave-phone.js' %}"></script>
-<script src="{% static 'vendor/libs/@form-validation/popular.js' %}"></script>
-<script src="{% static 'vendor/libs/@form-validation/bootstrap5.js' %}"></script>
-<script src="{% static 'vendor/libs/@form-validation/auto-focus.js' %}"></script>
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+  <script src="{% static 'vendor/libs/bs-stepper/bs-stepper.js' %}"></script>
+  <script src="{% static 'vendor/libs/rateyo/rateyo.js' %}"></script>
+  <script src="{% static 'vendor/libs/cleavejs/cleave.js' %}"></script>
+  <script src="{% static 'vendor/libs/cleavejs/cleave-phone.js' %}"></script>
+  <script src="{% static 'vendor/libs/@form-validation/popular.js' %}"></script>
+  <script src="{% static 'vendor/libs/@form-validation/bootstrap5.js' %}"></script>
+  <script src="{% static 'vendor/libs/@form-validation/auto-focus.js' %}"></script>
 {% endblock vendor_js %}
 
 {% block page_css %}
-{{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/css/pages/wizard-ex-checkout.css' %}" />
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/css/pages/wizard-ex-checkout.css' %}" />
 {% endblock page_css %}
 
 {% block page_js %}
-{{ block.super }}
-<script src="{% static 'js/modal-add-new-address.js' %}"></script>
-<script src="{% static 'js/wizard-ex-checkout.js' %}"></script>
+  {{ block.super }}
+  <script src="{% static 'js/modal-add-new-address.js' %}"></script>
+  <script src="{% static 'js/wizard-ex-checkout.js' %}"></script>
 {% endblock page_js %}
 
 {% block content %}
-{% include "partials/wizard_ex_checkout.html" %}
+  {% include "partials/wizard_ex_checkout.html" %}
 
-<!-- Add new address modal -->
-{% include "partials/_modals/modal_add_new_address.html" %}
+  <!-- Add new address modal -->
+  {% include "partials/_modals/modal_add_new_address.html" %}
 {% endblock %}

@@ -6,134 +6,119 @@
 {% block title %}Editors - Forms{% endblock %}
 
 {% block vendor_css %}
-{{ block.super }}
-<!--
-  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
-  ~
-  ~ Project: Bimod.io™
-  ~ File: forms_editors.html
-  ~ Last Modified: 2024-10-05 01:39:48
-  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-05 14:42:31
-  ~
-  ~ This software is proprietary and confidential. Unauthorized copying,
-  ~ distribution, modification, or use of this software, whether for
-  ~ commercial, academic, or any other purpose, is strictly prohibited
-  ~ without the prior express written permission of BMD™ Autonomous
-  ~ Holdings.
-  ~
-  ~  For permission inquiries, please contact: admin@Bimod.io.
-  ~
-  -->
+  {{ block.super }}
 
-<link rel="stylesheet" href="{% static 'vendor/libs/quill/typography.css' %}" />
-<link rel="stylesheet" href="{% static 'vendor/libs/quill/katex.css' %}" />
-<link rel="stylesheet" href="{% static 'vendor/libs/quill/editor.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/quill/typography.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/quill/katex.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/quill/editor.css' %}" />
 {% endblock vendor_css %}
 
 {% block vendor_js %}
-{{ block.super }}
-<script src="{% static 'vendor/libs/quill/katex.js' %}"></script>
-<script src="{% static 'vendor/libs/quill/quill.js' %}"></script>
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/quill/katex.js' %}"></script>
+  <script src="{% static 'vendor/libs/quill/quill.js' %}"></script>
 {% endblock vendor_js %}
 
 {% block page_js %}
-{{ block.super }}
-<script src="{% static 'js/forms-editors.js' %}"></script>
+  {{ block.super }}
+  <script src="{% static 'js/forms-editors.js' %}"></script>
 {% endblock page_js %}
 
 {% block content %}
-<div class="row">
-  <!-- Snow Theme -->
-  <div class="col-12">
-    <div class="card mb-6">
-      <h5 class="card-header">Snow Theme</h5>
-      <div class="card-body">
-        <div id="snow-toolbar">
+  <div class="row">
+    <!-- Snow Theme -->
+    <div class="col-12">
+      <div class="card mb-6">
+        <h5 class="card-header">Snow Theme</h5>
+        <div class="card-body">
+          <div id="snow-toolbar">
           <span class="ql-formats">
             <select class="ql-font"></select>
             <select class="ql-size"></select>
           </span>
-          <span class="ql-formats">
+            <span class="ql-formats">
             <button class="ql-bold"></button>
             <button class="ql-italic"></button>
             <button class="ql-underline"></button>
             <button class="ql-strike"></button>
           </span>
-          <span class="ql-formats">
+            <span class="ql-formats">
             <select class="ql-color"></select>
             <select class="ql-background"></select>
           </span>
-          <span class="ql-formats">
+            <span class="ql-formats">
             <button class="ql-script" value="sub"></button>
             <button class="ql-script" value="super"></button>
           </span>
-          <span class="ql-formats">
+            <span class="ql-formats">
             <button class="ql-header" value="1"></button>
             <button class="ql-header" value="2"></button>
             <button class="ql-blockquote"></button>
             <button class="ql-code-block"></button>
           </span>
-        </div>
-        <div id="snow-editor">
-          <h6>Quill Rich Text Editor</h6>
-          <p> Cupcake ipsum dolor sit amet. Halvah cheesecake chocolate bar gummi bears cupcake. Pie macaroon bear claw. Soufflé I love candy canes I love cotton candy I love. </p>
+          </div>
+          <div id="snow-editor">
+            <h6>Quill Rich Text Editor</h6>
+            <p> Cupcake ipsum dolor sit amet. Halvah cheesecake chocolate bar gummi bears cupcake. Pie macaroon bear
+              claw. Soufflé I love candy canes I love cotton candy I love. </p>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <!-- /Snow Theme -->
-  <!-- Bubble Theme -->
-  <div class="col-12">
-    <div class="card mb-6">
-      <h5 class="card-header">Bubble Theme</h5>
-      <div class="card-body">
-        <div id="bubble-toolbar">
+    <!-- /Snow Theme -->
+    <!-- Bubble Theme -->
+    <div class="col-12">
+      <div class="card mb-6">
+        <h5 class="card-header">Bubble Theme</h5>
+        <div class="card-body">
+          <div id="bubble-toolbar">
           <span class="ql-formats">
             <select class="ql-font"></select>
             <select class="ql-size"></select>
           </span>
-          <span class="ql-formats">
+            <span class="ql-formats">
             <button class="ql-bold"></button>
             <button class="ql-italic"></button>
             <button class="ql-underline"></button>
             <button class="ql-strike"></button>
           </span>
-          <span class="ql-formats">
+            <span class="ql-formats">
             <select class="ql-color"></select>
             <select class="ql-background"></select>
           </span>
-          <span class="ql-formats">
+            <span class="ql-formats">
             <button class="ql-script" value="sub"></button>
             <button class="ql-script" value="super"></button>
           </span>
-          <span class="ql-formats">
+            <span class="ql-formats">
             <button class="ql-header" value="1"></button>
             <button class="ql-header" value="2"></button>
             <button class="ql-blockquote"></button>
             <button class="ql-code-block"></button>
           </span>
-        </div>
-        <div id="bubble-editor">
-          <h6>Quill Rich Text Editor</h6>
-          <p> Cupcake ipsum dolor sit amet. Halvah cheesecake chocolate bar gummi bears cupcake. Pie macaroon bear claw. Soufflé I love candy canes I love cotton candy I love. </p>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- /Bubble Theme -->
-  <!-- Full Editor -->
-  <div class="col-12">
-    <div class="card">
-      <h5 class="card-header">Full Editor</h5>
-      <div class="card-body">
-        <div id="full-editor">
-          <h6>Quill Rich Text Editor</h6>
-          <p> Cupcake ipsum dolor sit amet. Halvah cheesecake chocolate bar gummi bears cupcake. Pie macaroon bear claw. Soufflé I love candy canes I love cotton candy I love. </p>
+          </div>
+          <div id="bubble-editor">
+            <h6>Quill Rich Text Editor</h6>
+            <p> Cupcake ipsum dolor sit amet. Halvah cheesecake chocolate bar gummi bears cupcake. Pie macaroon bear
+              claw. Soufflé I love candy canes I love cotton candy I love. </p>
+          </div>
         </div>
       </div>
     </div>
+    <!-- /Bubble Theme -->
+    <!-- Full Editor -->
+    <div class="col-12">
+      <div class="card">
+        <h5 class="card-header">Full Editor</h5>
+        <div class="card-body">
+          <div id="full-editor">
+            <h6>Quill Rich Text Editor</h6>
+            <p> Cupcake ipsum dolor sit amet. Halvah cheesecake chocolate bar gummi bears cupcake. Pie macaroon bear
+              claw. Soufflé I love candy canes I love cotton candy I love. </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /Full Editor -->
   </div>
-  <!-- /Full Editor -->
-</div>
 {% endblock %}

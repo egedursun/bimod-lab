@@ -6,45 +6,30 @@
 {% block title %}Under Maintenance - Pages{% endblock %}
 
 {% block page_css %}
-{{ block.super }}
-<!--
-  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
-  ~
-  ~ Project: Bimod.io™
-  ~ File: pages_misc_under_maintenance.html
-  ~ Last Modified: 2024-10-05 01:39:48
-  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-05 14:42:31
-  ~
-  ~ This software is proprietary and confidential. Unauthorized copying,
-  ~ distribution, modification, or use of this software, whether for
-  ~ commercial, academic, or any other purpose, is strictly prohibited
-  ~ without the prior express written permission of BMD™ Autonomous
-  ~ Holdings.
-  ~
-  ~  For permission inquiries, please contact: admin@Bimod.io.
-  ~
-  -->
+  {{ block.super }}
 
-<link rel="stylesheet" href="{% static 'vendor/css/pages/page-misc.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/css/pages/page-misc.css' %}" />
 {% endblock page_css %}
 
 {% block content %}
-<!--Under Maintenance -->
-<div class="container-xxl container-p-y">
-  <div class="misc-wrapper">
-    <h4 class="mb-2 mx-2">Under Maintenance! 🚧</h4>
-    <p class="mb-6 mx-2">
-      Sorry for the inconvenience but we're performing some maintenance at the moment
-    </p>
-    <a href="{% url 'index' %}" class="btn btn-primary">Back to home</a>
-    <div class="mt-12">
-      <img src="{% static 'img/illustrations/page-misc-under-maintenance.png' %}" height="355" alt="page-misc-under-maintenance" width="550" class="img-fluid">
+  <!--Under Maintenance -->
+  <div class="container-xxl container-p-y">
+    <div class="misc-wrapper">
+      <h4 class="mb-2 mx-2">Under Maintenance! 🚧</h4>
+      <p class="mb-6 mx-2">
+        Sorry for the inconvenience but we're performing some maintenance at the moment
+      </p>
+      <a href="{% url 'index' %}" class="btn btn-primary">Back to home</a>
+      <div class="mt-12">
+        <img src="{% static 'img/illustrations/page-misc-under-maintenance.png' %}" height="355"
+             alt="page-misc-under-maintenance" width="550" class="img-fluid">
+      </div>
     </div>
   </div>
-</div>
-<div class="container-fluid misc-bg-wrapper misc-under-maintenance-bg-wrapper">
-  <img src="{% static 'img/illustrations/bg-shape-image-' %}{{ COOKIES.style|default:style }}.png" height="355" alt="page-misc-under-maintenance" data-app-light-img="illustrations/bg-shape-image-light.png" data-app-dark-img="illustrations/bg-shape-image-dark.png">
-</div>
-<!-- /Under Maintenance -->
+  <div class="container-fluid misc-bg-wrapper misc-under-maintenance-bg-wrapper">
+    <img src="{% static 'img/illustrations/bg-shape-image-' %}{{ COOKIES.style|default:style }}.png" height="355"
+         alt="page-misc-under-maintenance" data-app-light-img="illustrations/bg-shape-image-light.png"
+         data-app-dark-img="illustrations/bg-shape-image-dark.png">
+  </div>
+  <!-- /Under Maintenance -->
 {% endblock %}

@@ -9,7 +9,7 @@
 
 {% block vendor_css %}
   {{ block.super }}
-<link rel="stylesheet" href="{% static 'vendor/libs/@form-validation/form-validation.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/@form-validation/form-validation.css' %}" />
 {% endblock vendor_css %}
 
 {% block vendor_js %}
@@ -21,7 +21,7 @@
 
 {% block page_css %}
   {{ block.super }}
-  <link rel="stylesheet" href="{% static 'vendor/css/pages/page-auth.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/css/pages/page-auth.css' %}" />
   <link rel="stylesheet" href="{% static  'vendor/css/pages/front-page-landing.css' %}">
 {% endblock page_css %}
 
@@ -66,13 +66,15 @@
             <div id="landingHero" class="section-py landing-hero position-relative">
               <div class="container">
                 <div class="hero-text-box text-center position-relative">
-                  <h1 class="text-primary hero-title display-1 fw-extrabold mb-10 pb-4"><strong>{% get_theme_variables 'template_name' %}</strong></h1>
+                  <h1 class="text-primary hero-title display-1 fw-extrabold mb-10 pb-4">
+                    <strong>{% get_theme_variables 'template_name' %}</strong></h1>
                 </div>
               </div>
             </div>
           </section>
           <h5 class="mb-1 mt-12"><strong>Register</strong></h5>
-          <p class="mb-6 mt-4">Join us and start your journey with {% get_theme_variables 'template_name' %} to automate your business now.</p>
+          <p class="mb-6 mt-4">Join us and start your journey with {% get_theme_variables 'template_name' %} to automate
+            your business now.</p>
           {% if messages %}
             {% for message in messages %}
               <div
@@ -99,7 +101,7 @@
               <div class="input-group input-group-merge">
                 <input type="password" id="password" class="form-control" name="password"
                        placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                       aria-describedby="password"/>
+                       aria-describedby="password" />
                 <span class="input-group-text cursor-pointer"><i class="ti ti-eye-off"></i></span>
               </div>
             </div>
@@ -109,7 +111,7 @@
               <div class="input-group input-group-merge">
                 <input type="password" id="confirm_password" class="form-control" name="confirm_password"
                        placeholder="&#xB7;&#xB7;&#xB7;&#xB7;&#xB7;&#xB7;&#xB7;&#xB7;&#xB7;&#xB7;&#xB7;&#xB7;"
-                       aria-describedby="password2"/>
+                       aria-describedby="password2" />
                 <span class="input-group-text cursor-pointer"><i class="ti ti-eye-off"></i></span>
               </div>
             </div>

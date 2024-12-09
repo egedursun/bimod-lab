@@ -1,38 +1,43 @@
-
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
   <!-- ! Hide app brand if navbar-full -->
-  {% if not navbar_full %}<div class="d-flex p-2 mb-4">
-    <a href="{% url 'dashboard:lab-landing' %}" class="app-brand-link">
-      <span class="mt-4" style="display: inline-block; background-color: white; padding: 1px; border-radius: 80%; box-shadow: 0 0 10px 5px rgba(255, 255, 255, 1.0);">
+  {% if not navbar_full %}
+    <div class="d-flex p-2 mb-4">
+      <a href="{% url 'dashboard:lab-landing' %}" class="app-brand-link">
+      <span class="mt-4"
+            style="display: inline-block; background-color: white; padding: 1px; border-radius: 80%; box-shadow: 0 0 10px 5px rgba(255, 255, 255, 1.0);">
         <!-- { % include 'partials/logo.html' with logo_size='large' % } -->
         <img src="{% static 'img/logo.png' %}" alt="logo" style="width: 40px;" class="m-1 me-2">
       </span>
-      <span class="app-brand-text demo menu-text text-white fw-extrabold ms-6 mt-4" style="text-shadow: 0px 0px 7px rgba(255, 255, 255, 0.9);">{% get_theme_variables 'template_name' %}</span>
-      <img src="{% static 'img/custom-illustrations-v2/heros/i2-h2.png' %}" alt="logo" style="position: absolute; top: -62px; left: -30px; opacity: 0.9; rotate: 0deg; width: 340px; height: 170px; z-index: -100000;">
-    </a>
-    <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto me-4" style="margin-top: 27px;">
-      <i class="ti menu-toggle-icon d-none d-xl-block align-middle text-white fw-extrabold" style="text-shadow: 0px 0px 7px rgba(255, 255, 255, 0.9);"></i>
-      <i class="ti ti-x d-block d-xl-none ti-md align-middle"></i>
-    </a>
-  </div>
+        <span class="app-brand-text demo menu-text text-white fw-extrabold ms-6 mt-4"
+              style="text-shadow: 0px 0px 7px rgba(255, 255, 255, 0.9);">{% get_theme_variables 'template_name' %}</span>
+        <img src="{% static 'img/custom-illustrations-v2/heros/i2-h2.png' %}" alt="logo"
+             style="position: absolute; top: -62px; left: -30px; opacity: 0.9; rotate: 0deg; width: 340px; height: 170px; z-index: -100000;">
+      </a>
+      <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto me-4"
+         style="margin-top: 27px;">
+        <i class="ti menu-toggle-icon d-none d-xl-block align-middle text-white fw-extrabold"
+           style="text-shadow: 0px 0px 7px rgba(255, 255, 255, 0.9);"></i>
+        <i class="ti ti-x d-block d-xl-none ti-md align-middle"></i>
+      </a>
+    </div>
   {% endif %}
 
   <ul class="menu-inner py-1 shadow-xl" style="border-radius: 20px;">
     {% for item in menu_data.menu %}
-    {% comment %} Menu Header {% endcomment %}
-    {% if "menu_header" in item %}
-      {% include './partials/menu_header_template.html' with header_text=item.menu_header %}
-    {% else %}
-      {% comment %} Menu Item {% endcomment %}
-      {% if item.name == "Meta Integrations" or item.name == "VoidForger™" %}
-        <!-- put as grayed out -->
-        {% include './partials/menu_item_template_disabled.html' with item=item %}
-      {% elif item.name == "Plug & Play Agents" or item.name == "Plug & Play Teams" or item.name == "Chats" or item.name == "Leanmod™ Chats" %}
-        {% include './partials/menu_link_template_superior.html' with item=item %}
+      {% comment %} Menu Header {% endcomment %}
+      {% if "menu_header" in item %}
+        {% include './partials/menu_header_template.html' with header_text=item.menu_header %}
       {% else %}
-        {% include './partials/menu_item_template.html' with item=item %}
+        {% comment %} Menu Item {% endcomment %}
+        {% if item.name == "Meta Integrations" or item.name == "VoidForger™" %}
+          <!-- put as grayed out -->
+          {% include './partials/menu_item_template_disabled.html' with item=item %}
+        {% elif item.name == "Plug & Play Agents" or item.name == "Plug & Play Teams" or item.name == "Chats" or item.name == "Leanmod™ Chats" %}
+          {% include './partials/menu_link_template_superior.html' with item=item %}
+        {% else %}
+          {% include './partials/menu_item_template.html' with item=item %}
+        {% endif %}
       {% endif %}
-    {% endif %}
     {% endfor %}
   </ul>
 

@@ -6,38 +6,24 @@
 {% block title %}Fluid - Layouts{% endblock %}
 
 {% block content %}
-<!--
-  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
-  ~
-  ~ Project: Bimod.io™
-  ~ File: layouts_fluid.html
-  ~ Last Modified: 2024-10-05 01:39:48
-  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-05 14:42:31
-  ~
-  ~ This software is proprietary and confidential. Unauthorized copying,
-  ~ distribution, modification, or use of this software, whether for
-  ~ commercial, academic, or any other purpose, is strictly prohibited
-  ~ without the prior express written permission of BMD™ Autonomous
-  ~ Holdings.
-  ~
-  ~  For permission inquiries, please contact: admin@Bimod.io.
-  ~
-  -->
 
-<!-- Layout Demo -->
-<div class="layout-demo-wrapper">
-  <div class="layout-demo-placeholder">
-    {% if menu_horizontal %}
-    <img src="{% static 'img/layouts/layout-horizontal-fluid-' %}{{ COOKIES.style|default:style }}.png" class="img-fluid" alt="Layout fluid" data-app-light-img="layouts/layout-horizontal-fluid-light.png" data-app-dark-img="layouts/layout-horizontal-fluid-dark.png">
-    {% else %}
-    <img src="{% static 'img/layouts/layout-fluid-' %}{{ COOKIES.style|default:style }}.png" class="img-fluid" alt="Layout fluid" data-app-light-img="layouts/layout-fluid-light.png" data-app-dark-img="layouts/layout-fluid-dark.png">
-    {% endif %}
+  <!-- Layout Demo -->
+  <div class="layout-demo-wrapper">
+    <div class="layout-demo-placeholder">
+      {% if menu_horizontal %}
+        <img src="{% static 'img/layouts/layout-horizontal-fluid-' %}{{ COOKIES.style|default:style }}.png"
+             class="img-fluid" alt="Layout fluid" data-app-light-img="layouts/layout-horizontal-fluid-light.png"
+             data-app-dark-img="layouts/layout-horizontal-fluid-dark.png">
+      {% else %}
+        <img src="{% static 'img/layouts/layout-fluid-' %}{{ COOKIES.style|default:style }}.png" class="img-fluid"
+             alt="Layout fluid" data-app-light-img="layouts/layout-fluid-light.png"
+             data-app-dark-img="layouts/layout-fluid-dark.png">
+      {% endif %}
+    </div>
+    <div class="layout-demo-info">
+      <h4>Layout fluid</h4>
+      <p>Fluid layout sets a <code>100% width</code> at each responsive breakpoint.</p>
+    </div>
   </div>
-  <div class="layout-demo-info">
-    <h4>Layout fluid</h4>
-    <p>Fluid layout sets a <code>100% width</code> at each responsive breakpoint.</p>
-  </div>
-</div>
-<!--/ Layout Demo -->
+  <!--/ Layout Demo -->
 {% endblock %}

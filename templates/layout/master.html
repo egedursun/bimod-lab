@@ -11,18 +11,18 @@
 <head>
   <title>{% block title %}{% endblock title %} | {% get_theme_variables 'template_name' %}
     - {% get_theme_variables 'template_suffix' %}</title>
-  <meta charset="utf-8"/>
+  <meta charset="utf-8" />
   <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
-  <meta name="og:description" content="{% get_theme_variables 'template_description' %}"/>
-  <meta name="og:image" content="{% static 'img/custom-illustrations-v2/banners/banner-meta.png' %}"/>
-  <meta name="og:url" content="{% url 'landing:index' %}"/>
-  <meta property="og:type" content="website"/>
-  <meta name="keywords" content="{% get_theme_variables 'template_keyword' %}"/>
+        content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+  <meta name="og:description" content="{% get_theme_variables 'template_description' %}" />
+  <meta name="og:image" content="{% static 'img/custom-illustrations-v2/banners/banner-meta.png' %}" />
+  <meta name="og:url" content="{% url 'landing:index' %}" />
+  <meta property="og:type" content="website" />
+  <meta name="keywords" content="{% get_theme_variables 'template_keyword' %}" />
   <link rel="canonical" href="{% get_theme_variables 'product_page' %}">
   <link rel="manifest" href="{% static 'pwa/manifest.json' %}">
   <!-- Favicon -->
-  <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon/favicon.ico' %}"/>
+  <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon/favicon.ico' %}" />
 
   <!-- Include the styles partial -->
   {% include is_front|yesno:"./partials/styles_front.html,./partials/styles.html" %}
@@ -36,7 +36,11 @@
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-0G6DQRLJ11"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
     gtag('js', new Date());
 
     gtag('config', 'G-0G6DQRLJ11');
@@ -49,8 +53,8 @@
   </script>
 
   <script>
-    window.onload = function () {
-      document.getElementById("template-customizer").style.display = "none";
+    window.onload = function() {
+      document.getElementById('template-customizer').style.display = 'none';
       const tipsSections = document.querySelectorAll('.tips-section');
       const tipsSwitch = document.querySelector('.switch-input');
       if (!tipsSections.length || !tipsSwitch) {
@@ -65,7 +69,7 @@
         }
       });
 
-      tipsSwitch.addEventListener('change', function () {
+      tipsSwitch.addEventListener('change', function() {
         const isOn = tipsSwitch.checked;
         localStorage.setItem('show_tips', isOn);
         tipsSections.forEach(tipsSection => {
@@ -138,21 +142,21 @@
   </script>
 
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const stepper = new Stepper(document.querySelector("#quickSetupWizard"));
+    document.addEventListener('DOMContentLoaded', function() {
+      const stepper = new Stepper(document.querySelector('#quickSetupWizard'));
 
       // Handle navigation and validation
-      document.querySelectorAll(".btn-next").forEach((btn) => {
-        btn.addEventListener("click", function () {
-          const currentStep = btn.closest(".content");
-          const inputField = currentStep.querySelector("input, textarea, select");
+      document.querySelectorAll('.btn-next').forEach((btn) => {
+        btn.addEventListener('click', function() {
+          const currentStep = btn.closest('.content');
+          const inputField = currentStep.querySelector('input, textarea, select');
 
           if (inputField) {
             const inputValue = inputField.value.trim();
 
             // Validate input before moving to the next step
             if (!inputValue) {
-              alert("Please fill out this field to proceed.");
+              alert('Please fill out this field to proceed.');
               inputField.focus();
               return;
             }
@@ -162,7 +166,7 @@
 
             // Show "Finish Setup" button if on the last step
             if (stepper._currentIndex === stepper._steps.length - 1) {
-              document.querySelector("#finishSetup").style.display = "block";
+              document.querySelector('#finishSetup').style.display = 'block';
             }
           }
         });
@@ -173,12 +177,38 @@
   <!-- Start of OpenWidget (www.openwidget.com) code -->
   <script>
     window.__ow = window.__ow || {};
-    window.__ow.organizationId = "ccb32d66-cae4-4bf7-96a7-92ecd731e913";
-    window.__ow.integration_name = "manual_settings";
-    window.__ow.product_name = "openwidget";
-    ;(function(n,t,c){function i(n){return e._h?e._h.apply(null,n):e._q.push(n)}var e={_q:[],_h:null,_v:"2.0",on:function(){i(["on",c.call(arguments)])},once:function(){i(["once",c.call(arguments)])},off:function(){i(["off",c.call(arguments)])},get:function(){if(!e._h)throw new Error("[OpenWidget] You can't use getters before load.");return i(["get",c.call(arguments)])},call:function(){i(["call",c.call(arguments)])},init:function(){var n=t.createElement("script");n.async=!0,n.type="text/javascript",n.src="https://cdn.openwidget.com/openwidget.js",t.head.appendChild(n)}};!n.__ow.asyncInit&&e.init(),n.OpenWidget=n.OpenWidget||e}(window,document,[].slice))
+    window.__ow.organizationId = 'ccb32d66-cae4-4bf7-96a7-92ecd731e913';
+    window.__ow.integration_name = 'manual_settings';
+    window.__ow.product_name = 'openwidget';
+    ;(function(n, t, c) {
+      function i(n) {
+        return e._h ? e._h.apply(null, n) : e._q.push(n);
+      }
+
+      var e = {
+        _q: [], _h: null, _v: '2.0', on: function() {
+          i(['on', c.call(arguments)]);
+        }, once: function() {
+          i(['once', c.call(arguments)]);
+        }, off: function() {
+          i(['off', c.call(arguments)]);
+        }, get: function() {
+          if (!e._h) throw new Error('[OpenWidget] You can\'t use getters before load.');
+          return i(['get', c.call(arguments)]);
+        }, call: function() {
+          i(['call', c.call(arguments)]);
+        }, init: function() {
+          var n = t.createElement('script');
+          n.async = !0, n.type = 'text/javascript', n.src = 'https://cdn.openwidget.com/openwidget.js', t.head.appendChild(n);
+        }
+      };
+      !n.__ow.asyncInit && e.init(), n.OpenWidget = n.OpenWidget || e;
+    }(window, document, [].slice));
   </script>
-  <noscript>You need to <a href="https://www.openwidget.com/enable-javascript" rel="noopener nofollow">enable JavaScript</a> to use the communication tool powered by <a href="https://www.openwidget.com/" rel="noopener nofollow" target="_blank">OpenWidget</a></noscript>
+  <noscript>You need to <a href="https://www.openwidget.com/enable-javascript" rel="noopener nofollow">enable
+    JavaScript</a> to use the communication tool powered by <a href="https://www.openwidget.com/"
+                                                               rel="noopener nofollow" target="_blank">OpenWidget</a>
+  </noscript>
   <!-- End of OpenWidget code -->
 
 

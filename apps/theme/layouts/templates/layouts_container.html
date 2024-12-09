@@ -6,38 +6,24 @@
 {% block title %}Container - Layouts{% endblock %}
 
 {% block content %}
-<!--
-  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
-  ~
-  ~ Project: Bimod.io™
-  ~ File: layouts_container.html
-  ~ Last Modified: 2024-10-05 01:39:48
-  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-05 14:42:31
-  ~
-  ~ This software is proprietary and confidential. Unauthorized copying,
-  ~ distribution, modification, or use of this software, whether for
-  ~ commercial, academic, or any other purpose, is strictly prohibited
-  ~ without the prior express written permission of BMD™ Autonomous
-  ~ Holdings.
-  ~
-  ~  For permission inquiries, please contact: admin@Bimod.io.
-  ~
-  -->
 
-<!-- Layout Demo -->
-<div class="layout-demo-wrapper">
-  <div class="layout-demo-placeholder">
-    {% if menu_horizontal %}
-    <img src="{% static 'img/layouts/layout-horizontal-container-' %}{{ COOKIES.style|default:style }}.png" class="img-fluid" alt="Layout container" data-app-light-img="layouts/layout-horizontal-container-light.png" data-app-dark-img="layouts/layout-horizontal-container-dark.png">
-    {% else %}
-    <img src="{% static 'img/layouts/layout-container-' %}{{ COOKIES.style|default:style }}.png" class="img-fluid" alt="Layout container" data-app-light-img="layouts/layout-container-light.png" data-app-dark-img="layouts/layout-container-dark.png">
-    {% endif %}
+  <!-- Layout Demo -->
+  <div class="layout-demo-wrapper">
+    <div class="layout-demo-placeholder">
+      {% if menu_horizontal %}
+        <img src="{% static 'img/layouts/layout-horizontal-container-' %}{{ COOKIES.style|default:style }}.png"
+             class="img-fluid" alt="Layout container" data-app-light-img="layouts/layout-horizontal-container-light.png"
+             data-app-dark-img="layouts/layout-horizontal-container-dark.png">
+      {% else %}
+        <img src="{% static 'img/layouts/layout-container-' %}{{ COOKIES.style|default:style }}.png" class="img-fluid"
+             alt="Layout container" data-app-light-img="layouts/layout-container-light.png"
+             data-app-dark-img="layouts/layout-container-dark.png">
+      {% endif %}
+    </div>
+    <div class="layout-demo-info">
+      <h4>Layout container</h4>
+      <p>Container layout sets a <code>max-width</code> at each responsive breakpoint.</p>
+    </div>
   </div>
-  <div class="layout-demo-info">
-    <h4>Layout container</h4>
-    <p>Container layout sets a <code>max-width</code> at each responsive breakpoint.</p>
-  </div>
-</div>
-<!--/ Layout Demo -->
+  <!--/ Layout Demo -->
 {% endblock %}

@@ -6,50 +6,32 @@
 {% block title %}Shepherd tour - Extended UI{% endblock title %}
 
 {% block vendor_css %}
-{{ block.super }}
-<!--
-  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
-  ~
-  ~ Project: Bimod.io™
-  ~ File: extended_ui_tour.html
-  ~ Last Modified: 2024-10-05 01:39:48
-  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-05 14:42:32
-  ~
-  ~ This software is proprietary and confidential. Unauthorized copying,
-  ~ distribution, modification, or use of this software, whether for
-  ~ commercial, academic, or any other purpose, is strictly prohibited
-  ~ without the prior express written permission of BMD™ Autonomous
-  ~ Holdings.
-  ~
-  ~  For permission inquiries, please contact: admin@Bimod.io.
-  ~
-  -->
+  {{ block.super }}
 
-<link rel="stylesheet" href="{% static 'vendor/libs/shepherd/shepherd.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/shepherd/shepherd.css' %}" />
 {% endblock vendor_css %}
 
 {% block vendor_js %}
-{{ block.super }}
-<script src="{% static 'vendor/libs/shepherd/shepherd.js' %}"></script>
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/shepherd/shepherd.js' %}"></script>
 {% endblock vendor_js %}
 
 {% block page_js %}
-{{ block.super }}
-<script src="{% static 'js/extended-ui-tour.js' %}"></script>
+  {{ block.super }}
+  <script src="{% static 'js/extended-ui-tour.js' %}"></script>
 {% endblock page_js %}
 
 {% block content %}
-<div class="row">
-  <div class="col-12">
-    <div class="card tour-card">
-      <h5 class="card-header">Tour</h5>
-      <div class="card-body">
-        <button class="btn btn-primary" id="shepherd-example">
-          Start tour
-        </button>
+  <div class="row">
+    <div class="col-12">
+      <div class="card tour-card">
+        <h5 class="card-header">Tour</h5>
+        <div class="card-body">
+          <button class="btn btn-primary" id="shepherd-example">
+            Start tour
+          </button>
+        </div>
       </div>
     </div>
   </div>
-</div>
 {% endblock %}

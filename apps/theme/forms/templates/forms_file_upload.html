@@ -6,76 +6,58 @@
 {% block title %}File upload - Forms{% endblock %}
 
 {% block vendor_css %}
-{{ block.super }}
-<!--
-  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
-  ~
-  ~ Project: Bimod.io™
-  ~ File: forms_file_upload.html
-  ~ Last Modified: 2024-10-05 01:39:48
-  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-  ~ Created: 2024-10-05 14:42:31
-  ~
-  ~ This software is proprietary and confidential. Unauthorized copying,
-  ~ distribution, modification, or use of this software, whether for
-  ~ commercial, academic, or any other purpose, is strictly prohibited
-  ~ without the prior express written permission of BMD™ Autonomous
-  ~ Holdings.
-  ~
-  ~  For permission inquiries, please contact: admin@Bimod.io.
-  ~
-  -->
+  {{ block.super }}
 
-<link rel="stylesheet" href="{% static 'vendor/libs/dropzone/dropzone.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/dropzone/dropzone.css' %}" />
 {% endblock vendor_css %}
 
 {% block vendor_js %}
-{{ block.super }}
-<script src="{% static 'vendor/libs/dropzone/dropzone.js' %}"></script>
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/dropzone/dropzone.js' %}"></script>
 {% endblock vendor_js %}
 
 {% block page_js %}
-{{ block.super }}
-<script src="{% static 'js/forms-file-upload.js' %}"></script>
+  {{ block.super }}
+  <script src="{% static 'js/forms-file-upload.js' %}"></script>
 {% endblock page_js %}
 
 {% block content %}
-<div class="row">
-  <!-- Basic  -->
-  <div class="col-12">
-    <div class="card mb-6">
-      <h5 class="card-header">Basic</h5>
-      <div class="card-body">
-        <form action="/upload" class="dropzone needsclick" id="dropzone-basic">
-          <div class="dz-message needsclick">
-            Drop files here or click to upload
-            <span class="note needsclick">(This is just a demo dropzone. Selected files are <span class="fw-medium">not</span> actually uploaded.)</span>
-          </div>
-          <div class="fallback">
-            <input name="file" type="file" />
-          </div>
-        </form>
+  <div class="row">
+    <!-- Basic  -->
+    <div class="col-12">
+      <div class="card mb-6">
+        <h5 class="card-header">Basic</h5>
+        <div class="card-body">
+          <form action="/upload" class="dropzone needsclick" id="dropzone-basic">
+            <div class="dz-message needsclick">
+              Drop files here or click to upload
+              <span class="note needsclick">(This is just a demo dropzone. Selected files are <span class="fw-medium">not</span> actually uploaded.)</span>
+            </div>
+            <div class="fallback">
+              <input name="file" type="file" />
+            </div>
+          </form>
+        </div>
       </div>
     </div>
-  </div>
-  <!-- /Basic  -->
-  <!-- Multi  -->
-  <div class="col-12">
-    <div class="card">
-      <h5 class="card-header">Multiple</h5>
-      <div class="card-body">
-        <form action="/upload" class="dropzone needsclick" id="dropzone-multi">
-          <div class="dz-message needsclick">
-            Drop files here or click to upload
-            <span class="note needsclick">(This is just a demo dropzone. Selected files are <span class="fw-medium">not</span> actually uploaded.)</span>
-          </div>
-          <div class="fallback">
-            <input name="file" type="file" />
-          </div>
-        </form>
+    <!-- /Basic  -->
+    <!-- Multi  -->
+    <div class="col-12">
+      <div class="card">
+        <h5 class="card-header">Multiple</h5>
+        <div class="card-body">
+          <form action="/upload" class="dropzone needsclick" id="dropzone-multi">
+            <div class="dz-message needsclick">
+              Drop files here or click to upload
+              <span class="note needsclick">(This is just a demo dropzone. Selected files are <span class="fw-medium">not</span> actually uploaded.)</span>
+            </div>
+            <div class="fallback">
+              <input name="file" type="file" />
+            </div>
+          </form>
+        </div>
       </div>
     </div>
+    <!-- Multi  -->
   </div>
-  <!-- Multi  -->
-</div>
 {% endblock %}
