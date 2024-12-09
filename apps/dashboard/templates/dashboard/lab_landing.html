@@ -1582,6 +1582,11 @@
                           <i class="fa fa-file-text me-2"></i>
                           <strong>Manage Text Documents</strong>
                         </a>
+                        <hr>
+                        <a href="#" class="btn btn-primary mt-4 w-100 disabled">
+                          <i class="fa fa-store me-2"></i>
+                          <strong>Knowledge Library Store</strong>
+                        </a>
                       </div>
                     </div>
                   </div>
@@ -1650,14 +1655,14 @@
                           </p>
                         </div>
                         <hr>
-                        <a href="#" class="btn btn-primary mt-4 w-100 disabled">
+                        <a href="{% url 'datasource_website:storage_list' %}" class="btn btn-primary mt-4 w-100">
                           <i class="fa fa-spider me-2"></i>
-                          <strong>Crawl New Website</strong>
+                          <strong>Manage Website Storages</strong>
                         </a>
                         <hr>
-                        <a href="#" class="btn btn-primary mt-4 w-100 disabled">
+                        <a href="{% url 'datasource_website:website_item_list' %}" class="btn btn-primary mt-4 w-100">
                           <i class="fa fa-spider me-2"></i>
-                          <strong>Manage Website Data</strong>
+                          <strong>Manage Web Pages</strong>
                         </a>
                       </div>
                     </div>
@@ -1696,6 +1701,12 @@
                         <a href="{% url 'datasource_ml_models:item_list' %}" class="btn btn-primary mt-4 w-100">
                           <i class="fa fa-cogs me-2"></i>
                           <strong>Manage ML Models</strong>
+                        </a>
+                        <hr>
+                        <hr>
+                        <a href="#" class="btn btn-primary mt-4 w-100 disabled">
+                          <i class="fa fa-store me-2"></i>
+                          <strong>ML Model Store</strong>
                         </a>
                       </div>
                     </div>

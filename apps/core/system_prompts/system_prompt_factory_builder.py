@@ -148,6 +148,8 @@ from apps.core.system_prompts.information_feeds.vector_store.build_vector_store_
     build_lean_vector_store_data_source_prompt,
     build_semantor_vector_store_data_source_prompt
 )
+from apps.core.system_prompts.information_feeds.website.build_website_data_source_prompt import \
+    build_semantor_website_data_source_prompt, build_lean_website_data_source_prompt, build_website_data_source_prompt
 
 from apps.core.system_prompts.leanmod.leanmod_guidelines_prompt import (
     build_structured_primary_guidelines_leanmod
@@ -295,6 +297,8 @@ from apps.core.system_prompts.tool_call_prompts.per_tool.execute_ssh_file_system
 from apps.core.system_prompts.tool_call_prompts.per_tool.execute_triggered_job_logs_query_tool_prompt import (
     build_tool_prompt__execute_triggered_job_logs_query
 )
+from apps.core.system_prompts.tool_call_prompts.per_tool.execute_website_data_search_tool_prompt import \
+    build_tool_prompt__website_data_search
 
 from apps.core.system_prompts.tool_call_prompts.per_tool.generate_image_tool_prompt import (
     build_tool_prompt__generate_image
@@ -446,6 +450,7 @@ class SystemPromptFactoryBuilder:
         (
             browsing_feed,
             codebase_feed,
+            website_feed,
             ssh_system_feed,
             vector_store_feed,
             media_manager_feed,
@@ -473,6 +478,7 @@ class SystemPromptFactoryBuilder:
             process_audio,
             execute_browsing,
             execute_codebase,
+            execute_website,
             analyze_code,
             execute_api,
             execute_function,
@@ -524,6 +530,8 @@ class SystemPromptFactoryBuilder:
             codebase_feed=codebase_feed,
             do_codebase=execute_codebase,
             do_analyze_code=analyze_code,
+            website_feed=website_feed,
+            do_website=execute_website,
             intra_memory=intra_memory,
             do_api=execute_api,
             do_function=execute_function,
@@ -615,6 +623,8 @@ class SystemPromptFactoryBuilder:
         codebase_feed,
         do_codebase,
         do_analyze_code,
+        website_feed,
+        do_website,
         intra_memory,
         do_api,
         do_function,
@@ -688,6 +698,7 @@ class SystemPromptFactoryBuilder:
         combined_system_instructions += nosql_feed
         combined_system_instructions += vector_store_feed
         combined_system_instructions += codebase_feed
+        combined_system_instructions += website_feed
         combined_system_instructions += file_systems
         combined_system_instructions += media_store_feed
         combined_system_instructions += ml_model_feed
@@ -708,6 +719,7 @@ class SystemPromptFactoryBuilder:
         combined_system_instructions += do_nosql_schema_search
         combined_system_instructions += do_vector_store
         combined_system_instructions += do_codebase
+        combined_system_instructions += do_website
         combined_system_instructions += do_intra_memory
         combined_system_instructions += do_ssh_command
         combined_system_instructions += do_ssh_schema_search
@@ -753,6 +765,7 @@ class SystemPromptFactoryBuilder:
         nosql_schema_search = build_tool_prompt__nosql_database_schema_search()
         vector_store = build_tool_prompt__query_vector_store()
         codebase = build_tool_prompt__execute_codebase_query()
+        website_search = build_tool_prompt__website_data_search()
         intra_memory = build_tool_prompt__intra_context_memory()
         ssh_file_system = build_tool_prompt__execute_ssh_file_system_command()
         ssh_schema_search = build_tool_prompt__file_directory_schema_search()
@@ -770,9 +783,11 @@ class SystemPromptFactoryBuilder:
         edit_image = build_tool_prompt__edit_image()
         dream_image = build_tool_prompt__dream_image()
         process_audio = build_tool_prompt__execute_audio()
+
         generate_video = build_tool_prompt__generate_video(
             assistant_id=assistant.id
         )
+
         smart_contract_func_call = build_tool_prompt__smart_contract_function_call()
         dashboard_statistics = build_tool_prompt__execute_dashboard_statistics_query()
         hadron_node_query = build_tool_prompt__execute_hadron_prime_node_query()
@@ -787,6 +802,7 @@ class SystemPromptFactoryBuilder:
             process_audio,
             browsing,
             codebase,
+            website_search,
             analyze_code,
             apis,
             functions,
@@ -836,6 +852,7 @@ class SystemPromptFactoryBuilder:
         nosql_feed = build_nosql_data_source_prompt(assistant)
         vector_store_feed = build_vector_store_data_source_prompt(assistant)
         codebase_feed = build_code_base_data_source_prompt(assistant)
+        website_feed = build_website_data_source_prompt(assistant)
         ssh_system_feed = build_file_system_data_source_prompt(assistant)
         media_manager_feed = build_media_manager_data_source_prompt(assistant)
         ml_feed = build_ml_models_data_source_prompt(assistant)
@@ -849,6 +866,7 @@ class SystemPromptFactoryBuilder:
         return (
             browsing_feed,
             codebase_feed,
+            website_feed,
             ssh_system_feed,
             vector_store_feed,
             media_manager_feed,
@@ -949,6 +967,7 @@ class SystemPromptFactoryBuilder:
         agent_nickname = assistant_name
         comm_language = language
         generic = build_internal_principles_prompt()
+
         agent_nickname_prompt = build_agent_nickname_prompt(
             name=agent_nickname,
             chat_name=chat_name
@@ -969,6 +988,7 @@ class SystemPromptFactoryBuilder:
         nosql_feed = build_lean_nosql_data_source_prompt()
         vector_store_feed = build_lean_vector_store_data_source_prompt()
         codebase_feed = build_lean_code_base_data_source_prompt()
+        website_feed = build_lean_website_data_source_prompt()
         ssh_feed = build_lean_file_system_data_source_prompt()
         media_manager_feed = build_lean_media_manager_data_source_prompt()
         ml_feed = build_lean_ml_models_data_source_prompt()
@@ -987,6 +1007,7 @@ class SystemPromptFactoryBuilder:
         do_sql_query = (build_tool_prompt__execute_sql_query())
         do_vector_store = build_tool_prompt__query_vector_store()
         do_codebase = build_tool_prompt__execute_codebase_query()
+        do_website_search = build_tool_prompt__website_data_search()
         do_intra_memory = build_tool_prompt__intra_context_memory()
         do_ssh_system = build_tool_prompt__execute_ssh_file_system_command()
         do_media_manager = build_tool_prompt__media_manager_query()
@@ -1025,6 +1046,7 @@ class SystemPromptFactoryBuilder:
         merged_prompt += nosql_feed
         merged_prompt += vector_store_feed
         merged_prompt += codebase_feed
+        merged_prompt += website_feed
         merged_prompt += ssh_feed
         merged_prompt += media_manager_feed
         merged_prompt += ml_feed
@@ -1043,6 +1065,7 @@ class SystemPromptFactoryBuilder:
         merged_prompt += do_sql_query
         merged_prompt += do_vector_store
         merged_prompt += do_codebase
+        merged_prompt += do_website_search
         merged_prompt += do_intra_memory
         merged_prompt += do_ssh_system
         merged_prompt += do_media_manager
@@ -1067,7 +1090,12 @@ class SystemPromptFactoryBuilder:
         merged_prompt += do_scheduled_job_logs
         merged_prompt += do_triggered_job_logs
         merged_prompt += do_smart_contract_gen
-        prompt = {"role": "system", "content": merged_prompt}
+
+        prompt = {
+            "role": "system",
+            "content": merged_prompt
+        }
+
         return prompt
 
     @staticmethod
@@ -1116,6 +1144,9 @@ class SystemPromptFactoryBuilder:
         ssh_feed = build_semantor_file_system_data_source_prompt(
             temporary_sources=temporary_sources
         )
+        website_feed = build_semantor_website_data_source_prompt(
+            temporary_sources=temporary_sources
+        )
         media_manager_feed = build_semantor_media_manager_data_source_prompt(
             temporary_sources=temporary_sources
         )
@@ -1154,6 +1185,7 @@ class SystemPromptFactoryBuilder:
         do_sql_query = (build_tool_prompt__execute_sql_query())
         do_vector_store = build_tool_prompt__query_vector_store()
         do_codebase = build_tool_prompt__execute_codebase_query()
+        do_website_search = build_tool_prompt__website_data_search()
         do_intra_memory = build_tool_prompt__intra_context_memory()
         do_ssh_system = build_tool_prompt__execute_ssh_file_system_command()
         do_media_manager = build_tool_prompt__media_manager_query()
@@ -1192,6 +1224,7 @@ class SystemPromptFactoryBuilder:
         merged_prompt += nosql_feed
         merged_prompt += vector_store_feed
         merged_prompt += codebase_feed
+        merged_prompt += website_feed
         merged_prompt += ssh_feed
         merged_prompt += media_manager_feed
         merged_prompt += ml_feed
@@ -1209,6 +1242,7 @@ class SystemPromptFactoryBuilder:
         merged_prompt += do_sql_query
         merged_prompt += do_vector_store
         merged_prompt += do_codebase
+        merged_prompt += do_website_search
         merged_prompt += do_intra_memory
         merged_prompt += do_ssh_system
         merged_prompt += do_media_manager
@@ -1233,7 +1267,12 @@ class SystemPromptFactoryBuilder:
         merged_prompt += do_scheduled_job_logs
         merged_prompt += do_triggered_job_logs
         merged_prompt += do_smart_contract_gen
-        prompt = {"role": "system", "content": merged_prompt}
+
+        prompt = {
+            "role": "system",
+            "content": merged_prompt
+        }
+
         return prompt
 
     @staticmethod

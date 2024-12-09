@@ -625,6 +625,24 @@
       "url": "/app/datasource_codebase/list_repositories"
     },
     {
+      "name": "Create Website Storage",
+      "icon": "menu-icon tf-icons ti ti-network",
+      "slug": "website-storages",
+      "url": "/app/datasource_website/storage/create"
+    },
+    {
+      "name": "Website Storages",
+      "icon": "menu-icon tf-icons ti ti-network",
+      "slug": "website-storages",
+      "url": "/app/datasource_website/storage/list"
+    },
+    {
+      "name": "Websites & Web Pages",
+      "icon": "menu-icon tf-icons ti ti-code",
+      "slug": "website-items",
+      "url": "/app/datasource_website/website_item/list"
+    },
+    {
       "name": "Connect Machine Learning Storage",
       "icon": "menu-icon tf-icons ti ti-wand",
       "slug": "machine-learning-storages",

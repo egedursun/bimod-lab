@@ -172,6 +172,16 @@ class PermissionNames:
     LIST_KNOWLEDGE_BASES = 'list_knowledge_bases'
     DELETE_KNOWLEDGE_BASES = 'delete_knowledge_bases'
 
+    ADD_WEBSITE_STORAGES = 'add_website_storages'
+    UPDATE_WEBSITE_STORAGES = 'update_website_storages'
+    LIST_WEBSITE_STORAGES = 'list_website_storages'
+    DELETE_WEBSITE_STORAGES = 'delete_website_storages'
+
+    ADD_WEBSITE_ITEMS = 'add_website_items'
+    UPDATE_WEBSITE_ITEMS = 'update_website_items'
+    LIST_WEBSITE_ITEMS = 'list_website_items'
+    DELETE_WEBSITE_ITEMS = 'delete_website_items'
+
     ADD_MEDIA_STORAGES = 'add_media_storages'
     UPDATE_MEDIA_STORAGES = 'update_media_storages'
     LIST_MEDIA_STORAGES = 'list_media_storages'
@@ -617,6 +627,16 @@ PERMISSION_TYPES = [
     ('list_knowledge_bases', 'List Knowledge Bases'),
     ('delete_knowledge_bases', 'Delete Knowledge Bases'),
 
+    ('add_website_storages', 'Add Website Storages'),
+    ('update_website_storages', 'Update Website Storages'),
+    ('list_website_storages', 'List Website Storages'),
+    ('delete_website_storages', 'Delete Website Storages'),
+
+    ('add_website_items', 'Add Website Items'),
+    ('update_website_items', 'Update Website Items'),
+    ('list_website_items', 'List Website Items'),
+    ('delete_website_items', 'Delete Website Items'),
+
     ('add_media_storages', 'Add Media Storages'),
     ('update_media_storages', 'Update Media Storages'),
     ('list_media_storages', 'List Media Storages'),
@@ -979,6 +999,8 @@ class PredefinedRolePackages__Functional:
                 ('integrate_beamguard_artifacts', 'Integrate BeamGuard Artifacts'),
                 ('add_code_base', 'Add Code Base'),
                 ('add_code_repository', 'Add Code Repository'),
+                ('add_website_storages', 'Add Website Storages'),
+                ('add_website_items', 'Add Website Items'),
                 ('add_knowledge_base_docs', 'Add Knowledge Base Docs'),
                 ('add_storage_files', 'Add Storage Files'),
                 ('add_ml_model_files', 'Add ML Model Files'),
@@ -1077,6 +1099,8 @@ class PredefinedRolePackages__Functional:
                 ('update_nosql_databases', 'Update NoSQL Databases'),
                 ('update_custom_nosql_queries', 'Update Custom NoSQL Queries'),
                 ('update_knowledge_bases', 'Update Knowledge Bases'),
+                ('update_website_storages', 'Update Website Storages'),
+                ('update_website_items', 'Update Website Items'),
                 ('update_media_storages', 'Update Media Storages'),
                 ('update_ml_model_connections', 'Update ML Model Connections'),
                 ('update_functions', 'Update Functions'),
@@ -1188,6 +1212,8 @@ class PredefinedRolePackages__Functional:
                 ('list_nosql_databases', 'List NoSQL Databases'),
                 ('list_custom_nosql_queries', 'List Custom NoSQL Queries'),
                 ('list_knowledge_bases', 'List Knowledge Bases'),
+                ('list_website_storages', 'List Website Storages'),
+                ('list_website_items', 'List Website Items'),
                 ('list_media_storages', 'List Media Storages'),
                 ('list_ml_model_connections', 'List ML Model Connections'),
                 ('list_functions', 'List Functions'),
@@ -1285,6 +1311,8 @@ class PredefinedRolePackages__Functional:
                 ('delete_nosql_databases', 'Delete NoSQL Databases'),
                 ('delete_custom_nosql_queries', 'Delete Custom NoSQL Queries'),
                 ('delete_knowledge_bases', 'Delete Knowledge Bases'),
+                ('delete_website_storages', 'Delete Website Storages'),
+                ('delete_website_items', 'Delete Website Items'),
                 ('delete_media_storages', 'Delete Media Storages'),
                 ('delete_ml_model_connections', 'Delete ML Model Connections'),
                 ('delete_functions', 'Delete Functions'),
@@ -1630,6 +1658,14 @@ class PredefinedRolePackages__Contextual:
                 ('update_knowledge_bases', 'Update Knowledge Bases'),
                 ('list_knowledge_bases', 'List Knowledge Bases'),
                 ('delete_knowledge_bases', 'Delete Knowledge Bases'),
+                ('add_website_storages', 'Add Website Storages'),
+                ('update_website_storages', 'Update Website Storages'),
+                ('list_website_storages', 'List Website Storages'),
+                ('delete_website_storages', 'Delete Website Storages'),
+                ('add_website_items', 'Add Website Items'),
+                ('update_website_items', 'Update Website Items'),
+                ('list_website_items', 'List Website Items'),
+                ('delete_website_items', 'Delete Website Items'),
                 ('add_media_storages', 'Add Media Storages'),
                 ('update_media_storages', 'Update Media Storages'),
                 ('list_media_storages', 'List Media Storages'),

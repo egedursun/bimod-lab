@@ -87,6 +87,7 @@ urlpatterns = [
     path("app/quick_setup_helper/", include("apps.quick_setup_helper.urls", namespace="quick_setup_helper")),
     path("app/mobile_client/", include("apps.mobile_client.urls", namespace="mobile_client")),
     path("app/beamguard/", include("apps.beamguard.urls", namespace="beamguard")),
+    path("app/datasource_website/", include("apps.datasource_website.urls", namespace="datasource_website")),
 
     ############################################################
     # WORK IN PROGRESS

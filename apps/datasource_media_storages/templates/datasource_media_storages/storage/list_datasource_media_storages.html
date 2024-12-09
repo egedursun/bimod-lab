@@ -96,7 +96,9 @@
           <img src="
             {% if org_data.organization.organization_image %}{{ org_data.organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
                class="rounded me-4" width="60" height="60" alt="Organization image">
-          <h4>{{ org_data.organization.name }}</h4>
+          <h4>
+            <strong>{{ org_data.organization.name }}</strong>
+          </h4>
         </div>
         <div class="card-datatable table-responsive">
           <a href="{% url 'datasource_media_storages:create' %}">
@@ -125,8 +127,10 @@
                     <div class="card-header d-flex justify-content-between">
                       <div class="card-title mb-0">
                         <p class="card-subtitle mb-4"><strong>
-                          <i class="fa fa-id-badge me-4"></i> Connection Name: &nbsp;&nbsp;</strong>
-                          {{ storage_data.storage.name }}
+                          <strong>
+                            <i class="fa fa-id-badge me-4"></i> Connection Name: &nbsp;&nbsp;</strong>
+                            {{ storage_data.storage.name }}
+                          </strong>
                         </p>
                         <p class="card-subtitle mb-1"><strong>
                           <i class="fa fa-database me-4"></i> Media Category: &nbsp;&nbsp;</strong>
@@ -164,7 +168,7 @@
                   </div>
                 </div>
               {% empty %}
-                <div class="alert alert-warning p-4 ms-4 w-75" role="alert">
+                <div class="alert alert-warning p-8 ms-4 w-75" role="alert">
                   <div class="">
                     <i class="fa fa-exclamation-triangle me-4"></i>
                     <strong>No Media Storage found for this assistant.</strong>
@@ -175,7 +179,7 @@
           </div>
           <hr>
         {% empty %}
-          <div class="alert alert-warning p-4 ms-4 w-75" role="alert">
+          <div class="alert alert-warning p-8 ms-4 w-75" role="alert">
             <div class="">
               <i class="fa fa-exclamation-triangle me-4"></i>
               <strong>No Media Storage found for this organization.</strong>

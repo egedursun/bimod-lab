@@ -73,3 +73,5 @@ from .delete_all_scheduled_jobs_orchestration_views import *
 from .delete_all_triggered_jobs_orchestration_views import *
 from .delete_all_scheduled_jobs_leanmod_views import *
 from .delete_all_triggered_jobs_leanmod_views import *
+from .delete_all_website_storage_items_views import *
+from .delete_all_website_storages_views import *

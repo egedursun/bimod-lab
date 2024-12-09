@@ -27,6 +27,7 @@ from apps.datasource_media_storages.models import DataSourceMediaStorageConnecti
 from apps.datasource_ml_models.models import DataSourceMLModelConnection
 from apps.datasource_nosql.models import NoSQLDatabaseConnection
 from apps.datasource_sql.models import SQLDatabaseConnection
+from apps.datasource_website.models import DataSourceWebsiteStorageConnection
 from apps.hadron_prime.models import HadronNodeAssistantConnection
 from apps.integrations.models import AssistantIntegration, AssistantIntegrationCategory
 from apps.llm_core.models import LLMCore
@@ -62,6 +63,7 @@ class IntegrationView_IntegrationCategoryStore(LoginRequiredMixin, TemplateView)
         nosql_databases = NoSQLDatabaseConnection.objects.filter(assistant__organization__in=user_organizations)
         knowledge_bases = DocumentKnowledgeBaseConnection.objects.filter(assistant__organization__in=user_organizations)
         code_bases = CodeRepositoryStorageConnection.objects.filter(assistant__organization__in=user_organizations)
+        website_storages = DataSourceWebsiteStorageConnection.objects.filter(assistant__organization__in=user_organizations)
         media_storages = DataSourceMediaStorageConnection.objects.filter(assistant__organization__in=user_organizations)
         ml_storages = DataSourceMLModelConnection.objects.filter(assistant__organization__in=user_organizations)
         video_generators = VideoGeneratorConnection.objects.filter(assistant__organization__in=user_organizations)
@@ -71,23 +73,32 @@ class IntegrationView_IntegrationCategoryStore(LoginRequiredMixin, TemplateView)
         metatempo_connections = MetaTempoAssistantConnection.objects.filter(assistant__organization__in=user_organizations)
         orchestration_connections = OrchestrationReactantAssistantConnection.objects.filter(assistant__organization__in=user_organizations)
 
-        integrations = AssistantIntegration.objects.filter(integration_category__category_slug=self.kwargs['category_slug']).order_by("integration_name")
+        integrations = AssistantIntegration.objects.filter(
+            integration_category__category_slug=self.kwargs['category_slug']
+        ).order_by("integration_name")
+
         context['category'] = category
         context['organizations'] = user_organizations
         context['assistants'] = integrations
         context['llm_models'] = llm_models
+
         context['web_browsers'] = web_browsers
         context['ssh_file_systems'] = ssh_file_systems
         context['sql_databases'] = sql_databases
+
         context['nosql_databases'] = nosql_databases
         context['knowledge_bases'] = knowledge_bases
         context['code_bases'] = code_bases
+        context['website_storages'] = website_storages
+
         context['media_storages'] = media_storages
         context['ml_storages'] = ml_storages
         context['video_generators'] = video_generators
         context['project_items'] = project_items
+
         context['hadron_node_connections'] = hadron_node_connections
         context['metakanban_connections'] = metakanban_connections
         context['metatempo_connections'] = metatempo_connections
         context['orchestration_connections'] = orchestration_connections
+
         return context

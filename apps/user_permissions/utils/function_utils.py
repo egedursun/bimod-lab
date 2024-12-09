@@ -440,6 +440,18 @@ def get_permissions_grouped():
             ('list_code_repository', 'List Code Repository'),
             ('delete_code_repository', 'Delete Code Repository'),
         ],
+        "Website Storage Permissions": [
+            ('add_website_storages', 'Add Website Storages'),
+            ('update_website_storages', 'Update Website Storages'),
+            ('list_website_storages', 'List Website Storages'),
+            ('delete_website_storages', 'Delete Website Storages'),
+        ],
+        "Website Item Permissions": [
+            ('add_website_items', 'Add Website Items'),
+            ('update_website_items', 'Update Website Items'),
+            ('list_website_items', 'List Website Items'),
+            ('delete_website_items', 'Delete Website Items'),
+        ],
         "Media Storage Permissions": [
             ('add_media_storages', 'Add Media Storages'),
             ('update_media_storages', 'Update Media Storages'),

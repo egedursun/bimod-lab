@@ -1,0 +1,148 @@
+<!--
+  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+  ~
+  ~ Project: Bimod.io™
+  ~ File: update_website_storage_connections.html
+  ~ Last Modified: 2024-12-07 19:38:07
+  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+  ~ Created: 2024-12-07 19:38:07
+  ~
+  ~ This software is proprietary and confidential. Unauthorized copying,
+  ~ distribution, modification, or use of this software, whether for
+  ~ commercial, academic, or any other purpose, is strictly prohibited
+  ~ without the prior express written permission of BMD™ Autonomous
+  ~ Holdings.
+  ~
+  ~  For permission inquiries, please contact: admin@Bimod.io.
+  ~
+  -->
+
+{% extends layout_path %}
+
+{% load static %}
+{% load i18n %}
+{% load field_to_label %}
+
+{% block title %}Update Website Storage Connection{% endblock %}
+
+{% block vendor_css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}"/>
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}"/>
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/cleavejs/cleave.js' %}"></script>
+  <script src="{% static 'vendor/libs/moment/moment.js' %}"></script>
+  <script src="{% static 'vendor/libs/flatpickr/flatpickr.js' %}"></script>
+  <script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block page_js %}
+  {{ block.super }}
+  <script src="{% static 'js/form-layouts.js' %}"></script>
+{% endblock page_js %}
+
+{% block content %}
+
+  <a href="{% url 'datasource_website:storage_list' %}">
+    <button class="btn btn-secondary my-4 w-25">
+      <i class="fa fa-chevron-left me-4"></i>
+      <strong> Back to Storage Connections</strong>
+    </button>
+  </a>
+
+  <!-- Basic Layout -->
+  <div class="row">
+    <div class="col-xl mb-6">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">
+            <strong>Update Website Storage Connection</strong>
+          </h5>
+        </div>
+        <div class="card-body">
+          <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center" role="alert">
+            <img src="{% static 'img/custom-illustrations-v2/i2-73.png' %}" width="25%" style="border-radius: 25px;"
+                 class="justify-content-end me-8" alt="Illustration for tip">
+            <span class="alert-icon rounded">
+            <i class="ti ti-bookmark"></i>
+          </span>
+            <div class="d-flex flex-column ps-1">
+              <h5 class="alert-heading mb-2">Tip</h5>
+              <p class="mb-0">
+                Update the website storage connection details below. Adjust the settings to optimize how your assistants interact with the web data indexed through this connection.
+              </p>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          </div>
+          {% if messages %}
+            {% for message in messages %}
+              <div class="alert alert-{{ message.tags }} mb-4" role="alert">
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+          <hr>
+          <form method="post" enctype="multipart/form-data" class="mt-4">
+            {% csrf_token %}
+            <div class="row p-8">
+              <div class="mb-6 col-6">
+                <label class="form-label" for="assistant_id">Assistant</label>
+                <select class="form-select" id="assistant_id" name="assistant_id">
+                  {% for assistant in assistants %}
+                    <option value="{{ assistant.id }}" {% if assistant.id == connection.assistant.id %}selected{% endif %}>
+                      {{ assistant.name }}
+                    </option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="mb-6 col-6">
+                <label class="form-label" for="name">Connection Name</label>
+                <input type="text" class="form-control" id="name" name="name" value="{{ connection.name }}"/>
+              </div>
+              <div class="mb-6 col-12">
+                <label class="form-label" for="description">Description</label>
+                <textarea class="form-control" id="description" name="description" rows="3">{{ connection.description }}</textarea>
+              </div>
+              <div class="mb-6 col-6">
+                <label class="form-label" for="vectorizer">Vectorizer</label>
+                <select class="form-select" id="vectorizer" name="vectorizer">
+                  {% for label, name in vectorizers %}
+                    <option value="{{ label }}" {% if label == connection.vectorizer %}selected{% endif %}>
+                      {{ name }}
+                    </option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="mb-6 col-3">
+                <label class="form-label" for="embedding_chunk_size">Embedding Chunk Size</label>
+                <input type="number" class="form-control" id="embedding_chunk_size" name="embedding_chunk_size" value="{{ connection.embedding_chunk_size }}"/>
+              </div>
+              <div class="mb-6 col-3">
+                <label class="form-label" for="embedding_chunk_overlap">Embedding Chunk Overlap</label>
+                <input type="number" class="form-control" id="embedding_chunk_overlap" name="embedding_chunk_overlap" value="{{ connection.embedding_chunk_overlap }}"/>
+              </div>
+              <div class="mb-6 col-3">
+                <label class="form-label" for="search_instance_retrieval_limit">Search Instance Retrieval Limit</label>
+                <input type="number" class="form-control" id="search_instance_retrieval_limit" name="search_instance_retrieval_limit" value="{{ connection.search_instance_retrieval_limit }}"/>
+              </div>
+              <div class="mb-6 col-3">
+                <label class="form-label" for="maximum_pages_to_index">Maximum Pages to Index</label>
+                <input type="number" class="form-control" id="maximum_pages_to_index" name="maximum_pages_to_index" value="{{ connection.maximum_pages_to_index }}"/>
+              </div>
+            </div>
+            <hr>
+            <button type="submit" class="btn btn-primary d-grid w-25 mt-4">
+              <strong>
+                <i class="fa fa-save me-2"></i> Update Connection
+              </strong>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

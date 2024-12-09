@@ -33,6 +33,7 @@ from apps.datasource_media_storages.models import DataSourceMediaStorageConnecti
 from apps.datasource_ml_models.models import DataSourceMLModelConnection, DataSourceMLModelItem
 from apps.datasource_nosql.models import NoSQLDatabaseConnection, CustomNoSQLQuery
 from apps.datasource_sql.models import SQLDatabaseConnection, CustomSQLQuery
+from apps.datasource_website.models import DataSourceWebsiteStorageConnection
 from apps.hadron_prime.models import HadronNodeAssistantConnection
 from apps.integrations.models import AssistantIntegrationCategory, AssistantIntegration
 from apps.llm_core.models import LLMCore
@@ -43,7 +44,6 @@ from apps.organization.models import Organization
 from apps.projects.models import ProjectItem
 from apps.user_permissions.utils import PermissionNames
 from apps.video_generations.models import VideoGeneratorConnection
-
 
 logger = logging.getLogger(__name__)
 
@@ -69,17 +69,18 @@ class IntegrationView_IntegrateAssistantToOrganization(LoginRequiredMixin, View)
         # iv. NoSQL Databases (Optional) -- (NOSQL)
         # v. Knowledge Bases (Optional) -- (KB + DOCS)
         # vi. Code Bases (Optional) -- (CODE)
-        # vii. Media Storages (Optional) -- (MEDIA + FILES)
-        # viii. ML models (Optional) -- (ML)
-        # ix. Video Generators (Optional) -- (VID)
-        # x. Projects (Optional) -- (PROJECT)
+        # vii. Website Storage Connections (Optional) -- (WEBSITE)
+        # viii. Media Storages (Optional) -- (MEDIA + FILES)
+        # ix. ML models (Optional) -- (ML)
+        # x. Video Generators (Optional) -- (VID)
+        # xi. Projects (Optional) -- (PROJECT)
         # _
         # _____ new _____
         # _
-        # xi. Hadron Node <> Assistant Connections
-        # xii. MetaKanban <> Assistant Connections
-        # xiii. MetaTempo <> Assistant Connections
-        # xiv. Orchestration <> Assistant Connections
+        # xii. Hadron Node <> Assistant Connections
+        # xiii. MetaKanban <> Assistant Connections
+        # xiv. MetaTempo <> Assistant Connections
+        # xv. Orchestration <> Assistant Connections
         #############################################################################################################
         # MULTI-MODALITIES (Can be later MODIFIED BY USER, but on creation content PASSED FROM BIMOD STAFF) (OPTIONAL)
         #############################################################################################################
@@ -94,8 +95,10 @@ class IntegrationView_IntegrateAssistantToOrganization(LoginRequiredMixin, View)
 
         ##############################
         # PERMISSION CHECK FOR - INTEGRATE_PLUG_AND_PLAY_AGENTS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.INTEGRATE_PLUG_AND_PLAY_AGENTS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.INTEGRATE_PLUG_AND_PLAY_AGENTS
+        ):
             messages.error(self.request, "You do not have permission to integrate plug-and-play agents.")
             return redirect('integrations:store', category_slug=category.category_slug)
         ##############################
@@ -111,6 +114,7 @@ class IntegrationView_IntegrateAssistantToOrganization(LoginRequiredMixin, View)
         nosql_database_id = request.POST.get('nosql_database')
         knowledge_base_id = request.POST.get('knowledge_base')
         code_base_id = request.POST.get('code_base')
+        website_storage_id = request.POST.get('website_storage')
         media_storage_id = request.POST.get('media_storage')
         ml_storage_id = request.POST.get('ml_storage')
         video_generator_id = request.POST.get('video_generator')
@@ -120,53 +124,65 @@ class IntegrationView_IntegrateAssistantToOrganization(LoginRequiredMixin, View)
         metatempo_conn_id = request.POST.get('metatempo')
         orchestration_conn_id = request.POST.get('orchestration')
 
-        print("Hadron node id: ", hadron_node_conn_id)
-        print("MetaKanban id: ", metakanban_conn_id)
-        print("MetaTempo id: ", metatempo_conn_id)
-        print("Orchestration id: ", orchestration_conn_id)
-
         organization = Organization.objects.get(id=organization_id)
         llm_model = LLMCore.objects.get(id=llm_model_id)
 
         web_browser = None
         if web_browser_id:
             web_browser = DataSourceBrowserConnection.objects.get(id=web_browser_id)
+
         file_system = None
         if file_system_id:
             file_system = DataSourceFileSystem.objects.get(id=file_system_id)
+
         sql_database = None
         if sql_database_id:
             sql_database = SQLDatabaseConnection.objects.get(id=sql_database_id)
+
         nosql_database = None
         if nosql_database_id:
             nosql_database = NoSQLDatabaseConnection.objects.get(id=nosql_database_id)
+
         knowledge_base = None
         if knowledge_base_id:
             knowledge_base = DocumentKnowledgeBaseConnection.objects.get(id=knowledge_base_id)
+
         code_base = None
         if code_base_id:
             code_base = CodeRepositoryStorageConnection.objects.get(id=code_base_id)
+
+        website_storage = None
+        if website_storage_id:
+            website_storage = DataSourceWebsiteStorageConnection.objects.get(id=website_storage_id)
+
         media_storage = None
         if media_storage_id:
             media_storage = DataSourceMediaStorageConnection.objects.get(id=media_storage_id)
+
         ml_storage = None
         if ml_storage_id:
             ml_storage = DataSourceMLModelConnection.objects.get(id=ml_storage_id)
+
         video_generator = None
         if video_generator_id:
             video_generator = VideoGeneratorConnection.objects.get(id=video_generator_id)
+
         project_item = None
         if project_item_id:
             project_item = ProjectItem.objects.get(id=project_item_id)
+
         hadron_node = None
         if hadron_node_conn_id:
             hadron_node = HadronNodeAssistantConnection.objects.get(id=hadron_node_conn_id)
+
         metakanban = None
         if metakanban_conn_id:
             metakanban = MetaKanbanAssistantConnection.objects.get(id=metakanban_conn_id)
+
         metatempo = None
         if metatempo_conn_id:
             metatempo = MetaTempoAssistantConnection.objects.get(id=metatempo_conn_id)
+
         orchestration = None
         if orchestration_conn_id:
             orchestration = OrchestrationReactantAssistantConnection.objects.get(id=orchestration_conn_id)
@@ -357,7 +373,22 @@ class IntegrationView_IntegrateAssistantToOrganization(LoginRequiredMixin, View)
             messages.error(request, 'An error occurred while integrating the code base.')
             logger.error(f"Error occurred while integrating the code base: {e}")
 
-        # Step 9: Create a copy of the media storage
+        # Step 9: Create a copy of the website storage
+        try:
+            if website_storage:
+                website_storage: DataSourceWebsiteStorageConnection
+                duplicated_website_storage = website_storage
+                duplicated_website_storage: DataSourceWebsiteStorageConnection
+                duplicated_website_storage.pk = None
+                duplicated_website_storage.assistant = created_assistant
+                duplicated_website_storage.save()
+                created_assistant.save()
+
+        except Exception as e:
+            messages.error(request, 'An error occurred while integrating the website storage.')
+            logger.error(f"Error occurred while integrating the website storage: {e}")
+
+        # Step 10: Create a copy of the media storage
         try:
             if media_storage:
                 media_storage: DataSourceMediaStorageConnection
@@ -381,7 +412,7 @@ class IntegrationView_IntegrateAssistantToOrganization(LoginRequiredMixin, View)
             messages.error(request, 'An error occurred while integrating the media storage.')
             logger.error(f"Error occurred while integrating the media storage: {e}")
 
-        # Step 10: Create a copy of the ML storage
+        # Step 11: Create a copy of the ML storage
         try:
             if ml_storage:
                 ml_storage: DataSourceMLModelConnection
@@ -405,7 +436,7 @@ class IntegrationView_IntegrateAssistantToOrganization(LoginRequiredMixin, View)
             messages.error(request, 'An error occurred while integrating the ML storage.')
             logger.error(f"Error occurred while integrating the ML storage: {e}")
 
-        # Step 11: Create a copy of the Hadron Node connection
+        # Step 12: Create a copy of the Hadron Node connection
         try:
             if hadron_node:
                 hadron_node: HadronNodeAssistantConnection
@@ -419,7 +450,7 @@ class IntegrationView_IntegrateAssistantToOrganization(LoginRequiredMixin, View)
             messages.error(request, 'An error occurred while integrating the Hadron Node <> Assistant connection.')
             logger.error(f"Error occurred while integrating the Hadron Node <> Assistant connection: {e}")
 
-        # Step 12: Create a copy of the MetaKanban connection
+        # Step 13: Create a copy of the MetaKanban connection
         try:
             if metakanban:
                 metakanban: MetaKanbanAssistantConnection
@@ -433,7 +464,7 @@ class IntegrationView_IntegrateAssistantToOrganization(LoginRequiredMixin, View)
             messages.error(request, 'An error occurred while integrating the MetaKanban <> Assistant connection.')
             logger.error(f"Error occurred while integrating the MetaKanban <> Assistant connection: {e}")
 
-        # Step 13: Create a copy of the MetaTempo connection
+        # Step 14: Create a copy of the MetaTempo connection
         try:
             if metatempo:
                 metatempo: MetaTempoAssistantConnection
@@ -447,7 +478,7 @@ class IntegrationView_IntegrateAssistantToOrganization(LoginRequiredMixin, View)
             messages.error(request, 'An error occurred while integrating the MetaTempo <> Assistant connection.')
             logger.error(f"Error occurred while integrating the MetaTempo <> Assistant connection: {e}")
 
-        # Step 14: Create a copy of the Orchestration connection
+        # Step 15: Create a copy of the Orchestration connection
         try:
             if orchestration:
                 orchestration: OrchestrationReactantAssistantConnection

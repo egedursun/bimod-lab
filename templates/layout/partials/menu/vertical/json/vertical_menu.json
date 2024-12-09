@@ -877,6 +877,32 @@
       ]
     },
     {
+      "menu_header": "Vector Website Storages"
+    },
+    {
+      "name": "Website Storages",
+      "icon": "menu-icon tf-icons ti ti-network",
+      "slug": "website-storages",
+      "submenu": [
+        {
+          "name": "Add Website Storage",
+          "slug": "website-storage",
+          "url": "datasource_website:storage_create"
+        },
+        {
+          "name": "Website Storages",
+          "slug": "website-storage",
+          "url": "datasource_website:storage_list"
+        }
+      ]
+    },
+    {
+      "name": "Manage Websites",
+      "icon": "menu-icon tf-icons ti ti-html",
+      "slug": "web-pages",
+      "url": "datasource_website:website_item_list"
+    },
+    {
       "menu_header": "ML Multi-Modalities"
     },
     {

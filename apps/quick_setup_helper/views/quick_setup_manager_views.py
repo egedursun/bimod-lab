@@ -746,7 +746,7 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
         ############################################################################################################
         # STEP 10 (+15%) = 90%
         ############################################################################################################
-        # Q15: Do you want to integrate your internal data sources (e.g. SQL/NoSQL databases, Text Documents such as pdf, txt, docx, xlsx, etc., GitHub Code Repositories, Servers/Computers) now?
+        # Q15: Do you want to integrate your internal data sources (e.g. SQL/NoSQL databases, Text Documents such as pdf, txt, docx, xlsx, etc., GitHub Code Repositories, Website Storages, Servers/Computers) now?
         response__internal_data_sources_decision = request.POST.get('response__internal_data_sources_decision')
         if response__internal_data_sources_decision == 'yes':
 
@@ -769,15 +769,28 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
 
             #       - (1) Answers for @ SQL
             response__internal_data_sources__sql_dbms_type = request.POST.get(
-                'response__internal_data_sources__sql_dbms_type')
-            response__internal_data_sources__sql_host = request.POST.get('response__internal_data_sources__sql_host')
-            response__internal_data_sources__sql_port = request.POST.get('response__internal_data_sources__sql_port')
+                'response__internal_data_sources__sql_dbms_type'
+            )
+
+            response__internal_data_sources__sql_host = request.POST.get(
+                'response__internal_data_sources__sql_host'
+            )
+
+            response__internal_data_sources__sql_port = request.POST.get(
+                'response__internal_data_sources__sql_port'
+            )
+
             response__internal_data_sources__sql_database_name = request.POST.get(
-                'response__internal_data_sources__sql_database_name')
+                'response__internal_data_sources__sql_database_name'
+            )
+
             response__internal_data_sources__sql_username = request.POST.get(
-                'response__internal_data_sources__sql_username')
+                'response__internal_data_sources__sql_username'
+            )
+
             response__internal_data_sources__sql_password = request.POST.get(
-                'response__internal_data_sources__sql_password')
+                'response__internal_data_sources__sql_password'
+            )
 
             required_fields__data_sources__sql = [
                 response__internal_data_sources__sql_dbms_type,
@@ -789,6 +802,7 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
             ]
 
             if all(field and field.strip() != "" for field in required_fields__data_sources__sql):
+
                 # Action-024: Create a new SQL connection
                 success_024 = action__024_sql_connection_create(
                     metadata__user=context_user,
@@ -805,7 +819,8 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
 
                 if success_024 is False:
                     print(
-                        f"Failed to create a new SQL connection.")
+                        f"Failed to create a new SQL connection."
+                    )
                     messages.error(request, f"Failed to create a new SQL connection.")
                     pass
             else:
@@ -814,15 +829,24 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
 
             #       - (2) Answers for @ NoSQL
             response__internal_data_sources__nosql_db_type = request.POST.get(
-                'response__internal_data_sources__nosql_db_type')
+                'response__internal_data_sources__nosql_db_type'
+            )
+
             response__internal_data_sources__nosql_host = request.POST.get(
-                'response__internal_data_sources__nosql_host')
+                'response__internal_data_sources__nosql_host'
+            )
+
             response__internal_data_sources__nosql_bucket_name = request.POST.get(
-                'response__internal_data_sources__nosql_bucket_name')
+                'response__internal_data_sources__nosql_bucket_name'
+            )
+
             response__internal_data_sources__nosql_username = request.POST.get(
-                'response__internal_data_sources__nosql_username')
+                'response__internal_data_sources__nosql_username'
+            )
+
             response__internal_data_sources__nosql_password = request.POST.get(
-                'response__internal_data_sources__nosql_password')
+                'response__internal_data_sources__nosql_password'
+            )
 
             required_fields__data_sources__nosql = [
                 response__internal_data_sources__nosql_db_type,
@@ -893,11 +917,16 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
 
             #       - (4) Answers for @ Code Base
             response__internal_data_sources__code_base_provider = request.POST.get(
-                'response__internal_data_sources__code_base_provider')
+                'response__internal_data_sources__code_base_provider'
+            )
+
             response__internal_data_sources__code_base_host_url = request.POST.get(
-                'response__internal_data_sources__code_base_host_url')
+                'response__internal_data_sources__code_base_host_url'
+            )
+
             response__internal_data_sources__code_base_provider_api_key = request.POST.get(
-                'response__internal_data_sources__code_base_provider_api_key')
+                'response__internal_data_sources__code_base_provider_api_key'
+            )
 
             required_fields__data_sources__code_base = [
                 response__internal_data_sources__code_base_provider,
@@ -925,6 +954,10 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
             else:
                 print("User opt out for adding a new Code Base connection.")
                 pass
+
+            #       - (4a) Answers for @ Website Storage
+            # TODO-A: Implement Website Storage connection creation
+            pass
 
             #       - (5) Answers for @ File Base (SSH)
             response__internal_data_sources__file_base_os_type = request.POST.get(

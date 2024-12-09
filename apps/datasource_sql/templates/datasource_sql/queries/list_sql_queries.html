@@ -210,6 +210,13 @@
                     </div>
                   </div>
                 </div>
+              {% empty %}
+                <div class="card-body">
+                  <div class="alert alert-warning p-8" role="alert">
+                    <i class="fa fa-exclamation-triangle me-4"></i>
+                    <strong>No custom SQL queries could be found for this assistant (yet).</strong>
+                  </div>
+                </div>
               {% endfor %}
             </div>
           </div>

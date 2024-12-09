@@ -77,7 +77,9 @@ from apps.user_settings.views import (
     SettingsView_DeleteAllTeams,
     SettingsView_DeleteAllEllmaScripts,
     SettingsView_DeleteAllSheetosDocuments,
-    SettingsView_DeleteAllSheetosFolders
+    SettingsView_DeleteAllSheetosFolders,
+    SettingsView_DeleteAllWebsiteStorageItems,
+    SettingsView_DeleteAllWebsiteStorages,
 )
 
 app_name = "user_settings"
@@ -542,6 +544,22 @@ urlpatterns = [
 
         ),
         name='delete_all_ellma_scripts'
+    ),
+
+    path(
+        'delete/all/website_storages/',
+        SettingsView_DeleteAllWebsiteStorages.as_view(
+
+        ),
+        name='delete_all_website_storages'
+    ),
+
+    path(
+        'delete/all/website_storage_items/',
+        SettingsView_DeleteAllWebsiteStorageItems.as_view(
+
+        ),
+        name='delete_all_website_storage_items'
     ),
 
     #####

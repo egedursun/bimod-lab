@@ -28,19 +28,42 @@ class MetaIntegrationManagementTypesNames:
 
     @staticmethod
     def as_list():
-        return [MetaIntegrationManagementTypesNames.EXPERT_NETWORKS_AND_LEAN_ASSISTANT,
-                MetaIntegrationManagementTypesNames.ORCHESTRATION_MAESTRO_AND_LEAN_ASSISTANT]
+        return [
+            MetaIntegrationManagementTypesNames.EXPERT_NETWORKS_AND_LEAN_ASSISTANT,
+            MetaIntegrationManagementTypesNames.ORCHESTRATION_MAESTRO_AND_LEAN_ASSISTANT
+        ]
 
 
-META_INTEGRATION_TEAM_ADMIN_LIST = ['meta_integration_name', 'meta_integration_category',
-                                    'created_at', 'updated_at']
-META_INTEGRATION_TEAM_ADMIN_FILTER = ['meta_integration_category', 'created_at', 'updated_at']
+META_INTEGRATION_TEAM_ADMIN_LIST = [
+    'meta_integration_name',
+    'meta_integration_category',
+    'created_at',
+    'updated_at'
+]
+META_INTEGRATION_TEAM_ADMIN_FILTER = [
+    'meta_integration_category',
+    'created_at',
+    'updated_at'
+]
+META_INTEGRATION_TEAM_ADMIN_SEARCH = [
+    'meta_integration_name',
+    'meta_integration_category'
+]
 
-META_INTEGRATION_TEAM_ADMIN_SEARCH = ['meta_integration_name', 'meta_integration_category']
-META_INTEGRATION_CATEGORY_ADMIN_LIST = ['category_name', 'category_description', 'category_image_url', 'created_at',
-                                        'updated_at']
-META_INTEGRATION_CATEGORY_ADMIN_FILTER = ['created_at', 'updated_at']
-META_INTEGRATION_CATEGORY_ADMIN_SEARCH = ['category_name']
+META_INTEGRATION_CATEGORY_ADMIN_LIST = [
+    'category_name',
+    'category_description',
+    'category_image_url',
+    'created_at',
+    'updated_at'
+]
+META_INTEGRATION_CATEGORY_ADMIN_FILTER = [
+    'created_at',
+    'updated_at'
+]
+META_INTEGRATION_CATEGORY_ADMIN_SEARCH = [
+    'category_name'
+]
 
 META_INTEGRATION_ORCHESTRATOR_STANDARD_INSTRUCTIONS = f"""
     You are an orchestrator manager tasked to manage the team members assigned under your command,

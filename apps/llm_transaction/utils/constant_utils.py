@@ -77,6 +77,7 @@ SOURCES_OF_LLM_TRANSACTION = [
     ("metakanban", "MetaKanban"),
     ("meeting-transcription", "Meeting Transcription"),
     ("metatempo", "MetaTempo"),
+    ("website-storage-executor", "Website Storage Executor"),
 ]
 
 
@@ -134,6 +135,7 @@ class LLMTransactionSourcesTypesNames:
     METAKANBAN = "metakanban"
     MEETING_TRANSCRIPTION = "meeting-transcription"
     METATEMPO = "metatempo"
+    WEBSITE_STORAGE_EXECUTOR = "website-storage-executor"
 
     @staticmethod
     def as_list():
@@ -184,6 +186,7 @@ class LLMTransactionSourcesTypesNames:
             LLMTransactionSourcesTypesNames.METAKANBAN,
             LLMTransactionSourcesTypesNames.MEETING_TRANSCRIPTION,
             LLMTransactionSourcesTypesNames.METATEMPO,
+            LLMTransactionSourcesTypesNames.WEBSITE_STORAGE_EXECUTOR,
         ]
 
 
@@ -192,7 +195,7 @@ class LLMTransactionSourcesTypesNames:
     **IMPORTANT NOTE:**
     ================================================================================================================
 
-    **IF YOU ARE ADDING A NEW TOOL THAT IS ASSOCIATED WITH A "COST",**
+    **IF YOU ARE ADDING A NEW TOOL THAT IS ASSOCIATED WITH A "COST"**
 
     DON'T FORGET TO UPDATE:
 
@@ -205,7 +208,6 @@ class LLMTransactionSourcesTypesNames:
 
     ================================================================================================================
 """
-
 
 INVOICE_TYPES = [
     ("auto-top-up", "Auto Top-Up"),
@@ -262,16 +264,24 @@ INTERNAL_TIME_FILTER_TYPES = [
     ('years', 'years'),
 ]
 
-
 TXS_PAGINATION_ITEMS_PER_PAGE = 5
 MAXIMUM_PAGES_POSSIBLE_TO_SHOW = 500
 
 
 class LLMCostsPerMillionTokens:
     OPENAI_GPT_COSTS = {
-        "gpt-4o": {"input": 5.00, "output": 15.00},
-        "gpt-4-turbo": {"input": 10.00, "output": 30.00},
-        "gpt-4": {"input": 30.00, "output": 60.00},
+        "gpt-4o": {
+            "input": 5.00,
+            "output": 15.00
+        },
+        "gpt-4-turbo": {
+            "input": 10.00,
+            "output": 30.00
+        },
+        "gpt-4": {
+            "input": 30.00,
+            "output": 60.00
+        },
     }
 
 
@@ -299,11 +309,29 @@ INVOICE_ADMIN_LIST = [
 ]
 
 TRANSACTION_ADMIN_LIST = [
-    "responsible_user", "responsible_assistant", "organization", "model", "transaction_source", "total_cost",
+    "responsible_user",
+    "responsible_assistant",
+    "organization",
+    "model",
+    "transaction_source",
+    "total_cost",
     "created_at"
 ]
-TRANSACTION_ADMIN_FILTER = ["responsible_user", "responsible_assistant", "transaction_source", "organization", "model",
-                            "created_at"]
-TRANSACTION_ADMIN_SEARCH = ["organization__name", "model__nickname"]
+TRANSACTION_ADMIN_FILTER = [
+    "responsible_user",
+    "responsible_assistant",
+    "transaction_source",
+    "organization",
+    "model",
+    "created_at"
+]
+TRANSACTION_ADMIN_SEARCH = [
+    "organization__name",
+    "model__nickname"
+]
 
-BALANCE_SNAPSHOT_ADMIN_LIST = ["organization", "balance", "created_at"]
+BALANCE_SNAPSHOT_ADMIN_LIST = [
+    "organization",
+    "balance",
+    "created_at"
+]

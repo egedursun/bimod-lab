@@ -60,7 +60,7 @@ from apps.core.tool_calls.tool_call_manager import ToolCallManager
 from apps.multimodal_chat.utils import (
     calculate_billable_cost_from_raw,
     transmit_websocket_log,
-    BIMOD_NO_TAG_PLACEHOLDER
+    BIMOD_NO_TAG_PLACEHOLDER, SourcesForMultimodalChatsNames
 )
 
 logger = logging.getLogger(__name__)
@@ -884,7 +884,9 @@ class OpenAIGPTClientManager:
         prev_tool_name=None,
         with_media=False,
         file_uris=None,
-        image_uris=None
+        image_uris=None,
+        with_custom_system_prompt=False,
+        custom_system_prompt=None
     ):
 
         from apps.multimodal_chat.models import MultimodalChatMessage
@@ -896,14 +898,20 @@ class OpenAIGPTClientManager:
 
         try:
             try:
-                prompt_msgs = [
-                    SystemPromptFactoryBuilder.build_system_prompts(
-                        chat=self.chat,
-                        assistant=self.assistant,
-                        user=user,
-                        role=ChatRoles.SYSTEM
-                    )
-                ]
+
+                if with_custom_system_prompt is False:
+                    prompt_msgs = [
+                        SystemPromptFactoryBuilder.build_system_prompts(
+                            chat=self.chat,
+                            assistant=self.assistant,
+                            user=user,
+                            role=ChatRoles.SYSTEM
+                        )
+                    ]
+                else:
+                    prompt_msgs = [
+                        custom_system_prompt
+                    ]
 
                 if self.assistant.ner_integration is not None:
                     ner_xc = NERExecutor(ner_id=self.assistant.ner_integration.id)

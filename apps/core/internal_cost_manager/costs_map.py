@@ -64,6 +64,7 @@ class InternalServiceCosts:
             InternalServiceCosts.MeetingTranscription.COST,
             InternalServiceCosts.MetaTempo.COST,
             InternalServiceCosts.EllmaScripting.COST,
+            InternalServiceCosts.WebsiteStorageExecutor.COST,
         ]
 
     class ContextMemory:
@@ -189,6 +190,9 @@ class InternalServiceCosts:
     class MetaTempo:
         COST = COSTS_MAP["METATEMPO"]
 
+    class WebsiteStorageExecutor:
+        COST = COSTS_MAP["WEBSITE_STORAGE_EXECUTOR"]
+
 
 TOOL_NAME_TO_COST_MAP = {
     "store-memory": InternalServiceCosts.ContextMemory.COST,
@@ -232,4 +236,5 @@ TOOL_NAME_TO_COST_MAP = {
     "metakanban": InternalServiceCosts.MetaKanban.COST,
     "meeting-transcription": InternalServiceCosts.MeetingTranscription.COST,
     "metatempo": InternalServiceCosts.MetaTempo.COST,
+    "website-storage-executor": InternalServiceCosts.WebsiteStorageExecutor.COST,
 }

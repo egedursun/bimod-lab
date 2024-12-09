@@ -166,6 +166,7 @@ INSTALLED_APPS = [
     "apps.quick_setup_helper",
     "apps.mobile_client",
     "apps.beamguard",
+    "apps.datasource_website",
 
     ########################################
     # SUPPORT
@@ -298,6 +299,8 @@ MAX_VOIDFORGER_EXPORTS_ORGANIZATION = int(os.environ.get("MAX_VOIDFORGER_EXPORTS
 
 MAX_BROWSERS_PER_ASSISTANT = int(os.environ.get("MAX_BROWSERS_PER_ASSISTANT", default="3"))
 MAX_CODE_BASES_PER_ASSISTANT = int(os.environ.get("MAX_CODE_BASES_PER_ASSISTANT", default="3"))
+MAX_WEBSITE_STORAGES_PER_ASSISTANT = int(os.environ.get("MAX_WEBSITE_STORAGES_PER_ASSISTANT", default="3"))
+MAX_WEBSITE_ITEMS_PER_STORAGE = int(os.environ.get("MAX_WEBSITE_ITEMS_PER_STORAGE", default="10"))
 MAX_FILE_SYSTEMS_PER_ASSISTANT = int(os.environ.get("MAX_FILE_SYSTEMS_PER_ASSISTANT", default="3"))
 MAX_KNOWLEDGE_BASES_PER_ASSISTANT = int(os.environ.get("MAX_KNOWLEDGE_BASES_PER_ASSISTANT", default="3"))
 MAX_MEDIA_STORAGES_PER_ASSISTANT = int(os.environ.get("MAX_MEDIA_STORAGES_PER_ASSISTANT", default="20"))
@@ -523,6 +526,7 @@ METAKANBAN = os.environ.get("METAKANBAN", default="0")
 MEETING_TRANSCRIPTION = os.environ.get("MEETING_TRANSCRIPTION", default="0")
 METATEMPO = os.environ.get("METATEMPO", default="0")
 ELLMA_SCRIPTING = os.environ.get("ELLMA_SCRIPTING", default="0")
+WEBSITE_STORAGE_EXECUTOR = os.environ.get("WEBSITE_STORAGE_EXECUTOR", default="0")
 
 COSTS_MAP = {
     "CONTEXT_MEMORY": float(CONTEXT_MEMORY),
@@ -566,6 +570,7 @@ COSTS_MAP = {
     "MEETING_TRANSCRIPTION": float(MEETING_TRANSCRIPTION),
     "METATEMPO": float(METATEMPO),
     "ELLMA_SCRIPTING": float(ELLMA_SCRIPTING),
+    "WEBSITE_STORAGE_EXECUTOR": float(WEBSITE_STORAGE_EXECUTOR),
 }
 
 if ENVIRONMENT != "local":
