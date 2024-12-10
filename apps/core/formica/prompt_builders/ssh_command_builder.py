@@ -29,11 +29,19 @@ from apps.core.formica.prompts import (
     build_formica_technical_dictionary_prompt,
     build_formica_ops_instruction_prompt,
     build_formica_action__ssh_prompt,
-    build_formica_file_system_data_source_prompt,
-    build_formica_tool_prompt__execute_ssh_file_system_command
 )
 
-from apps.core.formica.prompts.formica.whole_text_supplier_prompt import build_whole_text_supply_prompt_public
+from apps.core.formica.prompts.formica.whole_text_supplier_prompt import (
+    build_whole_text_supply_prompt_public
+)
+
+from apps.core.system_prompts.information_feeds.ssh_file_system.build_file_system_data_source_prompt import (
+    build_file_system_data_source_prompt
+)
+
+from apps.core.system_prompts.tool_call_prompts.per_tool.execute_ssh_file_system_command_tool_prompt import (
+    build_tool_prompt__execute_ssh_file_system_command
+)
 
 logger = logging.getLogger(__name__)
 
@@ -77,10 +85,10 @@ def build_ssh_command_system_prompt_public(
         user_query=user_query
     )
 
-    data_source_prompts = build_formica_file_system_data_source_prompt(
+    data_source_prompts = build_file_system_data_source_prompt(
         assistant=xc.copilot
     )
-    tool_execution_prompts = build_formica_tool_prompt__execute_ssh_file_system_command()
+    tool_execution_prompts = build_tool_prompt__execute_ssh_file_system_command()
 
     combined_system_prompt += generic_instruction_prompt
     combined_system_prompt += folder_and_doc_info_prompt

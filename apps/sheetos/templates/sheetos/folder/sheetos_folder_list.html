@@ -131,11 +131,11 @@
                 <strong class="ms-4">{{ org_data.organization.name }}</strong>
               </div>
             </h4>
+            <p class="text-dark">
+              <i class="fa fa-folder"></i>
+              <strong>&nbsp; Number of Folders: </strong> {{ org_data.folders.paginator.count }}
+            </p>
           </a>
-          <p>
-            <i class="fa fa-folder"></i>
-            <strong>&nbsp; Number of Folders: </strong> {{ org_data.folders.paginator.count }}
-          </p>
         </div>
 
         <!-- Folder Table -->

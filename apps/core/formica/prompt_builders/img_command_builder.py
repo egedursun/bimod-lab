@@ -28,11 +28,15 @@ from apps.core.formica.prompts import (
     build_formica_technical_dictionary_prompt,
     build_formica_ops_instruction_prompt,
     build_formica_action__img_prompt,
-    build_formica_tool_prompt__generate_image,
     build_formica_spatial_awareness_prompt
 )
 
-from apps.core.formica.prompts.formica.whole_text_supplier_prompt import build_whole_text_supply_prompt_public
+from apps.core.formica.prompts.formica.whole_text_supplier_prompt import (
+    build_whole_text_supply_prompt_public
+)
+from apps.core.system_prompts.tool_call_prompts.per_tool.generate_image_tool_prompt import (
+    build_tool_prompt__generate_image
+)
 
 logger = logging.getLogger(__name__)
 
@@ -77,7 +81,7 @@ def build_img_command_system_prompt_public(
         user_query=user_query
     )
 
-    tool_execution_prompts = build_formica_tool_prompt__generate_image()
+    tool_execution_prompts = build_tool_prompt__generate_image()
 
     combined_system_prompt += generic_instruction_prompt
     combined_system_prompt += folder_and_doc_info_prompt

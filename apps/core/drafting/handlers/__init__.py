@@ -26,3 +26,4 @@ from .auto_command_handler import *
 from .vect_command_handler import *
 from .nosql_command_handler import *
 from .repo_command_handler import *
+from .site_command_handler import *

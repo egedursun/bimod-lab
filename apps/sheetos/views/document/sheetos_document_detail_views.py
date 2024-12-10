@@ -14,13 +14,17 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
 from apps.organization.models import Organization
 from apps.sheetos.models import SheetosDocument
 from apps.user_permissions.utils import PermissionNames
@@ -35,18 +39,26 @@ class SheetosView_DocumentDetail(TemplateView, LoginRequiredMixin):
 
         ##############################
         # PERMISSION CHECK FOR - LIST_SHEETOS_DOCUMENTS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.LIST_SHEETOS_DOCUMENTS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.LIST_SHEETOS_DOCUMENTS
+        ):
             messages.error(self.request, "You do not have permission to list Sheetos Documents.")
             return context
         ##############################
 
-        user_orgs = Organization.objects.filter(users__in=[self.request.user])
+        user_orgs = Organization.objects.filter(
+            users__in=[self.request.user]
+        )
+
         document_id = self.kwargs.get('document_id')
         document = SheetosDocument.objects.get(id=document_id)
+
         context['document'] = document
         context['folder'] = document.document_folder
         content = document.document_content_json_quill
         context['content'] = content
+
         logger.info(f"Sheetos Document {document.document_title} was viewed.")
+
         return context

@@ -26,8 +26,6 @@ from apps.core.sheetos.prompts import (
     build_sheetos_technical_dictionary_prompt,
     build_sheetos_ops_instruction_prompt,
     build_sheetos_action__nosql_prompt,
-    build_sheetos_nosql_data_source_prompt,
-    build_sheetos_tool_prompt__execute_nosql_query
 )
 
 from apps.core.sheetos.prompts.sheetos.folder_and_document_data_prompt import (
@@ -40,7 +38,14 @@ from apps.core.sheetos.prompts.sheetos.whole_text_supplier_prompt import (
 )
 
 from apps.core.sheetos.sheetos_executor import SheetosExecutionManager
-from apps.core.sheetos.sheetos_executor_public import SheetosExecutionManager_Public
+
+from apps.core.system_prompts.information_feeds.nosql.build_nosql_data_source_prompt import (
+    build_nosql_data_source_prompt
+)
+
+from apps.core.system_prompts.tool_call_prompts.per_tool.execute_nosql_query_tool_prompt import (
+    build_tool_prompt__execute_nosql_query
+)
 
 logger = logging.getLogger(__name__)
 
@@ -51,8 +56,10 @@ def build_nosql_command_system_prompt(xc: SheetosExecutionManager, user_query: s
     combined_system_prompt = ""
 
     generic_instruction_prompt = ""
+
     generic_instruction_prompt += build_sheetos_agent_nickname_prompt(xc.copilot.name)
     generic_instruction_prompt += build_sheetos_internal_principles_prompt()
+
     generic_instruction_prompt += build_sheetos_agent_personality_prompt(tone=xc.copilot.tone)
     generic_instruction_prompt += build_sheetos_target_audience_prompt(audience=xc.copilot.audience)
     generic_instruction_prompt += build_sheetos_user_tenant_prompt(user=xc.copilot.created_by_user)
@@ -68,8 +75,8 @@ def build_nosql_command_system_prompt(xc: SheetosExecutionManager, user_query: s
     sheetos_ops_instruction_prompt = build_sheetos_ops_instruction_prompt()
     action_instructions_prompt = build_sheetos_action__nosql_prompt(user_query=user_query)
 
-    data_source_prompts = build_sheetos_nosql_data_source_prompt(assistant=xc.copilot)
-    tool_execution_prompts = build_sheetos_tool_prompt__execute_nosql_query()
+    data_source_prompts = build_nosql_data_source_prompt(assistant=xc.copilot)
+    tool_execution_prompts = build_tool_prompt__execute_nosql_query()
 
     combined_system_prompt += generic_instruction_prompt
     combined_system_prompt += folder_and_doc_info_prompt
@@ -83,17 +90,25 @@ def build_nosql_command_system_prompt(xc: SheetosExecutionManager, user_query: s
 
 
 def build_nosql_command_system_prompt_public(
-    xc: SheetosExecutionManager_Public,
+    xc,
     user_query: str,
     content: str
 ):
+    from apps.core.sheetos.sheetos_executor_public import (
+        SheetosExecutionManager_Public
+    )
+
+    xc: SheetosExecutionManager_Public
+
     logger.info(f"Building NOSQL command system prompt for user query: {user_query}")
 
     combined_system_prompt = ""
 
     generic_instruction_prompt = ""
+
     generic_instruction_prompt += build_sheetos_agent_nickname_prompt(xc.copilot.name)
     generic_instruction_prompt += build_sheetos_internal_principles_prompt()
+
     generic_instruction_prompt += build_sheetos_agent_personality_prompt(tone=xc.copilot.tone)
     generic_instruction_prompt += build_sheetos_target_audience_prompt(audience=xc.copilot.audience)
     generic_instruction_prompt += build_sheetos_user_tenant_prompt(user=xc.copilot.created_by_user)
@@ -105,8 +120,9 @@ def build_nosql_command_system_prompt_public(
     sheetos_ops_instruction_prompt = build_sheetos_ops_instruction_prompt()
     action_instructions_prompt = build_sheetos_action__nosql_prompt(user_query=user_query)
 
-    data_source_prompts = build_sheetos_nosql_data_source_prompt(assistant=xc.copilot)
-    tool_execution_prompts = build_sheetos_tool_prompt__execute_nosql_query()
+    data_source_prompts = build_nosql_data_source_prompt(assistant=xc.copilot)
+
+    tool_execution_prompts = build_tool_prompt__execute_nosql_query()
 
     combined_system_prompt += generic_instruction_prompt
     combined_system_prompt += folder_and_doc_info_prompt

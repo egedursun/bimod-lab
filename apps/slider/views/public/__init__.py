@@ -25,3 +25,4 @@ from .public_vect_commands_views import *
 from .public_auto_commands_views import *
 from .public_nosql_commands_views import *
 from .public_select_commands_views import *
+from .public_site_commands_views import *

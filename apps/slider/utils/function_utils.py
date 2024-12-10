@@ -19,17 +19,26 @@ import logging
 import secrets
 
 from apps.slider.models import SliderGoogleAppsConnection
-from apps.slider.utils import SLIDER_GOOGLE_APPS_CONNECTION_API_KEY_DEFAULT_LENGTH
+
+from apps.slider.utils import (
+    SLIDER_GOOGLE_APPS_CONNECTION_API_KEY_DEFAULT_LENGTH
+)
 
 logger = logging.getLogger(__name__)
 
 
 def generate_google_apps_connection_api_key():
-    return secrets.token_urlsafe(SLIDER_GOOGLE_APPS_CONNECTION_API_KEY_DEFAULT_LENGTH)
+    return secrets.token_urlsafe(
+        SLIDER_GOOGLE_APPS_CONNECTION_API_KEY_DEFAULT_LENGTH
+    )
 
 
 def is_valid_google_apps_authentication_key(authentication_key: str):
-    connection_object = SliderGoogleAppsConnection.objects.filter(connection_api_key=authentication_key).first()
+    connection_object = SliderGoogleAppsConnection.objects.filter(
+        connection_api_key=authentication_key
+    ).first()
+
     if not connection_object:
         logger.error(f"Google Apps Authentication Key: {authentication_key} is not valid.")
+
     return connection_object

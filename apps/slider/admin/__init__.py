@@ -16,5 +16,3 @@
 #
 
 from .slider_google_apps_connection_models import *
-from .slider_folder_admin import *
-from .slider_document_admin import *

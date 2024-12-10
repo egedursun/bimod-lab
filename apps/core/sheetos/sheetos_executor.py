@@ -30,7 +30,8 @@ from apps.core.sheetos.handlers import (
     handle_ssh_command,
     handle_vect_command,
     handle_web_command,
-    handle_repo_command
+    handle_repo_command,
+    handle_site_command,
 )
 
 from apps.sheetos.models import SheetosDocument
@@ -232,6 +233,27 @@ class SheetosExecutionManager:
             logger.error(
                 f"[SheetosExecutionManager.execute_repo_command] Error executing REPO command: {command}. Error: {e}")
             error = f"[SheetosExecutionManager.execute_repo_command] Error executing REPO command: {command}. Error: {e}"
+
+        response['output'] = output
+        response['error'] = error
+        return response
+
+    def execute_site_command(self, command: str):
+        output, error = None, None
+        response = {
+            'output': output,
+            'error': output
+        }
+
+        try:
+            output, error = handle_site_command(xc=self, command=command)
+            logger.info(
+                f"[SheetosExecutionManager.execute_site_command] SITE command executed successfully: {command}")
+
+        except Exception as e:
+            logger.error(
+                f"[SheetosExecutionManager.execute_site_command] Error executing SITE command: {command}. Error: {e}")
+            error = f"[SheetosExecutionManager.execute_site_command] Error executing SITE command: {command}. Error: {e}"
 
         response['output'] = output
         response['error'] = error

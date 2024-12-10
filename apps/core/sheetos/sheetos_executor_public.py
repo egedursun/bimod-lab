@@ -30,7 +30,8 @@ from apps.core.sheetos.public_handlers import (
     handle_ssh_command_public,
     handle_vect_command_public,
     handle_web_command_public,
-    handle_repo_command_public
+    handle_repo_command_public,
+    handle_site_command_public,
 )
 
 from apps.sheetos.models import SheetosGoogleAppsConnection
@@ -276,4 +277,30 @@ class SheetosExecutionManager_Public:
 
         response['output'] = output
         response['error'] = error
+        return response
+
+    def execute_site_command(self, command: str):
+        output, error = None, None
+        response = {
+            'output': output,
+            'error': output
+        }
+
+        try:
+            output, error = handle_site_command_public(
+                xc=self,
+                command=command,
+                content=self.content
+            )
+            logger.info(
+                f"[SheetosExecutionManager_Public.handle_site_command_public] SITE command executed successfully: {command}")
+
+        except Exception as e:
+            logger.error(
+                f"[SheetosExecutionManager_Public.handle_site_command_public] Error executing SITE command: {command}. Error: {e}")
+            error = f"[SheetosExecutionManager_Public.handle_site_command_public] Error executing SITE command: {command}. Error: {e}"
+
+        response['output'] = output
+        response['error'] = error
+
         return response

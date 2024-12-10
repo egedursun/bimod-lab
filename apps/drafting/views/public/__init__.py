@@ -21,6 +21,7 @@ from .public_ssh_commands_views import *
 from .public_web_commands_views import *
 from .public_ai_command_views import *
 from .public_repo_commands_views import *
+from .public_site_commands_views import *
 from .public_vect_commands_views import *
 from .public_auto_commands_views import *
 from .public_nosql_commands_views import *

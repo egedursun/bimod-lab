@@ -29,11 +29,18 @@ from apps.core.formica.prompts import (
     build_formica_technical_dictionary_prompt,
     build_formica_ops_instruction_prompt,
     build_formica_action__vect_prompt,
-    build_formica_vector_store_data_source_prompt,
-    build_formica_tool_prompt__query_vector_store
 )
 
-from apps.core.formica.prompts.formica.whole_text_supplier_prompt import build_whole_text_supply_prompt_public
+from apps.core.formica.prompts.formica.whole_text_supplier_prompt import (
+    build_whole_text_supply_prompt_public
+)
+from apps.core.system_prompts.information_feeds.vector_store.build_vector_store_data_source_prompt import (
+    build_vector_store_data_source_prompt
+)
+
+from apps.core.system_prompts.tool_call_prompts.per_tool.execute_vector_store_query_tool_prompt import (
+    build_tool_prompt__query_vector_store
+)
 
 logger = logging.getLogger(__name__)
 
@@ -77,10 +84,10 @@ def build_vect_command_system_prompt_public(
         user_query=user_query
     )
 
-    data_source_prompts = build_formica_vector_store_data_source_prompt(
+    data_source_prompts = build_vector_store_data_source_prompt(
         assistant=xc.copilot
     )
-    tool_execution_prompts = build_formica_tool_prompt__query_vector_store()
+    tool_execution_prompts = build_tool_prompt__query_vector_store()
 
     combined_system_prompt += generic_instruction_prompt
     combined_system_prompt += folder_and_doc_info_prompt

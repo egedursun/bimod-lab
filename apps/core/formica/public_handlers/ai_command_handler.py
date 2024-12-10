@@ -18,7 +18,9 @@
 import logging
 
 from apps.core.formica.utils import find_tool_call_from_json
+
 from apps.core.generative_ai.utils import ChatRoles, GPT_DEFAULT_ENCODING_ENGINE
+
 from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
 from apps.llm_transaction.models import LLMTransaction
 from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
@@ -34,6 +36,7 @@ def handle_ai_command_public(
 
     from apps.core.formica.formica_executor_public import FormicaExecutionManager_Public
     from apps.core.formica.prompt_builders import build_ai_command_system_prompt_public
+
     xc: FormicaExecutionManager_Public
 
     try:

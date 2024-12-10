@@ -29,11 +29,18 @@ from apps.core.formica.prompts import (
     build_formica_technical_dictionary_prompt,
     build_formica_ops_instruction_prompt,
     build_formica_action__web_prompt,
-    build_formica_browsing_data_source_prompt,
-    build_formica_tool_prompt__browsing
 )
 
-from apps.core.formica.prompts.formica.whole_text_supplier_prompt import build_whole_text_supply_prompt_public
+from apps.core.formica.prompts.formica.whole_text_supplier_prompt import (
+    build_whole_text_supply_prompt_public
+)
+from apps.core.system_prompts.information_feeds.browser.build_browser_data_source_prompt import (
+    build_browsing_data_source_prompt
+)
+
+from apps.core.system_prompts.tool_call_prompts.per_tool.execute_browsing_tool_prompt import (
+    build_tool_prompt__browsing
+)
 
 logger = logging.getLogger(__name__)
 
@@ -43,7 +50,6 @@ def build_web_command_system_prompt_public(
     user_query: str,
     content: str
 ):
-
     logger.info(f"Building WEB command system prompt for user query: {user_query}")
 
     combined_system_prompt = ""
@@ -78,10 +84,10 @@ def build_web_command_system_prompt_public(
         user_query=user_query
     )
 
-    data_source_prompts = build_formica_browsing_data_source_prompt(
+    data_source_prompts = build_browsing_data_source_prompt(
         assistant=xc.copilot
     )
-    tool_execution_prompts = build_formica_tool_prompt__browsing()
+    tool_execution_prompts = build_tool_prompt__browsing()
 
     combined_system_prompt += generic_instruction_prompt
     combined_system_prompt += folder_and_doc_info_prompt

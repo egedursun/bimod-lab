@@ -58,6 +58,12 @@ def build_formica_ops_instruction_prompt() -> str:
         offering relevant suggestions or information. Like //vect, but specific to code repositories. Responses should
         be provided still in JSON format
 
+        - [11] //site: This command is used to activate your Website Data search capability tools for creating form
+        elements if this is what the user requests in his query . This is different from the web command, since here,
+         the data chunks are retrieved from previously indexed websites by the system, by using queries in natural
+        language to retrieve the most relevant chunks of indexed website data. Responses should be provided still in
+        JSON format, and will be used to create form elements similar to the other commands.
+
         ---
 
         **NOTE:** The selected action will be shared with you in this system prompt, along with any necessary tools or

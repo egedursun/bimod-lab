@@ -29,7 +29,8 @@ from apps.core.formica.public_handlers import (
     handle_ssh_command_public,
     handle_vect_command_public,
     handle_web_command_public,
-    handle_repo_command_public
+    handle_repo_command_public,
+    handle_site_command_public,
 )
 
 from apps.formica.models import FormicaGoogleAppsConnection
@@ -49,6 +50,7 @@ class FormicaExecutionManager_Public:
         self.content = text_content
         self.copilot = formica_google_apps_connection.formica_assistant
         self.copilot_llm = formica_google_apps_connection.formica_assistant.llm_model
+
         self.naked_c = OpenAIGPTClientManager.get_naked_client(
             llm_model=self.copilot_llm
         )
@@ -311,6 +313,31 @@ class FormicaExecutionManager_Public:
             logger.error(
                 f"[FormicaExecutionManager_Public.handle_repo_command_public] Error executing REPO command: {command}. Error: {e}")
             error = f"[FormicaExecutionManager_Public.handle_repo_command_public] Error executing REPO command: {command}. Error: {e}"
+
+        response['output'] = output
+        response['error'] = error
+        return response
+
+    def execute_site_command(self, command: str):
+        output, error = None, None
+        response = {
+            'output': output,
+            'error': output
+        }
+
+        try:
+            output, error = handle_site_command_public(
+                xc=self,
+                command=command,
+                content=self.content
+            )
+            logger.info(
+                f"[FormicaExecutionManager_Public.handle_site_command_public] SITE command executed successfully: {command}")
+
+        except Exception as e:
+            logger.error(
+                f"[FormicaExecutionManager_Public.handle_site_command_public] Error executing SITE command: {command}. Error: {e}")
+            error = f"[FormicaExecutionManager_Public.handle_site_command_public] Error executing SITE command: {command}. Error: {e}"
 
         response['output'] = output
         response['error'] = error

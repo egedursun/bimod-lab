@@ -18,7 +18,6 @@
 import logging
 
 from apps.core.drafting.drafting_executor import DraftingExecutionManager
-from apps.core.drafting.drafting_executor_public import DraftingExecutionManager_Public
 
 from apps.core.drafting.prompts import (
     build_drafting_agent_nickname_prompt,
@@ -91,10 +90,16 @@ def build_ai_command_system_prompt(xc: DraftingExecutionManager, user_query: str
 
 
 def build_ai_command_system_prompt_public(
-    xc: DraftingExecutionManager_Public,
+    xc,
     user_query: str,
     content: str
 ):
+    from apps.core.drafting.drafting_executor_public import (
+        DraftingExecutionManager_Public
+    )
+
+    xc: DraftingExecutionManager_Public
+
     logger.info(f"Building AI command system prompt for user query: {user_query}")
 
     combined_system_prompt = ""

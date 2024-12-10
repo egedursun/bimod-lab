@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from apps.core.sheetos.prompts import (
@@ -38,7 +39,6 @@ from apps.core.sheetos.prompts.sheetos.whole_text_supplier_prompt import (
 )
 
 from apps.core.sheetos.sheetos_executor import SheetosExecutionManager
-from apps.core.sheetos.sheetos_executor_public import SheetosExecutionManager_Public
 
 logger = logging.getLogger(__name__)
 
@@ -79,11 +79,17 @@ def build_select_command_system_prompt(
 
 
 def build_select_command_system_prompt_public(
-    xc: SheetosExecutionManager_Public,
+    xc,
     user_query: str,
     selected_data: str,
     content: str
 ):
+    from apps.core.sheetos.sheetos_executor_public import (
+        SheetosExecutionManager_Public
+    )
+
+    xc: SheetosExecutionManager_Public
+
     logger.info(f"Building SELECT command system prompt for user query: {user_query}")
     combined_system_prompt = ""
 

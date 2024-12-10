@@ -50,11 +50,10 @@ from apps.drafting.views import (
     DraftingView_GoogleAppsConnectionCreate,
     DraftingView_GoogleAppsConnectionUpdate,
     DraftingView_GoogleAppsConnectionDelete,
-    DraftingView_GoogleAppsConnectionList
-)
-
-from apps.drafting.views.drafting_commands.repo_commands_views import (
-    DraftingView_GenerateViaRepoCommand
+    DraftingView_GoogleAppsConnectionList,
+    DraftingView_GenerateViaRepoCommand,
+    DraftingView_GenerateViaSiteCommand,
+    DraftingView_PublicGenerateViaSiteCommand,
 )
 
 app_name = 'drafting'
@@ -140,6 +139,8 @@ urlpatterns = [
         name="documents_save"
     ),
 
+    #####
+
     path(
         "generate/commands/ai/",
         DraftingView_GenerateViaAICommand.as_view(
@@ -220,6 +221,16 @@ urlpatterns = [
         name="generate_repo"
     ),
 
+    path(
+        "generate/commands/site/",
+        DraftingView_GenerateViaSiteCommand.as_view(
+
+        ),
+        name="generate_site"
+    ),
+
+    #####
+
     # Google Apps Connections
 
     path(
@@ -253,6 +264,8 @@ urlpatterns = [
         ),
         name="google_apps_connections_delete"
     ),
+
+    #####
 
     # Public endpoints
     path(
@@ -332,5 +345,13 @@ urlpatterns = [
 
         ),
         name="public_generate_repo"
+    ),
+
+    path(
+        "public/generate/commands/site/",
+        DraftingView_PublicGenerateViaSiteCommand.as_view(
+
+        ),
+        name="public_generate_site"
     ),
 ]

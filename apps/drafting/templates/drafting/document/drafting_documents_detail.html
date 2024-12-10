@@ -276,7 +276,11 @@
           placeholder: 'Ask something to the AI assistant...',
           buttonText: 'Consult'
         },
-        '//web': { title: 'Make AI Browse', placeholder: 'Write what you want to browse...', buttonText: 'Browse' },
+        '//web': {
+          title: 'Make AI Browse',
+          placeholder: 'Write what you want to browse...',
+          buttonText: 'Browse'
+        },
         '//sql': {
           title: 'Check SQL with AI',
           placeholder: 'Query your database files with AI...',
@@ -307,7 +311,16 @@
           placeholder: 'Query your code repositories with AI...',
           buttonText: 'Query Repository'
         },
-        '//auto': { title: '', placeholder: '', buttonText: '' }  // No modal, just handling.
+        '//site': {
+          title: 'Search Website Data with AI',
+          placeholder: 'Query your website data indexes with AI...',
+          buttonText: 'Query Website Data'
+        },
+        '//auto': {
+          title: '',
+          placeholder: '',
+          buttonText: ''
+        }  // No modal, just handling.
       };
 
       for (const command in commands) {
@@ -396,6 +409,8 @@
           handleVectConsult();
         } else if (currentCommand === '//repo') {
           handleRepoConsult();
+        } else if (currentCommand === '//site') {
+          handleSiteConsult();
         }
       }
     }
@@ -760,6 +775,38 @@
       }
     }
 
+    function handleSiteConsult() {
+      const sitePrompt = document.getElementById('aiPrompt').value;
+      if (sitePrompt.trim() !== '') {
+        closeModal();
+        const selection = quill.getSelection(true);
+        if (!selection) return;
+        const cursorPosition = selection.index;
+        const triggerPhraseLength = currentCommand.length;
+        const documentId = "{{ document.id }}";
+        fetch("{% url 'drafting:generate_site' %}", {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRFToken': "{{ csrf_token }}"
+          },
+          body: new URLSearchParams({
+            document_id: documentId,
+            command: sitePrompt
+          })
+        })
+          .then(response => response.json())
+          .then(data => {
+            if (data.output) {
+              quill.insertText(cursorPosition, data.output, 'user');
+            }
+            if (data.error) {
+              console.error('Error while querying website data:', data.error);
+            }
+          });
+      }
+    }
+
     // Make modal draggable
     function makeDraggable(modal, handle) {
       let offsetX = 0, offsetY = 0, initialX = 0, initialY = 0;
@@ -844,17 +891,17 @@
     <hr>
     <div class="d-flex justify-content-start align-content-center">
       <div class="d-flex justify-content-between align-items-center mt-1 me-4">
-      <span class="form-control bg-lightest text-bg-light" style="font-weight: bold; min-width: 200px; overflow: auto;">
+      <span class="form-control bg-lightest text-bg-light" style="font-weight: bold; min-width: 200px; max-width: 200px; overflow-x: auto; white-space: nowrap; display: inline-block;">
         {{ document.document_folder.name }}
       </span>
       </div>
       <div class="d-flex justify-content-between align-items-center mt-1 me-4">
-      <span class="form-control bg-lightest text-bg-light" style="font-weight: bold; min-width: 200px; overflow: auto;">
+      <span class="form-control bg-lightest text-bg-light" style="font-weight: bold; min-width: 200px; max-width: 200px; overflow-x: auto; white-space: nowrap; display: inline-block;">
         {{ document.copilot_assistant.name }}
       </span>
       </div>
       <div class="d-flex justify-content-between align-items-center mt-1">
-      <span class="form-control bg-lightest text-bg-light" style="font-weight: bold; min-width: 380px; overflow: auto;">
+      <span class="form-control bg-lightest text-bg-light" style="font-weight: bold; min-width: 250px; max-width: 250px; overflow-x: auto; white-space: nowrap; display: inline-block;">
         {{ document.document_title }}
       </span>
         <span class="bg-label-warning rounded p-1 ms-4" role="alert" style="min-width: 150px;">
@@ -870,7 +917,7 @@
         <div class="d-flex justify-content-between align-items-center mt-1">
           <input type="hidden" name="draft_text" value="">
           <button type="button" class="btn btn-link p-0 ms-2" onclick="saveContent()">
-            <i class="fa fa-save ms-2 mt-1_5 text-dark" style="font-size: 24px;"></i>
+            <i class="fa fa-save ms-2 mt-5 text-dark" style="font-size: 24px;"></i>
           </button>
         </div>
       </form>
@@ -894,7 +941,7 @@
         <div class="d-flex justify-content-between align-items-center mt-1 ms-2">
           <input type="hidden" name="delete_document" value="{{ document.id }}">
           <button type="button" class="btn btn-link p-0 ms-2" id="deleteButton">
-            <i class="fa fa-trash ms-2 mt-2 text-danger" style="font-size: 24px;"></i>
+            <i class="fa fa-trash mt-5 text-danger" style="font-size: 24px;"></i>
           </button>
         </div>
       </form>
@@ -1004,7 +1051,16 @@
             <i class="fa fa-globe me-2"></i>
             <span class="h6 mb-2 text-body"><strong>//web</strong></span>
             <span class="text-dark ms-4">
-                    <strong>Search Web</strong>
+                    <strong>Browser</strong>
+                  </span>
+          </div>
+        </div>
+        <div class="col-lg-2 badge bg-lighter d-flex align-items-center mb-2 mx-2">
+          <div class="">
+            <i class="fa fa-globe me-2"></i>
+            <span class="h6 mb-2 text-body"><strong>//site</strong></span>
+            <span class="text-dark ms-4">
+                    <strong>Website Indexes</strong>
                   </span>
           </div>
         </div>

@@ -24,3 +24,4 @@ from .repo_commands_views import *
 from .vect_commands_views import *
 from .nosql_commands_views import *
 from .select_commands_views import *
+from .site_commands_views import *

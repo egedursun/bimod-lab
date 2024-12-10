@@ -18,7 +18,6 @@
 import logging
 
 from apps.core.drafting.drafting_executor import DraftingExecutionManager
-from apps.core.drafting.drafting_executor_public import DraftingExecutionManager_Public
 
 from apps.core.drafting.prompts import (
     build_drafting_agent_nickname_prompt,
@@ -30,8 +29,6 @@ from apps.core.drafting.prompts import (
     build_drafting_technical_dictionary_prompt,
     build_drafting_ops_instruction_prompt,
     build_drafting_action__sql_prompt,
-    build_drafting_sql_data_source_prompt,
-    build_drafting_tool_prompt__execute_sql_query
 )
 
 from apps.core.drafting.prompts.drafting.folder_and_document_data_prompt import (
@@ -41,6 +38,13 @@ from apps.core.drafting.prompts.drafting.folder_and_document_data_prompt import 
 from apps.core.drafting.prompts.drafting.whole_text_supplier_prompt import (
     build_whole_text_supply_prompt,
     build_whole_text_supply_prompt_public
+)
+from apps.core.system_prompts.information_feeds.sql.build_sql_data_source_prompt import (
+    build_sql_data_source_prompt
+)
+
+from apps.core.system_prompts.tool_call_prompts.per_tool.execute_sql_query_tool_prompt import (
+    build_tool_prompt__execute_sql_query
 )
 
 logger = logging.getLogger(__name__)
@@ -102,10 +106,16 @@ def build_sql_command_system_prompt(xc: DraftingExecutionManager, user_query: st
 
 
 def build_sql_command_system_prompt_public(
-    xc: DraftingExecutionManager_Public,
+    xc,
     user_query: str,
     content: str
 ):
+    from apps.core.drafting.drafting_executor_public import (
+        DraftingExecutionManager_Public
+    )
+
+    xc: DraftingExecutionManager_Public
+
     logger.info(f"Building SQL command system prompt for user query: {user_query}")
 
     combined_system_prompt = ""
@@ -140,10 +150,10 @@ def build_sql_command_system_prompt_public(
         user_query=user_query
     )
 
-    data_source_prompts = build_drafting_sql_data_source_prompt(
+    data_source_prompts = build_sql_data_source_prompt(
         assistant=xc.copilot
     )
-    tool_execution_prompts = build_drafting_tool_prompt__execute_sql_query()
+    tool_execution_prompts = build_tool_prompt__execute_sql_query()
 
     combined_system_prompt += generic_instruction_prompt
     combined_system_prompt += folder_and_doc_info_prompt

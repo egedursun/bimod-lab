@@ -18,7 +18,6 @@
 import logging
 
 from apps.core.drafting.drafting_executor import DraftingExecutionManager
-from apps.core.drafting.drafting_executor_public import DraftingExecutionManager_Public
 
 from apps.core.drafting.prompts import (
     build_drafting_agent_nickname_prompt,
@@ -93,9 +92,15 @@ def build_auto_command_system_prompt(xc: DraftingExecutionManager):
 
 
 def build_auto_command_system_prompt_public(
-    xc: DraftingExecutionManager_Public,
+    xc,
     content: str
 ):
+    from apps.core.drafting.drafting_executor_public import (
+        DraftingExecutionManager_Public
+    )
+
+    xc: DraftingExecutionManager_Public
+
     logger.info(f"Building AUTO command system prompt.")
 
     combined_system_prompt = ""

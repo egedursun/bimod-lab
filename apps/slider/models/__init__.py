@@ -15,6 +15,4 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-from .slider_folder_models import *
-from .slider_document_models import *
 from .slider_google_apps_connection_models import *

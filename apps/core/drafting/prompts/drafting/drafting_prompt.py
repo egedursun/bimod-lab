@@ -65,6 +65,12 @@ def build_drafting_ops_instruction_prompt():
         This action is similar to the //vect command, but it is specifically used for code base repositories and code
         content in them.
 
+        - [11] //site: This command is used to activate your Website Data search capability tools for answering the query
+        user provided. This is different from the web command, since here, the data chunks are retrieved from previously
+        indexed websites by the system, by using queries in natural language to retrieve the most relevant chunks of
+        indexed website data. You still need to provide your responses after your Website Data search operations in
+        natural language and in a form that can be directly integrated in the text.
+
         ---
 
         **NOTE:** The action that has been selected by the user will be shared with you in this system prompt, along

@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from apps.core.sheetos.prompts import (
@@ -26,8 +27,6 @@ from apps.core.sheetos.prompts import (
     build_sheetos_technical_dictionary_prompt,
     build_sheetos_ops_instruction_prompt,
     build_sheetos_action__ssh_prompt,
-    build_sheetos_file_system_data_source_prompt,
-    build_sheetos_tool_prompt__execute_ssh_file_system_command
 )
 
 from apps.core.sheetos.prompts.sheetos.folder_and_document_data_prompt import (
@@ -40,7 +39,14 @@ from apps.core.sheetos.prompts.sheetos.whole_text_supplier_prompt import (
 )
 
 from apps.core.sheetos.sheetos_executor import SheetosExecutionManager
-from apps.core.sheetos.sheetos_executor_public import SheetosExecutionManager_Public
+
+from apps.core.system_prompts.information_feeds.ssh_file_system.build_file_system_data_source_prompt import (
+    build_file_system_data_source_prompt
+)
+
+from apps.core.system_prompts.tool_call_prompts.per_tool.execute_ssh_file_system_command_tool_prompt import (
+    build_tool_prompt__execute_ssh_file_system_command
+)
 
 logger = logging.getLogger(__name__)
 
@@ -68,8 +74,8 @@ def build_ssh_command_system_prompt(xc: SheetosExecutionManager, user_query: str
     sheetos_ops_instruction_prompt = build_sheetos_ops_instruction_prompt()
     action_instructions_prompt = build_sheetos_action__ssh_prompt(user_query=user_query)
 
-    data_source_prompts = build_sheetos_file_system_data_source_prompt(assistant=xc.copilot)
-    tool_execution_prompts = build_sheetos_tool_prompt__execute_ssh_file_system_command()
+    data_source_prompts = build_file_system_data_source_prompt(assistant=xc.copilot)
+    tool_execution_prompts = build_tool_prompt__execute_ssh_file_system_command()
 
     combined_system_prompt += generic_instruction_prompt
     combined_system_prompt += folder_and_doc_info_prompt
@@ -82,7 +88,17 @@ def build_ssh_command_system_prompt(xc: SheetosExecutionManager, user_query: str
     return combined_system_prompt
 
 
-def build_ssh_command_system_prompt_public(xc: SheetosExecutionManager_Public, user_query: str, content: str):
+def build_ssh_command_system_prompt_public(
+    xc,
+    user_query: str,
+    content: str
+):
+    from apps.core.sheetos.sheetos_executor_public import (
+        SheetosExecutionManager_Public
+    )
+
+    xc: SheetosExecutionManager_Public
+
     logger.info(f"Building SSH command system prompt for user query: {user_query}")
 
     combined_system_prompt = ""
@@ -101,8 +117,8 @@ def build_ssh_command_system_prompt_public(xc: SheetosExecutionManager_Public, u
     sheetos_ops_instruction_prompt = build_sheetos_ops_instruction_prompt()
     action_instructions_prompt = build_sheetos_action__ssh_prompt(user_query=user_query)
 
-    data_source_prompts = build_sheetos_file_system_data_source_prompt(assistant=xc.copilot)
-    tool_execution_prompts = build_sheetos_tool_prompt__execute_ssh_file_system_command()
+    data_source_prompts = build_file_system_data_source_prompt(assistant=xc.copilot)
+    tool_execution_prompts = build_tool_prompt__execute_ssh_file_system_command()
 
     combined_system_prompt += generic_instruction_prompt
     combined_system_prompt += folder_and_doc_info_prompt
