@@ -319,7 +319,7 @@ class DataBackupExecutor:
             except Exception as e:
                 logger.error(f"[DataBackupExecutor.BackupCustomScript.backup_custom_scripts] Error backing up custom scripts: {e}")
 
-               return "An error occurred while backing up the data."
+                return "An error occurred while backing up the data."
 
             return None
 
