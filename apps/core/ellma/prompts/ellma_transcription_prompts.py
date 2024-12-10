@@ -485,4 +485,5 @@ def get_ellma_transcription_prompt(script: EllmaScript):
     ## ** YOUR ROLE AND ASSIGNMENT (END)
     ############################################################################################################
     """
+
     return prompt

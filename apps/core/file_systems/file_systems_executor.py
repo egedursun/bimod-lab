@@ -24,9 +24,17 @@ import faiss
 import numpy as np
 import paramiko
 
-from apps.core.file_systems.utils import DEFAULT_BANNER_TIMEOUT
-from apps.core.generative_ai.gpt_openai_manager import OpenAIGPTClientManager
-from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
+from apps.core.file_systems.utils import (
+    DEFAULT_BANNER_TIMEOUT
+)
+
+from apps.core.generative_ai.gpt_openai_manager import (
+    OpenAIGPTClientManager
+)
+
+from apps.core.internal_cost_manager.costs_map import (
+    InternalServiceCosts
+)
 
 from apps.core.file_systems.internal_command_sets import (
     INTERNAL_COMMAND_SETS,
@@ -35,11 +43,20 @@ from apps.core.file_systems.internal_command_sets import (
 
 from paramiko import SSHClient
 
-from apps.datasource_file_systems.utils import FILE_SYSTEM_DIRECTORY_SCHEMA_MAX_CHARACTERS_LIMIT, \
-    FILE_SYSTEM_DIRECTORY_SCHEMA_MAX_DEPTH, DEFAULT_SEARCH_RESULTS_FILE_SYSTEM_DIRECTORY_SCHEMA, OpenAIEmbeddingModels, \
-    VECTOR_INDEX_PATH_FILE_SYSTEM_DIRECTORY_SCHEMAS, OPEN_AI_DEFAULT_EMBEDDING_VECTOR_DIMENSIONS
+from apps.datasource_file_systems.utils import (
+    FILE_SYSTEM_DIRECTORY_SCHEMA_MAX_CHARACTERS_LIMIT,
+    FILE_SYSTEM_DIRECTORY_SCHEMA_MAX_DEPTH,
+    DEFAULT_SEARCH_RESULTS_FILE_SYSTEM_DIRECTORY_SCHEMA,
+    OpenAIEmbeddingModels,
+    VECTOR_INDEX_PATH_FILE_SYSTEM_DIRECTORY_SCHEMAS,
+    OPEN_AI_DEFAULT_EMBEDDING_VECTOR_DIMENSIONS
+)
+
 from apps.llm_transaction.models import LLMTransaction
-from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
+
+from apps.llm_transaction.utils import (
+    LLMTransactionSourcesTypesNames
+)
 
 logger = logging.getLogger(__name__)
 
@@ -53,15 +70,25 @@ class FileSystemsExecutor:
 
         self.file_system_schemas_index_path = os.path.join(
             VECTOR_INDEX_PATH_FILE_SYSTEM_DIRECTORY_SCHEMAS,
-            f'file_system_directory_schemas_index_{self.connection.id}.index')
+            f'file_system_directory_schemas_index_{self.connection.id}.index'
+        )
 
         if os.path.exists(self.file_system_schemas_index_path):
-            self.file_system_schemas_index = faiss.read_index(self.file_system_schemas_index_path)
+            self.file_system_schemas_index = faiss.read_index(
+                self.file_system_schemas_index_path
+            )
 
         else:
             self.file_system_schemas_index = faiss.IndexIDMap(
-                faiss.IndexFlatL2(OPEN_AI_DEFAULT_EMBEDDING_VECTOR_DIMENSIONS))
-            faiss.write_index(self.file_system_schemas_index, self.file_system_schemas_index_path)
+                faiss.IndexFlatL2(
+                    OPEN_AI_DEFAULT_EMBEDDING_VECTOR_DIMENSIONS
+                )
+            )
+
+            faiss.write_index(
+                self.file_system_schemas_index,
+                self.file_system_schemas_index_path
+            )
 
     def connect_c(self):
         try:
@@ -69,7 +96,9 @@ class FileSystemsExecutor:
             ssh_port = self.connection.port
             ssh_username = self.connection.username
             ssh_password = self.connection.password
+
             ssh = SSHClient()
+
             ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
             ssh.connect(
@@ -79,7 +108,9 @@ class FileSystemsExecutor:
                 password=ssh_password,
                 banner_timeout=DEFAULT_BANNER_TIMEOUT
             )
+
             self.client = ssh
+
             logger.info(f"Connected to the remote host: {ssh_connection_host}")
 
         except Exception as e:
@@ -94,6 +125,7 @@ class FileSystemsExecutor:
             self.client.stdout.close()
             self.client.stderr.close()
             self.client.ssh.close()
+
             logger.info(f"Closed the connection to the remote host: {self.connection.host_url}")
 
         except Exception as e:
@@ -125,6 +157,7 @@ class FileSystemsExecutor:
         try:
             lines = output.strip().split('\n')
             root = {}
+
             current_dir = root
             dir_stack = [root]
             depth_stack = [0]
@@ -176,6 +209,7 @@ class FileSystemsExecutor:
 
         except Exception as e:
             logger.error(f"Failed to parse the file tree schema: {e}")
+
             return {}
 
         return root
@@ -184,7 +218,11 @@ class FileSystemsExecutor:
         client = self.connect_c()
 
         try:
-            query = INTERNAL_COMMAND_SETS[LIST_DIRECTORY_RECURSIVE][self.connection.os_type]
+            query = INTERNAL_COMMAND_SETS[
+                LIST_DIRECTORY_RECURSIVE
+            ][
+                self.connection.os_type
+            ]
 
             stdin, stdout, stderr = client.exec_command(query)
 
@@ -203,14 +241,22 @@ class FileSystemsExecutor:
 
         except Exception as e:
             logger.error(f"Failed to retrieve the file tree schema: {e}")
+
             directory_dict = {}
 
         self.close_c()
+
         return directory_dict
 
-    def execute_file_system_command_set(self, commands: list[str]):
+    def execute_file_system_command_set(
+        self,
+        commands: list[str]
+    ):
 
-        from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE
+        from apps.core.generative_ai.utils import (
+            GPT_DEFAULT_ENCODING_ENGINE
+        )
+
         from apps.core.generative_ai.utils import ChatRoles
 
         client = self.connect_c()
@@ -231,6 +277,7 @@ class FileSystemsExecutor:
                 results["stdins"].append(command)
                 results["stdouts"].append(stdout.read().decode())
                 results["stderrs"].append(stderr.read().decode())
+
                 logger.info(f"Executed the command: {command}")
 
             except Exception as e:
@@ -238,12 +285,15 @@ class FileSystemsExecutor:
                 results["stdins"].append(command)
                 results["stdouts"].append(f"Error executing the command: {str(e)}")
                 results["stderrs"].append("")
+
                 logger.error(f"Failed to execute the command: {command}")
 
         try:
             updated_schema = self.retrieve_file_tree_schema()
             results["updated_schema"] = updated_schema
+
             self.close_c()
+
             logger.info(f"Updated the file tree schema: {updated_schema}")
 
         except Exception as e:
@@ -264,6 +314,7 @@ class FileSystemsExecutor:
             )
 
             tx.save()
+
             logger.info(f"Created a new LLM transaction for the file system command execution: {tx}")
 
         except Exception as e:
@@ -273,8 +324,16 @@ class FileSystemsExecutor:
         return results
 
     def _generate_query_embedding(self, query: str) -> List[float]:
-        c = OpenAIGPTClientManager.get_naked_client(llm_model=self.connection.assistant.llm_model)
-        response = c.embeddings.create(input=query, model=OpenAIEmbeddingModels.TEXT_EMBEDDING_3_LARGE)
+
+        c = OpenAIGPTClientManager.get_naked_client(
+            llm_model=self.connection.assistant.llm_model
+        )
+
+        response = c.embeddings.create(
+            input=query,
+            model=OpenAIEmbeddingModels.TEXT_EMBEDDING_3_LARGE
+        )
+
         return response.data[0].embedding
 
     def search_file_system_directory_schema(
@@ -287,28 +346,46 @@ class FileSystemsExecutor:
             FileSystemDirectorySchemaChunkVectorData
         )
 
-        query_vector = np.array([self._generate_query_embedding(query)], dtype=np.float32)
+        query_vector = np.array(
+            [
+                self._generate_query_embedding(query)
+            ],
+            dtype=np.float32
+        )
+
         if self.file_system_schemas_index is None:
             raise ValueError("[search_file_system_directory_schemas] FAISS index not initialized or loaded properly.")
 
-        distances, ids = self.file_system_schemas_index.search(query_vector, n_results)
+        distances, ids = self.file_system_schemas_index.search(
+            query_vector,
+            n_results
+        )
+
         results = []
 
         for item_id, distance in zip(ids[0], distances[0]):
+
             if item_id == -1:
                 continue
+
             try:
-                instance = FileSystemDirectorySchemaChunkVectorData.objects.get(id=item_id)
-                results.append({
-                    "id": instance.id,
-                    "data": instance.raw_data,
-                    "distance": distance,
-                })
+                instance = FileSystemDirectorySchemaChunkVectorData.objects.get(
+                    id=item_id
+                )
+
+                results.append(
+                    {
+                        "id": instance.id,
+                        "data": instance.raw_data,
+                        "distance": distance,
+                    }
+                )
 
             except FileSystemDirectorySchemaChunkVectorData.DoesNotExist:
                 print(
                     f"Warning: File System Directory Schema Chunk Instance with ID {item_id} not found in the vector database."
                 )
+
                 logger.error(
                     f"File System Directory Schema Chunk Instance with ID {item_id} not found in the vector database."
                 )

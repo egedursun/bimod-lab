@@ -17,14 +17,31 @@
 
 import logging
 
-from apps.core.ellma.prompt_builders import build_ellma_transcription_system_prompt
-from apps.core.generative_ai.gpt_openai_manager import OpenAIGPTClientManager
-from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
+from apps.core.ellma.prompt_builders import (
+    build_ellma_transcription_system_prompt
+)
+
+from apps.core.generative_ai.gpt_openai_manager import (
+    OpenAIGPTClientManager
+)
+
+from apps.core.generative_ai.utils import (
+    GPT_DEFAULT_ENCODING_ENGINE,
+    ChatRoles
+)
+
 from apps.ellma.models import EllmaScript
-from apps.ellma.utils import EllmaTranscriptionLanguagesNames
+
+from apps.ellma.utils import (
+    EllmaTranscriptionLanguagesNames
+)
+
 from apps.llm_core.models import LLMCore
 from apps.llm_transaction.models import LLMTransaction
-from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
+
+from apps.llm_transaction.utils import (
+    LLMTransactionSourcesTypesNames
+)
 
 logger = logging.getLogger(__name__)
 
@@ -35,18 +52,27 @@ class EllmaExecutionManager:
 
         self.script: EllmaScript = script
         self.llm_model: LLMCore = self.script.llm_model
-        self.c = OpenAIGPTClientManager.get_naked_client(llm_model=self.llm_model)
+
+        self.c = OpenAIGPTClientManager.get_naked_client(
+            llm_model=self.llm_model
+        )
 
     def transcribe_via_ai(self):
 
-        structured_system_prompt = build_ellma_transcription_system_prompt(script=self.script)
-        print("System prompt is built successfully.")
+        structured_system_prompt = build_ellma_transcription_system_prompt(
+            script=self.script
+        )
+
         raw_code = self.script.ellma_script_content
-        print("Raw code is retrieved successfully: " + str(raw_code))
 
         context_message_history = [
-            {"role": "system", "content": str(structured_system_prompt)},
-            {"role": "user", "content": f"""
+            {
+                "role": "system",
+                "content": str(structured_system_prompt)
+            },
+            {
+                "role": "user",
+                "content": f"""
                 ########################################
                 # CONVERT THIS CODE
                 ########################################
@@ -54,7 +80,8 @@ class EllmaExecutionManager:
                 {str(raw_code)}
 
                 ########################################
-            """}
+            """
+            }
         ]
 
         try:
@@ -73,6 +100,7 @@ class EllmaExecutionManager:
                 transaction_type=ChatRoles.SYSTEM,
                 transaction_source=LLMTransactionSourcesTypesNames.ELLMA_SCRIPTING
             )
+
             logger.info(f"[_transcribe_via_ai] Created eLLMa scripting transcription for system prompt.")
 
         except Exception as e:
@@ -96,6 +124,7 @@ class EllmaExecutionManager:
                 transaction_type=ChatRoles.USER,
                 transaction_source=LLMTransactionSourcesTypesNames.ELLMA_SCRIPTING
             )
+
             logger.info(f"[_transcribe_via_ai] Created eLLMa scripting transcription for user prompt.")
 
         except Exception as e:
@@ -107,25 +136,34 @@ class EllmaExecutionManager:
             llm_output = self.c.chat.completions.create(
                 model=self.llm_model.model_name,
                 messages=context_message_history,
-                temperature=int(self.llm_model.temperature),
-                max_tokens=int(self.llm_model.maximum_tokens)
+                temperature=int(
+                    self.llm_model.temperature
+                ),
+                max_tokens=int(
+                    self.llm_model.maximum_tokens
+                )
             )
+
             logger.info(f"Retrieved eLLMa transcription content")
 
         except Exception as e:
             logger.error(f"Failed to retrieve eLLMa transcription content: " + str(e))
+
             return None, "Failed to retrieve eLLMa transcription content: " + str(e)
 
         try:
             choices = llm_output.choices
             first_choice = choices[0]
+
             choice_message = first_choice.message
             choice_message_content = choice_message.content
             final_response = choice_message_content
+
             logger.info(f"Processed eLLMa transcription content.")
 
         except Exception as e:
             logger.error(f"Failed to eLLMa transcription content: " + str(e))
+
             return None, "Failed to eLLMa transcription content: " + str(e)
 
         try:
@@ -144,6 +182,7 @@ class EllmaExecutionManager:
                 transaction_type=ChatRoles.ASSISTANT,
                 transaction_source=LLMTransactionSourcesTypesNames.ELLMA_SCRIPTING
             )
+
             logger.info(
                 f"[_transcribe_via_ai] Created eLLMa scripting transcription for assistant response (primary).")
 
@@ -155,11 +194,14 @@ class EllmaExecutionManager:
         try:
             for language_name in EllmaTranscriptionLanguagesNames.as_list():
                 final_response = final_response.replace(f"```{language_name}", "").replace("```", "")
+
             final_response = final_response.replace("`", "")
 
         except Exception as e:
             logger.error(f"Failed to process eLLMa transcription content: " + str(e))
+
             return None, "Failed to process eLLMa transcription content: " + str(e)
 
         logger.info(f"Final eLLMa transcription content is retrieved well.")
+
         return final_response, None

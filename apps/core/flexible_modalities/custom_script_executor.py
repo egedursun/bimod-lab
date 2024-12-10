@@ -17,10 +17,15 @@
 
 import logging
 
-from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
-from apps.llm_transaction.models import LLMTransaction
-from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
+from apps.core.internal_cost_manager.costs_map import (
+    InternalServiceCosts
+)
 
+from apps.llm_transaction.models import LLMTransaction
+
+from apps.llm_transaction.utils import (
+    LLMTransactionSourcesTypesNames
+)
 
 logger = logging.getLogger(__name__)
 
@@ -38,8 +43,10 @@ class CustomScriptsContentRetriever:
         self.context_assistant = context_assistant
 
     def retrieve_custom_script_content(self):
+        from apps.core.generative_ai.utils import (
+            GPT_DEFAULT_ENCODING_ENGINE
+        )
 
-        from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE
         from apps.core.generative_ai.utils import ChatRoles
 
         script = self.script
@@ -58,8 +65,10 @@ class CustomScriptsContentRetriever:
             if self.script.is_public else LLMTransactionSourcesTypesNames.INTERNAL_SCRIPT_RETRIEVAL,
             is_tool_cost=True
         )
+
         tx.save()
 
         response = script_content if script_content else "[The script content is empty.]"
         logger.info(f"Retrieved custom script content: {script.name}")
+
         return response

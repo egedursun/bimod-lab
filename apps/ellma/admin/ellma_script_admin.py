@@ -31,4 +31,5 @@ class EllmaScriptAdmin(admin.ModelAdmin):
     list_display = ELLMA_SCRIPT_ADMIN_LIST
     search_fields = ELLMA_SCRIPT_ADMIN_SEARCH
     list_filter = ELLMA_SCRIPT_ADMIN_FILTER
+
     ordering = ['-created_at']

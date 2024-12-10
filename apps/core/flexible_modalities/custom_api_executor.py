@@ -17,9 +17,15 @@
 
 import logging
 
-from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
+from apps.core.internal_cost_manager.costs_map import (
+    InternalServiceCosts
+)
+
 from apps.llm_transaction.models import LLMTransaction
-from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
+
+from apps.llm_transaction.utils import (
+    LLMTransactionSourcesTypesNames
+)
 from apps.mm_apis.tasks import mm_api_execution_task
 
 
@@ -46,7 +52,10 @@ class CustomAPIExecutor:
         body_values=None
     ):
 
-        from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE
+        from apps.core.generative_ai.utils import (
+            GPT_DEFAULT_ENCODING_ENGINE
+        )
+
         from apps.core.generative_ai.utils import ChatRoles
 
         api_id = self.api.id
@@ -58,6 +67,7 @@ class CustomAPIExecutor:
             query_values=query_values,
             body_values=body_values
         )
+
         response = promise.get()
 
         tx = LLMTransaction(
@@ -73,7 +83,9 @@ class CustomAPIExecutor:
             if self.api.is_public else LLMTransactionSourcesTypesNames.INTERNAL_API_EXECUTION,
             is_tool_cost=True
         )
+
         tx.save()
+
         logger.info(f"Executed custom API: {self.api.name} with response: {response}")
 
         return response

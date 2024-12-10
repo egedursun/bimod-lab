@@ -17,11 +17,17 @@
 
 import logging
 
-from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
-from apps.llm_transaction.models import LLMTransaction
-from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
-from apps.mm_functions.tasks import mm_function_execution_task
+from apps.core.internal_cost_manager.costs_map import (
+    InternalServiceCosts
+)
 
+from apps.llm_transaction.models import LLMTransaction
+
+from apps.llm_transaction.utils import (
+    LLMTransactionSourcesTypesNames
+)
+
+from apps.mm_functions.tasks import mm_function_execution_task
 
 logger = logging.getLogger(__name__)
 
@@ -39,12 +45,19 @@ class CustomFunctionExecutor:
         self.context_assistant = context_assistant
 
     def execute_custom_function(self, input_data):
+        from apps.core.generative_ai.utils import (
+            GPT_DEFAULT_ENCODING_ENGINE
+        )
 
-        from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE
         from apps.core.generative_ai.utils import ChatRoles
 
         function_id = self.function.id
-        promise = mm_function_execution_task.delay(function_id, input_data)
+
+        promise = mm_function_execution_task.delay(
+            function_id,
+            input_data
+        )
+
         response = promise.get()
 
         tx = LLMTransaction(
@@ -60,7 +73,9 @@ class CustomFunctionExecutor:
             if self.function.is_public else LLMTransactionSourcesTypesNames.INTERNAL_FUNCTION_EXECUTION,
             is_tool_cost=True
         )
+
         tx.save()
+
         logger.info(f"Executed custom function: {self.function.name} with response: {response}")
 
         return response

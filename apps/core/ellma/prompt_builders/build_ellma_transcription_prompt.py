@@ -15,12 +15,18 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-from apps.core.ellma.prompts import get_ellma_transcription_prompt
+from apps.core.ellma.prompts import (
+    get_ellma_transcription_prompt
+)
+
 from apps.ellma.models import EllmaScript
 
 
 def build_ellma_transcription_system_prompt(script: EllmaScript):
     merged_prompt = f""
-    merged_prompt += get_ellma_transcription_prompt(script=script)
+
+    merged_prompt += get_ellma_transcription_prompt(
+        script=script
+    )
 
     return merged_prompt
