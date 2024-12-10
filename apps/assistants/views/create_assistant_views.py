@@ -22,16 +22,34 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.assistants.models import AGENT_SPEECH_LANGUAGES, CONTEXT_MANAGEMENT_STRATEGY, Assistant
-from apps.assistants.utils import ContextManagementStrategyNames
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
+from apps.assistants.models import (
+    AGENT_SPEECH_LANGUAGES,
+    CONTEXT_MANAGEMENT_STRATEGY,
+    Assistant
+)
+
+from apps.assistants.utils import (
+    ContextManagementStrategyNames
+)
+
 from apps.data_security.models import NERIntegration
 from apps.llm_core.models import LLMCore
 from apps.organization.models import Organization
 from apps.projects.models import ProjectItem
 from apps.user_permissions.utils import PermissionNames
-from apps.assistants.utils import MULTI_STEP_REASONING_CAPABILITY_CHOICE
-from config.settings import MAX_PROJECTS_PER_ASSISTANT
+
+from apps.assistants.utils import (
+    MULTI_STEP_REASONING_CAPABILITY_CHOICE
+)
+
+from config.settings import (
+    MAX_PROJECTS_PER_ASSISTANT
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -40,23 +58,29 @@ logger = logging.getLogger(__name__)
 class AssistantView_Create(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+
         context['organizations'] = Organization.objects.filter(
             users__in=[
                 self.request.user
             ]
         )
+
         context['llm_models'] = LLMCore.objects.filter(
             organization__in=context['organizations']
         )
+
         context['response_languages'] = AGENT_SPEECH_LANGUAGES
         context['context_overflow_strategies'] = CONTEXT_MANAGEMENT_STRATEGY
         context['reasoning_capability_choices'] = MULTI_STEP_REASONING_CAPABILITY_CHOICE
+
         context["ner_integrations"] = NERIntegration.objects.filter(
             organization__in=context['organizations']
         )
+
         context["projects"] = ProjectItem.objects.filter(
             organization__in=context['organizations']
         )
+
         return context
 
     def post(self, request, *args, **kwargs):
@@ -89,6 +113,7 @@ class AssistantView_Create(LoginRequiredMixin, TemplateView):
         except Exception as e:
             logger.error(f"Error while getting the organization and LLM model information: {e}")
             messages.error(request, "Organization and LLM model information is required.")
+
             return redirect('assistants:create')
 
         try:
@@ -125,6 +150,7 @@ class AssistantView_Create(LoginRequiredMixin, TemplateView):
             communication_lang = request.POST.get('response_language')
             spatial_capab_time = request.POST.get('time_awareness') == 'on'
             spatial_capab_place = request.POST.get('place_awareness') == 'on'
+
             visualization_capab = request.POST.get('image_generation_capability') == 'on'
             reasoning_capab = request.POST.get('multi_step_reasoning_capability_choice')
             is_beamguard_active = request.POST.get('is_beamguard_active') == 'on'
@@ -140,17 +166,20 @@ class AssistantView_Create(LoginRequiredMixin, TemplateView):
                 tone
             ):
                 messages.error(request, "All fields are required.")
+
                 return redirect('assistants:create')
 
         except Exception as e:
             logger.error(f"Error while getting the agent information: {e}")
             messages.error(request, "Agent information is required.")
+
             return redirect('assistants:create')
 
         try:
             org = Organization.objects.get(id=org_id)
             llm_core = LLMCore.objects.get(id=llm_id)
             ner_integration = None
+
             if ner_id:
                 ner_integration = NERIntegration.objects.get(id=ner_id)
 
@@ -185,9 +214,11 @@ class AssistantView_Create(LoginRequiredMixin, TemplateView):
             org.save()
 
             project_items = request.POST.getlist('project_items[]', [])
+
             if project_items and len(project_items) > MAX_PROJECTS_PER_ASSISTANT:
                 messages.error(request,
                                f"Maximum related project count is {MAX_PROJECTS_PER_ASSISTANT} per assistant.")
+
                 project_items = project_items[:MAX_PROJECTS_PER_ASSISTANT]
 
             agent.project_items.set(project_items)
@@ -196,8 +227,10 @@ class AssistantView_Create(LoginRequiredMixin, TemplateView):
         except Exception as e:
             logger.error(f"Error while creating the agent: {e}")
             messages.error(request, "Error while creating the agent.")
+
             return redirect('assistant:create')
 
         messages.success(request, "Agent created successfully!")
         logger.info(f"Agent is created successfully. Agent ID: {agent.id}")
+
         return redirect('assistants:list')

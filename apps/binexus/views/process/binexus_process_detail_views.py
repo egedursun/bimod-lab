@@ -20,8 +20,15 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404
 from django.views.generic import TemplateView
 
-from apps.binexus.models import BinexusProcess, BinexusEliteAgent
-from apps.core.user_permissions.permission_manager import UserPermissionManager
+from apps.binexus.models import (
+    BinexusProcess,
+    BinexusEliteAgent
+)
+
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
@@ -43,6 +50,7 @@ class BinexusView_ProcessDetail(LoginRequiredMixin, TemplateView):
         try:
             process_id = self.kwargs.get('pk')
             binexus_process = get_object_or_404(BinexusProcess, id=process_id)
+
             elite_agents = BinexusEliteAgent.objects.filter(
                 binexus_process=binexus_process
             )
@@ -52,6 +60,8 @@ class BinexusView_ProcessDetail(LoginRequiredMixin, TemplateView):
 
         except Exception as e:
             messages.error(self.request, "Error listing the Binexus Process.")
+
             return context
 
+        logger.info(f"Binexus Process details listed successfully.")
         return context

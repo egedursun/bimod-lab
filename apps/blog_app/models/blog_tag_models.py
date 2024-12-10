@@ -25,6 +25,7 @@ class BlogTag(models.Model):
         related_name='tags',
         blank=True
     )
+
     name = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, unique=True)
 
@@ -44,9 +45,18 @@ class BlogTag(models.Model):
         ordering = ['name']
         verbose_name = 'Blog Tag'
         verbose_name_plural = 'Blog Tags'
+
         indexes = [
-            models.Index(fields=['name']),
-            models.Index(fields=['slug']),
-            models.Index(fields=['created_at']),
-            models.Index(fields=['updated_at']),
+            models.Index(fields=[
+                'name'
+            ]),
+            models.Index(fields=[
+                'slug'
+            ]),
+            models.Index(fields=[
+                'created_at'
+            ]),
+            models.Index(fields=[
+                'updated_at'
+            ]),
         ]

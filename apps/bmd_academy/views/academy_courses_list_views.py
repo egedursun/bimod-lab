@@ -29,6 +29,7 @@ class AcademyView_CourseList(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+
         context.update(
             {
                 "layout": "blank",
@@ -38,22 +39,26 @@ class AcademyView_CourseList(TemplateView):
                 ),
             }
         )
+
         context['courses'] = AcademyCourse.objects.order_by("created_at").all()
 
         try:
             amount_videos_by_course = {}
+
             for course in context['courses']:
                 sections = course.sections.all()
                 amount_videos = 0
 
                 for section in sections:
                     amount_videos += section.videos.count()
+
                 amount_videos_by_course[course.id] = amount_videos
 
             context['amount_videos_by_course'] = amount_videos_by_course
 
         except Exception as e:
             logger.error(f"[AcademyView_CourseList] Error fetching the Academy Courses: {e}")
+
             return context
 
         return context

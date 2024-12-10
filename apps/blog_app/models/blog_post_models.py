@@ -30,6 +30,7 @@ class BlogPost(models.Model):
         unique=True,
         blank=True
     )
+
     author = models.ForeignKey(
         'auth.User',
         on_delete=models.CASCADE,
@@ -38,6 +39,7 @@ class BlogPost(models.Model):
     )
 
     content = models.TextField()
+
     thumbnail_image = models.ImageField(
         upload_to='blog_post_images/%Y/%m/%d/',
         blank=True,
@@ -57,6 +59,7 @@ class BlogPost(models.Model):
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.title)
+
         super().save(*args, **kwargs)
 
     def __str__(self):
@@ -66,6 +69,7 @@ class BlogPost(models.Model):
         ordering = ['-published_at']
         verbose_name = 'Blog Post'
         verbose_name_plural = 'Blog Posts'
+
         indexes = [
             models.Index(
                 fields=[
@@ -73,12 +77,14 @@ class BlogPost(models.Model):
                     'slug'
                 ]
             ),
+
             models.Index(
                 fields=[
                     'title',
                     'status'
                 ]
             ),
+
             models.Index(
                 fields=[
                     'title',
@@ -86,6 +92,7 @@ class BlogPost(models.Model):
                     'published_at'
                 ]
             ),
+
             models.Index(
                 fields=[
                     'title',
@@ -93,6 +100,7 @@ class BlogPost(models.Model):
                     'created_at'
                 ]
             ),
+
             models.Index(
                 fields=[
                     'title',
@@ -100,6 +108,7 @@ class BlogPost(models.Model):
                     'updated_at'
                 ]
             ),
+
             models.Index(
                 fields=[
                     'title',
@@ -108,6 +117,7 @@ class BlogPost(models.Model):
                     'created_at'
                 ]
             ),
+
             models.Index(
                 fields=[
                     'title',
@@ -116,6 +126,7 @@ class BlogPost(models.Model):
                     'updated_at'
                 ]
             ),
+
             models.Index(
                 fields=[
                     'title',
@@ -124,6 +135,7 @@ class BlogPost(models.Model):
                     'updated_at'
                 ]
             ),
+
             models.Index(
                 fields=[
                     'title',
@@ -132,6 +144,7 @@ class BlogPost(models.Model):
                     'published_at'
                 ]
             ),
+
             models.Index(
                 fields=[
                     'title',

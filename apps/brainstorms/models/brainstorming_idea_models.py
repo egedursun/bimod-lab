@@ -31,6 +31,7 @@ class BrainstormingIdea(models.Model):
     idea_title = models.CharField(max_length=1000)
     idea_description = models.TextField()
     depth_level = models.IntegerField(default=1)
+
     is_bookmarked = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -41,10 +42,15 @@ class BrainstormingIdea(models.Model):
     class Meta:
         verbose_name = 'Brainstorming Idea'
         verbose_name_plural = 'Brainstorming Ideas'
+
         ordering = ['-created_at']
 
         unique_together = [
-            ['brainstorming_session', 'idea_description', 'depth_level'],
+            [
+                'brainstorming_session',
+                'idea_description',
+                'depth_level'
+            ],
         ]
 
         indexes = [

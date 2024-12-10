@@ -18,11 +18,22 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import get_object_or_404, redirect
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.shortcuts import (
+    get_object_or_404,
+    redirect
+)
+
 from django.views.generic import TemplateView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
 from apps.brainstorms.models import BrainstormingSession
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
@@ -34,6 +45,7 @@ class BrainstormingView_SessionConfirmDelete(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         ss_id = self.kwargs.get('session_id')
+
         session = get_object_or_404(
             BrainstormingSession,
             id=ss_id,
@@ -46,6 +58,7 @@ class BrainstormingView_SessionConfirmDelete(LoginRequiredMixin, TemplateView):
 
     def post(self, request, *args, **kwargs):
         ss_id = self.kwargs.get('session_id')
+
         session = get_object_or_404(
             BrainstormingSession,
             id=ss_id,
@@ -65,11 +78,14 @@ class BrainstormingView_SessionConfirmDelete(LoginRequiredMixin, TemplateView):
         try:
             session_name = session.session_name
             session.delete()
+
             messages.success(request, f'The session "{session_name}" was deleted successfully.')
 
         except Exception as e:
             messages.error(request, f"Error deleting session: {str(e)}")
+
             return self.get(request, *args, **kwargs)
 
         logger.info(f'The session "{session_name}" was deleted successfully. Session ID: {session.id}')
+
         return redirect('brainstorms:list_sessions')

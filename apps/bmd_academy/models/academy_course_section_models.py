@@ -45,7 +45,9 @@ class AcademyCourseSection(models.Model):
     class Meta:
         verbose_name = 'Academy Course Section'
         verbose_name_plural = 'Academy Course Sections'
+
         ordering = ['-created_at']
+
         indexes = [
             models.Index(
                 fields=[

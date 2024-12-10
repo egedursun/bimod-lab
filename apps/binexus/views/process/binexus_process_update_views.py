@@ -23,7 +23,11 @@ from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
 from apps.binexus.models import BinexusProcess
-from apps.core.user_permissions.permission_manager import UserPermissionManager
+
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
 from apps.llm_core.models import LLMCore
 from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
@@ -35,6 +39,7 @@ logger = logging.getLogger(__name__)
 class BinexusView_ProcessUpdate(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+
         process_id = self.kwargs.get('pk')
         binexus_process = BinexusProcess.objects.get(id=process_id)
 
@@ -48,6 +53,7 @@ class BinexusView_ProcessUpdate(LoginRequiredMixin, TemplateView):
         context['organizations'] = user_orgs
         context['llm_models'] = llm_models
         context['binexus_process'] = binexus_process
+
         return context
 
     def post(self, request, *args, **kwargs):
@@ -62,6 +68,7 @@ class BinexusView_ProcessUpdate(LoginRequiredMixin, TemplateView):
         ##############################
 
         process_id = self.kwargs.get('pk')
+
         try:
             binexus_process = BinexusProcess.objects.get(
                 id=process_id
@@ -71,6 +78,7 @@ class BinexusView_ProcessUpdate(LoginRequiredMixin, TemplateView):
             binexus_process.llm_model_id = request.POST.get('llm_model')
             binexus_process.process_name = request.POST.get('process_name')
             binexus_process.process_description = request.POST.get('process_description')
+
             binexus_process.process_objective = request.POST.get('process_objective')
             binexus_process.process_success_criteria = request.POST.get('process_success_criteria')
             binexus_process.fitness_manager_selectiveness = request.POST.get('fitness_manager_selectiveness')
@@ -84,6 +92,7 @@ class BinexusView_ProcessUpdate(LoginRequiredMixin, TemplateView):
                 try:
                     gene_name = gene_names[i].strip()
                     raw_values = gene_values[i].strip()
+
                     values_list = [
                         v.strip() for v in raw_values.split(',') if v.strip()
                     ]
@@ -96,26 +105,41 @@ class BinexusView_ProcessUpdate(LoginRequiredMixin, TemplateView):
                     continue
 
             # Optimization Hyper-Parameters
-            binexus_process.optimization_generations = request.POST.get('optimization_generations')
-            binexus_process.optimization_population_size = request.POST.get('optimization_population_size')
-            binexus_process.optimization_breeding_pool_rate = request.POST.get('optimization_breeding_pool_rate')
+            binexus_process.optimization_generations = request.POST.get(
+                'optimization_generations'
+            )
+
+            binexus_process.optimization_population_size = request.POST.get(
+                'optimization_population_size'
+            )
+
+            binexus_process.optimization_breeding_pool_rate = request.POST.get(
+                'optimization_breeding_pool_rate'
+            )
 
             binexus_process.optimization_mutation_rate_per_individual = request.POST.get(
                 'optimization_mutation_rate_per_individual'
             )
+
             binexus_process.optimization_mutation_rate_per_gene = request.POST.get(
                 'optimization_mutation_rate_per_gene'
             )
 
-            binexus_process.optimization_crossover_rate = request.POST.get('optimization_crossover_rate')
+            binexus_process.optimization_crossover_rate = request.POST.get(
+                'optimization_crossover_rate'
+            )
+
             binexus_process.self_breeding_possible = request.POST.get('self_breeding_possible') == 'on'
+
             binexus_process.additional_genes = genes_data
             binexus_process.save()
 
         except Exception as e:
             logger.error(f"Error updating Binexus Process: {e}")
             messages.error(request, f"Error updating Binexus Process: {e}")
+
             return redirect('binexus:process_detail', pk=process_id)
 
         logger.info(f"Binexus Process updated successfully: {binexus_process}")
+
         return redirect('binexus:process_list')

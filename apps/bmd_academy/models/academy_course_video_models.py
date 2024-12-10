@@ -47,7 +47,9 @@ class AcademyCourseVideo(models.Model):
     class Meta:
         verbose_name = 'Academy Course Video'
         verbose_name_plural = 'Academy Course Videos'
+
         ordering = ['-created_at']
+
         indexes = [
             models.Index(
                 fields=[
@@ -56,8 +58,12 @@ class AcademyCourseVideo(models.Model):
                 ]
             ),
         ]
+
         unique_together = [
-            ['course_section', 'video_title'],
+            [
+                'course_section',
+                'video_title'
+            ],
         ]
 
     def save(self, *args, **kwargs):

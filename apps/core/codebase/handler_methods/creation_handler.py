@@ -24,13 +24,19 @@ from apps.core.codebase.utils import (
     REPOSITORY_CHUNK_WEAVIATE_FIELDS_CONFIG
 )
 
-from apps.core.codebase.utils import DEFAULT_GENERATIVE_SEARCH_MODEL
+from apps.core.codebase.utils import (
+    DEFAULT_GENERATIVE_SEARCH_MODEL
+)
 
 logger = logging.getLogger(__name__)
 
 
 def create_classes_helper(executor):
-    output = {"status": True, "error": ""}
+    output = {
+        "status": True,
+        "error": ""
+    }
+
     conn = executor.connection_object
     c = executor.connect_c()
 
@@ -44,12 +50,15 @@ def create_classes_helper(executor):
                 max_tokens=conn.assistant.llm_model.maximum_tokens),
             properties=REPOSITORY_WEAVIATE_FIELDS_CONFIG
         )
+
         logger.info(f"Created class: {conn.class_name}")
 
     except Exception as e:
         output["status"] = False
         output["error"] = str(e)
+
         logger.error(f"Error while creating class: {str(e)}")
+
         return output
 
     try:
@@ -63,12 +72,14 @@ def create_classes_helper(executor):
             ),
             properties=REPOSITORY_CHUNK_WEAVIATE_FIELDS_CONFIG
         )
+
         logger.info(f"Created class: {conn.class_name}Chunks")
 
     except Exception as e:
         output["status"] = False
         output["error"] = str(e)
         logger.error(f"Error while creating class: {str(e)}")
+
         return output
 
     return output

@@ -18,7 +18,12 @@
 
 from django.urls import path
 
-from apps.assistants.views import AssistantView_Create, AssistantView_List, AssistantView_Update, AssistantView_Delete
+from apps.assistants.views import (
+    AssistantView_Create,
+    AssistantView_List,
+    AssistantView_Update,
+    AssistantView_Delete
+)
 
 app_name = "assistants"
 

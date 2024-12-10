@@ -18,6 +18,7 @@
 from django.contrib import admin
 
 from apps.assistants.models import AssistantOldChatMessagesVectorData
+
 from apps.assistants.utils import (
     ASSISTANT_OLD_CHAT_MESSAGES_VECTOR_DATA_ADMIN_SEARCH,
     ASSISTANT_OLD_CHAT_MESSAGES_VECTOR_DATA_ADMIN_FILTER,
@@ -30,4 +31,5 @@ class VoidForgerOldChatMessagesVectorDataAdmin(admin.ModelAdmin):
     list_display = ASSISTANT_OLD_CHAT_MESSAGES_VECTOR_DATA_ADMIN_LIST
     list_filter = ASSISTANT_OLD_CHAT_MESSAGES_VECTOR_DATA_ADMIN_FILTER
     search_fields = ASSISTANT_OLD_CHAT_MESSAGES_VECTOR_DATA_ADMIN_SEARCH
+
     ordering = ['-created_at']

@@ -23,9 +23,11 @@ WEAVIATE_INITIALIZATION_TIMEOUT = 60
 WEAVIATE_QUERY_TIMEOUT = 120
 WEAVIATE_INSERT_TIMEOUT = 240
 
-
 KNOWLEDGE_BASE_PROVIDERS = {
-    "WEAVIATE": {"code": "weaviate", "name": "Weaviate"},
+    "WEAVIATE": {
+        "code": "weaviate",
+        "name": "Weaviate"
+    },
 }
 
 REPOSITORY_WEAVIATE_FIELDS_CONFIG = [
@@ -35,23 +37,27 @@ REPOSITORY_WEAVIATE_FIELDS_CONFIG = [
         vectorize_property_name=True,
         tokenization=wvc.config.Tokenization.LOWERCASE
     ),
+
     wvc.config.Property(
         name="repository_description",
         data_type=wvc.config.DataType.TEXT,
         vectorize_property_name=False,
         tokenization=wvc.config.Tokenization.LOWERCASE
     ),
+
     wvc.config.Property(
         name="repository_metadata",
         data_type=wvc.config.DataType.TEXT,
         vectorize_property_name=True,
         tokenization=wvc.config.Tokenization.LOWERCASE
     ),
+
     wvc.config.Property(
         name="number_of_chunks",
         data_type=wvc.config.DataType.INT,
         vectorize_property_name=False,
     ),
+
     wvc.config.Property(
         name="created_at",
         data_type=wvc.config.DataType.TEXT,
@@ -67,23 +73,27 @@ REPOSITORY_CHUNK_WEAVIATE_FIELDS_CONFIG = [
         vectorize_property_name=True,
         tokenization=wvc.config.Tokenization.LOWERCASE
     ),
+
     wvc.config.Property(
         name="chunk_number",
         data_type=wvc.config.DataType.INT,
         vectorize_property_name=False,
     ),
+
     wvc.config.Property(
         name="chunk_content",
         data_type=wvc.config.DataType.TEXT,
         vectorize_property_name=True,
         tokenization=wvc.config.Tokenization.LOWERCASE
     ),
+
     wvc.config.Property(
         name="chunk_metadata",
         data_type=wvc.config.DataType.TEXT,
         vectorize_property_name=True,
         tokenization=wvc.config.Tokenization.LOWERCASE
     ),
+
     wvc.config.Property(
         name="created_at",
         data_type=wvc.config.DataType.TEXT,

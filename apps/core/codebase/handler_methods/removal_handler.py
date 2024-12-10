@@ -24,18 +24,23 @@ def delete_weaviate_class_helper(
     executor,
     class_name
 ):
-
     c = executor.connect_c()
-    output = {"status": True, "error": ""}
+    output = {
+        "status": True,
+        "error": ""
+    }
 
     try:
         _ = c.collections.delete(class_name)
         _ = c.collections.delete(f"{class_name}Chunks")
-        logger.info(f"[class_deleter.delete_weaviate_class_helper] Deleted classes: {class_name} and {class_name}Chunks")
+
+        logger.info(
+            f"[class_deleter.delete_weaviate_class_helper] Deleted classes: {class_name} and {class_name}Chunks")
 
     except Exception as e:
         output["status"] = False
         output["error"] = f"[class_deleter.delete_weaviate_class_helper] Error deleting classes: {e}"
+
         logger.error(f"[class_deleter.delete_weaviate_class_helper] Error deleting classes: {e}")
 
     return output

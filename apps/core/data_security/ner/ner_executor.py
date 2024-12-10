@@ -23,7 +23,10 @@ from apps.core.data_security.ner.utils import (
     LANGUAGE_TO_MODEL_MAPPING
 )
 
-from apps.data_security.models import NERIntegration
+from apps.data_security.models import (
+    NERIntegration
+)
+
 import spacy
 
 logger = logging.getLogger(__name__)
@@ -32,7 +35,10 @@ logger = logging.getLogger(__name__)
 class NERExecutor:
     def __init__(self, ner_id: int):
         try:
-            self.ner_integration: NERIntegration = NERIntegration.objects.get(id=ner_id)
+            self.ner_integration: NERIntegration = NERIntegration.objects.get(
+                id=ner_id
+            )
+
             logger.info(f"NERIntegration: {self.ner_integration}")
 
         except Exception as e:
@@ -40,7 +46,10 @@ class NERExecutor:
             pass
 
         try:
-            self.model = self._decode_model_from_language(self.ner_integration.language)
+            self.model = self._decode_model_from_language(
+                self.ner_integration.language
+            )
+
             logger.info(f"Model: {self.model}")
 
         except Exception as e:
@@ -49,7 +58,9 @@ class NERExecutor:
 
         try:
             self.nlp = self._load_model(self.model)
+
             logger.info(f"Loaded model: {self.nlp}")
+
             if not self.nlp:
                 logger.error("[NERExecutor.__init__] Error loading model.")
                 raise Exception("Error loading model.")
@@ -77,8 +88,10 @@ class NERExecutor:
 
             try:
                 from spacy.cli.download import download
+
                 download(model_name)
                 nlp = spacy.load(model_name)
+
                 logger.info(f"Downloaded and loaded model: {model_name}")
 
             except Exception as e:
@@ -155,18 +168,24 @@ class NERExecutor:
 
         doc = self.nlp(text)
         self.entity_mapping[uuid_str] = {}
+
         anonymized_text = text
         entity_counters = self.build_entity_mapping()
 
         for ent in doc.ents:
+
             entity_type = ent.label_
+
             if entity_type in entity_counters:
                 placeholder = f"<[[{entity_type}_{entity_counters[entity_type]}]]>"
+
                 self.entity_mapping[uuid_str][placeholder] = ent.text
+
                 anonymized_text = anonymized_text.replace(ent.text, placeholder)
                 entity_counters[entity_type] += 1
 
         logger.info(f"Anonymized Text retrieved.")
+
         return anonymized_text
 
     def decrypt_text(
@@ -176,6 +195,7 @@ class NERExecutor:
     ) -> str:
 
         deanonymized_text = anonymized_text
+
         for placeholder, original_text in self.entity_mapping.get(uuid, {}).items():
             deanonymized_text = deanonymized_text.replace(
                 placeholder,

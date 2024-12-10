@@ -62,6 +62,7 @@ class PopulationManager:
     def build_population_with_size(self):
 
         generated_population = []
+
         for i in range(self.population_size):
             new_individual = Individual(
                 process=self.process,
@@ -70,6 +71,7 @@ class PopulationManager:
                 ),
                 llm_model=self.llm_model
             )
+
             generated_population.append(new_individual)
 
         return generated_population
@@ -83,10 +85,13 @@ class PopulationManager:
         best_individual, worst_individual = None, None
 
         for individual in population:
+
             fitness = individual.get_fitness_score()
+
             if fitness > best_fitness:
                 best_fitness = fitness
                 best_individual = individual
+
             if fitness < worst_fitness:
                 worst_fitness = fitness
                 worst_individual = individual
@@ -95,9 +100,13 @@ class PopulationManager:
 
         self.best_individual = best_individual
         self.best_fitness = best_fitness
+
         self.worst_individual = worst_individual
         self.worst_fitness = worst_fitness
-        self.average_fitness = (total_fitness / self.population_size)
+
+        self.average_fitness = (
+            total_fitness / self.population_size
+        )
 
     def replace_population(
         self,

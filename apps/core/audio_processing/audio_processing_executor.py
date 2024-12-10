@@ -17,9 +17,13 @@
 
 import logging
 
-from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
-from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
+from apps.core.internal_cost_manager.costs_map import (
+    InternalServiceCosts
+)
 
+from apps.llm_transaction.utils import (
+    LLMTransactionSourcesTypesNames
+)
 
 logger = logging.getLogger(__name__)
 
@@ -30,10 +34,13 @@ class AudioProcessingExecutor:
         assistant,
         chat
     ):
-        from apps.core.generative_ai.auxiliary_clients.auxiliary_llm_audio_client import AuxiliaryLLMAudioClient
+        from apps.core.generative_ai.auxiliary_clients.auxiliary_llm_audio_client import (
+            AuxiliaryLLMAudioClient
+        )
 
         self.assistant = assistant
         self.chat = chat
+
         self.client = AuxiliaryLLMAudioClient(
             assistant=self.assistant,
             chat_object=self.chat
@@ -42,7 +49,11 @@ class AudioProcessingExecutor:
     def convert_audio_to_text(self, audio_file_path: str):
 
         from apps.llm_transaction.models import LLMTransaction
-        from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE
+
+        from apps.core.generative_ai.utils import (
+            GPT_DEFAULT_ENCODING_ENGINE
+        )
+
         from apps.core.generative_ai.utils import ChatRoles
 
         try:
@@ -58,18 +69,25 @@ class AudioProcessingExecutor:
                 is_tool_cost=True
             )
             tx.save()
+
         except Exception as e:
             logger.error(f"Error while saving LLM Transaction: {str(e)}")
             pass
 
         logger.info(f"Converting audio to text: {audio_file_path}")
-        output = self.client.transform_speech_to_text(audio_uri=audio_file_path)
+
+        output = self.client.transform_speech_to_text(
+            audio_uri=audio_file_path
+        )
 
         return output
 
     def convert_text_to_audio_message(self, message):
 
-        from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE
+        from apps.core.generative_ai.utils import (
+            GPT_DEFAULT_ENCODING_ENGINE
+        )
+
         from apps.core.generative_ai.utils import ChatRoles
         from apps.llm_transaction.models import LLMTransaction
 
@@ -86,19 +104,28 @@ class AudioProcessingExecutor:
                 is_tool_cost=True
             )
             tx.save()
+
         except Exception as e:
             logger.error(f"Error while saving LLM Transaction: {str(e)}")
             pass
 
         logger.info(f"Converting text to audio message: {message}")
+
         output = self.client.tts_audio_content_message(
             message=message
         )
 
         return output
 
-    def convert_text_to_audio_file(self, text_content: str, voice_selection: str):
-        from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE
+    def convert_text_to_audio_file(
+        self,
+        text_content: str,
+        voice_selection: str
+    ):
+        from apps.core.generative_ai.utils import (
+            GPT_DEFAULT_ENCODING_ENGINE
+        )
+
         from apps.core.generative_ai.utils import ChatRoles
         from apps.llm_transaction.models import LLMTransaction
 
@@ -121,6 +148,7 @@ class AudioProcessingExecutor:
             pass
 
         logger.info(f"Converting text to audio file: {text_content}")
+
         output = self.client.transform_text_to_speech(
             text_content=text_content,
             voice=voice_selection

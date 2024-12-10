@@ -51,7 +51,9 @@ class AcademyCourse(models.Model):
     class Meta:
         verbose_name = 'Academy Course'
         verbose_name_plural = 'Academy Courses'
+
         ordering = ['-created_at']
+
         indexes = [
             models.Index(
                 fields=[

@@ -23,8 +23,13 @@ import numpy as np
 from django.db.models.signals import pre_delete
 from django.dispatch import receiver
 
-from apps.assistants.models import AssistantOldChatMessagesVectorData
-from apps.multimodal_chat.models import MultimodalChatMessage
+from apps.assistants.models import (
+    AssistantOldChatMessagesVectorData
+)
+
+from apps.multimodal_chat.models import (
+    MultimodalChatMessage
+)
 
 logger = logging.getLogger(__name__)
 
@@ -51,6 +56,7 @@ def remove_vector_from_index_on_assistant_chat_message_delete(
 
         if os.path.exists(index_path):
             index = faiss.read_index(index_path)
+
             xids = np.array(
                 [
                     vector_data_instance.id for vector_data_instance in vector_data_instances
@@ -58,6 +64,7 @@ def remove_vector_from_index_on_assistant_chat_message_delete(
             )
 
             index.remove_ids(xids)
+
             faiss.write_index(
                 index,
                 index_path

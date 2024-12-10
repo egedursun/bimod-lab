@@ -19,6 +19,7 @@
 from django.contrib import admin
 
 from apps.binexus.models import BinexusEliteAgent
+
 from apps.binexus.utils import (
     BINEXUS_ELITE_AGENT_ADMIN_LIST,
     BINEXUS_ELITE_AGENT_ADMIN_FILTER,
@@ -31,4 +32,5 @@ class BinexusEliteAgentAdmin(admin.ModelAdmin):
     list_display = BINEXUS_ELITE_AGENT_ADMIN_LIST
     list_filter = BINEXUS_ELITE_AGENT_ADMIN_FILTER
     search_fields = BINEXUS_ELITE_AGENT_ADMIN_SEARCH
+
     ordering = ['-created_at']

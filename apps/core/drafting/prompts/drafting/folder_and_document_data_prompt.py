@@ -14,10 +14,17 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-from apps.drafting.models import DraftingFolder, DraftingDocument
+
+from apps.drafting.models import (
+    DraftingFolder,
+    DraftingDocument
+)
 
 
-def build_drafting_folder_and_document_data_prompt(folder: DraftingFolder, doc: DraftingDocument):
+def build_drafting_folder_and_document_data_prompt(
+    folder: DraftingFolder,
+    doc: DraftingDocument
+):
     return f"""
         ### **FOLDER INFORMATION:**
 

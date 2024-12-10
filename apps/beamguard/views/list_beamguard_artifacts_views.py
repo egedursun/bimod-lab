@@ -28,7 +28,9 @@ from apps.beamguard.utils import (
     BeamGuardConfirmationStatusesNames,
     BeamGuardArtifactTypesNames
 )
-from apps.core.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
 
 from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
@@ -55,9 +57,11 @@ class BeamGuardView_ListArtifacts(LoginRequiredMixin, TemplateView):
         user_orgs = Organization.objects.filter(
             users__in=[self.request.user]
         )
+
         org_assistants = Assistant.objects.filter(
             organization__in=user_orgs
         )
+
         beamguard_artifacts = BeamGuardArtifact.objects.filter(
             assistant__in=org_assistants
         )

@@ -18,20 +18,45 @@
 import json
 import logging
 
-from apps.core.drafting.utils import DRAFTING_TOOL_CALL_MAXIMUM_ATTEMPTS, find_tool_call_from_json
-from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
-from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
-from apps.core.tool_calls.core_services.core_service_execute_ssh_system_command import run_execute_ssh_system_commands
-from apps.core.tool_calls.input_verifiers.verify_ssh_system_command import verify_ssh_system_command_content
+from apps.core.drafting.utils import (
+    DRAFTING_TOOL_CALL_MAXIMUM_ATTEMPTS,
+    find_tool_call_from_json
+)
+
+from apps.core.generative_ai.utils import (
+    GPT_DEFAULT_ENCODING_ENGINE,
+    ChatRoles
+)
+
+from apps.core.internal_cost_manager.costs_map import (
+    InternalServiceCosts
+)
+
+from apps.core.tool_calls.core_services.core_service_execute_ssh_system_command import (
+    run_execute_ssh_system_commands
+)
+
+from apps.core.tool_calls.input_verifiers.verify_ssh_system_command import (
+    verify_ssh_system_command_content
+)
+
 from apps.llm_transaction.models import LLMTransaction
-from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
+
+from apps.llm_transaction.utils import (
+    LLMTransactionSourcesTypesNames
+)
 
 logger = logging.getLogger(__name__)
 
 
 def handle_ssh_command(xc, command: str) -> str:
-    from apps.core.drafting.drafting_executor import DraftingExecutionManager
-    from apps.core.drafting.prompt_builders import build_ssh_command_system_prompt
+    from apps.core.drafting.drafting_executor import (
+        DraftingExecutionManager
+    )
+
+    from apps.core.drafting.prompt_builders import (
+        build_ssh_command_system_prompt
+    )
 
     try:
         tx = LLMTransaction.objects.create(
@@ -49,6 +74,7 @@ def handle_ssh_command(xc, command: str) -> str:
             transaction_type=ChatRoles.USER,
             transaction_source=LLMTransactionSourcesTypesNames.DRAFTING
         )
+
         logger.info(f"[handle_ai_command] Created LLMTransaction for user command: {command}")
 
     except Exception as e:
@@ -56,7 +82,12 @@ def handle_ssh_command(xc, command: str) -> str:
         pass
 
     output, error = None, None
-    system_prompt = build_ssh_command_system_prompt(xc=xc, user_query=command)
+
+    system_prompt = build_ssh_command_system_prompt(
+        xc=xc,
+        user_query=command
+    )
+
     xc: DraftingExecutionManager
     client = xc.naked_c
 
@@ -76,6 +107,7 @@ def handle_ssh_command(xc, command: str) -> str:
             transaction_type=ChatRoles.SYSTEM,
             transaction_source=LLMTransactionSourcesTypesNames.DRAFTING
         )
+
         logger.info(f"[handle_ai_command] Created LLMTransaction for system prompt.")
 
     except Exception as e:
@@ -100,8 +132,10 @@ def handle_ssh_command(xc, command: str) -> str:
 
         choices = llm_response.choices
         first_choice = choices[0]
+
         choice_message = first_choice.message
         choice_message_content = choice_message.content
+
         logger.info(f"[handle_ai_command] Generated AI response.")
 
         try:
@@ -120,6 +154,7 @@ def handle_ssh_command(xc, command: str) -> str:
                 transaction_type=ChatRoles.ASSISTANT,
                 transaction_source=LLMTransactionSourcesTypesNames.DRAFTING
             )
+
             logger.info(f"[handle_ai_command] Created LLMTransaction for AI response.")
 
         except Exception as e:
@@ -129,17 +164,22 @@ def handle_ssh_command(xc, command: str) -> str:
     except Exception as e:
         logger.error(f"[handle_ai_command] Error generating AI response. Error: {e}")
         error = f"[handle_ai_command] Error executing SSH command: {command}. Error: {e}"
+
         return output, error
 
     # TOOL USAGE IDENTIFICATION
     tool_counter = 0
     context_messages = [structured_system_prompt]
+
     while (
         len(find_tool_call_from_json(choice_message_content)) > 0 and
         tool_counter < DRAFTING_TOOL_CALL_MAXIMUM_ATTEMPTS
     ):
         tool_counter += 1
-        tool_requests_dicts = find_tool_call_from_json(choice_message_content)
+
+        tool_requests_dicts = find_tool_call_from_json(
+            choice_message_content
+        )
 
         if len(tool_requests_dicts) > 0:
 
@@ -150,7 +190,9 @@ def handle_ssh_command(xc, command: str) -> str:
 
                     '''
                 """
+
                 error = verify_ssh_system_command_content(content=tool_req_dict)
+
                 if error:
                     logger.error(error)
                     return error, None, None, None
@@ -159,10 +201,17 @@ def handle_ssh_command(xc, command: str) -> str:
                     tool_usage_dict=tool_req_dict,
                     output_tool_call=output_tool_call
                 )
+
                 output_tool_call += """
                     '''
                 """
-                context_messages.append({"content": output_tool_call, "role": "system"})
+
+                context_messages.append(
+                    {
+                        "content": output_tool_call,
+                        "role": "system"
+                    }
+                )
 
         try:
             llm_response = client.chat.completions.create(
@@ -176,8 +225,10 @@ def handle_ssh_command(xc, command: str) -> str:
 
             choices = llm_response.choices
             first_choice = choices[0]
+
             choice_message = first_choice.message
             choice_message_content = choice_message.content
+
             logger.info(f"[handle_ai_command] Generated AI response.")
 
             try:
@@ -196,6 +247,7 @@ def handle_ssh_command(xc, command: str) -> str:
                     transaction_type=ChatRoles.ASSISTANT,
                     transaction_source=LLMTransactionSourcesTypesNames.DRAFTING
                 )
+
                 logger.info(f"[handle_ai_command] Created LLMTransaction for AI response.")
 
             except Exception as e:
@@ -205,12 +257,14 @@ def handle_ssh_command(xc, command: str) -> str:
         except Exception as e:
             logger.error(f"[handle_ai_command] Error generating AI response. Error: {e}")
             error = f"[handle_ai_command] Error executing SSH command: {command}. Error: {e}"
+
             return output, error
 
     if tool_counter == DRAFTING_TOOL_CALL_MAXIMUM_ATTEMPTS:
         error = (f"[handle_ai_command] Error executing SSH command: {command}. Error: Maximum tool call attempts "
                  f"reached.")
         logger.error(error)
+
         return output, error
 
     try:
@@ -226,7 +280,9 @@ def handle_ssh_command(xc, command: str) -> str:
             transaction_source=LLMTransactionSourcesTypesNames.DRAFTING,
             is_tool_cost=True
         )
+
         tx.save()
+
         logger.info(f"[handle_ai_command] Created LLMTransaction for Drafting.")
 
     except Exception as e:
@@ -234,6 +290,7 @@ def handle_ssh_command(xc, command: str) -> str:
         pass
 
     output = choice_message_content
+
     return output, error
 
 
@@ -257,4 +314,5 @@ def _handle_tool_ssh_system(
 
     output_tool_call += output_str
     logger.info(f"[handle_ai_command] Executed SSH system command: {commands}")
+
     return output_tool_call

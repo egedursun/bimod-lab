@@ -28,10 +28,12 @@ def build_binexus_individual_assignment_prompt(
     individual
 ):
     merged_prompt = ""
+
     merged_prompt += binexus_individual_assignment_prompt(
         process=process,
         individual=individual
     )
+
     return merged_prompt
 
 
@@ -40,8 +42,10 @@ def build_binexus_individual_assignment_prompt_redacted(
     individual
 ):
     merged_prompt = ""
+
     merged_prompt += binexus_individual_assignment_prompt_redacted(
         process=process,
         individual=individual
     )
+
     return merged_prompt

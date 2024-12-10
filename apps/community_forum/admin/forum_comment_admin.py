@@ -31,4 +31,5 @@ class ForumCommentAdmin(admin.ModelAdmin):
     list_display = FORUM_COMMENT_ADMIN_LIST
     search_fields = FORUM_COMMENT_ADMIN_SEARCH
     list_filter = FORUM_COMMENT_ADMIN_FILTER
+
     ordering = ("-created_at",)

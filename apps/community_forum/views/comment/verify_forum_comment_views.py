@@ -21,7 +21,11 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
 from django.views import View
 
-from apps.community_forum.models import ForumPost, ForumComment
+from apps.community_forum.models import (
+    ForumPost,
+    ForumComment
+)
+
 from auth.utils import ForumRewardActionsNames
 
 logger = logging.getLogger(__name__)
@@ -31,7 +35,11 @@ class ForumView_CommentVerify(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         post_id = self.kwargs.get("post_id")
         comment_id = self.kwargs.get("comment_id")
-        post = get_object_or_404(ForumPost, id=post_id)
+
+        post = get_object_or_404(
+            ForumPost,
+            id=post_id
+        )
 
         try:
             comment = get_object_or_404(ForumComment, id=comment_id)
@@ -48,7 +56,12 @@ class ForumView_CommentVerify(LoginRequiredMixin, View):
 
         except Exception as e:
             logger.error(f"[ForumView_CommentVerify] Error verifying the Comment: {e}")
+
             return redirect('community_forum:thread_detail', thread_id=post.thread.id)
 
         logger.info(f"Comment verified. Comment ID: {comment.id}")
-        return redirect('community_forum:thread_detail', thread_id=post.thread.id)
+
+        return redirect(
+            'community_forum:thread_detail',
+            thread_id=post.thread.id
+        )

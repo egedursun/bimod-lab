@@ -35,10 +35,19 @@ from apps.core.browsers.utils import (
     BrowsingExecutorOptions
 )
 
-from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
-from apps.datasource_browsers.utils import BrowsingReadingAbilitiesNames
+from apps.core.internal_cost_manager.costs_map import (
+    InternalServiceCosts
+)
+
+from apps.datasource_browsers.utils import (
+    BrowsingReadingAbilitiesNames
+)
+
 from apps.llm_transaction.models import LLMTransaction
-from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
+
+from apps.llm_transaction.utils import (
+    LLMTransactionSourcesTypesNames
+)
 
 logger = logging.getLogger(__name__)
 
@@ -53,14 +62,18 @@ class BrowsingExecutor:
         self.connection = connection
         self.engine = connection.browser_type
         self.d = None
+
         self.blacklisted_extensions = self.connection.blacklisted_extensions if self.connection else []
         self.whitelisted_extensions = self.connection.whitelisted_extensions if self.connection else []
 
         try:
             mode = BrowsingModes.STANDARD
+
             if self.whitelisted_extensions != [] or self.blacklisted_extensions != []:
+
                 if self.whitelisted_extensions:
                     mode = BrowsingModes.WHITELIST
+
                 if self.blacklisted_extensions:
                     mode = BrowsingModes.BLACKLIST
 
@@ -71,6 +84,7 @@ class BrowsingExecutor:
         try:
             self.mode = mode
             self.connect_c()
+
             logger.info(f"Connected to the browsing driver.")
 
         except Exception as e:
@@ -83,7 +97,10 @@ class BrowsingExecutor:
         **kwargs
     ):
 
-        from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE
+        from apps.core.generative_ai.utils import (
+            GPT_DEFAULT_ENCODING_ENGINE
+        )
+
         from apps.core.generative_ai.utils import ChatRoles
 
         try:
@@ -98,7 +115,9 @@ class BrowsingExecutor:
                 transaction_source=LLMTransactionSourcesTypesNames.BROWSING,
                 is_tool_cost=True
             )
+
             tx.save()
+
             logger.info(f"LLM Transaction created for browsing action: {action}.")
 
         except Exception as e:
@@ -106,17 +125,20 @@ class BrowsingExecutor:
             pass
 
         if action == BrowserActionsNames.BROWSER_SEARCH:
+
             try:
 
                 search_output, image_bytes = self.browser_search(
                     kwargs["query"],
                     kwargs["page"]
                 )
+
                 logger.info(f"Search query: {kwargs['query']} for the {kwargs['page']}th page of the {self.engine}"
                             f"search engine.")
 
             except Exception as e:
                 logger.error(f"Error while searching the query: {str(e)}")
+
                 return None
 
             try:
@@ -131,7 +153,9 @@ class BrowsingExecutor:
                                 f"search engine.",
                     screenshot=ContentFile(image_bytes, name=f"{uuid.uuid4()}.png")
                 )
+
                 new_log_instance.save()
+
                 logger.info(f"Log instance created for the search query: {kwargs['query']} for the {kwargs['page']}th"
                             f"page of the {self.engine} search engine.")
 
@@ -153,6 +177,7 @@ class BrowsingExecutor:
 
             except Exception as e:
                 logger.error(f"Error while clicking the URL in the search results: {str(e)}")
+
                 return None
 
             try:
@@ -165,16 +190,20 @@ class BrowsingExecutor:
                     log_content=f"Clicked the URL: {kwargs['click_url']} in the search results.",
                     screenshot=ContentFile(image_bytes, name=f"{uuid.uuid4()}.png")
                 )
+
                 new_log_instance.save()
+
                 logger.info(f"Log instance created for clicking the URL: {kwargs['click_url']} in the search results.")
 
             except Exception as e:
                 logger.error(f"Error while creating log instance for clicking the URL in the search results: {str(e)}")
                 pass
+
             return click_response
 
         else:
             logger.error(f"Invalid action: {action}. Must be one of {BrowserActionsNames.as_list()}.")
+
             return f"[BrowsingExecutor.act] Invalid action: {action}. Must be one of {BrowserActionsNames.as_list()}."
 
     def connect_c(self):
@@ -183,12 +212,15 @@ class BrowsingExecutor:
             options = webdriver.ChromeOptions()
             options.add_argument(BrowsingExecutorOptions.HEADLESS)
             options.add_argument(BrowsingExecutorOptions.WINDOW_SIZE)
+
             d = webdriver.Chrome(options=options)
             self.d = d
+
             logger.info(f"Connected to the browsing driver.")
 
         except Exception as e:
             logger.error(f"Error while connecting to the browsing driver: {str(e)}")
+
             return (f"[BrowsingExecutor.connect_c] There has been an unexpected error while trying to "
                     f"connect to the driver: {e}")
 
@@ -200,6 +232,7 @@ class BrowsingExecutor:
 
         except Exception as e:
             logger.error(f"Error while closing the browsing driver: {str(e)}")
+
             return (f"[BrowsingExecutor.close_c] There has been an unexpected error while trying to close the "
                     f"driver: {e}")
 
@@ -211,6 +244,7 @@ class BrowsingExecutor:
 
         if self.engine == SearchEnginesNames.GOOGLE:
             self.get_page(BrowserURLs.GOOGLE)
+
         else:
             logger.error(f"Invalid search engine: {self.engine}.")
             return f"[BrowsingExecutor.browser_search] Invalid search engine: {self.engine}."
@@ -218,27 +252,39 @@ class BrowsingExecutor:
         search_input = self.find(FindByTypes.NAME, "q")
 
         try:
-            self.send_keys(search_input, query)
+            self.send_keys(
+                search_input,
+                query
+            )
+
             search_input.submit()
             self.wait()
+
             logger.info(f"Search query: {query} for the {page}th page of the {self.engine} search engine.")
 
         except Exception as e:
             logger.error(f"Error while searching the query: {str(e)}")
+
             return (f"[BrowsingExecutor.browser_search] There has been an unexpected error while trying to search "
                     f"the query: {e}"), None
 
         if page > 1:
 
             try:
-                next_page = self.find(FindByTypes.CSS_SELECTOR, "a#pnnext")
+                next_page = self.find(
+                    FindByTypes.CSS_SELECTOR,
+                    "a#pnnext"
+                )
+
                 self.click(next_page)
                 self.wait()
+
                 logger.info(f"Going to the next page for the search query: {query} for the {page}th page of the "
                             f"{self.engine} search engine.")
 
             except Exception as e:
                 logger.error(f"Error while going to the next page: {str(e)}")
+
                 return (f"[BrowsingExecutor.browser_search] There has been an unexpected error while trying to "
                         f"go to the next page: {e}")
 
@@ -274,7 +320,10 @@ class BrowsingExecutor:
     def get_page_content(self):
 
         try:
-            clean_content = self.clean_page_content(self.d.page_source)
+            clean_content = self.clean_page_content(
+                self.d.page_source
+            )
+
             logger.info(f"Getting the content of the page.")
 
             return clean_content
@@ -291,6 +340,7 @@ class BrowsingExecutor:
         try:
             image_b64 = self.d.get_screenshot_as_base64()
             image_bytes = base64.b64decode(image_b64)
+
             logger.info(f"Getting the search results.")
 
         except Exception as e:
@@ -300,13 +350,21 @@ class BrowsingExecutor:
                 f"screenshot on browsing: {e}"), None
 
         try:
-            raw_results = self.d.find_elements(By.CSS_SELECTOR, "div.g")
-            clean_results = self.get_cleaned_search_results(raw_results)
+            raw_results = self.d.find_elements(
+                By.CSS_SELECTOR,
+                "div.g"
+            )
+
+            clean_results = self.get_cleaned_search_results(
+                raw_results
+            )
 
             if self.mode == BrowsingModes.WHITELIST:
                 clean_results = self.filter_on_whitelist(clean_results)
+
             elif self.mode == BrowsingModes.BLACKLIST:
                 clean_results = self.filter_on_blacklist(clean_results)
+
             logger.info(f"Search results: {clean_results}")
 
             return clean_results, image_bytes
@@ -326,6 +384,7 @@ class BrowsingExecutor:
 
         except Exception as e:
             logger.error(f"Error while waiting: {str(e)}")
+
             return f"[[BrowsingExecutor.wait] There has been an unexpected error while trying to wait on browsing: {e}"
 
     def find(
@@ -337,11 +396,17 @@ class BrowsingExecutor:
         try:
             if by not in FindByTypes.as_list():
                 return f"[BrowsingExecutor.find] Invalid 'by' type: {by}. Must be one of {FindByTypes.as_list()}."
+
             logger.info(f"Finding the element on browsing.")
-            return self.d.find_element(by=by, value=query)
+
+            return self.d.find_element(
+                by=by,
+                value=query
+            )
 
         except Exception as e:
             logger.error(f"Error while finding the element: {str(e)}")
+
             return (
                 f"[BrowsingExecutor.find] There has been an unexpected error while trying to find the element on "
                 f"browsing: {e}")
@@ -358,6 +423,7 @@ class BrowsingExecutor:
 
         except Exception as e:
             logger.error(f"Error while sending keys: {str(e)}")
+
             return (f"[BrowsingExecutor.send_keys] There has been an unexpected error while trying to send keys to the"
                     f" element on browsing: {e}")
 
@@ -372,16 +438,20 @@ class BrowsingExecutor:
 
                 if r["url"] == click_url:
                     self.get_page(r["url"])
+
                     image_b64 = self.d.get_screenshot_as_base64()
                     image_bytes = base64.b64decode(image_b64)
                     content = self.get_page_content()
+
                     logger.info(f"Clicked the URL: {click_url} in the search results.")
+
                     return content, image_bytes
 
             return f"[BrowsingExecutor.click_url_in_search] URL not found in search results: {click_url}"
 
         except Exception as e:
             logger.error(f"Error while clicking the URL in the search results: {str(e)}")
+
             return (
                 f"[BrowsingExecutor.click_url_in_search] There has been an unexpected error while trying to "
                 f"click the URL in the search results on browsing: {e}")
@@ -392,10 +462,12 @@ class BrowsingExecutor:
     ):
         try:
             element.click()
+
             logger.info(f"Clicked the element on browsing.")
 
         except Exception as e:
             logger.error(f"Error while clicking: {str(e)}")
+
             return (f"[BrowsingExecutor.click] There has been an unexpected error while trying to click "
                     f"the element on browsing: {e}")
 
@@ -405,10 +477,13 @@ class BrowsingExecutor:
     ):
 
         filtered_results = []
+
         for r in res:
             try:
                 r["url"] = r["url"].split("/")[2]
+
                 for ext in self.whitelisted_extensions:
+
                     if r["url"].endswith(ext):
                         filtered_results.append(r)
                         break
@@ -418,6 +493,7 @@ class BrowsingExecutor:
                 pass
 
         logger.info(f"Filtered results on whitelist: {filtered_results}")
+
         return filtered_results
 
     def filter_on_blacklist(
@@ -429,9 +505,11 @@ class BrowsingExecutor:
         for r in res:
             try:
                 blacklisted = False
+
                 r["url"] = r["url"].split("/")[2]
 
                 for ext in self.blacklisted_extensions:
+
                     if r["url"].endswith(ext):
                         blacklisted = True
                         break
@@ -456,12 +534,26 @@ class BrowsingExecutor:
 
             try:
                 clean = {}
-                url = r.find_element(By.CSS_SELECTOR, "a").get_attribute("href")
-                title = r.find_element(By.CSS_SELECTOR, "h3").text
-                snippet = r.find_element(By.CSS_SELECTOR, "span").text
+
+                url = r.find_element(
+                    By.CSS_SELECTOR,
+                    "a"
+                ).get_attribute("href")
+
+                title = r.find_element(
+                    By.CSS_SELECTOR,
+                    "h3"
+                ).text
+
+                snippet = r.find_element(
+                    By.CSS_SELECTOR,
+                    "span"
+                ).text
+
                 clean["url"] = url
                 clean["title"] = title
                 clean["snippet"] = snippet
+
                 cleaned_results.append(clean)
 
             except Exception as e:
@@ -469,6 +561,7 @@ class BrowsingExecutor:
                 pass
 
         logger.info(f"Cleaned search results: {cleaned_results}")
+
         return cleaned_results
 
     def clean_page_content(
@@ -478,14 +571,17 @@ class BrowsingExecutor:
 
         abilities = self.connection.reading_abilities
         cleaner = Cleaner()
+
         cleaner.javascript = abilities[BrowsingReadingAbilitiesNames.JAVASCRIPT]
         cleaner.style = abilities[BrowsingReadingAbilitiesNames.STYLE]
         cleaner.comments = abilities[BrowsingReadingAbilitiesNames.COMMENTS]
         cleaner.links = abilities[BrowsingReadingAbilitiesNames.LINKS]
+
         cleaner.meta = abilities[BrowsingReadingAbilitiesNames.META]
         cleaner.page_structure = abilities[BrowsingReadingAbilitiesNames.PAGE_STRUCTURE]
         cleaner.processing_instructions = abilities[BrowsingReadingAbilitiesNames.PROCESSING_INSTRUCTIONS]
         cleaner.embedded = abilities[BrowsingReadingAbilitiesNames.EMBEDDED]
+
         cleaner.frames = abilities[BrowsingReadingAbilitiesNames.FRAMES]
         cleaner.forms = abilities[BrowsingReadingAbilitiesNames.FORMS]
         cleaner.annoying_tags = True
@@ -496,13 +592,17 @@ class BrowsingExecutor:
 
         try:
             text = cleaner.clean_html(text)
+
             text = (text.replace("<div>", "").replace("</div>", "").replace("\n", "")
                     .replace("\t", ""))
+
             text = " ".join(text.split())
+
             logger.info(f"Cleaned the page content.")
 
         except Exception as e:
             logger.error(f"Error while cleaning the page content: {str(e)}")
+
             return None
 
         return text

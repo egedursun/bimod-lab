@@ -24,6 +24,7 @@ class BinexusProcess(models.Model):
         'organization.Organization',
         on_delete=models.CASCADE
     )
+
     llm_model = models.ForeignKey(
         'llm_core.LLMCore',
         on_delete=models.CASCADE
@@ -34,13 +35,20 @@ class BinexusProcess(models.Model):
 
     process_objective = models.TextField(blank=True, null=True)
     process_success_criteria = models.TextField(blank=True, null=True)
+
     fitness_manager_selectiveness = models.FloatField(default=0.5)
-    additional_genes = models.JSONField(default=dict, blank=True, null=True)
+
+    additional_genes = models.JSONField(
+        default=dict,
+        blank=True,
+        null=True
+    )
 
     # Optimization Hyper-Parameters
     optimization_generations = models.IntegerField(default=10)
     optimization_population_size = models.IntegerField(default=5)
     optimization_breeding_pool_rate = models.FloatField(default=0.4)
+
     optimization_mutation_rate_per_individual = models.FloatField(default=0.1)
     optimization_mutation_rate_per_gene = models.FloatField(default=0.1)
     optimization_crossover_rate = models.FloatField(default=0.5)
@@ -52,31 +60,37 @@ class BinexusProcess(models.Model):
         blank=True,
         null=True
     )
+
     post_processing_history_best_fitness_per_epoch = models.JSONField(
         default=list,
         blank=True,
         null=True
     )
+
     post_processing_history_worst_fitness_per_epoch = models.JSONField(
         default=list,
         blank=True,
         null=True
     )
+
     post_processing_history_average_of_average_fitnesses = models.FloatField(
         default=0.0,
         blank=True,
         null=True
     )
+
     post_processing_history_average_of_best_fitnesses = models.FloatField(
         default=0.0,
         blank=True,
         null=True
     )
+
     post_processing_history_average_of_worst_fitnesses = models.FloatField(
         default=0.0,
         blank=True,
         null=True
     )
+
     post_processing_history_visual_chart = models.ImageField(
         upload_to='binexus_process_visual_charts/%Y/%m/%d/',
         blank=True,
@@ -87,6 +101,7 @@ class BinexusProcess(models.Model):
         'auth.User',
         on_delete=models.CASCADE
     )
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -97,12 +112,22 @@ class BinexusProcess(models.Model):
     class Meta:
         verbose_name = 'Binexus Process'
         verbose_name_plural = 'Binexus Processes'
+
         ordering = ['-created_at']
+
         unique_together = [
-            ["organization", "process_name"],
+            [
+                "organization",
+                "process_name"
+            ],
         ]
+
         indexes = [
-            models.Index(fields=['organization']),
+            models.Index(
+                fields=[
+                    'organization'
+                ]
+            ),
             models.Index(
                 fields=[
                     'organization',

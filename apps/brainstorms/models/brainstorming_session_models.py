@@ -23,10 +23,12 @@ class BrainstormingSession(models.Model):
         'organization.Organization',
         on_delete=models.CASCADE
     )
+
     llm_model = models.ForeignKey(
         'llm_core.LLMCore',
         on_delete=models.CASCADE
     )
+
     created_by_user = models.ForeignKey(
         'auth.User',
         on_delete=models.CASCADE
@@ -35,6 +37,7 @@ class BrainstormingSession(models.Model):
     session_name = models.CharField(max_length=1000)
     topic_definition = models.TextField()
     constraints = models.TextField()
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -44,10 +47,16 @@ class BrainstormingSession(models.Model):
     class Meta:
         verbose_name = 'Brainstorming Session'
         verbose_name_plural = 'Brainstorming Sessions'
+
         ordering = ['-created_at']
+
         unique_together = [
-            ['organization', 'session_name'],
+            [
+                'organization',
+                'session_name'
+            ],
         ]
+
         indexes = [
             models.Index(
                 fields=['organization']

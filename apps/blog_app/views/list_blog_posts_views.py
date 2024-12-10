@@ -22,7 +22,11 @@ from django.db.models import Q
 from django.views.generic import TemplateView
 
 from apps.blog_app.models import BlogPost
-from web_project import TemplateLayout, TemplateHelper
+
+from web_project import (
+    TemplateLayout,
+    TemplateHelper
+)
 
 logger = logging.getLogger(__name__)
 
@@ -30,6 +34,7 @@ logger = logging.getLogger(__name__)
 class BlogPostView_List(TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+
         context.update(
             {
                 "layout": "blank",
@@ -56,13 +61,16 @@ class BlogPostView_List(TemplateView):
 
             paginator = Paginator(posts, 9)
             page_number = self.request.GET.get('page')
+
             page_obj = paginator.get_page(page_number)
             context['page_obj'] = page_obj
             context['search_query'] = search_query
 
         except Exception as e:
             logger.error(f"[BlogPostView_List] Error listing the Blog Posts: {e}")
+
             return context
 
         logger.info(f"Blog Posts were listed. User authenticated: {self.request.user.is_authenticated}")
+
         return context

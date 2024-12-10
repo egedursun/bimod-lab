@@ -24,8 +24,10 @@ class BinexusEliteAgent(models.Model):
         'binexus.BinexusProcess',
         on_delete=models.CASCADE
     )
+
     agent_nickname = models.CharField(max_length=255)
     agent_prompt = models.TextField(null=True, blank=True)
+
     agent_temperature = models.FloatField(default=0.0)
     binexus_fitness_score = models.IntegerField(default=0)
     agent_chromosome_parameters = models.JSONField(default=dict)
@@ -40,7 +42,9 @@ class BinexusEliteAgent(models.Model):
     class Meta:
         verbose_name = 'Binexus Elite Agent'
         verbose_name_plural = 'Binexus Elite Agents'
+
         ordering = ['-binexus_fitness_score']
+
         indexes = [
             models.Index(
                 fields=['binexus_fitness_score'],

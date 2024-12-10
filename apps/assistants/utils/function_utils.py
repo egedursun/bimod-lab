@@ -18,7 +18,10 @@
 import random
 import string
 
-from apps.assistants.utils import RANDOM_SUFFIX_MAXIMUM_VALUE, RANDOM_SUFFIX_MINIMUM_VALUE
+from apps.assistants.utils import (
+    RANDOM_SUFFIX_MAXIMUM_VALUE,
+    RANDOM_SUFFIX_MINIMUM_VALUE
+)
 
 
 def generate_random_string(length=16):

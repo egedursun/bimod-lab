@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 import boto3
@@ -37,6 +38,7 @@ class Assistant(models.Model):
         on_delete=models.CASCADE,
         related_name='assistants'
     )
+
     llm_model = models.ForeignKey(
         'llm_core.LLMCore',
         on_delete=models.CASCADE,
@@ -47,8 +49,10 @@ class Assistant(models.Model):
     description = models.TextField(default="", blank=True)
     instructions = models.TextField(default="", blank=True)
     response_template = models.TextField(default="", blank=True)
+
     audience = models.CharField(max_length=1000)
     tone = models.CharField(max_length=1000)
+
     response_language = models.CharField(
         max_length=10,
         choices=AGENT_SPEECH_LANGUAGES,
@@ -58,11 +62,13 @@ class Assistant(models.Model):
     max_retry_count = models.IntegerField(default=3)
     tool_max_attempts_per_instance = models.IntegerField(default=3)
     tool_max_chains = models.IntegerField(default=3)
+
     glossary = models.JSONField(default=dict, blank=True)
     time_awareness = models.BooleanField(default=True)
     place_awareness = models.BooleanField(default=True)
 
     assistant_image_save_path = 'assistant_images/%Y/%m/%d/'
+
     assistant_image = models.ImageField(
         upload_to=assistant_image_save_path,
         blank=True,
@@ -75,6 +81,7 @@ class Assistant(models.Model):
         related_name='assistants',
         blank=True
     )
+
     context_overflow_strategy = models.CharField(
         max_length=100,
         choices=CONTEXT_MANAGEMENT_STRATEGY,
@@ -82,20 +89,37 @@ class Assistant(models.Model):
     )
 
     max_context_messages = models.IntegerField(default=25)
-    document_base_directory = models.CharField(max_length=1000, null=True, blank=True)
-    storages_base_directory = models.CharField(max_length=1000, null=True, blank=True)
-    ml_models_base_directory = models.CharField(max_length=1000, null=True, blank=True)
+
+    document_base_directory = models.CharField(
+        max_length=1000,
+        null=True,
+        blank=True
+    )
+
+    storages_base_directory = models.CharField(
+        max_length=1000,
+        null=True,
+        blank=True
+    )
+
+    ml_models_base_directory = models.CharField(
+        max_length=1000,
+        null=True,
+        blank=True
+    )
 
     created_by_user = models.ForeignKey(
         "auth.User",
         on_delete=models.CASCADE,
         related_name='assistants_created_by_user'
     )
+
     last_updated_by_user = models.ForeignKey(
         "auth.User",
         on_delete=models.CASCADE,
         related_name='assistants_updated_by_user'
     )
+
     image_generation_capability = models.BooleanField(default=True)
 
     multi_step_reasoning_capability_choice = models.CharField(
@@ -134,10 +158,12 @@ class Assistant(models.Model):
         update_fields=None
     ):
         s3c = boto3.client('s3')
+
         bucket = settings.AWS_STORAGE_BUCKET_NAME
         bucket_root_url = f"https://{bucket}.s3.amazonaws.com/"
 
         if self.document_base_directory is None:
+
             try:
                 dir_name = f"documents/{str(self.organization.id)}/{str(self.llm_model.id)}/{generate_random_name_suffix()}/"
                 f_uri = f"{bucket_root_url}{dir_name}"
@@ -148,32 +174,39 @@ class Assistant(models.Model):
                 logger.error(f"Error while creating document base directory: {e}")
 
         if self.storages_base_directory is None:
+
             try:
                 dir_name = f"storages/{str(self.organization.id)}/{str(self.llm_model.id)}/{generate_random_name_suffix()}/"
                 f_uri = f"{bucket_root_url}{dir_name}"
+
                 s3c.put_object(
                     Bucket=bucket,
                     Key=f"{dir_name}/"
                 )
+
                 self.storages_base_directory = f_uri
 
             except Exception as e:
                 logger.error(f"Error while creating storages base directory: {e}")
 
         if self.ml_models_base_directory is None:
+
             try:
                 dir_name = f"ml_models/{str(self.organization.id)}/{str(self.llm_model.id)}/{generate_random_name_suffix()}/"
                 f_uri = f"{bucket_root_url}{dir_name}"
+
                 s3c.put_object(
                     Bucket=bucket,
                     Key=f"{dir_name}/"
                 )
+
                 self.ml_models_base_directory = f_uri
 
             except Exception as e:
                 logger.error(f"Error while creating ml models base directory: {e}")
 
         logger.info(f"Assistant has been created for organization.")
+
         super().save(
             force_insert,
             force_update,
@@ -194,10 +227,12 @@ class Assistant(models.Model):
             try:
                 dir_name = full_uri.replace(f"https://{bucket}.s3.amazonaws.com/", "")
                 paginator = s3c.get_paginator('list_objects_v2')
+
                 pages = paginator.paginate(
                     Bucket=bucket,
                     Prefix=dir_name
                 )
+
                 for page in pages:
                     if 'Contents' in page:
                         delete_keys = {
@@ -206,10 +241,12 @@ class Assistant(models.Model):
                                     'Key': obj['Key']} for obj in page['Contents']
                             ]
                         }
+
                         s3c.delete_objects(
                             Bucket=bucket,
                             Delete=delete_keys
                         )
+
                 logger.info(f"Deleted s3 directory: {full_uri}")
 
             except Exception as e:
@@ -231,25 +268,77 @@ class Assistant(models.Model):
         verbose_name = "Assistant"
         verbose_name_plural = "Assistants"
         ordering = ["-created_at"]
+
         unique_together = [
-            ["organization", "name"],
+            [
+                "organization",
+                "name"
+            ],
         ]
+
         indexes = [
-            models.Index(fields=["organization"]),
-            models.Index(fields=["llm_model"]),
-            models.Index(fields=["name"]),
-            models.Index(fields=["response_language"]),
-            models.Index(fields=["created_by_user"]),
-            models.Index(fields=["last_updated_by_user"]),
-            models.Index(fields=["created_at"]),
-            models.Index(fields=["updated_at"]),
-            models.Index(fields=["organization", "llm_model"]),
-            models.Index(fields=["organization", "name"]),
-            models.Index(fields=["organization", "created_at"]),
-            models.Index(fields=["llm_model", "created_at"]),
-            models.Index(fields=["organization", "created_by_user"]),
-            models.Index(fields=["created_by_user", "created_at"]),
-            models.Index(fields=["organization", "llm_model", "name"]),
-            models.Index(fields=["organization", "llm_model", "created_by_user", "created_at"]),
-            models.Index(fields=["organization", "llm_model", "updated_at"]),
+            models.Index(fields=[
+                "organization"
+            ]),
+            models.Index(fields=[
+                "llm_model"
+            ]),
+            models.Index(fields=[
+                "name"
+            ]),
+            models.Index(fields=[
+                "response_language"
+            ]),
+            models.Index(fields=[
+                "created_by_user"
+            ]),
+            models.Index(fields=[
+                "last_updated_by_user"
+            ]),
+            models.Index(fields=[
+                "created_at"
+            ]),
+            models.Index(fields=[
+                "updated_at"
+            ]),
+            models.Index(fields=[
+                "organization",
+                "llm_model"
+            ]),
+            models.Index(fields=[
+                "organization",
+                "name"
+            ]),
+            models.Index(fields=[
+                "organization",
+                "created_at"
+            ]),
+            models.Index(fields=[
+                "llm_model",
+                "created_at"
+            ]),
+            models.Index(fields=[
+                "organization",
+                "created_by_user"
+            ]),
+            models.Index(fields=[
+                "created_by_user",
+                "created_at"
+            ]),
+            models.Index(fields=[
+                "organization",
+                "llm_model",
+                "name"
+            ]),
+            models.Index(fields=[
+                "organization",
+                "llm_model",
+                "created_by_user",
+                "created_at"
+            ]),
+            models.Index(fields=[
+                "organization",
+                "llm_model",
+                "updated_at"
+            ]),
         ]

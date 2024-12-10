@@ -20,7 +20,11 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 
 from apps.binexus.models import BinexusProcess
-from apps.core.user_permissions.permission_manager import UserPermissionManager
+
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
 from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
@@ -56,6 +60,7 @@ class BinexusView_ProcessList(LoginRequiredMixin, TemplateView):
 
         except Exception as e:
             messages.error(self.request, "Error listing the Binexus Processes.")
+
             return context
 
         return context

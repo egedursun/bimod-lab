@@ -30,15 +30,19 @@ def build_binexus_fitness_evaluation_prompt(
     individual
 ):
     merged_prompt = ""
+
     merged_prompt += binexus_generic_instructions_prompt(
         process=process
     )
+
     merged_prompt += binexus_process_metadata_prompt(
         process=process
     )
+
     merged_prompt += binexus_output_format_prompt(
         process=process
     )
+
     merged_prompt += binexus_evaluation_individual_prompt(
         individual=individual
     )

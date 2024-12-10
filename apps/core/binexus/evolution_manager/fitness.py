@@ -18,12 +18,31 @@
 import logging
 
 from apps.binexus.models import BinexusProcess
-from apps.core.binexus.evolution_manager import PopulationManager, Chromosome, Individual
-from apps.core.binexus.prompt_builders import build_binexus_fitness_evaluation_prompt
-from apps.core.generative_ai.gpt_openai_manager import OpenAIGPTClientManager
-from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
+
+from apps.core.binexus.evolution_manager import (
+    PopulationManager,
+    Chromosome,
+    Individual
+)
+
+from apps.core.binexus.prompt_builders import (
+    build_binexus_fitness_evaluation_prompt
+)
+
+from apps.core.generative_ai.gpt_openai_manager import (
+    OpenAIGPTClientManager
+)
+
+from apps.core.generative_ai.utils import (
+    GPT_DEFAULT_ENCODING_ENGINE,
+    ChatRoles
+)
+
 from apps.llm_transaction.models import LLMTransaction
-from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
+
+from apps.llm_transaction.utils import (
+    LLMTransactionSourcesTypesNames
+)
 
 logger = logging.getLogger(__name__)
 
@@ -37,7 +56,10 @@ class FitnessEvaluationManager:
         self.process = binexus_process
         self.custom_genes = {} if (custom_genes is None) else custom_genes
         self.llm_model = self.process.llm_model
-        self.c = OpenAIGPTClientManager.get_naked_client(llm_model=self.llm_model)
+
+        self.c = OpenAIGPTClientManager.get_naked_client(
+            llm_model=self.llm_model
+        )
 
     def _consult_ai(
         self,
@@ -47,7 +69,13 @@ class FitnessEvaluationManager:
             process=self.process,
             individual=individual
         )
-        structured_messages = [{"role": "system", "content": system_prompt}]
+
+        structured_messages = [
+            {
+                "role": "system",
+                "content": system_prompt
+            }
+        ]
 
         tx = LLMTransaction.objects.create(
             organization=self.process.organization,
@@ -64,10 +92,13 @@ class FitnessEvaluationManager:
             transaction_type=ChatRoles.SYSTEM,
             transaction_source=LLMTransactionSourcesTypesNames.BINEXUS
         )
+
         tx.save()
+
         logger.info(f"[_consult_ai] Created system prompt LLM Transaction for Binexus Fitness Evaluation.")
 
         temperature_of_evaluation_agent = (1.0 - self.process.fitness_manager_selectiveness)
+
         llm_response = self.c.chat.completions.create(
             model=self.llm_model.model_name,
             messages=structured_messages,
@@ -101,6 +132,7 @@ class FitnessEvaluationManager:
         )
 
         tx.save()
+
         logger.info(f"[_consult_ai] Created response (system) prompt LLM Transaction for Binexus Fitness Evaluation.")
 
         try:
@@ -119,9 +151,11 @@ class FitnessEvaluationManager:
         is_test
     ):
         calculated_fitness_score = 0
+
         if is_test is True:
 
             for gene_name, gene_value in individual.get_chromosome().items():
+
                 if Chromosome.get_index_of_gene_value(
                     gene_name=gene_name,
                     gene_value=gene_value,
@@ -133,6 +167,7 @@ class FitnessEvaluationManager:
             fitness_score = self._consult_ai(
                 individual=individual
             )
+
             calculated_fitness_score = fitness_score
 
         individual.set_new_fitness_score(calculated_fitness_score)
@@ -142,12 +177,15 @@ class FitnessEvaluationManager:
         population,
         is_test
     ):
-        for i, individual in enumerate(population):
 
+        for i, individual in enumerate(population):
             self._evaluate_and_record_individual_fitness(
                 individual,
                 is_test=is_test
             )
 
-        order_population_by_fitness_descending = PopulationManager.order_population_by_fitness_descending(population)
+        order_population_by_fitness_descending = PopulationManager.order_population_by_fitness_descending(
+            population
+        )
+
         return order_population_by_fitness_descending

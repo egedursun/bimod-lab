@@ -18,6 +18,7 @@
 from django.contrib import admin
 
 from apps.audit_logs.models import AuditLog
+
 from apps.audit_logs.utils import (
     AUDIT_LOG_ADMIN_LIST,
     AUDIT_LOG_ADMIN_SEARCH,
@@ -30,4 +31,5 @@ class AuditLogAdmin(admin.ModelAdmin):
     list_display = AUDIT_LOG_ADMIN_LIST
     search_fields = AUDIT_LOG_ADMIN_SEARCH
     list_filter = AUDIT_LOG_ADMIN_FILTER
+
     ordering = ('-timestamp',)

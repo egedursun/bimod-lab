@@ -30,6 +30,7 @@ class BrainstormingCompleteSynthesis(models.Model):
     )
 
     synthesis_content = models.TextField()
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -39,13 +40,32 @@ class BrainstormingCompleteSynthesis(models.Model):
     class Meta:
         verbose_name = 'Brainstorming Complete Synthesis'
         verbose_name_plural = 'Brainstorming Complete Syntheses'
+
         ordering = ['-created_at']
+
         indexes = [
-            models.Index(fields=['brainstorming_session']),
-            models.Index(fields=['created_by_user']),
-            models.Index(fields=['created_at']),
-            models.Index(fields=['updated_at']),
-            models.Index(fields=['brainstorming_session', 'created_by_user']),
-            models.Index(fields=['brainstorming_session', 'created_at']),
-            models.Index(fields=['brainstorming_session', 'updated_at']),
+            models.Index(fields=[
+                'brainstorming_session'
+            ]),
+            models.Index(fields=[
+                'created_by_user'
+            ]),
+            models.Index(fields=[
+                'created_at'
+            ]),
+            models.Index(fields=[
+                'updated_at'
+            ]),
+            models.Index(fields=[
+                'brainstorming_session',
+                'created_by_user'
+            ]),
+            models.Index(fields=[
+                'brainstorming_session',
+                'created_at'
+            ]),
+            models.Index(fields=[
+                'brainstorming_session',
+                'updated_at'
+            ]),
         ]

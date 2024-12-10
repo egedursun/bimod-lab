@@ -22,7 +22,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import TemplateView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
 from apps.brainstorms.models import BrainstormingSession
 from apps.llm_core.models import LLMCore
 from apps.organization.models import Organization
@@ -78,11 +81,13 @@ class BrainstormingView_SessionUpdate(LoginRequiredMixin, TemplateView):
 
         org_id = request.POST.get('organization')
         llm_id = request.POST.get('llm_model')
+
         session_name = request.POST.get('session_name')
         topic_definition = request.POST.get('topic_definition')
         constraints = request.POST.get('constraints')
 
         if org_id and llm_id and session_name and topic_definition:
+
             try:
                 organization = Organization.objects.get(id=org_id)
                 llm_model = LLMCore.objects.get(id=llm_id)
@@ -92,10 +97,12 @@ class BrainstormingView_SessionUpdate(LoginRequiredMixin, TemplateView):
                 session.session_name = session_name
                 session.topic_definition = topic_definition
                 session.constraints = constraints
+
                 session.save()
 
                 messages.success(request, "Brainstorming session updated successfully!")
                 logger.info(f'The session "{session_name}" was updated successfully. Session ID: {session.id}')
+
                 return redirect('brainstorms:list_sessions')
 
             except Exception as e:

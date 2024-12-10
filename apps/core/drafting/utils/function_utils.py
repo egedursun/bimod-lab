@@ -26,7 +26,9 @@ def find_tool_call_from_json(
     decoder=JSONDecoder()
 ):
     logger.info(f"Searching for tool call in response.")
+
     response = f"""{response}"""
+
     response = (
         response.replace("\n", "")
         .replace("'", '"')
@@ -34,11 +36,13 @@ def find_tool_call_from_json(
         .replace('```', '')
         .replace('`', '')
     )
+
     json_objects = []
     pos = 0
 
     while True:
         match = response.find('{', pos)
+
         if match == -1:
             break
 

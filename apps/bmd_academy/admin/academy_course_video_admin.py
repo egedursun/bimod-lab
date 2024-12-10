@@ -31,4 +31,5 @@ class AcademyCourseVideoAdmin(admin.ModelAdmin):
     list_display = ACADEMY_COURSE_VIDEO_LIST
     list_filter = ACADEMY_COURSE_VIDEO_FILTER
     search_fields = ACADEMY_COURSE_VIDEO_SEARCH
+
     ordering = ['-created_at']

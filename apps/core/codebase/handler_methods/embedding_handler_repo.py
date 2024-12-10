@@ -18,7 +18,9 @@
 import json
 import logging
 
-from apps.datasource_codebase.utils import RepositoryUploadStatusNames
+from apps.datasource_codebase.utils import (
+    RepositoryUploadStatusNames
+)
 
 logger = logging.getLogger(__name__)
 
@@ -28,7 +30,10 @@ def build_repository_orm_structure(
     knowledge_base,
     path: str
 ):
-    from apps.datasource_codebase.models import CodeBaseRepository
+    from apps.datasource_codebase.models import (
+        CodeBaseRepository
+    )
+
     _id, error = None, None
 
     try:
@@ -37,7 +42,9 @@ def build_repository_orm_structure(
         doc_document_uri = path
         doc_description = ""
         doc_document_content_temporary = ""
+
         doc_metadata = document["metadata"]
+
         document_orm_object = CodeBaseRepository.objects.create(
             knowledge_base=doc_knowledge_base,
             repository_name=doc_file_name,
@@ -46,13 +53,16 @@ def build_repository_orm_structure(
             repository_uri=doc_document_uri,
             repository_content_temporary=doc_document_content_temporary,
         )
+
         document_orm_object.save()
+
         _id = document_orm_object.id
         logger.info(f"[repository_embedder.build_repository_orm_structure] Built the repository ORM structure")
 
     except Exception as e:
         logger.error(
             f"[repository_embedder.build_repository_orm_structure] Error building the repository ORM structure: {e}")
+
         error = f"[repository_embedder.build_repository_orm_structure] Error building the repository ORM structure: {e}"
 
     return _id, error
@@ -64,12 +74,20 @@ def build_repository_weaviate_structure(
     number_of_chunks: int
 ):
     document_weaviate_object, error = None, None
+
     try:
         weaviate_document_file_name = path.split("/")[-1]
         weaviate_document_description = ""
-        weaviate_document_metadata = json.dumps(document["metadata"], default=str, sort_keys=True)
+
+        weaviate_document_metadata = json.dumps(
+            document["metadata"],
+            default=str,
+            sort_keys=True
+        )
+
         weaviate_document_number_of_chunks = number_of_chunks
         weaviate_document_created_at = ""
+
         document_weaviate_object = {
             "repository_file_name": weaviate_document_file_name,
             "repository_description": weaviate_document_description,
@@ -77,12 +95,14 @@ def build_repository_weaviate_structure(
             "number_of_chunks": weaviate_document_number_of_chunks,
             "created_at": weaviate_document_created_at
         }
+
         logger.info(
             f"[repository_embedder.build_repository_weaviate_structure] Built the repository Weaviate structure")
 
     except Exception as e:
         logger.error(
             f"[repository_embedder.build_repository_weaviate_structure] Error building the repository Weaviate structure: {e}")
+
         error = (f"[repository_embedder.build_repository_weaviate_structure] Error building the "
                  f"repository Weaviate structure: {e}")
 
@@ -95,7 +115,6 @@ def embed_repository_sync(
     document_weaviate_object: dict,
     path: str
 ):
-
     from apps.core.codebase.codebase_decoder import CodeBaseDecoder
     from apps.datasource_codebase.models import (CodeRepositoryStorageConnection, CodeBaseRepository)
     from apps.datasource_codebase.tasks import add_repository_upload_log
@@ -142,7 +161,6 @@ def embed_repository_helper(
     path: str,
     number_of_chunks: int
 ):
-
     from apps.datasource_codebase.models import CodeRepositoryStorageConnection
 
     document_id, document_uuid = None, None

@@ -20,6 +20,7 @@ from django.db import models
 
 class ForumPost(models.Model):
     id = models.AutoField(primary_key=True)
+
     thread = models.ForeignKey(
         "ForumThread",
         related_name='posts',
@@ -27,6 +28,7 @@ class ForumPost(models.Model):
     )
 
     content = models.TextField()
+
     created_by = models.ForeignKey(
         "auth.User",
         on_delete=models.CASCADE
@@ -56,7 +58,9 @@ class ForumPost(models.Model):
     class Meta:
         verbose_name = "Forum Post"
         verbose_name_plural = "Forum Posts"
+
         ordering = ["-created_at"]
+
         indexes = [
             models.Index(
                 fields=[

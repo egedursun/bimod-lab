@@ -15,7 +15,10 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-def build_drafting_action__select_prompt(user_query: str, selected_text: str):
+def build_drafting_action__select_prompt(
+    user_query: str,
+    selected_text: str
+):
     return f"""
         ### **SELECTED ACTION BY THE USER:**
 

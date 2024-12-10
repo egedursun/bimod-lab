@@ -31,4 +31,5 @@ class AcademyCourseInstructorAdmin(admin.ModelAdmin):
     list_display = ACADEMY_COURSE_INSTRUCTOR_ADMIN_LIST
     search_fields = ACADEMY_COURSE_INSTRUCTOR_ADMIN_SEARCH
     list_filter = ACADEMY_COURSE_INSTRUCTOR_ADMIN_FILTER
+
     ordering = ('-created_at',)

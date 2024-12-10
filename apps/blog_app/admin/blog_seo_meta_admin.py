@@ -18,6 +18,7 @@
 from django.contrib import admin
 
 from apps.blog_app.models import BlogSEOMeta
+
 from apps.blog_app.utils import (
     BLOG_SEO_ADMIN_LIST,
     BLOG_SEO_ADMIN_FILTER,
@@ -30,4 +31,5 @@ class BlogSEOMetaAdmin(admin.ModelAdmin):
     list_display = BLOG_SEO_ADMIN_LIST
     list_filter = BLOG_SEO_ADMIN_FILTER
     search_fields = BLOG_SEO_ADMIN_SEARCH
+
     ordering = ['post']

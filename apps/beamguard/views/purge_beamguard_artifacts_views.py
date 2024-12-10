@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
@@ -22,7 +23,11 @@ from django.shortcuts import redirect
 from django.views import View
 
 from apps.assistants.models import Assistant
-from apps.core.user_permissions.permission_manager import UserPermissionManager
+
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
 from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 
@@ -50,6 +55,7 @@ class BeamGuardView_PurgeAllArtifacts(LoginRequiredMixin, View):
         user_orgs = Organization.objects.filter(
             users__in=[user]
         )
+
         user_assistants = Assistant.objects.filter(
             organization__in=user_orgs
         )
@@ -59,10 +65,12 @@ class BeamGuardView_PurgeAllArtifacts(LoginRequiredMixin, View):
                 assistant: Assistant
 
                 beamguard_artifacts = assistant.beamguard_artifacts.all()
+
                 for artifact in beamguard_artifacts:
 
                     try:
                         artifact.delete()
+
                     except Exception as e:
                         logger.error("Failed to purge the artifact with ID {artifact.id}: {e}")
                         continue
@@ -73,4 +81,5 @@ class BeamGuardView_PurgeAllArtifacts(LoginRequiredMixin, View):
 
         logger.info(f"BeamGuardView_PurgeAllArtifacts: All artifacts have been purged successfully.")
         messages.success(request, 'All artifacts have been purged successfully.')
+
         return redirect("beamguard:list")

@@ -14,13 +14,23 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
-from django.shortcuts import get_object_or_404
-from django.views.generic import TemplateView
+from django.shortcuts import (
+    get_object_or_404
+)
+
+from django.views.generic import (
+    TemplateView
+)
 
 from apps.blog_app.models import BlogPost
-from web_project import TemplateLayout, TemplateHelper
+
+from web_project import (
+    TemplateLayout,
+    TemplateHelper
+)
 
 logger = logging.getLogger(__name__)
 
@@ -41,11 +51,13 @@ class BlogPostView_Detail(TemplateView):
 
         try:
             post_slug = self.kwargs.get('slug')
+
             post = get_object_or_404(
                 BlogPost,
                 slug=post_slug,
                 status='published'
             )
+
             context['post'] = post
 
             if hasattr(post, 'seo_meta'):
@@ -61,7 +73,9 @@ class BlogPostView_Detail(TemplateView):
 
         except Exception as e:
             logger.error(f"[BlogPostView_Detail] Error fetching the Blog Post: {e}")
+
             return context
 
         logger.info(f"Blog Post {post.title} was viewed.")
+
         return context

@@ -18,6 +18,7 @@
 from django.contrib import admin
 
 from apps.blog_app.models import BlogPost
+
 from apps.blog_app.utils import (
     BLOG_POST_ADMIN_LIST,
     BLOG_POST_ADMIN_FILTER,
@@ -30,4 +31,5 @@ class BlogPostAdmin(admin.ModelAdmin):
     list_display = BLOG_POST_ADMIN_LIST
     list_filter = BLOG_POST_ADMIN_FILTER
     search_fields = BLOG_POST_ADMIN_SEARCH
+
     ordering = ['-created_at']

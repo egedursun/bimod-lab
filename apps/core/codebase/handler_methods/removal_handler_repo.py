@@ -19,7 +19,6 @@ import logging
 
 from weaviate.classes.query import Filter
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -28,19 +27,22 @@ def delete_repository_helper(
     class_name: str,
     document_uuid
 ):
-
     c = executor.connect_c()
     output = {"status": True, "error": ""}
 
     try:
         _ = c.collections.get(class_name).data.delete_by_id(document_uuid)
+
         _ = c.collections.get(f"{class_name}Chunks").data.delete_many(
-            where=Filter.by_property("repository_uuid").equal(document_uuid))
+            where=Filter.by_property("repository_uuid").equal(document_uuid)
+        )
+
         logger.info(f"[repository_deleter.delete_repository_helper] Deleted repository: {document_uuid}")
 
     except Exception as e:
         output["status"] = False
         output["error"] = f"[repository_deleter.delete_repository_helper] Error deleting repository: {e}"
+
         logger.error(f"[repository_deleter.delete_repository_helper] Error deleting repository: {e}")
 
     return output

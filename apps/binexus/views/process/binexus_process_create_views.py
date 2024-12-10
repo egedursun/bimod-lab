@@ -23,7 +23,11 @@ from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
 from apps.binexus.models import BinexusProcess
-from apps.core.user_permissions.permission_manager import UserPermissionManager
+
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
 from apps.llm_core.models import LLMCore
 from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
@@ -36,8 +40,14 @@ class BinexusView_ProcessCreate(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
-        user_orgs = Organization.objects.filter(users__in=[self.request.user])
-        llm_models = LLMCore.objects.filter(organization__in=user_orgs)
+
+        user_orgs = Organization.objects.filter(
+            users__in=[self.request.user]
+        )
+
+        llm_models = LLMCore.objects.filter(
+            organization__in=user_orgs
+        )
 
         context['organizations'] = user_orgs
         context['llm_models'] = llm_models
@@ -60,6 +70,7 @@ class BinexusView_ProcessCreate(LoginRequiredMixin, TemplateView):
             organization = request.POST.get('organization')
             llm_model = request.POST.get('llm_model')
             process_name = request.POST.get('process_name')
+
             process_description = request.POST.get('process_description')
             process_objective = request.POST.get('process_objective')
             process_success_criteria = request.POST.get('process_success_criteria')
@@ -87,6 +98,7 @@ class BinexusView_ProcessCreate(LoginRequiredMixin, TemplateView):
             optimization_generations = request.POST.get('optimization_generations')
             optimization_population_size = request.POST.get('optimization_population_size')
             optimization_breeding_pool_rate = request.POST.get('optimization_breeding_pool_rate')
+
             optimization_mutation_rate_per_individual = request.POST.get('optimization_mutation_rate_per_individual')
             optimization_mutation_rate_per_gene = request.POST.get('optimization_mutation_rate_per_gene')
             optimization_crossover_rate = request.POST.get('optimization_crossover_rate')
@@ -115,7 +127,9 @@ class BinexusView_ProcessCreate(LoginRequiredMixin, TemplateView):
         except Exception as e:
             logger.error(f"Error creating Binexus Process: {e}")
             messages.error(request, "Error creating Binexus Process.")
+
             return redirect('binexus:process_list')
 
         logger.info(f"Binexus Process created successfully.")
+
         return redirect('binexus:process_list')

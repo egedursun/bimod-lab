@@ -18,12 +18,26 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import get_object_or_404, redirect
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.shortcuts import (
+    get_object_or_404,
+    redirect
+)
+
 from django.views import View
 
-from apps.brainstorms.utils import BrainstormingBookmarkStatusesNames
-from apps.core.user_permissions.permission_manager import UserPermissionManager
+from apps.brainstorms.utils import (
+    BrainstormingBookmarkStatusesNames
+)
+
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
 from apps.brainstorms.models import BrainstormingIdea
 from apps.user_permissions.utils import PermissionNames
 
@@ -33,7 +47,12 @@ logger = logging.getLogger(__name__)
 class BrainstormingView_IdeaBookmark(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         idea_id = self.kwargs.get('idea_id')
-        idea = get_object_or_404(BrainstormingIdea, id=idea_id, created_by_user=request.user)
+
+        idea = get_object_or_404(
+            BrainstormingIdea,
+            id=idea_id,
+            created_by_user=request.user
+        )
 
         ##############################
         # PERMISSION CHECK FOR - BOOKMARK_BRAINSTORMING_IDEAS
@@ -47,8 +66,13 @@ class BrainstormingView_IdeaBookmark(LoginRequiredMixin, View):
 
         idea.is_bookmarked = not idea.is_bookmarked
         idea.save()
+
         status = BrainstormingBookmarkStatusesNames.BOOKMARKED if idea.is_bookmarked else BrainstormingBookmarkStatusesNames.UNBOOKMARKED
 
         messages.success(request, f'Idea "{idea.idea_title}" has been {status}.')
         logger.info(f'Idea "{idea.idea_title}" has been {status}. Idea ID: {idea.id}')
-        return redirect('brainstorms:detail_session', session_id=idea.brainstorming_session.id)
+
+        return redirect(
+            'brainstorms:detail_session',
+            session_id=idea.brainstorming_session.id
+        )

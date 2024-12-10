@@ -17,9 +17,13 @@
 
 import logging
 
-from apps.core.codebase.codebase_executor import WeaviateExecutor
-from apps.core.codebase.utils import KNOWLEDGE_BASE_PROVIDERS
+from apps.core.codebase.codebase_executor import (
+    WeaviateExecutor
+)
 
+from apps.core.codebase.utils import (
+    KNOWLEDGE_BASE_PROVIDERS
+)
 
 logger = logging.getLogger(__name__)
 
@@ -27,7 +31,7 @@ logger = logging.getLogger(__name__)
 class CodeBaseDecoder:
     @staticmethod
     def get(connection):
-
         if connection.provider == KNOWLEDGE_BASE_PROVIDERS["WEAVIATE"]["code"]:
             logger.info(f"Creating WeaviateExecutor for connection: {connection}")
+
             return WeaviateExecutor(connection)

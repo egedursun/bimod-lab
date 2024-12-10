@@ -18,11 +18,18 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
 from apps.brainstorms.models import BrainstormingSession
 from apps.llm_core.models import LLMCore
 from apps.organization.models import Organization
@@ -40,6 +47,7 @@ class BrainstormingView_SessionCreate(LoginRequiredMixin, TemplateView):
         context['organizations'] = Organization.objects.filter(
             users__in=[user]
         )
+
         context['llm_models'] = LLMCore.objects.filter(
             organization__in=context['organizations']
         )
@@ -68,6 +76,7 @@ class BrainstormingView_SessionCreate(LoginRequiredMixin, TemplateView):
             try:
                 organization = Organization.objects.get(id=org_id)
                 llm_model = LLMCore.objects.get(id=llm_core_id)
+
                 session = BrainstormingSession.objects.create(
                     organization=organization,
                     llm_model=llm_model,
@@ -79,6 +88,7 @@ class BrainstormingView_SessionCreate(LoginRequiredMixin, TemplateView):
 
                 messages.success(request, "Brainstorming session created successfully!")
                 logger.info(f"Brainstorming session created successfully. Session ID: {session.id}")
+
                 return redirect('brainstorms:list_sessions')
 
             except Exception as e:

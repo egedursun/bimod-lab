@@ -58,9 +58,11 @@ def build_site_command_system_prompt(xc: DraftingExecutionManager, user_query: s
     combined_system_prompt = ""
 
     generic_instruction_prompt = ""
+
     generic_instruction_prompt += build_drafting_agent_nickname_prompt(
         xc.copilot.name
     )
+
     generic_instruction_prompt += build_drafting_internal_principles_prompt()
 
     generic_instruction_prompt += build_drafting_agent_personality_prompt(
@@ -131,9 +133,11 @@ def build_site_command_system_prompt_public(
     combined_system_prompt = ""
 
     generic_instruction_prompt = ""
+
     generic_instruction_prompt += build_drafting_agent_nickname_prompt(
         xc.copilot.name
     )
+
     generic_instruction_prompt += build_drafting_internal_principles_prompt()
 
     generic_instruction_prompt += build_drafting_agent_personality_prompt(

@@ -18,12 +18,27 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import get_object_or_404, redirect
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+
+)
+
+from django.shortcuts import (
+    get_object_or_404,
+    redirect
+)
+
 from django.views import View
 
-from apps.core.brainstorms.brainstorms_executor import BrainstormsExecutor
-from apps.core.user_permissions.permission_manager import UserPermissionManager
+from apps.core.brainstorms.brainstorms_executor import (
+    BrainstormsExecutor
+)
+
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
 from apps.brainstorms.models import BrainstormingSession
 from apps.user_permissions.utils import PermissionNames
 
@@ -33,6 +48,7 @@ logger = logging.getLogger(__name__)
 class BrainstormingView_PerformCompleteSynthesis(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         ss_id = self.kwargs.get('session_id')
+
         session = get_object_or_404(
             BrainstormingSession,
             id=ss_id,
@@ -54,4 +70,8 @@ class BrainstormingView_PerformCompleteSynthesis(LoginRequiredMixin, View):
 
         messages.success(request, 'Complete synthesis for the entire session generated successfully.')
         logger.info(f'Complete synthesis for the entire session generated successfully. Session ID: {session.id}')
-        return redirect('brainstorms:detail_session', session_id=session.id)
+
+        return redirect(
+            'brainstorms:detail_session',
+            session_id=session.id
+        )

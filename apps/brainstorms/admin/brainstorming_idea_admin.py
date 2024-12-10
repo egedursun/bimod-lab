@@ -31,4 +31,9 @@ class BrainstormingIdeaAdmin(admin.ModelAdmin):
     list_display = BRAINSTORMING_IDEA_ADMIN_LIST
     list_filter = BRAINSTORMING_IDEA_ADMIN_FILTER
     search_fields = BRAINSTORMING_IDEA_ADMIN_SEARCH
-    ordering = ('-created_at', 'idea_title', 'brainstorming_session')
+
+    ordering = (
+        '-created_at',
+        'idea_title',
+        'brainstorming_session'
+    )

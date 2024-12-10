@@ -18,20 +18,45 @@
 import json
 import logging
 
-from apps.core.drafting.utils import find_tool_call_from_json, DRAFTING_TOOL_CALL_MAXIMUM_ATTEMPTS
-from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
-from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
-from apps.core.tool_calls.core_services.core_service_sql_query import run_sql_query
-from apps.core.tool_calls.input_verifiers.verify_run_sql_query import verify_run_sql_query_content
+from apps.core.drafting.utils import (
+    find_tool_call_from_json,
+    DRAFTING_TOOL_CALL_MAXIMUM_ATTEMPTS
+)
+
+from apps.core.generative_ai.utils import (
+    GPT_DEFAULT_ENCODING_ENGINE,
+    ChatRoles
+)
+
+from apps.core.internal_cost_manager.costs_map import (
+    InternalServiceCosts
+)
+
+from apps.core.tool_calls.core_services.core_service_sql_query import (
+    run_sql_query
+)
+
+from apps.core.tool_calls.input_verifiers.verify_run_sql_query import (
+    verify_run_sql_query_content
+)
+
 from apps.llm_transaction.models import LLMTransaction
-from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
+
+from apps.llm_transaction.utils import (
+    LLMTransactionSourcesTypesNames
+)
 
 logger = logging.getLogger(__name__)
 
 
 def handle_sql_command(xc, command: str) -> str:
-    from apps.core.drafting.drafting_executor import DraftingExecutionManager
-    from apps.core.drafting.prompt_builders import build_sql_command_system_prompt
+    from apps.core.drafting.drafting_executor import (
+        DraftingExecutionManager
+    )
+
+    from apps.core.drafting.prompt_builders import (
+        build_sql_command_system_prompt
+    )
 
     try:
         tx = LLMTransaction.objects.create(
@@ -49,6 +74,7 @@ def handle_sql_command(xc, command: str) -> str:
             transaction_type=ChatRoles.USER,
             transaction_source=LLMTransactionSourcesTypesNames.DRAFTING
         )
+
         logger.info(f"[handle_ai_command] Created LLMTransaction for user command: {command}")
 
     except Exception as e:
@@ -56,7 +82,12 @@ def handle_sql_command(xc, command: str) -> str:
         pass
 
     output, error = None, None
-    system_prompt = build_sql_command_system_prompt(xc=xc, user_query=command)
+
+    system_prompt = build_sql_command_system_prompt(
+        xc=xc,
+        user_query=command
+    )
+
     xc: DraftingExecutionManager
     client = xc.naked_c
 
@@ -76,6 +107,7 @@ def handle_sql_command(xc, command: str) -> str:
             transaction_type=ChatRoles.SYSTEM,
             transaction_source=LLMTransactionSourcesTypesNames.DRAFTING
         )
+
         logger.info(f"[handle_ai_command] Created LLMTransaction for system prompt.")
 
     except Exception as e:
@@ -100,8 +132,10 @@ def handle_sql_command(xc, command: str) -> str:
 
         choices = llm_response.choices
         first_choice = choices[0]
+
         choice_message = first_choice.message
         choice_message_content = choice_message.content
+
         logger.info(f"[handle_ai_command] Generated AI response.")
 
         try:
@@ -120,6 +154,7 @@ def handle_sql_command(xc, command: str) -> str:
                 transaction_type=ChatRoles.ASSISTANT,
                 transaction_source=LLMTransactionSourcesTypesNames.DRAFTING
             )
+
             logger.info(f"[handle_ai_command] Created LLMTransaction for AI response.")
 
         except Exception as e:
@@ -129,11 +164,13 @@ def handle_sql_command(xc, command: str) -> str:
     except Exception as e:
         logger.error(f"[handle_ai_command] Error generating AI response. Error: {e}")
         error = f"[handle_ai_command] Error executing SQL command: {command}. Error: {e}"
+
         return output, error
 
     # TOOL USAGE IDENTIFICATION
     tool_counter = 0
     context_messages = [structured_system_prompt]
+
     while (
         len(find_tool_call_from_json(choice_message_content)) > 0 and
         tool_counter < DRAFTING_TOOL_CALL_MAXIMUM_ATTEMPTS
@@ -150,7 +187,11 @@ def handle_sql_command(xc, command: str) -> str:
 
                     '''
                 """
-                error = verify_run_sql_query_content(content=tool_req_dict)
+
+                error = verify_run_sql_query_content(
+                    content=tool_req_dict
+                )
+
                 if error:
                     logger.error(error)
                     return error, None, None, None
@@ -163,7 +204,13 @@ def handle_sql_command(xc, command: str) -> str:
                 output_tool_call += """
                     '''
                 """
-                context_messages.append({"content": output_tool_call, "role": "system"})
+                context_messages.append(
+                    {
+                        "content": output_tool_call,
+                        "role": "system"
+                    }
+                )
+
         try:
 
             llm_response = client.chat.completions.create(
@@ -178,8 +225,10 @@ def handle_sql_command(xc, command: str) -> str:
 
             choices = llm_response.choices
             first_choice = choices[0]
+
             choice_message = first_choice.message
             choice_message_content = choice_message.content
+
             logger.info(f"[handle_ai_command] Generated AI response.")
 
             try:
@@ -198,6 +247,7 @@ def handle_sql_command(xc, command: str) -> str:
                     transaction_type=ChatRoles.ASSISTANT,
                     transaction_source=LLMTransactionSourcesTypesNames.DRAFTING
                 )
+
                 logger.info(f"[handle_ai_command] Created LLMTransaction for AI response.")
 
             except Exception as e:
@@ -207,13 +257,16 @@ def handle_sql_command(xc, command: str) -> str:
         except Exception as e:
             logger.error(f"[handle_ai_command] Error generating AI response. Error: {e}")
             error = f"[handle_ai_command] Error executing SQL command: {command}. Error: {e}"
+
             return output, error
 
     if tool_counter == DRAFTING_TOOL_CALL_MAXIMUM_ATTEMPTS:
         logger.error(f"[handle_ai_command] Error executing SQL command: {command}. Error: Maximum tool call attempts "
                      f"reached.")
+
         error = (f"[handle_ai_command] Error executing SQL command: {command}. Error: Maximum tool call attempts "
                  f"reached.")
+
         return output, error
 
     try:
@@ -228,7 +281,9 @@ def handle_sql_command(xc, command: str) -> str:
             transaction_source=LLMTransactionSourcesTypesNames.DRAFTING,
             is_tool_cost=True
         )
+
         tx.save()
+
         logger.info(f"[handle_ai_command] Created LLMTransaction for Drafting.")
 
     except Exception as e:
@@ -236,6 +291,7 @@ def handle_sql_command(xc, command: str) -> str:
         pass
 
     output = choice_message_content
+
     return output, error
 
 

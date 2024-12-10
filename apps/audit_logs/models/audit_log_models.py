@@ -28,15 +28,18 @@ class AuditLog(models.Model):
         max_length=6,
         choices=AUDIT_LOG_ACTION_CHOICES
     )
+
     model_name = models.CharField(max_length=10000)
     object_id = models.PositiveIntegerField()
     timestamp = models.DateTimeField(default=timezone.now)
+
     user = models.ForeignKey(
         get_user_model(),
         null=True,
         blank=True,
         on_delete=models.SET_NULL
     )
+
     changes = models.JSONField(
         null=True,
         blank=True
@@ -45,20 +48,63 @@ class AuditLog(models.Model):
     class Meta:
         verbose_name = "Audit Log"
         verbose_name_plural = "Audit Logs"
+
         ordering = ["-timestamp"]
+
         indexes = [
-            models.Index(fields=["object_id"]),
-            models.Index(fields=["model_name"]),
-            models.Index(fields=["timestamp"]),
-            models.Index(fields=["user"]),
-            models.Index(fields=["action"]),
-            models.Index(fields=["model_name", "object_id"]),
-            models.Index(fields=["model_name", "object_id", "action"]),
-            models.Index(fields=["model_name", "object_id", "timestamp"]),
-            models.Index(fields=["model_name", "object_id", "user"]),
-            models.Index(fields=["model_name", "object_id", "action", "timestamp"]),
-            models.Index(fields=["model_name", "object_id", "action", "user"]),
-            models.Index(fields=["model_name", "object_id", "action", "timestamp", "user"]),
+            models.Index(fields=[
+                "object_id"
+            ]),
+            models.Index(fields=[
+                "model_name"
+            ]),
+            models.Index(fields=[
+                "timestamp"
+            ]),
+            models.Index(fields=[
+                "user"
+            ]),
+            models.Index(fields=[
+                "action"
+            ]),
+            models.Index(fields=[
+                "model_name",
+                "object_id"
+            ]),
+            models.Index(fields=[
+                "model_name",
+                "object_id",
+                "action"
+            ]),
+            models.Index(fields=[
+                "model_name",
+                "object_id",
+                "timestamp"
+            ]),
+            models.Index(fields=[
+                "model_name",
+                "object_id",
+                "user"
+            ]),
+            models.Index(fields=[
+                "model_name",
+                "object_id",
+                "action",
+                "timestamp"
+            ]),
+            models.Index(fields=[
+                "model_name",
+                "object_id",
+                "action",
+                "user"
+            ]),
+            models.Index(fields=[
+                "model_name",
+                "object_id",
+                "action",
+                "timestamp",
+                "user"
+            ]),
         ]
 
     def __str__(self):

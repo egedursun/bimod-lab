@@ -18,7 +18,11 @@
 import logging
 import uuid
 
-from apps.binexus.models import BinexusProcess, BinexusEliteAgent
+from apps.binexus.models import (
+    BinexusProcess,
+    BinexusEliteAgent
+)
+
 from apps.core.binexus.evolution_manager import Chromosome
 
 from apps.core.binexus.prompt_builders.binexus_individual_assignment_prompt_builders import (
@@ -29,13 +33,25 @@ from apps.core.binexus.prompts.binexus_individual_assignment_prompt import (
     binexus_individual_assignment_prompt_redacted
 )
 
-from apps.core.binexus.utils import generate_random_elite_agent_name
-from apps.core.generative_ai.gpt_openai_manager import OpenAIGPTClientManager
-from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
+from apps.core.binexus.utils import (
+    generate_random_elite_agent_name
+)
+
+from apps.core.generative_ai.gpt_openai_manager import (
+    OpenAIGPTClientManager
+)
+
+from apps.core.generative_ai.utils import (
+    GPT_DEFAULT_ENCODING_ENGINE,
+    ChatRoles
+)
 
 from apps.llm_core.models import LLMCore
 from apps.llm_transaction.models import LLMTransaction
-from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
+
+from apps.llm_transaction.utils import (
+    LLMTransactionSourcesTypesNames
+)
 
 logger = logging.getLogger(__name__)
 
@@ -50,7 +66,11 @@ class Individual:
 
         self.process: BinexusProcess = process
         self.llm_model: LLMCore = llm_model
-        self.c = OpenAIGPTClientManager.get_naked_client(llm_model=self.llm_model)
+
+        self.c = OpenAIGPTClientManager.get_naked_client(
+            llm_model=self.llm_model
+        )
+
         self.uuid_string = str(uuid.uuid4())
         self.chromosome: dict = chromosome
         self.assignment_content: str = self._create_assignment()
@@ -74,10 +94,12 @@ class Individual:
             new_elite_individual.save()
 
             logger.info(f"New Elite Agent Ascended: {new_elite_individual.agent_nickname}")
+
             return True
 
         except Exception as e:
             logger.error(f"Error while ascending to elite: {e}")
+
             return False
 
     def get_fitness_score(self):
@@ -92,7 +114,13 @@ class Individual:
                 process=self.process,
                 individual=self
             )
-            structured_messages = [{"role": "system", "content": system_prompt}]
+
+            structured_messages = [
+                {
+                    "role": "system",
+                    "content": system_prompt
+                }
+            ]
 
             tx = LLMTransaction.objects.create(
                 organization=self.process.organization,
@@ -109,10 +137,16 @@ class Individual:
                 transaction_type=ChatRoles.SYSTEM,
                 transaction_source=LLMTransactionSourcesTypesNames.BINEXUS
             )
+
             tx.save()
+
             logger.info(f"[_create_assignment] Created system prompt LLM Transaction for Binexus Assignment Creation.")
 
-            agent_temperature_value = self.chromosome.get(Chromosome.GeneNames.TEMPERATURE, 0.5)
+            agent_temperature_value = self.chromosome.get(
+                Chromosome.GeneNames.TEMPERATURE,
+                0.5
+            )
+
             llm_response = self.c.chat.completions.create(
                 model=self.llm_model.model_name,
                 messages=structured_messages,
@@ -124,6 +158,7 @@ class Individual:
 
             choices = llm_response.choices
             first_choice = choices[0]
+
             choice_message = first_choice.message
             choice_message_content = choice_message.content
             final_response = choice_message_content
@@ -143,7 +178,9 @@ class Individual:
                 transaction_type=ChatRoles.SYSTEM,
                 transaction_source=LLMTransactionSourcesTypesNames.BINEXUS
             )
+
             tx.save()
+
             logger.info(
                 f"[_create_assignment] Created response (system) prompt LLM Transaction for Binexus Assignment Creation.")
 
@@ -155,8 +192,7 @@ class Individual:
                 ---
             """
             logger.error(f"Error while creating assignment: {e}")
-        print("- Assignment Created Successfully")
-        print("--------process: individual assignment creation: end------------")
+
         return final_response
 
     def set_new_fitness_score(

@@ -31,4 +31,5 @@ class BrainstormingLevelSynthesisAdmin(admin.ModelAdmin):
     list_display = BRAINSTORMING_LEVEL_SYNTHESIS_ADMIN_LIST
     list_filter = BRAINSTORMING_LEVEL_SYNTHESIS_ADMIN_FILTER
     search_fields = BRAINSTORMING_LEVEL_SYNTHESIS_ADMIN_SEARCH
+
     ordering = ('-created_at',)

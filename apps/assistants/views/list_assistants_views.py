@@ -14,13 +14,20 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.views.generic import TemplateView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
 from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
@@ -47,6 +54,7 @@ class AssistantView_List(LoginRequiredMixin, TemplateView):
             organizations = Organization.objects.filter(
                 users__in=[user]
             )
+
             org_assistants = {org: org.assistants.all() for org in organizations}
             context['org_assistants'] = org_assistants
 

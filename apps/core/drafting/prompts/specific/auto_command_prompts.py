@@ -14,7 +14,10 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-from apps.core.drafting.drafting_executor import DraftingExecutionManager
+
+from apps.core.drafting.drafting_executor import (
+    DraftingExecutionManager
+)
 
 
 def build_drafting_action__auto_prompt(xc: DraftingExecutionManager):

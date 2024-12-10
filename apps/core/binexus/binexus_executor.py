@@ -19,9 +19,17 @@ import logging
 
 from django.core.files.base import ContentFile
 
-from apps.binexus.models import BinexusProcess
-from apps.core.binexus.evolution_manager.matrix import Matrix
-from apps.core.binexus.utils import generate_random_chart_file_name
+from apps.binexus.models import (
+    BinexusProcess
+)
+
+from apps.core.binexus.evolution_manager.matrix import (
+    Matrix
+)
+
+from apps.core.binexus.utils import (
+    generate_random_chart_file_name
+)
 
 logger = logging.getLogger(__name__)
 
@@ -49,13 +57,16 @@ class BinexusExecutionManager:
         success, error = mx.execute_evolution(
             is_test=False
         )
+
         if error is not None:
             logger.error(f"Error occurred during execution: {error}")
+
             return False, error
 
         self.binexus_process.post_processing_history_average_fitness_per_epoch = mx.average_fitness_per_epoch
         self.binexus_process.post_processing_history_best_fitness_per_epoch = mx.best_fitness_per_epoch
         self.binexus_process.post_processing_history_worst_fitness_per_epoch = mx.worst_fitness_per_epoch
+
         self.binexus_process.post_processing_history_average_of_average_fitnesses = mx.average_of_average_fitnesses
         self.binexus_process.post_processing_history_average_of_best_fitnesses = mx.average_of_best_fitnesses
         self.binexus_process.post_processing_history_average_of_worst_fitnesses = mx.average_of_worst_fitnesses
@@ -63,6 +74,7 @@ class BinexusExecutionManager:
         if mx.process_history_chart:
             chart_name = f"binexus_process_chart_{generate_random_chart_file_name()}.png"
             chart_content = ContentFile(mx.process_history_chart)
+
             self.binexus_process.post_processing_history_visual_chart.save(
                 chart_name,
                 chart_content,
@@ -70,7 +82,7 @@ class BinexusExecutionManager:
             )
 
         self.binexus_process.save()
+
         logger.info("Binexus process execution completed successfully.")
 
         return success, None
-

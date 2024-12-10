@@ -18,7 +18,9 @@
 from apps.binexus.models import BinexusProcess
 
 
-def binexus_generic_instructions_prompt(process: BinexusProcess):
+def binexus_generic_instructions_prompt(
+    process: BinexusProcess
+):
     return f"""
         #### **EVOLUTIONARY PROCESS INSTRUCTIONS:**
 
@@ -45,7 +47,9 @@ def binexus_generic_instructions_prompt(process: BinexusProcess):
     """
 
 
-def binexus_process_metadata_prompt(process: BinexusProcess):
+def binexus_process_metadata_prompt(
+    process: BinexusProcess
+):
     return f"""
         #### **EVOLUTIONARY PROCESS METADATA:**
 
@@ -75,7 +79,9 @@ def binexus_process_metadata_prompt(process: BinexusProcess):
     """
 
 
-def binexus_output_format_prompt(process: BinexusProcess):
+def binexus_output_format_prompt(
+    process: BinexusProcess
+):
     return f"""
         **THE OUTPUT FORMAT YOU MUST STRICTLY ADHERE TO:**
 
@@ -171,7 +177,9 @@ def binexus_output_format_prompt(process: BinexusProcess):
     """
 
 
-def binexus_evaluation_individual_prompt(individual):
+def binexus_evaluation_individual_prompt(
+    individual
+):
     assignment_content = individual.get_assignment_content()
     return f"""
         ------------------------------

@@ -23,7 +23,11 @@ from django.shortcuts import redirect
 from django.views import View
 
 from apps.binexus.models import BinexusEliteAgent
-from apps.core.user_permissions.permission_manager import UserPermissionManager
+
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
 from apps.user_permissions.utils import PermissionNames
 
 logger = logging.getLogger(__name__)
@@ -48,10 +52,12 @@ class BinexusView_EliteAgentDelete(LoginRequiredMixin, View):
 
         agent_id = kwargs.get('pk')
         agent = BinexusEliteAgent.objects.get(id=agent_id)
+
         process_id = agent.binexus_process.id
 
         try:
             agent.delete()
+
             logger.info(f"Elite agent deleted successfully.")
             messages.success(request, "Elite agent deleted successfully.")
 
@@ -59,4 +65,7 @@ class BinexusView_EliteAgentDelete(LoginRequiredMixin, View):
             logger.error(f"Error deleting elite agent: {e}")
             messages.error(request, f"Error deleting elite agent: {e}")
 
-        return redirect('binexus:process_detail', pk=process_id)
+        return redirect(
+            'binexus:process_detail',
+            pk=process_id
+        )

@@ -23,5 +23,6 @@ class RunAudioProcessingActionTypesNames:
     @staticmethod
     def as_list():
         return [
-            RunAudioProcessingActionTypesNames.TTS, RunAudioProcessingActionTypesNames.STT
+            RunAudioProcessingActionTypesNames.TTS,
+            RunAudioProcessingActionTypesNames.STT
         ]

@@ -267,10 +267,12 @@ def build_synthesis_from_level_system_prompt(
     bookmarked_ideas: list
 ):
     logger.info(f"Building synthesis prompt for session: {session.id}")
+
     topic_definition = session.topic_definition
     constraints = session.constraints
 
     ideas_textual = ""
+
     for idea in bookmarked_ideas:
         idea: BrainstormingIdea
         ideas_textual += f"""
@@ -396,10 +398,12 @@ def build_synthesis_from_all_levels_system_prompt(
     bookmarked_ideas: list
 ):
     logger.info(f"Building synthesis prompt for session: {session.id}")
+
     topic_definition = session.topic_definition
     constraints = session.constraints
 
     ideas_textual = ""
+
     for idea in bookmarked_ideas:
         idea: BrainstormingIdea
         ideas_textual += f"""
@@ -524,10 +528,12 @@ def build_deepen_thought_over_idea_system_prompt(
     idea: BrainstormingIdea
 ):
     logger.info(f"Building deepen thought over idea prompt for idea: {idea.id}")
+
     topic_definition = idea.brainstorming_session.topic_definition
     constraints = idea.brainstorming_session.constraints
 
     idea: BrainstormingIdea
+
     idea_textual = f"""
         --------------------------------------------------
         - **Idea Title:** {idea.idea_title}
@@ -659,14 +665,18 @@ def find_json_presence(
 
     json_objects = []
     pos = 0
+
     while True:
         match = response.find('{', pos)
+
         if match == -1:
             break
+
         try:
             result, index = decoder.raw_decode(response[match:])
             json_objects.append(result)
             pos = match + index
+
         except ValueError:
             pos = match + 1
 

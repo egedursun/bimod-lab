@@ -22,8 +22,15 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.views import View
 
-from apps.binexus.models import BinexusProcess, BinexusEliteAgent
-from apps.core.user_permissions.permission_manager import UserPermissionManager
+from apps.binexus.models import (
+    BinexusProcess,
+    BinexusEliteAgent
+)
+
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
 from apps.user_permissions.utils import PermissionNames
 
 logger = logging.getLogger(__name__)
@@ -60,6 +67,7 @@ class BinexusView_ProcessPurgeData(LoginRequiredMixin, View):
             process.post_processing_history_average_of_best_fitnesses = 0.0
             process.post_processing_history_average_of_worst_fitnesses = 0.0
             process.post_processing_history_visual_chart = None
+
             process.save()
 
             logger.info(f"Binexus process internal information purged successfully.")
@@ -76,8 +84,10 @@ class BinexusView_ProcessPurgeData(LoginRequiredMixin, View):
         except Exception as e:
             logger.error(f"Error purging binexus process data: {e}")
             messages.error(request, f"Error purging binexus process data: {e}")
+
             return redirect('binexus:process_detail', pk=process_id)
 
         messages.success(request, "Binexus process data purged successfully.")
         logger.info(f"Binexus process data purged successfully.")
+
         return redirect('binexus:process_detail', pk=process_id)

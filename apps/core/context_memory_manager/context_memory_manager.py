@@ -53,7 +53,9 @@ from apps.leanmod.models import (
     LeanModOldChatMessagesVectorData
 )
 
-from apps.leanmod.utils import VECTOR_INDEX_PATH_LEANMOD_CHAT_MESSAGES
+from apps.leanmod.utils import (
+    VECTOR_INDEX_PATH_LEANMOD_CHAT_MESSAGES
+)
 
 from apps.multimodal_chat.models import (
     MultimodalChat,
@@ -70,23 +72,34 @@ class ContextMemoryManager:
         message_history,
         maximum_allowed_messages
     ):
-        from apps.core.generative_ai.utils import ChatRoles
+        from apps.core.generative_ai.utils import (
+            ChatRoles
+        )
 
         try:
             system_prompt = build_chat_history_memory_handling_prompt()
+
             logger.info(f"[ChatContextManager.forget_oldest_chat_messages] System prompt: {system_prompt}")
 
         except Exception as e:
             system_prompt = get_error_on_context_memory_handling_log(error_log=str(e))
+
             logger.error(f"[ChatContextManager.forget_oldest_chat_messages] Error creating system prompt: {e}")
 
-        msg = {"role": ChatRoles.SYSTEM, "content": system_prompt}
+        msg = {
+            "role": ChatRoles.SYSTEM,
+            "content": system_prompt
+        }
+
         len_msg_history = len(message_history)
 
         if len_msg_history > maximum_allowed_messages:
             trimmed_msg_history = message_history[-maximum_allowed_messages:] + [msg]
+
             return trimmed_msg_history
+
         else:
+
             return message_history
 
     @staticmethod
@@ -94,23 +107,34 @@ class ContextMemoryManager:
         message_history: list,
         maximum_allowed_messages
     ):
-        from apps.core.generative_ai.utils import ChatRoles
+        from apps.core.generative_ai.utils import (
+            ChatRoles
+        )
 
         try:
             system_prompt = build_chat_history_memory_stop_communication_handler_prompt()
+
             logger.info(f"[ChatContextManager.stop_communication_at_threshold] System prompt: {system_prompt}")
 
         except Exception as e:
             logger.error(f"[ChatContextManager.stop_communication_at_threshold] Error creating system prompt: {e}")
+
             system_prompt = get_error_on_context_memory_handling_log(error_log=str(e))
 
         len_msg_history = len(message_history)
 
         if len_msg_history > maximum_allowed_messages:
-            msg = {"role": ChatRoles.SYSTEM, "content": system_prompt}
+            msg = {
+                "role": ChatRoles.SYSTEM,
+                "content": system_prompt
+            }
+
             trimmed_msg_history = message_history[-maximum_allowed_messages:] + [msg]
+
             return trimmed_msg_history
+
         else:
+
             return message_history
 
     @staticmethod
@@ -130,6 +154,7 @@ class ContextMemoryManager:
 
         if chat_history_length > maximum_allowed_messages:
             trimmed_msgs_history = message_history[-maximum_allowed_messages:]
+
         else:
             trimmed_msgs_history = message_history
 
@@ -144,18 +169,31 @@ class ContextMemoryManager:
         max_context_msgs = assistant.max_context_messages
 
         if mgm_strategy == ContextManagementStrategyNames.FORGET:
-            ctx_msgs = ContextMemoryManager._handle_strategy_forget_oldest(chat_history, max_context_msgs)
+            ctx_msgs = ContextMemoryManager._handle_strategy_forget_oldest(
+                chat_history,
+                max_context_msgs
+            )
 
         elif mgm_strategy == ContextManagementStrategyNames.STOP:
-            ctx_msgs = ContextMemoryManager._handle_strategy_stop_conversation(chat_history, max_context_msgs)
+            ctx_msgs = ContextMemoryManager._handle_strategy_stop_conversation(
+                chat_history,
+                max_context_msgs
+            )
 
         elif mgm_strategy == ContextManagementStrategyNames.VECTORIZE:
-            ctx_msgs = ContextMemoryManager._handle_strategy_vectorize_history(chat_history, max_context_msgs)
+            ctx_msgs = ContextMemoryManager._handle_strategy_vectorize_history(
+                chat_history,
+                max_context_msgs
+            )
 
         else:
-            ctx_msgs = ContextMemoryManager._handle_strategy_forget_oldest(chat_history, max_context_msgs)
+            ctx_msgs = ContextMemoryManager._handle_strategy_forget_oldest(
+                chat_history,
+                max_context_msgs
+            )
 
         logger.info(f"[ChatContextManager.handle_context] Handled the context for Assistant.")
+
         return ctx_msgs
 
     @staticmethod
@@ -168,18 +206,31 @@ class ContextMemoryManager:
         max_context_msgs = lean_assistant.max_context_messages
 
         if mgm_strategy == ContextManagementStrategyNames.FORGET:
-            ctx_msgs = ContextMemoryManager._handle_strategy_forget_oldest(chat_history, max_context_msgs)
+            ctx_msgs = ContextMemoryManager._handle_strategy_forget_oldest(
+                chat_history,
+                max_context_msgs
+            )
 
         elif mgm_strategy == ContextManagementStrategyNames.STOP:
-            ctx_msgs = ContextMemoryManager._handle_strategy_stop_conversation(chat_history, max_context_msgs)
+            ctx_msgs = ContextMemoryManager._handle_strategy_stop_conversation(
+                chat_history,
+                max_context_msgs
+            )
 
         elif mgm_strategy == ContextManagementStrategyNames.VECTORIZE:
-            ctx_msgs = ContextMemoryManager._handle_strategy_vectorize_history(chat_history, max_context_msgs)
+            ctx_msgs = ContextMemoryManager._handle_strategy_vectorize_history(
+                chat_history,
+                max_context_msgs
+            )
 
         else:
-            ctx_msgs = ContextMemoryManager._handle_strategy_forget_oldest(chat_history, max_context_msgs)
+            ctx_msgs = ContextMemoryManager._handle_strategy_forget_oldest(
+                chat_history,
+                max_context_msgs
+            )
 
         logger.info(f"[ChatContextManager.handle_context_leanmod] Handled the context for LeanMod.")
+
         return ctx_msgs
 
     @staticmethod
@@ -190,6 +241,7 @@ class ContextMemoryManager:
         ctx_msgs = ContextMemoryManager._handle_strategy_forget_oldest(
             chat_history, voidforger.short_term_memory_max_messages
         )
+
         logger.info(f"[ChatContextManager.handle_context_voidforger] Handled the context for VoidForger.")
 
         return ctx_msgs
@@ -204,12 +256,14 @@ class ContextMemoryManager:
                 message_history=chat_history,
                 maximum_allowed_messages=max_messages
             )
+
             logger.info(
                 f"[ChatContextManager._handle_strategy_vectorize_history] Vectorized the history, returning trimmed messages.")
 
         except Exception as e:
             logger.error(
                 f"[ChatContextManager._handle_strategy_vectorize_history] Error in vectorization of the message history: {e}")
+
             ctx_msgs = chat_history
 
         return ctx_msgs
@@ -221,11 +275,16 @@ class ContextMemoryManager:
     ):
 
         try:
-            ctx_msgs = ContextMemoryManager.stop_communication_at_threshold(chat_history, max_messages)
+            ctx_msgs = ContextMemoryManager.stop_communication_at_threshold(
+                chat_history,
+                max_messages
+            )
+
             logger.info(f"[ChatContextManager._handle_strategy_stop_conversation] Stopped the conversation.")
 
         except Exception as e:
             ctx_msgs = chat_history
+
             logger.error(
                 f"[ChatContextManager._handle_strategy_stop_conversation] Error stopping the conversation: {e}")
 
@@ -237,11 +296,16 @@ class ContextMemoryManager:
         max_messages
     ):
         try:
-            ctx_msgs = ContextMemoryManager.forget_oldest_chat_messages(chat_history, max_messages)
+            ctx_msgs = ContextMemoryManager.forget_oldest_chat_messages(
+                chat_history,
+                max_messages
+            )
+
             logger.info(f"[ChatContextManager._handle_strategy_forget_oldest] Forgot the oldest messages.")
 
         except Exception as e:
             ctx_msgs = chat_history
+
             logger.error(
                 f"[ChatContextManager._handle_strategy_forget_oldest] Error forgetting the oldest messages: {e}")
 
@@ -253,11 +317,14 @@ class ContextMemoryManager:
         query: str
     ) -> List[float]:
 
-        from apps.core.generative_ai.gpt_openai_manager import OpenAIGPTClientManager
+        from apps.core.generative_ai.gpt_openai_manager import (
+            OpenAIGPTClientManager
+        )
 
         c = OpenAIGPTClientManager.get_naked_client(
             llm_model=assistant.llm_model
         )
+
         response = c.embeddings.create(
             input=query,
             model=OpenAIEmbeddingModels.TEXT_EMBEDDING_3_LARGE
@@ -271,13 +338,17 @@ class ContextMemoryManager:
         query: str
     ) -> List[float]:
 
-        from apps.core.generative_ai.gpt_openai_manager import OpenAIGPTClientManager
+        from apps.core.generative_ai.gpt_openai_manager import (
+            OpenAIGPTClientManager
+        )
 
         c = OpenAIGPTClientManager.get_naked_client(
             llm_model=leanmod_assistant.llm_model
         )
+
         response = c.embeddings.create(
-            input=query, model=OpenAIEmbeddingModels.TEXT_EMBEDDING_3_LARGE
+            input=query,
+            model=OpenAIEmbeddingModels.TEXT_EMBEDDING_3_LARGE
         )
 
         return response.data[0].embedding
@@ -295,18 +366,32 @@ class ContextMemoryManager:
         )
 
         if os.path.exists(old_chat_messages_index_path):
-            old_chat_messages_index = faiss.read_index(old_chat_messages_index_path)
+            old_chat_messages_index = faiss.read_index(
+                old_chat_messages_index_path
+            )
         else:
-            old_chat_messages_index = faiss.IndexIDMap(faiss.IndexFlatL2(OPEN_AI_DEFAULT_EMBEDDING_VECTOR_DIMENSIONS))
-            faiss.write_index(old_chat_messages_index, old_chat_messages_index_path)
+            old_chat_messages_index = faiss.IndexIDMap(
+                faiss.IndexFlatL2(
+                    OPEN_AI_DEFAULT_EMBEDDING_VECTOR_DIMENSIONS
+                )
+            )
+
+            faiss.write_index(
+                old_chat_messages_index,
+                old_chat_messages_index_path
+            )
 
         try:
-            chat_object = MultimodalChat.objects.get(id=assistant_chat_id)
+            chat_object = MultimodalChat.objects.get(
+                id=assistant_chat_id
+            )
+
             assistant_object = chat_object.assistant
 
         except Exception as e:
             print(f"Error getting the chat object: {e}")
             logger.error(f"Error getting the chat object: {e}")
+
             return []
 
         query_vector = np.array(
@@ -318,6 +403,7 @@ class ContextMemoryManager:
             ],
             dtype=np.float32
         )
+
         if old_chat_messages_index is None:
             raise ValueError("[search_old_chat_messages] FAISS index not initialized or loaded properly.")
 
@@ -327,18 +413,24 @@ class ContextMemoryManager:
         )
 
         results = []
+
         for item_id, distance in zip(ids[0], distances[0]):
 
             if item_id == -1:
                 continue
 
             try:
-                instance = AssistantOldChatMessagesVectorData.objects.get(id=item_id)
-                results.append({
-                    "id": instance.id,
-                    "data": instance.raw_data,
-                    "distance": distance,
-                })
+                instance = AssistantOldChatMessagesVectorData.objects.get(
+                    id=item_id
+                )
+
+                results.append(
+                    {
+                        "id": instance.id,
+                        "data": instance.raw_data,
+                        "distance": distance,
+                    }
+                )
 
             except AssistantOldChatMessagesVectorData.DoesNotExist:
                 print(
@@ -361,22 +453,32 @@ class ContextMemoryManager:
         )
 
         if os.path.exists(old_chat_messages_index_path):
-            old_chat_messages_index = faiss.read_index(old_chat_messages_index_path)
+            old_chat_messages_index = faiss.read_index(
+                old_chat_messages_index_path
+            )
         else:
             old_chat_messages_index = faiss.IndexIDMap(
-                faiss.IndexFlatL2(OPEN_AI_DEFAULT_EMBEDDING_VECTOR_DIMENSIONS))
+                faiss.IndexFlatL2(
+                    OPEN_AI_DEFAULT_EMBEDDING_VECTOR_DIMENSIONS
+                )
+            )
 
-            faiss.write_index(old_chat_messages_index, old_chat_messages_index_path)
+            faiss.write_index(
+                old_chat_messages_index,
+                old_chat_messages_index_path
+            )
 
         try:
             chat_object: MultimodalLeanChat = MultimodalLeanChat.objects.get(
                 id=leanmod_chat_id
             )
+
             assistant_object = chat_object.lean_assistant
 
         except Exception as e:
             print(f"Error getting the LeanMod chat object: {e}")
             logger.error(f"Error getting the LeanMod chat object: {e}")
+
             return []
 
         query_vector = np.array(
@@ -398,6 +500,7 @@ class ContextMemoryManager:
         )
 
         results = []
+
         for item_id, distance in zip(ids[0], distances[0]):
 
             if item_id == -1:
@@ -407,11 +510,14 @@ class ContextMemoryManager:
                 instance = LeanModOldChatMessagesVectorData.objects.get(
                     id=item_id
                 )
-                results.append({
-                    "id": instance.id,
-                    "data": instance.raw_data,
-                    "distance": distance,
-                })
+
+                results.append(
+                    {
+                        "id": instance.id,
+                        "data": instance.raw_data,
+                        "distance": distance,
+                    }
+                )
 
             except LeanModOldChatMessagesVectorData.DoesNotExist:
                 print(

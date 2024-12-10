@@ -21,6 +21,7 @@ from django.db import models
 
 class AcademyCourseInstructor(models.Model):
     user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+
     full_name = models.CharField(max_length=1_000)
     course_instructor_bio = models.TextField()
 
@@ -33,7 +34,9 @@ class AcademyCourseInstructor(models.Model):
     class Meta:
         verbose_name = 'Academy Course Instructor'
         verbose_name_plural = 'Academy Course Instructors'
+
         ordering = ['-created_at']
+
         indexes = [
             models.Index(
                 fields=[

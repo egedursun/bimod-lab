@@ -22,8 +22,14 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
 from django.views import View
 
-from apps.core.brainstorms.brainstorms_executor import BrainstormsExecutor
-from apps.core.user_permissions.permission_manager import UserPermissionManager
+from apps.core.brainstorms.brainstorms_executor import (
+    BrainstormsExecutor
+)
+
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
 from apps.brainstorms.models import BrainstormingSession
 from apps.user_permissions.utils import PermissionNames
 
@@ -51,9 +57,14 @@ class BrainstormingView_IdeasGenerate(LoginRequiredMixin, View):
             id=ss_id,
             created_by_user=request.user
         )
+
         xc = BrainstormsExecutor(session=session)
         xc.produce_ideas(depth_level=int(depth_level))
 
         messages.success(request, f'Ideas for level {depth_level} generated successfully.')
         logger.info(f'Ideas for level {depth_level} generated successfully. Session ID: {session.id}')
-        return redirect('brainstorms:detail_session', session_id=session.id)
+
+        return redirect(
+            'brainstorms:detail_session',
+            session_id=session.id
+        )

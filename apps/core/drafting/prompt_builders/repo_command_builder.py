@@ -17,7 +17,9 @@
 
 import logging
 
-from apps.core.drafting.drafting_executor import DraftingExecutionManager
+from apps.core.drafting.drafting_executor import (
+    DraftingExecutionManager
+)
 
 from apps.core.drafting.prompts import (
     build_drafting_agent_nickname_prompt,
@@ -56,22 +58,29 @@ def build_repo_command_system_prompt(xc: DraftingExecutionManager, user_query: s
     combined_system_prompt = ""
 
     generic_instruction_prompt = ""
+
     generic_instruction_prompt += build_drafting_agent_nickname_prompt(
         xc.copilot.name
     )
+
     generic_instruction_prompt += build_drafting_internal_principles_prompt()
+
     generic_instruction_prompt += build_drafting_agent_personality_prompt(
         tone=xc.copilot.tone
     )
+
     generic_instruction_prompt += build_drafting_target_audience_prompt(
         audience=xc.copilot.audience
     )
+
     generic_instruction_prompt += build_drafting_user_tenant_prompt(
         user=xc.copilot.created_by_user
     )
+
     generic_instruction_prompt += build_drafting_spatial_awareness_prompt(
         user=xc.copilot.created_by_user
     )
+
     generic_instruction_prompt += build_drafting_technical_dictionary_prompt(
         glossary=xc.copilot.glossary
     )
@@ -80,11 +89,13 @@ def build_repo_command_system_prompt(xc: DraftingExecutionManager, user_query: s
         folder=xc.drafting_document.document_folder,
         doc=xc.drafting_document
     )
+
     folder_and_doc_info_prompt += build_whole_text_supply_prompt(
         xc=xc
     )
 
     drafting_ops_instruction_prompt = build_drafting_ops_instruction_prompt()
+
     action_instructions_prompt = build_drafting_action__repo_prompt(
         user_query=user_query
     )
@@ -92,6 +103,7 @@ def build_repo_command_system_prompt(xc: DraftingExecutionManager, user_query: s
     data_source_prompts = build_code_base_data_source_prompt(
         assistant=xc.copilot
     )
+
     tool_execution_prompts = build_tool_prompt__execute_codebase_query()
 
     combined_system_prompt += generic_instruction_prompt
@@ -121,22 +133,29 @@ def build_repo_command_system_prompt_public(
     combined_system_prompt = ""
 
     generic_instruction_prompt = ""
+
     generic_instruction_prompt += build_drafting_agent_nickname_prompt(
         xc.copilot.name
     )
+
     generic_instruction_prompt += build_drafting_internal_principles_prompt()
+
     generic_instruction_prompt += build_drafting_agent_personality_prompt(
         tone=xc.copilot.tone
     )
+
     generic_instruction_prompt += build_drafting_target_audience_prompt(
         audience=xc.copilot.audience
     )
+
     generic_instruction_prompt += build_drafting_user_tenant_prompt(
         user=xc.copilot.created_by_user
     )
+
     generic_instruction_prompt += build_drafting_spatial_awareness_prompt(
         user=xc.copilot.created_by_user
     )
+
     generic_instruction_prompt += build_drafting_technical_dictionary_prompt(
         glossary=xc.copilot.glossary
     )
@@ -146,6 +165,7 @@ def build_repo_command_system_prompt_public(
     )
 
     drafting_ops_instruction_prompt = build_drafting_ops_instruction_prompt()
+
     action_instructions_prompt = build_drafting_action__repo_prompt(
         user_query=user_query
     )
@@ -153,6 +173,7 @@ def build_repo_command_system_prompt_public(
     data_source_prompts = build_code_base_data_source_prompt(
         assistant=xc.copilot
     )
+
     tool_execution_prompts = build_tool_prompt__execute_codebase_query()
 
     combined_system_prompt += generic_instruction_prompt

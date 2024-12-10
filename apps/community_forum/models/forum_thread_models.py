@@ -20,6 +20,7 @@ from django.db import models
 
 class ForumThread(models.Model):
     id = models.AutoField(primary_key=True)
+
     category = models.ForeignKey(
         "ForumCategory",
         related_name='threads',
@@ -45,10 +46,16 @@ class ForumThread(models.Model):
     class Meta:
         verbose_name = "Forum Thread"
         verbose_name_plural = "Forum Threads"
+
         ordering = ["-created_at"]
+
         unique_together = [
-            ['category', 'title'],
+            [
+                'category',
+                'title'
+            ],
         ]
+
         indexes = [
             models.Index(
                 fields=[

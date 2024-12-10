@@ -17,11 +17,17 @@
 
 import logging
 
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.core.paginator import Paginator
 from django.views.generic import TemplateView
 
-from apps.community_forum.models import ForumCategory
+from apps.community_forum.models import (
+    ForumCategory
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -33,6 +39,7 @@ class ForumView_CategoryList(LoginRequiredMixin, TemplateView):
 
         try:
             search_query = self.request.GET.get('search', '')
+
             if search_query:
                 categories = ForumCategory.objects.filter(
                     threads__title__icontains=search_query
@@ -52,7 +59,9 @@ class ForumView_CategoryList(LoginRequiredMixin, TemplateView):
 
         except Exception as e:
             logger.error(f"[ForumView_CategoryList] Error listing the Forum Categories: {e}")
+
             return context
 
         logger.info(f"Forum Categories were listed.")
+
         return context

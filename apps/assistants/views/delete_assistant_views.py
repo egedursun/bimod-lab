@@ -22,7 +22,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.views.generic import DeleteView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
 from apps.assistants.models import Assistant
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
@@ -66,6 +69,7 @@ class AssistantView_Delete(LoginRequiredMixin, DeleteView):
 
     def get_queryset(self):
         context_user = self.request.user
+
         return Assistant.objects.filter(
             organization__users__in=[
                 context_user

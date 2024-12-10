@@ -31,4 +31,5 @@ class BeamGuardArtifactAdmin(admin.ModelAdmin):
     list_display = BEAMGUARD_ARTIFACT_ADMIN_LIST
     search_fields = BEAMGUARD_ARTIFACT_ADMIN_SEARCH
     list_filter = BEAMGUARD_ARTIFACT_ADMIN_FILTER
+
     ordering = ('-created_at',)

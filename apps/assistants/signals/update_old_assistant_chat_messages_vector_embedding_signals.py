@@ -20,8 +20,13 @@ import logging
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-from apps.assistants.models import AssistantOldChatMessagesVectorData
-from apps.multimodal_chat.models import MultimodalChatMessage
+from apps.assistants.models import (
+    AssistantOldChatMessagesVectorData
+)
+
+from apps.multimodal_chat.models import (
+    MultimodalChatMessage
+)
 
 logger = logging.getLogger(__name__)
 

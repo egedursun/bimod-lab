@@ -31,4 +31,5 @@ class ForumPostAdmin(admin.ModelAdmin):
     list_display = FORUM_POST_ADMIN_LIST
     search_fields = FORUM_POST_ADMIN_SEARCH
     list_filter = FORUM_POST_ADMIN_FILTER
+
     ordering = ("-created_at",)

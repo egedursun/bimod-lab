@@ -23,8 +23,15 @@ from django.shortcuts import redirect
 from django.views import View
 
 from apps.binexus.models import BinexusProcess
-from apps.core.binexus.binexus_executor import BinexusExecutionManager
-from apps.core.user_permissions.permission_manager import UserPermissionManager
+
+from apps.core.binexus.binexus_executor import (
+    BinexusExecutionManager
+)
+
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
 from apps.user_permissions.utils import PermissionNames
 
 logger = logging.getLogger(__name__)
@@ -57,7 +64,11 @@ class BinexusView_ProcessExecute(LoginRequiredMixin, View):
 
         except Exception as e:
             messages.error(request, f"Error occurred while executing the process: {e}")
-            return redirect('binexus:process_detail', pk=kwargs.get('pk'))
+
+            return redirect(
+                'binexus:process_detail',
+                pk=kwargs.get('pk')
+            )
 
         try:
 
@@ -66,13 +77,25 @@ class BinexusView_ProcessExecute(LoginRequiredMixin, View):
             if error is not None:
                 logger.error(f"Error occurred while executing the process: {error}")
                 messages.error(request, f"Error occurred while executing the process: {error}")
-                return redirect('binexus:process_detail', pk=kwargs.get('pk'))
+
+                return redirect(
+                    'binexus:process_detail',
+                    pk=kwargs.get('pk')
+                )
 
         except Exception as e:
             logger.error(f"Error occurred while executing the process: {e}")
             messages.error(request, f"Error occurred while executing the process: {e}")
-            return redirect('binexus:process_detail', pk=kwargs.get('pk'))
+
+            return redirect(
+                'binexus:process_detail',
+                pk=kwargs.get('pk')
+            )
 
         logger.info(f"Process executed successfully.")
         messages.success(request, f"Process executed successfully.")
-        return redirect('binexus:process_detail', pk=kwargs.get('pk'))
+
+        return redirect(
+            'binexus:process_detail',
+            pk=kwargs.get('pk')
+        )

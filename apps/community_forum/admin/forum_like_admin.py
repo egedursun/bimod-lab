@@ -30,4 +30,5 @@ class ForumLikeAdmin(admin.ModelAdmin):
     list_display = FORUM_LIKE_ADMIN_LIST
     search_fields = FORUM_LIKE_ADMIN_SEARCH
     list_filter = FORUM_LIKE_ADMIN_FILTER
+
     ordering = ("-created_at",)

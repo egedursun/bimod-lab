@@ -23,7 +23,11 @@ from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
 from apps.binexus.models import BinexusProcess
-from apps.core.user_permissions.permission_manager import UserPermissionManager
+
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
@@ -33,8 +37,10 @@ logger = logging.getLogger(__name__)
 class BinexusView_ProcessDelete(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+
         process_id = self.kwargs.get('pk')
         binexus_process = BinexusProcess.objects.get(id=process_id)
+
         context['binexus_process'] = binexus_process
         return context
 
@@ -53,12 +59,15 @@ class BinexusView_ProcessDelete(LoginRequiredMixin, TemplateView):
         try:
             process_id = self.kwargs.get('pk')
             binexus_process = BinexusProcess.objects.get(id=process_id)
+
             binexus_process.delete()
 
         except Exception as e:
             logger.error(f"[BinexusView_ProcessDelete] Error deleting the Binexus Process: {e}")
             messages.error(self.request, "Error deleting the Binexus Process.")
+
             return redirect('binexus:process_list')
 
         logger.info(f'Binexus Process deleted successfully.')
+
         return redirect('binexus:process_list')

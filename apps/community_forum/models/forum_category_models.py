@@ -32,7 +32,9 @@ class ForumCategory(models.Model):
     class Meta:
         verbose_name = "Forum Category"
         verbose_name_plural = "Forum Categories"
+
         ordering = ["-created_at"]
+
         indexes = [
             models.Index(
                 fields=[

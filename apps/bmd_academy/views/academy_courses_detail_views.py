@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.db.models import Prefetch
@@ -25,7 +26,10 @@ from apps.bmd_academy.models import (
     AcademyCourseVideo
 )
 
-from web_project import TemplateLayout, TemplateHelper
+from web_project import (
+    TemplateLayout,
+    TemplateHelper
+)
 
 logger = logging.getLogger(__name__)
 
@@ -33,6 +37,7 @@ logger = logging.getLogger(__name__)
 class AcademyView_CourseDetail(TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+
         context.update(
             {
                 "layout": "blank",
@@ -53,11 +58,14 @@ class AcademyView_CourseDetail(TemplateView):
                             queryset=AcademyCourseVideo.objects.order_by('created_at'))
                     )
                 )
-            ).get(course_slug=self.kwargs['slug'])
+            ).get(
+                course_slug=self.kwargs['slug']
+            )
             context['course'] = course
 
         except Exception as e:
             logger.error(f"[AcademyView_CourseDetail] Error fetching the Academy Course: {e}")
+
             return context
 
         return context

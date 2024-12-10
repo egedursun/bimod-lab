@@ -31,5 +31,12 @@ class BrainstormingSessionAdmin(admin.ModelAdmin):
     list_display = BRAINSTORMING_SESSION_ADMIN_LIST
     list_filter = BRAINSTORMING_SESSION_ADMIN_FILTER
     search_fields = BRAINSTORMING_SESSION_ADMIN_SEARCH
-    readonly_fields = ['created_at', 'updated_at']
-    ordering = ['-created_at']
+
+    readonly_fields = [
+        'created_at',
+        'updated_at'
+    ]
+
+    ordering = [
+        '-created_at'
+    ]

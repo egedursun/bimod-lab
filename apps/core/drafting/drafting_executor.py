@@ -17,8 +17,14 @@
 
 import logging
 
-from apps.core.drafting.handlers.repo_command_handler import handle_repo_command
-from apps.core.generative_ai.gpt_openai_manager import OpenAIGPTClientManager
+from apps.core.drafting.handlers.repo_command_handler import (
+    handle_repo_command
+)
+
+from apps.core.generative_ai.gpt_openai_manager import (
+    OpenAIGPTClientManager
+)
+
 from apps.drafting.models import DraftingDocument
 
 from apps.core.drafting.handlers import (
@@ -46,12 +52,16 @@ class DraftingExecutionManager:
         self.drafting_document = drafting_document
         self.copilot = drafting_document.copilot_assistant
         self.copilot_llm = drafting_document.copilot_assistant.llm_model
-        self.naked_c = OpenAIGPTClientManager.get_naked_client(llm_model=self.copilot_llm)
+
+        self.naked_c = OpenAIGPTClientManager.get_naked_client(
+            llm_model=self.copilot_llm
+        )
 
     #####
 
     def execute_ai_command(self, command: str):
         output, error = None, None
+
         response = {
             'output': output,
             'error': output
@@ -71,10 +81,12 @@ class DraftingExecutionManager:
 
         response['output'] = output
         response['error'] = error
+
         return response
 
     def execute_auto_command(self):
         output, error = None, None
+
         response = {
             'output': output,
             'error': output
@@ -89,6 +101,7 @@ class DraftingExecutionManager:
         except Exception as e:
             logger.error(f"[DraftingExecutionManager.execute_auto_command] Error executing AUTO command. Error: {e}")
             error = f"[DraftingExecutionManager.execute_auto_command] Error executing AUTO command. Error: {e}"
+
         response['output'] = output
         response['error'] = error
 
@@ -96,6 +109,7 @@ class DraftingExecutionManager:
 
     def execute_img_command(self, command: str):
         output, error = None, None
+
         response = {
             'output': output,
             'error': output
@@ -115,10 +129,12 @@ class DraftingExecutionManager:
 
         response['output'] = output
         response['error'] = error
+
         return response
 
     def execute_nosql_command(self, command: str):
         output, error = None, None
+
         response = {
             'output': output,
             'error': output
@@ -131,6 +147,7 @@ class DraftingExecutionManager:
             )
             logger.info(
                 f"[DraftingExecutionManager.execute_nosql_command] NOSQL command executed successfully: {command}")
+
         except Exception as e:
             logger.error(
                 f"[DraftingExecutionManager.execute_nosql_command] Error executing NOSQL command: {command}. Error: {e}")
@@ -138,6 +155,7 @@ class DraftingExecutionManager:
 
         response['output'] = output
         response['error'] = error
+
         return response
 
     def execute_select_command(
@@ -146,6 +164,7 @@ class DraftingExecutionManager:
         command: str
     ):
         output, error = None, None
+
         response = {
             'output': output,
             'error': output
@@ -167,11 +186,13 @@ class DraftingExecutionManager:
 
         response['output'] = output
         response['error'] = error
+
         return response
 
     def execute_sql_command(self, command: str):
 
         output, error = None, None
+
         response = {
             'output': output,
             'error': output
@@ -197,6 +218,7 @@ class DraftingExecutionManager:
     def execute_ssh_command(self, command: str):
 
         output, error = None, None
+
         response = {
             'output': output,
             'error': output
@@ -216,10 +238,12 @@ class DraftingExecutionManager:
 
         response['output'] = output
         response['error'] = error
+
         return response
 
     def execute_vect_command(self, command: str):
         output, error = None, None
+
         response = {
             'output': output,
             'error': output
@@ -240,10 +264,12 @@ class DraftingExecutionManager:
 
         response['output'] = output
         response['error'] = error
+
         return response
 
     def execute_web_command(self, command: str):
         output, error = None, None
+
         response = {
             'output': output,
             'error': output
@@ -263,6 +289,7 @@ class DraftingExecutionManager:
 
         response['output'] = output
         response['error'] = error
+
         return response
 
     def execute_repo_command(self, command: str):
@@ -288,6 +315,7 @@ class DraftingExecutionManager:
 
         response['output'] = output
         response['error'] = error
+
         return response
 
     def execute_site_command(self, command: str):
@@ -313,4 +341,5 @@ class DraftingExecutionManager:
 
         response['output'] = output
         response['error'] = error
+
         return response

@@ -14,15 +14,26 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.shortcuts import redirect
 from django.views import View
 
-from apps.core.beamguard.beamguard_executor import BeamGuardExecutionManager
-from apps.core.user_permissions.permission_manager import UserPermissionManager
+from apps.core.beamguard.beamguard_executor import (
+    BeamGuardExecutionManager
+)
+
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
 from apps.user_permissions.utils import PermissionNames
 
 logger = logging.getLogger(__name__)
@@ -51,9 +62,11 @@ class BeamGuardView_AbsolveArtifact(LoginRequiredMixin, View):
             success = BeamGuardExecutionManager.authorize_and_absolve_artifact(
                 artifact_id=artifact_id
             )
+
             if success is True:
                 logger.info(f"BeamGuardView_AbsolveArtifact: Artifact with ID {artifact_id} has been absolved.")
                 messages.success(request, 'Artifact has been absolved successfully.')
+
             else:
                 logger.error(f"BeamGuardView_AbsolveArtifact: Failed to absolve artifact with ID {artifact_id}.")
                 messages.error(request, 'Failed to absolve the artifact, reverting.')

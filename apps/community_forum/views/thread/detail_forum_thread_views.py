@@ -18,14 +18,25 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.core.paginator import Paginator
 from django.db.models import Prefetch, Q
-from django.shortcuts import get_object_or_404, redirect
+
+from django.shortcuts import (
+    get_object_or_404,
+    redirect
+)
+
 from django.utils import timezone
 from django.views.generic import TemplateView
 
-from apps.community_forum.forms import ForumCommentForm
+from apps.community_forum.forms import (
+    ForumCommentForm
+)
 
 from apps.community_forum.models import (
     ForumThread,
@@ -35,7 +46,10 @@ from apps.community_forum.models import (
     ForumLike
 )
 
-from apps.community_forum.utils import CONST_MINUTES
+from apps.community_forum.utils import (
+    CONST_MINUTES
+)
+
 from auth.utils import ForumRewardActionsNames
 from web_project import TemplateLayout
 
@@ -55,14 +69,17 @@ class ForumView_ThreadDetail(LoginRequiredMixin, TemplateView):
                 if (timezone.now() - request.user.profile.user_last_forum_comment_at).seconds < (5 * CONST_MINUTES):
                     messages.error(request, "You can only comment once every 5 minutes.")
                     logger.error(f"User tried to comment more than once per 5 minutes. User ID: {request.user.id}")
+
                     return redirect('community_forum:thread_detail', thread_id=thread.id)
 
             request.user.profile.user_last_forum_comment_at = timezone.now()
+
             request.user.profile.save()
 
         except Exception as e:
             logger.error(f"Error creating forum comment: {e}")
             messages.error(request, "An error occurred while creating the comment.")
+
             return redirect('community_forum:thread_detail', thread_id=thread.id)
 
         try:
@@ -71,20 +88,25 @@ class ForumView_ThreadDetail(LoginRequiredMixin, TemplateView):
                 comment = form.save(commit=False)
                 comment.post = post
                 comment.created_by = request.user
+
                 comment.save()
 
                 request.user.profile.add_points(ForumRewardActionsNames.ADD_COMMENT)
                 logger.info(f"Forum comment created. Comment ID: {comment.id}")
+
                 return redirect('community_forum:thread_detail', thread_id=thread.id)
 
         except Exception as e:
             logger.error(f"Error creating forum comment: {e}")
             messages.error(request, "An error occurred while creating the comment.")
+
             return redirect('community_forum:thread_detail', thread_id=thread.id)
 
         context = self.get_context_data(**kwargs)
         context['form'] = form
+
         logger.error(f"Error creating forum comment: {form.errors}")
+
         return self.render_to_response(context)
 
     def get_context_data(self, **kwargs):
@@ -94,8 +116,12 @@ class ForumView_ThreadDetail(LoginRequiredMixin, TemplateView):
         try:
             thread = get_object_or_404(ForumThread, id=thread_id)
             context['thread'] = thread
+
             categories = ForumCategory.objects.prefetch_related(
-                Prefetch('threads', queryset=ForumThread.objects.order_by('-created_at'))
+                Prefetch(
+                    'threads',
+                    queryset=ForumThread.objects.order_by('-created_at')
+                )
             )
 
             context['categories'] = categories
@@ -112,6 +138,7 @@ class ForumView_ThreadDetail(LoginRequiredMixin, TemplateView):
 
         except Exception as e:
             logger.error(f"Error getting context data for forum thread detail: {e}")
+
             return context
 
         try:
@@ -129,6 +156,7 @@ class ForumView_ThreadDetail(LoginRequiredMixin, TemplateView):
 
                 comment_paginator = Paginator(comments, 5)
                 comment_page_number = self.request.GET.get(f'comment_page_{post.id}')
+
                 post.ordered_comments = comment_paginator.get_page(comment_page_number)
                 post.comment_page_obj = post.ordered_comments
 
@@ -140,8 +168,10 @@ class ForumView_ThreadDetail(LoginRequiredMixin, TemplateView):
 
         except Exception as e:
             logger.error(f"Error paginating posts and comments: {e}")
+
             return context
 
         context['form'] = ForumCommentForm()
         logger.info(f"Thread detail view accessed. Thread ID: {thread.id}")
+
         return context

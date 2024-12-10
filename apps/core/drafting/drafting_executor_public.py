@@ -17,8 +17,13 @@
 
 import logging
 
-from apps.core.generative_ai.gpt_openai_manager import OpenAIGPTClientManager
-from apps.drafting.models import DraftingGoogleAppsConnection
+from apps.core.generative_ai.gpt_openai_manager import (
+    OpenAIGPTClientManager
+)
+
+from apps.drafting.models import (
+    DraftingGoogleAppsConnection
+)
 
 from apps.core.drafting.public_handlers import (
     handle_ai_command_public,
@@ -48,13 +53,17 @@ class DraftingExecutionManager_Public:
         self.content = text_content
         self.copilot = drafting_google_apps_connection.drafting_assistant
         self.copilot_llm = drafting_google_apps_connection.drafting_assistant.llm_model
-        self.naked_c = OpenAIGPTClientManager.get_naked_client(llm_model=self.copilot_llm)
+
+        self.naked_c = OpenAIGPTClientManager.get_naked_client(
+            llm_model=self.copilot_llm
+        )
 
     #####
 
     def execute_ai_command(self, command: str):
 
         output, error = None, None
+
         response = {
             'output': output,
             'error': output
@@ -76,11 +85,13 @@ class DraftingExecutionManager_Public:
 
         response['output'] = output
         response['error'] = error
+
         return response
 
     def execute_auto_command(self):
 
         output, error = None, None
+
         response = {
             'output': output,
             'error': output
@@ -100,11 +111,13 @@ class DraftingExecutionManager_Public:
 
         response['output'] = output
         response['error'] = error
+
         return response
 
     def execute_img_command(self, command: str):
 
         output, error = None, None
+
         response = {
             'output': output,
             'error': output
@@ -126,10 +139,12 @@ class DraftingExecutionManager_Public:
 
         response['output'] = output
         response['error'] = error
+
         return response
 
     def execute_nosql_command(self, command: str):
         output, error = None, None
+
         response = {
             'output': output,
             'error': output
@@ -151,10 +166,16 @@ class DraftingExecutionManager_Public:
 
         response['output'] = output
         response['error'] = error
+
         return response
 
-    def execute_select_command(self, selected_text: str, command: str):
+    def execute_select_command(
+        self,
+        selected_text: str,
+        command: str
+    ):
         output, error = None, None
+
         response = {
             'output': output,
             'error': output
@@ -177,6 +198,7 @@ class DraftingExecutionManager_Public:
 
         response['output'] = output
         response['error'] = error
+
         return response
 
     def execute_sql_command(self, command: str):
@@ -203,11 +225,13 @@ class DraftingExecutionManager_Public:
 
         response['output'] = output
         response['error'] = error
+
         return response
 
     def execute_ssh_command(self, command: str):
 
         output, error = None, None
+
         response = {
             'output': output,
             'error': output
@@ -229,10 +253,12 @@ class DraftingExecutionManager_Public:
 
         response['output'] = output
         response['error'] = error
+
         return response
 
     def execute_vect_command(self, command: str):
         output, error = None, None
+
         response = {
             'output': output,
             'error': output
@@ -254,10 +280,12 @@ class DraftingExecutionManager_Public:
 
         response['output'] = output
         response['error'] = error
+
         return response
 
     def execute_web_command(self, command: str):
         output, error = None, None
+
         response = {
             'output': output,
             'error': output
@@ -269,6 +297,7 @@ class DraftingExecutionManager_Public:
                 command=command,
                 content=self.content
             )
+
             logger.info(
                 f"[DraftingExecutionManager.handle_web_command_public] WEB command executed successfully: {command}")
 
@@ -279,10 +308,12 @@ class DraftingExecutionManager_Public:
 
         response['output'] = output
         response['error'] = error
+
         return response
 
     def execute_repo_command(self, command: str):
         output, error = None, None
+
         response = {
             'output': output,
             'error': output
@@ -304,10 +335,12 @@ class DraftingExecutionManager_Public:
 
         response['output'] = output
         response['error'] = error
+
         return response
 
     def execute_site_command(self, command: str):
         output, error = None, None
+
         response = {
             'output': output,
             'error': output
@@ -329,4 +362,5 @@ class DraftingExecutionManager_Public:
 
         response['output'] = output
         response['error'] = error
+
         return response

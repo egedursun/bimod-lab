@@ -14,7 +14,10 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-from apps.core.drafting.drafting_executor import DraftingExecutionManager
+
+from apps.core.drafting.drafting_executor import (
+    DraftingExecutionManager
+)
 
 
 def build_whole_text_supply_prompt(xc: DraftingExecutionManager):

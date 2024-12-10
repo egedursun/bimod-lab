@@ -17,8 +17,14 @@
 
 import random
 
-from apps.core.binexus.evolution_manager import Individual, Chromosome
-from apps.core.binexus.evolution_manager.population import PopulationManager
+from apps.core.binexus.evolution_manager import (
+    Individual,
+    Chromosome
+)
+
+from apps.core.binexus.evolution_manager.population import (
+    PopulationManager
+)
 
 
 class MutationManager:
@@ -37,12 +43,16 @@ class MutationManager:
     ) -> Individual:
 
         mutated_chromosome = {}
+
         for gene_name, gene_value in individual.get_chromosome().items():
+
             if random.random() < self.mutation_chance_per_gene:
                 mutated_gene_value = Chromosome.give_random_value_of_gene(gene_name)
                 mutated_chromosome[gene_name] = mutated_gene_value
+
             else:
                 mutated_chromosome[gene_name] = gene_value
+
         individual.chromosome = mutated_chromosome
 
         return individual
@@ -53,10 +63,17 @@ class MutationManager:
     ) -> list:
 
         mutated_population = []
+
         for i, individual in enumerate(population):
+
             if random.random() < self.mutation_chance_per_individual:
-                mutated_individual = self._mutate_individual(individual)
+
+                mutated_individual = self._mutate_individual(
+                    individual
+                )
+
                 mutated_population.append(mutated_individual)
+
             else:
                 mutated_population.append(individual)
 

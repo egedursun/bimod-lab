@@ -21,15 +21,18 @@ from django.db import models
 class ForumComment(models.Model):
     id = models.AutoField(primary_key=True)
     content = models.TextField()
+
     created_by = models.ForeignKey(
         "auth.User",
         on_delete=models.CASCADE
     )
+
     post = models.ForeignKey(
         "ForumPost",
         related_name='comments',
         on_delete=models.CASCADE
     )
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     like_count = models.PositiveIntegerField(default=0)
@@ -40,7 +43,9 @@ class ForumComment(models.Model):
     class Meta:
         verbose_name = "Comment"
         verbose_name_plural = "Comments"
+
         ordering = ["-created_at"]
+
         indexes = [
             models.Index(
                 fields=[

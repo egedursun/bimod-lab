@@ -18,7 +18,10 @@
 from apps.binexus.models import BinexusProcess
 
 
-def binexus_individual_assignment_prompt(process: BinexusProcess, individual):
+def binexus_individual_assignment_prompt(
+    process: BinexusProcess,
+    individual
+):
     return f"""
         ## **CONTEXT INFORMATION:**
 
@@ -92,7 +95,10 @@ def binexus_individual_assignment_prompt(process: BinexusProcess, individual):
     """
 
 
-def binexus_individual_assignment_prompt_redacted(process: BinexusProcess, individual):
+def binexus_individual_assignment_prompt_redacted(
+    process: BinexusProcess,
+    individual
+):
 
     parameters_string = "[ KEY ] : [ VALUE ]\n"
     for key, value in individual.get_chromosome().items():

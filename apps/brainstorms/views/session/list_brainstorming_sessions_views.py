@@ -21,7 +21,10 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
 from apps.brainstorms.models import BrainstormingSession
 from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
@@ -48,9 +51,11 @@ class BrainstormingView_SessionList(LoginRequiredMixin, TemplateView):
         user_orgs = Organization.objects.filter(
             users__in=[self.request.user]
         )
+
         context['sessions'] = BrainstormingSession.objects.filter(
             organization__in=user_orgs
         )
 
         logger.info(f"Brainstorming Sessions were listed.")
+
         return context

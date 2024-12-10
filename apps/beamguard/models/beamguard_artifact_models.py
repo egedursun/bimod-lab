@@ -33,6 +33,7 @@ class BeamGuardArtifact(models.Model):
         null=True,
         blank=True
     )
+
     chat = models.ForeignKey(
         'multimodal_chat.MultimodalChat',
         on_delete=models.CASCADE,
@@ -41,7 +42,12 @@ class BeamGuardArtifact(models.Model):
         blank=True
     )
 
-    name = models.CharField(max_length=10000, null=True, blank=True)
+    name = models.CharField(
+        max_length=10000,
+        null=True,
+        blank=True
+    )
+
     metadata = models.JSONField(null=True, blank=True)
 
     confirmation_status = models.CharField(
@@ -51,6 +57,7 @@ class BeamGuardArtifact(models.Model):
     )
 
     type = models.CharField(max_length=500, choices=BEAMGUARD_ARTIFACT_TYPES)
+
     raw_query = models.TextField(null=True, blank=True)
 
     sql_connection_object = models.ForeignKey(
@@ -61,6 +68,7 @@ class BeamGuardArtifact(models.Model):
         null=True,
         blank=True,
     )
+
     nosql_connection_object = models.ForeignKey(
         'datasource_nosql.NoSQLDatabaseConnection',
         on_delete=models.CASCADE,
@@ -69,6 +77,7 @@ class BeamGuardArtifact(models.Model):
         null=True,
         blank=True,
     )
+
     file_system_connection_object = models.ForeignKey(
         'datasource_file_systems.DataSourceFileSystem',
         on_delete=models.CASCADE,
@@ -84,11 +93,25 @@ class BeamGuardArtifact(models.Model):
     class Meta:
         verbose_name_plural = 'BeamGuard Artifacts'
         verbose_name = 'BeamGuard Artifact'
+
         ordering = ['-created_at']
+
         indexes = [
-            models.Index(fields=['assistant', 'type']),
-            models.Index(fields=['assistant', 'type', 'created_at']),
-            models.Index(fields=['assistant', 'type', 'created_at', 'name']),
+            models.Index(fields=[
+                'assistant',
+                'type'
+            ]),
+            models.Index(fields=[
+                'assistant',
+                'type',
+                'created_at'
+            ]),
+            models.Index(fields=[
+                'assistant',
+                'type',
+                'created_at',
+                'name'
+            ]),
         ]
 
     def __str__(self):
@@ -96,13 +119,22 @@ class BeamGuardArtifact(models.Model):
 
     def save(self, *args, **kwargs):
 
-        if self.type == BeamGuardArtifactTypesNames.SQL and self.sql_connection_object is None:
+        if (
+            self.type == BeamGuardArtifactTypesNames.SQL and
+            self.sql_connection_object is None
+        ):
             raise ValueError("SQL Connection Object is required for SQL BeamGuard Artifact.")
 
-        if self.type == BeamGuardArtifactTypesNames.NOSQL and self.nosql_connection_object is None:
+        if (
+            self.type == BeamGuardArtifactTypesNames.NOSQL and
+            self.nosql_connection_object is None
+        ):
             raise ValueError("NoSQL Connection Object is required for NoSQL BeamGuard Artifact.")
 
-        if self.type == BeamGuardArtifactTypesNames.FILE_SYSTEM and self.file_system_connection_object is None:
+        if (
+            self.type == BeamGuardArtifactTypesNames.FILE_SYSTEM and
+            self.file_system_connection_object is None
+        ):
             raise ValueError("File System Connection Object is required for File System BeamGuard Artifact.")
 
         super().save(*args, **kwargs)

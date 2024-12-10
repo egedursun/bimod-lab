@@ -19,6 +19,7 @@
 from django.contrib import admin
 
 from apps.assistants.models import Assistant
+
 from apps.assistants.utils import (
     AGENT_ADMIN_DISPLAY_FIELDS,
     AGENT_ADMIN_FILTER_FIELDS,
@@ -31,5 +32,6 @@ class AssistantAdmin(admin.ModelAdmin):
     list_display = AGENT_ADMIN_DISPLAY_FIELDS
     list_filter = AGENT_ADMIN_FILTER_FIELDS
     search_fields = AGENT_ADMIN_SEARCH_FIELDS
+
     date_hierarchy = "created_at"
     ordering = ["-created_at"]

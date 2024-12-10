@@ -18,11 +18,22 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import get_object_or_404, redirect
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.shortcuts import (
+    get_object_or_404,
+    redirect
+)
+
 from django.views import View
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
 from apps.brainstorms.models import BrainstormingIdea
 from apps.user_permissions.utils import PermissionNames
 
@@ -53,4 +64,8 @@ class BrainstormingView_IdeaDelete(LoginRequiredMixin, View):
 
         messages.success(request, f'Idea "{idea.idea_title}" has been deleted successfully.')
         logger.info(f'Idea "{idea.idea_title}" has been deleted successfully. Idea ID: {idea.id}')
-        return redirect('brainstorms:detail_session', session_id=ss_id)
+
+        return redirect(
+            'brainstorms:detail_session',
+            session_id=ss_id
+        )

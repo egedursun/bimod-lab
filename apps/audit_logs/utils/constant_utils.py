@@ -20,6 +20,7 @@ AUDIT_LOG_ACTION_CHOICES = [
     ('update', 'Update'),
     ('delete', 'Delete'),
 ]
+
 AUDIT_LOG_ADMIN_LIST = [
     "action",
     'model_name',

@@ -17,18 +17,32 @@
 
 import logging
 
-from apps.core.generative_ai.utils import ChatRoles, GPT_DEFAULT_ENCODING_ENGINE
-from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
-from apps.llm_transaction.models import LLMTransaction
-from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
+from apps.core.generative_ai.utils import (
+    ChatRoles,
+    GPT_DEFAULT_ENCODING_ENGINE
+)
 
+from apps.core.internal_cost_manager.costs_map import (
+    InternalServiceCosts
+)
+
+from apps.llm_transaction.models import LLMTransaction
+
+from apps.llm_transaction.utils import (
+    LLMTransactionSourcesTypesNames
+)
 
 logger = logging.getLogger(__name__)
 
 
 def handle_ai_command(xc, command: str) -> str:
-    from apps.core.drafting.drafting_executor import DraftingExecutionManager
-    from apps.core.drafting.prompt_builders import build_ai_command_system_prompt
+    from apps.core.drafting.drafting_executor import (
+        DraftingExecutionManager
+    )
+
+    from apps.core.drafting.prompt_builders import (
+        build_ai_command_system_prompt
+    )
 
     try:
         tx = LLMTransaction.objects.create(
@@ -46,13 +60,20 @@ def handle_ai_command(xc, command: str) -> str:
             transaction_type=ChatRoles.USER,
             transaction_source=LLMTransactionSourcesTypesNames.DRAFTING
         )
+
         logger.info(f"[handle_ai_command] Created LLMTransaction for user command: {command}")
+
     except Exception as e:
         logger.error(f"[handle_ai_command] Error creating LLMTransaction for user command: {command}. Error: {e}")
         pass
 
     output, error = None, None
-    system_prompt = build_ai_command_system_prompt(xc=xc, user_query=command)
+
+    system_prompt = build_ai_command_system_prompt(
+        xc=xc,
+        user_query=command
+    )
+
     xc: DraftingExecutionManager
     client = xc.naked_c
 
@@ -72,7 +93,9 @@ def handle_ai_command(xc, command: str) -> str:
             transaction_type=ChatRoles.SYSTEM,
             transaction_source=LLMTransactionSourcesTypesNames.DRAFTING
         )
+
         logger.info(f"[handle_ai_command] Created LLMTransaction for system prompt.")
+
     except Exception as e:
         logger.error(f"[handle_ai_command] Error creating LLMTransaction for system prompt. Error: {e}")
         pass
@@ -92,13 +115,16 @@ def handle_ai_command(xc, command: str) -> str:
 
         choices = llm_response.choices
         first_choice = choices[0]
+
         choice_message = first_choice.message
         choice_message_content = choice_message.content
+
         logger.info(f"[handle_ai_command] Generated AI response.")
 
     except Exception as e:
         logger.error(f"[handle_ai_command] Error generating AI response. Error: {e}")
         error = f"[handle_ai_command] Error executing AI command: {command}. Error: {e}"
+
         return output, error
 
     try:
@@ -117,6 +143,7 @@ def handle_ai_command(xc, command: str) -> str:
             transaction_type=ChatRoles.ASSISTANT,
             transaction_source=LLMTransactionSourcesTypesNames.DRAFTING
         )
+
         logger.info(f"[handle_ai_command] Created LLMTransaction for AI response.")
 
     except Exception as e:
@@ -135,7 +162,9 @@ def handle_ai_command(xc, command: str) -> str:
             transaction_source=LLMTransactionSourcesTypesNames.DRAFTING,
             is_tool_cost=True
         )
+
         tx.save()
+
         logger.info(f"[handle_ai_command] Created LLMTransaction for Drafting.")
 
     except Exception as e:
@@ -143,4 +172,5 @@ def handle_ai_command(xc, command: str) -> str:
         pass
 
     output = choice_message_content
+
     return output, error

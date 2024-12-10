@@ -20,7 +20,10 @@ import logging
 from django.utils import timezone
 
 from apps.assistants.models import Assistant
-from apps.beamguard.models import BeamGuardArtifact
+
+from apps.beamguard.models import (
+    BeamGuardArtifact
+)
 
 from apps.core.beamguard.utils import (
     MYSQL_GUARDED_KEYWORDS,
@@ -29,14 +32,38 @@ from apps.core.beamguard.utils import (
     UNIX_FILE_SYSTEM_GUARDED_KEYWORDS
 )
 
-from apps.core.nosql.nosql_executor import CouchbaseNoSQLExecutor
-from apps.core.sql.sql_executor import MySQLExecutor, PostgresSQLExecutor
-from apps.datasource_file_systems.utils import DataSourceFileSystemsOsTypeNames
-from apps.datasource_nosql.models import NoSQLDatabaseConnection
-from apps.datasource_nosql.utils import NoSQLDatabaseChoicesNames
-from apps.datasource_sql.models import SQLDatabaseConnection
-from apps.datasource_sql.utils import DBMSChoicesNames
-from apps.multimodal_chat.models import MultimodalChat
+from apps.core.nosql.nosql_executor import (
+    CouchbaseNoSQLExecutor
+)
+
+from apps.core.sql.sql_executor import (
+    MySQLExecutor,
+    PostgresSQLExecutor
+)
+
+from apps.datasource_file_systems.utils import (
+    DataSourceFileSystemsOsTypeNames
+)
+
+from apps.datasource_nosql.models import (
+    NoSQLDatabaseConnection
+)
+
+from apps.datasource_nosql.utils import (
+    NoSQLDatabaseChoicesNames
+)
+
+from apps.datasource_sql.models import (
+    SQLDatabaseConnection
+)
+
+from apps.datasource_sql.utils import (
+    DBMSChoicesNames
+)
+
+from apps.multimodal_chat.models import (
+    MultimodalChat
+)
 
 logger = logging.getLogger(__name__)
 
@@ -52,15 +79,21 @@ class BeamGuardExecutionManager:
 
     #####
 
-    def _guard_mysql_modifications(self, connection: SQLDatabaseConnection, raw_query: str):
+    def _guard_mysql_modifications(
+        self,
+        connection: SQLDatabaseConnection,
+        raw_query: str
+    ):
         from apps.beamguard.utils import (
-            BeamGuardArtifactTypesNames, BeamGuardConfirmationStatusesNames,
+            BeamGuardArtifactTypesNames,
+            BeamGuardConfirmationStatusesNames,
         )
 
         unauthorized_keyword_found = False
         unauthorized_keywords_list = []
 
         for keyword in MYSQL_GUARDED_KEYWORDS:
+
             if keyword in raw_query.upper():
                 unauthorized_keyword_found = True
                 unauthorized_keywords_list.append(keyword)
@@ -101,24 +134,34 @@ class BeamGuardExecutionManager:
                 # nosql_connection_object=None,
                 # file_system_connection_object=None
             )
+
             artifact.save()
 
             logger.info(f"BeamGuard artifact created: {artifact}")
+
             return artifact
 
         except Exception as e:
             logger.error(f"Failed to create BeamGuard artifact: {e}")
+
             return None
 
-    def _guard_postgresql_modifications(self, connection: SQLDatabaseConnection, raw_query: str):
+    def _guard_postgresql_modifications(
+        self,
+        connection: SQLDatabaseConnection,
+        raw_query: str
+    ):
+
         from apps.beamguard.utils import (
-            BeamGuardArtifactTypesNames, BeamGuardConfirmationStatusesNames,
+            BeamGuardArtifactTypesNames,
+            BeamGuardConfirmationStatusesNames,
         )
 
         unauthorized_keyword_found = False
         unauthorized_keywords_list = []
 
         for keyword in POSTGRESQL_GUARDED_KEYWORDS:
+
             if keyword in raw_query.upper():
                 unauthorized_keyword_found = True
                 unauthorized_keywords_list.append(keyword)
@@ -162,40 +205,63 @@ class BeamGuardExecutionManager:
             artifact.save()
 
             logger.info(f"BeamGuard artifact created: {artifact}")
+
             return artifact
 
         except Exception as e:
             logger.error(f"Failed to create BeamGuard artifact: {e}")
+
             return None
 
-    def guard_sql_modifications(self, connection_id: int, raw_query: str):
-        connection = SQLDatabaseConnection.objects.get(id=connection_id)
+    def guard_sql_modifications(
+        self,
+        connection_id: int,
+        raw_query: str
+    ):
+        connection = SQLDatabaseConnection.objects.get(
+            id=connection_id
+        )
+
         db_type = connection.dbms_type
 
         if db_type == DBMSChoicesNames.MYSQL:
-            artifact = self._guard_mysql_modifications(connection=connection, raw_query=raw_query)
+            artifact = self._guard_mysql_modifications(
+                connection=connection,
+                raw_query=raw_query
+            )
 
         elif db_type == DBMSChoicesNames.POSTGRESQL:
-            artifact = self._guard_postgresql_modifications(connection=connection, raw_query=raw_query)
+            artifact = self._guard_postgresql_modifications(
+                connection=connection,
+                raw_query=raw_query
+            )
 
         else:
             logger.error(f"Unsupported DBMS type: {db_type}")
+
             return None
 
         if artifact:
             return artifact
+
         else:
             return None
 
-    def _guard_couchbase_modifications(self, connection: NoSQLDatabaseConnection, raw_query: str):
+    def _guard_couchbase_modifications(
+        self,
+        connection: NoSQLDatabaseConnection,
+        raw_query: str
+    ):
         from apps.beamguard.utils import (
-            BeamGuardArtifactTypesNames, BeamGuardConfirmationStatusesNames,
+            BeamGuardArtifactTypesNames,
+            BeamGuardConfirmationStatusesNames,
         )
 
         unauthorized_keyword_found = False
         unauthorized_keywords_list = []
 
         for keyword in N1QL_GUARDED_KEYWORDS:
+
             if keyword in raw_query.upper():
                 unauthorized_keyword_found = True
                 unauthorized_keywords_list.append(keyword)
@@ -238,18 +304,31 @@ class BeamGuardExecutionManager:
             artifact.save()
 
             logger.info(f"BeamGuard artifact created: {artifact}")
+
             return artifact
 
         except Exception as e:
             logger.error(f"Failed to create BeamGuard artifact: {e}")
+
             return None
 
-    def guard_nosql_modifications(self, connection_id: int, raw_query: str):
-        connection = NoSQLDatabaseConnection.objects.get(id=connection_id)
+    def guard_nosql_modifications(
+        self,
+        connection_id: int,
+        raw_query: str
+    ):
+        connection = NoSQLDatabaseConnection.objects.get(
+            id=connection_id
+        )
+
         nosql_db_type = connection.nosql_db_type
 
         if nosql_db_type == NoSQLDatabaseChoicesNames.COUCHBASE:
-            artifact = self._guard_couchbase_modifications(connection=connection, raw_query=raw_query)
+
+            artifact = self._guard_couchbase_modifications(
+                connection=connection,
+                raw_query=raw_query
+            )
 
         else:
             logger.error(f"Unsupported NoSQL DB type: {nosql_db_type}")
@@ -257,13 +336,20 @@ class BeamGuardExecutionManager:
 
         if artifact:
             return artifact
+
         else:
             return None
 
-    def _guard_unix_file_system_modifications(self, connection, raw_query: str):
+    def _guard_unix_file_system_modifications(
+        self,
+        connection,
+        raw_query: str
+    ):
         from apps.datasource_file_systems.models import DataSourceFileSystem
+
         from apps.beamguard.utils import (
-            BeamGuardArtifactTypesNames, BeamGuardConfirmationStatusesNames,
+            BeamGuardArtifactTypesNames,
+            BeamGuardConfirmationStatusesNames,
         )
 
         connection: DataSourceFileSystem
@@ -272,6 +358,7 @@ class BeamGuardExecutionManager:
         unauthorized_keywords_list = []
 
         for keyword in UNIX_FILE_SYSTEM_GUARDED_KEYWORDS:
+
             if keyword in raw_query.lower():
                 unauthorized_keyword_found = True
                 unauthorized_keywords_list.append(keyword)
@@ -315,18 +402,31 @@ class BeamGuardExecutionManager:
             artifact.save()
 
             logger.info(f"BeamGuard artifact created: {artifact}")
+
             return artifact
 
         except Exception as e:
             logger.error(f"Failed to create BeamGuard artifact: {e}")
+
             return None
 
     def guard_file_system_modifications(self, connection_id: int, raw_query: str):
-        connection = DataSourceFileSystem.objects.get(id=connection_id)
+        from apps.datasource_file_systems.models import (
+            DataSourceFileSystem
+        )
+
+        connection = DataSourceFileSystem.objects.get(
+            id=connection_id
+        )
+
         os_type = connection.os_type
 
         if os_type == DataSourceFileSystemsOsTypeNames.LINUX or DataSourceFileSystemsOsTypeNames.MACOS:
-            artifact = self._guard_unix_file_system_modifications(connection=connection, raw_query=raw_query)
+
+            artifact = self._guard_unix_file_system_modifications(
+                connection=connection,
+                raw_query=raw_query
+            )
 
         else:
             logger.error(f"Unsupported OS type: {os_type}")
@@ -334,6 +434,7 @@ class BeamGuardExecutionManager:
 
         if artifact:
             return artifact
+
         else:
             return None
 
@@ -344,6 +445,7 @@ class BeamGuardExecutionManager:
     @staticmethod
     def _authorize_and_absolve_sql_artifact(artifact: BeamGuardArtifact):
         if artifact.sql_connection_object.dbms_type == DBMSChoicesNames.MYSQL:
+
             xc_mysql = MySQLExecutor(
                 connection=artifact.sql_connection_object
             )
@@ -354,12 +456,15 @@ class BeamGuardExecutionManager:
 
             if output.get("status", False) is False:
                 logger.error(f"Failed to execute MySQL query: {artifact.raw_query}")
+
                 return False
 
             logger.info(f"Successfully executed MySQL query: {artifact.raw_query}")
+
             return True
 
         elif artifact.sql_connection_object.dbms_type == DBMSChoicesNames.POSTGRESQL:
+
             xc_postgresql = PostgresSQLExecutor(
                 connection=artifact.sql_connection_object
             )
@@ -370,17 +475,21 @@ class BeamGuardExecutionManager:
 
             if output.get("status", False) is False:
                 logger.error(f"Failed to execute PostgreSQL query: {artifact.raw_query}")
+
                 return False
 
             logger.info(f"Successfully executed PostgreSQL query: {artifact.raw_query}")
+
             return True
 
         else:
             logger.error(f"Unsupported DBMS type: {artifact.sql_connection_object.dbms_type}")
+
             return False
 
     @staticmethod
     def _authorize_and_absolve_nosql_artifact(artifact: BeamGuardArtifact):
+
         if artifact.nosql_connection_object.nosql_db_type == NoSQLDatabaseChoicesNames.COUCHBASE:
             xc_couchbase = CouchbaseNoSQLExecutor(
                 connection=artifact.nosql_connection_object
@@ -392,18 +501,24 @@ class BeamGuardExecutionManager:
 
             if output.get("status", False) is False:
                 logger.error(f"Failed to execute Couchbase N1QL query: {artifact.raw_query}")
+
                 return False
 
             logger.info(f"Successfully executed Couchbase N1QL query: {artifact.raw_query}")
+
             return True
 
         else:
             logger.error(f"Unsupported NoSQL DB type: {artifact.nosql_connection_object.nosql_db_type}")
+
             return False
 
     @staticmethod
     def _authorize_and_absolve_file_system_artifact(artifact: BeamGuardArtifact):
-        from apps.core.file_systems.file_systems_executor import FileSystemsExecutor
+
+        from apps.core.file_systems.file_systems_executor import (
+            FileSystemsExecutor
+        )
 
         if (
             artifact.file_system_connection_object.os_type == DataSourceFileSystemsOsTypeNames.LINUX or
@@ -419,13 +534,16 @@ class BeamGuardExecutionManager:
 
             if output.get("status", False) is False:
                 logger.error(f"Failed to execute Unix file system command set: {artifact.raw_query}")
+
                 return False
 
             logger.info(f"Successfully executed Unix file system command set: {artifact.raw_query}")
+
             return True
 
         else:
             logger.error(f"Unsupported OS type: {artifact.file_system_connection_object.os_type}")
+
             return False
 
     @staticmethod
@@ -434,24 +552,32 @@ class BeamGuardExecutionManager:
             BeamGuardConfirmationStatusesNames,
         )
 
-        artifact = BeamGuardArtifact.objects.get(id=artifact_id)
+        artifact = BeamGuardArtifact.objects.get(
+            id=artifact_id
+        )
+
         if not artifact:
             logger.error(f"BeamGuard artifact not found: {artifact_id}")
+
             return False
 
         if artifact.confirmation_status == BeamGuardConfirmationStatusesNames.REJECTED:
             logger.warning(f"BeamGuard artifact already rejected: {artifact_id}")
+
             return False
 
         if artifact.confirmation_status == BeamGuardConfirmationStatusesNames.CONFIRMED:
             logger.warning(f"BeamGuard artifact is confirmed, confirmations can't be reverted: {artifact_id}")
+
             return False
 
         artifact.confirmation_status = BeamGuardConfirmationStatusesNames.REJECTED
         artifact.processed_at = timezone.now()
+
         artifact.save()
 
         logger.info(f"BeamGuard artifact has been rejected and discarded: {artifact_id}")
+
         return True
 
     @staticmethod
@@ -460,45 +586,59 @@ class BeamGuardExecutionManager:
             BeamGuardConfirmationStatusesNames,
         )
 
-        artifact = BeamGuardArtifact.objects.get(id=artifact_id)
+        artifact = BeamGuardArtifact.objects.get(
+            id=artifact_id
+        )
+
         if not artifact:
             logger.error(f"BeamGuard artifact not found: {artifact_id}")
+
             return False
 
         if artifact.confirmation_status == BeamGuardConfirmationStatusesNames.CONFIRMED:
             logger.warning(f"BeamGuard artifact already confirmed: {artifact_id}")
+
             return False
 
         if artifact.confirmation_status == BeamGuardConfirmationStatusesNames.REJECTED:
             logger.warning(f"BeamGuard artifact is rejected, rejections can't be reverted: {artifact_id}")
+
             return False
 
         artifact.confirmation_status = BeamGuardConfirmationStatusesNames.CONFIRMED
         artifact.processed_at = timezone.now()
 
         if artifact.sql_connection_object:
+
             absolved = BeamGuardExecutionManager._authorize_and_absolve_sql_artifact(
                 artifact=artifact
             )
 
         elif artifact.nosql_connection_object:
+
             absolved = BeamGuardExecutionManager._authorize_and_absolve_nosql_artifact(
                 artifact=artifact
             )
 
         elif artifact.file_system_connection_object:
+
             absolved = BeamGuardExecutionManager._authorize_and_absolve_file_system_artifact(
                 artifact=artifact
             )
 
         else:
             logger.error(f"Unsupported BeamGuard artifact type: {artifact.type}")
+
             return False
 
         if absolved:
             logger.info(f"BeamGuard artifact confirmed: {artifact_id}")
+
             artifact.save()
+
             return True
+
         else:
             logger.error(f"Failed to confirm BeamGuard artifact: {artifact_id}")
+
             return False

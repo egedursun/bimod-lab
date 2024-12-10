@@ -17,13 +17,21 @@
 
 import logging
 
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.core.paginator import Paginator
 from django.db.models import Prefetch, Q
+
 from django.shortcuts import get_object_or_404
 from django.views.generic import TemplateView
 
-from apps.community_forum.models import ForumCategory, ForumThread
+from apps.community_forum.models import (
+    ForumCategory,
+    ForumThread
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -35,8 +43,13 @@ class ForumView_ThreadList(LoginRequiredMixin, TemplateView):
         category_slug = self.kwargs.get("slug")
 
         try:
-            category = get_object_or_404(ForumCategory, slug=category_slug)
+            category = get_object_or_404(
+                ForumCategory,
+                slug=category_slug
+            )
+
             context['category'] = category
+
             categories = ForumCategory.objects.prefetch_related(
                 Prefetch(
                     'threads',
@@ -57,6 +70,7 @@ class ForumView_ThreadList(LoginRequiredMixin, TemplateView):
 
         except Exception as e:
             logger.error(f"[ForumView_ThreadList] Error listing the Forum Threads: {e}")
+
             return context
 
         try:
@@ -70,6 +84,7 @@ class ForumView_ThreadList(LoginRequiredMixin, TemplateView):
 
         except Exception as e:
             logger.error(f"[ForumView_ThreadList] Error listing the Forum Threads: {e}")
+
             return context
 
         return context

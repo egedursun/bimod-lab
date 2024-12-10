@@ -47,12 +47,16 @@ class DataBackupExecutor:
         ):
 
             from apps.data_backups.models import DataBackup
-            from apps.data_backups.utils import BackupTypesNames
+
+            from apps.data_backups.utils import (
+                BackupTypesNames
+            )
 
             try:
                 queryset = LLMCore.objects.filter(
                     organization=self.organization
                 )
+
                 serialized_data = serializers.serialize('json', queryset)
 
                 _ = DataBackup.objects.create(
@@ -63,10 +67,12 @@ class DataBackupExecutor:
                     serialized_data=serialized_data,
                     encryption_password=password
                 )
+
                 logger.info(f"[DataBackupExecutor.BackupLLMModel.backup_llm_models] Backed up LLM models.")
 
             except Exception as e:
                 logger.error(f"[DataBackupExecutor.BackupLLMModel.backup_llm_models] Error backing up LLM models: {e}")
+
                 return "An error occurred while backing up the data."
 
             return None
@@ -87,7 +93,10 @@ class DataBackupExecutor:
         ):
 
             from apps.data_backups.models import DataBackup
-            from apps.data_backups.utils import BackupTypesNames
+
+            from apps.data_backups.utils import (
+                BackupTypesNames
+            )
 
             try:
                 queryset = NERIntegration.objects.filter(
@@ -104,10 +113,12 @@ class DataBackupExecutor:
                     serialized_data=serialized_data,
                     encryption_password=password
                 )
+
                 logger.info(f"[DataBackupExecutor.BackupNERInstance.backup_ner_instances] Backed up NER instances.")
 
             except Exception as e:
                 logger.error(f"[DataBackupExecutor.BackupNERInstance.backup_ner_instances] Error backing up NER instances: {e}")
+
                 return "An error occurred while backing up the data."
 
             return None
@@ -128,16 +139,25 @@ class DataBackupExecutor:
         ):
 
             from apps.data_backups.models import DataBackup
-            from apps.data_backups.utils import BackupTypesNames
+
+            from apps.data_backups.utils import (
+                BackupTypesNames
+            )
 
             try:
-                queryset = Assistant.objects.filter(organization=self.organization)
+                queryset = Assistant.objects.filter(
+                    organization=self.organization
+                )
 
                 for item in queryset:
                     item: Assistant
                     item.memories.set([])
 
-                serialized_data = serializers.serialize('json', queryset)
+                serialized_data = serializers.serialize(
+                    'json',
+                    queryset
+                )
+
                 _ = DataBackup.objects.create(
                     organization=self.organization,
                     responsible_user=self.responsible_user,
@@ -146,10 +166,12 @@ class DataBackupExecutor:
                     serialized_data=serialized_data,
                     encryption_password=password
                 )
+
                 logger.info(f"[DataBackupExecutor.BackupAssistant.backup_assistants] Backed up assistants.")
 
             except Exception as e:
                 logger.error(f"[DataBackupExecutor.BackupAssistant.backup_assistants] Error backing up assistants: {e}")
+
                 return "An error occurred while backing up the data."
 
             return None
@@ -170,13 +192,20 @@ class DataBackupExecutor:
             password
         ):
             from apps.data_backups.models import DataBackup
-            from apps.data_backups.utils import BackupTypesNames
+
+            from apps.data_backups.utils import (
+                BackupTypesNames
+            )
 
             try:
                 queryset = CustomFunction.objects.filter(
                     created_by_user=self.responsible_user
                 )
-                serialized_data = serializers.serialize('json', queryset)
+
+                serialized_data = serializers.serialize(
+                    'json',
+                    queryset
+                )
 
                 _ = DataBackup.objects.create(
                     organization=self.organization,
@@ -186,10 +215,12 @@ class DataBackupExecutor:
                     serialized_data=serialized_data,
                     encryption_password=password
                 )
+
                 logger.info(f"[DataBackupExecutor.BackupCustomFunction.backup_custom_functions] Backed up custom functions.")
 
             except Exception as e:
                 logger.error(f"[DataBackupExecutor.BackupCustomFunction.backup_custom_functions] Error backing up custom functions: {e}")
+
                 return "An error occurred while backing up the data."
 
             return None
@@ -210,11 +241,20 @@ class DataBackupExecutor:
         ):
 
             from apps.data_backups.models import DataBackup
-            from apps.data_backups.utils import BackupTypesNames
+
+            from apps.data_backups.utils import (
+                BackupTypesNames
+            )
 
             try:
-                queryset = CustomAPI.objects.filter(created_by_user=self.responsible_user)
-                serialized_data = serializers.serialize('json', queryset)
+                queryset = CustomAPI.objects.filter(
+                    created_by_user=self.responsible_user
+                )
+
+                serialized_data = serializers.serialize(
+                    'json',
+                    queryset
+                )
 
                 _ = DataBackup.objects.create(
                     organization=self.organization,
@@ -224,10 +264,12 @@ class DataBackupExecutor:
                     serialized_data=serialized_data,
                     encryption_password=password
                 )
+
                 logger.info(f"[DataBackupExecutor.BackupCustomAPI.backup_custom_apis] Backed up custom APIs.")
 
             except Exception as e:
                 logger.error(f"[DataBackupExecutor.BackupCustomAPI.backup_custom_apis] Error backing up custom APIs: {e}")
+
                 return "An error occurred while backing up the data."
 
             return None
@@ -249,14 +291,21 @@ class DataBackupExecutor:
         ):
 
             from apps.data_backups.models import DataBackup
-            from apps.data_backups.utils import BackupTypesNames
+
+            from apps.data_backups.utils import (
+                BackupTypesNames
+            )
 
             try:
                 queryset = CustomScript.objects.filter(
                     created_by_user=self.responsible_user
                 )
 
-                serialized_data = serializers.serialize('json', queryset)
+                serialized_data = serializers.serialize(
+                    'json',
+                    queryset
+                )
+
                 _ = DataBackup.objects.create(
                     organization=self.organization,
                     responsible_user=self.responsible_user,
@@ -264,11 +313,13 @@ class DataBackupExecutor:
                     backup_type=BackupTypesNames.CUSTOM_SCRIPTS,
                     serialized_data=serialized_data,
                     encryption_password=password)
+
                 logger.info(f"[DataBackupExecutor.BackupCustomScript.backup_custom_scripts] Backed up custom scripts.")
 
             except Exception as e:
                 logger.error(f"[DataBackupExecutor.BackupCustomScript.backup_custom_scripts] Error backing up custom scripts: {e}")
-                return "An error occurred while backing up the data."
+
+               return "An error occurred while backing up the data."
 
             return None
 
@@ -281,7 +332,11 @@ class DataBackupExecutor:
             if backup_object.encryption_password != password:
                 return "The password is incorrect."
 
-            deserialized_data = serializers.deserialize('json', backup_object.serialized_data)
+            deserialized_data = serializers.deserialize(
+                'json',
+                backup_object.serialized_data
+            )
+
             for obj in deserialized_data:
                 obj: Assistant
 
@@ -291,10 +346,12 @@ class DataBackupExecutor:
 
                 except Exception as e:
                     logger.error(f"[DataBackupExecutor.restore] Error restoring the data: {e}")
+
                     return "An error occurred while restoring the data."
 
         except Exception as e:
             logger.error(f"[DataBackupExecutor.restore] Error restoring the data: {e}")
+
             return "An error occurred while restoring the data: " + str(e)
 
         return None

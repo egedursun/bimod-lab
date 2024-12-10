@@ -24,6 +24,7 @@ class BlogSEOMeta(models.Model):
         on_delete=models.CASCADE,
         related_name='seo_meta'
     )
+
     meta_title = models.CharField(max_length=300, blank=True)
     meta_description = models.CharField(max_length=1000, blank=True)
     meta_keywords = models.CharField(max_length=300, blank=True)
@@ -34,13 +35,32 @@ class BlogSEOMeta(models.Model):
     class Meta:
         verbose_name = 'Blog SEO Meta'
         verbose_name_plural = 'Blog SEO Meta'
+
         ordering = ['post']
+
         indexes = [
-            models.Index(fields=['post']),
-            models.Index(fields=['meta_title']),
-            models.Index(fields=['meta_description']),
-            models.Index(fields=['meta_keywords']),
-            models.Index(fields=['post', 'meta_title']),
-            models.Index(fields=['post', 'meta_description']),
-            models.Index(fields=['post', 'meta_keywords']),
+            models.Index(fields=[
+                'post'
+            ]),
+            models.Index(fields=[
+                'meta_title'
+            ]),
+            models.Index(fields=[
+                'meta_description'
+            ]),
+            models.Index(fields=[
+                'meta_keywords'
+            ]),
+            models.Index(fields=[
+                'post',
+                'meta_title'
+            ]),
+            models.Index(fields=[
+                'post',
+                'meta_description'
+            ]),
+            models.Index(fields=[
+                'post',
+                'meta_keywords'
+            ]),
         ]

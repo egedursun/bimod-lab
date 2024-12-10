@@ -17,23 +17,56 @@
 
 import logging
 
-from apps.core.drafting.utils import DRAFTING_TOOL_CALL_MAXIMUM_ATTEMPTS, find_tool_call_from_json
-from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
-from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
-from apps.core.tool_calls.core_services.core_service_generate_image import run_generate_image
-from apps.core.tool_calls.input_verifiers.verify_generate_image import verify_generate_image_content
-from apps.core.tool_calls.utils import IMAGE_GENERATION_AFFIRMATION_PROMPT
+from apps.core.drafting.utils import (
+    DRAFTING_TOOL_CALL_MAXIMUM_ATTEMPTS,
+    find_tool_call_from_json
+)
+
+from apps.core.generative_ai.utils import (
+    GPT_DEFAULT_ENCODING_ENGINE,
+    ChatRoles
+)
+
+from apps.core.internal_cost_manager.costs_map import (
+    InternalServiceCosts
+)
+
+from apps.core.tool_calls.core_services.core_service_generate_image import (
+    run_generate_image
+)
+
+from apps.core.tool_calls.input_verifiers.verify_generate_image import (
+    verify_generate_image_content
+)
+
+from apps.core.tool_calls.utils import (
+    IMAGE_GENERATION_AFFIRMATION_PROMPT
+)
+
 from apps.llm_transaction.models import LLMTransaction
-from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
+
+from apps.llm_transaction.utils import (
+    LLMTransactionSourcesTypesNames
+)
+
 from apps.multimodal_chat.models import MultimodalChat
-from apps.multimodal_chat.utils import generate_chat_name, SourcesForMultimodalChatsNames
+
+from apps.multimodal_chat.utils import (
+    generate_chat_name,
+    SourcesForMultimodalChatsNames
+)
 
 logger = logging.getLogger(__name__)
 
 
 def handle_img_command(xc, command: str) -> str:
-    from apps.core.drafting.drafting_executor import DraftingExecutionManager
-    from apps.core.drafting.prompt_builders import build_img_command_system_prompt
+    from apps.core.drafting.drafting_executor import (
+        DraftingExecutionManager
+    )
+
+    from apps.core.drafting.prompt_builders import (
+        build_img_command_system_prompt
+    )
 
     try:
         tx = LLMTransaction.objects.create(
@@ -51,6 +84,7 @@ def handle_img_command(xc, command: str) -> str:
             transaction_type=ChatRoles.USER,
             transaction_source=LLMTransactionSourcesTypesNames.DRAFTING
         )
+
         logger.info(f"[handle_ai_command] Created LLMTransaction for user command: {command}")
 
     except Exception as e:
@@ -58,7 +92,12 @@ def handle_img_command(xc, command: str) -> str:
         pass
 
     output, error = None, None
-    system_prompt = build_img_command_system_prompt(xc=xc, user_query=command)
+
+    system_prompt = build_img_command_system_prompt(
+        xc=xc,
+        user_query=command
+    )
+
     xc: DraftingExecutionManager
     client = xc.naked_c
 
@@ -78,6 +117,7 @@ def handle_img_command(xc, command: str) -> str:
             transaction_type=ChatRoles.SYSTEM,
             transaction_source=LLMTransactionSourcesTypesNames.DRAFTING
         )
+
         logger.info(f"[handle_ai_command] Created LLMTransaction for system prompt.")
 
     except Exception as e:
@@ -85,7 +125,11 @@ def handle_img_command(xc, command: str) -> str:
         pass
 
     try:
-        structured_system_prompt = {"content": system_prompt, "role": "system"}
+        structured_system_prompt = {
+            "content": system_prompt,
+            "role": "system"
+        }
+
         llm_response = client.chat.completions.create(
             model=xc.copilot_llm.model_name,
             messages=[structured_system_prompt],
@@ -98,8 +142,10 @@ def handle_img_command(xc, command: str) -> str:
 
         choices = llm_response.choices
         first_choice = choices[0]
+
         choice_message = first_choice.message
         choice_message_content = choice_message.content
+
         logger.info(f"[handle_ai_command] Generated AI response.")
 
         try:
@@ -118,6 +164,7 @@ def handle_img_command(xc, command: str) -> str:
                 transaction_type=ChatRoles.ASSISTANT,
                 transaction_source=LLMTransactionSourcesTypesNames.DRAFTING
             )
+
             logger.info(f"[handle_ai_command] Created LLMTransaction for AI response.")
 
         except Exception as e:
@@ -127,11 +174,13 @@ def handle_img_command(xc, command: str) -> str:
     except Exception as e:
         logger.error(f"[handle_ai_command] Error generating AI response. Error: {e}")
         error = f"[handle_ai_command] Error executing IMG command: {command}. Error: {e}"
+
         return output, error
 
     # TOOL USAGE IDENTIFICATION
     tool_counter = 0
     context_messages = [structured_system_prompt]
+
     while (
         len(find_tool_call_from_json(choice_message_content)) > 0 and
         tool_counter < DRAFTING_TOOL_CALL_MAXIMUM_ATTEMPTS
@@ -165,7 +214,9 @@ def handle_img_command(xc, command: str) -> str:
 
                 if image_uri and image_uri != "":
                     output = image_uri
+
                     return output, error
+
         try:
             llm_response = client.chat.completions.create(
                 model=xc.copilot_llm.model_name,
@@ -179,8 +230,10 @@ def handle_img_command(xc, command: str) -> str:
 
             choices = llm_response.choices
             first_choice = choices[0]
+
             choice_message = first_choice.message
             choice_message_content = choice_message.content
+
             logger.info(f"[handle_ai_command] Generated AI response.")
 
             try:
@@ -208,12 +261,14 @@ def handle_img_command(xc, command: str) -> str:
         except Exception as e:
             logger.error(f"[handle_ai_command] Error generating AI response. Error: {e}")
             error = f"[handle_ai_command] Error executing AI command: {command}. Error: {e}"
+
             return output, error
 
     if tool_counter == DRAFTING_TOOL_CALL_MAXIMUM_ATTEMPTS:
         error = (f"[handle_ai_command] Error executing IMG command: {command}. Error: Maximum tool call attempts "
                  f"reached.")
         logger.error(error)
+
         return output, error
 
     try:
@@ -228,7 +283,9 @@ def handle_img_command(xc, command: str) -> str:
             transaction_source=LLMTransactionSourcesTypesNames.DRAFTING,
             is_tool_cost=True
         )
+
         tx.save()
+
         logger.info(f"[handle_ai_command] Created LLMTransaction for Drafting.")
 
     except Exception as e:
@@ -236,6 +293,7 @@ def handle_img_command(xc, command: str) -> str:
         pass
 
     output = choice_message_content
+
     return output, error
 
 
@@ -267,4 +325,5 @@ def _handle_tool_generate_image(
 
     image_uri = image_generation_response.get("image_uri")
     logger.info(f"[handle_ai_command] Generated image: {image_uri}")
+
     return image_uri

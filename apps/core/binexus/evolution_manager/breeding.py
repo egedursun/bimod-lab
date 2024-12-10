@@ -50,12 +50,14 @@ class BreedingManager:
     ):
         elites = []
         selection_amount = int(self.population_size * self.elitism_selection_ratio)
+
         PopulationManager.order_population_by_fitness_descending(
             population=population
         )
 
         for i in range(selection_amount):
             elites.append(population[i])
+
         return elites
 
     def _apply_crossing_over(
@@ -64,15 +66,19 @@ class BreedingManager:
         elites
     ):
         new_population = []
+
         for i in range(self.population_size):
+
             if random.random() < self.crossover_rate:
                 parent_1 = random.choice(elites)
 
                 if self.self_mating_possible:
                     parent_2 = random.choice(elites)
+
                 else:
                     while True:
                         parent_2 = random.choice(elites)
+
                         if parent_1 != parent_2:
                             break
 
@@ -80,9 +86,12 @@ class BreedingManager:
                 parent_2_chromosome = parent_2.get_chromosome()
 
                 child_chromosome = {}
+
                 for gene_name, gene_value in parent_1_chromosome.items():
+
                     if random.random() < 0.5:
                         child_chromosome[gene_name] = gene_value
+
                     else:
                         child_chromosome[gene_name] = parent_2_chromosome[gene_name]
 
@@ -91,15 +100,24 @@ class BreedingManager:
                     chromosome=child_chromosome,
                     llm_model=self.llm_model
                 )
+
                 new_population.append(new_individual)
+
             else:
                 new_population.append(population[i])
+
         return new_population
 
     def produce_new_generation(
         self,
         population
     ):
+
         elites = self._determine_elites(population)
-        new_population = self._apply_crossing_over(population, elites)
+
+        new_population = self._apply_crossing_over(
+            population,
+            elites
+        )
+
         return new_population
