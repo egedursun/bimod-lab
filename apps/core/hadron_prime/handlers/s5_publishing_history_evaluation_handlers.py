@@ -17,7 +17,10 @@
 
 import logging
 
-from apps.hadron_prime.models import HadronNode, HadronTopicMessage
+from apps.hadron_prime.models import (
+    HadronNode,
+    HadronTopicMessage
+)
 
 logger = logging.getLogger(__name__)
 
@@ -46,4 +49,5 @@ def retrieve_publish_history_logs(node: HadronNode):
         """
 
     logger.info("Publishing history logs have been embedded.")
+
     return publish_history_logs, error

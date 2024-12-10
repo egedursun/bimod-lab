@@ -17,7 +17,9 @@
 
 import logging
 
-from apps.core.generative_ai.gpt_openai_manager import OpenAIGPTClientManager
+from apps.core.generative_ai.gpt_openai_manager import (
+    OpenAIGPTClientManager
+)
 
 from apps.core.formica.public_handlers import (
     handle_ai_command_public,
@@ -33,7 +35,9 @@ from apps.core.formica.public_handlers import (
     handle_site_command_public,
 )
 
-from apps.formica.models import FormicaGoogleAppsConnection
+from apps.formica.models import (
+    FormicaGoogleAppsConnection
+)
 
 logger = logging.getLogger(__name__)
 
@@ -63,6 +67,7 @@ class FormicaExecutionManager_Public:
     ):
 
         output, error = None, None
+
         response = {
             'output': output,
             'error': output
@@ -84,22 +89,27 @@ class FormicaExecutionManager_Public:
 
         response['output'] = output
         response['error'] = error
+
         return response
 
     def execute_auto_command(self):
         output, error = None, None
+
         response = {
             'output': output,
             'error': output
         }
 
         try:
+
             output, error = handle_auto_command_public(
                 xc=self,
                 content=self.content
             )
+
             logger.info(
-                f"[FormicaExecutionManager_Public.handle_auto_command_public] AUTO command executed successfully.")
+                f"[FormicaExecutionManager_Public.handle_auto_command_public] AUTO command executed successfully."
+            )
 
         except Exception as e:
             logger.error(
@@ -108,10 +118,12 @@ class FormicaExecutionManager_Public:
 
         response['output'] = output
         response['error'] = error
+
         return response
 
     def execute_img_command(self, command: str):
         output, error = None, None
+
         response = {
             'output': output,
             'error': output
@@ -123,6 +135,7 @@ class FormicaExecutionManager_Public:
                 command=command,
                 content=self.content
             )
+
             logger.info(
                 f"[FormicaExecutionManager_Public.handle_img_command_public] IMG command executed successfully: {command}")
 
@@ -133,10 +146,12 @@ class FormicaExecutionManager_Public:
 
         response['output'] = output
         response['error'] = error
+
         return response
 
     def execute_nosql_command(self, command: str):
         output, error = None, None
+
         response = {
             'output': output,
             'error': output
@@ -158,6 +173,7 @@ class FormicaExecutionManager_Public:
 
         response['output'] = output
         response['error'] = error
+
         return response
 
     def execute_select_command(
@@ -167,6 +183,7 @@ class FormicaExecutionManager_Public:
     ):
 
         output, error = None, None
+
         response = {
             'output': output,
             'error': output
@@ -179,6 +196,7 @@ class FormicaExecutionManager_Public:
                 command=command,
                 content=self.content
             )
+
             logger.info(
                 f"[FormicaExecutionManager_Public.handle_select_command_public] SELECT command executed successfully: {command}")
 
@@ -189,11 +207,13 @@ class FormicaExecutionManager_Public:
 
         response['output'] = output
         response['error'] = error
+
         return response
 
     def execute_sql_command(self, command: str):
 
         output, error = None, None
+
         response = {
             'output': output,
             'error': output
@@ -215,10 +235,12 @@ class FormicaExecutionManager_Public:
 
         response['output'] = output
         response['error'] = error
+
         return response
 
     def execute_ssh_command(self, command: str):
         output, error = None, None
+
         response = {
             'output': output,
             'error': output
@@ -230,6 +252,7 @@ class FormicaExecutionManager_Public:
                 command=command,
                 content=self.content
             )
+
             logger.info(
                 f"[FormicaExecutionManager_Public.handle_ssh_command_public] SSH command executed successfully: {command}")
 
@@ -240,11 +263,13 @@ class FormicaExecutionManager_Public:
 
         response['output'] = output
         response['error'] = error
+
         return response
 
     def execute_vect_command(self, command: str):
 
         output, error = None, None
+
         response = {
             'output': output,
             'error': output
@@ -256,6 +281,7 @@ class FormicaExecutionManager_Public:
                 command=command,
                 content=self.content
             )
+
             logger.info(
                 f"[FormicaExecutionManager_Public.handle_vect_command_public] VECT command executed successfully: {command}")
 
@@ -266,10 +292,12 @@ class FormicaExecutionManager_Public:
 
         response['output'] = output
         response['error'] = error
+
         return response
 
     def execute_web_command(self, command: str):
         output, error = None, None
+
         response = {
             'output': output,
             'error': output
@@ -291,10 +319,12 @@ class FormicaExecutionManager_Public:
 
         response['output'] = output
         response['error'] = error
+
         return response
 
     def execute_repo_command(self, command: str):
         output, error = None, None
+
         response = {
             'output': output,
             'error': output
@@ -316,10 +346,12 @@ class FormicaExecutionManager_Public:
 
         response['output'] = output
         response['error'] = error
+
         return response
 
     def execute_site_command(self, command: str):
         output, error = None, None
+
         response = {
             'output': output,
             'error': output
@@ -331,6 +363,7 @@ class FormicaExecutionManager_Public:
                 command=command,
                 content=self.content
             )
+
             logger.info(
                 f"[FormicaExecutionManager_Public.handle_site_command_public] SITE command executed successfully: {command}")
 
@@ -341,4 +374,5 @@ class FormicaExecutionManager_Public:
 
         response['output'] = output
         response['error'] = error
+
         return response

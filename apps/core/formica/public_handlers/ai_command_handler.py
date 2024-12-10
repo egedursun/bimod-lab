@@ -17,13 +17,24 @@
 
 import logging
 
-from apps.core.formica.utils import find_tool_call_from_json
+from apps.core.formica.utils import (
+    find_tool_call_from_json
+)
 
-from apps.core.generative_ai.utils import ChatRoles, GPT_DEFAULT_ENCODING_ENGINE
+from apps.core.generative_ai.utils import (
+    ChatRoles,
+    GPT_DEFAULT_ENCODING_ENGINE
+)
 
-from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
+from apps.core.internal_cost_manager.costs_map import (
+    InternalServiceCosts
+)
+
 from apps.llm_transaction.models import LLMTransaction
-from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
+
+from apps.llm_transaction.utils import (
+    LLMTransactionSourcesTypesNames
+)
 
 logger = logging.getLogger(__name__)
 
@@ -33,9 +44,13 @@ def handle_ai_command_public(
     content: str,
     command: str
 ) -> str:
+    from apps.core.formica.formica_executor_public import (
+        FormicaExecutionManager_Public
+    )
 
-    from apps.core.formica.formica_executor_public import FormicaExecutionManager_Public
-    from apps.core.formica.prompt_builders import build_ai_command_system_prompt_public
+    from apps.core.formica.prompt_builders import (
+        build_ai_command_system_prompt_public
+    )
 
     xc: FormicaExecutionManager_Public
 
@@ -55,6 +70,7 @@ def handle_ai_command_public(
             transaction_type=ChatRoles.USER,
             transaction_source=LLMTransactionSourcesTypesNames.FORMICA
         )
+
         logger.info(f"[handle_ai_command] Created LLMTransaction for user command: {command}")
 
     except Exception as e:
@@ -62,11 +78,13 @@ def handle_ai_command_public(
         pass
 
     output, error = None, None
+
     system_prompt = build_ai_command_system_prompt_public(
         xc=xc,
         user_query=command,
         content=content
     )
+
     client = xc.naked_c
 
     try:
@@ -85,6 +103,7 @@ def handle_ai_command_public(
             transaction_type=ChatRoles.SYSTEM,
             transaction_source=LLMTransactionSourcesTypesNames.FORMICA
         )
+
         logger.info(f"[handle_ai_command] Created LLMTransaction for system prompt.")
 
     except Exception as e:
@@ -110,16 +129,16 @@ def handle_ai_command_public(
 
         choices = llm_response.choices
         first_choice = choices[0]
+
         choice_message = first_choice.message
         choice_message_content = choice_message.content
+
         logger.info(f"[handle_ai_command] Generated AI response.")
 
     except Exception as e:
         logger.error(f"[handle_ai_command] Error generating AI response. Error: {e}")
         error = f"[handle_ai_command] Error executing AI command: {command}. Error: {e}"
         return output, error
-
-    print("Content: ", choice_message_content)
 
     try:
         tx = LLMTransaction.objects.create(
@@ -137,6 +156,7 @@ def handle_ai_command_public(
             transaction_type=ChatRoles.ASSISTANT,
             transaction_source=LLMTransactionSourcesTypesNames.FORMICA
         )
+
         logger.info(f"[handle_ai_command] Created LLMTransaction for AI response.")
 
     except Exception as e:
@@ -155,7 +175,9 @@ def handle_ai_command_public(
             transaction_source=LLMTransactionSourcesTypesNames.FORMICA,
             is_tool_cost=True
         )
+
         tx.save()
+
         logger.info(f"[handle_ai_command] Created LLMTransaction for Formica.")
 
     except Exception as e:
@@ -165,9 +187,11 @@ def handle_ai_command_public(
     try:
         choice_message_content = choice_message_content.replace("```json", "").replace("```", "").replace("`", "")
         choice_message_content = find_tool_call_from_json(choice_message_content)[0]
+
     except Exception as e:
         print(f"[handle_ai_command] Error parsing AI response. Error: {e}")
         logger.error(f"[handle_ai_command] Error parsing AI response. Error: {e}")
 
     output = choice_message_content
+
     return output, error

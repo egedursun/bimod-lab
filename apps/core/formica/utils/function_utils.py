@@ -1,4 +1,3 @@
-
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
 #  Project: Bimod.io™
@@ -23,15 +22,24 @@ logger = logging.getLogger(__name__)
 
 
 def is_final_output(response: str):
-    from apps.core.formica.utils import FormicaGoogleFormsQuestionTypesNames
+    from apps.core.formica.utils import (
+        FormicaGoogleFormsQuestionTypesNames
+    )
+
     count = 0
+
     for specifier in FormicaGoogleFormsQuestionTypesNames.Config_OutputFinalResponseSpecifiers.as_list():
+
         if specifier in response:
             count += 1
+
     if count == len(FormicaGoogleFormsQuestionTypesNames.Config_OutputFinalResponseSpecifiers.as_list()):
         logger.info(f"Final output specifier found in response")
+
         return True
+
     logger.info(f"Final output specifier not found in response")
+
     return False
 
 
@@ -42,14 +50,19 @@ def find_tool_call_from_json(response: str, decoder=JSONDecoder()):
     response = response.replace("\n", "").replace("'", '"').replace('```json', '').replace('```', '').replace('`', '')
     json_objects = []
     pos = 0
+
     while True:
         match = response.find('{', pos)
+
         if match == -1:
             break
+
         try:
             result, index = decoder.raw_decode(response[match:])
             json_objects.append(result)
             pos = match + index
+
         except ValueError:
             pos = match + 1
+
     return json_objects

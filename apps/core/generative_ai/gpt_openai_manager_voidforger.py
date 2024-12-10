@@ -52,8 +52,13 @@ from apps.core.system_prompts.system_prompt_factory_builder import (
     SystemPromptFactoryBuilder
 )
 
-from apps.core.tool_calls.tool_call_manager import ToolCallManager
-from apps.core.tool_calls.utils import VoidForgerModesNames
+from apps.core.tool_calls.tool_call_manager import (
+    ToolCallManager
+)
+
+from apps.core.tool_calls.utils import (
+    VoidForgerModesNames
+)
 
 from apps.multimodal_chat.utils import (
     calculate_billable_cost_from_raw,
@@ -61,7 +66,10 @@ from apps.multimodal_chat.utils import (
     BIMOD_NO_TAG_PLACEHOLDER
 )
 
-from apps.voidforger.models import VoidForger, MultimodalVoidForgerChat
+from apps.voidforger.models import (
+    VoidForger,
+    MultimodalVoidForgerChat
+)
 
 logger = logging.getLogger(__name__)
 
@@ -76,6 +84,7 @@ class OpenAIGPTVoidForgerClientManager:
         self.connection = OpenAI(
             api_key=voidforger.llm_model.api_key
         )
+
         self.user: User = user
         self.voidforger: VoidForger = voidforger
         self.chat: MultimodalVoidForgerChat = multimodal_chat
@@ -98,7 +107,10 @@ class OpenAIGPTVoidForgerClientManager:
         fermion__export_type=None,
         fermion__endpoint=None
     ):
-        from apps.voidforger.models import MultimodalVoidForgerChatMessage
+        from apps.voidforger.models import (
+            MultimodalVoidForgerChatMessage
+        )
+
         from apps.llm_transaction.models import LLMTransaction
 
         transmit_websocket_log(
@@ -162,6 +174,7 @@ class OpenAIGPTVoidForgerClientManager:
                 ext_history, encrypt_uuid = HistoryBuilder.build_voidforger(
                     voidforger_chat=self.chat
                 )
+
                 system_prompt_msgs.extend(ext_history)
 
                 transmit_websocket_log(
@@ -244,7 +257,9 @@ class OpenAIGPTVoidForgerClientManager:
 
                 self.chat.transactions.add(failure_tx)
                 self.chat.save()
+
                 final_resp = resp
+
                 return final_resp
 
             transmit_websocket_log(
@@ -353,6 +368,7 @@ class OpenAIGPTVoidForgerClientManager:
 
             except Exception as e:
                 logger.error(f"Error occurred while processing the response from the language model: {str(e)}")
+
                 transmit_websocket_log(
 
                     f"""🚨 A critical error occurred while processing the response from the language model.""",
@@ -443,6 +459,7 @@ class OpenAIGPTVoidForgerClientManager:
                 final_resp += get_technical_error_log(
                     error_logs=str(e)
                 )
+
                 global ACTIVE_RETRY_COUNT
                 ACTIVE_RETRY_COUNT = 0
 
@@ -557,7 +574,10 @@ class OpenAIGPTVoidForgerClientManager:
 
                     if tool_name is not None:
 
-                        tool_resp = get_json_decode_error_log(error_logs=str(e))
+                        tool_resp = get_json_decode_error_log(
+                            error_logs=str(e)
+                        )
+
                         tool_resp_list.append(f"""
                                     [{i}] [FAILED] "tool_name": {tool_name},
                                         [{i}a.] "tool_response": {tool_resp},
@@ -669,6 +689,7 @@ class OpenAIGPTVoidForgerClientManager:
 
             except Exception as e:
                 logger.error(f"Error occurred while recording the tool response: {str(e)}")
+
                 transmit_websocket_log(
                     f""" 🚨 A critical error occurred while recording the tool response. Cancelling the process.""",
                     stop_tag=BIMOD_PROCESS_END,
@@ -778,8 +799,12 @@ class OpenAIGPTVoidForgerClientManager:
         image_uris=None,
     ):
 
-        from apps.voidforger.models import MultimodalVoidForgerChatMessage
+        from apps.voidforger.models import (
+            MultimodalVoidForgerChatMessage
+        )
+
         from apps.llm_transaction.models import LLMTransaction
+
         c = self.connection
         user = self.chat.user
 
@@ -794,9 +819,11 @@ class OpenAIGPTVoidForgerClientManager:
                         current_mode=current_mode
                     )
                 ]
+
                 ext_msgs, encrypt_uuid = HistoryBuilder.build_voidforger(
                     voidforger_chat=self.chat
                 )
+
                 prompt_msgs.extend(ext_msgs)
 
             except Exception as e:
@@ -812,10 +839,12 @@ class OpenAIGPTVoidForgerClientManager:
 
             except Exception as e:
                 logger.error(f"Error occurred while inspecting the transaction parameters: {str(e)}")
+
                 return DEFAULT_ERROR_MESSAGE
 
             if last_msg_cost > self.voidforger.llm_model.organization.balance:
                 final_output = BALANCE_OVERFLOW_LOG
+
                 failure_tx = LLMTransaction.objects.create(
                     organization=self.voidforger.llm_model.organization,
                     model=self.chat.voidforger.llm_model,
@@ -835,6 +864,7 @@ class OpenAIGPTVoidForgerClientManager:
                 self.chat.transactions.add(failure_tx)
                 self.chat.save()
                 final_resp = final_output
+
                 return final_resp
 
             try:
@@ -850,6 +880,7 @@ class OpenAIGPTVoidForgerClientManager:
 
             except Exception as e:
                 logger.error(f"Error occurred while retrieving the response from the language model: {str(e)}")
+
                 return DEFAULT_ERROR_MESSAGE
 
             try:
@@ -860,6 +891,7 @@ class OpenAIGPTVoidForgerClientManager:
 
             except Exception as e:
                 logger.error(f"Error occurred while processing the response from the language model: {str(e)}")
+
                 return DEFAULT_ERROR_MESSAGE
 
             try:
@@ -881,6 +913,7 @@ class OpenAIGPTVoidForgerClientManager:
 
             except Exception as e:
                 logger.error(f"Error occurred while saving the transaction: {str(e)}")
+
                 return DEFAULT_ERROR_MESSAGE
 
             final_resp = choice_message_content
@@ -895,7 +928,9 @@ class OpenAIGPTVoidForgerClientManager:
             )
 
             if final_resp == DEFAULT_ERROR_MESSAGE:
-                final_resp += get_technical_error_log(error_logs=str(e))
+                final_resp += get_technical_error_log(
+                    error_logs=str(e)
+                )
 
         tool_resp_list, json_content_of_resp = [], []
 
@@ -903,6 +938,7 @@ class OpenAIGPTVoidForgerClientManager:
             json_content_of_resp = find_tool_call_from_json(final_resp)
 
             tool_name = None
+
             for i, json_part in enumerate(json_content_of_resp):
                 try:
                     tool_xc = ToolCallManager(
@@ -913,6 +949,7 @@ class OpenAIGPTVoidForgerClientManager:
                     )
 
                     tool_resp, tool_name, file_uris, image_uris = tool_xc.call_internal_tool_service_voidforger()
+
                     if tool_name is not None:
                         prev_tool_name = tool_name
 
@@ -970,6 +1007,7 @@ class OpenAIGPTVoidForgerClientManager:
 
             except Exception as e:
                 logger.error(f"Error occurred while recording the tool request: {str(e)}")
+
                 return DEFAULT_ERROR_MESSAGE
 
             try:
@@ -980,11 +1018,13 @@ class OpenAIGPTVoidForgerClientManager:
                     message_file_contents=file_uris,
                     message_image_contents=image_uris
                 )
+
                 self.chat.voidforger_chat_messages.add(tool_msg)
                 self.chat.save()
 
             except Exception as e:
                 logger.error(f"Error occurred while recording the tool response: {str(e)}")
+
                 return DEFAULT_ERROR_MESSAGE
 
             try:
@@ -1006,6 +1046,7 @@ class OpenAIGPTVoidForgerClientManager:
 
             except Exception as e:
                 logger.error(f"Error occurred while recording the transaction: {str(e)}")
+
                 return DEFAULT_ERROR_MESSAGE
 
             return self.respond(

@@ -33,11 +33,15 @@ def structure_topic_messages(node: HadronNode):
 
     topic_messages_string = {}
     chunk_size = (node.topic_messages_history_lookback_memory_size // len(hadron_topics))
+
     logger.info("Starting to structure the topic messages for the node.")
 
     for topic in hadron_topics:
         topic: HadronTopic
-        topic_messages = HadronTopicMessage.objects.filter(topic=topic).order_by('-created_at')[:chunk_size]
+
+        topic_messages = HadronTopicMessage.objects.filter(
+            topic=topic
+        ).order_by('-created_at')[:chunk_size]
 
         for topic_message in topic_messages:
             topic_message: HadronTopicMessage
@@ -55,6 +59,7 @@ def structure_topic_messages(node: HadronNode):
 
             except Exception as e:
                 error = str(e)
+
                 logger.error(f"Error while structuring the topic messages for the node: {error}")
 
     logger.info("Finished structuring the topic messages for the node.")
@@ -87,4 +92,5 @@ def structure_topic_messages(node: HadronNode):
     """
 
     logger.info("Structured the combined topic messages for the node.")
+
     return structured_topic_messages, error

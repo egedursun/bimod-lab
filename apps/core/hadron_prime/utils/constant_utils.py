@@ -15,7 +15,9 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-from apps.hadron_prime.models import HadronNode
+from apps.hadron_prime.models import (
+    HadronNode
+)
 
 
 class NodeExecutionProcessLogTexts:

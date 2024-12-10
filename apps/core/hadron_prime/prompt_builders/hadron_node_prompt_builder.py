@@ -50,16 +50,19 @@ def build_hadron_prime_system_prompt(
     combined_system_prompt += build_optional_instructions_prompt(node=node)
     combined_system_prompt += build_system_metadata_prompt(node=node)
     combined_system_prompt += build_node_metadata_prompt(node=node)
+
     combined_system_prompt += f"""
         ------------------------------------------
         **DATA DECISION INFORMATION FOR EXECUTION BELOW:
         ------------------------------------------
 
     """
+
     combined_system_prompt += current_state
     combined_system_prompt += goal_state
     combined_system_prompt += error_calculation
     combined_system_prompt += measurements
+
     combined_system_prompt += topic_messages
     combined_system_prompt += sease_logs
     combined_system_prompt += publish_history_logs
@@ -78,9 +81,13 @@ def build_hadron_prime_system_prompt(
 
     """
 
-    combined_system_prompt += build_hadron_prime_expert_networks_multi_modality_prompt(node=node)
+    combined_system_prompt += build_hadron_prime_expert_networks_multi_modality_prompt(
+        node=node
+    )
+
     combined_system_prompt += build_hadron_prime_structured_tool_usage_instructions_prompt()
     combined_system_prompt += build_hadron_prime_structured_tool_prompt__expert_network_query_execution()
 
     logger.info(f"Combined System Prompt is successfully built for the Hadron Prime System.")
+
     return combined_system_prompt

@@ -19,13 +19,17 @@ import logging
 import shlex
 import requests
 
-from apps.core.hadron_prime.utils import CURLHttpOptions, CURLHttpMethods
+from apps.core.hadron_prime.utils import (
+    CURLHttpOptions,
+    CURLHttpMethods
+)
 
 logger = logging.getLogger(__name__)
 
 
 def parse_curl(curl_command):
     tokens = shlex.split(curl_command)
+
     method = 'GET'
     url = ''
     headers = {}
@@ -87,19 +91,37 @@ def make_request_from_curl(curl_command):
     method, url, headers, data = parse_curl(curl_command)
 
     if method == CURLHttpMethods.GET:
-        response = requests.get(url, headers=headers)
+        response = requests.get(
+            url,
+            headers=headers
+        )
 
     elif method == CURLHttpMethods.POST:
-        response = requests.post(url, headers=headers, data=data)
+        response = requests.post(
+            url,
+            headers=headers,
+            data=data
+        )
 
     elif method == CURLHttpMethods.PUT:
-        response = requests.put(url, headers=headers, data=data)
+        response = requests.put(
+            url,
+            headers=headers,
+            data=data
+        )
 
     elif method == CURLHttpMethods.PATCH:
-        response = requests.patch(url, headers=headers, data=data)
+        response = requests.patch(
+            url,
+            headers=headers,
+            data=data
+        )
 
     elif method == CURLHttpMethods.DELETE:
-        response = requests.delete(url, headers=headers)
+        response = requests.delete(
+            url,
+            headers=headers
+        )
 
     else:
         logger.error(f"Unsupported HTTP method: {method}")
@@ -111,4 +133,5 @@ def make_request_from_curl(curl_command):
 
     except ValueError:
         logger.warning("Response is not a valid JSON. Returning raw response.")
+
         return response.text

@@ -54,7 +54,10 @@ class AuxiliaryLLMVisualClient:
     ):
         self.assistant = assistant
         self.chat = chat_object
-        self.connection = OpenAI(api_key=assistant.llm_model.api_key)
+
+        self.connection = OpenAI(
+            api_key=assistant.llm_model.api_key
+        )
 
     def generate_image(
         self,
@@ -104,11 +107,13 @@ class AuxiliaryLLMVisualClient:
             final_output["success"] = True
             final_output["image_url"] = image_url
             logger.info(f"Generated image at: {image_url}")
+
             return final_output
 
         except Exception as e:
             logger.error(f"Failed to generate image: {str(e)}")
             final_output["message"] = get_image_generation_error_log(error_logs=str(e))
+
             return final_output
 
     def edit_image(
@@ -126,6 +131,7 @@ class AuxiliaryLLMVisualClient:
         }
 
         edit_img_llm_model = DEFAULT_IMAGE_MODIFICATION_MODEL
+
         if image_size == DefaultImageResolutionChoicesNames.SQUARE:
             image_size = DefaultImageResolutionChoices.Min1024Max1792.SQUARE
 
@@ -154,14 +160,17 @@ class AuxiliaryLLMVisualClient:
             )
 
             img_url = llm_output.data[0].url
+
             final_output["success"] = True
             final_output["image_url"] = img_url
             logger.info(f"Edited image at: {img_url}")
+
             return final_output
 
         except Exception as e:
             logger.error(f"Failed to edit image: {str(e)}")
             final_output["message"] = get_image_modification_error_log(error_logs=str(e))
+
             return final_output
 
     def dream_image(
@@ -177,6 +186,7 @@ class AuxiliaryLLMVisualClient:
         }
 
         dream_img_llm_model = DEFAULT_IMAGE_VARIATION_MODEL
+
         if image_size == DefaultImageResolutionChoicesNames.SQUARE:
             image_size = DefaultImageResolutionChoices.Min1024Max1792.SQUARE
 
@@ -190,6 +200,7 @@ class AuxiliaryLLMVisualClient:
             image_size = DefaultImageResolutionChoices.Min1024Max1792.SQUARE
 
         try:
+
             img = requests.get(image_uri)
             img_bytes = img.content
 
@@ -207,7 +218,11 @@ class AuxiliaryLLMVisualClient:
 
         except Exception as e:
             logger.error(f"Failed to dream image: {str(e)}")
-            final_output["message"] = get_image_variation_error_log(error_logs=str(e))
+
+            final_output["message"] = get_image_variation_error_log(
+                error_logs=str(e)
+            )
+
             return final_output
 
         return final_output

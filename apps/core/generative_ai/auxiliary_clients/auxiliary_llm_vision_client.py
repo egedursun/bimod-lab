@@ -21,14 +21,18 @@ import logging
 import requests
 from openai import OpenAI
 
-from apps.core.generative_ai.auxiliary_methods.affirmations.affirmation_instructions import GENERIC_AFFIRMATION_PROMPT
+from apps.core.generative_ai.auxiliary_methods.affirmations.affirmation_instructions import (
+    GENERIC_AFFIRMATION_PROMPT
+)
 
 from apps.core.generative_ai.auxiliary_methods.errors.error_log_prompts import (
     IMAGE_ANALYST_RESPONSE_RETRIEVAL_ERROR_LOG,
     IMAGE_ANALYST_RESPONSE_PROCESSING_ERROR_LOG
 )
 
-from apps.core.generative_ai.auxiliary_methods.output_supply_prompts import EMPTY_OBJECT_PATH_LOG
+from apps.core.generative_ai.auxiliary_methods.output_supply_prompts import (
+    EMPTY_OBJECT_PATH_LOG
+)
 
 from apps.core.generative_ai.auxiliary_methods.status_logs.status_log_prompts import (
     get_number_of_files_too_high_log
@@ -45,7 +49,10 @@ from apps.core.generative_ai.utils import (
 )
 
 from apps.llm_transaction.models import LLMTransaction
-from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
+
+from apps.llm_transaction.utils import (
+    LLMTransactionSourcesTypesNames
+)
 
 logger = logging.getLogger(__name__)
 
@@ -74,7 +81,10 @@ class AuxiliaryLLMVisionClient:
         c = self.connection
         if len(full_image_paths) > CONCRETE_LIMIT_SINGLE_FILE_INTERPRETATION:
             logger.error(f"Number of files too high for image interpretation: {len(full_image_paths)}")
-            return get_number_of_files_too_high_log(max=CONCRETE_LIMIT_SINGLE_FILE_INTERPRETATION)
+
+            return get_number_of_files_too_high_log(
+                max=CONCRETE_LIMIT_SINGLE_FILE_INTERPRETATION
+            )
 
         img_data = []
         for pth in full_image_paths:
@@ -86,6 +96,7 @@ class AuxiliaryLLMVisionClient:
             try:
                 file = requests.get(pth)
                 img_data.append({"binary": file.content, "extension": pth.split(".")[-1]})
+
                 logger.info(f"Retrieved image content from: {pth}")
 
             except FileNotFoundError:
@@ -100,8 +111,15 @@ class AuxiliaryLLMVisionClient:
         for image_content in img_data:
             binary = image_content["binary"]
             extension = image_content["extension"]
+
             image_base64 = b64.b64encode(binary).decode("utf-8")
-            img_objs.append({"base64": image_base64, "extension": extension})
+
+            img_objs.append(
+                {
+                    "base64": image_base64,
+                    "extension": extension
+                }
+            )
 
         msgs = [
             {
@@ -123,8 +141,10 @@ class AuxiliaryLLMVisionClient:
                 ]
             }
         ]
+
         for image_object in img_objs:
             formatted_uri = f"data:image/{image_object['extension']};base64,{image_object['base64']}"
+
             msgs[-1]["content"].append(
                 {
                     "type": "image_url",
@@ -141,6 +161,7 @@ class AuxiliaryLLMVisionClient:
                 temperature=interpretation_temperature,
                 max_tokens=interpretation_maximum_tokens
             )
+
             logger.info(f"Retrieved image interpretation content.")
 
         except Exception as e:
@@ -150,13 +171,16 @@ class AuxiliaryLLMVisionClient:
         try:
             choices = llm_output.choices
             first_choice = choices[0]
+
             choice_message = first_choice.message
             choice_message_content = choice_message.content
+
             final_response = choice_message_content
             logger.info(f"Processed image interpretation content.")
 
         except Exception as e:
             logger.error(f"Failed to process image interpretation content.")
+
             return IMAGE_ANALYST_RESPONSE_PROCESSING_ERROR_LOG
 
         LLMTransaction.objects.create(
@@ -176,4 +200,5 @@ class AuxiliaryLLMVisionClient:
         )
 
         logger.info(f"Created new LLM transaction for image interpretation.")
+
         return final_response

@@ -29,8 +29,13 @@ from apps.core.generative_ai.auxiliary_methods.errors.error_log_prompts import (
     get_default_reasoning_error_log
 )
 
-from apps.core.generative_ai.gpt_openai_manager import OpenAIGPTClientManager
-from apps.core.generative_ai.utils import ChatRoles
+from apps.core.generative_ai.gpt_openai_manager import (
+    OpenAIGPTClientManager
+)
+
+from apps.core.generative_ai.utils import (
+    ChatRoles
+)
 
 from apps.core.system_prompts.reasoning.reasoning_prompt import (
     build_reasoning_system_prompt
@@ -71,6 +76,7 @@ class ReasoningAuxiliaryLLMManager:
         try:
 
             system_prompt = build_reasoning_system_prompt()
+
             c = OpenAIGPTClientManager.get_naked_client(
                 llm_model=self.assistant.llm_model
             )
@@ -91,13 +97,18 @@ class ReasoningAuxiliaryLLMManager:
 
             choices = llm_response.choices
             first_choice = choices[0]
+
             choice_message = first_choice.message
             choice_message_content = choice_message.content
+
             final_output = choice_message_content
             logger.info(f"Reasoning response: {final_output}")
 
         except Exception as e:
             logger.error(f"Failed to reason: {str(e)}")
-            final_output = get_default_reasoning_error_log(error_logs=str(e))
+
+            final_output = get_default_reasoning_error_log(
+                error_logs=str(e)
+            )
 
         return final_output

@@ -182,14 +182,14 @@
 ### ENTERTAINING FACTS
 
 - Start Date: 2024-06-29
-- Last Measurement Date: 2024-12-03
-- Total Days: 157
-  - Number of Files: 61,000
-  - Logical Lines: 14,200,000
-  - Comment Lines: 4,200,000
-  - Blank Lines: 2,700,000
-  - TOTAL: 21,100,000 (2.9% CoData Rate) / ??
-  - TOTAL RAW CALCULATION: 750,000,000 / ??
+- Last Measurement Date: 2024-12-10
+- Total Days: 164
+  - Number of Files: 63,000
+  - Logical Lines: 16,400,000
+  - Comment Lines: 4,300,000
+  - Blank Lines: 2,800,000
+  - TOTAL: 23,500,000 (2.9% CoData Rate)
+  - TOTAL RAW CALCULATION: 810,000,000
 
 ---
 

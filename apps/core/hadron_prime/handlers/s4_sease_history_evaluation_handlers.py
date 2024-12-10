@@ -22,13 +22,13 @@ from apps.hadron_prime.models import (
     HadronStateErrorActionStateErrorLog
 )
 
-
 logger = logging.getLogger(__name__)
 
 
 def retrieve_sease_logs(node: HadronNode):
     sease_logs, error = "N/A", None
     memory_size = node.state_action_state_lookback_memory_size
+
     sease_log_objects = node.state_action_state_history_logs.all().order_by('-created_at')[:memory_size]
 
     logger.info("Retrieving SEASE logs.")
@@ -37,6 +37,7 @@ def retrieve_sease_logs(node: HadronNode):
     for sease_log in sease_log_objects:
         sease_log: HadronStateErrorActionStateErrorLog
         sease_logs_string += f"[S(t-1): {sease_log.old_state} & E(t-1): {sease_log.old_error}] -> [A(t): {sease_log.action}] -> [S(t): {sease_log.new_state} & E(t): {sease_log.new_error}]\n"
+
     logger.info("SEASE logs have been retrieved.")
 
     sease_logs = f"""
@@ -46,4 +47,5 @@ def retrieve_sease_logs(node: HadronNode):
         '''
     """
     logger.info("SEASE logs have been embedded.")
+
     return sease_logs, error

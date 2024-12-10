@@ -17,7 +17,9 @@
 
 import logging
 
-from apps.core.formica.formica_executor_public import FormicaExecutionManager_Public
+from apps.core.formica.formica_executor_public import (
+    FormicaExecutionManager_Public
+)
 
 from apps.core.formica.prompts import (
     build_formica_agent_nickname_prompt,
@@ -55,9 +57,11 @@ def build_site_command_system_prompt_public(
     combined_system_prompt = ""
 
     generic_instruction_prompt = ""
+
     generic_instruction_prompt += build_formica_agent_nickname_prompt(
         xc.copilot.name
     )
+
     generic_instruction_prompt += build_formica_internal_principles_prompt()
 
     generic_instruction_prompt += build_formica_agent_personality_prompt(
@@ -85,6 +89,7 @@ def build_site_command_system_prompt_public(
     )
 
     formica_ops_instruction_prompt = build_formica_ops_instruction_prompt()
+
     action_instructions_prompt = build_formica_action__site_prompt(
         user_query=user_query
     )
@@ -92,6 +97,7 @@ def build_site_command_system_prompt_public(
     data_source_prompts = build_website_data_source_prompt(
         assistant=xc.copilot
     )
+
     tool_execution_prompts = build_tool_prompt__website_data_search()
 
     combined_system_prompt += generic_instruction_prompt

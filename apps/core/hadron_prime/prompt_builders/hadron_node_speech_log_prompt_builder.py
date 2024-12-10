@@ -42,38 +42,68 @@ logger = logging.getLogger(__name__)
 
 def build_hadron_node_speech_log_prompt(node: HadronNode):
     merged_instructions = ""
-    merged_instructions += hadron_node_speech_generation_core_instructions_prompt()
-    merged_instructions += build_optional_instructions_prompt(node=node)
-    merged_instructions += build_system_metadata_prompt(node=node)
-    merged_instructions += build_node_metadata_prompt(node=node)
 
-    messages_for_topic, error = structure_topic_messages(node=node)
+    merged_instructions += hadron_node_speech_generation_core_instructions_prompt()
+
+    merged_instructions += build_optional_instructions_prompt(
+        node=node
+    )
+
+    merged_instructions += build_system_metadata_prompt(
+        node=node
+    )
+
+    merged_instructions += build_node_metadata_prompt(
+        node=node
+    )
+
+    messages_for_topic, error = structure_topic_messages(
+        node=node
+    )
+
     if error:
         logger.error(f"Error while structuring topic messages for node, skipping...")
+
     else:
         merged_instructions += messages_for_topic
 
-    self_publishes_for_topics, error = retrieve_publish_history_logs(node=node)
+    self_publishes_for_topics, error = retrieve_publish_history_logs(
+        node=node
+    )
+
     if error:
         logger.error(f"Error while retrieving publish history logs for node, skipping...")
+
     else:
         merged_instructions += self_publishes_for_topics
 
-    logs_for_sease, error = retrieve_sease_logs(node=node)
+    logs_for_sease, error = retrieve_sease_logs(
+        node=node
+    )
+
     if error:
         logger.error(f"Error while retrieving SEASE logs for node, skipping...")
+
     else:
         merged_instructions += logs_for_sease
 
-    logs_for_speech, error = hadron_node_speech_logs_prompt(node=node)
+    logs_for_speech, error = hadron_node_speech_logs_prompt(
+        node=node
+    )
+
     if error:
         logger.error(f"Error while retrieving speech logs for node, skipping...")
+
     else:
         merged_instructions += logs_for_speech
 
-    logs_for_execution, error = hadron_node_execution_logs_prompt(node=node)
+    logs_for_execution, error = hadron_node_execution_logs_prompt(
+        node=node
+    )
+
     if error:
         logger.error(f"Error while retrieving execution logs for node, skipping...")
+
     else:
         merged_instructions += logs_for_execution
 

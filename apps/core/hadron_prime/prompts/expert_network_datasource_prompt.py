@@ -15,7 +15,9 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-from apps.hadron_prime.models import HadronNode
+from apps.hadron_prime.models import (
+    HadronNode
+)
 
 from apps.leanmod.models import (
     ExpertNetworkAssistantReference,
@@ -23,8 +25,11 @@ from apps.leanmod.models import (
 )
 
 
-def build_hadron_prime_expert_networks_multi_modality_prompt(node: HadronNode):
+def build_hadron_prime_expert_networks_multi_modality_prompt(
+    node: HadronNode
+):
     expert_networks = node.expert_networks.all()
+
     response_prompt = """
     ### *EXPERT NETWORKS*
 
@@ -33,14 +38,18 @@ def build_hadron_prime_expert_networks_multi_modality_prompt(node: HadronNode):
 
     for i, expert_network in enumerate(expert_networks):
         expert_network: ExpertNetwork
+
         response_prompt += f"""
                     [Network Name: {expert_network.name}]
                     [Network Description: {expert_network.meta_description}]
                     """
+
         agent_refs = expert_network.assistant_references.all()
+
         for j, agent_ref in enumerate(agent_refs):
             agent_ref: ExpertNetworkAssistantReference
             assistant = agent_ref.assistant
+
             response_prompt += f"""
                         [Assistant ID: {agent_ref.id}]
                         [Assistant Name: {assistant.name}]
@@ -66,5 +75,5 @@ def build_hadron_prime_expert_networks_multi_modality_prompt(node: HadronNode):
     ---
 
     """
-    return response_prompt
 
+    return response_prompt

@@ -31,8 +31,10 @@ def find_tool_call_from_json(response: str, decoder=JSONDecoder()):
 
     while True:
         match = response.find('{', pos)
+
         if match == -1:
             break
+
         try:
             result, index = decoder.raw_decode(response[match:])
 
@@ -42,6 +44,7 @@ def find_tool_call_from_json(response: str, decoder=JSONDecoder()):
 
             json_objects.append(result)
             pos = match + index
+
         except ValueError:
             pos = match + 1
 

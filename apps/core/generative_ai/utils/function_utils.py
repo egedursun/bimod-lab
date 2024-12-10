@@ -64,6 +64,7 @@ def extract_image_uri(
     logger.info("Extracting image URI from response.")
     pattern = r'"image_uri":\s*"([^"]+)"'
     match = re.search(pattern, response_str)
+
     return match.group(1) if match else None
 
 
@@ -73,6 +74,7 @@ def extract_file_uri(
     logger.info("Extracting file URI from response.")
     pattern = r'"file_uri":\s*"([^"]+)"'
     match = re.search(pattern, response_str)
+
     return match.group(1) if match else None
 
 
@@ -82,6 +84,7 @@ def generate_random_audio_filename(
     uuid1 = str(uuid.uuid4())
     uuid2 = str(uuid.uuid4())
     filename = f"generated_audio_{uuid1}_{uuid2}.{extension}"
+
     return filename
 
 
@@ -91,7 +94,11 @@ def step_back_retry_mechanism(
     caller="respond"
 ):
     logger.info("Step back retry mechanism.")
-    from apps.core.generative_ai.utils import RetryCallersNames, DEFAULT_ERROR_MESSAGE
+
+    from apps.core.generative_ai.utils import (
+        RetryCallersNames,
+        DEFAULT_ERROR_MESSAGE
+    )
 
     if apps.core.generative_ai.utils.constant_utils.ACTIVE_RETRY_COUNT < client.assistant.max_retry_count:
 

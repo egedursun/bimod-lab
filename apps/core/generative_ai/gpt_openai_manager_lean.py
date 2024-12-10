@@ -76,6 +76,7 @@ class OpenAIGPTLeanClientManager:
         self.connection = OpenAI(
             api_key=assistant.llm_model.api_key
         )
+
         self.user: User = user
         self.lean_assistant: LeanAssistant = assistant
         self.chat: MultimodalLeanChat = multimodal_chat
@@ -98,7 +99,10 @@ class OpenAIGPTLeanClientManager:
         fermion__endpoint=None
     ):
 
-        from apps.multimodal_chat.models import MultimodalLeanChatMessage
+        from apps.multimodal_chat.models import (
+            MultimodalLeanChatMessage
+        )
+
         from apps.llm_transaction.models import LLMTransaction
 
         transmit_websocket_log(
@@ -141,6 +145,7 @@ class OpenAIGPTLeanClientManager:
                         fermion__endpoint=fermion__endpoint
                     )
                 ]
+
                 transmit_websocket_log(
                     f""" ⚡ System prompt preparation is completed.""",
                     chat_id=self.chat.id,
@@ -157,7 +162,10 @@ class OpenAIGPTLeanClientManager:
                     fermion__endpoint=fermion__endpoint
                 )
 
-                ext_history, encrypt_uuid = HistoryBuilder.build_leanmod(lean_chat=self.chat)
+                ext_history, encrypt_uuid = HistoryBuilder.build_leanmod(
+                    lean_chat=self.chat
+                )
+
                 system_prompt_msgs.extend(ext_history)
 
                 transmit_websocket_log(
@@ -241,7 +249,9 @@ class OpenAIGPTLeanClientManager:
 
                 self.chat.transactions.add(failure_tx)
                 self.chat.save()
+
                 final_resp = resp
+
                 return final_resp
 
             transmit_websocket_log(
@@ -304,6 +314,7 @@ class OpenAIGPTLeanClientManager:
                 )
 
                 acc_chunks = ""
+
                 for elem in chunks:
 
                     choices = elem.choices
@@ -437,7 +448,10 @@ class OpenAIGPTLeanClientManager:
             )
 
             if final_resp == DEFAULT_ERROR_MESSAGE:
-                final_resp += get_technical_error_log(error_logs=str(e))
+                final_resp += get_technical_error_log(
+                    error_logs=str(e)
+                )
+
                 global ACTIVE_RETRY_COUNT
                 ACTIVE_RETRY_COUNT = 0
 
@@ -479,6 +493,7 @@ class OpenAIGPTLeanClientManager:
             )
 
             tool_name = None
+
             for i, json_part in enumerate(json_content_of_resp):
 
                 transmit_websocket_log(
@@ -763,7 +778,10 @@ class OpenAIGPTLeanClientManager:
         image_uris=None
     ):
 
-        from apps.multimodal_chat.models import MultimodalLeanChatMessage
+        from apps.multimodal_chat.models import (
+            MultimodalLeanChatMessage
+        )
+
         from apps.llm_transaction.models import LLMTransaction
         c = self.connection
         user = self.chat.user
@@ -778,9 +796,11 @@ class OpenAIGPTLeanClientManager:
                         role=ChatRoles.SYSTEM
                     )
                 ]
+
                 ext_msgs, encrypt_uuid = HistoryBuilder.build_leanmod(
                     lean_chat=self.chat
                 )
+
                 prompt_msgs.extend(ext_msgs)
 
             except Exception as e:
@@ -796,6 +816,7 @@ class OpenAIGPTLeanClientManager:
 
             except Exception as e:
                 logger.error(f"Error occurred while inspecting the transaction parameters: {str(e)}")
+
                 return DEFAULT_ERROR_MESSAGE
 
             if last_msg_cost > self.chat.organization.balance:
@@ -820,6 +841,7 @@ class OpenAIGPTLeanClientManager:
                 self.chat.transactions.add(failure_tx)
                 self.chat.save()
                 final_resp = final_output
+
                 return final_resp
 
             try:
@@ -835,6 +857,7 @@ class OpenAIGPTLeanClientManager:
 
             except Exception as e:
                 logger.error(f"Error occurred while retrieving the response from the language model: {str(e)}")
+
                 return DEFAULT_ERROR_MESSAGE
 
             try:
@@ -845,6 +868,7 @@ class OpenAIGPTLeanClientManager:
 
             except Exception as e:
                 logger.error(f"Error occurred while processing the response from the language model: {str(e)}")
+
                 return DEFAULT_ERROR_MESSAGE
 
             try:
@@ -866,6 +890,7 @@ class OpenAIGPTLeanClientManager:
 
             except Exception as e:
                 logger.error(f"Error occurred while saving the transaction: {str(e)}")
+
                 return DEFAULT_ERROR_MESSAGE
 
             final_resp = choice_message_content
@@ -880,13 +905,17 @@ class OpenAIGPTLeanClientManager:
             )
 
             if final_resp == DEFAULT_ERROR_MESSAGE:
-                final_resp += get_technical_error_log(error_logs=str(e))
+                final_resp += get_technical_error_log(
+                    error_logs=str(e)
+                )
 
         tool_resp_list, json_content_of_resp = [], []
+
         if find_tool_call_from_json(final_resp):
             json_content_of_resp = find_tool_call_from_json(final_resp)
 
             tool_name = None
+
             for i, json_part in enumerate(json_content_of_resp):
                 try:
                     tool_xc = ToolCallManager(
@@ -897,6 +926,7 @@ class OpenAIGPTLeanClientManager:
                     )
 
                     tool_resp, tool_name, file_uris, image_uris = tool_xc.call_internal_tool_service_lean()
+
                     if tool_name is not None:
                         prev_tool_name = tool_name
 
@@ -911,7 +941,11 @@ class OpenAIGPTLeanClientManager:
 
                     logger.error(f"Error occurred while executing the tool: {str(e)}")
                     if tool_name is not None:
-                        tool_resp = get_json_decode_error_log(error_logs=str(e))
+
+                        tool_resp = get_json_decode_error_log(
+                            error_logs=str(e)
+                        )
+
                         tool_resp_list.append(f"""
                             [{i}] [FAILED] "tool_name": {tool_name},
                                 [{i}a.] "tool_response": {tool_resp},
@@ -921,7 +955,10 @@ class OpenAIGPTLeanClientManager:
                         """)
 
                     else:
-                        tool_resp = get_json_decode_error_log(error_logs=str(e))
+                        tool_resp = get_json_decode_error_log(
+                            error_logs=str(e)
+                        )
+
                         tool_resp_list.append(f"""
                             [{i}] [FAILED / NO TOOL NAME] "tool_name": {tool_name},
                                 [{i}a.] "tool_response": {tool_resp},
@@ -942,6 +979,7 @@ class OpenAIGPTLeanClientManager:
                     message_file_contents=[],
                     message_image_contents=[]
                 )
+
                 self.chat.lean_chat_messages.add(tool_req)
                 self.chat.save()
 
@@ -957,11 +995,13 @@ class OpenAIGPTLeanClientManager:
                     message_file_contents=file_uris,
                     message_image_contents=image_uris
                 )
+
                 self.chat.lean_chat_messages.add(tool_msg)
                 self.chat.save()
 
             except Exception as e:
                 logger.error(f"Error occurred while recording the tool response: {str(e)}")
+
                 return DEFAULT_ERROR_MESSAGE
 
             try:
@@ -983,6 +1023,7 @@ class OpenAIGPTLeanClientManager:
 
             except Exception as e:
                 logger.error(f"Error occurred while recording the transaction: {str(e)}")
+
                 return DEFAULT_ERROR_MESSAGE
 
             return self.respond(

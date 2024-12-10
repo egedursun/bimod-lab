@@ -17,7 +17,10 @@
 
 import logging
 
-from apps.core.hadron_prime.parsers import make_request_from_curl
+from apps.core.hadron_prime.parsers import (
+    make_request_from_curl
+)
+
 from apps.hadron_prime.models import HadronNode
 
 logger = logging.getLogger(__name__)
@@ -28,16 +31,20 @@ def calculate_analytical_data(node: HadronNode):
     analytical_data_curl = node.analytic_calculation_curl
 
     try:
-        response_text = make_request_from_curl(curl_command=analytical_data_curl)
+        response_text = make_request_from_curl(
+            curl_command=analytical_data_curl
+        )
 
     except Exception as e:
         logger.error(f"Error occurred while evaluating analytical data: {str(e)}")
         error = str(e)
+
         return analytical_data, error
 
     if not response_text:
         logger.error("Analytical data could not have been received.")
         error = "Analytical data could not have been received."
+
         return analytical_data, error
 
     analytical_data = f"""
@@ -48,5 +55,7 @@ def calculate_analytical_data(node: HadronNode):
 
         -----
     """
+
     logger.info("Analytical data has been evaluated.")
+
     return analytical_data, error

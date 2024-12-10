@@ -14,7 +14,10 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-from apps.core.formica.utils import FormicaGoogleFormsQuestionTypesNames
+
+from apps.core.formica.utils import (
+    FormicaGoogleFormsQuestionTypesNames
+)
 
 
 def build_formica_ops_instruction_prompt() -> str:

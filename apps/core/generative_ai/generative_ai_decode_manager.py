@@ -37,9 +37,16 @@ from apps.core.generative_ai.statistical_analysis_manager import (
     provide_analysis
 )
 
-from apps.core.generative_ai.utils import LLM_CORE_PROVIDERS
+from apps.core.generative_ai.utils import (
+    LLM_CORE_PROVIDERS
+)
+
 from apps.multimodal_chat.models import MultimodalChat
-from apps.voidforger.models import VoidForger, MultimodalVoidForgerChat
+
+from apps.voidforger.models import (
+    VoidForger,
+    MultimodalVoidForgerChat
+)
 
 logger = logging.getLogger(__name__)
 
@@ -105,4 +112,5 @@ class GenerativeAIDecodeController:
             )
 
         logger.error(f"Provider {llm_model.provider} is not supported by our system to do analysis at the current moment.")
+
         return f"Provider {llm_model.provider} is not supported by our system to do analysis at the current moment."

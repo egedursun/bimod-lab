@@ -16,23 +16,58 @@
 #
 import logging
 
-from apps.core.formica.utils import FORMICA_TOOL_CALL_MAXIMUM_ATTEMPTS, find_tool_call_from_json, is_final_output
-from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
-from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
-from apps.core.tool_calls.core_services.core_service_generate_image import run_generate_image
-from apps.core.tool_calls.input_verifiers.verify_generate_image import verify_generate_image_content
-from apps.core.tool_calls.utils import IMAGE_GENERATION_AFFIRMATION_PROMPT
+from apps.core.formica.utils import (
+    FORMICA_TOOL_CALL_MAXIMUM_ATTEMPTS,
+    find_tool_call_from_json,
+    is_final_output
+)
+
+from apps.core.generative_ai.utils import (
+    GPT_DEFAULT_ENCODING_ENGINE,
+    ChatRoles
+)
+
+from apps.core.internal_cost_manager.costs_map import (
+    InternalServiceCosts
+)
+
+from apps.core.tool_calls.core_services.core_service_generate_image import (
+    run_generate_image
+)
+
+from apps.core.tool_calls.input_verifiers.verify_generate_image import (
+    verify_generate_image_content
+)
+
+from apps.core.tool_calls.utils import (
+    IMAGE_GENERATION_AFFIRMATION_PROMPT
+)
+
 from apps.llm_transaction.models import LLMTransaction
-from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
+
+from apps.llm_transaction.utils import (
+    LLMTransactionSourcesTypesNames
+)
+
 from apps.multimodal_chat.models import MultimodalChat
-from apps.multimodal_chat.utils import generate_chat_name, SourcesForMultimodalChatsNames
+
+from apps.multimodal_chat.utils import (
+    generate_chat_name,
+    SourcesForMultimodalChatsNames
+)
 
 logger = logging.getLogger(__name__)
 
 
 def handle_img_command_public(xc, command: str, content: str) -> str:
-    from apps.core.formica.formica_executor_public import FormicaExecutionManager_Public
-    from apps.core.formica.prompt_builders import build_img_command_system_prompt_public
+    from apps.core.formica.formica_executor_public import (
+        FormicaExecutionManager_Public
+    )
+
+    from apps.core.formica.prompt_builders import (
+        build_img_command_system_prompt_public
+    )
+
     xc: FormicaExecutionManager_Public
 
     try:
@@ -50,6 +85,7 @@ def handle_img_command_public(xc, command: str, content: str) -> str:
             transaction_type=ChatRoles.USER,
             transaction_source=LLMTransactionSourcesTypesNames.FORMICA
         )
+
         logger.info(f"[handle_ai_command] Created LLMTransaction for user command: {command}")
 
     except Exception as e:
@@ -57,11 +93,13 @@ def handle_img_command_public(xc, command: str, content: str) -> str:
         pass
 
     output, error = None, None
+
     system_prompt = build_img_command_system_prompt_public(
         xc=xc,
         user_query=command,
         content=content
     )
+
     client = xc.naked_c
 
     try:
@@ -80,6 +118,7 @@ def handle_img_command_public(xc, command: str, content: str) -> str:
             transaction_type=ChatRoles.SYSTEM,
             transaction_source=LLMTransactionSourcesTypesNames.FORMICA
         )
+
         logger.info(f"[handle_ai_command] Created LLMTransaction for system prompt.")
 
     except Exception as e:
@@ -87,6 +126,7 @@ def handle_img_command_public(xc, command: str, content: str) -> str:
         pass
 
     try:
+
         structured_system_prompt = {
             "content": system_prompt,
             "role": "system"
@@ -106,8 +146,10 @@ def handle_img_command_public(xc, command: str, content: str) -> str:
 
         choices = llm_response.choices
         first_choice = choices[0]
+
         choice_message = first_choice.message
         choice_message_content = choice_message.content
+
         logger.info(f"[handle_ai_command] Generated AI response.")
 
         try:
@@ -126,6 +168,7 @@ def handle_img_command_public(xc, command: str, content: str) -> str:
                 transaction_type=ChatRoles.ASSISTANT,
                 transaction_source=LLMTransactionSourcesTypesNames.FORMICA
             )
+
             logger.info(f"[handle_ai_command] Created LLMTransaction for AI response.")
 
         except Exception as e:
@@ -135,9 +178,11 @@ def handle_img_command_public(xc, command: str, content: str) -> str:
     except Exception as e:
         logger.error(f"[handle_ai_command] Error generating AI response. Error: {e}")
         error = f"[handle_ai_command] Error executing IMG command: {command}. Error: {e}"
+
         return output, error
 
     # TOOL USAGE IDENTIFICATION
+
     tool_counter = 0
     context_messages = [structured_system_prompt]
 
@@ -146,13 +191,17 @@ def handle_img_command_public(xc, command: str, content: str) -> str:
         tool_counter < FORMICA_TOOL_CALL_MAXIMUM_ATTEMPTS and
         not is_final_output(choice_message_content)
     ):
+
         tool_counter += 1
         tool_requests_dicts = find_tool_call_from_json(choice_message_content)
 
         if len(tool_requests_dicts) > 0:
             for tool_req_dict in tool_requests_dicts:
 
-                error = verify_generate_image_content(content=tool_req_dict)
+                error = verify_generate_image_content(
+                    content=tool_req_dict
+                )
+
                 if error:
                     logger.error(f"[handle_ai_command] Error verifying tool content: {error}")
                     return error, None, None, None
@@ -163,13 +212,16 @@ def handle_img_command_public(xc, command: str, content: str) -> str:
                     tool_usage_dict=tool_req_dict
                 )
 
-                context_messages.append({
-                    "content": image_uri,
-                    "role": "system"
-                })
+                context_messages.append(
+                    {
+                        "content": image_uri,
+                        "role": "system"
+                    }
+                )
 
                 if image_uri and image_uri != "":
                     output = image_uri
+
                     return output, error
 
         try:
@@ -185,8 +237,10 @@ def handle_img_command_public(xc, command: str, content: str) -> str:
 
             choices = llm_response.choices
             first_choice = choices[0]
+
             choice_message = first_choice.message
             choice_message_content = choice_message.content
+
             logger.info(f"[handle_ai_command] Generated AI response.")
 
             try:
@@ -205,6 +259,7 @@ def handle_img_command_public(xc, command: str, content: str) -> str:
                     transaction_type=ChatRoles.ASSISTANT,
                     transaction_source=LLMTransactionSourcesTypesNames.FORMICA
                 )
+
                 logger.info(f"[handle_ai_command] Created LLMTransaction for AI response.")
 
             except Exception as e:
@@ -214,12 +269,15 @@ def handle_img_command_public(xc, command: str, content: str) -> str:
         except Exception as e:
             logger.error(f"[handle_ai_command] Error generating AI response. Error: {e}")
             error = f"[handle_ai_command] Error executing AI command: {command}. Error: {e}"
+
             return output, error
 
     if tool_counter == FORMICA_TOOL_CALL_MAXIMUM_ATTEMPTS:
         error = (f"[handle_ai_command] Error executing IMG command: {command}. Error: Maximum tool call attempts "
                  f"reached.")
+
         logger.error(error)
+
         return output, error
 
     try:
@@ -234,7 +292,9 @@ def handle_img_command_public(xc, command: str, content: str) -> str:
             transaction_source=LLMTransactionSourcesTypesNames.FORMICA,
             is_tool_cost=True
         )
+
         tx.save()
+
         logger.info(f"[handle_ai_command] Created LLMTransaction for Formica.")
 
     except Exception as e:
@@ -250,6 +310,7 @@ def handle_img_command_public(xc, command: str, content: str) -> str:
         logger.error(f"[handle_ai_command] Error parsing AI response. Error: {e}")
 
     output = choice_message_content
+
     return output, error
 
 
@@ -258,7 +319,6 @@ def _handle_tool_generate_image(
     assistant_id,
     tool_usage_dict
 ):
-
     prompt = tool_usage_dict.get("parameters").get("prompt")
     size = tool_usage_dict.get("parameters").get("size")
     quality = tool_usage_dict.get("parameters").get("quality")
@@ -281,5 +341,7 @@ def _handle_tool_generate_image(
     )
 
     image_uri = image_generation_response.get("image_uri")
+
     logger.info(f"[handle_ai_command] Generated image: {image_uri}")
+
     return image_uri

@@ -19,9 +19,15 @@ import logging
 
 import requests
 from openai import OpenAI
-from openai.types.beta.threads import TextContentBlock, ImageFileContentBlock
 
-from apps.core.generative_ai.auxiliary_methods.affirmations.affirmation_instructions import GENERIC_AFFIRMATION_PROMPT
+from openai.types.beta.threads import (
+    TextContentBlock,
+    ImageFileContentBlock
+)
+
+from apps.core.generative_ai.auxiliary_methods.affirmations.affirmation_instructions import (
+    GENERIC_AFFIRMATION_PROMPT
+)
 
 from apps.core.generative_ai.auxiliary_methods.errors.error_log_prompts import (
     CODE_ANALYST_AGENT_PREPARATION_ERROR_LOG,
@@ -40,7 +46,9 @@ from apps.core.generative_ai.auxiliary_methods.status_logs.status_log_prompts im
     get_code_interpreter_status_log
 )
 
-from apps.core.generative_ai.auxiliary_methods.tool_helpers.tool_helper_instructions import HELPER_SYSTEM_INSTRUCTIONS
+from apps.core.generative_ai.auxiliary_methods.tool_helpers.tool_helper_instructions import (
+    HELPER_SYSTEM_INSTRUCTIONS
+)
 
 from apps.core.generative_ai.utils import (
     CONCRETE_LIMIT_SINGLE_FILE_INTERPRETATION,
@@ -49,7 +57,11 @@ from apps.core.generative_ai.utils import (
 )
 
 from apps.llm_transaction.models import LLMTransaction
-from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
+
+from apps.llm_transaction.utils import (
+    LLMTransactionSourcesTypesNames
+)
+
 from config.settings import MEDIA_URL
 
 logger = logging.getLogger(__name__)
@@ -77,10 +89,14 @@ class AuxiliaryLLMCodeAnalysisManager:
     ):
 
         c = self.connection
+
         if len(full_file_paths) > CONCRETE_LIMIT_SINGLE_FILE_INTERPRETATION:
-            return get_number_of_codes_too_high_log(max=CONCRETE_LIMIT_SINGLE_FILE_INTERPRETATION), [], []
+            return get_number_of_codes_too_high_log(
+                max=CONCRETE_LIMIT_SINGLE_FILE_INTERPRETATION
+            ), [], []
 
         f_data = []
+
         for pth in full_file_paths:
 
             if not pth:
@@ -103,6 +119,7 @@ class AuxiliaryLLMCodeAnalysisManager:
                 continue
 
         f_objs = []
+
         for con in f_data:
             try:
                 f = c.files.create(
@@ -135,10 +152,12 @@ class AuxiliaryLLMCodeAnalysisManager:
                 },
                 temperature=float(interpretation_temperature)
             )
+
             logger.info(f"Created new assistant for code interpretation.")
 
         except Exception as e:
             logger.error(f"Failed to create new assistant for code interpretation.")
+
             return CODE_ANALYST_AGENT_PREPARATION_ERROR_LOG, [], []
 
         try:
@@ -150,10 +169,12 @@ class AuxiliaryLLMCodeAnalysisManager:
                     }
                 ]
             )
+
             logger.info(f"Created new thread for code interpretation.")
 
         except Exception as e:
             logger.error(f"Failed to create new thread for code interpretation.")
+
             return CODE_ANALYST_THREAD_CREATION_ERROR_LOG, [], []
 
         try:
@@ -161,15 +182,20 @@ class AuxiliaryLLMCodeAnalysisManager:
                 thread_id=thread.id,
                 assistant_id=agent.id
             )
+
             logger.info(f"Created new run for code interpretation.")
 
         except Exception as e:
             logger.error(f"Failed to create new run for code interpretation.")
+
             return CODE_ANALYST_RESPONSE_RETRIEVAL_ERROR_LOG, [], []
 
         txts, img_http_ids, f_http_ids = [], [], []
+
         if run.status == AgentRunConditions.COMPLETED:
-            msgs = c.beta.threads.messages.list(thread_id=thread.id)
+            msgs = c.beta.threads.messages.list(
+                thread_id=thread.id
+            )
 
             for msg in msgs.data:
 
@@ -203,30 +229,50 @@ class AuxiliaryLLMCodeAnalysisManager:
 
         else:
             if run.status == AgentRunConditions.FAILED:
-                msgs = get_code_interpreter_status_log(status="failed")
+                msgs = get_code_interpreter_status_log(
+                    status="failed"
+                )
+
                 logger.error(f"Code interpretation failed.")
 
             elif run.status == AgentRunConditions.INCOMPLETE:
-                msgs = get_code_interpreter_status_log(status="incomplete")
+                msgs = get_code_interpreter_status_log(
+                    status="incomplete"
+                )
+
                 logger.error(f"Code interpretation incomplete.")
 
             elif run.status == AgentRunConditions.EXPIRED:
-                msgs = get_code_interpreter_status_log(status="expired")
+                msgs = get_code_interpreter_status_log(
+                    status="expired"
+                )
+
                 logger.error(f"Code interpretation expired.")
 
             elif run.status == AgentRunConditions.CANCELLED:
-                msgs = get_code_interpreter_status_log(status="cancelled")
+                msgs = get_code_interpreter_status_log(
+                    status="cancelled"
+                )
+
                 logger.error(f"Code interpretation cancelled.")
 
             else:
-                msgs = get_code_interpreter_status_log(status="unknown")
+                msgs = get_code_interpreter_status_log(
+                    status="unknown"
+                )
+
                 logger.error(f"Code interpretation status unknown.")
 
         fs_http = []
+
         for f_id, remote in f_http_ids:
             try:
                 data_bytes = c.files.content(f_id).read()
-                fs_http.append((data_bytes, remote))
+
+                fs_http.append(
+                    (data_bytes, remote)
+                )
+
                 logger.info(f"Retrieved file content from: {remote}")
 
             except Exception as e:
@@ -234,6 +280,7 @@ class AuxiliaryLLMCodeAnalysisManager:
                 continue
 
         imgs_http = []
+
         for image_id in img_http_ids:
             try:
                 data_bytes = c.files.content(image_id).read()
@@ -277,4 +324,5 @@ class AuxiliaryLLMCodeAnalysisManager:
         )
 
         logger.info(f"Created new LLM transaction for code interpretation.")
+
         return txts, fs_http, imgs_http

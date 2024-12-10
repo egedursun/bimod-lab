@@ -19,7 +19,11 @@ import logging
 
 import requests
 from openai import OpenAI
-from openai.types.beta.threads import TextContentBlock, ImageFileContentBlock
+
+from openai.types.beta.threads import (
+    TextContentBlock,
+    ImageFileContentBlock
+)
 
 from apps.core.generative_ai.auxiliary_methods.affirmations.affirmation_instructions import (
     GENERIC_AFFIRMATION_PROMPT,
@@ -46,7 +50,9 @@ from apps.core.generative_ai.auxiliary_methods.status_logs.status_log_prompts im
     get_ml_prediction_status_log
 )
 
-from apps.core.generative_ai.auxiliary_methods.tool_helpers.tool_helper_instructions import HELPER_SYSTEM_INSTRUCTIONS
+from apps.core.generative_ai.auxiliary_methods.tool_helpers.tool_helper_instructions import (
+    HELPER_SYSTEM_INSTRUCTIONS
+)
 
 from apps.core.generative_ai.utils import (
     CONCRETE_LIMIT_ML_MODEL_PREDICTIONS,
@@ -55,7 +61,10 @@ from apps.core.generative_ai.utils import (
 )
 
 from apps.llm_transaction.models import LLMTransaction
-from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
+
+from apps.llm_transaction.utils import (
+    LLMTransactionSourcesTypesNames
+)
 
 logger = logging.getLogger(__name__)
 
@@ -83,22 +92,28 @@ class AuxiliaryLLMMachineLearningClient:
 
         c = self.connection
         if len(input_data_urls) > CONCRETE_LIMIT_ML_MODEL_PREDICTIONS:
-            return get_number_of_ml_predictions_too_high_log(max=CONCRETE_LIMIT_ML_MODEL_PREDICTIONS), [], []
+            return get_number_of_ml_predictions_too_high_log(
+                max=CONCRETE_LIMIT_ML_MODEL_PREDICTIONS
+            ), [], []
 
         try:
             model = requests.get(ml_model_path)
             deployed_model_bytes = model.content
+
             logger.info(f"Retrieved model content from: {ml_model_path}")
 
         except FileNotFoundError:
             logger.error(f"Model not found at: {ml_model_path}")
+
             return ML_MODEL_NOT_FOUND_ERROR_LOG, [], []
 
         except Exception as e:
             logger.error(f"Error loading model from: {ml_model_path}")
+
             return ML_MODEL_LOADING_ERROR_LOG, [], []
 
         f_data = []
+
         for pth in input_data_urls:
 
             if not pth:
@@ -129,6 +144,7 @@ class AuxiliaryLLMMachineLearningClient:
                     file=data
                 )
                 f_objs.append(f)
+
                 logger.info(f"Created file object for file content.")
 
             except Exception as e:
@@ -139,6 +155,7 @@ class AuxiliaryLLMMachineLearningClient:
                 continue
 
         try:
+
             agent = c.beta.assistants.create(
                 name=HELPER_SYSTEM_INSTRUCTIONS["ml_model_predictor"]["name"],
                 description=HELPER_SYSTEM_INSTRUCTIONS["ml_model_predictor"]["description"],
@@ -157,10 +174,12 @@ class AuxiliaryLLMMachineLearningClient:
                 },
                 temperature=interpretation_temperature,
             )
+
             logger.info(f"Created new assistant for ML model prediction.")
 
         except Exception as e:
             logger.error(f"Failed to create new assistant for ML model prediction.")
+
             return ML_MODEL_AGENT_PREPARATION_ERROR_LOG, [], []
 
         try:
@@ -172,10 +191,12 @@ class AuxiliaryLLMMachineLearningClient:
                     }
                 ]
             )
+
             logger.info(f"Created new thread for ML model prediction.")
 
         except Exception as e:
             logger.error(f"Failed to create new thread for ML model prediction.")
+
             return ML_MODEL_THREAD_CREATION_ERROR_LOG, [], []
 
         try:
@@ -183,16 +204,22 @@ class AuxiliaryLLMMachineLearningClient:
                 thread_id=thread.id,
                 assistant_id=agent.id
             )
+
             logger.info(f"Created new run for ML model prediction.")
 
         except Exception as e:
             logger.error(f"Failed to create new run for ML model prediction.")
+
             return ML_MODEL_RESPONSE_RETRIEVAL_ERROR_LOG, [], []
 
         txts, img_http_ids, f_http_ids = [], [], []
+
         if run.status == AgentRunConditions.COMPLETED:
 
-            msgs = c.beta.threads.messages.list(thread_id=thread.id)
+            msgs = c.beta.threads.messages.list(
+                thread_id=thread.id
+            )
+
             for msg in msgs.data:
 
                 if msg.role == ChatRoles.ASSISTANT:
@@ -227,30 +254,46 @@ class AuxiliaryLLMMachineLearningClient:
         else:
 
             if run.status == AgentRunConditions.FAILED:
-                msgs = get_ml_prediction_status_log(status=AgentRunConditions.FAILED)
+                msgs = get_ml_prediction_status_log(
+                    status=AgentRunConditions.FAILED
+                )
+
                 logger.error(f"ML model prediction failed.")
 
             elif run.status == AgentRunConditions.INCOMPLETE:
-                msgs = get_ml_prediction_status_log(status=AgentRunConditions.INCOMPLETE)
+                msgs = get_ml_prediction_status_log(
+                    status=AgentRunConditions.INCOMPLETE
+                )
                 logger.error(f"ML model prediction incomplete.")
 
             elif run.status == AgentRunConditions.EXPIRED:
-                msgs = get_ml_prediction_status_log(status=AgentRunConditions.EXPIRED)
+                msgs = get_ml_prediction_status_log(
+                    status=AgentRunConditions.EXPIRED
+                )
                 logger.error(f"ML model prediction expired.")
 
             elif run.status == AgentRunConditions.CANCELLED:
-                msgs = get_ml_prediction_status_log(status=AgentRunConditions.CANCELLED)
+                msgs = get_ml_prediction_status_log(
+                    status=AgentRunConditions.CANCELLED
+                )
                 logger.error(f"ML model prediction cancelled.")
 
             else:
-                msgs = get_ml_prediction_status_log(status="unknown")
+                msgs = get_ml_prediction_status_log(
+                    status="unknown"
+                )
                 logger.error(f"ML model prediction status unknown.")
 
         fs_http = []
+
         for f_id, remote in f_http_ids:
             try:
                 data_bytes = c.files.content(f_id).read()
-                fs_http.append((data_bytes, remote))
+
+                fs_http.append(
+                    (data_bytes, remote)
+                )
+
                 logger.info(f"Retrieved file content from: {remote}")
 
             except Exception as e:
@@ -258,6 +301,7 @@ class AuxiliaryLLMMachineLearningClient:
                 continue
 
         imgs_http = []
+
         for image_id in img_http_ids:
             try:
                 data_bytes = c.files.content(image_id).read()
@@ -302,4 +346,5 @@ class AuxiliaryLLMMachineLearningClient:
         )
 
         logger.info(f"Created new LLM transaction for ML model prediction.")
+
         return txts, fs_http, imgs_http

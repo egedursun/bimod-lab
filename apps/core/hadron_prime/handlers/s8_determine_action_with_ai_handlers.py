@@ -18,17 +18,30 @@
 import json
 import logging
 
-from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
-from apps.core.hadron_prime.parsers import make_request_from_curl
-from apps.core.hadron_prime.prompt_builders import build_hadron_prime_system_prompt
-from apps.core.hadron_prime.prompts import verify_hadron_prime_expert_network_query_content
+from apps.core.generative_ai.utils import (
+    GPT_DEFAULT_ENCODING_ENGINE,
+    ChatRoles
+)
+from apps.core.hadron_prime.parsers import (
+    make_request_from_curl
+)
+
+from apps.core.hadron_prime.prompt_builders import (
+    build_hadron_prime_system_prompt
+)
+
+from apps.core.hadron_prime.prompts import (
+    verify_hadron_prime_expert_network_query_content
+)
 
 from apps.core.hadron_prime.utils import (
     find_tool_call_from_json,
     HADRON_PRIME_TOOL_CALL_MAXIMUM_ATTEMPTS
 )
 
-from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
+from apps.core.internal_cost_manager.costs_map import (
+    InternalServiceCosts
+)
 
 from apps.core.tool_calls.leanmod.core_services.core_service_query_expert_network import (
     execute_expert_network_query
@@ -36,7 +49,10 @@ from apps.core.tool_calls.leanmod.core_services.core_service_query_expert_networ
 
 from apps.hadron_prime.models import HadronNode
 from apps.llm_transaction.models import LLMTransaction
-from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
+
+from apps.llm_transaction.utils import (
+    LLMTransactionSourcesTypesNames
+)
 
 logger = logging.getLogger(__name__)
 
@@ -53,7 +69,10 @@ def consult_ai(
     analytical_data: str,
     action_set_data: str
 ):
-    from apps.core.generative_ai.gpt_openai_manager import OpenAIGPTClientManager
+    from apps.core.generative_ai.gpt_openai_manager import (
+        OpenAIGPTClientManager
+    )
+
     ai_consultancy_output, command, error = "N/A", "N/A", None
 
     c = OpenAIGPTClientManager.get_naked_client(
@@ -117,6 +136,7 @@ def consult_ai(
 
         choices = llm_response.choices
         first_choice = choices[0]
+
         choice_message = first_choice.message
         choice_message_content = choice_message.content
 
@@ -135,14 +155,17 @@ def consult_ai(
             transaction_type=ChatRoles.ASSISTANT,
             transaction_source=LLMTransactionSourcesTypesNames.HADRON_PRIME
         )
+
         logger.info(f"[consult_ai] Created LLMTransaction for AI response.")
 
     except Exception as e:
         logger.error(f"Error occurred while consulting AI: {str(e)}")
         error = str(e)
+
         return ai_consultancy_output, command, error
 
     # TOOL USAGE IDENTIFICATION
+
     tool_counter = 0
     context_messages = [structured_system_prompt]
 
@@ -163,13 +186,17 @@ def consult_ai(
                     '''
                 """
 
-                error = verify_hadron_prime_expert_network_query_content(content=tool_req_dict)
+                error = verify_hadron_prime_expert_network_query_content(
+                    content=tool_req_dict
+                )
+
                 if error:
                     logger.error(error)
                     return ai_consultancy_output, command, error
 
                 assistant_id = tool_req_dict.get("parameters").get("assistant_id")
                 query = tool_req_dict.get("parameters").get("query")
+
                 image_urls = tool_req_dict.get("parameters").get("image_urls")
                 file_urls = tool_req_dict.get("parameters").get("file_urls")
 
@@ -187,6 +214,7 @@ def consult_ai(
                 )
 
                 output_tool_call += expert_network_response_raw_str
+
                 context_messages.append(
                     {
                         "content": str(output_tool_call),
@@ -207,8 +235,10 @@ def consult_ai(
 
             choices = llm_response.choices
             first_choice = choices[0]
+
             choice_message = first_choice.message
             choice_message_content = choice_message.content
+
             logger.info(f"[consult_ai] Generated AI response again after tool usage.")
 
             try:
@@ -228,6 +258,7 @@ def consult_ai(
                     transaction_type=ChatRoles.ASSISTANT,
                     transaction_source=LLMTransactionSourcesTypesNames.HADRON_PRIME
                 )
+
                 logger.info(f"[consult_ai] Created LLMTransaction for AI response.")
 
             except Exception as e:
@@ -237,6 +268,7 @@ def consult_ai(
         except Exception as e:
             logger.error(f"[consult_ai] Error generating AI response. Error: {e}")
             error = f"[consult_ai] Error generating AI response. Error: {e}"
+
             return ai_consultancy_output, command, error
 
     if tool_counter == HADRON_PRIME_TOOL_CALL_MAXIMUM_ATTEMPTS:
@@ -245,6 +277,7 @@ def consult_ai(
             f"reached.")
 
         error = f"[consult_ai] Error generating AI response. Error: Maximum tool call attempts reached."
+
         return ai_consultancy_output, command, error
 
     context_messages.append(
@@ -280,13 +313,16 @@ def consult_ai(
 
         choices = command_response.choices
         first_choice = choices[0]
+
         choice_message = first_choice.message
         command = choice_message.content
+
         logger.info(f"[consult_ai] Generated AI response for command.")
 
     except Exception as e:
         logger.error(f"[consult_ai] Error generating AI response for command. Error: {e}")
         error = f"[consult_ai] Error generating AI response for command. Error: {e}"
+
         return ai_consultancy_output, command, error
 
     try:
@@ -301,7 +337,9 @@ def consult_ai(
             transaction_source=LLMTransactionSourcesTypesNames.HADRON_PRIME,
             is_tool_cost=True
         )
+
         tx.save()
+
         logger.info(f"[handle_ai_command] Created LLMTransaction for Hadron Prime.")
 
     except Exception as e:
@@ -310,6 +348,7 @@ def consult_ai(
 
     logger.info("Consulted to AI successfully.")
     ai_consultancy_output = choice_message_content
+
     return ai_consultancy_output, command, error
 
 
@@ -330,16 +369,20 @@ def determine_action_with_ai(
     logger.info("Evaluating action set data.")
 
     try:
-        response_text = make_request_from_curl(curl_command=action_set_curl)
+        response_text = make_request_from_curl(
+            curl_command=action_set_curl
+        )
 
     except Exception as e:
         logger.error(f"Error occurred while evaluating action set data: {str(e)}")
         error = str(e)
+
         return determined_action, command, error
 
     if not response_text:
         logger.error("Analytical data could not have been received.")
         error = "Analytical data could not have been received."
+
         return determined_action, command, error
 
     action_set_data = response_text
@@ -360,7 +403,9 @@ def determine_action_with_ai(
 
     if error:
         logger.error(f"Error occurred while determining action with AI: {error}")
+
         return determined_action, command, error
 
     logger.info("Action determination has been evaluated.")
+
     return determined_action, command, error

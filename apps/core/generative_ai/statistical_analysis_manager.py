@@ -100,8 +100,10 @@ def provide_analysis(
 
         choices = output.choices
         first_choice = choices[0]
+
         choice_message = first_choice.message
         choice_message_content = choice_message.content
+
         output = choice_message_content
         logger.info("Analysis has been provided successfully by the system.")
 

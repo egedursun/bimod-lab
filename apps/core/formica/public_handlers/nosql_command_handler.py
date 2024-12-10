@@ -18,20 +18,46 @@
 import json
 import logging
 
-from apps.core.formica.utils import find_tool_call_from_json, FORMICA_TOOL_CALL_MAXIMUM_ATTEMPTS, is_final_output
-from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
-from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
-from apps.core.tool_calls.core_services.core_service_nosql_query import run_nosql_query
-from apps.core.tool_calls.input_verifiers.verify_run_nosql_query import verify_run_nosql_query_content
+from apps.core.formica.utils import (
+    find_tool_call_from_json,
+    FORMICA_TOOL_CALL_MAXIMUM_ATTEMPTS,
+    is_final_output
+)
+
+from apps.core.generative_ai.utils import (
+    GPT_DEFAULT_ENCODING_ENGINE,
+    ChatRoles
+)
+from apps.core.internal_cost_manager.costs_map import (
+    InternalServiceCosts
+)
+
+from apps.core.tool_calls.core_services.core_service_nosql_query import (
+    run_nosql_query
+)
+
+from apps.core.tool_calls.input_verifiers.verify_run_nosql_query import (
+    verify_run_nosql_query_content
+)
+
 from apps.llm_transaction.models import LLMTransaction
-from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
+
+from apps.llm_transaction.utils import (
+    LLMTransactionSourcesTypesNames
+)
 
 logger = logging.getLogger(__name__)
 
 
 def handle_nosql_command_public(xc, command: str, content: str) -> str:
-    from apps.core.formica.formica_executor_public import FormicaExecutionManager_Public
-    from apps.core.formica.prompt_builders import build_nosql_command_system_prompt_public
+    from apps.core.formica.formica_executor_public import (
+        FormicaExecutionManager_Public
+    )
+
+    from apps.core.formica.prompt_builders import (
+        build_nosql_command_system_prompt_public
+    )
+
     xc: FormicaExecutionManager_Public
 
     try:
@@ -50,6 +76,7 @@ def handle_nosql_command_public(xc, command: str, content: str) -> str:
             transaction_type=ChatRoles.USER,
             transaction_source=LLMTransactionSourcesTypesNames.FORMICA
         )
+
         logger.info(f"[handle_ai_command] Created LLMTransaction for user command: {command}")
 
     except Exception as e:
@@ -57,6 +84,7 @@ def handle_nosql_command_public(xc, command: str, content: str) -> str:
         pass
 
     output, error = None, None
+
     system_prompt = build_nosql_command_system_prompt_public(
         xc=xc,
         user_query=command,
@@ -81,6 +109,7 @@ def handle_nosql_command_public(xc, command: str, content: str) -> str:
             transaction_type=ChatRoles.SYSTEM,
             transaction_source=LLMTransactionSourcesTypesNames.FORMICA
         )
+
         logger.info(f"[handle_ai_command] Created LLMTransaction for system prompt.")
 
     except Exception as e:
@@ -107,8 +136,10 @@ def handle_nosql_command_public(xc, command: str, content: str) -> str:
 
         choices = llm_response.choices
         first_choice = choices[0]
+
         choice_message = first_choice.message
         choice_message_content = choice_message.content
+
         logger.info(f"[handle_ai_command] Generated AI response.")
 
         try:
@@ -127,6 +158,7 @@ def handle_nosql_command_public(xc, command: str, content: str) -> str:
                 transaction_type=ChatRoles.ASSISTANT,
                 transaction_source=LLMTransactionSourcesTypesNames.FORMICA
             )
+
             logger.info(f"[handle_ai_command] Created LLMTransaction for AI response.")
 
         except Exception as e:
@@ -135,7 +167,9 @@ def handle_nosql_command_public(xc, command: str, content: str) -> str:
 
     except Exception as e:
         error = f"[handle_ai_command] Error executing NoSQL command: {command}. Error: {e}"
+
         logger.error(error)
+
         return output, error
 
     # TOOL USAGE IDENTIFICATION
@@ -147,6 +181,7 @@ def handle_nosql_command_public(xc, command: str, content: str) -> str:
         tool_counter < FORMICA_TOOL_CALL_MAXIMUM_ATTEMPTS and
         not is_final_output(choice_message_content)
     ):
+
         tool_counter += 1
         tool_requests_dicts = find_tool_call_from_json(choice_message_content)
 
@@ -160,7 +195,9 @@ def handle_nosql_command_public(xc, command: str, content: str) -> str:
                     '''
                 """
 
-                error = verify_run_nosql_query_content(content=tool_req_dict)
+                error = verify_run_nosql_query_content(
+                    content=tool_req_dict
+                )
 
                 if error:
                     logger.error(error)
@@ -174,7 +211,13 @@ def handle_nosql_command_public(xc, command: str, content: str) -> str:
                 output_tool_call += """
                     '''
                 """
-                context_messages.append({"content": output_tool_call, "role": "system"})
+
+                context_messages.append(
+                    {
+                        "content": output_tool_call,
+                        "role": "system"
+                    }
+                )
 
         try:
             llm_response = client.chat.completions.create(
@@ -189,8 +232,10 @@ def handle_nosql_command_public(xc, command: str, content: str) -> str:
 
             choices = llm_response.choices
             first_choice = choices[0]
+
             choice_message = first_choice.message
             choice_message_content = choice_message.content
+
             logger.info(f"[handle_ai_command] Generated AI response.")
 
             try:
@@ -209,6 +254,7 @@ def handle_nosql_command_public(xc, command: str, content: str) -> str:
                     transaction_type=ChatRoles.ASSISTANT,
                     transaction_source=LLMTransactionSourcesTypesNames.FORMICA
                 )
+
                 logger.info(f"[handle_ai_command] Created LLMTransaction for AI response.")
 
             except Exception as e:
@@ -218,11 +264,13 @@ def handle_nosql_command_public(xc, command: str, content: str) -> str:
         except Exception as e:
             logger.error(f"[handle_ai_command] Error executing NoSQL command: {command}. Error: {e}")
             error = f"[handle_ai_command] Error executing NoSQL command: {command}. Error: {e}"
+
             return output, error
 
     if tool_counter == FORMICA_TOOL_CALL_MAXIMUM_ATTEMPTS:
         error = (f"[handle_ai_command] Error executing NoSQL command: {command}. Error: Maximum tool call attempts "
                  f"reached.")
+
         return output, error
 
     try:
@@ -237,7 +285,9 @@ def handle_nosql_command_public(xc, command: str, content: str) -> str:
             transaction_source=LLMTransactionSourcesTypesNames.FORMICA,
             is_tool_cost=True
         )
+
         tx.save()
+
         logger.info(f"[handle_ai_command] Created LLMTransaction for Formica.")
 
     except Exception as e:
@@ -253,6 +303,7 @@ def handle_nosql_command_public(xc, command: str, content: str) -> str:
         logger.error(f"[handle_ai_command] Error parsing AI response. Error: {e}")
 
     output = choice_message_content
+
     return output, error
 
 
@@ -260,7 +311,6 @@ def _handle_tool_nosql_query(
     tool_usage_dict,
     output_tool_call
 ):
-
     c_id = tool_usage_dict.get("parameters").get("database_connection_id")
     query_type = tool_usage_dict.get("parameters").get("type")
     nosql_query = tool_usage_dict.get("parameters").get("nosql_query")
@@ -278,5 +328,7 @@ def _handle_tool_nosql_query(
     )
 
     output_tool_call += output_str
+
     logger.info(f"[handle_ai_command] Tool Response: {output_tool_call}")
+
     return output_tool_call

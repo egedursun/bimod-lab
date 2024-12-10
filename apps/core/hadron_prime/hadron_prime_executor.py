@@ -38,7 +38,9 @@ from apps.hadron_prime.models import (
     HadronNodeSpeechLog
 )
 
-from apps.hadron_prime.utils import HadronNodeExecutionStatusesNames
+from apps.hadron_prime.utils import (
+    HadronNodeExecutionStatusesNames
+)
 
 from apps.core.hadron_prime.utils import (
     NodeExecutionProcessLogTexts,
@@ -57,18 +59,26 @@ from apps.core.hadron_prime.handlers import (
 )
 
 from apps.llm_transaction.models import LLMTransaction
-from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
+
+from apps.llm_transaction.utils import (
+    LLMTransactionSourcesTypesNames
+)
 
 logger = logging.getLogger(__name__)
 
 
 class HadronPrimeExecutor:
 
-    def __init__(self, node: HadronNode, execution_log_object: HadronNodeExecutionLog):
+    def __init__(
+        self,
+        node: HadronNode,
+        execution_log_object: HadronNodeExecutionLog
+    ):
         self.node = node
         self.system: HadronSystem = node.system
         self.topics = self.node.subscribed_topics
         self.execution_log_object = execution_log_object
+
         self.topic_message_history_memory_size = self.node.topic_messages_history_lookback_memory_size
         self.publish_history_memory_size = self.node.publishing_history_lookback_memory_size
         self.sease_history_memory_size = self.node.state_action_state_lookback_memory_size
@@ -83,7 +93,12 @@ class HadronPrimeExecutor:
 
         self.expert_nets = self.node.expert_networks.all() if self.node.expert_networks else []
 
-    def _update_execution_log_object_status(self, new_status: str, log_text: str):
+    def _update_execution_log_object_status(
+        self,
+        new_status: str,
+        log_text: str
+    ):
+
         if new_status not in HadronNodeExecutionStatusesNames.as_list():
             raise ValueError('Invalid status detected for execution.')
 
@@ -95,37 +110,60 @@ class HadronPrimeExecutor:
 
         except Exception as e:
             logger.error(f"Error occurred while updating the execution log object status: {e}")
+
             return False
 
         logger.info(f"Execution log object status updated to: {new_status}")
+
         return True
 
-    def _create_sease_log_and_append_to_node_sease_logs(self, sease_log: HadronStateErrorActionStateErrorLog):
+    def _create_sease_log_and_append_to_node_sease_logs(
+        self,
+        sease_log: HadronStateErrorActionStateErrorLog
+    ):
+
         try:
             sease_log.save()
+
             self.node.state_action_state_history_logs.add(sease_log)
             self.node.save()
 
         except Exception as e:
             logger.error(f"Error occurred while creating and appending the SEASE log to the node: {e}")
+
             return False
 
         logger.info("SEASE log created and appended to the node.")
+
         return True
 
-    def _create_topic_message_and_append_to_node_publish_history(self, topic_message: HadronTopicMessage):
+    def _create_topic_message_and_append_to_node_publish_history(
+        self,
+        topic_message: HadronTopicMessage
+    ):
+
         try:
-            self.node.publishing_history_logs.add(topic_message)
+            self.node.publishing_history_logs.add(
+                topic_message
+            )
+
             self.node.save()
 
         except Exception as e:
             logger.error(f"Error occurred while creating and appending the topic message to the node: {e}")
+
             return False
 
         logger.info("Topic message created and appended to the node.")
+
         return True
 
-    def _publish_message_to_topic(self, event_type: str, message: str):
+    def _publish_message_to_topic(
+        self,
+        event_type: str,
+        message: str
+    ):
+
         if event_type not in HadronTopicCategoriesNames.as_list():
             raise ValueError('Invalid topic category detected for publishing.')
 
@@ -141,13 +179,16 @@ class HadronPrimeExecutor:
                     )
 
                     topic_message.save()
+
                     self._create_topic_message_and_append_to_node_publish_history(topic_message)
 
                 except Exception as e:
                     logger.error(f"Error occurred while publishing the message to the topic: {e}")
+
                     return False
 
         logger.info("Message published to the relevant topic(s) successfully.")
+
         return True
 
     def _structure_sease_log(
@@ -179,12 +220,14 @@ class HadronPrimeExecutor:
 
     def execute_hadron_node(self):
         success, error = True, None
+
         self._update_execution_log_object_status(
             new_status=HadronNodeExecutionStatusesNames.RUNNING,
             log_text=NodeExecutionProcessLogTexts.process_started(
                 timestamp=timezone.now()
             )
         )
+
         try:
             self._update_execution_log_object_status(
                 new_status=HadronNodeExecutionStatusesNames.RUNNING,
@@ -193,11 +236,15 @@ class HadronPrimeExecutor:
                 )
             )
 
-            current_state_data, goal_state_data, error = s1_state_evaluation_handlers.evaluate_state(node=self.node)
+            current_state_data, goal_state_data, error = s1_state_evaluation_handlers.evaluate_state(
+                node=self.node
+            )
 
             if error:
                 success, error = False, error
+
                 logger.error(f"Error occurred while evaluating the state: {error}")
+
                 self._update_execution_log_object_status(
                     new_status=HadronNodeExecutionStatusesNames.FAILED,
                     log_text=NodeExecutionProcessLogTexts.state_retrieval_failed(
@@ -205,7 +252,11 @@ class HadronPrimeExecutor:
                     )
 
                 )
-                self._publish_message_to_topic(event_type=HadronTopicCategoriesNames.ALERTS, message=error)
+                self._publish_message_to_topic(
+                    event_type=HadronTopicCategoriesNames.ALERTS,
+                    message=error
+                )
+
                 return success, error
 
             logger.info("State retrieved successfully.")
@@ -236,7 +287,9 @@ class HadronPrimeExecutor:
                 )
             )
 
-            measurement_data, error = s2_measurement_evaluation_handlers.evaluate_measurements(node=self.node)
+            measurement_data, error = s2_measurement_evaluation_handlers.evaluate_measurements(
+                node=self.node
+            )
 
             if error:
                 success, error = False, error
@@ -248,7 +301,11 @@ class HadronPrimeExecutor:
                     )
                 )
 
-                self._publish_message_to_topic(event_type=HadronTopicCategoriesNames.ALERTS, message=error)
+                self._publish_message_to_topic(
+                    event_type=HadronTopicCategoriesNames.ALERTS,
+                    message=error
+                )
+
                 return success, error
 
             logger.info("Measurements evaluated successfully.")
@@ -272,13 +329,18 @@ class HadronPrimeExecutor:
 
             self._update_execution_log_object_status(
                 new_status=HadronNodeExecutionStatusesNames.RUNNING,
-                log_text=NodeExecutionProcessLogTexts.topic_message_processing_started(timestamp=timezone.now())
+                log_text=NodeExecutionProcessLogTexts.topic_message_processing_started(
+                    timestamp=timezone.now()
+                )
             )
 
-            structured_topic_messages, error = s3_read_topics_handlers.structure_topic_messages(node=self.node)
+            structured_topic_messages, error = s3_read_topics_handlers.structure_topic_messages(
+                node=self.node
+            )
 
             if error:
                 success, error = False, error
+
                 logger.error(f"Error occurred while structuring the topic messages: {error}")
 
                 self._update_execution_log_object_status(
@@ -294,7 +356,9 @@ class HadronPrimeExecutor:
                 )
 
                 return success, error
+
             logger.info("Topic messages structured successfully.")
+
             self._update_execution_log_object_status(
                 new_status=HadronNodeExecutionStatusesNames.RUNNING,
                 log_text=NodeExecutionProcessLogTexts.topic_message_processing_completed(
@@ -316,10 +380,13 @@ class HadronPrimeExecutor:
                 )
             )
 
-            sease_logs, error = s4_sease_history_evaluation_handlers.retrieve_sease_logs(node=self.node)
+            sease_logs, error = s4_sease_history_evaluation_handlers.retrieve_sease_logs(
+                node=self.node
+            )
 
             if error:
                 success, error = False, error
+
                 logger.error(f"Error occurred while retrieving the SEASE logs: {error}")
 
                 self._update_execution_log_object_status(
@@ -365,6 +432,7 @@ class HadronPrimeExecutor:
 
             if error:
                 success, error = False, error
+
                 logger.error(f"Error occurred while retrieving the publishing history logs: {error}")
 
                 self._update_execution_log_object_status(
@@ -404,10 +472,13 @@ class HadronPrimeExecutor:
                 )
             )
 
-            error_measurement, error = s6_calculate_current_error_handlers.calculate_error_data(node=self.node)
+            error_measurement, error = s6_calculate_current_error_handlers.calculate_error_data(
+                node=self.node
+            )
 
             if error:
                 success, error = False, error
+
                 logger.error(f"Error occurred while calculating the error data: {error}")
 
                 self._update_execution_log_object_status(
@@ -417,10 +488,15 @@ class HadronPrimeExecutor:
                     )
                 )
 
-                self._publish_message_to_topic(event_type=HadronTopicCategoriesNames.ALERTS, message=error)
+                self._publish_message_to_topic(
+                    event_type=HadronTopicCategoriesNames.ALERTS,
+                    message=error
+                )
+
                 return success, error
 
             logger.info("Error calculation process completed successfully.")
+
             self._update_execution_log_object_status(
                 new_status=HadronNodeExecutionStatusesNames.RUNNING,
                 log_text=NodeExecutionProcessLogTexts.error_calculation_process_completed(
@@ -448,7 +524,9 @@ class HadronPrimeExecutor:
 
             if error:
                 success, error = False, error
+
                 logger.error(f"Error occurred while calculating the analytical data: {error}")
+
                 self._update_execution_log_object_status(
                     new_status=HadronNodeExecutionStatusesNames.FAILED,
                     log_text=NodeExecutionProcessLogTexts.analytical_calculation_calls_failed(
@@ -456,7 +534,11 @@ class HadronPrimeExecutor:
                     )
                 )
 
-                self._publish_message_to_topic(event_type=HadronTopicCategoriesNames.ALERTS, message=error)
+                self._publish_message_to_topic(
+                    event_type=HadronTopicCategoriesNames.ALERTS,
+                    message=error
+                )
+
                 return success, error
 
             logger.info("Analytical calculation calls completed successfully.")
@@ -496,6 +578,7 @@ class HadronPrimeExecutor:
 
             if error:
                 success, error = False, error
+
                 logger.error(f"Error occurred while determining the action with AI: {error}")
 
                 self._update_execution_log_object_status(
@@ -505,7 +588,11 @@ class HadronPrimeExecutor:
                     )
                 )
 
-                self._publish_message_to_topic(event_type=HadronTopicCategoriesNames.ALERTS, message=error)
+                self._publish_message_to_topic(
+                    event_type=HadronTopicCategoriesNames.ALERTS,
+                    message=error
+                )
+
                 return success, error
 
             logger.info("Action determined successfully.")
@@ -522,7 +609,10 @@ class HadronPrimeExecutor:
                 message="I managed to determine the next action I will take successfully."
             )
 
-            self._publish_message_to_topic(event_type=HadronTopicCategoriesNames.COMMANDS, message=command)
+            self._publish_message_to_topic(
+                event_type=HadronTopicCategoriesNames.COMMANDS,
+                message=command
+            )
 
             #####
 
@@ -540,7 +630,9 @@ class HadronPrimeExecutor:
 
             if error:
                 success, error = False, error
+
                 logger.error(f"Error occurred while executing the actuation call: {error}")
+
                 self._update_execution_log_object_status(
                     new_status=HadronNodeExecutionStatusesNames.FAILED,
                     log_text=NodeExecutionProcessLogTexts.actuation_call_layer_failed(
@@ -548,7 +640,11 @@ class HadronPrimeExecutor:
                     )
                 )
 
-                self._publish_message_to_topic(event_type=HadronTopicCategoriesNames.ALERTS, message=error)
+                self._publish_message_to_topic(
+                    event_type=HadronTopicCategoriesNames.ALERTS,
+                    message=error
+                )
+
                 return success, error
 
             logger.info("Actuation call executed successfully.")
@@ -586,7 +682,9 @@ class HadronPrimeExecutor:
 
             if error:
                 success, error = False, error
+
                 logger.error(f"Error occurred while evaluating the updated state: {error}")
+
                 self._update_execution_log_object_status(
                     new_status=HadronNodeExecutionStatusesNames.FAILED,
                     log_text=NodeExecutionProcessLogTexts.post_action_state_evaluation_failed(
@@ -628,7 +726,9 @@ class HadronPrimeExecutor:
 
             if error:
                 success, error = False, error
+
                 logger.error(f"Error occurred while calculating the updated error data: {error}")
+
                 self._update_execution_log_object_status(
                     new_status=HadronNodeExecutionStatusesNames.FAILED,
                     log_text=NodeExecutionProcessLogTexts.post_action_error_evaluation_failed(
@@ -636,7 +736,11 @@ class HadronPrimeExecutor:
                     )
                 )
 
-                self._publish_message_to_topic(event_type=HadronTopicCategoriesNames.ALERTS, message=error)
+                self._publish_message_to_topic(
+                    event_type=HadronTopicCategoriesNames.ALERTS,
+                    message=error
+                )
+
                 return success, error
 
             logger.info("Updated error data calculated successfully.")
@@ -662,7 +766,9 @@ class HadronPrimeExecutor:
                 new_error=new_error_measurement
             )
 
-            self._create_sease_log_and_append_to_node_sease_logs(sease_log)
+            self._create_sease_log_and_append_to_node_sease_logs(
+                sease_log
+            )
 
             self._publish_message_to_topic(
                 event_type=HadronTopicCategoriesNames.INFO,
@@ -685,6 +791,7 @@ class HadronPrimeExecutor:
             )
 
         except Exception as e:
+
             logger.error(f"Error occurred while executing the Hadron node: {e}")
 
             self._publish_message_to_topic(
@@ -695,12 +802,17 @@ class HadronPrimeExecutor:
             return False, f"Error occurred while executing the Hadron node: {e}"
 
         logger.info("Hadron node executed successfully.")
+
         return success, error
 
     def generate_node_speech(self, user_query_text: str):
-        from apps.core.generative_ai.gpt_openai_manager import OpenAIGPTClientManager
+        from apps.core.generative_ai.gpt_openai_manager import (
+            OpenAIGPTClientManager
+        )
 
-        system_prompt = build_hadron_node_speech_log_prompt(node=self.node)
+        system_prompt = build_hadron_node_speech_log_prompt(
+            node=self.node
+        )
 
         structured_system_prompt = {
             "role": "system",
@@ -708,17 +820,15 @@ class HadronPrimeExecutor:
         }
 
         context_messages = [
-            structured_system_prompt
-        ]
-
-        context_messages.append(
-            {
+            structured_system_prompt, {
                 "role": "user",
                 "content": user_query_text
             }
-        )
+        ]
 
-        c = OpenAIGPTClientManager.get_naked_client(llm_model=self.node.llm_model)
+        c = OpenAIGPTClientManager.get_naked_client(
+            llm_model=self.node.llm_model
+        )
 
         tx = LLMTransaction.objects.create(
             organization=self.node.system.organization,
@@ -769,8 +879,10 @@ class HadronPrimeExecutor:
 
             choices = llm_response.choices
             first_choice = choices[0]
+
             choice_message = first_choice.message
             choice_message_content = choice_message.content
+
             logger.info(f"[generate_node_speech] Node speech generated successfully: {choice_message_content}")
 
             final_speech_output = choice_message_content
@@ -802,9 +914,12 @@ class HadronPrimeExecutor:
             )
 
             logger.info(f"[generate_node_speech] Created LLMTransaction for user prompt: {system_prompt}")
+
             return final_speech_output, True, None
 
         except Exception as e:
             error = f"Error occurred while generating AI response: {e}"
+
             logger.error(f"[generate_node_speech] Error occurred while generating AI response: {e}")
+
             return None, False, error

@@ -20,7 +20,10 @@ import logging
 from openai import OpenAI
 
 import apps.core.generative_ai.utils.constant_utils
-from apps.core.data_security.ner.ner_executor import NERExecutor
+
+from apps.core.data_security.ner.ner_executor import (
+    NERExecutor
+)
 
 from apps.core.generative_ai.auxiliary_methods.output_supply_prompts import (
     BALANCE_OVERFLOW_LOG
@@ -60,7 +63,8 @@ from apps.core.tool_calls.tool_call_manager import ToolCallManager
 from apps.multimodal_chat.utils import (
     calculate_billable_cost_from_raw,
     transmit_websocket_log,
-    BIMOD_NO_TAG_PLACEHOLDER, SourcesForMultimodalChatsNames
+    BIMOD_NO_TAG_PLACEHOLDER,
+    SourcesForMultimodalChatsNames
 )
 
 logger = logging.getLogger(__name__)
@@ -72,7 +76,10 @@ class OpenAIGPTClientManager:
         assistant,
         chat_object
     ):
-        self.connection = OpenAI(api_key=assistant.llm_model.api_key)
+        self.connection = OpenAI(
+            api_key=assistant.llm_model.api_key
+        )
+
         self.assistant = assistant
         self.chat = chat_object
 
@@ -100,7 +107,10 @@ class OpenAIGPTClientManager:
         fermion__endpoint=None
     ):
 
-        from apps.multimodal_chat.models import MultimodalChatMessage
+        from apps.multimodal_chat.models import (
+            MultimodalChatMessage
+        )
+
         from apps.llm_transaction.models import LLMTransaction
 
         transmit_websocket_log(
@@ -158,8 +168,11 @@ class OpenAIGPTClientManager:
                     fermion__export_type=fermion__export_type,
                     fermion__endpoint=fermion__endpoint
                 )
+
                 if self.assistant.ner_integration is not None:
-                    ner_xc = NERExecutor(ner_id=self.assistant.ner_integration.id)
+                    ner_xc = NERExecutor(
+                        ner_id=self.assistant.ner_integration.id
+                    )
 
                 ext_msgs, encrypt_uuid = HistoryBuilder.build_chat_history(
                     chat=self.chat,
@@ -251,7 +264,9 @@ class OpenAIGPTClientManager:
 
                 self.chat.transactions.add(failure_tx)
                 self.chat.save()
+
                 final_resp = response
+
                 return final_resp
 
             transmit_websocket_log(
@@ -323,6 +338,7 @@ class OpenAIGPTClientManager:
 
                     if content is not None:
                         acc_resp += content
+
                         transmit_websocket_log(
                             f"""{content}""",
                             stop_tag=BIMOD_NO_TAG_PLACEHOLDER,
@@ -462,10 +478,14 @@ class OpenAIGPTClientManager:
             )
 
             if final_resp == DEFAULT_ERROR_MESSAGE:
-                final_resp += get_technical_error_log(error_logs=str(e))
+                final_resp += get_technical_error_log(
+                    error_logs=str(e)
+                )
+
                 apps.core.generative_ai.utils.constant_utils.ACTIVE_RETRY_COUNT = 0
 
         tool_resp_list, json_content_of_resp = [], []
+
         if find_tool_call_from_json(final_resp):
 
             transmit_websocket_log(
@@ -477,7 +497,9 @@ class OpenAIGPTClientManager:
             )
 
             if apps.core.generative_ai.utils.constant_utils.ACTIVE_CHAIN_SIZE > self.assistant.tool_max_chains:
-                idle_tx_msg = get_maximum_tool_chains_reached_log(final_response=final_resp)
+                idle_tx_msg = get_maximum_tool_chains_reached_log(
+                    final_response=final_resp
+                )
 
                 transmit_websocket_log(
                     f""" 🚨 Maximum tool chain limit has been reached. Cancelling the process.""",
@@ -504,6 +526,7 @@ class OpenAIGPTClientManager:
                         transaction_type=ChatRoles.ASSISTANT,
                         transaction_source=self.chat.chat_source
                     )
+
                     self.chat.transactions.add(failure_tx)
                     self.chat.save()
 
@@ -525,7 +548,10 @@ class OpenAIGPTClientManager:
                 return idle_tx_msg
 
             if apps.core.generative_ai.utils.constant_utils.ACTIVE_TOOL_RETRY_COUNT > self.assistant.tool_max_attempts_per_instance:
-                idle_tx_msg = get_maximum_tool_attempts_reached_log(final_response=final_resp)
+
+                idle_tx_msg = get_maximum_tool_attempts_reached_log(
+                    final_response=final_resp
+                )
 
                 transmit_websocket_log(
                     f"""🚨 Maximum same tool attempt limit has been reached. Cancelling the process.""",
@@ -571,6 +597,7 @@ class OpenAIGPTClientManager:
                     return idle_tx_msg
 
                 apps.core.generative_ai.utils.constant_utils.ACTIVE_TOOL_RETRY_COUNT = 0
+
                 return idle_tx_msg
 
             apps.core.generative_ai.utils.constant_utils.ACTIVE_TOOL_RETRY_COUNT += 1
@@ -668,7 +695,10 @@ class OpenAIGPTClientManager:
                     )
 
                     if tool_name is not None:
-                        tool_resp = get_json_decode_error_log(error_logs=str(e))
+                        tool_resp = get_json_decode_error_log(
+                            error_logs=str(e)
+                        )
+
                         tool_resp_list.append(f"""
                                     [{i}] [FAILED] "tool_name": {tool_name},
                                         [{i}a.] "tool_response": {tool_resp},
@@ -678,7 +708,10 @@ class OpenAIGPTClientManager:
                                 """)
 
                     else:
-                        tool_resp = get_json_decode_error_log(error_logs=str(e))
+                        tool_resp = get_json_decode_error_log(
+                            error_logs=str(e)
+                        )
+
                         tool_resp_list.append(f"""
                                     [{i}] [FAILED / NO TOOL NAME] "tool_name": {tool_name},
                                         [{i}a.] "tool_response": {tool_resp},
@@ -873,6 +906,7 @@ class OpenAIGPTClientManager:
         )
 
         apps.core.generative_ai.utils.constant_utils.ACTIVE_CHAIN_SIZE = 0
+
         if with_media:
             return final_resp, file_uris, image_uris
 
@@ -889,7 +923,10 @@ class OpenAIGPTClientManager:
         custom_system_prompt=None
     ):
 
-        from apps.multimodal_chat.models import MultimodalChatMessage
+        from apps.multimodal_chat.models import (
+            MultimodalChatMessage
+        )
+
         from apps.llm_transaction.models import LLMTransaction
 
         c = self.connection
@@ -908,6 +945,7 @@ class OpenAIGPTClientManager:
                             role=ChatRoles.SYSTEM
                         )
                     ]
+
                 else:
                     prompt_msgs = [
                         custom_system_prompt
@@ -920,6 +958,7 @@ class OpenAIGPTClientManager:
                     chat=self.chat,
                     ner_executor=ner_xc
                 )
+
                 prompt_msgs.extend(ext_msgs)
 
             except Exception as e:
@@ -935,6 +974,7 @@ class OpenAIGPTClientManager:
 
             except Exception as e:
                 logger.error(f"Error occurred while inspecting the transaction parameters: {str(e)}")
+
                 return DEFAULT_ERROR_MESSAGE
 
             if latest_msg_billable_cost > self.chat.organization.balance:
@@ -959,6 +999,7 @@ class OpenAIGPTClientManager:
                 self.chat.transactions.add(failure_tx)
                 self.chat.save()
                 final_resp = resp
+
                 return final_resp
 
             try:
@@ -974,6 +1015,7 @@ class OpenAIGPTClientManager:
 
             except Exception as e:
                 logger.error(f"Error occurred while retrieving the response from the language model: {str(e)}")
+
                 return DEFAULT_ERROR_MESSAGE
 
             try:
@@ -984,6 +1026,7 @@ class OpenAIGPTClientManager:
 
             except Exception as e:
                 logger.error(f"Error occurred while processing the response from the language model: {str(e)}")
+
                 return DEFAULT_ERROR_MESSAGE
 
             ####################################################################################################
@@ -1021,12 +1064,14 @@ class OpenAIGPTClientManager:
 
             except Exception as e:
                 logger.error(f"Error occurred while saving the transaction: {str(e)}")
+
                 return DEFAULT_ERROR_MESSAGE
 
             final_resp = choice_message_content
 
         except Exception as e:
             logger.error(f"Error occurred while processing the response: {str(e)}")
+
             final_resp = step_back_retry_mechanism(
                 client=self,
                 latest_message=latest_message,
@@ -1034,15 +1079,22 @@ class OpenAIGPTClientManager:
             )
 
             if final_resp == DEFAULT_ERROR_MESSAGE:
-                final_resp += get_technical_error_log(error_logs=str(e))
+                final_resp += get_technical_error_log(
+                    error_logs=str(e)
+                )
+
                 apps.core.generative_ai.utils.constant_utils.ACTIVE_RETRY_COUNT = 0
 
         tool_resp_list, json_content_of_resp = [], []
+
         if find_tool_call_from_json(final_resp):
 
             if apps.core.generative_ai.utils.constant_utils.ACTIVE_CHAIN_SIZE > self.assistant.tool_max_chains:
 
-                idle_tx_msg = get_maximum_tool_chains_reached_log(final_response=final_resp)
+                idle_tx_msg = get_maximum_tool_chains_reached_log(
+                    final_response=final_resp
+                )
+
                 try:
 
                     failure_tx = LLMTransaction.objects.create(
@@ -1060,19 +1112,25 @@ class OpenAIGPTClientManager:
                         transaction_type=ChatRoles.ASSISTANT,
                         transaction_source=self.chat.chat_source
                     )
+
                     self.chat.transactions.add(failure_tx)
                     self.chat.save()
 
                 except Exception as e:
                     logger.error(f"Error occurred while saving the transaction: {str(e)}")
+
                     return idle_tx_msg
 
                 apps.core.generative_ai.utils.constant_utils.ACTIVE_CHAIN_SIZE = 0
+
                 return idle_tx_msg
 
             if apps.core.generative_ai.utils.constant_utils.ACTIVE_TOOL_RETRY_COUNT > self.assistant.tool_max_attempts_per_instance:
 
-                idle_tx_msg = get_maximum_tool_attempts_reached_log(final_response=final_resp)
+                idle_tx_msg = get_maximum_tool_attempts_reached_log(
+                    final_response=final_resp
+                )
+
                 try:
                     failure_tx = LLMTransaction.objects.create(
                         organization=self.chat.organization,
@@ -1089,18 +1147,22 @@ class OpenAIGPTClientManager:
                         transaction_type=ChatRoles.ASSISTANT,
                         transaction_source=self.chat.chat_source
                     )
+
                     self.chat.transactions.add(failure_tx)
                     self.chat.save()
 
                 except Exception as e:
                     logger.error(f"Error occurred while saving the transaction: {str(e)}")
+
                     return idle_tx_msg
 
                 apps.core.generative_ai.utils.constant_utils.ACTIVE_TOOL_RETRY_COUNT = 0
+
                 return idle_tx_msg
 
             apps.core.generative_ai.utils.constant_utils.ACTIVE_TOOL_RETRY_COUNT += 1
             json_content_of_resp = find_tool_call_from_json(final_resp)
+
             tool_name = None
 
             for i, json_part in enumerate(json_content_of_resp):
@@ -1113,6 +1175,7 @@ class OpenAIGPTClientManager:
                     )
 
                     tool_resp, tool_name, file_uris, image_uris = tool_executor.call_internal_tool_service()
+
                     if tool_name is not None and tool_name != prev_tool_name:
                         apps.core.generative_ai.utils.constant_utils.ACTIVE_CHAIN_SIZE += 1
                         prev_tool_name = tool_name
@@ -1128,7 +1191,10 @@ class OpenAIGPTClientManager:
                     logger.error(f"Error occurred while executing the tool: {str(e)}")
 
                     if tool_name is not None:
-                        tool_resp = get_json_decode_error_log(error_logs=str(e))
+                        tool_resp = get_json_decode_error_log(
+                            error_logs=str(e)
+                        )
+
                         tool_resp_list.append(f"""
                             [{i}] [FAILED] "tool_name": {tool_name},
                                 [{i}a.] "tool_response": {tool_resp},
@@ -1138,7 +1204,10 @@ class OpenAIGPTClientManager:
                         """)
 
                     else:
-                        tool_resp = get_json_decode_error_log(error_logs=str(e))
+                        tool_resp = get_json_decode_error_log(
+                            error_logs=str(e)
+                        )
+
                         tool_resp_list.append(f"""
                             [{i}] [FAILED / NO TOOL NAME] "tool_name": {tool_name},
                                 [{i}a.] "tool_response": {tool_resp},
@@ -1158,11 +1227,13 @@ class OpenAIGPTClientManager:
                     message_file_contents=[],
                     message_image_contents=[]
                 )
+
                 self.chat.chat_messages.add(tool_req)
                 self.chat.save()
 
             except Exception as e:
                 logger.error(f"Error occurred while recording the tool request: {str(e)}")
+
                 return DEFAULT_ERROR_MESSAGE
 
             try:
@@ -1173,11 +1244,13 @@ class OpenAIGPTClientManager:
                     message_file_contents=file_uris,
                     message_image_contents=image_uris
                 )
+
                 self.chat.chat_messages.add(tool_msg)
                 self.chat.save()
 
             except Exception as e:
                 logger.error(f"Error occurred while recording the tool response: {str(e)}")
+
                 return DEFAULT_ERROR_MESSAGE
 
             try:
@@ -1199,6 +1272,7 @@ class OpenAIGPTClientManager:
 
             except Exception as e:
                 logger.error(f"Error occurred while recording the transaction: {str(e)}")
+
                 return DEFAULT_ERROR_MESSAGE
 
             return self.respond(
