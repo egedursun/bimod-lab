@@ -237,10 +237,10 @@ def embed_repository_chunks_helper(
                 chunk_weaviate_object=document_weaviate_object
             )
 
-        if error:
-            errors.append(error)
-            logger.error(error)
-            continue
+            if error:
+                errors.append(error)
+                logger.error(error)
+                continue
 
         add_repository_upload_log(
             document_full_uri=path,
