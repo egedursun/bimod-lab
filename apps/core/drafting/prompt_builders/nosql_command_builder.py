@@ -92,7 +92,7 @@ def build_nosql_command_system_prompt(
         user_query=user_query
     )
 
-    data_source_prompts = build_drafting_nosql_data_source_prompt(
+    data_source_prompts = build_nosql_data_source_prompt(
         assistant=xc.copilot
     )
     tool_execution_prompts = build_tool_prompt__execute_nosql_query()

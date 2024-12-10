@@ -27,7 +27,6 @@ from apps.core.slider.prompts import (
     build_slider_technical_dictionary_prompt,
     build_slider_ops_instruction_prompt,
     build_slider_action__auto_prompt_public,
-    build_slider_action__auto_prompt
 )
 
 from apps.core.slider.prompts.slider.whole_text_supplier_prompt import (

@@ -89,10 +89,10 @@ def build_repo_command_system_prompt(xc: DraftingExecutionManager, user_query: s
         user_query=user_query
     )
 
-    data_source_prompts = build_drafting_code_base_data_source_prompt(
+    data_source_prompts = build_code_base_data_source_prompt(
         assistant=xc.copilot
     )
-    tool_execution_prompts = build_drafting_tool_prompt__execute_codebase_query()
+    tool_execution_prompts = build_tool_prompt__execute_codebase_query()
 
     combined_system_prompt += generic_instruction_prompt
     combined_system_prompt += folder_and_doc_info_prompt

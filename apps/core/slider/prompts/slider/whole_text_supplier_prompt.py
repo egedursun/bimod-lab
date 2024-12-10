@@ -15,35 +15,6 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-from apps.core.slider.slider_executor import SliderExecutionManager
-
-
-def build_whole_text_supply_prompt(xc: SliderExecutionManager):
-    return f"""
-            ### **DOCUMENT TEXT CONTENT INFORMATION:**
-
-            **Textual Content of the Document:**
-
-            '''
-
-            {xc.slider_document.document_content_json_quill}
-
-            '''
-
-            **NOTE**: This is the entire textual content of the document. There can be a dictionary format in the
-            content you receive, and this is because the user is interacting with the slides content with a UI script
-            probably based on Javascript, on front-end side. Therefore, you must neglect the UI-related things if you
-            encounter any, and just focus on the plain text.
-
-                - **NEVER** include the UI related metadata from the editor in the content you generate for the slide content
-                generation process, as the text you generate will be directly pasted to the editor user is interacting
-                with, and it will be rendered as a plain text, so you MUST NOT provide your output in JSON or
-                anything like that. You must produce plain text (UNLESS YOU HAVE TOOLS TO RUN, AND YOU DECIDE TO RUN A TOOL).
-
-            ---
-        """
-
-
 def build_whole_text_supply_prompt_public(content: str):
     return f"""
             ### **DOCUMENT TEXT CONTENT INFORMATION:**

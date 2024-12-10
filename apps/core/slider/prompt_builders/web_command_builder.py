@@ -30,7 +30,6 @@ from apps.core.slider.prompts import (
 )
 
 from apps.core.slider.prompts.slider.whole_text_supplier_prompt import (
-    build_whole_text_supply_prompt,
     build_whole_text_supply_prompt_public
 )
 

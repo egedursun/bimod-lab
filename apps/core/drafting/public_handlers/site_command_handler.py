@@ -24,9 +24,6 @@ from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
 
 from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
 
-from apps.core.tool_calls.core_services.core_service_website_data_search import (
-    run_query_search_website_data
-)
 from apps.core.tool_calls.input_verifiers.verify_website_data_search import (
     verify_website_data_search_content
 )
@@ -39,10 +36,6 @@ logger = logging.getLogger(__name__)
 
 def handle_site_command_public(xc, command: str, content: str):
     from apps.core.drafting.drafting_executor_public import DraftingExecutionManager_Public
-
-    from apps.core.drafting.prompt_builders import (
-        build_site_command_system_prompt
-    )
 
     xc: DraftingExecutionManager_Public
 

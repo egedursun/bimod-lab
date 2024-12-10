@@ -89,10 +89,10 @@ def build_sql_command_system_prompt(xc: DraftingExecutionManager, user_query: st
         user_query=user_query
     )
 
-    data_source_prompts = build_drafting_sql_data_source_prompt(
+    data_source_prompts = build_sql_data_source_prompt(
         assistant=xc.copilot
     )
-    tool_execution_prompts = build_drafting_tool_prompt__execute_sql_query()
+    tool_execution_prompts = build_tool_prompt__execute_sql_query()
 
     combined_system_prompt += generic_instruction_prompt
     combined_system_prompt += folder_and_doc_info_prompt
