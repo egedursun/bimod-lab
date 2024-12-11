@@ -18,15 +18,24 @@
 import logging
 
 from django.http import JsonResponse
-from django.utils.decorators import method_decorator
+
+from django.utils.decorators import (
+    method_decorator
+)
+
 from django.views import View
-from django.views.decorators.csrf import csrf_exempt
+
+from django.views.decorators.csrf import (
+    csrf_exempt
+)
 
 from apps.core.drafting.drafting_executor_public import (
     DraftingExecutionManager_Public
 )
 
-from apps.drafting.utils import is_valid_google_apps_authentication_key
+from apps.drafting.utils import (
+    is_valid_google_apps_authentication_key
+)
 
 logger = logging.getLogger(__name__)
 
@@ -68,7 +77,6 @@ class DraftingView_PublicGenerateViaSelectCommand(View):
                 }
             )
 
-        # auth key check
         authentication_key = request.POST.get('authentication_key')
 
         if authentication_key is None:
@@ -100,7 +108,11 @@ class DraftingView_PublicGenerateViaSelectCommand(View):
             text_content=text_content
         )
 
-        response_json = xc.execute_select_command(selected_text=selected_text, command=command)
+        response_json = xc.execute_select_command(
+            selected_text=selected_text,
+            command=command
+        )
 
         logger.info(f"Select Command was executed for Google Apps Connection: {connection_object}")
+
         return JsonResponse(response_json)

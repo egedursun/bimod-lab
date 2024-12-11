@@ -25,15 +25,26 @@ import boto3
 import filetype
 
 from apps.assistants.models import Assistant
-from apps.core.code_analyst.utils import BIN_FILE_FORMAT
-from apps.core.media_managers.utils import GENERATED_FILES_ROOT_MEDIA_PATH, GENERATED_IMAGES_ROOT_MEDIA_PATH
+
+from apps.core.code_analyst.utils import (
+    BIN_FILE_FORMAT
+)
+
+from apps.core.media_managers.utils import (
+    GENERATED_FILES_ROOT_MEDIA_PATH,
+    GENERATED_IMAGES_ROOT_MEDIA_PATH
+)
+
 from config import settings
 from config.settings import MEDIA_URL
 
 logger = logging.getLogger(__name__)
 
 
-def generate_endpoint(assistant: Assistant, export_id: int):
+def generate_endpoint(
+    assistant: Assistant,
+    export_id: int
+):
     logger.info(f"Generating endpoint for assistant {assistant.id}")
 
     org_id = assistant.organization.id
@@ -53,6 +64,7 @@ def generate_assistant_custom_api_key(assistant: Assistant):
     org_name = assistant.organization.name
     agent_name = assistant.name
     desc = assistant.description
+
     instructions = assistant.instructions
     llm_name = assistant.llm_model.model_name
     llm_temperature = assistant.llm_model.temperature
@@ -104,7 +116,10 @@ def save_file_and_provide_full_uri(file_bytes, remote_name):
     else:
         extension = remote_name.split(".")[-1]
 
-    save_name = generate_save_name(extension=extension)
+    save_name = generate_save_name(
+        extension=extension
+    )
+
     s3_path = f"{GENERATED_FILES_ROOT_MEDIA_PATH}{save_name}"
     full_uri = f"{MEDIA_URL}{s3_path}"
 
@@ -122,6 +137,7 @@ def save_file_and_provide_full_uri(file_bytes, remote_name):
 
     except Exception as e:
         logger.error(f"[save_file_and_provide_full_uri] Error occurred while saving the file to S3: {e}")
+
         return None
 
     return full_uri
@@ -134,7 +150,10 @@ def save_image_and_provide_full_uri(image_bytes):
         guess_file_type = BIN_FILE_FORMAT
 
     extension = guess_file_type.extension
-    save_name = generate_save_name(extension=extension)
+
+    save_name = generate_save_name(
+        extension=extension
+    )
 
     s3_path = f"{GENERATED_IMAGES_ROOT_MEDIA_PATH}{save_name}"
     full_uri = f"{MEDIA_URL}{s3_path}"
@@ -153,6 +172,7 @@ def save_image_and_provide_full_uri(image_bytes):
 
     except Exception as e:
         logger.error(f"[save_image_and_provide_full_uri] Error occurred while saving the image to S3: {e}")
+
         return None
 
     return full_uri
@@ -193,6 +213,7 @@ def save_images_and_provide_full_uris(image_bytes_list):
 
         except Exception as e:
             logger.error(f"[save_images_and_provide_full_uris] Error occurred while saving the image: {e}")
+
             pass
 
     return f_uris

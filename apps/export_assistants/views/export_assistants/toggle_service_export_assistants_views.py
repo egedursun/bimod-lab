@@ -18,16 +18,29 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import get_object_or_404, redirect
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.shortcuts import (
+    get_object_or_404,
+    redirect
+)
+
 from django.views import View
 
 from apps.core.user_permissions.permission_manager import (
     UserPermissionManager
 )
 
-from apps.export_assistants.models import ExportAssistantAPI
-from apps.user_permissions.utils import PermissionNames
+from apps.export_assistants.models import (
+    ExportAssistantAPI
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
 
 logger = logging.getLogger(__name__)
 
@@ -35,7 +48,11 @@ logger = logging.getLogger(__name__)
 class ExportAssistantView_ToggleService(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
 
-        exp_agent = get_object_or_404(ExportAssistantAPI, pk=self.kwargs['pk'])
+        exp_agent = get_object_or_404(
+            ExportAssistantAPI,
+            pk=self.kwargs['pk']
+        )
+
         context_user = request.user
 
         ##############################
@@ -50,6 +67,7 @@ class ExportAssistantView_ToggleService(LoginRequiredMixin, View):
 
         try:
             exp_agent.is_online = not exp_agent.is_online
+
             exp_agent.save()
 
         except Exception as e:
@@ -62,6 +80,15 @@ class ExportAssistantView_ToggleService(LoginRequiredMixin, View):
 
         return redirect('export_assistants:list')
 
-    def get(self, request, *args, **kwargs):
+    def get(
+        self,
+        request,
+        *args,
+        **kwargs
+    ):
 
-        return self.post(request, *args, **kwargs)
+        return self.post(
+            request,
+            *args,
+            **kwargs
+        )

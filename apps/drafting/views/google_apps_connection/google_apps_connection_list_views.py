@@ -16,7 +16,10 @@
 #
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
 
 from django.core.paginator import (
     Paginator,
@@ -32,9 +35,16 @@ from apps.core.user_permissions.permission_manager import (
     UserPermissionManager
 )
 
-from apps.drafting.models import DraftingGoogleAppsConnection
+from apps.drafting.models import (
+    DraftingGoogleAppsConnection
+)
+
 from apps.organization.models import Organization
-from apps.user_permissions.utils import PermissionNames
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 
@@ -66,6 +76,7 @@ class DraftingView_GoogleAppsConnectionList(LoginRequiredMixin, TemplateView):
             )
 
             paginator = Paginator(connections, 10)
+
             page = self.request.GET.get('page')
 
             try:
@@ -81,6 +92,7 @@ class DraftingView_GoogleAppsConnectionList(LoginRequiredMixin, TemplateView):
 
         except Exception as e:
             messages.error(self.request, 'An error occurred while getting assistants.')
+
             return context
 
         return context

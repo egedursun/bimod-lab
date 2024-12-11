@@ -16,11 +16,21 @@
 #
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import get_object_or_404, redirect
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.shortcuts import (
+    get_object_or_404,
+    redirect
+)
+
 from django.views import View
 
-from apps.assistants.models import Assistant
+from apps.assistants.models import (
+    Assistant
+)
 
 from apps.core.user_permissions.permission_manager import (
     UserPermissionManager
@@ -34,7 +44,9 @@ from apps.drafting.utils import (
     generate_google_apps_connection_api_key
 )
 
-from apps.user_permissions.utils import PermissionNames
+from apps.user_permissions.utils import (
+    PermissionNames
+)
 
 
 class DraftingView_GoogleAppsConnectionUpdate(LoginRequiredMixin, View):
@@ -64,7 +76,11 @@ class DraftingView_GoogleAppsConnectionUpdate(LoginRequiredMixin, View):
             )
 
             connection.connection_api_key = generate_google_apps_connection_api_key()
-            new_assistant = Assistant.objects.get(id=assistant_id)
+
+            new_assistant = Assistant.objects.get(
+                id=assistant_id
+            )
+
             connection.drafting_assistant = new_assistant
 
             connection.save()

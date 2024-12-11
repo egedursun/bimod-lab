@@ -39,6 +39,7 @@ class DraftingDocument(models.Model):
 
     document_content_json_quill = models.TextField(blank=True, null=True)
     context_instructions = models.TextField(blank=True, null=True)
+
     target_audience = models.TextField(blank=True, null=True)
     tone = models.TextField(blank=True, null=True)
 
@@ -63,6 +64,7 @@ class DraftingDocument(models.Model):
     class Meta:
         verbose_name = 'Drafting Document'
         verbose_name_plural = 'Drafting Documents'
+
         unique_together = [
             [
                 'organization',
@@ -70,6 +72,7 @@ class DraftingDocument(models.Model):
                 'document_title'
             ],
         ]
+
         indexes = [
             models.Index(fields=[
                 'organization'

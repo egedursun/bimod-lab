@@ -16,7 +16,11 @@
 #
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.shortcuts import redirect
 from django.views import View
 
@@ -24,8 +28,13 @@ from apps.core.user_permissions.permission_manager import (
     UserPermissionManager
 )
 
-from apps.ellma.models import EllmaScript
-from apps.user_permissions.utils import PermissionNames
+from apps.ellma.models import (
+    EllmaScript
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
 
 
 class EllmaScriptView_DeleteScript(LoginRequiredMixin, View):
@@ -46,7 +55,9 @@ class EllmaScriptView_DeleteScript(LoginRequiredMixin, View):
         ##############################
 
         try:
-            ellma_script = EllmaScript.objects.get(id=script_id)
+            ellma_script = EllmaScript.objects.get(
+                id=script_id
+            )
 
             ellma_script.delete()
 

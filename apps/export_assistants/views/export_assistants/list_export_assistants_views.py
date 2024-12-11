@@ -18,16 +18,31 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import TemplateView
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.views.generic import (
+    TemplateView
+)
 
 from apps.core.user_permissions.permission_manager import (
     UserPermissionManager
 )
 
-from apps.export_assistants.models import ExportAssistantAPI
-from apps.organization.models import Organization
-from apps.user_permissions.utils import PermissionNames
+from apps.export_assistants.models import (
+    ExportAssistantAPI
+)
+
+from apps.organization.models import (
+    Organization
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from config import settings
 from web_project import TemplateLayout
 
@@ -53,7 +68,11 @@ class ExportAssistantView_List(TemplateView, LoginRequiredMixin):
 
         try:
             org_data = []
-            orgs = Organization.objects.filter(users=user_context)
+
+            orgs = Organization.objects.filter(
+                users=user_context
+            )
+
             for org in orgs:
 
                 n_exp_agents = org.exported_assistants.count()
@@ -63,13 +82,15 @@ class ExportAssistantView_List(TemplateView, LoginRequiredMixin):
                 for agent in exp_agents:
                     agent.usage_percentage = 100
 
-                org_data.append({
-                    'organization': org,
-                    'export_assistants_count': n_exp_agents,
-                    'assistants_percentage': agents_pct,
-                    'export_assistants': exp_agents,
-                    'limit': max_exp_agents
-                })
+                org_data.append(
+                    {
+                        'organization': org,
+                        'export_assistants_count': n_exp_agents,
+                        'assistants_percentage': agents_pct,
+                        'export_assistants': exp_agents,
+                        'limit': max_exp_agents
+                    }
+                )
 
             exp_agents = ExportAssistantAPI.objects.filter(
                 created_by_user=user_context

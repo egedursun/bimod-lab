@@ -55,6 +55,8 @@ urlpatterns = [
         name='compile-script'
     ),
 
+    #####
+
     # TemplateView based views
 
     path(

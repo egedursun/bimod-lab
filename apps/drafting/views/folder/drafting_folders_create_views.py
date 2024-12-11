@@ -18,14 +18,27 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.shortcuts import redirect
 from django.views import View
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.drafting.models import DraftingFolder
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
+from apps.drafting.models import (
+    DraftingFolder
+)
+
 from apps.organization.models import Organization
-from apps.user_permissions.utils import PermissionNames
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
 
 logger = logging.getLogger(__name__)
 
@@ -46,11 +59,15 @@ class DraftingView_FolderCreate(LoginRequiredMixin, View):
         organization_id = request.POST.get('organization')
         folder_name = request.POST.get('name')
         description = request.POST.get('description', '')
+
         meta_context_instructions = request.POST.get('meta_context_instructions', '')
 
         try:
             if organization_id and folder_name:
-                organization = Organization.objects.get(id=organization_id)
+                organization = Organization.objects.get(
+                    id=organization_id
+                )
+
                 DraftingFolder.objects.create(
                     organization=organization,
                     name=folder_name,

@@ -14,17 +14,34 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import get_object_or_404, redirect
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.shortcuts import (
+    get_object_or_404,
+    redirect
+)
 from django.views.generic import TemplateView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.drafting.models import DraftingFolder
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
+from apps.drafting.models import (
+    DraftingFolder
+)
+
 from apps.organization.models import Organization
-from apps.user_permissions.utils import PermissionNames
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -36,7 +53,10 @@ class DraftingView_FolderUpdate(LoginRequiredMixin, TemplateView):
         folder_id = self.kwargs['folder_id']
 
         try:
-            folder = get_object_or_404(DraftingFolder, id=folder_id)
+            folder = get_object_or_404(
+                DraftingFolder,
+                id=folder_id
+            )
 
             organizations = Organization.objects.filter(
                 users__in=[self.request.user]
@@ -65,7 +85,11 @@ class DraftingView_FolderUpdate(LoginRequiredMixin, TemplateView):
         ##############################
 
         folder_id = self.kwargs['folder_id']
-        folder = get_object_or_404(DraftingFolder, id=folder_id)
+
+        folder = get_object_or_404(
+            DraftingFolder,
+            id=folder_id
+        )
 
         try:
             folder.name = request.POST.get('name')
@@ -81,7 +105,9 @@ class DraftingView_FolderUpdate(LoginRequiredMixin, TemplateView):
         except Exception as e:
             logger.error(f"Error updating Drafting Folder: {e}")
             messages.error(self.request, 'An error occurred while updating Drafting Folder.')
+
             return redirect('drafting:folders_list')
 
         logger.info(f"Drafting Folder was updated by User: {request.user.id}.")
+
         return redirect('drafting:folders_list')

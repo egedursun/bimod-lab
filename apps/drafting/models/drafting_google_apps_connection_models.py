@@ -43,6 +43,7 @@ class DraftingGoogleAppsConnection(models.Model):
     class Meta:
         verbose_name = 'Drafting Google Apps Connection'
         verbose_name_plural = 'Drafting Google Apps Connections'
+
         indexes = [
             models.Index(fields=[
                 'drafting_assistant'
@@ -55,6 +56,7 @@ class DraftingGoogleAppsConnection(models.Model):
                 'owner_user'
             ]),
         ]
+
         unique_together = [
             [
                 'drafting_assistant',

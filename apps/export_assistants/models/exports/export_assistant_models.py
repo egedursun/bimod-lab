@@ -18,14 +18,19 @@
 from django.db import models
 from django.utils import timezone
 
-from apps.export_assistants.models import RequestLog
+from apps.export_assistants.models import (
+    RequestLog
+)
 
 from apps.export_assistants.utils import (
     generate_assistant_custom_api_key,
     generate_endpoint
 )
 
-from config.settings import BASE_URL, EXPORT_API_BASE_URL
+from config.settings import (
+    BASE_URL,
+    EXPORT_API_BASE_URL
+)
 
 
 class ExportAssistantAPI(models.Model):
@@ -96,7 +101,9 @@ class ExportAssistantAPI(models.Model):
             self.save()
 
         if not self.custom_api_key and (not self.is_public):
-            self.custom_api_key = generate_assistant_custom_api_key(self.assistant)
+            self.custom_api_key = generate_assistant_custom_api_key(
+                self.assistant
+            )
 
             self.save()
 
@@ -116,6 +123,7 @@ class ExportAssistantAPI(models.Model):
     class Meta:
         verbose_name = "Export Assistant API"
         verbose_name_plural = "Export Assistant APIs"
+
         ordering = ['-created_at']
 
         unique_together = [

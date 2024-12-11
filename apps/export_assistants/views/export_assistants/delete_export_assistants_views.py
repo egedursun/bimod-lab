@@ -18,16 +18,30 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import redirect, get_object_or_404
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.shortcuts import (
+    redirect,
+    get_object_or_404
+)
+
 from django.views.generic import DeleteView
 
 from apps.core.user_permissions.permission_manager import (
     UserPermissionManager
 )
 
-from apps.export_assistants.models import ExportAssistantAPI
-from apps.user_permissions.utils import PermissionNames
+from apps.export_assistants.models import (
+    ExportAssistantAPI
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -55,8 +69,13 @@ class ExportAssistantView_Delete(LoginRequiredMixin, DeleteView):
             return redirect('export_assistants:list')
         ##############################
 
-        exp_agent = get_object_or_404(ExportAssistantAPI, id=self.kwargs['pk'])
+        exp_agent = get_object_or_404(
+            ExportAssistantAPI,
+            id=self.kwargs['pk']
+        )
+
         exp_agent.delete()
+
         success_message = "Export Assistant deleted successfully."
 
         org = exp_agent.assistant.organization
@@ -65,6 +84,7 @@ class ExportAssistantView_Delete(LoginRequiredMixin, DeleteView):
         org.save()
 
         logger.info(f"Export Assistant was deleted by User: {request.user.id}.")
+
         messages.success(request, success_message)
 
         return redirect(self.success_url)

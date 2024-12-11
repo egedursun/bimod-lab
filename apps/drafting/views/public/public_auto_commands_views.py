@@ -18,15 +18,24 @@
 import logging
 
 from django.http import JsonResponse
-from django.utils.decorators import method_decorator
+
+from django.utils.decorators import (
+    method_decorator
+)
+
 from django.views import View
-from django.views.decorators.csrf import csrf_exempt
+
+from django.views.decorators.csrf import (
+    csrf_exempt
+)
 
 from apps.core.drafting.drafting_executor_public import (
     DraftingExecutionManager_Public
 )
 
-from apps.drafting.utils import is_valid_google_apps_authentication_key
+from apps.drafting.utils import (
+    is_valid_google_apps_authentication_key
+)
 
 logger = logging.getLogger(__name__)
 
@@ -62,6 +71,7 @@ class DraftingView_PublicGenerateViaAutoCommand(View):
 
         if not connection_object:
             logger.error(f"Invalid Google Apps Authentication Key.")
+
             return JsonResponse(
                 {
                     "output": None,

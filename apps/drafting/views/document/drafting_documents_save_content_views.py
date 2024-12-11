@@ -18,16 +18,29 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import get_object_or_404, redirect
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.shortcuts import (
+    get_object_or_404,
+    redirect
+)
+
 from django.views import View
 
 from apps.core.user_permissions.permission_manager import (
     UserPermissionManager
 )
 
-from apps.drafting.models import DraftingDocument
-from apps.user_permissions.utils import PermissionNames
+from apps.drafting.models import (
+    DraftingDocument
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
 
 logger = logging.getLogger(__name__)
 

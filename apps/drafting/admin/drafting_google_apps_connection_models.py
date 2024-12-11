@@ -18,7 +18,9 @@
 
 from django.contrib import admin
 
-from apps.drafting.models import DraftingGoogleAppsConnection
+from apps.drafting.models import (
+    DraftingGoogleAppsConnection
+)
 
 from apps.drafting.utils import (
     DRAFTING_GOOGLE_APPS_CONNECTION_ADMIN_LIST,
@@ -32,4 +34,5 @@ class DraftingGoogleAppsConnectionAdmin(admin.ModelAdmin):
     list_display = DRAFTING_GOOGLE_APPS_CONNECTION_ADMIN_LIST
     list_filter = DRAFTING_GOOGLE_APPS_CONNECTION_ADMIN_FILTER
     search_fields = DRAFTING_GOOGLE_APPS_CONNECTION_ADMIN_SEARCH
+
     ordering = ('-created_at', '-updated_at')

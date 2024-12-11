@@ -18,15 +18,33 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.http import JsonResponse
-from django.shortcuts import get_object_or_404, redirect
+
+from django.shortcuts import (
+    get_object_or_404,
+    redirect
+)
+
 from django.views import View
 
-from apps.core.drafting.drafting_executor import DraftingExecutionManager
-from apps.core.user_permissions.permission_manager import UserPermissionManager
+from apps.core.drafting.drafting_executor import (
+    DraftingExecutionManager
+)
+
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
 from apps.drafting.models import DraftingDocument
-from apps.user_permissions.utils import PermissionNames
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
 
 logger = logging.getLogger(__name__)
 
@@ -47,12 +65,18 @@ class DraftingView_GenerateViaAutoCommand(LoginRequiredMixin, View):
             operation=PermissionNames.UPDATE_DRAFTING_DOCUMENTS
         ):
             messages.error(self.request, "You do not have permission to update Drafting Documents.")
-            return redirect('drafting:documents_detail',
-                            folder_id=document.document_folder.id, document_id=document_id)
+            return redirect(
+                'drafting:documents_detail',
+                folder_id=document.document_folder.id,
+                document_id=document_id
+            )
         ##############################
 
         try:
-            xc = DraftingExecutionManager(drafting_document=document)
+            xc = DraftingExecutionManager(
+                drafting_document=document
+            )
+
             response_json = xc.execute_auto_command()
 
         except Exception as e:
@@ -66,4 +90,5 @@ class DraftingView_GenerateViaAutoCommand(LoginRequiredMixin, View):
             )
 
         logger.info(f"Auto Command was executed for Drafting Document: {document.id}.")
+
         return JsonResponse(response_json)

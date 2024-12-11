@@ -17,7 +17,9 @@
 
 from django.contrib import admin
 
-from apps.drafting.models import DraftingFolder
+from apps.drafting.models import (
+    DraftingFolder
+)
 
 from apps.drafting.utils import (
     DRAFTING_FOLDER_ADMIN_LIST,
@@ -31,4 +33,5 @@ class DraftingFolderAdmin(admin.ModelAdmin):
     list_display = DRAFTING_FOLDER_ADMIN_LIST
     list_filter = DRAFTING_FOLDER_ADMIN_FILTER
     search_fields = DRAFTING_FOLDER_ADMIN_SEARCH
+
     ordering = ('-created_at',)

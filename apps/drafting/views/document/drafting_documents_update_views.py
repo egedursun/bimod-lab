@@ -18,8 +18,16 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import get_object_or_404, redirect
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.shortcuts import (
+    get_object_or_404,
+    redirect
+)
+
 from django.views.generic import TemplateView
 
 from apps.assistants.models import Assistant
@@ -33,7 +41,10 @@ from apps.drafting.models import (
     DraftingDocument
 )
 
-from apps.user_permissions.utils import PermissionNames
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -42,6 +53,7 @@ logger = logging.getLogger(__name__)
 class DraftingView_DocumentUpdate(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+
         folder_id = self.kwargs['folder_id']
         document_id = self.kwargs['document_id']
 
@@ -73,6 +85,7 @@ class DraftingView_DocumentUpdate(LoginRequiredMixin, TemplateView):
         except Exception as e:
             logger.error(f"Error getting Drafting Document: {e}")
             messages.error(self.request, 'An error occurred while getting Drafting Document.')
+
             return context
 
         return context
@@ -110,6 +123,7 @@ class DraftingView_DocumentUpdate(LoginRequiredMixin, TemplateView):
 
             document.context_instructions = request.POST.get('context_instructions', '')
             document.target_audience = request.POST.get('target_audience', '')
+
             document.tone = request.POST.get('tone', '')
             document.last_updated_by_user = request.user
 

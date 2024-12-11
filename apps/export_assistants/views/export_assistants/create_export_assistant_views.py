@@ -18,8 +18,16 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import redirect, get_object_or_404
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.shortcuts import (
+    redirect,
+    get_object_or_404
+)
+
 from django.views.generic import TemplateView
 
 from apps.core.user_permissions.permission_manager import (
@@ -27,8 +35,15 @@ from apps.core.user_permissions.permission_manager import (
 )
 
 from apps.assistants.models import Assistant
-from apps.user_permissions.utils import PermissionNames
-from config.settings import MAX_ASSISTANT_EXPORTS_ORGANIZATION
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
+from config.settings import (
+    MAX_ASSISTANT_EXPORTS_ORGANIZATION
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -51,7 +66,9 @@ class ExportAssistantView_Create(TemplateView, LoginRequiredMixin):
         return context
 
     def post(self, request, *args, **kwargs):
-        from apps.export_assistants.models import ExportAssistantAPI
+        from apps.export_assistants.models import (
+            ExportAssistantAPI
+        )
 
         ##############################
         # PERMISSION CHECK FOR - ADD_EXPORT_ASSISTANT
@@ -64,7 +81,11 @@ class ExportAssistantView_Create(TemplateView, LoginRequiredMixin):
         ##############################
 
         agent_id = request.POST.get('assistant')
-        agent = get_object_or_404(Assistant, pk=agent_id)
+
+        agent = get_object_or_404(
+            Assistant,
+            pk=agent_id
+        )
 
         is_public = request.POST.get('is_public') == 'on'
         limit_req_per_hour = request.POST.get('request_limit_per_hour')
@@ -74,12 +95,16 @@ class ExportAssistantView_Create(TemplateView, LoginRequiredMixin):
         ).count() > MAX_ASSISTANT_EXPORTS_ORGANIZATION:
             messages.error(request, f"Maximum number of Export Assistant APIs reached for the organization.")
 
-            return self.render_to_response(self.get_context_data())
+            return self.render_to_response(
+                self.get_context_data()
+            )
 
         if not agent_id or not limit_req_per_hour:
             messages.error(request, "Assistant ID and Request Limit Per Hour are required.")
 
-            return self.render_to_response(self.get_context_data())
+            return self.render_to_response(
+                self.get_context_data()
+            )
 
         try:
             new_export_assistant = ExportAssistantAPI.objects.create(
@@ -91,6 +116,7 @@ class ExportAssistantView_Create(TemplateView, LoginRequiredMixin):
 
             org = agent.organization
             org.exported_assistants.add(new_export_assistant)
+
             org.save()
 
             logger.info(f"Export Assistant API was created by User: {request.user.id}.")
@@ -103,4 +129,6 @@ class ExportAssistantView_Create(TemplateView, LoginRequiredMixin):
             logger.error(f"Error creating Export Assistant API: {str(e)}")
             messages.error(request, f"Error creating Export Assistant API: {str(e)}")
 
-            return self.render_to_response(self.get_context_data())
+            return self.render_to_response(
+                self.get_context_data()
+            )

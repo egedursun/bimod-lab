@@ -18,15 +18,35 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.http import JsonResponse
-from django.shortcuts import get_object_or_404, redirect
+
+from django.shortcuts import (
+    get_object_or_404,
+    redirect
+)
+
 from django.views import View
 
-from apps.core.drafting.drafting_executor import DraftingExecutionManager
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.drafting.models import DraftingDocument
-from apps.user_permissions.utils import PermissionNames
+from apps.core.drafting.drafting_executor import (
+    DraftingExecutionManager
+)
+
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
+from apps.drafting.models import (
+    DraftingDocument
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
 
 logger = logging.getLogger(__name__)
 
@@ -38,7 +58,11 @@ class DraftingView_GenerateViaImgCommand(LoginRequiredMixin, View):
 
     def post(self, request, *args, **kwargs):
         document_id = request.POST.get('document_id')
-        document = get_object_or_404(DraftingDocument, pk=document_id)
+
+        document = get_object_or_404(
+            DraftingDocument,
+            pk=document_id
+        )
 
         ##############################
         # PERMISSION CHECK FOR - UPDATE_DRAFTING_DOCUMENTS
@@ -47,14 +71,23 @@ class DraftingView_GenerateViaImgCommand(LoginRequiredMixin, View):
             operation=PermissionNames.UPDATE_DRAFTING_DOCUMENTS
         ):
             messages.error(self.request, "You do not have permission to update Drafting Documents.")
-            return redirect('drafting:documents_detail',
-                            folder_id=document.document_folder.id, document_id=document_id)
+            return redirect(
+                'drafting:documents_detail',
+                folder_id=document.document_folder.id,
+                document_id=document_id
+            )
         ##############################
 
         try:
             command = request.POST.get('command')
-            xc = DraftingExecutionManager(drafting_document=document)
-            response_json = xc.execute_img_command(command=command)
+
+            xc = DraftingExecutionManager(
+                drafting_document=document
+            )
+
+            response_json = xc.execute_img_command(
+                command=command
+            )
 
         except Exception as e:
             logger.error(f"Error executing Img Command for Drafting Document: {e}")
@@ -67,4 +100,5 @@ class DraftingView_GenerateViaImgCommand(LoginRequiredMixin, View):
             )
 
         logger.info(f"Img Command was executed for Drafting Document: {document.id}.")
+
         return JsonResponse(response_json)

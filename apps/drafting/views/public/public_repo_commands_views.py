@@ -18,15 +18,24 @@
 import logging
 
 from django.http import JsonResponse
-from django.utils.decorators import method_decorator
+
+from django.utils.decorators import (
+    method_decorator
+)
+
 from django.views import View
-from django.views.decorators.csrf import csrf_exempt
+
+from django.views.decorators.csrf import (
+    csrf_exempt
+)
 
 from apps.core.drafting.drafting_executor_public import (
     DraftingExecutionManager_Public
 )
 
-from apps.drafting.utils import is_valid_google_apps_authentication_key
+from apps.drafting.utils import (
+    is_valid_google_apps_authentication_key
+)
 
 logger = logging.getLogger(__name__)
 
@@ -52,6 +61,7 @@ class DraftingView_PublicGenerateViaRepoCommand(View):
             )
 
         text_content = request.POST.get('text_content')
+
         if text_content is None:
             logger.error(f"Text Content is None, assuming empty string.")
             text_content = ""
@@ -88,7 +98,9 @@ class DraftingView_PublicGenerateViaRepoCommand(View):
             text_content=text_content
         )
 
-        response_json = xc.execute_repo_command(command=command)
+        response_json = xc.execute_repo_command(
+            command=command
+        )
 
         logger.info(f"Repo Command was executed for Google Apps Connection: {connection_object}")
 

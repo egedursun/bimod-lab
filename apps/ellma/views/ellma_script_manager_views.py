@@ -15,8 +15,14 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import TemplateView
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.views.generic import (
+    TemplateView
+)
 
 from apps.core.user_permissions.permission_manager import (
     UserPermissionManager
@@ -24,8 +30,15 @@ from apps.core.user_permissions.permission_manager import (
 
 from apps.ellma.models import EllmaScript
 from apps.llm_core.models import LLMCore
-from apps.organization.models import Organization
-from apps.user_permissions.utils import PermissionNames
+
+from apps.organization.models import (
+    Organization
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 
@@ -44,19 +57,29 @@ class EllmaScriptView_ManageScripts(LoginRequiredMixin, TemplateView):
         ##############################
 
         try:
-            user_orgs = Organization.objects.filter(users__in=[self.request.user])
+            user_orgs = Organization.objects.filter(
+                users__in=[self.request.user]
+            )
+
             org_scripts = {}
 
             for org in user_orgs:
-                scripts = EllmaScript.objects.filter(organization=org)
+                scripts = EllmaScript.objects.filter(
+                    organization=org
+                )
+
                 org_scripts[org] = scripts
 
             context['org_scripts'] = org_scripts
             context["organizations"] = user_orgs
-            context['llm_models'] = LLMCore.objects.filter(organization__in=user_orgs)
+
+            context['llm_models'] = LLMCore.objects.filter(
+                organization__in=user_orgs
+            )
 
         except Exception as e:
             messages.error(self.request, f"An error occurred: {str(e)}")
+
             return context
 
         return context

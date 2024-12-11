@@ -18,14 +18,30 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.core.paginator import Paginator
 from django.views.generic import TemplateView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.drafting.models import DraftingFolder
-from apps.organization.models import Organization
-from apps.user_permissions.utils import PermissionNames
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
+from apps.drafting.models import (
+    DraftingFolder
+)
+
+from apps.organization.models import (
+    Organization
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -46,7 +62,6 @@ class DraftingView_FolderList(LoginRequiredMixin, TemplateView):
             return context
         ##############################
 
-        # Get organizations and paginate folders for each
         try:
             user_orgs = Organization.objects.filter(
                 users__in=[self.request.user]
@@ -55,9 +70,14 @@ class DraftingView_FolderList(LoginRequiredMixin, TemplateView):
             org_folders = []
 
             for org in user_orgs:
-                folders = DraftingFolder.objects.filter(organization=org)
+                folders = DraftingFolder.objects.filter(
+                    organization=org
+                )
+
                 paginator = Paginator(folders, 10)
+
                 page_number = self.request.GET.get(f'page_{org.id}', 1)
+
                 page_obj = paginator.get_page(page_number)
 
                 org_folders.append(
@@ -77,4 +97,5 @@ class DraftingView_FolderList(LoginRequiredMixin, TemplateView):
             return context
 
         logger.info(f"Drafting Folders were listed for User: {self.request.user.id}.")
+
         return context

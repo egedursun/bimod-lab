@@ -18,8 +18,15 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.exceptions import ObjectDoesNotExist
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.core.exceptions import (
+    ObjectDoesNotExist
+)
+
 from django.shortcuts import redirect
 from django.views import View
 
@@ -41,9 +48,18 @@ from apps.core.user_permissions.permission_manager import (
 )
 
 from apps.ellma.models import EllmaScript
-from apps.llm_transaction.models import LLMTransaction
-from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
-from apps.user_permissions.utils import PermissionNames
+
+from apps.llm_transaction.models import (
+    LLMTransaction
+)
+
+from apps.llm_transaction.utils import (
+    LLMTransactionSourcesTypesNames
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
 
 logger = logging.getLogger(__name__)
 
@@ -55,11 +71,14 @@ class EllmaScriptView_CompileScript(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         script_id = kwargs.get('pk')
 
-        script: EllmaScript = EllmaScript.objects.get(id=script_id)
+        script: EllmaScript = EllmaScript.objects.get(
+            id=script_id
+        )
 
         if not script:
             messages.error(request, "Script not found.")
             logger.error(f"[eLLMa Compilation View] Script not found.")
+
             return redirect('ellma:manage-scripts')
 
         ##############################
@@ -73,9 +92,13 @@ class EllmaScriptView_CompileScript(LoginRequiredMixin, View):
         ##############################
 
         try:
-            ellma_script = EllmaScript.objects.get(id=script_id)
+            ellma_script = EllmaScript.objects.get(
+                id=script_id
+            )
 
-            xc = EllmaExecutionManager(script=ellma_script)
+            xc = EllmaExecutionManager(
+                script=ellma_script
+            )
 
             generated_code_output, error = xc.transcribe_via_ai()
             ellma_script.ellma_transcribed_content = generated_code_output
@@ -86,10 +109,13 @@ class EllmaScriptView_CompileScript(LoginRequiredMixin, View):
                 logger.error(f"[eLLMa Compilation View] An error occurred during compilation: {error}")
                 messages.error(request, f"An error occurred during compilation: {error}")
 
-                return redirect('ellma:script-editor', pk=script_id)
+                return redirect(
+                    'ellma:script-editor',
+                    pk=script_id
+                )
 
             else:
-                print("Generated Code Output: ", generated_code_output)
+                logger.info(f"[eLLMa Compilation View] Compiled eLLMa Script: {ellma_script.script_name}")
 
         except ObjectDoesNotExist:
             messages.error(request, "Script not found.")
@@ -101,9 +127,11 @@ class EllmaScriptView_CompileScript(LoginRequiredMixin, View):
             messages.error(request, f"An error occurred during compilation: {str(e)}")
             logger.error(f"[eLLMa Compilation View] An error occurred during compilation: {str(e)}")
 
-            return redirect('ellma:script-editor', pk=script_id)
+            return redirect(
+                'ellma:script-editor',
+                pk=script_id
+            )
 
-        # Save the output generation as text
         script.ellma_transcribed_content = generated_code_output
 
         script.save()
@@ -122,7 +150,9 @@ class EllmaScriptView_CompileScript(LoginRequiredMixin, View):
                 transaction_source=LLMTransactionSourcesTypesNames.ELLMA_SCRIPTING,
                 is_tool_cost=True
             )
+
             tx.save()
+
             logger.info(f"[eLLMa Compilation View] Created LLMTransaction for eLLMa Scripting Compilation Tool.")
 
         except Exception as e:
@@ -131,4 +161,8 @@ class EllmaScriptView_CompileScript(LoginRequiredMixin, View):
             pass
 
         logger.info(f"[eLLMa Compilation View] Compiled eLLMa Script: {script.script_name}")
-        return redirect('ellma:script-editor', pk=script_id)
+
+        return redirect(
+            'ellma:script-editor',
+            pk=script_id
+        )

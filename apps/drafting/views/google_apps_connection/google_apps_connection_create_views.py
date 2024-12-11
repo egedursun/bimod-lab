@@ -16,15 +16,35 @@
 #
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import redirect, get_object_or_404
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.shortcuts import (
+    redirect,
+    get_object_or_404
+)
+
 from django.views import View
 
 from apps.assistants.models import Assistant
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.drafting.models import DraftingGoogleAppsConnection
-from apps.drafting.utils import generate_google_apps_connection_api_key
-from apps.user_permissions.utils import PermissionNames
+
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
+from apps.drafting.models import (
+    DraftingGoogleAppsConnection
+)
+
+from apps.drafting.utils import (
+    generate_google_apps_connection_api_key
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
 
 
 class DraftingView_GoogleAppsConnectionCreate(LoginRequiredMixin, View):
@@ -44,12 +64,16 @@ class DraftingView_GoogleAppsConnectionCreate(LoginRequiredMixin, View):
         ##############################
 
         assistant_id = request.POST.get('assistant')
+
         if not assistant_id:
             messages.error(request, "Assistant field is required.")
             return redirect('drafting:google_apps_connections_list')
 
         try:
-            assistant = get_object_or_404(Assistant, id=assistant_id)
+            assistant = get_object_or_404(
+                Assistant,
+                id=assistant_id
+            )
 
             connection, created = DraftingGoogleAppsConnection.objects.get_or_create(
                 owner_user=request.user,
@@ -61,6 +85,7 @@ class DraftingView_GoogleAppsConnectionCreate(LoginRequiredMixin, View):
 
             if not created:
                 messages.warning(request, "A connection for this model already exists. Please renew if necessary.")
+
             else:
                 messages.success(request, "Connection successfully created.")
 

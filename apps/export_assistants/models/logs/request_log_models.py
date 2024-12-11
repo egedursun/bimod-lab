@@ -29,6 +29,7 @@ class RequestLog(models.Model):
     class Meta:
         verbose_name = "Request Log"
         verbose_name_plural = "Request Logs"
+
         ordering = ['-timestamp']
 
         indexes = [

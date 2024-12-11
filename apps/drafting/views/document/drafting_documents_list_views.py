@@ -18,7 +18,10 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
 
 from django.core.paginator import (
     Paginator,
@@ -26,8 +29,13 @@ from django.core.paginator import (
     EmptyPage
 )
 
-from django.shortcuts import get_object_or_404
-from django.views.generic import TemplateView
+from django.shortcuts import (
+    get_object_or_404
+)
+
+from django.views.generic import (
+    TemplateView
+)
 
 from apps.assistants.models import Assistant
 
@@ -40,7 +48,10 @@ from apps.drafting.models import (
     DraftingDocument
 )
 
-from apps.user_permissions.utils import PermissionNames
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -76,6 +87,7 @@ class DraftingView_DocumentList(LoginRequiredMixin, TemplateView):
         )
 
         paginator = Paginator(documents, 10)
+
         page = self.request.GET.get('page')
 
         try:

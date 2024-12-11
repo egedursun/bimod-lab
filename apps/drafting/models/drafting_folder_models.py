@@ -30,7 +30,11 @@ class DraftingFolder(models.Model):
     meta_context_instructions = models.TextField(blank=True, null=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
-    created_by_user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+
+    created_by_user = models.ForeignKey(
+        'auth.User',
+        on_delete=models.CASCADE
+    )
 
     def __str__(self):
         return self.organization.name + ' - ' + self.name
@@ -38,6 +42,7 @@ class DraftingFolder(models.Model):
     class Meta:
         verbose_name = 'Drafting Folder'
         verbose_name_plural = 'Drafting Folders'
+
         indexes = [
             models.Index(fields=[
                 'organization'
@@ -47,6 +52,7 @@ class DraftingFolder(models.Model):
                 'name'
             ]),
         ]
+
         unique_together = [
             [
                 'organization',

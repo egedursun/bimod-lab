@@ -18,15 +18,35 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.http import JsonResponse
-from django.shortcuts import get_object_or_404, redirect
+
+from django.shortcuts import (
+    get_object_or_404,
+    redirect
+)
+
 from django.views import View
 
-from apps.core.drafting.drafting_executor import DraftingExecutionManager
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.drafting.models import DraftingDocument
-from apps.user_permissions.utils import PermissionNames
+from apps.core.drafting.drafting_executor import (
+    DraftingExecutionManager
+)
+
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
+from apps.drafting.models import (
+    DraftingDocument
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
 
 logger = logging.getLogger(__name__)
 
@@ -57,8 +77,14 @@ class DraftingView_GenerateViaSiteCommand(LoginRequiredMixin, View):
 
         try:
             command = request.POST.get('command')
-            xc = DraftingExecutionManager(drafting_document=document)
-            response_json = xc.execute_site_command(command=command)
+
+            xc = DraftingExecutionManager(
+                drafting_document=document
+            )
+
+            response_json = xc.execute_site_command(
+                command=command
+            )
 
         except Exception as e:
             logger.error(f"Error executing Site Command for Drafting Document: {e}")
@@ -71,4 +97,5 @@ class DraftingView_GenerateViaSiteCommand(LoginRequiredMixin, View):
             )
 
         logger.info(f"Site Command was executed for Drafting Document: {document.id}.")
+
         return JsonResponse(response_json)

@@ -16,8 +16,15 @@
 #
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.exceptions import ObjectDoesNotExist
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.core.exceptions import (
+    ObjectDoesNotExist
+)
+
 from django.shortcuts import redirect
 from django.views import View
 
@@ -25,10 +32,19 @@ from apps.core.user_permissions.permission_manager import (
     UserPermissionManager
 )
 
-from apps.ellma.models import EllmaScript
+from apps.ellma.models import (
+    EllmaScript
+)
+
 from apps.llm_core.models import LLMCore
-from apps.organization.models import Organization
-from apps.user_permissions.utils import PermissionNames
+
+from apps.organization.models import (
+    Organization
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
 
 
 class EllmaScriptView_CreateScript(LoginRequiredMixin, View):
@@ -60,11 +76,17 @@ class EllmaScriptView_CreateScript(LoginRequiredMixin, View):
             return redirect('ellma:manage-scripts')
 
         try:
-            organization = Organization.objects.get(id=organization_id)
-            llm_model = LLMCore.objects.get(id=llm_model_id)
+            organization = Organization.objects.get(
+                id=organization_id
+            )
+
+            llm_model = LLMCore.objects.get(
+                id=llm_model_id
+            )
 
         except ObjectDoesNotExist:
             messages.error(request, "Organization or LLM Model not found.")
+
             return redirect('ellma:manage-scripts')
 
         ellma_script = EllmaScript.objects.create(

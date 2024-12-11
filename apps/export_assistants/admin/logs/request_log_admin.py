@@ -17,7 +17,9 @@
 
 from django.contrib import admin
 
-from apps.export_assistants.models import RequestLog
+from apps.export_assistants.models import (
+    RequestLog
+)
 
 from apps.export_assistants.utils import (
     EXPORT_ASSISTANT_LOG_ADMIN_LIST,
@@ -31,5 +33,6 @@ class RequestLogAdmin(admin.ModelAdmin):
     list_display = EXPORT_ASSISTANT_LOG_ADMIN_LIST
     list_filter = EXPORT_ASSISTANT_LOG_ADMIN_FILTER
     search_fields = EXPORT_ASSISTANT_LOG_ADMIN_SEARCH
+
     date_hierarchy = "timestamp"
     ordering = ["-timestamp"]
