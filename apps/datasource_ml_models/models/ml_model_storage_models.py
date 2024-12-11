@@ -60,13 +60,16 @@ class DataSourceMLModelConnection(models.Model):
     class Meta:
         verbose_name = 'Data Source ML Model Connection'
         verbose_name_plural = 'Data Source ML Model Connections'
+
         unique_together = [
             [
                 'assistant',
                 'name'
             ],
         ]
+
         ordering = ['-created_at']
+
         indexes = [
             models.Index(fields=[
                 'assistant',
@@ -97,7 +100,9 @@ class DataSourceMLModelConnection(models.Model):
         if not self.directory_full_path:
             base_dir = self.assistant.ml_models_base_directory
             dir_suffix = self.model_object_category
+
             full_path = f"{base_dir}{dir_suffix}/"
+
             self.directory_full_path = full_path
 
         super().save(
@@ -107,7 +112,11 @@ class DataSourceMLModelConnection(models.Model):
             update_fields
         )
 
-    def delete(self, using=None, keep_parents=False):
+    def delete(
+        self,
+        using=None,
+        keep_parents=False
+    ):
         if self.directory_full_path is not None:
 
             try:
@@ -122,4 +131,7 @@ class DataSourceMLModelConnection(models.Model):
             except IOError:
                 pass
 
-        super().delete(using, keep_parents)
+        super().delete(
+            using,
+            keep_parents
+        )

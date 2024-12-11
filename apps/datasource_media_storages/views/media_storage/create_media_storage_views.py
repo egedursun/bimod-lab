@@ -18,7 +18,11 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
@@ -37,8 +41,15 @@ from apps.datasource_media_storages.utils import (
 )
 
 from apps.organization.models import Organization
-from apps.user_permissions.utils import PermissionNames
-from config.settings import MAX_MEDIA_STORAGES_PER_ASSISTANT
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
+from config.settings import (
+    MAX_MEDIA_STORAGES_PER_ASSISTANT
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -47,6 +58,7 @@ logger = logging.getLogger(__name__)
 class MediaView_ManagerCreate(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+
         context_user = self.request.user
 
         try:
@@ -83,6 +95,7 @@ class MediaView_ManagerCreate(LoginRequiredMixin, TemplateView):
 
         name = request.POST.get('name')
         desc = request.POST.get('description')
+
         item_category = request.POST.get('media_category')
         agent_id = request.POST.get('assistant')
 

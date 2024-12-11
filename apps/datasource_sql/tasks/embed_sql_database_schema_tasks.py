@@ -24,7 +24,8 @@ import numpy as np
 
 from apps.datasource_sql.utils import (
     OpenAIEmbeddingModels,
-    OPEN_AI_DEFAULT_EMBEDDING_VECTOR_DIMENSIONS, VECTOR_INDEX_PATH_SQL_SCHEMAS
+    OPEN_AI_DEFAULT_EMBEDDING_VECTOR_DIMENSIONS,
+    VECTOR_INDEX_PATH_SQL_SCHEMAS
 )
 
 logger = logging.getLogger(__name__)
@@ -45,7 +46,10 @@ def _generate_embedding(vector, raw_data):
         llm_model=vector.sql_database.assistant.llm_model
     )
 
-    raw_data_text = json.dumps(raw_data, indent=2)
+    raw_data_text = json.dumps(
+        raw_data,
+        indent=2
+    )
 
     try:
         response = c.embeddings.create(
@@ -54,6 +58,7 @@ def _generate_embedding(vector, raw_data):
         )
 
         embedding_vector = response.data[0].embedding
+
         vector.vector_data = embedding_vector
 
     except Exception as e:
@@ -61,6 +66,7 @@ def _generate_embedding(vector, raw_data):
         vector.vector_data = []
 
     vector.raw_data = raw_data
+
     vector.save()
 
 
@@ -74,9 +80,15 @@ def _save_embedding(vector, index_path):
             OPEN_AI_DEFAULT_EMBEDDING_VECTOR_DIMENSIONS
         )
 
-        xids = np.array([vector.id], dtype=np.int64)
+        xids = np.array(
+            [
+                vector.id
+            ],
+            dtype=np.int64
+        )
 
         if not os.path.exists(index_path):
+
             index = faiss.IndexIDMap(
                 faiss.IndexFlatL2(
                     OPEN_AI_DEFAULT_EMBEDDING_VECTOR_DIMENSIONS
@@ -84,14 +96,29 @@ def _save_embedding(vector, index_path):
             )
 
         else:
-            index = faiss.read_index(index_path)
-            if not isinstance(index, faiss.IndexIDMap):
-                index = faiss.IndexIDMap(index)
+            index = faiss.read_index(
+                index_path
+            )
+
+            if not isinstance(
+                index,
+                faiss.IndexIDMap
+            ):
+                index = faiss.IndexIDMap(
+                    index
+                )
+
             index.remove_ids(xids)
 
-        index.add_with_ids(x, xids)
+        index.add_with_ids(
+            x,
+            xids
+        )
 
-        faiss.write_index(index, index_path)
+        faiss.write_index(
+            index,
+            index_path
+        )
 
 
 def handle_embedding_task(
@@ -107,6 +134,7 @@ def handle_embedding_task(
     )
 
     storage_id = vector.sql_database.id
+
     index_path = os.path.join(
         VECTOR_INDEX_PATH_SQL_SCHEMAS,
         f'sql_schemas_index_{storage_id}.index'
@@ -114,8 +142,15 @@ def handle_embedding_task(
 
     if not vector:
         logger.error(f"Vector not found with ID: {vector}")
+
         return False
 
-    _generate_embedding(vector=vector, raw_data=raw_data)
+    _generate_embedding(
+        vector=vector,
+        raw_data=raw_data
+    )
 
-    _save_embedding(vector=vector, index_path=index_path)
+    _save_embedding(
+        vector=vector,
+        index_path=index_path
+    )

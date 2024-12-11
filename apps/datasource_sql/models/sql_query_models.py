@@ -51,7 +51,9 @@ class CustomSQLQuery(models.Model):
             update_fields
         )
 
-        self.database_connection.custom_queries.add(self)
+        self.database_connection.custom_queries.add(
+            self
+        )
 
     class Meta:
         ordering = ['-created_at']

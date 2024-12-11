@@ -20,7 +20,11 @@ import os
 
 import boto3
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import redirect
@@ -36,10 +40,20 @@ from apps.datasource_media_storages.models import (
     DataSourceMediaStorageItem
 )
 
-from apps.multimodal_chat.models import MultimodalChat
+from apps.multimodal_chat.models import (
+    MultimodalChat
+)
+
 from apps.organization.models import Organization
-from apps.user_permissions.utils import PermissionNames
-from apps.video_generations.models import GeneratedVideo
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
+from apps.video_generations.models import (
+    GeneratedVideo
+)
+
 from config.settings import MEDIA_URL
 from web_project import TemplateLayout
 
@@ -73,7 +87,9 @@ class MediaView_Generated(LoginRequiredMixin, TemplateView):
                 )
 
                 agent_data_list = []
+
                 for agent in agents:
+
                     chats_of_agents = MultimodalChat.objects.filter(
                         assistant=agent
                     )
@@ -82,6 +98,7 @@ class MediaView_Generated(LoginRequiredMixin, TemplateView):
                     msgs_with_fs = []
 
                     for chat in chats_of_agents:
+
                         f_or_img_msgs = chat.chat_messages.filter(
                             Q(message_image_contents__isnull=False) |
                             Q(message_file_contents__isnull=False)
@@ -90,6 +107,7 @@ class MediaView_Generated(LoginRequiredMixin, TemplateView):
                         for m in f_or_img_msgs:
 
                             if m.message_image_contents:
+
                                 for img in m.message_image_contents:
                                     message_data = {
                                         'message': m,
@@ -109,12 +127,17 @@ class MediaView_Generated(LoginRequiredMixin, TemplateView):
 
                     pg_imgs = Paginator(msgs_with_imgs, 5)
                     pg_no_imgs = self.request.GET.get('page_images')
+
                     pg_obj_imgs = pg_imgs.get_page(pg_no_imgs)
                     pg_fs = Paginator(msgs_with_fs, 5)
 
                     pg_no_fs = self.request.GET.get('page_files')
                     pg_obj_fs = pg_fs.get_page(pg_no_fs)
-                    gen_videos = GeneratedVideo.objects.filter(assistant=agent)
+
+                    gen_videos = GeneratedVideo.objects.filter(
+                        assistant=agent
+                    )
+
                     pg_videos = Paginator(gen_videos, 5)
 
                     pg_no_videos = self.request.GET.get('page_videos')
@@ -129,7 +152,12 @@ class MediaView_Generated(LoginRequiredMixin, TemplateView):
 
                     agent_data_list.append(agent_data)
 
-                data.append({'organization': org, 'assistants': agent_data_list, })
+                data.append(
+                    {
+                        'organization': org,
+                        'assistants': agent_data_list,
+                    }
+                )
 
         except Exception as e:
             logger.error(f"User: {self.request.user} - Generated Media - List Error: {e}")
@@ -154,6 +182,7 @@ class MediaView_Generated(LoginRequiredMixin, TemplateView):
         ##############################
 
         if 'selected_items' in request.POST:
+
             item_ids = request.POST.getlist('selected_items')
 
             items_to_be_deleted = DataSourceMediaStorageItem.objects.filter(
@@ -161,7 +190,9 @@ class MediaView_Generated(LoginRequiredMixin, TemplateView):
             )
 
             for item in items_to_be_deleted:
+
                 if item.full_file_path is not None:
+
                     try:
                         s3c = boto3.client('s3')
                         bucket = os.getenv('AWS_STORAGE_BUCKET_NAME')
@@ -175,7 +206,10 @@ class MediaView_Generated(LoginRequiredMixin, TemplateView):
                         pass
 
             logger.info(f"[views.generated_media_items] Deleting selected generated media files.")
-            DataSourceMediaStorageItem.objects.filter(id__in=item_ids).delete()
+
+            DataSourceMediaStorageItem.objects.filter(
+                id__in=item_ids
+            ).delete()
 
         messages.success(request, 'Selected generated media files deleted successfully.')
 

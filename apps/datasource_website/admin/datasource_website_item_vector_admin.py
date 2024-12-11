@@ -17,7 +17,9 @@
 
 from django.contrib import admin
 
-from apps.datasource_website.models import WebsiteItemChunkVectorData
+from apps.datasource_website.models import (
+    WebsiteItemChunkVectorData
+)
 
 from apps.datasource_website.utils import (
     DATASOURCE_WEBSITE_ITEM_CHUNK_VECTOR_DATA_ADMIN_LIST,

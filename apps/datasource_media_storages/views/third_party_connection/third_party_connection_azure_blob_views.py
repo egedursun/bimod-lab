@@ -18,7 +18,11 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
@@ -37,7 +41,11 @@ from apps.datasource_media_storages.models import (
 )
 
 from apps.organization.models import Organization
-from apps.user_permissions.utils import PermissionNames
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -63,6 +71,7 @@ class MediaView_ThirdPartyConnection_AzureBlob(LoginRequiredMixin, TemplateView)
         context['organizations'] = user_orgs
         context['assistants'] = org_assistants
         context['media_storages'] = media_storages
+
         return context
 
     def post(self, request, *args, **kwargs):
@@ -82,6 +91,7 @@ class MediaView_ThirdPartyConnection_AzureBlob(LoginRequiredMixin, TemplateView)
             account_name = request.POST.get('account_name')
             account_key = request.POST.get('account_key')
             container_name = request.POST.get('container_name')
+
             prefix = request.POST.get('prefix')
             media_storage_id = request.POST.get('media_storage_id')
 

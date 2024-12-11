@@ -32,7 +32,11 @@ def decode_stream__docx(file_bytes):
 
     logger.info(f"Decoded {len(doc.paragraphs)} paragraphs.")
 
-    return '\n'.join([paragraph.text for paragraph in doc.paragraphs])
+    return '\n'.join(
+        [
+            paragraph.text for paragraph in doc.paragraphs
+        ]
+    )
 
 
 def decode_stream__pptx(file_bytes):
@@ -52,15 +56,29 @@ def decode_stream__pptx(file_bytes):
 
 def decode_stream__xlsx(file_bytes):
     f_stream = BytesIO(file_bytes)
-    w_book = ms_ex(f_stream, data_only=True)
+
+    w_book = ms_ex(
+        f_stream,
+        data_only=True
+    )
+
     txt = []
 
     for sheet in w_book.sheetnames:
+
         w_sheet = w_book[sheet]
-        for row in w_sheet.iter_rows(values_only=True):
-            txt.append('\t'.join([
-                str(cell) if cell is not None else '' for cell in row
-            ]))
+
+        for row in w_sheet.iter_rows(
+            values_only=True
+        ):
+            txt.append(
+                '\t'.join(
+                    [
+                        str(cell) if cell is not None else '' for cell in row
+                    ]
+                )
+            )
 
     logger.info(f"Decoded {len(txt)} rows from {len(w_book.sheetnames)} sheets.")
+
     return '\n'.join(txt)

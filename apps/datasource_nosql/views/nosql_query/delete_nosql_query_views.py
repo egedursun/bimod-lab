@@ -18,7 +18,11 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.shortcuts import redirect
 from django.views.generic import DeleteView
 
@@ -26,8 +30,13 @@ from apps.core.user_permissions.permission_manager import (
     UserPermissionManager
 )
 
-from apps.datasource_nosql.models import CustomNoSQLQuery
-from apps.user_permissions.utils import PermissionNames
+from apps.datasource_nosql.models import (
+    CustomNoSQLQuery
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
 
 logger = logging.getLogger(__name__)
 
@@ -57,6 +66,7 @@ class NoSQLDatabaseView_QueryDelete(LoginRequiredMixin, DeleteView):
         except Exception as e:
             logger.error(f"Error deleting NoSQL Query: {e}")
             messages.error(self.request, 'An error occurred while deleting NoSQL Query.')
+
             return redirect(self.success_url)
 
         logger.info(f"NoSQL Query {self.object.name} was deleted.")

@@ -18,9 +18,12 @@
 import logging
 
 import psycopg2
+
 from django.contrib import admin
 
-from apps.datasource_sql.models import SQLDatabaseConnection
+from apps.datasource_sql.models import (
+    SQLDatabaseConnection
+)
 
 from apps.datasource_sql.utils import (
     DBMSChoicesNames,
@@ -51,17 +54,31 @@ class SQLDatabaseConnectionAdmin(admin.ModelAdmin):
         'updated_at'
     )
 
-    def save_model(self, request, obj, form, change):
+    def save_model(
+        self,
+        request,
+        obj,
+        form,
+        change
+    ):
         obj.schema_data_json = self.retrieve_schema(obj)
-        super().save_model(request, obj, form, change)
+
+        super().save_model(
+            request,
+            obj,
+            form,
+            change
+        )
 
     def retrieve_schema(self, obj):
         schema = {}
 
         if obj.dbms_type == DBMSChoicesNames.POSTGRESQL:
+
             schema = self.retrieve_postgresql_schema(obj)
 
         elif obj.dbms_type == DBMSChoicesNames.MYSQL:
+
             schema = self.retrieve_mysql_schema(obj)
 
         return schema
@@ -76,15 +93,27 @@ class SQLDatabaseConnectionAdmin(admin.ModelAdmin):
                 host=obj.host,
                 port=obj.port
             )
+
             csr = c.cursor()
             csr.execute(POSTGRESQL_SCHEMA_RETRIEVAL_QUERY)
+
             tables = csr.fetchall()
 
             for table in tables:
                 table_name = table[0]
-                csr.execute(POSTGRESQL_SCHEMA_RETRIEVAL_QUERY_SUPPLY, (table_name,))
+
+                csr.execute(
+                    POSTGRESQL_SCHEMA_RETRIEVAL_QUERY_SUPPLY,
+                    (table_name,)
+                )
+
                 columns = csr.fetchall()
-                schema[table_name] = [{'name': col[0], 'type': col[1]} for col in columns]
+
+                schema[table_name] = [
+                    {
+                        'name': col[0], 'type': col[1]
+                    } for col in columns
+                ]
 
             csr.close()
             c.close()
@@ -97,6 +126,7 @@ class SQLDatabaseConnectionAdmin(admin.ModelAdmin):
 
     def retrieve_mysql_schema(self, obj):
         schema = {}
+
         try:
             c = mysql.connector.connect(
                 user=obj.username,
@@ -107,14 +137,28 @@ class SQLDatabaseConnectionAdmin(admin.ModelAdmin):
             )
 
             csr = c.cursor()
-            csr.execute(MYSQL_SCHEMA_RETRIEVAL_QUERY)
+
+            csr.execute(
+                MYSQL_SCHEMA_RETRIEVAL_QUERY
+            )
+
             tables = csr.fetchall()
 
             for table in tables:
                 table_name = table[0]
-                csr.execute(MYSQL_SCHEMA_RETRIEVAL_QUERY_SUPPLY, (table_name,))
+
+                csr.execute(
+                    MYSQL_SCHEMA_RETRIEVAL_QUERY_SUPPLY,
+                    (table_name,)
+                )
+
                 columns = csr.fetchall()
-                schema[table_name] = [{'name': col[0], 'type': col[1]} for col in columns]
+
+                schema[table_name] = [
+                    {
+                        'name': col[0], 'type': col[1]
+                    } for col in columns
+                ]
 
             csr.close()
             c.close()

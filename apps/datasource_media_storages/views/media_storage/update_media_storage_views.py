@@ -18,8 +18,16 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import get_object_or_404, redirect
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.shortcuts import (
+    get_object_or_404,
+    redirect
+)
+
 from django.views.generic import TemplateView
 
 from apps.core.user_permissions.permission_manager import (
@@ -36,7 +44,11 @@ from apps.datasource_media_storages.utils import (
 )
 
 from apps.organization.models import Organization
-from apps.user_permissions.utils import PermissionNames
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -64,6 +76,7 @@ class MediaView_ManagerUpdate(LoginRequiredMixin, TemplateView):
 
             context['media_categories'] = MEDIA_MANAGER_ITEM_TYPES
             context['user'] = context_user
+
             context['connection'] = media_manager
 
         except Exception as e:
@@ -90,11 +103,15 @@ class MediaView_ManagerUpdate(LoginRequiredMixin, TemplateView):
 
         name = request.POST.get('name')
         desc = request.POST.get('description')
+
         manager_category = request.POST.get('media_category')
         agent_id = request.POST.get('assistant')
 
         try:
-            agent = Assistant.objects.get(id=agent_id)
+            agent = Assistant.objects.get(
+                id=agent_id
+            )
+
             media_manager.name = name
             media_manager.description = desc
             media_manager.media_category = manager_category
@@ -111,10 +128,16 @@ class MediaView_ManagerUpdate(LoginRequiredMixin, TemplateView):
             logger.error('Invalid assistant selected.')
             messages.error(request, 'Invalid assistant selected.')
 
-            return redirect('datasource_media_storages:update', pk=media_manager.pk)
+            return redirect(
+                'datasource_media_storages:update',
+                pk=media_manager.pk
+            )
 
         except Exception as e:
             logger.error(f'Error updating Data Source Media Storage: {e}')
             messages.error(request, f'Error updating Data Source Media Storage: {e}')
 
-            return redirect('datasource_media_storages:update', pk=media_manager.pk)
+            return redirect(
+                'datasource_media_storages:update',
+                pk=media_manager.pk
+            )

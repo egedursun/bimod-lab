@@ -14,17 +14,33 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.shortcuts import redirect
 from django.views import View
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.datasource_website.models import DataSourceWebsiteStorageItem
-from apps.datasource_website.tasks import crawl_and_index_website_item
-from apps.user_permissions.utils import PermissionNames
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
+from apps.datasource_website.models import (
+    DataSourceWebsiteStorageItem
+)
+
+from apps.datasource_website.tasks import (
+    crawl_and_index_website_item
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
 
 logger = logging.getLogger(__name__)
 
@@ -67,6 +83,7 @@ class DataSourceWebsiteView_WebsiteItemRefresh(LoginRequiredMixin, View):
             if not existing_website_item:
                 logger.error("The website item does not exist.")
                 messages.error(request, "The website item does not exist.")
+
                 return redirect("datasource_website:website_item_list")
 
             # Crawl and index the website item.
@@ -78,7 +95,9 @@ class DataSourceWebsiteView_WebsiteItemRefresh(LoginRequiredMixin, View):
         except Exception as e:
             logger.error("There was an error while refreshing the website item: %s" % e)
             messages.error(request, "There was an error while refreshing the website item.")
+
             return redirect("datasource_website:website_item_list")
 
         messages.success(request, "The website item has been refreshed successfully.")
+
         return redirect("datasource_website:website_item_list")

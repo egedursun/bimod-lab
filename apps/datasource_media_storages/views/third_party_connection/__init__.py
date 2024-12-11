@@ -19,4 +19,3 @@ from .third_party_connections_main_views import *
 from .third_party_connections_aws_s3_views import *
 from .third_party_connections_gcp_bucket_views import *
 from .third_party_connection_azure_blob_views import *
-from .third_party_connections_google_drive_views import *

@@ -17,7 +17,9 @@
 
 from django.contrib import admin
 
-from apps.datasource_nosql.models import CustomNoSQLQuery
+from apps.datasource_nosql.models import (
+    CustomNoSQLQuery
+)
 
 from apps.datasource_nosql.utils import (
     NOSQL_QUERY_ADMIN_LIST,

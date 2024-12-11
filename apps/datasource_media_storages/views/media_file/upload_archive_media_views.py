@@ -22,7 +22,11 @@ from io import BytesIO
 
 import rarfile
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
@@ -39,7 +43,10 @@ from apps.datasource_media_storages.utils import (
     SUPPORTED_ARCHIVE_TYPES
 )
 
-from apps.user_permissions.utils import PermissionNames
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -48,9 +55,11 @@ logger = logging.getLogger(__name__)
 class MediaView_ItemArchiveRetrieval(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+
         return context
 
     def get(self, request, *args, **kwargs):
+
         return self.post(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
@@ -66,6 +75,7 @@ class MediaView_ItemArchiveRetrieval(LoginRequiredMixin, TemplateView):
         ##############################
 
         mm_id = request.POST.get('storage_id') or None
+
         archive_file_data = request.FILES.get('archive_file')
 
         if not mm_id:
@@ -85,6 +95,7 @@ class MediaView_ItemArchiveRetrieval(LoginRequiredMixin, TemplateView):
 
             if not any(archive_file_data.name.endswith(ext) for ext in SUPPORTED_ARCHIVE_TYPES):
                 logger.error('Unsupported file type uploaded.')
+
                 messages.error(
                     request,
 
@@ -100,6 +111,7 @@ class MediaView_ItemArchiveRetrieval(LoginRequiredMixin, TemplateView):
 
             if not success:
                 messages.error(request, 'Error while retrieving files from the uploaded archive.')
+
                 return redirect('datasource_media_storages:create_item')
 
             logger.info('File download from URL initiated.')
@@ -115,13 +127,22 @@ class MediaView_ItemArchiveRetrieval(LoginRequiredMixin, TemplateView):
         return redirect('datasource_media_storages:list_items')
 
 
-def retrieve_from_archive_file(file_data, storage_id):
+def retrieve_from_archive_file(
+    file_data,
+    storage_id
+):
     try:
         archive_data_files = []
+
         file_name = file_data.name
 
         if file_name.endswith('.zip'):
-            with zipfile.ZipFile(BytesIO(file_data.read())) as archive:
+
+            with zipfile.ZipFile(
+                BytesIO(
+                    file_data.read()
+                )
+            ) as archive:
 
                 for file_name in archive.namelist():
 
@@ -134,7 +155,11 @@ def retrieve_from_archive_file(file_data, storage_id):
                             }
                         )
 
-        elif file_name.endswith('.tar') or file_name.endswith('.tar.gz'):
+        elif (
+            file_name.endswith('.tar') or
+            file_name.endswith('.tar.gz')
+        ):
+
             with tarfile.open(
                 fileobj=BytesIO(
                     file_data.read()
@@ -154,6 +179,7 @@ def retrieve_from_archive_file(file_data, storage_id):
                         )
 
         elif file_name.endswith('.rar'):
+
             with rarfile.RarFile(
                 BytesIO(
                     file_data.read()
@@ -173,6 +199,7 @@ def retrieve_from_archive_file(file_data, storage_id):
 
         else:
             logger.error(f"Unsupported file type: {file_name}")
+
             return False
 
         storage_manager = DataSourceMediaStorageConnection.objects.get(
@@ -180,6 +207,7 @@ def retrieve_from_archive_file(file_data, storage_id):
         )
 
         for item in archive_data_files:
+
             try:
                 DataSourceMediaStorageItem.objects.create(
                     storage_base=storage_manager,

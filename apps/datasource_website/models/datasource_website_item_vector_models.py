@@ -19,7 +19,9 @@ import os
 
 from django.db import models
 
-from apps.datasource_website.utils import VECTOR_INDEX_PATH_WEBSITE_ITEMS
+from apps.datasource_website.utils import (
+    VECTOR_INDEX_PATH_WEBSITE_ITEMS
+)
 
 
 class WebsiteItemChunkVectorData(models.Model):
@@ -47,6 +49,7 @@ class WebsiteItemChunkVectorData(models.Model):
     class Meta:
         verbose_name = "Website Item Chunk Vector Data"
         verbose_name_plural = "Website Item Chunk Vector Data"
+
         indexes = [
             models.Index(fields=[
                 'website_item'
@@ -61,6 +64,7 @@ class WebsiteItemChunkVectorData(models.Model):
 
     def _get_index_path(self):
         storage_id = self.website_item.storage.id
+
         return os.path.join(
             VECTOR_INDEX_PATH_WEBSITE_ITEMS,
             f'website_storage_index_{storage_id}.index'

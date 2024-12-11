@@ -38,6 +38,7 @@ class DataSourceMLModelItem(models.Model):
 
     ml_model_name = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
+
     ml_model_size = models.BigIntegerField(null=True, blank=True)
     interpretation_temperature = models.FloatField(default=0.25)
 
@@ -48,6 +49,7 @@ class DataSourceMLModelItem(models.Model):
     )
 
     file_bytes = models.BinaryField(null=True, blank=True)
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -94,13 +96,18 @@ class DataSourceMLModelItem(models.Model):
         using=None,
         update_fields=None
     ):
-        self.ml_model_name = slugify(self.ml_model_name)
+        self.ml_model_name = slugify(
+            self.ml_model_name
+        )
+
         file_type = ML_MODEL_ITEM_CATEGORIES[0][0]
 
         if not self.full_file_path:
             base_dir = self.ml_model_base.directory_full_path
             f_name = self.ml_model_name
+
             f_uri = f"{base_dir}{f_name.split('.')[0]}_{str(random.randint(1_000_000, 9_999_999))}.{file_type}"
+
             self.full_file_path = f_uri
 
         super().save(

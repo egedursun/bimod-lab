@@ -22,7 +22,10 @@ import boto3
 from django.db import models
 from slugify import slugify
 
-from apps.datasource_media_storages.utils import MEDIA_MANAGER_ITEM_TYPES
+from apps.datasource_media_storages.utils import (
+    MEDIA_MANAGER_ITEM_TYPES
+)
+
 from config.settings import MEDIA_URL
 
 logger = logging.getLogger(__name__)
@@ -49,6 +52,7 @@ class DataSourceMediaStorageConnection(models.Model):
     )
 
     directory_schema = models.TextField(blank=True, null=True)
+
     interpretation_temperature = models.FloatField(default=0.25)
     interpretation_maximum_tokens = models.IntegerField(default=2048)
 
@@ -62,13 +66,16 @@ class DataSourceMediaStorageConnection(models.Model):
     class Meta:
         verbose_name = 'Data Source Media Storage Connection'
         verbose_name_plural = 'Data Source Media Storage Connections'
+
         unique_together = [
             [
                 'assistant',
                 'name'
             ],
         ]
+
         ordering = ['-created_at']
+
         indexes = [
             models.Index(fields=[
                 'assistant',
@@ -99,7 +106,12 @@ class DataSourceMediaStorageConnection(models.Model):
         if not self.directory_full_path:
             base_dir = self.assistant.storages_base_directory
             dir_suffix = self.media_category
-            full_path = os.path.join(base_dir, dir_suffix)
+
+            full_path = os.path.join(
+                base_dir,
+                dir_suffix
+            )
+
             self.directory_full_path = full_path
 
         super().save(
@@ -109,14 +121,21 @@ class DataSourceMediaStorageConnection(models.Model):
             update_fields
         )
 
-    def delete(self, using=None, keep_parents=False):
-        if self.directory_full_path and os.path.exists(self.directory_full_path):
+    def delete(
+        self,
+        using=None,
+        keep_parents=False
+    ):
+        if self.directory_full_path and os.path.exists(
+            self.directory_full_path
+        ):
 
             s3c = boto3.client('s3')
             bucket = os.getenv('AWS_STORAGE_BUCKET_NAME')
 
             bucket_path = self.directory_full_path.split(MEDIA_URL)[1]
             bucket_path = bucket_path.replace('/', '')
+
             bucket_path = f"{bucket_path}/"
 
             try:
@@ -131,4 +150,7 @@ class DataSourceMediaStorageConnection(models.Model):
                 logger.error(f"Error occurred while deleting the S3 bucket path: {bucket_path} - {e}")
                 pass
 
-        super().delete(using, keep_parents)
+        super().delete(
+            using,
+            keep_parents
+        )

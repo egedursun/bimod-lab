@@ -18,10 +18,12 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import TemplateView
 
-from apps.assistants.models import Assistant
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.views.generic import TemplateView
 
 from apps.core.user_permissions.permission_manager import (
     UserPermissionManager
@@ -61,13 +63,18 @@ class NoSQLDatabaseView_ManagerList(TemplateView, LoginRequiredMixin):
             user_orgs = context_user.organizations.all()
 
             for org in user_orgs:
+
                 c_by_orgs[org] = {}
+
                 for assistant in org.assistants.all():
                     c_by_orgs[org][assistant] = []
 
             connections = NoSQLDatabaseConnection.objects.filter(
                 assistant__organization__in=user_orgs
-            ).select_related('assistant', 'assistant__organization')
+            ).select_related(
+                'assistant',
+                'assistant__organization'
+            )
 
             for connection in connections:
                 org = connection.assistant.organization

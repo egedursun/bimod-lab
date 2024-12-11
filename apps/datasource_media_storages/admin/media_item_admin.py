@@ -17,7 +17,9 @@
 
 from django.contrib import admin
 
-from apps.datasource_media_storages.models import DataSourceMediaStorageItem
+from apps.datasource_media_storages.models import (
+    DataSourceMediaStorageItem
+)
 
 from apps.datasource_media_storages.utils import (
     MEDIA_MANAGER_ITEM_ADMIN_LIST_DISPLAY,
@@ -31,5 +33,10 @@ class DataSourceMediaStorageItemAdmin(admin.ModelAdmin):
     list_display = MEDIA_MANAGER_ITEM_ADMIN_LIST_DISPLAY
     list_filter = MEDIA_MANAGER_ITEM_ADMIN_LIST_FILTER
     search_fields = MEDIA_MANAGER_ITEM_ADMIN_SEARCH_FIELDS
+
     ordering = ['-created_at']
-    readonly_fields = ['created_at', 'updated_at']
+
+    readonly_fields = [
+        'created_at',
+        'updated_at'
+    ]

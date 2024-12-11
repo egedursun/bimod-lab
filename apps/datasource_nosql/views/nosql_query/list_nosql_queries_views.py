@@ -18,10 +18,12 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import TemplateView
 
-from apps.assistants.models import Assistant
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.views.generic import TemplateView
 
 from apps.core.user_permissions.permission_manager import (
     UserPermissionManager
@@ -43,6 +45,7 @@ logger = logging.getLogger(__name__)
 class NoSQLDatabaseView_QueryList(TemplateView, LoginRequiredMixin):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+
         context_user = self.request.user
 
         ##############################
@@ -76,6 +79,7 @@ class NoSQLDatabaseView_QueryList(TemplateView, LoginRequiredMixin):
 
             for qu in queries:
                 org = qu.database_connection.assistant.organization
+
                 assistant = qu.database_connection.assistant
                 queries_by_orgs[org][assistant].append(qu)
 

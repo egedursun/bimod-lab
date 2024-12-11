@@ -17,7 +17,9 @@
 
 from django.contrib import admin
 
-from apps.datasource_sql.models import SQLSchemaChunkVectorData
+from apps.datasource_sql.models import (
+    SQLSchemaChunkVectorData
+)
 
 from apps.datasource_sql.utils import (
     SQL_SCHEMA_CHUNK_VECTOR_DATA_ADMIN_LIST,

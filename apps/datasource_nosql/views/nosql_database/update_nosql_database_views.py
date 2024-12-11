@@ -18,9 +18,16 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.shortcuts import redirect
-from django.views.generic import TemplateView
+
+from django.views.generic import (
+    TemplateView
+)
 
 from apps.assistants.models import Assistant
 
@@ -55,7 +62,10 @@ class NoSQLDatabaseView_ManagerUpdate(TemplateView, LoginRequiredMixin):
         context_user = self.request.user
 
         try:
-            conn = NoSQLDatabaseConnection.objects.get(id=kwargs['pk'])
+            conn = NoSQLDatabaseConnection.objects.get(
+                id=kwargs['pk']
+            )
+
             user_orgs = context_user.organizations.all()
 
             agents = Assistant.objects.filter(
@@ -107,6 +117,7 @@ class NoSQLDatabaseView_ManagerUpdate(TemplateView, LoginRequiredMixin):
 
             logger.info(f"NoSQL Data Source updated: {conn}")
             messages.success(request, "NoSQL Data Source updated successfully.")
+
             return redirect('datasource_nosql:list')
 
         else:

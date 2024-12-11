@@ -19,7 +19,11 @@ import logging
 import os
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
@@ -31,7 +35,10 @@ from apps.datasource_media_storages.models import (
     DataSourceMediaStorageItem
 )
 
-from apps.user_permissions.utils import PermissionNames
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -40,10 +47,12 @@ logger = logging.getLogger(__name__)
 class MediaView_ItemDeleteAll(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+
         return context
 
     def get(self, request, *args, **kwargs):
         context = self.post(request, *args, **kwargs)
+
         return self.render_to_response(context)
 
     def post(self, request, *args, **kwargs):
@@ -63,9 +72,12 @@ class MediaView_ItemDeleteAll(LoginRequiredMixin, TemplateView):
         )
 
         for item in complete_items_set:
+
             if item.full_file_path is not None:
+
                 try:
                     os.system(f"rm -rf {item.full_file_path}")
+
                 except Exception as e:
                     logger.error(f"Error while deleting media file: {e}")
                     pass
@@ -78,8 +90,10 @@ class MediaView_ItemDeleteAll(LoginRequiredMixin, TemplateView):
         except Exception as e:
             logger.error(f"User: {request.user} - Media Item - Delete All Error: {e}")
             messages.error(request, 'An error occurred while deleting all media files.')
+
             return redirect('datasource_media_storages:list_items')
 
         logger.info(f"[views.delete_all_media_items] All media files deleted successfully.")
         messages.success(request, 'All media files deleted successfully.')
+
         return redirect('datasource_media_storages:list_items')

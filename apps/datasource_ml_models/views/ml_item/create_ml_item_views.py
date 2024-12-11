@@ -18,7 +18,11 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
@@ -37,8 +41,15 @@ from apps.datasource_ml_models.models import (
 )
 
 from apps.organization.models import Organization
-from apps.user_permissions.utils import PermissionNames
-from config.settings import MAX_ML_MODELS_PER_STORAGE
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
+from config.settings import (
+    MAX_ML_MODELS_PER_STORAGE
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)

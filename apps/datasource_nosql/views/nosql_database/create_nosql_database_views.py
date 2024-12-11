@@ -18,7 +18,11 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
@@ -72,6 +76,7 @@ class NoSQLDatabaseView_ManagerCreate(TemplateView, LoginRequiredMixin):
         except Exception as e:
             logger.error(f"User: {context_user} - NoSQL Data Source - Create Error: {e}")
             messages.error(self.request, 'An error occurred while creating NoSQL Data Source.')
+
             return context
 
         return context
@@ -98,6 +103,7 @@ class NoSQLDatabaseView_ManagerCreate(TemplateView, LoginRequiredMixin):
             if n_nosql_dbs > MAX_NOSQL_DBS_PER_ASSISTANT:
                 messages.error(request,
                                f'Assistant has reached the maximum number of NOSQL database connections ({MAX_NOSQL_DBS_PER_ASSISTANT}).')
+
                 return redirect('datasource_nosql:list')
 
             form.save()
@@ -113,4 +119,5 @@ class NoSQLDatabaseView_ManagerCreate(TemplateView, LoginRequiredMixin):
 
             context = self.get_context_data(**kwargs)
             context['form'] = form
+
             return self.render_to_response(context)

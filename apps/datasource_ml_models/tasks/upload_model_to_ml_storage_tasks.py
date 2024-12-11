@@ -27,13 +27,14 @@ from apps.datasource_ml_models.utils import (
 from config import settings
 from config.settings import MEDIA_URL
 
-
 logger = logging.getLogger(__name__)
 
 
 @shared_task
-def upload_model_to_ml_model_base(file_bytes: bytes, full_path: str):
-
+def upload_model_to_ml_model_base(
+    file_bytes: bytes,
+    full_path: str
+):
     f_format = full_path.split('.')[-1]
 
     if f_format not in [
@@ -56,6 +57,7 @@ def upload_model_to_ml_model_base(file_bytes: bytes, full_path: str):
 
     except Exception as e:
         logger.error(f"Error while uploading model to ML Model Base: {e}")
+
         return False
 
     return True

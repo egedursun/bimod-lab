@@ -20,7 +20,6 @@ import os
 
 from django.db import models
 
-from apps.datasource_nosql.tasks import handle_embedding_task
 from apps.datasource_nosql.utils import (
     VECTOR_INDEX_PATH_NOSQL_SCHEMAS,
 )
@@ -54,6 +53,7 @@ class NoSQLSchemaChunkVectorData(models.Model):
     class Meta:
         verbose_name = "NoSQL Schema Chunk Vector Data"
         verbose_name_plural = "NoSQL Schema Chunk Vector Data"
+
         indexes = [
             models.Index(fields=[
                 'nosql_database'
@@ -68,4 +68,8 @@ class NoSQLSchemaChunkVectorData(models.Model):
 
     def _get_index_path(self):
         storage_id = self.nosql_database.id
-        return os.path.join(VECTOR_INDEX_PATH_NOSQL_SCHEMAS, f'nosql_schemas_index_{storage_id}.index')
+
+        return os.path.join(
+            VECTOR_INDEX_PATH_NOSQL_SCHEMAS,
+            f'nosql_schemas_index_{storage_id}.index'
+        )

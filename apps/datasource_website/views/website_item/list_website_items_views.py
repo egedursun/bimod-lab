@@ -22,7 +22,10 @@ from django.contrib.auth.mixins import (
 )
 
 from django.shortcuts import redirect
-from django.views.generic import TemplateView
+
+from django.views.generic import (
+    TemplateView
+)
 
 from apps.assistants.models import Assistant
 
@@ -85,9 +88,12 @@ class DataSourceWebsiteView_WebsiteItemList(LoginRequiredMixin, TemplateView):
                     data_obj[org][assistant][storage] = storage.storage_items.all()
 
                 pass
+
             pass
+
         pass
 
         context['data_obj'] = data_obj
         context['website_crawling_methodology_choices'] = WEBSITE_CRAWLING_METHODOLOGY_CHOICES
+
         return context

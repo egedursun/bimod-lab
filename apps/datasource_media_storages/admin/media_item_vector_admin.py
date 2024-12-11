@@ -17,7 +17,9 @@
 
 from django.contrib import admin
 
-from apps.datasource_media_storages.models import MediaItemVectorData
+from apps.datasource_media_storages.models import (
+    MediaItemVectorData
+)
 
 from apps.datasource_media_storages.utils import (
     MEDIA_ITEM_VECTOR_DATA_ADMIN_LIST,
@@ -31,4 +33,5 @@ class MediaItemVectorDataAdmin(admin.ModelAdmin):
     list_display = MEDIA_ITEM_VECTOR_DATA_ADMIN_LIST
     search_fields = MEDIA_ITEM_VECTOR_DATA_ADMIN_SEARCH
     list_filter = MEDIA_ITEM_VECTOR_DATA_ADMIN_FILTER
+
     ordering = ('created_at',)

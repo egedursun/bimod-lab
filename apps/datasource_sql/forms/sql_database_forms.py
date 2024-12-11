@@ -15,13 +15,17 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-from apps.datasource_sql.models import SQLDatabaseConnection
+from apps.datasource_sql.models import (
+    SQLDatabaseConnection
+)
+
 from django import forms
 
 
 class SQLDatabaseConnectionForm(forms.ModelForm):
     class Meta:
         model = SQLDatabaseConnection
+
         fields = [
             'assistant',
             'dbms_type',

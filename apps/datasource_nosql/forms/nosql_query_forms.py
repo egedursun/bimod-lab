@@ -17,18 +17,22 @@
 
 from django import forms
 
-from apps.datasource_nosql.models import CustomNoSQLQuery
+from apps.datasource_nosql.models import (
+    CustomNoSQLQuery
+)
 
 
 class CustomNoSQLQueryForm(forms.ModelForm):
     class Meta:
         model = CustomNoSQLQuery
+
         fields = [
             'database_connection',
             'name',
             'description',
             'nosql_query',
         ]
+
         widgets = {
             'nosql_query': forms.Textarea(
                 attrs={

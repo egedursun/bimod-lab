@@ -24,7 +24,10 @@ from django.contrib.auth.mixins import (
 )
 
 from django.shortcuts import redirect
-from django.views.generic import TemplateView
+
+from django.views.generic import (
+    TemplateView
+)
 
 from apps.assistants.models import Assistant
 
@@ -63,6 +66,7 @@ class DataSourceWebsiteView_StorageUpdate(LoginRequiredMixin, TemplateView):
         if not storage_item:
             logger.error(f"Error while updating website storage connection: Website storage connection not found.")
             messages.error(self.request, "Website storage connection not found.")
+
             return redirect("datasource_website:storage_list")
 
         user_orgs = Organization.objects.filter(
@@ -76,6 +80,7 @@ class DataSourceWebsiteView_StorageUpdate(LoginRequiredMixin, TemplateView):
         context["connection"] = storage_item
         context["assistants"] = user_assistants
         context["vectorizers"] = EMBEDDING_VECTORIZER_MODELS
+
         return context
 
     def post(
@@ -99,17 +104,22 @@ class DataSourceWebsiteView_StorageUpdate(LoginRequiredMixin, TemplateView):
             assistant_id = self.request.POST.get("assistant_id")
             name = self.request.POST.get("name")
             description = self.request.POST.get("description")
+
             vectorizer = self.request.POST.get("vectorizer")
             embedding_chunk_size = self.request.POST.get("embedding_chunk_size")
             embedding_chunk_overlap = self.request.POST.get("embedding_chunk_overlap")
+
             search_instance_retrieval_limit = self.request.POST.get("search_instance_retrieval_limit")
             maximum_pages_to_index = self.request.POST.get("maximum_pages_to_index")
             created_by_user = self.request.user
 
-            assistant = Assistant.objects.get(id=assistant_id)
+            assistant = Assistant.objects.get(
+                id=assistant_id
+            )
 
             if not assistant:
                 messages.error(self.request, "Assistant not found.")
+
                 return redirect("datasource_website:storage_update")
 
             item = DataSourceWebsiteStorageConnection.objects.get(
@@ -119,14 +129,17 @@ class DataSourceWebsiteView_StorageUpdate(LoginRequiredMixin, TemplateView):
             if not item:
                 logger.error(f"Error while updating website storage connection: Website storage connection not found.")
                 messages.error(self.request, "Website storage connection not found.")
+
                 return redirect("datasource_website:storage_update")
 
             item.assistant = assistant
             item.name = name
             item.description = description
+
             item.vectorizer = vectorizer
             item.embedding_chunk_size = embedding_chunk_size
             item.embedding_chunk_overlap = embedding_chunk_overlap
+
             item.search_instance_retrieval_limit = search_instance_retrieval_limit
             item.maximum_pages_to_index = maximum_pages_to_index
             item.created_by_user = created_by_user

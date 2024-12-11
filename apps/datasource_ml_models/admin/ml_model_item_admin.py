@@ -17,7 +17,9 @@
 
 from django.contrib import admin
 
-from apps.datasource_ml_models.models import DataSourceMLModelItem
+from apps.datasource_ml_models.models import (
+    DataSourceMLModelItem
+)
 
 from apps.datasource_ml_models.utils import (
     ML_MODEL_ITEM_ADMIN_LIST,
@@ -31,4 +33,5 @@ class DataSourceMLModelItemAdmin(admin.ModelAdmin):
     list_display = ML_MODEL_ITEM_ADMIN_LIST
     list_filter = ML_MODEL_ITEM_ADMIN_FILTER
     search_fields = ML_MODEL_ITEM_ADMIN_SEARCH
+
     ordering = ('-created_at',)

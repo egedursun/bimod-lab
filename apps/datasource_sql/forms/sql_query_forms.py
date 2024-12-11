@@ -17,7 +17,9 @@
 
 from django import forms
 
-from apps.datasource_sql.models import CustomSQLQuery
+from apps.datasource_sql.models import (
+    CustomSQLQuery
+)
 
 
 class CustomSQLQueryForm(forms.ModelForm):

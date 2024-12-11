@@ -17,7 +17,9 @@
 
 from django.contrib import admin
 
-from apps.datasource_sql.models import CustomSQLQuery
+from apps.datasource_sql.models import (
+    CustomSQLQuery
+)
 
 from apps.datasource_sql.utils import (
     SQL_QUERY_ADMIN_LIST,

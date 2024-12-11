@@ -17,7 +17,9 @@
 
 from django.contrib import admin
 
-from apps.datasource_media_storages.models import DataSourceMediaStorageConnection
+from apps.datasource_media_storages.models import (
+    DataSourceMediaStorageConnection
+)
 
 from apps.datasource_media_storages.utils import (
     MEDIA_STORE_ADMIN_LIST_DISPLAY,

@@ -19,7 +19,11 @@ import logging
 import re
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
@@ -48,7 +52,10 @@ from apps.datasource_media_storages.utils import (
     AI_GENERATED_DESCRIPTION_SPECIFIER
 )
 
-from apps.user_permissions.utils import PermissionNames
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -76,6 +83,7 @@ class MediaView_ItemAIDescription(LoginRequiredMixin, TemplateView):
 
         if media_item_type in MediaFileTypesNamesLists.IMAGE:
             logger.info(f"Media Item Type: {media_item_type}")
+
             return AnalysisToolCallExecutionTypesNames.IMAGE_INTERPRETATION
 
         elif media_item_type in (
@@ -84,10 +92,12 @@ class MediaView_ItemAIDescription(LoginRequiredMixin, TemplateView):
             media_item_type in MediaFileTypesNamesLists.CODE
         ):
             logger.info(f"Media Item Type: {media_item_type}")
+
             return AnalysisToolCallExecutionTypesNames.FILE_INTERPRETATION
 
         else:
             logger.info(f"Media Item Type: {media_item_type}")
+
             return AnalysisToolCallExecutionTypesNames.FILE_INTERPRETATION
 
     @staticmethod
@@ -170,10 +180,14 @@ class MediaView_ItemAIDescription(LoginRequiredMixin, TemplateView):
                 media_item.description = gen_desc
 
                 media_item.save()
+
                 logger.info(f"[views.update_media_item] Media item updated successfully.")
 
             except Exception as e:
                 logger.error(f"Error while updating media item description: {e}")
                 pass
 
-        return redirect('datasource_media_storages:item_detail', **kwargs)
+        return redirect(
+            'datasource_media_storages:item_detail',
+            **kwargs
+        )

@@ -74,8 +74,10 @@ class SQLDatabaseConnection(models.Model):
 
     class Meta:
         ordering = ['-created_at']
+
         verbose_name_plural = 'SQL Database Connections'
         verbose_name = 'SQL Database Connection'
+
         unique_together = [
             [
                 "assistant",
@@ -86,11 +88,33 @@ class SQLDatabaseConnection(models.Model):
         ]
 
         indexes = [
-            models.Index(fields=['assistant', 'dbms_type', 'name']),
-            models.Index(fields=['assistant', 'dbms_type', 'created_at']),
-            models.Index(fields=['assistant', 'dbms_type', 'updated_at']),
-            models.Index(fields=['assistant', 'dbms_type', 'name', 'created_at']),
-            models.Index(fields=['assistant', 'dbms_type', 'name', 'updated_at']),
+            models.Index(fields=[
+                'assistant',
+                'dbms_type',
+                'name'
+            ]),
+            models.Index(fields=[
+                'assistant',
+                'dbms_type',
+                'created_at'
+            ]),
+            models.Index(fields=[
+                'assistant',
+                'dbms_type',
+                'updated_at'
+            ]),
+            models.Index(fields=[
+                'assistant',
+                'dbms_type',
+                'name',
+                'created_at'
+            ]),
+            models.Index(fields=[
+                'assistant',
+                'dbms_type',
+                'name',
+                'updated_at'
+            ]),
         ]
 
     def __str__(self):
@@ -125,17 +149,31 @@ class SQLDatabaseConnection(models.Model):
             )
 
             crs = c.cursor()
-            crs.execute(POSTGRESQL_SCHEMA_RETRIEVAL_QUERY)
+
+            crs.execute(
+                POSTGRESQL_SCHEMA_RETRIEVAL_QUERY
+            )
+
             tables = crs.fetchall()
 
             for table in tables:
                 table_name = table[0]
-                crs.execute(POSTGRESQL_SCHEMA_RETRIEVAL_QUERY_SUPPLY, (table_name,))
+                crs.execute(
+                    POSTGRESQL_SCHEMA_RETRIEVAL_QUERY_SUPPLY,
+                    (table_name,)
+                )
+
                 columns = crs.fetchall()
-                schema[table_name] = [{'name': col[0], 'type': col[1]} for col in columns]
+
+                schema[table_name] = [
+                    {
+                        'name': col[0], 'type': col[1]
+                    } for col in columns
+                ]
 
             crs.close()
             c.close()
+
             logger.info(f"Schema retrieved: {schema}")
 
         except Exception as e:
@@ -157,13 +195,23 @@ class SQLDatabaseConnection(models.Model):
             )
 
             crs = c.cursor()
-            crs.execute(MYSQL_SCHEMA_RETRIEVAL_QUERY)
+
+            crs.execute(
+                MYSQL_SCHEMA_RETRIEVAL_QUERY
+            )
+
             tables = crs.fetchall()
 
             for table in tables:
                 table_name = table[0]
-                crs.execute(MYSQL_SCHEMA_RETRIEVAL_QUERY_SUPPLY, (table_name,))
+
+                crs.execute(
+                    MYSQL_SCHEMA_RETRIEVAL_QUERY_SUPPLY,
+                    (table_name,)
+                )
+
                 columns = crs.fetchall()
+
                 schema[table_name] = [
                     {
                         'name': col[0], 'type': col[1]
@@ -172,10 +220,12 @@ class SQLDatabaseConnection(models.Model):
 
             crs.close()
             c.close()
+
             logger.info(f"Schema retrieved: {schema}")
 
         except Exception as e:
             logger.error(f"Error occurred while retrieving the schema: {e}")
+
             return {}
 
         return schema

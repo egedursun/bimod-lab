@@ -20,7 +20,11 @@ import os
 
 import boto3
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
@@ -89,25 +93,39 @@ class MediaView_ItemUpdate(LoginRequiredMixin, TemplateView):
         try:
 
             if media_item.media_file_type == MediaManagerItemFormatTypesNames.Data.TXT:
-                item_contents = f_data_bytes.decode('utf-8')
+                item_contents = f_data_bytes.decode(
+                    'utf-8'
+                )
 
             elif media_item.media_file_type == MediaManagerItemFormatTypesNames.Data.DOCX:
-                item_contents = decode_stream__docx(f_data_bytes)
+                item_contents = decode_stream__docx(
+                    f_data_bytes
+                )
 
             elif media_item.media_file_type == MediaManagerItemFormatTypesNames.Data.PPTX:
-                item_contents = decode_stream__pptx(f_data_bytes)
+                item_contents = decode_stream__pptx(
+                    f_data_bytes
+                )
 
             elif media_item.media_file_type == MediaManagerItemFormatTypesNames.Data.XLSX:
-                item_contents = decode_stream__xlsx(f_data_bytes)
+                item_contents = decode_stream__xlsx(
+                    f_data_bytes
+                )
 
             else:
-                item_contents = f_data_bytes.decode('utf-8', errors='ignore')
+                item_contents = f_data_bytes.decode(
+                    'utf-8',
+                    errors='ignore'
+                )
 
         except Exception as e:
             pass
 
         context['media_item_contents'] = item_contents
-        context['file_type_highlighting'] = FILE_TYPE_HIGHLIGHTING_DECODER.get(media_item.media_file_type, 'plaintext')
+        context['file_type_highlighting'] = FILE_TYPE_HIGHLIGHTING_DECODER.get(
+            media_item.media_file_type,
+            'plaintext'
+        )
 
         return context
 

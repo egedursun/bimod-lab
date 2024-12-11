@@ -34,10 +34,17 @@ from apps.datasource_website.models import (
     DataSourceWebsiteStorageConnection,
     DataSourceWebsiteStorageItem
 )
-from apps.datasource_website.tasks import crawl_and_index_website_item
+from apps.datasource_website.tasks import (
+    crawl_and_index_website_item
+)
 
-from apps.user_permissions.utils import PermissionNames
-from config.settings import MAX_WEBSITE_ITEMS_PER_STORAGE
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
+from config.settings import (
+    MAX_WEBSITE_ITEMS_PER_STORAGE
+)
 
 logger = logging.getLogger(__name__)
 
@@ -72,7 +79,10 @@ class DataSourceWebsiteView_WebsiteItemCreate(LoginRequiredMixin, View):
         try:
 
             storage_id = request.POST.get('storage_id')
-            storage = DataSourceWebsiteStorageConnection.objects.get(id=storage_id)
+
+            storage = DataSourceWebsiteStorageConnection.objects.get(
+                id=storage_id
+            )
 
             n_website_items = storage.storage_items.count()
 
@@ -86,6 +96,7 @@ class DataSourceWebsiteView_WebsiteItemCreate(LoginRequiredMixin, View):
 
             if storage is None:
                 messages.error(request, "Website storage connection not found.")
+
                 return redirect('datasource_website:website_item_list')
 
             website_url = request.POST.get('website_url')
@@ -109,4 +120,5 @@ class DataSourceWebsiteView_WebsiteItemCreate(LoginRequiredMixin, View):
             messages.error(request, "There was an error creating a new website item.")
 
         messages.success(request, "Website item created successfully.")
+
         return redirect('datasource_website:website_item_list')

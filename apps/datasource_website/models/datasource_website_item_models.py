@@ -62,7 +62,9 @@ class DataSourceWebsiteStorageItem(models.Model):
         db_table = 'datasource_website_storage_item'
         verbose_name = "Website Storage Item"
         verbose_name_plural = "Website Storage Items"
+
         ordering = ['-created_at']
+
         indexes = [
             models.Index(fields=[
                 'website_url'

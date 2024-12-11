@@ -18,7 +18,11 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
@@ -37,8 +41,15 @@ from apps.datasource_website.models import (
 )
 
 from apps.organization.models import Organization
-from apps.user_permissions.utils import PermissionNames
-from config.settings import MAX_WEBSITE_STORAGES_PER_ASSISTANT
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
+from config.settings import (
+    MAX_WEBSITE_STORAGES_PER_ASSISTANT
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -59,6 +70,7 @@ class DataSourceWebsiteView_StorageCreate(LoginRequiredMixin, TemplateView):
 
         context["assistants"] = user_assistants
         context["vectorizers"] = EMBEDDING_VECTORIZER_MODELS
+
         return context
 
     def post(
@@ -88,13 +100,17 @@ class DataSourceWebsiteView_StorageCreate(LoginRequiredMixin, TemplateView):
 
             if int(embedding_chunk_overlap) >= int(embedding_chunk_size):
                 messages.error(self.request, "Embedding chunk overlap must be less than the embedding chunk size.")
+
                 return redirect("datasource_website:storage_create")
 
             search_instance_retrieval_limit = self.request.POST.get("search_instance_retrieval_limit")
             maximum_pages_to_index = self.request.POST.get("maximum_pages_to_index")
+
             created_by_user = self.request.user
 
-            assistant = Assistant.objects.get(id=assistant_id)
+            assistant = Assistant.objects.get(
+                id=assistant_id
+            )
 
             n_website_storages = assistant.datasourcewebsitestorageconnection_set.count()
 
@@ -108,6 +124,7 @@ class DataSourceWebsiteView_StorageCreate(LoginRequiredMixin, TemplateView):
 
             if not assistant:
                 messages.error(self.request, "Assistant not found.")
+
                 return redirect("datasource_website:storage_create")
 
             DataSourceWebsiteStorageConnection.objects.create(
@@ -129,4 +146,5 @@ class DataSourceWebsiteView_StorageCreate(LoginRequiredMixin, TemplateView):
             return redirect("datasource_website:storage_create")
 
         messages.success(self.request, "Website storage connection created successfully.")
+
         return redirect("datasource_website:storage_list")

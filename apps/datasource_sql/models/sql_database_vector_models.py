@@ -20,8 +20,6 @@ import os
 
 from django.db import models
 
-from apps.datasource_sql.tasks import handle_embedding_task
-
 from apps.datasource_sql.utils import (
     VECTOR_INDEX_PATH_SQL_SCHEMAS,
 )
@@ -54,6 +52,7 @@ class SQLSchemaChunkVectorData(models.Model):
     class Meta:
         verbose_name = "SQL Schema Chunk Vector Data"
         verbose_name_plural = "SQL Schema Chunk Vector Data"
+
         indexes = [
             models.Index(fields=[
                 'sql_database'
@@ -68,4 +67,8 @@ class SQLSchemaChunkVectorData(models.Model):
 
     def _get_index_path(self):
         storage_id = self.sql_database.id
-        return os.path.join(VECTOR_INDEX_PATH_SQL_SCHEMAS, f'sql_schemas_index_{storage_id}.index')
+
+        return os.path.join(
+            VECTOR_INDEX_PATH_SQL_SCHEMAS,
+            f'sql_schemas_index_{storage_id}.index'
+        )

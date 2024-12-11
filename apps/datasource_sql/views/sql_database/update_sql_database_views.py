@@ -18,7 +18,11 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
@@ -78,6 +82,7 @@ class SQLDatabaseView_ManagerUpdate(TemplateView, LoginRequiredMixin):
         except Exception as e:
             logger.error(f"User: {context_user} - SQL Data Source - Update Error: {e}")
             messages.error(self.request, 'An error occurred while updating SQL Data Source.')
+
             return context
 
         return context
@@ -106,6 +111,7 @@ class SQLDatabaseView_ManagerUpdate(TemplateView, LoginRequiredMixin):
         )
 
         if form.is_valid():
+
             form.save()
 
             logger.info("SQL Data Source updated.")
@@ -117,6 +123,7 @@ class SQLDatabaseView_ManagerUpdate(TemplateView, LoginRequiredMixin):
 
             logger.error("Error updating SQL Data Source: " + str(form.errors))
             messages.error(request, "Error updating SQL Data Source: " + str(form.errors))
+
             context = self.get_context_data(**kwargs)
             context['form'] = form
 

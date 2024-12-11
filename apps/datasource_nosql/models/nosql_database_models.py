@@ -18,7 +18,10 @@
 import logging
 from datetime import timedelta
 
-from couchbase.auth import PasswordAuthenticator
+from couchbase.auth import (
+    PasswordAuthenticator
+)
+
 from couchbase.cluster import Cluster
 
 from couchbase.options import (
@@ -177,10 +180,15 @@ class NoSQLDatabaseConnection(models.Model):
 
         try:
             query = f'SELECT * FROM `{bucket_name}`._default.`{collection_name}` LIMIT {DEFAULT_SCHEMA_SAMPLING_LIMIT}'
+
             result = cluster.query(query, QueryOptions())
 
             for row in result:
-                document = row.get(collection_name, {})
+                document = row.get(
+                    collection_name,
+                    {}
+                )
+
                 schema = NoSQLDatabaseConnection._merge_schemas(
                     schema, NoSQLDatabaseConnection._infer_fields(
                         document,
@@ -211,10 +219,25 @@ class NoSQLDatabaseConnection(models.Model):
 
             if key in existing_schema:
 
-                if isinstance(existing_schema[key], dict) and isinstance(value, dict):
-                    existing_schema[key] = NoSQLDatabaseConnection._merge_schemas(existing_schema[key], value)
+                if isinstance(
+                    existing_schema[key],
+                    dict
+                ) and isinstance(
+                    value,
+                    dict
+                ):
+                    existing_schema[key] = NoSQLDatabaseConnection._merge_schemas(
+                        existing_schema[key],
+                        value
+                    )
 
-                elif isinstance(existing_schema[key], list) and isinstance(value, list):
+                elif isinstance(
+                    existing_schema[key],
+                    list
+                ) and isinstance(
+                    value,
+                    list
+                ):
 
                     if existing_schema[key] and value:
                         existing_schema[key][0] = NoSQLDatabaseConnection._merge_schemas(
@@ -237,6 +260,7 @@ class NoSQLDatabaseConnection(models.Model):
             for field, value in document.items():
 
                 if isinstance(value, dict):
+
                     if current_depth < max_depth:
                         inferred_schema[field] = NoSQLDatabaseConnection._infer_fields(
                             value, max_value_characters_allowed, max_depth, current_depth + 1)
@@ -271,10 +295,16 @@ class NoSQLDatabaseConnection(models.Model):
         return inferred_schema
 
     @staticmethod
-    def _truncate_value(value, max_value_characters_allowed):
+    def _truncate_value(
+        value,
+        max_value_characters_allowed
+    ):
 
         try:
-            if isinstance(value, str) and len(value) > max_value_characters_allowed:
+            if isinstance(
+                value,
+                str
+            ) and len(value) > max_value_characters_allowed:
                 return value[:VALUE_TRUNCATION_PREFIX_LENGTH] + "..." + value[-VALUE_TRUNCATION_SUFFIX_LENGTH:]
 
         except Exception as e:
@@ -284,7 +314,9 @@ class NoSQLDatabaseConnection(models.Model):
 
     def retrieve_couchbase_schema(self):
         schema = {}
+
         error = None
+
         timeout_options = ClusterTimeoutOptions(
             kv_timeout=timedelta(
                 seconds=NOSQL_KV_TIMOUT_CONSTANT
@@ -309,10 +341,14 @@ class NoSQLDatabaseConnection(models.Model):
                 ),
             )
 
-            bucket = cluster.bucket(self.bucket_name)
+            bucket = cluster.bucket(
+                self.bucket_name
+            )
+
             collection_manager = bucket.collections()
 
             for scope in collection_manager.get_all_scopes():
+
                 for collection in scope.collections:
                     schema[collection.name] = self._infer_collection_schema(
                         cluster,

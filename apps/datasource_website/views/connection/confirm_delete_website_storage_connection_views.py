@@ -18,7 +18,11 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
@@ -30,7 +34,10 @@ from apps.datasource_website.models import (
     DataSourceWebsiteStorageConnection
 )
 
-from apps.user_permissions.utils import PermissionNames
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -48,9 +55,11 @@ class DataSourceWebsiteView_StorageConfirmDelete(LoginRequiredMixin, TemplateVie
         if not connection_item:
             logger.error("Website storage connection not found.")
             messages.error(self.request, "Website storage connection not found.")
+
             return redirect("datasource_website:storage_list")
 
         context["connection"] = connection_item
+
         return context
 
     def post(
@@ -73,10 +82,13 @@ class DataSourceWebsiteView_StorageConfirmDelete(LoginRequiredMixin, TemplateVie
 
             deletion_id = self.kwargs.get("pk")
 
-            deletion_item = DataSourceWebsiteStorageConnection.objects.get(id=deletion_id)
+            deletion_item = DataSourceWebsiteStorageConnection.objects.get(
+                id=deletion_id
+            )
 
             if not deletion_item:
                 messages.error(self.request, "Website storage connection not found.")
+
                 return redirect("datasource_website:storage_list")
 
             deletion_item.delete()
@@ -84,7 +96,9 @@ class DataSourceWebsiteView_StorageConfirmDelete(LoginRequiredMixin, TemplateVie
         except Exception as e:
             logger.error(f"Error: {e}")
             messages.error(self.request, "An error occurred while deleting the website storage connection.")
+
             return redirect("datasource_website:storage_list")
 
         messages.success(self.request, "Website storage connection has been successfully deleted.")
+
         return redirect("datasource_website:storage_list")

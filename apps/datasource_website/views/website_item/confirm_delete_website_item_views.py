@@ -37,7 +37,10 @@ from apps.datasource_website.tasks import (
     handle_delete_website_item
 )
 
-from apps.user_permissions.utils import PermissionNames
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -57,9 +60,11 @@ class DataSourceWebsiteView_WebsiteItemConfirmDelete(LoginRequiredMixin, Templat
         if not item:
             logger.error(f"Item not found with ID: {item_id}")
             messages.error(self.request, "Website item not found.")
+
             return redirect("datasource_website:website_item_list")
 
         context["item"] = item
+
         return context
 
     def post(
@@ -88,12 +93,16 @@ class DataSourceWebsiteView_WebsiteItemConfirmDelete(LoginRequiredMixin, Templat
 
             if not deletion_item:
                 messages.error(self.request, "Website item not found.")
+
                 return redirect("datasource_website:website_item_list")
 
-            success = handle_delete_website_item(item=deletion_item)
+            success = handle_delete_website_item(
+                item=deletion_item
+            )
 
             if success is False:
                 messages.error(self.request, "An error occurred while deleting the website item.")
+
                 return redirect("datasource_website:website_item_list")
 
         except Exception as e:

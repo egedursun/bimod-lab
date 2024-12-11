@@ -14,12 +14,18 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import os
 
 from django.db import models
 
-from apps.datasource_knowledge_base.utils import EMBEDDING_VECTORIZER_MODELS
-from apps.datasource_website.utils import VECTOR_INDEX_PATH_WEBSITE_ITEMS
+from apps.datasource_knowledge_base.utils import (
+    EMBEDDING_VECTORIZER_MODELS
+)
+
+from apps.datasource_website.utils import (
+    VECTOR_INDEX_PATH_WEBSITE_ITEMS
+)
 
 
 class DataSourceWebsiteStorageConnection(models.Model):
@@ -66,7 +72,9 @@ class DataSourceWebsiteStorageConnection(models.Model):
     class Meta:
         verbose_name = "Website Storage Connection"
         verbose_name_plural = "Website Storage Connections"
+
         ordering = ['-created_at']
+
         unique_together = [
             [
                 'assistant',
@@ -96,4 +104,5 @@ class DataSourceWebsiteStorageConnection(models.Model):
                 VECTOR_INDEX_PATH_WEBSITE_ITEMS,
                 f'website_storage_index_{self.id}.index'
             )
+
             self.save()

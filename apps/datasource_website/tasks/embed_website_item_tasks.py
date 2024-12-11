@@ -57,7 +57,10 @@ def _generate_embedding(vector, raw_data):
         llm_model=vector.website_item.storage.assistant.llm_model
     )
 
-    raw_data_text = json.dumps(raw_data, indent=2)
+    raw_data_text = json.dumps(
+        raw_data,
+        indent=2
+    )
 
     try:
 
@@ -80,6 +83,7 @@ def _generate_embedding(vector, raw_data):
         vector.vector_data = []
 
     vector.raw_data = raw_data
+
     vector.save()
 
 
@@ -93,7 +97,12 @@ def _save_embedding(vector, index_path):
             OPEN_AI_DEFAULT_EMBEDDING_VECTOR_DIMENSIONS
         )
 
-        xids = np.array([vector.id], dtype=np.int64)
+        xids = np.array(
+            [
+                vector.id
+            ],
+            dtype=np.int64
+        )
 
         if not os.path.exists(index_path):
             index = faiss.IndexIDMap(
@@ -104,13 +113,24 @@ def _save_embedding(vector, index_path):
 
         else:
             index = faiss.read_index(index_path)
-            if not isinstance(index, faiss.IndexIDMap):
+
+            if not isinstance(
+                index,
+                faiss.IndexIDMap
+            ):
                 index = faiss.IndexIDMap(index)
+
             index.remove_ids(xids)
 
-        index.add_with_ids(x, xids)
+        index.add_with_ids(
+            x,
+            xids
+        )
 
-        faiss.write_index(index, index_path)
+        faiss.write_index(
+            index,
+            index_path
+        )
 
 
 def handle_embedding_task(
@@ -122,6 +142,7 @@ def handle_embedding_task(
     )
 
     storage_id = vector.website_item.storage.id
+
     index_path = os.path.join(
         VECTOR_INDEX_PATH_WEBSITE_ITEMS,
         f'website_storage_index_{storage_id}.index'
@@ -129,6 +150,7 @@ def handle_embedding_task(
 
     if not vector:
         logger.error(f"Vector not found with ID: {vector}")
+
         return False
 
     _generate_embedding(
@@ -145,12 +167,10 @@ def handle_embedding_task(
 def clean_previous_data(item: DataSourceWebsiteStorageItem) -> bool:
     try:
 
-        # Restore item count
         item.n_chunks_indexed_status = 0
         item.n_chunks = 0
         item.save()
 
-        # Determine the index file path
         storage = item.storage
         storage: DataSourceWebsiteStorageConnection
         storage_id = storage.id
@@ -160,7 +180,6 @@ def clean_previous_data(item: DataSourceWebsiteStorageItem) -> bool:
             f'website_storage_index_{storage_id}.index'
         )
 
-        # Remove previous vector ORM objects
         previous_vectors = WebsiteItemChunkVectorData.objects.filter(
             website_item=item
         )
@@ -169,7 +188,6 @@ def clean_previous_data(item: DataSourceWebsiteStorageItem) -> bool:
             logger.info(f"No previous vector data found for website item with ID: {item.id}, skipping...")
 
         else:
-            # Collect vector IDs to remove from FAISS
             vector_ids = list(
                 previous_vectors.values_list(
                     'id',
@@ -177,25 +195,31 @@ def clean_previous_data(item: DataSourceWebsiteStorageItem) -> bool:
                 )
             )
 
-            # Delete vector ORM objects
             previous_vectors.delete()
 
             logger.info(f"Deleted {len(vector_ids)} previous vector ORM objects for website item with ID: {item.id}")
 
-            # Clean vectors from FAISS index
             if os.path.exists(index_path):
 
                 index = faiss.read_index(index_path)
 
-                if not isinstance(index, faiss.IndexIDMap):
+                if not isinstance(
+                    index,
+                    faiss.IndexIDMap
+                ):
                     index = faiss.IndexIDMap(index)
 
-                # Remove IDs from the FAISS index
-                xids = np.array(vector_ids, dtype=np.int64)
+                xids = np.array(
+                    vector_ids,
+                    dtype=np.int64
+                )
+
                 index.remove_ids(xids)
 
-                # Save the updated FAISS index back to the file
-                faiss.write_index(index, index_path)
+                faiss.write_index(
+                    index,
+                    index_path
+                )
 
                 logger.info(f"Removed vectors with IDs {vector_ids} from FAISS index for website item {item.id}.")
 
@@ -203,26 +227,37 @@ def clean_previous_data(item: DataSourceWebsiteStorageItem) -> bool:
                 logger.info(f"FAISS index file not found at {index_path}, nothing to clean...")
 
         logger.info(f"Successfully cleaned the previous data for website item with ID: {item.id}.")
+
         return True
 
     except Exception as e:
 
         logger.error(f"An error occurred while cleaning the previous data for website item with ID: {item.id}: {e}")
+
         return False
 
 
-def _crawl(item: DataSourceWebsiteStorageItem, fetch_text_only: bool = False) -> dict:
+def _crawl(
+    item: DataSourceWebsiteStorageItem,
+    fetch_text_only: bool = False
+) -> dict:
     item: DataSourceWebsiteStorageItem
 
     def discover_sitemap(base_url: str) -> str:
         robots_url = f"{base_url}/robots.txt"
         try:
-            response = requests.get(robots_url, timeout=10)
+            response = requests.get(
+                robots_url,
+                timeout=10
+            )
+
             response.raise_for_status()
 
             for line in response.text.splitlines():
+
                 if line.lower().startswith("sitemap:"):
                     return line.split(":", 1)[1].strip()
+
         except Exception as e:
             logger.warning(f"Failed to fetch robots.txt: {e}")
 
@@ -235,29 +270,38 @@ def _crawl(item: DataSourceWebsiteStorageItem, fetch_text_only: bool = False) ->
             sitemap_urls = []
 
             if 'xml' in response.headers['Content-Type']:
+
                 root = ET.fromstring(response.text)
+
                 for loc in root.findall('.//{http://www.sitemaps.org/schemas/sitemap/0.9}loc'):
                     sitemap_urls.append(loc.text)
             else:
                 soup = BeautifulSoup(response.text, 'html.parser')
+
                 for link in soup.find_all('a', href=True):
                     sitemap_urls.append(link['href'])
 
             return sitemap_urls
+
         except Exception as e:
             logger.error(f"Error fetching sitemap: {e}")
+
             return []
 
     def fetch_page_content(url: str) -> Dict:
         try:
             response = requests.get(url)
             response.raise_for_status()
+
             soup = BeautifulSoup(response.text, 'html.parser')
 
             if fetch_text_only:
+
                 for element in soup(['script', 'style']):
                     element.decompose()
+
                 content = soup.get_text(separator='\n', strip=True)
+
             else:
                 content = str(soup)
 
@@ -278,25 +322,25 @@ def _crawl(item: DataSourceWebsiteStorageItem, fetch_text_only: bool = False) ->
 
     logger.info(f"Starting to crawl website with ID: {item.id}")
 
-    # Discover sitemap URL
-    sitemap_url = discover_sitemap(item.website_url)
+    sitemap_url = discover_sitemap(
+        item.website_url
+    )
+
     logger.info(f"Discovered sitemap URL: {sitemap_url}")
 
-    # Fetch and parse the sitemap
-    sitemap_pages = fetch_sitemap(sitemap_url)
+    sitemap_pages = fetch_sitemap(
+        sitemap_url
+    )
 
-    # Update the 'sitemap' field of the item
     item.sitemap_content = sitemap_pages
     item.save()
 
     logger.info(f"Retrieved {len(sitemap_pages)} URLs from the sitemap.")
 
-    # Limit pages to maximum allowed
     relevant_pages = sitemap_pages[:item.storage.maximum_pages_to_index]
 
     extracted_content = []
 
-    # Crawl and process pages
     for index, page_url in enumerate(relevant_pages):
 
         logger.info(f"Processing page {index + 1}/{len(relevant_pages)}: {page_url}")
@@ -308,7 +352,6 @@ def _crawl(item: DataSourceWebsiteStorageItem, fetch_text_only: bool = False) ->
 
     logger.info(f"Successfully crawled {len(extracted_content)} pages for item ID: {item.id}")
 
-    # Return extracted content
     return {
         "item_id": item.id,
         "total_pages_crawled": len(extracted_content),
@@ -316,7 +359,10 @@ def _crawl(item: DataSourceWebsiteStorageItem, fetch_text_only: bool = False) ->
     }
 
 
-def crawl_and_index_website_item(item_id: int, delete_previous=False) -> bool:
+def crawl_and_index_website_item(
+    item_id: int,
+    delete_previous=False
+) -> bool:
     logger.info(f"Crawling and indexing website item with ID: {item_id}")
 
     item: DataSourceWebsiteStorageItem = DataSourceWebsiteStorageItem.objects.get(
@@ -329,7 +375,9 @@ def crawl_and_index_website_item(item_id: int, delete_previous=False) -> bool:
 
     if delete_previous:
         try:
-            success = clean_previous_data(item=item)
+            success = clean_previous_data(
+                item=item
+            )
 
             if success is False:
                 logger.error(f"An error occurred while cleaning the previous data for website item with ID: {item_id}")
@@ -350,16 +398,16 @@ def crawl_and_index_website_item(item_id: int, delete_previous=False) -> bool:
     elif item.crawling_methodology == WebsiteIndexingMethodologyChoicesNames.HTML_CONTENT:
         fetch_text_only = False
 
-    complete_content = _crawl(item, fetch_text_only=fetch_text_only)
+    complete_content = _crawl(
+        item,
+        fetch_text_only=fetch_text_only
+    )
 
-    print("The complete content for website URL: ", item.website_url,
-          " has been retrieved successfully, for storage: ", item.storage.id, " and related assistant: ",
-          item.storage.assistant.id)
+    complete_content_string = json.dumps(
+        complete_content,
+        indent=2
+    )
 
-    # Convert the content to string.
-    complete_content_string = json.dumps(complete_content, indent=2)
-
-    # Split it into multiple chunks
     splitter = RecursiveCharacterTextSplitter(
         complete_content_string,
         chunk_size=item.storage.embedding_chunk_size,
@@ -368,11 +416,9 @@ def crawl_and_index_website_item(item_id: int, delete_previous=False) -> bool:
 
     chunks = splitter.split_text(complete_content_string)
 
-    # Learn the total number of chunks
     item.n_chunks = int(len(chunks))
     item.save()
 
-    # Embed each chunk into the vector space
     try:
         for i, chunk in enumerate(chunks):
 
@@ -394,17 +440,25 @@ def crawl_and_index_website_item(item_id: int, delete_previous=False) -> bool:
 
                 ##############################
 
-                item.n_chunks_indexed_status = int(int(item.n_chunks_indexed_status) + 1)
+                item.n_chunks_indexed_status = int(
+                    int(
+                        item.n_chunks_indexed_status
+                    ) + 1
+                )
+
                 item.save()
 
             except Exception as e:
                 logger.error(f"An error occurred while embedding chunk {i + 1}/{len(chunks)}: {e}")
+
                 continue
 
     except Exception as e:
         logger.error(f"An error occurred while embedding chunk {i + 1}/{len(chunks)}: {e}")
+
         return False
 
     logger.info(f"Successfully updated the vector embeddings for WebsiteItem with ID {item.id}.")
     logger.info("All chunks have been embedded successfully.")
+
     return True

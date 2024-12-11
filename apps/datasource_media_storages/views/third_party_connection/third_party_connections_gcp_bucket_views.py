@@ -28,7 +28,10 @@ from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
 from apps.assistants.models import Assistant
-from apps.core.media_managers.media_manager_execution_handler import MediaManager
+from apps.core.media_managers.media_manager_execution_handler import (
+    MediaManager
+)
+
 from apps.core.user_permissions.permission_manager import (
     UserPermissionManager
 )
@@ -38,7 +41,11 @@ from apps.datasource_media_storages.models import (
 )
 
 from apps.organization.models import Organization
-from apps.user_permissions.utils import PermissionNames
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -64,6 +71,7 @@ class MediaView_ThirdPartyConnection_GCPStorageBucket(LoginRequiredMixin, Templa
         context['organizations'] = user_orgs
         context['assistants'] = org_assistants
         context['media_storages'] = media_storages
+
         return context
 
     def post(self, request, *args, **kwargs):
@@ -89,7 +97,10 @@ class MediaView_ThirdPartyConnection_GCPStorageBucket(LoginRequiredMixin, Templa
                 return redirect('datasource_media_storages:connect_gcp_bucket')
 
             service_account_info_decoded = service_account_info_file.read().decode("utf-8")
-            service_account_info_json = json.loads(service_account_info_decoded)
+
+            service_account_info_json = json.loads(
+                service_account_info_decoded
+            )
 
             media_storage_id = request.POST.get("media_storage_id")
             bucket_name = request.POST.get("bucket_name")

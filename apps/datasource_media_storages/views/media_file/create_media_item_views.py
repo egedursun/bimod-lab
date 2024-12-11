@@ -18,7 +18,11 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
@@ -34,7 +38,11 @@ from apps.datasource_media_storages.models import (
 )
 
 from apps.organization.models import Organization
-from apps.user_permissions.utils import PermissionNames
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -81,8 +89,10 @@ class MediaView_ItemCreate(LoginRequiredMixin, TemplateView):
         ##############################
 
         mm_id = request.POST.get('media_storage') or None
+
         if not mm_id:
             messages.error(request, 'Please select a media storage.')
+
             return redirect('datasource_media_storages:create_item')
 
         media_manager = DataSourceMediaStorageConnection.objects.get(
@@ -93,7 +103,11 @@ class MediaView_ItemCreate(LoginRequiredMixin, TemplateView):
         descriptions = request.POST.getlist('file_descriptions[]')
 
         if mm_id and fs:
-            for file, desc in zip(fs, descriptions):
+
+            for file, desc in zip(
+                fs,
+                descriptions
+            ):
 
                 try:
                     f_data_bytes = file.read()
@@ -110,6 +124,7 @@ class MediaView_ItemCreate(LoginRequiredMixin, TemplateView):
                     file_bytes=f_data_bytes,
                     description=desc
                 )
+
                 media_item.save()
 
             logger.info(f"[views.create_media_item] Files uploaded successfully.")

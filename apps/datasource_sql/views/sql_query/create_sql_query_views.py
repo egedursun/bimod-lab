@@ -18,7 +18,11 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
@@ -42,7 +46,10 @@ from apps.user_permissions.utils import (
     PermissionNames
 )
 
-from config.settings import MAX_SQL_QUERIES_PER_DB
+from config.settings import (
+    MAX_SQL_QUERIES_PER_DB
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -51,6 +58,7 @@ logger = logging.getLogger(__name__)
 class SQLDatabaseView_QueryCreate(TemplateView, LoginRequiredMixin):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+
         context_user = self.request.user
 
         try:
@@ -102,12 +110,14 @@ class SQLDatabaseView_QueryCreate(TemplateView, LoginRequiredMixin):
             if n_sql_queries > MAX_SQL_QUERIES_PER_DB:
                 messages.error(request,
                                f'Assistant has reached the maximum number of SQL queries per database connection ({MAX_SQL_QUERIES_PER_DB}).')
+
                 return redirect('datasource_sql:list_queries')
 
             form.save()
             logger.info("SQL Query created.")
 
             messages.success(request, "SQL Query created successfully.")
+
             return redirect('datasource_sql:create_query')
 
         else:

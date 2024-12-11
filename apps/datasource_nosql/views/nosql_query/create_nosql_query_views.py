@@ -18,7 +18,11 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
@@ -96,6 +100,7 @@ class NoSQLDatabaseView_QueryCreate(TemplateView, LoginRequiredMixin):
             if n_nosql_queries > MAX_NOSQL_QUERIES_PER_DB:
                 messages.error(request,
                                f'Assistant has reached the maximum number of NOSQL queries per database connection ({MAX_NOSQL_QUERIES_PER_DB}).')
+
                 return redirect('datasource_nosql:list_queries')
 
             form.save()

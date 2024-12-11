@@ -16,7 +16,11 @@
 #
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.views.generic import TemplateView
 
 from apps.assistants.models import Assistant
@@ -26,7 +30,11 @@ from apps.core.user_permissions.permission_manager import (
 )
 
 from apps.organization.models import Organization
-from apps.user_permissions.utils import PermissionNames
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 
@@ -75,8 +83,11 @@ class DataSourceWebsiteView_StorageList(LoginRequiredMixin, TemplateView):
                 assistant: Assistant
 
                 data_obj[org][assistant] = assistant.datasourcewebsitestorageconnection_set.all()
+
             pass
+
         pass
 
         context['data_obj'] = data_obj
+
         return context

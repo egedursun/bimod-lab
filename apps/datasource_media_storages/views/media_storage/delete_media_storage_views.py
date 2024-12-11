@@ -18,8 +18,15 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import get_object_or_404, redirect
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.shortcuts import (
+    get_object_or_404,
+    redirect
+)
 from django.views.generic import TemplateView
 
 from apps.core.user_permissions.permission_manager import (
@@ -30,7 +37,10 @@ from apps.datasource_media_storages.models import (
     DataSourceMediaStorageConnection
 )
 
-from apps.user_permissions.utils import PermissionNames
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -54,6 +64,7 @@ class MediaView_ManagerDelete(LoginRequiredMixin, TemplateView):
         except Exception as e:
             logger.error(f"User: {context_user} - Media Storage - Delete Error: {e}")
             messages.error(self.request, 'An error occurred while deleting media storage.')
+
             return context
 
         return context

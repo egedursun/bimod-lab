@@ -18,14 +18,16 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.views.generic import TemplateView
 
 from apps.core.user_permissions.permission_manager import (
     UserPermissionManager
 )
-
-from apps.assistants.models import Assistant
 
 from apps.datasource_sql.models import (
     SQLDatabaseConnection
@@ -59,10 +61,13 @@ class SQLDatabaseView_ManagerList(TemplateView, LoginRequiredMixin):
 
         c_by_orgs = {}
         user_orgs = context_user.organizations.all()
+
         for org in user_orgs:
+
             c_by_orgs[org] = {}
+
             for assistant in org.assistants.all():
-                c_by_orgs[org][assistant] = []  # Initialize with empty list
+                c_by_orgs[org][assistant] = []
 
         try:
             connections = SQLDatabaseConnection.objects.filter(

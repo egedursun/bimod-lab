@@ -32,7 +32,11 @@ logger = logging.getLogger(__name__)
 
 
 @receiver(pre_delete, sender=DataSourceMediaStorageItem)
-def remove_vector_from_index_on_media_item_delete(sender, instance, **kwargs):
+def remove_vector_from_index_on_media_item_delete(
+    sender,
+    instance,
+    **kwargs
+):
     try:
         vector_data_instances = MediaItemVectorData.objects.filter(
             media_item=instance
@@ -47,23 +51,26 @@ def remove_vector_from_index_on_media_item_delete(sender, instance, **kwargs):
         if os.path.exists(index_path):
             index = faiss.read_index(index_path)
 
-            xids = np.array([
-                vector_data_instance.id for vector_data_instance in vector_data_instances
-            ])
+            xids = np.array(
+                [
+                    vector_data_instance.id for vector_data_instance in vector_data_instances
+                ]
+            )
 
             index.remove_ids(xids)
 
-            faiss.write_index(index, index_path)
+            faiss.write_index(
+                index,
+                index_path
+            )
 
             logger.info(f"Removed vector data for DataSourceMediaStorageItem with ID {instance.id} from index.")
-            print(f"Removed vector data for DataSourceMediaStorageItem with ID {instance.id} from index.")
 
         else:
-            print(f"Index path {index_path} does not exist.")
+            logger.error(f"Index file not found for DataSourceMediaStorageItem with ID {instance.id}.")
 
         for vector_data_instance in vector_data_instances:
             vector_data_instance.delete()
 
     except MediaItemVectorData.DoesNotExist:
-        print(
-            f"No MediaItemVectorData found for DataSourceMediaStorageItem with ID {instance.id}.")
+        logger.error(f"Error occurred while deleting vector data for DataSourceMediaStorageItem with ID {instance.id}.")

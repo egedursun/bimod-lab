@@ -18,7 +18,10 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
 
 from django.core.paginator import (
     Paginator,
@@ -45,7 +48,11 @@ from apps.datasource_ml_models.utils import (
 )
 
 from apps.organization.models import Organization
-from apps.user_permissions.utils import PermissionNames
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -126,23 +133,35 @@ class MLModelView_ItemList(LoginRequiredMixin, TemplateView):
 
         ##############################
         # PERMISSION CHECK FOR - DELETE_ML_MODEL_FILES
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.DELETE_ML_MODEL_FILES):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.DELETE_ML_MODEL_FILES
+        ):
             messages.error(self.request, "You do not have permission to delete ML Model files.")
             return redirect('datasource_ml_models:item_list')
         ##############################
 
         mgr_id = request.POST.get('storage_id')
+
         chosen_insts = request.POST.getlist('selected_items')
-        chosen_insts = [item for item in chosen_insts if item]
+
+        chosen_insts = [
+            item for item in chosen_insts if item
+        ]
 
         if DELETE_ALL_ML_ITEMS_SPECIFIER in request.POST:
-            DataSourceMLModelItem.objects.filter(ml_model_base__id=mgr_id).delete()
+            DataSourceMLModelItem.objects.filter(
+                ml_model_base__id=mgr_id
+            ).delete()
+
             logger.info(f"All ML models in the selected connection have been deleted.")
             messages.success(request, 'All ML models in the selected connection have been deleted.')
 
         elif chosen_insts:
-            DataSourceMLModelItem.objects.filter(id__in=chosen_insts).delete()
+            DataSourceMLModelItem.objects.filter(
+                id__in=chosen_insts
+            ).delete()
+
             logger.info(f"Selected ML models have been deleted.")
             messages.success(request, 'Selected ML models have been deleted.')
 

@@ -17,9 +17,10 @@
 
 import json
 import logging
-import os
 
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain.text_splitter import (
+    RecursiveCharacterTextSplitter
+)
 
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -28,7 +29,10 @@ from apps.datasource_sql.models import (
     SQLDatabaseConnection,
     SQLSchemaChunkVectorData,
 )
-from apps.datasource_sql.tasks import handle_embedding_task
+from apps.datasource_sql.tasks import (
+    handle_embedding_task
+)
+
 from apps.datasource_sql.utils import (
     SQL_SCHEMA_VECTOR_CHUNK_OVERLAP,
     SQL_SCHEMA_VECTOR_CHUNK_SIZE
@@ -47,12 +51,14 @@ def update_sql_database_vector_embedding_after_save(
     if created:
 
         try:
-            # Get the schema of the SQL database
             instance: SQLDatabaseConnection
             schema = instance.schema_data_json
 
-            # Split it into multiple chunks
-            json_text = json.dumps(schema, indent=2)
+            json_text = json.dumps(
+                schema,
+                indent=2
+            )
+
             splitter = RecursiveCharacterTextSplitter(
                 json_text,
                 chunk_size=SQL_SCHEMA_VECTOR_CHUNK_SIZE,
@@ -61,7 +67,6 @@ def update_sql_database_vector_embedding_after_save(
 
             chunks = splitter.split_text(json_text)
 
-            # Embed each chunk into the vector space
             for i, chunk in enumerate(chunks):
                 chunk_vector_data = SQLSchemaChunkVectorData.objects.create(
                     sql_database=instance,
@@ -80,7 +85,6 @@ def update_sql_database_vector_embedding_after_save(
                 ##############################
 
             logger.info(f"Successfully updated the vector embeddings for SQLDatabaseConnection with ID {instance.id}.")
-            print("All chunks have been embedded successfully.")
 
         except Exception as e:
             logger.error(f"Error in post-save embedding update: {e}")

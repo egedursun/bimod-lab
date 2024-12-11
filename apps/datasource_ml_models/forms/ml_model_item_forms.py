@@ -17,7 +17,9 @@
 
 from django import forms
 
-from apps.datasource_ml_models.models import DataSourceMLModelItem
+from apps.datasource_ml_models.models import (
+    DataSourceMLModelItem
+)
 
 
 class DataSourceMLModelItemForm(forms.ModelForm):
@@ -32,11 +34,13 @@ class DataSourceMLModelItemForm(forms.ModelForm):
 
     class Meta:
         model = DataSourceMLModelItem
+
         fields = [
             'ml_model_base',
             'ml_model_name',
             'description', 'interpretation_temperature'
         ]
+
         widgets = {
             'ml_model_base': forms.Select(
                 attrs={

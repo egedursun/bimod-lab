@@ -30,7 +30,9 @@ logger = logging.getLogger(__name__)
 
 def handle_delete_website_item(item: DataSourceWebsiteStorageItem):
     try:
-        success = clean_previous_data(item=item)
+        success = clean_previous_data(
+            item=item
+        )
 
         if success is False:
             logger.error(f"An error occurred while deleting the data for website item with ID: {item.id}")

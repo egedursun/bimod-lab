@@ -18,7 +18,10 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
 
 from django.shortcuts import (
     get_object_or_404,
@@ -99,7 +102,11 @@ class SQLDatabaseView_QueryUpdate(TemplateView, LoginRequiredMixin):
             return redirect('datasource_sql:list_queries')
         ##############################
 
-        query = get_object_or_404(CustomSQLQuery, id=kwargs['pk'])
+        query = get_object_or_404(
+            CustomSQLQuery,
+            id=kwargs['pk']
+        )
+
         form = CustomSQLQueryForm(
             request.POST,
             instance=query

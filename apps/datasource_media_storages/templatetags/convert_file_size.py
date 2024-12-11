@@ -17,7 +17,9 @@
 
 from django import template
 
-from apps.datasource_media_storages.utils import UNIT_BYTES_THOUSAND
+from apps.datasource_media_storages.utils import (
+    UNIT_BYTES_THOUSAND
+)
 
 register = template.Library()
 

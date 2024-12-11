@@ -33,10 +33,13 @@ def download_file_from_url(storage_id: int, url: str):
 
     import requests
 
-    media_manager = DataSourceMediaStorageConnection.objects.get(id=storage_id)
+    media_manager = DataSourceMediaStorageConnection.objects.get(
+        id=storage_id
+    )
 
     if not media_manager:
         logger.error(f"[tasks.download_file_from_url] Media manager not found: {storage_id}")
+
         return False
 
     file_format = url.split('.')[-1]
@@ -54,8 +57,10 @@ def download_file_from_url(storage_id: int, url: str):
 
     try:
         output = requests.get(url)
+
         if output.status_code == 200:
             file_data = output.content
+
             if not f_generated:
                 f_generated = f"{uuid.uuid4()}_{uuid.uuid4()}.{filetype.guess(file_data).extension}"
 
@@ -66,17 +71,21 @@ def download_file_from_url(storage_id: int, url: str):
                 media_file_type=file_format,
                 file_bytes=file_data
             )
+
             media_item.save()
 
         else:
             logger.error(f"[tasks.download_file_from_url] Error downloading file from URL: {url}")
+
             return False
 
     except Exception as e:
         logger.error(f"[tasks.download_file_from_url] Error downloading file from URL: {url} - {e}")
+
         return False
 
     logger.info(f"[tasks.download_file_from_url] File downloaded successfully from URL: {url}")
+
     return True
 
 

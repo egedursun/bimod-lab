@@ -17,7 +17,9 @@
 
 from django import forms
 
-from apps.datasource_nosql.models import NoSQLDatabaseConnection
+from apps.datasource_nosql.models import (
+    NoSQLDatabaseConnection
+)
 
 
 class NoSQLDatabaseConnectionForm(forms.ModelForm):

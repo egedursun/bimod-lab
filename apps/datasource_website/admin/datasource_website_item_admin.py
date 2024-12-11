@@ -17,7 +17,9 @@
 
 from django.contrib import admin
 
-from apps.datasource_website.models import DataSourceWebsiteStorageItem
+from apps.datasource_website.models import (
+    DataSourceWebsiteStorageItem
+)
 
 from apps.datasource_website.utils import (
     DATASOURCE_WEBSITE_STORAGE_ITEM_ADMIN_LIST,

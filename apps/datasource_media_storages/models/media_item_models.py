@@ -21,8 +21,14 @@ import random
 from django.db import models
 from slugify import slugify
 
-from apps.datasource_media_storages.tasks import upload_file_to_storage
-from apps.datasource_media_storages.utils import MEDIA_FILE_TYPES
+from apps.datasource_media_storages.tasks import (
+    upload_file_to_storage
+)
+
+from apps.datasource_media_storages.utils import (
+    MEDIA_FILE_TYPES
+)
+
 from config.settings import MEDIA_URL
 
 logger = logging.getLogger(__name__)
@@ -36,6 +42,7 @@ class DataSourceMediaStorageItem(models.Model):
     )
 
     media_file_name = models.CharField(max_length=255)
+
     description = models.TextField(blank=True, null=True)
     media_file_size = models.BigIntegerField(null=True, blank=True)
 
@@ -61,7 +68,9 @@ class DataSourceMediaStorageItem(models.Model):
     class Meta:
         verbose_name = 'Data Source Media Storage Item'
         verbose_name_plural = 'Data Source Media Storage Items'
+
         ordering = ['-created_at']
+
         indexes = [
             models.Index(fields=[
                 'storage_base',
@@ -97,18 +106,28 @@ class DataSourceMediaStorageItem(models.Model):
         update_fields=None
     ):
 
-        self.media_file_name = slugify(self.media_file_name)
+        self.media_file_name = slugify(
+            self.media_file_name
+        )
+
         file_type = self.media_file_type
 
         if file_type not in [ft[0] for ft in MEDIA_FILE_TYPES]:
             logger.error(f"Unsupported file type: {file_type}")
+
             return False
 
         if not self.full_file_path:
             base_dir = self.storage_base.directory_full_path
             file_name = self.media_file_name
 
-            unique_suffix = str(random.randint(1_000_000, 9_999_999))
+            unique_suffix = str(
+                random.randint(
+                    1_000_000,
+                    9_999_999
+                )
+            )
+
             relative_path = f"{base_dir.split(MEDIA_URL)[1]}/{file_name.split('.')[0]}_{unique_suffix}.{file_type}"
 
             self.full_file_path = f"{MEDIA_URL}{relative_path}"

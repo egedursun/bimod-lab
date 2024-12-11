@@ -19,7 +19,9 @@ import json
 import logging
 import os
 
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain.text_splitter import (
+    RecursiveCharacterTextSplitter
+)
 
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -28,7 +30,9 @@ from apps.datasource_nosql.models import (
     NoSQLDatabaseConnection,
     NoSQLSchemaChunkVectorData,
 )
-from apps.datasource_nosql.tasks import handle_embedding_task
+from apps.datasource_nosql.tasks import (
+    handle_embedding_task
+)
 
 from apps.datasource_nosql.utils import (
     NOSQL_SCHEMA_VECTOR_CHUNK_OVERLAP,
@@ -48,12 +52,13 @@ def update_nosql_database_vector_embedding_after_save(
     if created:
 
         try:
-            # Get the schema of the NoSQL database
             instance: NoSQLDatabaseConnection
             schema = instance.schema_data_json
 
-            # Split it into multiple chunks
-            json_text = json.dumps(schema, indent=2)
+            json_text = json.dumps(
+                schema,
+                indent=2
+            )
 
             splitter = RecursiveCharacterTextSplitter(
                 json_text,
@@ -63,11 +68,6 @@ def update_nosql_database_vector_embedding_after_save(
 
             chunks = splitter.split_text(json_text)
 
-            # Display the chunks
-            for i, chunk in enumerate(chunks):
-                print(f"[NOSQL SCHEMA] Chunk {i + 1}:\n{chunk}\n-------------\n")
-
-            # Embed each chunk into the vector space
             for i, chunk in enumerate(chunks):
                 chunk_vector_data = NoSQLSchemaChunkVectorData.objects.create(
                     nosql_database=instance,

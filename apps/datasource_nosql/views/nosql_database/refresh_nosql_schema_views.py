@@ -22,7 +22,11 @@ import os
 import faiss
 import numpy as np
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.shortcuts import redirect
 from django.views import View
 
@@ -56,13 +60,15 @@ class NoSQLDatabaseView_ManagerRefreshSchema(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         connection_id = kwargs.get('pk')
 
-        nosql_database = NoSQLDatabaseConnection.objects.get(id=connection_id)
+        nosql_database = NoSQLDatabaseConnection.objects.get(
+            id=connection_id
+        )
+
         if not nosql_database:
             messages.error(request, 'NoSQL Database Connection is not found, unexpected error.')
 
         try:
 
-            # re-save the NoSQL db to refresh the schema
             nosql_database.save()
 
             ################################################################################################
@@ -74,6 +80,7 @@ class NoSQLDatabaseView_ManagerRefreshSchema(LoginRequiredMixin, View):
             ).all()
 
             storage_id = nosql_database.id
+
             index_path = os.path.join(
                 VECTOR_INDEX_PATH_NOSQL_SCHEMAS,
                 f'nosql_schemas_index_{storage_id}.index'
@@ -83,20 +90,26 @@ class NoSQLDatabaseView_ManagerRefreshSchema(LoginRequiredMixin, View):
             if os.path.exists(index_path):
                 index = faiss.read_index(index_path)
 
-                xids = np.array([
-                    vector_data_instance.id for vector_data_instance in vector_data_instances
-                ])
+                xids = np.array(
+                    [
+                        vector_data_instance.id for vector_data_instance in vector_data_instances
+                    ]
+                )
 
-                index.remove_ids(xids)
+                index.remove_ids(
+                    xids
+                )
 
-                faiss.write_index(index, index_path)
+                faiss.write_index(
+                    index,
+                    index_path
+                )
 
                 logger.info(f"Removed vector data for [NoSQL] with ID {nosql_database.id} from index.")
 
             else:
                 print(f"Index path {index_path} does not exist, skipping deletion of index items...")
 
-            # Clean the ORM object
             for vector_data_instance in vector_data_instances:
                 vector_data_instance.delete()
 
@@ -112,7 +125,10 @@ class NoSQLDatabaseView_ManagerRefreshSchema(LoginRequiredMixin, View):
 
             schema = nosql_database.schema_data_json
 
-            json_text = json.dumps(schema, indent=2)
+            json_text = json.dumps(
+                schema,
+                indent=2
+            )
 
             splitter = RecursiveCharacterTextSplitter(
                 json_text,
@@ -140,7 +156,6 @@ class NoSQLDatabaseView_ManagerRefreshSchema(LoginRequiredMixin, View):
                 ##############################
 
             logger.info(f"Successfully updated the vector embeddings for NoSQLDatabaseConnection.")
-            print("All chunks have been embedded successfully.")
 
             ################################################################################################
             # / Re-Run Embedding Process
