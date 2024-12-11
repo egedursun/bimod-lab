@@ -26,7 +26,9 @@ def execute_voidforger_leanmod_oracle_search_query(
     query
 ):
 
-    from apps.core.semantor.semantor_executor import SemantorVectorSearchExecutionManager
+    from apps.core.semantor.semantor_executor import (
+        SemantorVectorSearchExecutionManager
+    )
 
     try:
         xc = SemantorVectorSearchExecutionManager(
@@ -43,6 +45,7 @@ def execute_voidforger_leanmod_oracle_search_query(
     except Exception as e:
         logger.error(f"Error occurred while executing the function: {e}")
         error = f"Error occurred while executing the function: {str(e)}"
+
         return error
 
     return search_output

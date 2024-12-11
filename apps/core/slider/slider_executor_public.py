@@ -21,7 +21,9 @@ from apps.core.generative_ai.gpt_openai_manager import (
     OpenAIGPTClientManager
 )
 
-from apps.slider.models import SliderGoogleAppsConnection
+from apps.slider.models import (
+    SliderGoogleAppsConnection
+)
 
 from apps.core.slider.public_handlers import (
     handle_ai_command_public,
@@ -72,20 +74,24 @@ class SliderExecutionManager_Public:
                 command=command,
                 content=self.content
             )
+
             logger.info(
                 f"[SliderExecutionManager_Public.handle_ai_command_public] AI command executed successfully: {command}")
 
         except Exception as e:
             logger.error(
                 f"[SliderExecutionManager_Public.handle_ai_command_public] Error executing AI command: {command}. Error: {e}")
+
             error = f"[SliderExecutionManager_Public.handle_ai_command_public] Error executing AI command: {command}. Error: {e}"
 
         response['output'] = output
         response['error'] = error
+
         return response
 
     def execute_auto_command(self):
         output, error = None, None
+
         response = {
             'output': output,
             'error': output
@@ -102,14 +108,17 @@ class SliderExecutionManager_Public:
         except Exception as e:
             logger.error(
                 f"[SliderExecutionManager_Public.handle_auto_command_public] Error executing AUTO command. Error: {e}")
+
             error = f"[SliderExecutionManager_Public.handle_auto_command_public] Error executing AUTO command. Error: {e}"
 
         response['output'] = output
         response['error'] = error
+
         return response
 
     def execute_img_command(self, command: str):
         output, error = None, None
+
         response = {
             'output': output,
             'error': output
@@ -131,10 +140,12 @@ class SliderExecutionManager_Public:
 
         response['output'] = output
         response['error'] = error
+
         return response
 
     def execute_nosql_command(self, command: str):
         output, error = None, None
+
         response = {
             'output': output,
             'error': output
@@ -146,6 +157,7 @@ class SliderExecutionManager_Public:
                 command=command,
                 content=self.content
             )
+
             logger.info(
                 f"[SliderExecutionManager_Public.handle_nosql_command_public] NOSQL command executed successfully: {command}")
 
@@ -156,10 +168,16 @@ class SliderExecutionManager_Public:
 
         response['output'] = output
         response['error'] = error
+
         return response
 
-    def execute_select_command(self, selected_text: str, command: str):
+    def execute_select_command(
+        self,
+        selected_text: str,
+        command: str
+    ):
         output, error = None, None
+
         response = {
             'output': output,
             'error': output
@@ -168,23 +186,28 @@ class SliderExecutionManager_Public:
         try:
             output, error = handle_select_command_public(
                 xc=self,
-                selected_text=selected_text, command=command,
+                selected_text=selected_text,
+                command=command,
                 content=self.content
             )
+
             logger.info(
                 f"[SliderExecutionManager_Public.handle_select_command_public] SELECT command executed successfully: {command}")
 
         except Exception as e:
             logger.error(
                 f"[SliderExecutionManager_Public.handle_select_command_public] Error executing SELECT command: {command}. Error: {e}")
+
             error = f"[SliderExecutionManager_Public.handle_select_command_public] Error executing SELECT command: {command}. Error: {e}"
 
         response['output'] = output
         response['error'] = error
+
         return response
 
     def execute_sql_command(self, command: str):
         output, error = None, None
+
         response = {
             'output': output,
             'error': output
@@ -196,6 +219,7 @@ class SliderExecutionManager_Public:
                 command=command,
                 content=self.content
             )
+
             logger.info(
                 f"[SliderExecutionManager_Public.handle_sql_command_public] SQL command executed successfully: {command}")
 
@@ -206,10 +230,12 @@ class SliderExecutionManager_Public:
 
         response['output'] = output
         response['error'] = error
+
         return response
 
     def execute_ssh_command(self, command: str):
         output, error = None, None
+
         response = {
             'output': output,
             'error': output
@@ -221,6 +247,7 @@ class SliderExecutionManager_Public:
                 command=command,
                 content=self.content
             )
+
             logger.info(
                 f"[SliderExecutionManager_Public.handle_ssh_command_public] SSH command executed successfully: {command}")
 
@@ -231,10 +258,12 @@ class SliderExecutionManager_Public:
 
         response['output'] = output
         response['error'] = error
+
         return response
 
     def execute_vect_command(self, command: str):
         output, error = None, None
+
         response = {
             'output': output,
             'error': output
@@ -256,10 +285,12 @@ class SliderExecutionManager_Public:
 
         response['output'] = output
         response['error'] = error
+
         return response
 
     def execute_web_command(self, command: str):
         output, error = None, None
+
         response = {
             'output': output,
             'error': output
@@ -271,6 +302,7 @@ class SliderExecutionManager_Public:
                 command=command,
                 content=self.content
             )
+
             logger.info(
                 f"[SliderExecutionManager_Public.handle_web_command_public] WEB command executed successfully: {command}")
 
@@ -281,10 +313,12 @@ class SliderExecutionManager_Public:
 
         response['output'] = output
         response['error'] = error
+
         return response
 
     def execute_repo_command(self, command: str):
         output, error = None, None
+
         response = {
             'output': output,
             'error': output
@@ -296,6 +330,7 @@ class SliderExecutionManager_Public:
                 command=command,
                 content=self.content
             )
+
             logger.info(
                 f"[SliderExecutionManager_Public.handle_repo_command_public] REPO command executed successfully: {command}")
 
@@ -306,4 +341,5 @@ class SliderExecutionManager_Public:
 
         response['output'] = output
         response['error'] = error
+
         return response

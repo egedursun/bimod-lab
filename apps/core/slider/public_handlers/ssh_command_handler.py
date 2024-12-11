@@ -18,13 +18,33 @@
 import json
 import logging
 
-from apps.core.slider.utils import SLIDER_TOOL_CALL_MAXIMUM_ATTEMPTS, find_tool_call_from_json
-from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
-from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
-from apps.core.tool_calls.core_services.core_service_execute_ssh_system_command import run_execute_ssh_system_commands
-from apps.core.tool_calls.input_verifiers.verify_ssh_system_command import verify_ssh_system_command_content
+from apps.core.slider.utils import (
+    SLIDER_TOOL_CALL_MAXIMUM_ATTEMPTS,
+    find_tool_call_from_json
+)
+
+from apps.core.generative_ai.utils import (
+    GPT_DEFAULT_ENCODING_ENGINE,
+    ChatRoles
+)
+
+from apps.core.internal_cost_manager.costs_map import (
+    InternalServiceCosts
+)
+
+from apps.core.tool_calls.core_services.core_service_execute_ssh_system_command import (
+    run_execute_ssh_system_commands
+)
+
+from apps.core.tool_calls.input_verifiers.verify_ssh_system_command import (
+    verify_ssh_system_command_content
+)
+
 from apps.llm_transaction.models import LLMTransaction
-from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
+
+from apps.llm_transaction.utils import (
+    LLMTransactionSourcesTypesNames
+)
 
 logger = logging.getLogger(__name__)
 
@@ -34,8 +54,14 @@ def handle_ssh_command_public(
     command: str,
     content: str
 ) -> str:
-    from apps.core.slider.slider_executor_public import SliderExecutionManager_Public
-    from apps.core.slider.prompt_builders import build_ssh_command_system_prompt_public
+    from apps.core.slider.slider_executor_public import (
+        SliderExecutionManager_Public
+    )
+
+    from apps.core.slider.prompt_builders import (
+        build_ssh_command_system_prompt_public
+    )
+
     xc: SliderExecutionManager_Public
 
     try:
@@ -54,6 +80,7 @@ def handle_ssh_command_public(
             transaction_type=ChatRoles.USER,
             transaction_source=LLMTransactionSourcesTypesNames.SLIDER
         )
+
         logger.info(f"[handle_ai_command] Created LLMTransaction for user command: {command}")
 
     except Exception as e:
@@ -61,6 +88,7 @@ def handle_ssh_command_public(
         pass
 
     output, error = None, None
+
     system_prompt = build_ssh_command_system_prompt_public(
         xc=xc,
         user_query=command,
@@ -85,6 +113,7 @@ def handle_ssh_command_public(
             transaction_type=ChatRoles.SYSTEM,
             transaction_source=LLMTransactionSourcesTypesNames.SLIDER
         )
+
         logger.info(f"[handle_ai_command] Created LLMTransaction for system prompt.")
 
     except Exception as e:
@@ -109,8 +138,10 @@ def handle_ssh_command_public(
 
         choices = llm_response.choices
         first_choice = choices[0]
+
         choice_message = first_choice.message
         choice_message_content = choice_message.content
+
         logger.info(f"[handle_ai_command] Generated AI response.")
 
         try:
@@ -129,6 +160,7 @@ def handle_ssh_command_public(
                 transaction_type=ChatRoles.ASSISTANT,
                 transaction_source=LLMTransactionSourcesTypesNames.SLIDER
             )
+
             logger.info(f"[handle_ai_command] Created LLMTransaction for AI response.")
 
         except Exception as e:
@@ -138,9 +170,11 @@ def handle_ssh_command_public(
     except Exception as e:
         logger.error(f"[handle_ai_command] Error generating AI response. Error: {e}")
         error = f"[handle_ai_command] Error executing SSH command: {command}. Error: {e}"
+
         return output, error
 
     # TOOL USAGE IDENTIFICATION
+
     tool_counter = 0
     context_messages = [structured_system_prompt]
 
@@ -149,18 +183,26 @@ def handle_ssh_command_public(
         tool_counter < SLIDER_TOOL_CALL_MAXIMUM_ATTEMPTS
     ):
         tool_counter += 1
-        tool_requests_dicts = find_tool_call_from_json(choice_message_content)
+
+        tool_requests_dicts = find_tool_call_from_json(
+            choice_message_content
+        )
 
         if len(tool_requests_dicts) > 0:
             for tool_req_dict in tool_requests_dicts:
 
                 defined_tool_descriptor = tool_req_dict.get("tool", "")
+
                 output_tool_call = f"""
                     Tool Response: {defined_tool_descriptor}
 
                     '''
                 """
-                error = verify_ssh_system_command_content(content=tool_req_dict)
+
+                error = verify_ssh_system_command_content(
+                    content=tool_req_dict
+                )
+
                 if error:
                     logger.error(error)
                     return error, None, None, None
@@ -173,10 +215,14 @@ def handle_ssh_command_public(
                 output_tool_call += """
                     '''
                 """
-                context_messages.append({
-                    "content": output_tool_call,
-                    "role": "system"
-                })
+
+                context_messages.append(
+                    {
+                        "content": output_tool_call,
+                        "role": "system"
+                    }
+                )
+
         try:
             llm_response = client.chat.completions.create(
                 model=xc.copilot_llm.model_name,
@@ -190,8 +236,10 @@ def handle_ssh_command_public(
 
             choices = llm_response.choices
             first_choice = choices[0]
+
             choice_message = first_choice.message
             choice_message_content = choice_message.content
+
             logger.info(f"[handle_ai_command] Generated AI response.")
 
             try:
@@ -210,6 +258,7 @@ def handle_ssh_command_public(
                     transaction_type=ChatRoles.ASSISTANT,
                     transaction_source=LLMTransactionSourcesTypesNames.SLIDER
                 )
+
                 logger.info(f"[handle_ai_command] Created LLMTransaction for AI response.")
 
             except Exception as e:
@@ -219,12 +268,14 @@ def handle_ssh_command_public(
         except Exception as e:
             logger.error(f"[handle_ai_command] Error generating AI response. Error: {e}")
             error = f"[handle_ai_command] Error executing SSH command: {command}. Error: {e}"
+
             return output, error
 
     if tool_counter == SLIDER_TOOL_CALL_MAXIMUM_ATTEMPTS:
         error = (f"[handle_ai_command] Error executing SSH command: {command}. Error: Maximum tool call attempts "
                  f"reached.")
         logger.error(error)
+
         return output, error
 
     try:
@@ -239,7 +290,9 @@ def handle_ssh_command_public(
             transaction_source=LLMTransactionSourcesTypesNames.SLIDER,
             is_tool_cost=True
         )
+
         tx.save()
+
         logger.info(f"[handle_ai_command] Created LLMTransaction for Slider.")
 
     except Exception as e:
@@ -247,14 +300,30 @@ def handle_ssh_command_public(
         pass
 
     output = choice_message_content
+
     return output, error
 
 
-def _handle_tool_ssh_system(tool_usage_dict, output_tool_call):
+def _handle_tool_ssh_system(
+    tool_usage_dict,
+    output_tool_call
+):
     c_id = tool_usage_dict.get("parameters").get("file_system_connection_id")
     commands = tool_usage_dict.get("parameters").get("commands")
-    output = run_execute_ssh_system_commands(c_id=c_id, bash_commands=commands)
-    output_str = json.dumps(output, sort_keys=True, default=str)
+
+    output = run_execute_ssh_system_commands(
+        c_id=c_id,
+        bash_commands=commands
+    )
+
+    output_str = json.dumps(
+        output,
+        sort_keys=True,
+        default=str
+    )
+
     output_tool_call += output_str
+
     logger.info(f"[handle_ai_command] Executed SSH system command: {commands}")
+
     return output_tool_call

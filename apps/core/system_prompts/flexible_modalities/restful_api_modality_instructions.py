@@ -19,11 +19,17 @@
 import json
 
 from apps.assistants.models import Assistant
-from apps.mm_apis.models import CustomAPIReference
+
+from apps.mm_apis.models import (
+    CustomAPIReference
+)
 
 
 def build_apis_multi_modality_prompt(assistant: Assistant):
-    custom_api_references = CustomAPIReference.objects.filter(assistant=assistant)
+    custom_api_references = CustomAPIReference.objects.filter(
+        assistant=assistant
+    )
+
     response_prompt = """
             ### **CUSTOM APIS:**
 
@@ -32,6 +38,7 @@ def build_apis_multi_modality_prompt(assistant: Assistant):
 
     for i, custom_api_reference in enumerate(custom_api_references):
         custom_api = custom_api_reference.custom_api
+
         response_prompt += f"""
                 [Custom API Reference ID: {custom_api_reference.id}]
                     API Name: {custom_api.name}
@@ -84,10 +91,14 @@ def build_apis_multi_modality_prompt(assistant: Assistant):
 
             ---
             """
+
     return response_prompt
 
 
-def build_semantor_apis_multi_modality_prompt(temporary_sources: dict):
+def build_semantor_apis_multi_modality_prompt(
+    temporary_sources: dict
+):
+
     custom_api_references = temporary_sources.get("tools").get("apis")
 
     response_prompt = """
@@ -98,6 +109,7 @@ def build_semantor_apis_multi_modality_prompt(temporary_sources: dict):
 
     for i, custom_api_reference in enumerate(custom_api_references):
         custom_api = custom_api_reference.custom_api
+
         response_prompt += f"""
                 [Custom API Reference ID: {custom_api_reference.id}]
                     API Name: {custom_api.name}
@@ -154,7 +166,6 @@ def build_semantor_apis_multi_modality_prompt(temporary_sources: dict):
 
 
 def build_lean_apis_multi_modality_prompt():
-    # Build the prompt
     response_prompt = """
             **CUSTOM API CONNECTIONS:**
 
@@ -198,4 +209,5 @@ def build_lean_apis_multi_modality_prompt():
 
             ---
             """
+
     return response_prompt

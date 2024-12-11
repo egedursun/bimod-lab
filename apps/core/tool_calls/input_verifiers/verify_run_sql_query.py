@@ -16,7 +16,9 @@
 #
 
 
-from apps.datasource_sql.models import SQLDatabaseConnection
+from apps.datasource_sql.models import (
+    SQLDatabaseConnection
+)
 
 
 def verify_run_sql_query_content(content: dict):

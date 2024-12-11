@@ -21,7 +21,9 @@ from apps.core.metatempo.metatempo_execution_handler import (
     MetaTempoExecutionManager
 )
 
-from apps.metatempo.models import MetaTempoAssistantConnection
+from apps.metatempo.models import (
+    MetaTempoAssistantConnection
+)
 
 logger = logging.getLogger(__name__)
 
@@ -31,7 +33,6 @@ def run_query_execute_metatempo(
     action: str,
     query: str
 ):
-
     try:
         connection = MetaTempoAssistantConnection.objects.get(
             id=c_id
@@ -48,6 +49,7 @@ def run_query_execute_metatempo(
 
             if error:
                 logger.error(f"Error occurred while running the MetaTempo board manager AI 'QUERY' query: {error}")
+
                 return error
 
         elif action == "REPORT":
@@ -55,16 +57,19 @@ def run_query_execute_metatempo(
 
             if error:
                 logger.error(f"Error occurred while running the MetaTempo board manager AI 'REPORT' query: {error}")
+
                 return error
 
         else:
             error = f"Invalid action type: {action}"
             logger.error(f"Error occurred while running the MetaTempo board manager AI query: {error}")
+
             return error
 
     except Exception as e:
         logger.error(f"Error occurred while running the MetaTempo board manager AI query: {e}")
         error = f"There has been an unexpected error on running the MetaTempo board manager AI query: {e}"
+
         return error
 
     return output

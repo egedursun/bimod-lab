@@ -16,7 +16,9 @@
 #
 
 
-from apps.core.video_generation.utils import VideoGenerationActionTypes
+from apps.core.video_generation.utils import (
+    VideoGenerationActionTypes
+)
 
 
 def verify_generate_video_content(content: dict):

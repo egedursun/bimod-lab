@@ -22,7 +22,10 @@ from apps.assistants.models import Assistant
 def build_file_system_data_source_prompt(assistant: Assistant):
     from apps.datasource_file_systems.models import DataSourceFileSystem
 
-    file_system_data_sources = DataSourceFileSystem.objects.filter(assistant=assistant)
+    file_system_data_sources = DataSourceFileSystem.objects.filter(
+        assistant=assistant
+    )
+
     response_prompt = """
             ### **FILE SYSTEM CONNECTIONS (via SSH):**
 

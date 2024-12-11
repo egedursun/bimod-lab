@@ -34,7 +34,10 @@ def run_query_search_media_items(
     query: str
 ):
     try:
-        connection = DataSourceMediaStorageConnection.objects.get(id=connection_id)
+        connection = DataSourceMediaStorageConnection.objects.get(
+            id=connection_id
+        )
+
         if not connection:
             return f"Connection with ID: {connection_id} does not exist."
 
@@ -42,11 +45,15 @@ def run_query_search_media_items(
             connection=connection,
             chat=chat
         )
-        output = xc.search_media_items(query=query)
+
+        output = xc.search_media_items(
+            query=query
+        )
 
     except Exception as e:
         logger.error(f"Error occurred while executing the Media Item Search query: {str(e)}")
         error_msg = f"Error occurred while executing the Media Item Search query: {str(e)}"
+
         return error_msg
 
     return output

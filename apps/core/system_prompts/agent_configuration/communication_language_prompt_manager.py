@@ -15,7 +15,9 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-from apps.assistants.models import AGENT_SPEECH_LANGUAGES
+from apps.assistants.models import (
+    AGENT_SPEECH_LANGUAGES
+)
 
 
 def build_communication_language_prompt(response_language: str):

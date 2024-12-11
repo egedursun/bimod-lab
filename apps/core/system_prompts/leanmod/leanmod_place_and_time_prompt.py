@@ -17,7 +17,9 @@
 
 from datetime import datetime
 
-from django.contrib.auth.models import User
+from django.contrib.auth.models import (
+    User
+)
 
 
 def build_structured_place_and_time_prompt_leanmod(user: User):
@@ -50,4 +52,5 @@ def build_structured_place_and_time_prompt_leanmod(user: User):
             """
 
     response_prompt += user_location + current_time
+
     return response_prompt

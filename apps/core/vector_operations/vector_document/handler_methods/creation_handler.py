@@ -19,7 +19,9 @@ import logging
 
 import weaviate.classes as wvc
 
-from apps.core.codebase.utils import DEFAULT_GENERATIVE_SEARCH_MODEL
+from apps.core.codebase.utils import (
+    DEFAULT_GENERATIVE_SEARCH_MODEL
+)
 
 from apps.core.vector_operations.vector_document.utils import (
     VECTOR_STORE_DOCUMENT_WEAVIATE_FIELDS_CONFIG,
@@ -31,8 +33,14 @@ logger = logging.getLogger(__name__)
 
 def create_weaviate_classes_handler(executor):
     logger.info("Creating Weaviate classes")
-    output = {"status": True, "error": ""}
+
+    output = {
+        "status": True,
+        "error": ""
+    }
+
     connection = executor.connection_object
+
     c = executor.connect_c()
 
     try:
@@ -53,8 +61,10 @@ def create_weaviate_classes_handler(executor):
 
     except Exception as e:
         logger.error(f"Error occurred while creating Weaviate class: {e}")
+
         output["status"] = False
         output["error"] = str(e)
+
         return output
 
     try:
@@ -69,11 +79,15 @@ def create_weaviate_classes_handler(executor):
                 max_tokens=connection.assistant.llm_model.maximum_tokens
             ),
             properties=VECTOR_STORE_DOCUMENT_CHUNK_WEAVIATE_FIELDS_CONFIG)
+
         logger.info(f"Created Weaviate class: {connection.class_name}Chunks")
 
     except Exception as e:
         output["status"] = False
         output["error"] = str(e)
+
         logger.error(f"Error occurred while creating Weaviate class: {e}")
+
         return output
+
     return output

@@ -16,11 +16,17 @@
 #
 
 from apps.assistants.models import Assistant
-from apps.metatempo.models import MetaTempoAssistantConnection
+
+from apps.metatempo.models import (
+    MetaTempoAssistantConnection
+)
 
 
 def build_metatempo_to_assistant_data_source_prompt(assistant: Assistant):
-    metatempo_to_assistant_data_sources = MetaTempoAssistantConnection.objects.filter(assistant=assistant)
+    metatempo_to_assistant_data_sources = MetaTempoAssistantConnection.objects.filter(
+        assistant=assistant
+    )
+
     response_prompt = """
             ### **METATEMPO TRACKER CONNECTIONS:**
 
@@ -29,6 +35,7 @@ def build_metatempo_to_assistant_data_source_prompt(assistant: Assistant):
 
     for i, info_feed in enumerate(metatempo_to_assistant_data_sources):
         conn: MetaTempoAssistantConnection = info_feed
+
         response_prompt += f"""
                 [Connection ID: {conn.id}]
                     [MetaTempo Board Name: {conn.metatempo_instance.board.title}]
@@ -64,6 +71,7 @@ def build_semantor_metatempo_to_assistant_data_source_prompt(temporary_sources: 
 
     for i, info_feed in enumerate(metatempo_to_assistant_data_sources):
         conn: MetaTempoAssistantConnection = info_feed
+
         response_prompt += f"""
                 [Connection ID: {conn.id}]
                     [MetaTempo Board Name: {conn.metatempo_instance.board.title}]

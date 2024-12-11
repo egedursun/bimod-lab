@@ -48,4 +48,5 @@ def build_structured_tool_usage_instructions_prompt_harmoniq():
             - "parameters" are parameters tool requires.
             - For each tool, sample is provided showing how its called.
         """
+
     return response_prompt

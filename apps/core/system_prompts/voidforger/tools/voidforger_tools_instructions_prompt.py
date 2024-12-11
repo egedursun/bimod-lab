@@ -46,4 +46,5 @@ def build_structured_tool_usage_instructions_prompt_voidforger():
         - "parameters" are parameters that tool requires.
         - For each tool, specific explanations are also shared in your prompt.
     """
+
     return response_prompt

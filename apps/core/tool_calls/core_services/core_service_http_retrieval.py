@@ -30,7 +30,6 @@ def run_http_retrieval(
     connection_id: int,
     url: str
 ):
-
     xc = HTTPClientDownloadExecutor(
         storage_id=connection_id
     )
@@ -41,11 +40,13 @@ def run_http_retrieval(
             url = f"{MEDIA_URL}{url}"
 
         output = xc.retrieve(url=url)
+
         logger.info(f"HTTP retrieval output: {output}")
 
     except Exception as e:
         logger.error(f"Error occurred while downloading the file from the URL: {e}")
         error = f"Error occurred while downloading the file from the URL: {str(e)}"
+
         return error
 
     return output

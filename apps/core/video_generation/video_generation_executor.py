@@ -23,17 +23,28 @@ import filetype
 import requests
 import boto3
 
-from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
+from apps.core.internal_cost_manager.costs_map import (
+    InternalServiceCosts
+)
 
 from apps.core.generative_ai.utils import (
     GPT_DEFAULT_ENCODING_ENGINE,
     ChatRoles
 )
 
-from apps.core.media_managers.utils import GENERATED_VIDEOS_ROOT_MEDIA_PATH
+from apps.core.media_managers.utils import (
+    GENERATED_VIDEOS_ROOT_MEDIA_PATH
+)
+
 from apps.llm_transaction.models import LLMTransaction
-from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
-from apps.video_generations.models import VideoGeneratorConnection
+
+from apps.llm_transaction.utils import (
+    LLMTransactionSourcesTypesNames
+)
+
+from apps.video_generations.models import (
+    VideoGeneratorConnection
+)
 
 from apps.core.video_generation.utils import (
     VideoGeneratorFrameTypes,
@@ -84,12 +95,15 @@ class VideoGenerationExecutor:
                 transaction_source=LLMTransactionSourcesTypesNames.GENERATE_VIDEO,
                 is_tool_cost=True
             )
+
             tx.save()
+
             logger.info(f"Transaction created for video generation: {tx.id}")
 
         except Exception as e:
 
             logger.error(f"Error occurred while saving the transaction: {e}")
+
             return {
                 "success": False,
                 "message": "Error occurred while saving the transaction.",
@@ -101,7 +115,9 @@ class VideoGenerationExecutor:
                 video_url,
                 stream=True
             )
+
             data_bytes = response.content
+
             logger.info(f"Downloaded video data from the URL: {video_url}")
 
         except Exception as e:
@@ -109,11 +125,13 @@ class VideoGenerationExecutor:
             return None
 
         estimated_format = filetype.guess(data_bytes)
+
         if estimated_format is None:
             logger.error("Could not determine the file type of the downloaded video.")
             estimated_format = UNCLASSIFIED_FILE_EXTENSION
 
         file_format = estimated_format.extension
+
         save_name = generate_save_name(
             extension=file_format
         )
@@ -129,10 +147,12 @@ class VideoGenerationExecutor:
                 Key=bucket_path,
                 Body=data_bytes
             )
+
             logger.info(f"Saved the video to the S3 bucket: {bucket_path}")
 
         except Exception as e:
             logger.error(f"Error occurred while saving the video to the S3 bucket: {e}")
+
             return None
 
         return full_uri
@@ -152,6 +172,7 @@ class VideoGenerationExecutor:
         if loop is True:
 
             if with_aspect_ratio is True:
+
                 aspect_ratio = "3:4" if not aspect_ratio else aspect_ratio
 
                 generation = self.client.generations.create(
@@ -166,36 +187,51 @@ class VideoGenerationExecutor:
                     loop=True
                 )
         else:
+
             if with_aspect_ratio is True:
+
                 aspect_ratio = "3:4" if not aspect_ratio else aspect_ratio
+
                 generation = self.client.generations.create(
                     prompt=query,
                     aspect_ratio=aspect_ratio
                 )
 
             else:
+
                 generation = self.client.generations.create(
                     prompt=query
                 )
 
         completed = False
+
         while not completed:
 
-            generation = self.client.generations.get(id=generation.id)
+            generation = self.client.generations.get(
+                id=generation.id
+            )
+
             completed = True if generation.state == LumaAIGenerationStates.COMPLETED else False
 
             if generation.state == LumaAIGenerationStates.FAILED:
                 logger.error("The video generation process has failed on the client side.")
+
                 return {
                     "error": "The video generation process has failed on the client side.",
                     "video_url": None
                 }
 
             time.sleep(VIDEO_GENERATOR_PING_INTERVAL_SECONDS)
+
             logger.info(f"Video generation process is still running. State: {generation.state}")
 
         video_url = generation.assets.video
-        s3_url = self._download_and_save_video(generation, video_url)
+
+        s3_url = self._download_and_save_video(
+            generation,
+            video_url
+        )
+
         logger.info(f"Video generation process completed successfully. Video URL: {s3_url}")
 
         return {
@@ -212,8 +248,12 @@ class VideoGenerationExecutor:
         loop=False
     ):
 
-        if start_frame_url is None and end_frame_url is None:
+        if (
+            start_frame_url is None and
+            end_frame_url is None
+        ):
             logger.error("At least one of the start or end frame URLs must be provided.")
+
             return {
                 "error": "At least one of the start or end frame URLs must be provided.",
                 "video_url": None
@@ -237,6 +277,7 @@ class VideoGenerationExecutor:
                 )
 
             else:
+
                 generation = self.client.generations.create(
                     prompt=query,
                     keyframes={
@@ -248,6 +289,7 @@ class VideoGenerationExecutor:
                 )
 
         elif frame_type == VideoGeneratorFrameTypes.END:
+
             generation = self.client.generations.create(
                 prompt=query,
                 keyframes={
@@ -259,6 +301,7 @@ class VideoGenerationExecutor:
             )
 
         elif frame_type == VideoGeneratorFrameTypes.START_AND_END:
+
             generation = self.client.generations.create(
                 prompt=query,
                 keyframes={
@@ -274,11 +317,13 @@ class VideoGenerationExecutor:
             )
 
         completed = False
+
         while not completed:
 
             generation = self.client.generations.get(
                 id=generation.id
             )
+
             completed = True if generation.state == LumaAIGenerationStates.COMPLETED else False
 
             if generation.state == LumaAIGenerationStates.FAILED:
@@ -290,7 +335,12 @@ class VideoGenerationExecutor:
             time.sleep(VIDEO_GENERATOR_PING_INTERVAL_SECONDS)
 
         video_url = generation.assets.video
-        s3_url = self._download_and_save_video(generation, video_url)
+
+        s3_url = self._download_and_save_video(
+            generation,
+            video_url
+        )
+
         logger.info(f"Video generation process completed successfully. Video URL: {s3_url}")
 
         return {

@@ -31,20 +31,23 @@ from apps.core.visual_client.utils import (
 )
 
 from config import settings
-from config.settings import MEDIA_URL
 
+from config.settings import (
+    MEDIA_URL
+)
 
 logger = logging.getLogger(__name__)
 
 
 def generator_save_images_and_return_uris(datas):
-
     logger.info("Saving images and returning URIs")
     uris = []
 
     for data in datas:
+
         try:
             uri = generator_save_image_and_return_uri(data)
+
             if uri is not None:
                 uris.append(uri)
 
@@ -57,31 +60,39 @@ def generator_save_images_and_return_uris(datas):
     return uris
 
 
-def generator_save_image_and_return_uri(img_data):
-
+def generator_save_image_and_return_uri(
+    img_data
+):
     estimate_format = filetype.guess(img_data)
+
     if estimate_format is None:
         estimate_format = FILE_FORMAT_BIN
 
     file_format = estimate_format.extension
+
     file_name = generator_generate_save_name(
         extension=file_format
     )
+
     bucket_path = f"{GENERATED_IMAGES_ROOT_MEDIA_PATH}{file_name}"
+
     uri = f"{MEDIA_URL}{bucket_path}"
 
     try:
         s3c = boto3.client('s3')
         bucket = os.getenv('AWS_STORAGE_BUCKET_NAME')
+
         s3c.put_object(
             Bucket=bucket,
             Key=bucket_path,
             Body=img_data
         )
+
         logger.info(f"URI: {uri}")
 
     except Exception as e:
         logger.error(f"Error saving image and returning URI: {e}")
+
         return None
 
     return uri
@@ -94,17 +105,20 @@ def generator_generate_save_name(extension):
 
     except Exception as e:
         logger.error(f"Error generating save name: {e}")
+
         return None
 
     return f"{uuid_1}_{uuid_2}.{extension}"
 
 
 def edit_save_images_and_return_uris(datas):
-
     uris = []
+
     for data in datas:
+
         try:
             uri = edit_save_image_and_return_uri(data)
+
             if uri is not None:
                 uris.append(uri)
 
@@ -116,29 +130,37 @@ def edit_save_images_and_return_uris(datas):
 
 
 def edit_save_image_and_return_uri(img_data):
-    estimate_format = filetype.guess(img_data)
+    estimate_format = filetype.guess(
+        img_data
+    )
+
     if estimate_format is None:
         estimate_format = FILE_FORMAT_BIN
 
     file_format = estimate_format.extension
+
     file_name = edit_generate_save_name(
         extension=file_format
     )
+
     bucket_path = f"{GENERATED_IMAGES_ROOT_MEDIA_PATH}{file_name}"
     uri = f"{MEDIA_URL}{bucket_path}"
 
     try:
         s3c = boto3.client("s3")
         bucket = os.getenv("AWS_STORAGE_BUCKET_NAME")
+
         s3c.put_object(
             Bucket=bucket,
             Key=bucket_path,
             Body=img_data
         )
+
         logger.info(f"URI: {uri}")
 
     except Exception as e:
         logger.error(f"Error saving image and returning URI: {e}")
+
         return None
 
     return uri
@@ -151,52 +173,61 @@ def edit_generate_save_name(extension):
 
     except Exception as e:
         logger.error(f"Error generating save name: {e}")
+
         return None
 
     return f"{uuid_1}_{uuid_2}.{extension}"
 
 
 def dream_save_images_and_return_uris(datas):
-
     uris = []
+
     for data in datas:
+
         try:
             uri = dream_save_image_and_return_uri(data)
+
             if uri is not None:
                 uris.append(uri)
 
         except Exception as e:
             logger.error(f"Error saving image and returning URI: {e}")
+
             return None
 
     return uris
 
 
 def dream_save_image_and_return_uri(img_data):
-
     estimate_format = filetype.guess(img_data)
+
     if estimate_format is None:
         estimate_format = FILE_FORMAT_BIN
 
     file_format = estimate_format.extension
+
     file_name = dream_generate_save_name(
         extension=file_format
     )
+
     bucket_path = f"{GENERATED_IMAGES_ROOT_MEDIA_PATH}{file_name}"
     uri = f"{MEDIA_URL}{bucket_path}"
 
     try:
         s3c = boto3.client('s3')
         bucket = settings.AWS_STORAGE_BUCKET_NAME
+
         s3c.put_object(
             Bucket=bucket,
             Key=bucket_path,
             Body=img_data
         )
+
         logger.info(f"URI: {uri}")
 
     except Exception as e:
         logger.error(f"Error saving image and returning URI: {e}")
+
         return None
 
     return uri
@@ -211,6 +242,7 @@ def dream_generate_save_name(
 
     except Exception as e:
         logger.error(f"Error generating save name: {e}")
+
         return None
 
     return f"{uuid_1}_{uuid_2}.{extension}"

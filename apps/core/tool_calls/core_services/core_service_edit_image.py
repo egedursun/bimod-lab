@@ -22,9 +22,15 @@ from apps.core.tool_calls.utils import (
     VISUALIZATION_TOOL_STANDARD_ERROR_LOG
 )
 
-from apps.core.visual_client.operations import EditManager
+from apps.core.visual_client.operations import (
+    EditManager
+)
+
 from apps.assistants.models import Assistant
-from apps.multimodal_chat.models import MultimodalChat
+
+from apps.multimodal_chat.models import (
+    MultimodalChat
+)
 
 logger = logging.getLogger(__name__)
 
@@ -53,6 +59,7 @@ def run_edit_image(
     if agent.image_generation_capability is False:
         error = VISUALIZATION_TOOL_ERROR_LOG
         logger.error("The agent does not have the capability to generate images.")
+
         return error
 
     try:
@@ -62,11 +69,13 @@ def run_edit_image(
             edit_image_mask_uri=edit_img_uri_mask,
             image_size=img_dimensions
         )
+
         logger.info(f"Edit image generation output: {output}")
 
     except Exception as e:
         logger.error(f"Error occurred while running the edit image generation: {e}")
         error = VISUALIZATION_TOOL_STANDARD_ERROR_LOG
+
         return error
 
     return output

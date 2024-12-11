@@ -16,7 +16,10 @@
 #
 
 
-from apps.core.tool_calls.utils import ToolCallDescriptorNames
+from apps.core.tool_calls.utils import (
+    ToolCallDescriptorNames
+)
+
 from config.settings import MEDIA_URL
 
 
@@ -109,4 +112,5 @@ def build_tool_prompt__execute_audio():
                 appending file path to the base URL.
 
         """
+
     return response_prompt

@@ -18,11 +18,17 @@
 import json
 
 from apps.assistants.models import Assistant
-from apps.mm_scripts.models import CustomScriptReference
+
+from apps.mm_scripts.models import (
+    CustomScriptReference
+)
 
 
 def build_scripts_multi_modality_prompt(assistant: Assistant):
-    script_refs = CustomScriptReference.objects.filter(assistant=assistant)
+    script_refs = CustomScriptReference.objects.filter(
+        assistant=assistant
+    )
+
     response_prompt = """
             ### **CUSTOM SCRIPTS:**
 
@@ -31,6 +37,7 @@ def build_scripts_multi_modality_prompt(assistant: Assistant):
 
     for i, custom_script_reference in enumerate(script_refs):
         custom_script = custom_script_reference.custom_script
+
         response_prompt += f"""
                 [Custom Script Reference ID: {custom_script_reference.id}]
                     Script Name: {custom_script.name}
@@ -88,7 +95,9 @@ def build_scripts_multi_modality_prompt(assistant: Assistant):
     return response_prompt
 
 
-def build_semantor_scripts_multi_modality_prompt(temporary_sources: dict):
+def build_semantor_scripts_multi_modality_prompt(
+    temporary_sources: dict
+):
     script_refs = temporary_sources.get("tools").get("scripts")
 
     response_prompt = """
@@ -99,6 +108,7 @@ def build_semantor_scripts_multi_modality_prompt(temporary_sources: dict):
 
     for i, custom_script_reference in enumerate(script_refs):
         custom_script = custom_script_reference.custom_script
+
         response_prompt += f"""
                 [Custom Script Reference ID: {custom_script_reference.id}]
                     Script Name: {custom_script.name}
@@ -201,4 +211,5 @@ def build_lean_scripts_multi_modality_prompt():
 
             -------
             """
+
     return response_prompt

@@ -19,7 +19,9 @@ import logging
 
 from django.contrib.auth.models import User
 
-from apps.core.orchestration.orchestration_executor import OrchestrationExecutor
+from apps.core.orchestration.orchestration_executor import (
+    OrchestrationExecutor
+)
 
 from apps.orchestrations.models import (
     OrchestrationReactantAssistantConnection,
@@ -27,7 +29,9 @@ from apps.orchestrations.models import (
     OrchestrationQueryLog
 )
 
-from apps.orchestrations.utils import OrchestrationQueryLogTypesNames
+from apps.orchestrations.utils import (
+    OrchestrationQueryLogTypesNames
+)
 
 logger = logging.getLogger(__name__)
 
@@ -37,7 +41,6 @@ def run_query_trigger_orchestration(
     c_id: int,
     user_query: str
 ):
-
     try:
 
         attached_images = []
@@ -89,6 +92,7 @@ def run_query_trigger_orchestration(
     except Exception as e:
         logger.error(f"Error occurred while running the Orchestration triggering execution tool: {e}")
         error = f"There has been an unexpected error on running the Orchestration triggering execution tool: {e}"
+
         return error
 
     return output

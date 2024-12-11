@@ -18,7 +18,10 @@
 import logging
 import traceback
 
-from apps.core.website.website_executor import WebsiteExecutionManager
+from apps.core.website.website_executor import (
+    WebsiteExecutionManager
+)
+
 from apps.datasource_website.models import (
     DataSourceWebsiteStorageConnection
 )
@@ -32,7 +35,10 @@ def run_query_search_website_data(
     query: str
 ):
     try:
-        connection = DataSourceWebsiteStorageConnection.objects.get(id=connection_id)
+        connection = DataSourceWebsiteStorageConnection.objects.get(
+            id=connection_id
+        )
+
         if not connection:
             return f"Connection with ID: {connection_id} does not exist."
 
@@ -49,6 +55,7 @@ def run_query_search_website_data(
         logger.error(f"Error occurred while executing the Website Data Search query: {str(e)}")
         logger.error(traceback.format_exc())
         error_msg = f"Error occurred while executing the Website Data Search query: {str(e)}"
+
         return error_msg
 
     return output

@@ -15,17 +15,34 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-from apps.core.tool_calls.utils import ToolCallDescriptorNames
+from apps.core.tool_calls.utils import (
+    ToolCallDescriptorNames
+)
+
 from apps.assistants.models import Assistant
-from apps.video_generations.models import VideoGeneratorConnection
-from apps.core.video_generation.utils import VideoGenerationActionTypes
+
+from apps.video_generations.models import (
+    VideoGeneratorConnection
+)
+
+from apps.core.video_generation.utils import (
+    VideoGenerationActionTypes
+)
+
 from config.settings import MEDIA_URL
 
 
 def build_tool_prompt__generate_video(assistant_id: int):
-    agent = Assistant.objects.get(id=assistant_id)
-    conns = VideoGeneratorConnection.objects.filter(assistant=agent)
+    agent = Assistant.objects.get(
+        id=assistant_id
+    )
+
+    conns = VideoGeneratorConnection.objects.filter(
+        assistant=agent
+    )
+
     video_generator_connections_text = ""
+
     for connection in conns:
         video_generator_connections_text += f"""
             --------------------------------------------------
@@ -155,6 +172,7 @@ def build_tool_prompt__generate_video(assistant_id: int):
             ---
 
         """
+
     return response_prompt
 
 
@@ -277,4 +295,5 @@ def build_lean_tool_prompt__generate_video():
             ---
 
         """
+
     return response_prompt

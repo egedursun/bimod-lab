@@ -20,8 +20,12 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-def delete_weaviate_class_handler(executor, class_name):
+def delete_weaviate_class_handler(
+    executor,
+    class_name
+):
     logger.info(f"Deleting class: {class_name}")
+
     c = executor.connect_c()
 
     output = {

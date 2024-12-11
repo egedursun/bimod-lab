@@ -28,6 +28,7 @@ def build_chat_history_memory_handling_prompt():
         user know that you forget something unless it is necessary.
         ---
     """
+
     return context_memory_instructions
 
 
@@ -40,4 +41,5 @@ def build_chat_history_memory_stop_communication_handler_prompt():
         end the conversation.
         ---
     """
+
     return stop_conversation_prompt

@@ -15,7 +15,9 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-from apps.core.tool_calls.utils import ToolCallDescriptorNames
+from apps.core.tool_calls.utils import (
+    ToolCallDescriptorNames
+)
 
 
 def build_structured_tool_prompt__leanmod_oracle_command_order_voidforger():
@@ -60,4 +62,5 @@ def build_structured_tool_prompt__leanmod_oracle_command_order_voidforger():
 
         ---
     """
+
     return response_prompt

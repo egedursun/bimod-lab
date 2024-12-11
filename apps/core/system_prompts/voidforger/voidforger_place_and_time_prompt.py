@@ -21,11 +21,13 @@ from datetime import datetime
 
 def build_structured_place_and_time_prompt_voidforger(user):
     user: User
+
     response_prompt = """
             ### **PLACE AND TIME**
 
             '''
             """
+
     user_location = f"""
             User Address: {user.profile.address}
                 City: {user.profile.city}
@@ -52,4 +54,5 @@ def build_structured_place_and_time_prompt_voidforger(user):
             """
 
     response_prompt += user_location + current_time
+
     return response_prompt

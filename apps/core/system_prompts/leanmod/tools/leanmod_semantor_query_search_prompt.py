@@ -15,7 +15,9 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-from apps.core.tool_calls.utils import ToolCallDescriptorNames
+from apps.core.tool_calls.utils import (
+    ToolCallDescriptorNames
+)
 
 
 def build_structured_tool_prompt__semantor_search_execution_leanmod():
@@ -78,6 +80,7 @@ def build_structured_tool_prompt__semantor_search_execution_leanmod():
 
                 ---
             """
+
     return response_prompt
 
 

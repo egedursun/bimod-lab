@@ -148,8 +148,11 @@ from apps.core.system_prompts.information_feeds.vector_store.build_vector_store_
     build_lean_vector_store_data_source_prompt,
     build_semantor_vector_store_data_source_prompt
 )
-from apps.core.system_prompts.information_feeds.website.build_website_data_source_prompt import \
-    build_semantor_website_data_source_prompt, build_lean_website_data_source_prompt, build_website_data_source_prompt
+from apps.core.system_prompts.information_feeds.website.build_website_data_source_prompt import (
+    build_semantor_website_data_source_prompt,
+    build_lean_website_data_source_prompt,
+    build_website_data_source_prompt
+)
 
 from apps.core.system_prompts.leanmod.leanmod_guidelines_prompt import (
     build_structured_primary_guidelines_leanmod
@@ -237,14 +240,16 @@ from apps.core.system_prompts.tool_call_prompts.per_tool.execute_code_analysis_t
 from apps.core.system_prompts.tool_call_prompts.per_tool.execute_dashboard_statistics_query_tool_prompt import (
     build_tool_prompt__execute_dashboard_statistics_query
 )
-from apps.core.system_prompts.tool_call_prompts.per_tool.execute_file_system_directory_schema_search_tool_prompt import \
+from apps.core.system_prompts.tool_call_prompts.per_tool.execute_file_system_directory_schema_search_tool_prompt import (
     build_tool_prompt__file_directory_schema_search
+)
 
 from apps.core.system_prompts.tool_call_prompts.per_tool.execute_hadron_prime_node_query_tool_prompt import (
     build_tool_prompt__execute_hadron_prime_node_query
 )
-from apps.core.system_prompts.tool_call_prompts.per_tool.execute_media_item_search_tool_prompt import \
+from apps.core.system_prompts.tool_call_prompts.per_tool.execute_media_item_search_tool_prompt import (
     build_tool_prompt__media_item_search
+)
 
 from apps.core.system_prompts.tool_call_prompts.per_tool.execute_metakanban_query_tool_prompt import (
     build_tool_prompt__execute_metakanban_query
@@ -253,8 +258,9 @@ from apps.core.system_prompts.tool_call_prompts.per_tool.execute_metakanban_quer
 from apps.core.system_prompts.tool_call_prompts.per_tool.execute_metatempo_query_tool_prompt import (
     build_tool_prompt__execute_metatempo_query
 )
-from apps.core.system_prompts.tool_call_prompts.per_tool.execute_nosql_database_schema_search_tool_prompt import \
+from apps.core.system_prompts.tool_call_prompts.per_tool.execute_nosql_database_schema_search_tool_prompt import (
     build_tool_prompt__nosql_database_schema_search
+)
 
 from apps.core.system_prompts.tool_call_prompts.per_tool.execute_nosql_query_tool_prompt import (
     build_tool_prompt__execute_nosql_query
@@ -287,8 +293,9 @@ from apps.core.system_prompts.tool_call_prompts.per_tool.execute_smart_contract_
 from apps.core.system_prompts.tool_call_prompts.per_tool.execute_smart_contract_query_tool_prompt import (
     build_tool_prompt__execute_smart_contract_generation_query
 )
-from apps.core.system_prompts.tool_call_prompts.per_tool.execute_sql_database_schema_search_tool_prompt import \
+from apps.core.system_prompts.tool_call_prompts.per_tool.execute_sql_database_schema_search_tool_prompt import (
     build_tool_prompt__sql_database_schema_search
+)
 
 from apps.core.system_prompts.tool_call_prompts.per_tool.execute_ssh_file_system_command_tool_prompt import (
     build_tool_prompt__execute_ssh_file_system_command
@@ -297,8 +304,9 @@ from apps.core.system_prompts.tool_call_prompts.per_tool.execute_ssh_file_system
 from apps.core.system_prompts.tool_call_prompts.per_tool.execute_triggered_job_logs_query_tool_prompt import (
     build_tool_prompt__execute_triggered_job_logs_query
 )
-from apps.core.system_prompts.tool_call_prompts.per_tool.execute_website_data_search_tool_prompt import \
+from apps.core.system_prompts.tool_call_prompts.per_tool.execute_website_data_search_tool_prompt import (
     build_tool_prompt__website_data_search
+)
 
 from apps.core.system_prompts.tool_call_prompts.per_tool.generate_image_tool_prompt import (
     build_tool_prompt__generate_image
@@ -371,8 +379,10 @@ from apps.core.system_prompts.voidforger.tools.voidforger_old_message_search_pro
     build_structured_tool_prompt__old_message_search_execution_voidforger
 )
 
-from apps.core.system_prompts.voidforger.tools.voidforger_tools_instructions_prompt import \
+from apps.core.system_prompts.voidforger.tools.voidforger_tools_instructions_prompt import (
     build_structured_tool_usage_instructions_prompt_voidforger
+)
+
 from apps.core.system_prompts.voidforger.voidforger_agent_personality_prompt import (
     build_agent_personality_prompt_voidforger
 )
@@ -394,9 +404,20 @@ from apps.core.system_prompts.voidforger.voidforger_user_information_prompt impo
 )
 
 from apps.leanmod.models import LeanAssistant
-from apps.llm_transaction.models import LLMTransaction
-from apps.multimodal_chat.models import MultimodalChat, MultimodalLeanChat
-from apps.multimodal_chat.utils import transmit_websocket_log
+
+from apps.llm_transaction.models import (
+    LLMTransaction
+)
+
+from apps.multimodal_chat.models import (
+    MultimodalChat,
+    MultimodalLeanChat
+)
+
+from apps.multimodal_chat.utils import (
+    transmit_websocket_log
+)
+
 from apps.voidforger.models import VoidForger
 
 logger = logging.getLogger(__name__)
@@ -412,7 +433,10 @@ class SystemPromptFactoryBuilder:
         role: str
     ):
 
-        from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE
+        from apps.core.generative_ai.utils import (
+            GPT_DEFAULT_ENCODING_ENGINE
+        )
+
         from apps.core.generative_ai.utils import ChatRoles
 
         agent_nickname = assistant.name
@@ -892,37 +916,48 @@ class SystemPromptFactoryBuilder:
     ):
 
         generic = build_internal_principles_prompt()
+
         agent_nickname = build_agent_nickname_prompt(
             name=agent_nickname,
             chat_name=chat.chat_name
         )
+
         main_instructions = build_system_internal_instructions_prompt(
             assistant=assistant
         )
+
         templated_response = build_templated_response_prompt(
             response_template=templated_response
         )
+
         target_audience = build_target_audience_prompt(
             audience=target_audience
         )
+
         tone = build_agent_personality_prompt(
             tone=agent_personality_tone
         )
+
         projects_teams_prompt = build_agent_related_project_items_prompt(
             agent=assistant
         )
+
         comm_language = build_communication_language_prompt(
             response_language=output_language
         )
+
         user_info = build_user_tenant_prompt(
             user=user
         )
+
         standard_memory = build_standard_memory_prompt(
             assistant=assistant, user=user
         )
+
         technical_dict = build_technical_dictionary_prompt(
             glossary=assistant.glossary
         )
+
         spatial_awareness = ""
 
         if assistant.time_awareness and assistant.place_awareness:
@@ -1114,17 +1149,22 @@ class SystemPromptFactoryBuilder:
         agent_nickname = assistant_name
         comm_language = language
         generic = build_internal_principles_prompt()
+
         agent_nickname_prompt = build_agent_nickname_prompt(
             name=agent_nickname,
             chat_name=chat_name
         )
+
         main_instructions = instructions
+
         audience_prompt = build_target_audience_prompt(
             audience=audience
         )
+
         tone_prompt = build_agent_personality_prompt(
             tone=tone
         )
+
         output_language = build_communication_language_prompt(
             response_language=comm_language
         )
@@ -1132,39 +1172,51 @@ class SystemPromptFactoryBuilder:
         sql_feed = build_semantor_sql_data_source_prompt(
             temporary_sources=temporary_sources
         )
+
         nosql_feed = build_semantor_nosql_data_source_prompt(
             temporary_sources=temporary_sources
         )
+
         vector_store_feed = build_semantor_vector_store_data_source_prompt(
             temporary_sources=temporary_sources
         )
+
         codebase_feed = build_semantor_code_base_data_source_prompt(
             temporary_sources=temporary_sources
         )
+
         ssh_feed = build_semantor_file_system_data_source_prompt(
             temporary_sources=temporary_sources
         )
+
         website_feed = build_semantor_website_data_source_prompt(
             temporary_sources=temporary_sources
         )
+
         media_manager_feed = build_semantor_media_manager_data_source_prompt(
             temporary_sources=temporary_sources
         )
+
         ml_feed = build_semantor_ml_models_data_source_prompt(
             temporary_sources=temporary_sources
         )
+
         browsing_feed = build_semantor_browsing_data_source_prompt(
             temporary_sources=temporary_sources
         )
+
         hadron_prime_node_feed = build_semantor_hadron_prime_node_to_assistant_data_source_prompt(
             temporary_sources=temporary_sources
         )
+
         metakanban_feed = build_semantor_metakanban_to_assistant_data_source_prompt(
             temporary_sources=temporary_sources
         )
+
         metatempo_feed = build_semantor_metatempo_to_assistant_data_source_prompt(
             temporary_sources=temporary_sources
         )
+
         orchestration_trigger_feed = build_semantor_orchestration_to_assistant_data_source_prompt(
             temporary_sources=temporary_sources
         )
@@ -1174,9 +1226,11 @@ class SystemPromptFactoryBuilder:
         function_modality = build_semantor_functions_multi_modality_prompt(
             temporary_sources=temporary_sources
         )
+
         api_modality = build_semantor_apis_multi_modality_prompt(
             temporary_sources=temporary_sources
         )
+
         script_modality = build_semantor_scripts_multi_modality_prompt(
             temporary_sources=temporary_sources
         )
@@ -1186,26 +1240,31 @@ class SystemPromptFactoryBuilder:
         do_vector_store = build_tool_prompt__query_vector_store()
         do_codebase = build_tool_prompt__execute_codebase_query()
         do_website_search = build_tool_prompt__website_data_search()
+
         do_intra_memory = build_tool_prompt__intra_context_memory()
         do_ssh_system = build_tool_prompt__execute_ssh_file_system_command()
         do_media_manager = build_tool_prompt__media_manager_query()
         do_http_retrieval = build_tool_prompt__retrieval_via_http_client()
         do_ml = build_tool_prompt__infer_with_machine_learning()
+
         do_browsing = build_tool_prompt__browsing()
         do_analyze_code = build_tool_prompt__analyze_code()
         do_function = build_tool_prompt__execute_code()
         do_api = build_tool_prompt__execute_restful_api()
         do_script = build_tool_prompt__execute_bash_script()
+
         do_generate_image = build_tool_prompt__generate_image()
         do_edit_image = build_tool_prompt__edit_image()
         do_dream_image = build_tool_prompt__dream_image()
         do_audio = build_tool_prompt__execute_audio()
         do_generate_video = build_lean_tool_prompt__generate_video()
+
         do_smart_contract = build_tool_prompt__smart_contract_function_call()
         do_dashboard_statistics = build_tool_prompt__execute_dashboard_statistics_query()
         do_hadron_node_query = build_tool_prompt__execute_hadron_prime_node_query()
         do_metakanban_query = build_tool_prompt__execute_metakanban_query()
         do_metatempo_query = build_tool_prompt__execute_metatempo_query()
+
         do_orchestration_trigger = build_tool_prompt__execute_orchestration_trigger()
         do_scheduled_job_logs = build_tool_prompt__execute_scheduled_job_logs_query()
         do_triggered_job_logs = build_tool_prompt__execute_triggered_job_logs_query()
@@ -1224,11 +1283,13 @@ class SystemPromptFactoryBuilder:
         merged_prompt += nosql_feed
         merged_prompt += vector_store_feed
         merged_prompt += codebase_feed
+
         merged_prompt += website_feed
         merged_prompt += ssh_feed
         merged_prompt += media_manager_feed
         merged_prompt += ml_feed
         merged_prompt += browsing_feed
+
         merged_prompt += hadron_prime_node_feed
         merged_prompt += metakanban_feed
         merged_prompt += metatempo_feed
@@ -1239,29 +1300,35 @@ class SystemPromptFactoryBuilder:
         merged_prompt += api_modality
         merged_prompt += script_modality
         merged_prompt += do_instructions
+
         merged_prompt += do_sql_query
         merged_prompt += do_vector_store
         merged_prompt += do_codebase
         merged_prompt += do_website_search
+
         merged_prompt += do_intra_memory
         merged_prompt += do_ssh_system
         merged_prompt += do_media_manager
         merged_prompt += do_http_retrieval
         merged_prompt += do_ml
+
         merged_prompt += do_browsing
         merged_prompt += do_analyze_code
         merged_prompt += do_function
         merged_prompt += do_api
         merged_prompt += do_script
+
         merged_prompt += do_generate_image
         merged_prompt += do_edit_image
         merged_prompt += do_dream_image
         merged_prompt += do_audio
         merged_prompt += do_generate_video
+
         merged_prompt += do_smart_contract
         merged_prompt += do_dashboard_statistics
         merged_prompt += do_hadron_node_query
         merged_prompt += do_metakanban_query
+
         merged_prompt += do_metatempo_query
         merged_prompt += do_orchestration_trigger
         merged_prompt += do_scheduled_job_logs
@@ -1286,7 +1353,9 @@ class SystemPromptFactoryBuilder:
         fermion__endpoint=None
     ):
 
-        from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE
+        from apps.core.generative_ai.utils import (
+            GPT_DEFAULT_ENCODING_ENGINE
+        )
         from apps.core.generative_ai.utils import ChatRoles
 
         try:
@@ -1312,7 +1381,9 @@ class SystemPromptFactoryBuilder:
                     responsible_user=user,
                     responsible_assistant=None,
                     encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
-                    transaction_context_content=json.dumps(combined_system_instructions),
+                    transaction_context_content=json.dumps(
+                        combined_system_instructions
+                    ),
                     llm_cost=0,
                     internal_service_cost=0,
                     tax_cost=0,
@@ -1329,6 +1400,7 @@ class SystemPromptFactoryBuilder:
 
         except Exception as e:
             print("Error building Leanmod system prompts: %s" % e)
+
             return {"role": role, "content": "Unexpected error building Leanmod system prompts: %s" % e}
 
         return prompt
@@ -1344,6 +1416,7 @@ class SystemPromptFactoryBuilder:
     ):
 
         agent_nickname = lean_assistant.name
+
         generic = build_structured_primary_guidelines_leanmod()
 
         transmit_websocket_log(
@@ -1358,9 +1431,11 @@ class SystemPromptFactoryBuilder:
             assistant_name=agent_nickname,
             chat_name=chat.chat_name
         )
+
         instructions = build_structured_instructions_prompt_leanmod(
             assistant=lean_assistant
         )
+
         user_info = build_structured_user_information_prompt_leanmod(
             user=user
         )
@@ -1400,6 +1475,7 @@ class SystemPromptFactoryBuilder:
         tool_instructions = build_structured_tool_usage_instructions_prompt_leanmod()
         do_expert_network = build_structured_tool_prompt__expert_network_query_execution_leanmod()
         search_semantor = build_structured_tool_prompt__semantor_search_execution_leanmod()
+
         do_semantor = build_structured_tool_prompt__semantor_consultation_execution_leanmod()
         do_intra_memory_search = build_tool_prompt__leanmod_context_memory()
 
@@ -1415,9 +1491,11 @@ class SystemPromptFactoryBuilder:
         combined_system_instructions += agent_nickname
         combined_system_instructions += instructions
         combined_system_instructions += user_info
+
         combined_system_instructions += spatial_awareness
         combined_system_instructions += expert_network
         combined_system_instructions += tool_instructions
+
         combined_system_instructions += do_expert_network
         combined_system_instructions += search_semantor
         combined_system_instructions += do_semantor
@@ -1445,7 +1523,10 @@ class SystemPromptFactoryBuilder:
         fermion__endpoint=None
     ):
 
-        from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE
+        from apps.core.generative_ai.utils import (
+            GPT_DEFAULT_ENCODING_ENGINE
+        )
+
         from apps.core.generative_ai.utils import ChatRoles
 
         combined_system_instructions = SystemPromptFactoryBuilder._prepare_voidforger_system_prompts(
@@ -1481,6 +1562,7 @@ class SystemPromptFactoryBuilder:
 
         chat.transactions.add(tx)
         chat.save()
+
         return prompt
 
     @staticmethod

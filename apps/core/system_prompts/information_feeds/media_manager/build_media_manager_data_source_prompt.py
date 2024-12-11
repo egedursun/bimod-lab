@@ -24,7 +24,10 @@ from apps.datasource_media_storages.models import (
 
 
 def build_media_manager_data_source_prompt(assistant: Assistant):
-    media_manager_data_sources = DataSourceMediaStorageConnection.objects.filter(assistant=assistant)
+    media_manager_data_sources = DataSourceMediaStorageConnection.objects.filter(
+        assistant=assistant
+    )
+
     response_prompt = """
             ### **MEDIA STORAGE RESOURCE CONNECTIONS:**
 
@@ -86,7 +89,9 @@ def build_media_manager_data_source_prompt(assistant: Assistant):
     return response_prompt
 
 
-def build_semantor_media_manager_data_source_prompt(temporary_sources: dict):
+def build_semantor_media_manager_data_source_prompt(
+    temporary_sources: dict
+):
     media_manager_data_sources = temporary_sources.get("data_sources").get("media_storages")
 
     response_prompt = """

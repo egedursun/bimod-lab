@@ -17,10 +17,20 @@
 
 import logging
 
-from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
-from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
+from apps.core.generative_ai.utils import (
+    GPT_DEFAULT_ENCODING_ENGINE,
+    ChatRoles
+)
+
+from apps.core.internal_cost_manager.costs_map import (
+    InternalServiceCosts
+)
+
 from apps.llm_transaction.models import LLMTransaction
-from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
+
+from apps.llm_transaction.utils import (
+    LLMTransactionSourcesTypesNames
+)
 
 logger = logging.getLogger(__name__)
 
@@ -31,8 +41,14 @@ def handle_select_command_public(
     selected_text: str,
     content: str
 ) -> str:
-    from apps.core.slider.slider_executor_public import SliderExecutionManager_Public
-    from apps.core.slider.prompt_builders import build_select_command_system_prompt_public
+    from apps.core.slider.slider_executor_public import (
+        SliderExecutionManager_Public
+    )
+
+    from apps.core.slider.prompt_builders import (
+        build_select_command_system_prompt_public
+    )
+
     xc: SliderExecutionManager_Public
 
     try:
@@ -51,6 +67,7 @@ def handle_select_command_public(
             transaction_type=ChatRoles.USER,
             transaction_source=LLMTransactionSourcesTypesNames.SLIDER
         )
+
         logger.info(f"[handle_ai_command] Created LLMTransaction for user command: {command}")
 
     except Exception as e:
@@ -58,6 +75,7 @@ def handle_select_command_public(
         pass
 
     output, error = None, None
+
     system_prompt = build_select_command_system_prompt_public(
         xc=xc,
         user_query=command,
@@ -83,6 +101,7 @@ def handle_select_command_public(
             transaction_type=ChatRoles.SYSTEM,
             transaction_source=LLMTransactionSourcesTypesNames.SLIDER
         )
+
         logger.info(f"[handle_ai_command] Created LLMTransaction for system prompt.")
 
     except Exception as e:
@@ -94,6 +113,7 @@ def handle_select_command_public(
             "content": system_prompt,
             "role": "system"
         }
+
         llm_response = client.chat.completions.create(
             model=xc.copilot_llm.model_name,
             messages=[structured_system_prompt],
@@ -106,13 +126,16 @@ def handle_select_command_public(
 
         choices = llm_response.choices
         first_choice = choices[0]
+
         choice_message = first_choice.message
         choice_message_content = choice_message.content
+
         logger.info(f"[handle_ai_command] Generated AI response.")
 
     except Exception as e:
         error = f"[handle_ai_command] Error executing SELECT command: {command}. Error: {e}"
         logger.error(error)
+
         return output, error
 
     try:
@@ -131,6 +154,7 @@ def handle_select_command_public(
             transaction_type=ChatRoles.ASSISTANT,
             transaction_source=LLMTransactionSourcesTypesNames.SLIDER
         )
+
         logger.info(f"[handle_ai_command] Created LLMTransaction for AI response.")
 
     except Exception as e:
@@ -149,7 +173,9 @@ def handle_select_command_public(
             transaction_source=LLMTransactionSourcesTypesNames.SLIDER,
             is_tool_cost=True
         )
+
         tx.save()
+
         logger.info(f"[handle_ai_command] SELECT command cost.")
 
     except Exception as e:
@@ -157,4 +183,5 @@ def handle_select_command_public(
         pass
 
     output = choice_message_content
+
     return output, error

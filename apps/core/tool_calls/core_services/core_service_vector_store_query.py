@@ -53,6 +53,7 @@ def run_query_vector_store(
     except Exception as e:
         error_msg = f"Error occurred while executing the knowledge base query: {str(e)}"
         logger.error(error_msg)
+
         return error_msg
 
     return output

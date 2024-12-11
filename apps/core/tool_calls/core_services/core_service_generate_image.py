@@ -22,9 +22,15 @@ from apps.core.tool_calls.utils import (
     VISUALIZATION_TOOL_STANDARD_ERROR_LOG
 )
 
-from apps.core.visual_client.operations import GeneratorManager
+from apps.core.visual_client.operations import (
+    GeneratorManager
+)
+
 from apps.assistants.models import Assistant
-from apps.multimodal_chat.models import MultimodalChat
+
+from apps.multimodal_chat.models import (
+    MultimodalChat
+)
 
 logger = logging.getLogger(__name__)
 
@@ -36,7 +42,6 @@ def run_generate_image(
     img_dimensions,
     img_resolution
 ):
-
     agent = Assistant.objects.get(
         id=agent_id
     )
@@ -52,6 +57,7 @@ def run_generate_image(
 
     if agent.image_generation_capability is False:
         logger.error("The agent does not have the capability to generate images.")
+
         return VISUALIZATION_TOOL_ERROR_LOG
 
     try:
@@ -61,11 +67,13 @@ def run_generate_image(
             image_size=img_dimensions,
             quality=img_resolution
         )
+
         logger.info(f"Image generation output: {output}")
 
     except Exception as e:
         logger.error(f"Error occurred while running the image generation: {e}")
         error = VISUALIZATION_TOOL_STANDARD_ERROR_LOG
+
         return error
 
     return output

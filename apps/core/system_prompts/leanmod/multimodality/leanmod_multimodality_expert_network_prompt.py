@@ -22,8 +22,11 @@ from apps.leanmod.models import (
 )
 
 
-def build_expert_networks_multi_modality_prompt_leanmod(lean_assistant: LeanAssistant):
+def build_expert_networks_multi_modality_prompt_leanmod(
+    lean_assistant: LeanAssistant
+):
     expert_networks = lean_assistant.expert_networks.all()
+
     response_prompt = """
     ### *EXPERT NETWORKS*
 
@@ -36,10 +39,13 @@ def build_expert_networks_multi_modality_prompt_leanmod(lean_assistant: LeanAssi
                     [Network Name: {expert_network.name}]
                     [Network Description: {expert_network.meta_description}]
                     """
+
         agent_refs = expert_network.assistant_references.all()
+
         for j, agent_ref in enumerate(agent_refs):
             agent_ref: ExpertNetworkAssistantReference
             assistant = agent_ref.assistant
+
             response_prompt += f"""
                         [Assistant ID: {agent_ref.id}]
                         [Assistant Name: {assistant.name}]

@@ -16,7 +16,9 @@
 #
 
 
-from apps.assistants.models import Assistant
+from apps.assistants.models import (
+    Assistant
+)
 
 
 def build_system_internal_instructions_prompt(assistant: Assistant):

@@ -16,7 +16,9 @@
 #
 
 
-from apps.core.tool_calls.utils import ToolCallDescriptorNames
+from apps.core.tool_calls.utils import (
+    ToolCallDescriptorNames
+)
 
 
 def build_tool_prompt__leanmod_context_memory():
@@ -54,4 +56,5 @@ def build_tool_prompt__leanmod_context_memory():
             - You are expected to take in this, and use it to provide answer to user's question.
 
     """
+
     return response_prompt

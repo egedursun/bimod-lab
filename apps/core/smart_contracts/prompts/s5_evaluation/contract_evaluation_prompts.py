@@ -15,10 +15,14 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-from apps.smart_contracts.models import BlockchainSmartContract
+from apps.smart_contracts.models import (
+    BlockchainSmartContract
+)
 
 
-def contract_final_evaluation_primary_instructions(contract_object: BlockchainSmartContract):
+def contract_final_evaluation_primary_instructions(
+    contract_object: BlockchainSmartContract
+):
     return f"""
         ### **EVALUATION INSTRUCTIONS:**
 
@@ -48,7 +52,9 @@ def contract_final_evaluation_primary_instructions(contract_object: BlockchainSm
     """
 
 
-def contract_natural_language_context_explanation_prompt(contract_object: BlockchainSmartContract):
+def contract_natural_language_context_explanation_prompt(
+    contract_object: BlockchainSmartContract
+):
     return f"""
         ### **NATURAL LANGUAGE CONTEXT EXPLANATION:**
 

@@ -28,10 +28,17 @@ def run_execute_browsing(
     search_results,
     click_url
 ):
+    from apps.core.browsers.browser_executor import (
+        BrowsingExecutor
+    )
 
-    from apps.core.browsers.browser_executor import BrowsingExecutor
-    from apps.core.browsers.utils import BrowserActionsNames
-    from apps.datasource_browsers.models import DataSourceBrowserConnection
+    from apps.core.browsers.utils import (
+        BrowserActionsNames
+    )
+
+    from apps.datasource_browsers.models import (
+        DataSourceBrowserConnection
+    )
 
     conn = DataSourceBrowserConnection.objects.get(
         id=connection_id
@@ -44,6 +51,7 @@ def run_execute_browsing(
     if browsing_action == BrowserActionsNames.BROWSER_SEARCH:
 
         logger.info(f"Running browsing action: {browsing_action} with query: {browsing_query}")
+
         return xc.act(
             BrowserActionsNames.BROWSER_SEARCH,
             query=browsing_query,
@@ -52,7 +60,9 @@ def run_execute_browsing(
 
     elif browsing_action == BrowserActionsNames.CLICK_URL_IN_SEARCH:
 
-        logger.info(f"Running browsing action: {browsing_action} with search results: {search_results} and click url: {click_url}")
+        logger.info(
+            f"Running browsing action: {browsing_action} with search results: {search_results} and click url: {click_url}")
+
         return xc.act(
             BrowserActionsNames.CLICK_URL_IN_SEARCH,
             search_results=search_results,
@@ -63,4 +73,5 @@ def run_execute_browsing(
 
         logger.error(f"Invalid action: {browsing_action}. Must be one of {BrowserActionsNames.as_list()}.")
         action_error_log = f"Invalid action: {browsing_action}. Must be one of {BrowserActionsNames.as_list()}."
+
         return action_error_log

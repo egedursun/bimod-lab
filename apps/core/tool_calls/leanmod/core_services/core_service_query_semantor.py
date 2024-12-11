@@ -17,7 +17,9 @@
 
 import logging
 
-from apps.semantor.models import SemantorConfiguration
+from apps.semantor.models import (
+    SemantorConfiguration
+)
 
 logger = logging.getLogger(__name__)
 
@@ -27,7 +29,10 @@ def execute_semantor_search_query(
     llm_model,
     query
 ):
-    from apps.core.semantor.semantor_executor import SemantorVectorSearchExecutionManager
+    from apps.core.semantor.semantor_executor import (
+        SemantorVectorSearchExecutionManager
+    )
+
     try:
         xc = SemantorVectorSearchExecutionManager(
             user=user,
@@ -37,6 +42,7 @@ def execute_semantor_search_query(
         semantor_config, _ = SemantorConfiguration.objects.get_or_create(
             user=user
         )
+
         semantor_config: SemantorConfiguration
 
         if semantor_config.is_local_network_active:
@@ -58,12 +64,14 @@ def execute_semantor_search_query(
             global_network_output = {
                 "info": "Global network is not active. Please activate it from the Semantor configuration."
             }
+
         logger.info(f"Semantor search query output: {local_network_output}")
 
     except Exception as e:
 
         logger.error(f"Error occurred while executing the function: {e}")
         error = f"Error occurred while executing the function: {str(e)}"
+
         return error
 
     final_output = {

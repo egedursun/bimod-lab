@@ -15,7 +15,10 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-from apps.core.tool_calls.utils import ToolCallDescriptorNames
+from apps.core.tool_calls.utils import (
+    ToolCallDescriptorNames
+)
+
 from config.settings import MEDIA_URL
 
 
@@ -75,4 +78,5 @@ def build_tool_prompt__dream_image():
                     by appending the file path to the BASE URL.
 
         """
+
     return response_prompt

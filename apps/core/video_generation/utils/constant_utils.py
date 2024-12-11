@@ -25,7 +25,9 @@ class VideoGeneratorProviderTypesNames:
 
     @staticmethod
     def as_list():
-        return [VideoGeneratorProviderTypesNames.LUMA_AI]
+        return [
+            VideoGeneratorProviderTypesNames.LUMA_AI
+        ]
 
 
 class VideoGeneratorFrameTypes:
@@ -40,7 +42,6 @@ class LumaAIGenerationStates:
 
 
 VIDEO_GENERATOR_PING_INTERVAL_SECONDS = 2
-
 
 UNCLASSIFIED_FILE_EXTENSION = ".bin"
 

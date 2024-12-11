@@ -16,12 +16,17 @@
 #
 
 from apps.assistants.models import Assistant
-from apps.orchestrations.models import OrchestrationReactantAssistantConnection
+
+from apps.orchestrations.models import (
+    OrchestrationReactantAssistantConnection
+)
 
 
 def build_orchestration_to_assistant_data_source_prompt(assistant: Assistant):
     orchestration_to_assistant_data_sources = OrchestrationReactantAssistantConnection.objects.filter(
-        assistant=assistant)
+        assistant=assistant
+    )
+
     response_prompt = """
             ### **ORCHESTRATION MANAGER/MAESTRO CONNECTIONS:**
 
@@ -30,6 +35,7 @@ def build_orchestration_to_assistant_data_source_prompt(assistant: Assistant):
 
     for i, info_feed in enumerate(orchestration_to_assistant_data_sources):
         conn: OrchestrationReactantAssistantConnection = info_feed
+
         response_prompt += f"""
                 [Connection ID: {conn.id}]
                     [Orchestration Maestro Name: {conn.orchestration_maestro.name}]
@@ -63,6 +69,7 @@ def build_semantor_orchestration_to_assistant_data_source_prompt(temporary_sourc
 
     for i, info_feed in enumerate(orchestration_to_assistant_data_sources):
         conn: OrchestrationReactantAssistantConnection = info_feed
+
         response_prompt += f"""
                 [Connection ID: {conn.id}]
                     [Orchestration Maestro Name: {conn.orchestration_maestro.name}]

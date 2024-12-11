@@ -19,7 +19,9 @@ import logging
 
 from django.contrib.auth.models import User
 
-from apps.user_permissions.models import UserPermission
+from apps.user_permissions.models import (
+    UserPermission
+)
 
 logger = logging.getLogger(__name__)
 
@@ -39,7 +41,9 @@ class UserPermissionManager:
 
         if operation not in user_permissions:
             logger.warning(f"User: {user.username} is not authorized to perform operation: {operation}")
+
             return False
 
         logger.info(f"User: {user.username} is authorized to perform operation: {operation}")
+
         return True

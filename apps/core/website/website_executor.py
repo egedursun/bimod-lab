@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 import os
 from typing import List
@@ -21,7 +22,10 @@ from typing import List
 import faiss
 import numpy as np
 
-from apps.core.website.utils import WEBSITE_SEARCH_QUERY_SET_MAXIMUM_SIZE
+from apps.core.website.utils import (
+    WEBSITE_SEARCH_QUERY_SET_MAXIMUM_SIZE
+)
+
 from apps.datasource_website.models import (
     DataSourceWebsiteStorageConnection,
     WebsiteItemChunkVectorData
@@ -54,7 +58,9 @@ class WebsiteExecutionManager:
             VECTOR_INDEX_PATH_WEBSITE_ITEMS,
             f'website_storage_index_{self.connection_object.id}.index')
 
-        if os.path.exists(self.website_storage_schemas_index_path):
+        if os.path.exists(
+            self.website_storage_schemas_index_path
+        ):
             self.website_storage_schemas_index = faiss.read_index(
                 self.website_storage_schemas_index_path
             )
@@ -71,8 +77,13 @@ class WebsiteExecutionManager:
                 self.website_storage_schemas_index_path
             )
 
-    def _generate_query_embedding(self, query: str) -> List[float]:
-        from apps.core.generative_ai.gpt_openai_manager import OpenAIGPTClientManager
+    def _generate_query_embedding(
+        self,
+        query: str
+    ) -> List[float]:
+        from apps.core.generative_ai.gpt_openai_manager import (
+            OpenAIGPTClientManager
+        )
 
         c = OpenAIGPTClientManager.get_naked_client(
             llm_model=self.connection_object.assistant.llm_model
@@ -93,14 +104,20 @@ class WebsiteExecutionManager:
 
         website_items = self.connection_object.storage_items.all()
 
-        existing_urls = [item.website_url for item in website_items]
+        existing_urls = [
+            item.website_url for item in website_items
+        ]
 
         n_results = int(
             self.connection_object.search_instance_retrieval_limit
         )
 
         total_vectors = self.website_storage_schemas_index.ntotal
-        k = min(WEBSITE_SEARCH_QUERY_SET_MAXIMUM_SIZE, total_vectors)
+
+        k = min(
+            WEBSITE_SEARCH_QUERY_SET_MAXIMUM_SIZE,
+            total_vectors
+        )
 
         query_vector = np.array(
             [
@@ -125,7 +142,10 @@ class WebsiteExecutionManager:
 
         if website_url in existing_urls:
 
-            for item_id, distance in zip(ids[0], distances[0]):
+            for item_id, distance in zip(
+                ids[0],
+                distances[0]
+            ):
 
                 if item_id == -1:
                     continue
@@ -138,6 +158,7 @@ class WebsiteExecutionManager:
                     # Filter by website URL
 
                     if instance.website_item.website_url == website_url:
+
                         filtered_results.append(
                             {
                                 "id": instance.id,
@@ -152,7 +173,6 @@ class WebsiteExecutionManager:
                 except WebsiteItemChunkVectorData.DoesNotExist:
                     logger.error(f"Website Item Chunk Instance with ID {item_id} not found in the database.")
 
-            print(f"Search within Website Item Chunk is successful. Found {len(filtered_results)} results.")
             return filtered_results
 
         else:
@@ -165,6 +185,7 @@ class WebsiteExecutionManager:
                     continue
 
                 try:
+
                     instance = WebsiteItemChunkVectorData.objects.get(
                         id=item_id
                     )
@@ -183,5 +204,4 @@ class WebsiteExecutionManager:
                 except WebsiteItemChunkVectorData.DoesNotExist:
                     logger.error(f"Website Item Chunk Instance with ID {item_id} not found in the database.")
 
-            print(f"Search within Website Item Chunk is successful. Found {len(filtered_results)} results.")
             return filtered_results

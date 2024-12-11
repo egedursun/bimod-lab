@@ -15,7 +15,9 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-from apps.assistants.utils import AGENT_SPEECH_LANGUAGES
+from apps.assistants.utils import (
+    AGENT_SPEECH_LANGUAGES
+)
 
 
 def build_communication_language_prompt_voidforger(response_language):

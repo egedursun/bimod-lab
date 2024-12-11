@@ -17,7 +17,10 @@
 
 import logging
 
-from apps.core.flexible_modalities.custom_api_executor import CustomAPIExecutor
+from apps.core.flexible_modalities.custom_api_executor import (
+    CustomAPIExecutor
+)
+
 from apps.mm_apis.models import CustomAPIReference
 
 logger = logging.getLogger(__name__)
@@ -48,11 +51,13 @@ def run_execute_custom_api(
             query_values=header_query_vals,
             body_values=header_body_vals
         )
+
         logger.info(f"Custom API execution output: {output}")
 
     except Exception as e:
         logger.error(f"Error occurred while executing the API: {e}")
         error_msg = f"Error occurred while executing the API: {str(e)}"
+
         return error_msg
 
     return output

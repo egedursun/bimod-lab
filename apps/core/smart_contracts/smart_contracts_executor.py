@@ -24,8 +24,14 @@ from web3 import Web3
 from solcx import compile_source
 from web3.exceptions import TimeExhausted
 
-from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
-from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
+from apps.core.generative_ai.utils import (
+    GPT_DEFAULT_ENCODING_ENGINE,
+    ChatRoles
+)
+
+from apps.core.internal_cost_manager.costs_map import (
+    InternalServiceCosts
+)
 
 from apps.core.smart_contracts.builders import (
     build_smart_contract_generation_prompt,
@@ -43,7 +49,10 @@ from apps.core.smart_contracts.utils import (
 
 from apps.llm_core.models import LLMCore
 from apps.llm_transaction.models import LLMTransaction
-from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
+
+from apps.llm_transaction.utils import (
+    LLMTransactionSourcesTypesNames
+)
 
 from apps.smart_contracts.models import (
     BlockchainSmartContract,
@@ -67,11 +76,15 @@ class SmartContractsExecutionManager:
         llm_model: LLMCore
     ):
 
-        from apps.core.generative_ai.gpt_openai_manager import OpenAIGPTClientManager
+        from apps.core.generative_ai.gpt_openai_manager import (
+            OpenAIGPTClientManager
+        )
 
         self.contract_obj: BlockchainSmartContract = smart_contract_object
         self.wallet: BlockchainWalletConnection = smart_contract_object.wallet
+
         self.llm_model: LLMCore = llm_model
+
         self.c = OpenAIGPTClientManager.get_naked_client(
             llm_model=self.llm_model
         )
@@ -139,6 +152,7 @@ class SmartContractsExecutionManager:
         topic = extraction_object.get("topic", "N/A")
         protocol_details = extraction_object.get("protocol_details", "N/A")
         summary = extraction_object.get("summary", "N/A")
+
         parties = extraction_object.get("parties", [])
         clauses = extraction_object.get("clauses", [])
         functions = extraction_object.get("functions", [])
@@ -148,6 +162,7 @@ class SmartContractsExecutionManager:
         self.contract_obj.post_gen_protocol_details = protocol_details
         self.contract_obj.pot_gen_summary = summary
         self.contract_obj.post_gen_parties = parties
+
         self.contract_obj.post_gen_clauses = clauses
         self.contract_obj.post_gen_functions = functions
         self.contract_obj.contract_args = contract_args
@@ -184,7 +199,9 @@ class SmartContractsExecutionManager:
                 transaction_type=ChatRoles.SYSTEM,
                 transaction_source=LLMTransactionSourcesTypesNames.SMART_CONTRACT_CREATION
             )
+
             tx.save()
+
             logger.info(f"[create_contract] Smart Contract System Prompt Creation Transaction Created.")
 
             structured_messages = [
@@ -193,6 +210,7 @@ class SmartContractsExecutionManager:
                     "content": system_prompt
                 }
             ]
+
             conversation_messages = structured_messages + messages
 
             llm_response = self.c.chat.completions.create(
@@ -207,8 +225,10 @@ class SmartContractsExecutionManager:
 
             choices = llm_response.choices
             first_choice = choices[0]
+
             choice_message = first_choice.message
             choice_message_content = choice_message.content
+
             final_response = choice_message_content
             logger.info(f"AI Generated Smart Contract Code.")
 
@@ -227,6 +247,7 @@ class SmartContractsExecutionManager:
 
         output, contract_explanation, error = "N/A", "N/A", None
         n_iterations = self.contract_obj.refinement_iterations_before_evaluation
+
         messages = []
         contract_abi = []
 
@@ -242,7 +263,13 @@ class SmartContractsExecutionManager:
                 return None, None, error
 
             logger.info(f"Smart Contract Generated for iteration: {i}.")
-            messages.append({"role": "assistant", "content": str(assistant_response)})
+
+            messages.append(
+                {
+                    "role": "assistant",
+                    "content": str(assistant_response)
+                }
+            )
 
             tx = LLMTransaction.objects.create(
                 organization=self.wallet.organization,
@@ -259,7 +286,9 @@ class SmartContractsExecutionManager:
                 transaction_type=ChatRoles.ASSISTANT,
                 transaction_source=LLMTransactionSourcesTypesNames.SMART_CONTRACT_CREATION
             )
+
             tx.save()
+
             logger.info(f"[create_contract] Smart Contract Assistant Prompt Creation Transaction Created.")
 
             tx = LLMTransaction(
@@ -273,7 +302,9 @@ class SmartContractsExecutionManager:
                 transaction_source=LLMTransactionSourcesTypesNames.SMART_CONTRACT_CREATION,
                 is_tool_cost=True
             )
+
             tx.save()
+
             logger.info(f"[create_contract] Smart Contract Creation Tool Cost Transaction Created.")
 
             if i < (n_iterations - 1):
@@ -282,7 +313,13 @@ class SmartContractsExecutionManager:
                     contract_object=self.contract_obj,
                     previous_mistakes_prompt=previous_mistakes_prompt
                 )
-                messages.append({"role": "user", "content": refinement_prompt})
+
+                messages.append(
+                    {
+                        "role": "user",
+                        "content": refinement_prompt
+                    }
+                )
 
                 contract_abi, syntax_error = self.is_valid_solidity_syntax(
                     solidity_code=self.contract_obj.generated_solidity_code
@@ -322,7 +359,9 @@ class SmartContractsExecutionManager:
                     transaction_type=ChatRoles.USER,
                     transaction_source=LLMTransactionSourcesTypesNames.SMART_CONTRACT_CREATION
                 )
+
                 tx.save()
+
                 logger.info(f"[create_contract] Smart Contract User Prompt Creation Transaction Created.")
 
             else:
@@ -331,15 +370,19 @@ class SmartContractsExecutionManager:
 
         if len(messages) > 0:
             final_contract_code = messages[-1]['content']
+
             logger.info(f"Smart Contract Message output has been retrieved successfully.")
 
         else:
             error = "No messages were generated."
+
             logger.error(f"Smart Contract Generation Failed: {error}")
+
             return None, None, error
 
         self.contract_obj.generated_solidity_code = final_contract_code
         self.contract_obj.contract_abi = contract_abi
+
         self.contract_obj.save()
 
         nlp_feed_prompt = contract_natural_language_context_explanation_prompt(
@@ -363,7 +406,9 @@ class SmartContractsExecutionManager:
                     transaction_type=ChatRoles.SYSTEM,
                     transaction_source=LLMTransactionSourcesTypesNames.SMART_CONTRACT_CREATION
                 )
+
                 tx.save()
+
                 logger.info(f"[create_contract] Smart Contract NLP Feed Prompt Creation Transaction Created.")
 
                 structured_messages = [
@@ -398,14 +443,18 @@ class SmartContractsExecutionManager:
                     transaction_type=ChatRoles.ASSISTANT,
                     transaction_source=LLMTransactionSourcesTypesNames.SMART_CONTRACT_CREATION
                 )
+
                 tx.save()
+
                 logger.info(
                     f"[create_contract] Smart Contract NLP Feed Prompt Assistant Response Transaction Created.")
 
                 choices = contract_description_llm_response.choices
                 first_choice = choices[0]
+
                 choice_message = first_choice.message
                 choice_message_content = choice_message.content
+
                 contract_explanation = choice_message_content
 
                 logger.info(f"Smart Contract Explanation Generated.")
@@ -418,14 +467,17 @@ class SmartContractsExecutionManager:
 
         self.contract_obj.generated_solidity_code_natural_language = contract_explanation
         self.contract_obj.save()
+
         response = self.parse_and_save_generated_contract_functions()
 
         if response is False:
             error = "Smart Contract Function Parsing Failed: No valid JSON Found."
             logger.error(f"Smart Contract Generation Failed: No valid JSON Found.")
+
             return None, None, error
 
         logger.info(f"Smart Contract Generation & Explanation Completed.")
+
         return final_contract_code, contract_explanation, error
 
     def generate_contract_and_save_content(
@@ -458,11 +510,13 @@ class SmartContractsExecutionManager:
             self.contract_obj.save()
 
             logger.info(f"Smart Contract Content Saved.")
+
             return True, error
 
         except Exception as e:
             error = e
             logger.error(f"Smart Contract Generation Failed: {error}")
+
             return False, error
 
     @staticmethod
@@ -485,6 +539,7 @@ class SmartContractsExecutionManager:
             if not web3.is_connected():
                 error = "Web3 Connection Failed."
                 logger.error(f"Smart Contract Deployment Failed: {error}")
+
                 return False, error
 
             logger.info(f"Web3 Connection Established Successfully.")
@@ -492,6 +547,7 @@ class SmartContractsExecutionManager:
             # Compile contract code using SOLCX
             compiled_sol = compile_source(contract_text)
             contract_interface = compiled_sol.popitem()[1]
+
             logger.info(f"Smart Contract Compiled Successfully.")
 
             # Prepare contract to deploy
@@ -499,11 +555,13 @@ class SmartContractsExecutionManager:
                 abi=contract_interface['abi'],
                 bytecode=contract_interface['bin']
             )
+
             logger.info(f"Smart Contract Prepared for Deployment.")
 
             # Get account & private key
             account = c_obj.wallet.wallet_address
             private_key = c_obj.wallet.wallet_private_key
+
             logger.info(f"Account and Private Key Retrieved Successfully.")
 
             # Build the contract deploy tx
@@ -528,24 +586,30 @@ class SmartContractsExecutionManager:
                 transaction,
                 private_key=private_key
             )
+
             logger.info(f"Smart Contract Deployment Transaction Signed Successfully.")
 
             # Send the blockchain tx
             tx_hash = web3.eth.send_raw_transaction(signed_txn.raw_transaction)
+
             logger.info(f"Smart Contract Deployment Transaction Sent Successfully.")
 
             # Save the hash to the contract
             c_obj.tx_hash = tx_hash
             c_obj.deployment_status = DeploymentStatusesNames.WAITING_FOR_MINING
+
             c_obj.save()
+
             logger.info(f"Smart Contract Deployment Transaction Hash Saved Successfully.")
 
         except Exception as e:
             error = e
             logger.error(f"Smart Contract Deployment Failed: {error}")
+
             return False, error
 
         logger.info(f"Smart Contract Deployed Successfully.")
+
         return True, error
 
     @staticmethod
@@ -557,9 +621,11 @@ class SmartContractsExecutionManager:
         c_obj: BlockchainSmartContract = contract_obj
 
         tx_hash = c_obj.tx_hash
+
         if tx_hash is None:
             error = "No transaction hash found."
             logger.error(f"Smart Contract Deployment Status Check Failed: {error}")
+
             return False, error
 
         try:
@@ -569,6 +635,7 @@ class SmartContractsExecutionManager:
             if not web3.is_connected():
                 error = "Web3 Connection Failed."
                 logger.error(f"Smart Contract Status check has Failed: {error}")
+
                 return False, error
 
             try:
@@ -581,11 +648,13 @@ class SmartContractsExecutionManager:
             except TimeExhausted as e:
                 error = e
                 logger.error(f"Smart Contract Status Check Timeout: {error}")
+
                 return False, error
 
             except Exception as e:
                 error = e
                 logger.error(f"Smart Contract Status Check Failed: {error}")
+
                 return False, error
 
             logger.info(f"Smart Contract Deployment Transaction Receipt Retrieved Successfully.")
@@ -594,12 +663,15 @@ class SmartContractsExecutionManager:
             c_obj.deployment_status = DeploymentStatusesNames.DEPLOYED
             c_obj.tx_receipt_raw = json.dumps(tx_receipt)
             c_obj.deployed_at = timezone.now()
+
             c_obj.save()
+
             return True, error
 
         except Exception as e:
             error = e
             logger.error(f"Smart Contract Deployment Status Check Failed: {error}")
+
             return False, error
 
     #####
@@ -616,6 +688,7 @@ class SmartContractsExecutionManager:
         if contract_address is None:
             error = "No contract address found."
             logger.error(f"Smart Contract Function Execution Failed: {error}")
+
             return error
 
         try:
@@ -625,9 +698,11 @@ class SmartContractsExecutionManager:
             if not web3.is_connected():
                 error = "Web3 Connection Failed."
                 logger.error(f"Smart Contract Function Execution Failed: {error}")
+
                 return error
 
             contract_abi = c_obj.contract_abi
+
             contract = web3.eth.contract(
                 address=contract_address,
                 abi=contract_abi
@@ -643,15 +718,21 @@ class SmartContractsExecutionManager:
             if function_metadata is None:
                 error = f"Function {function_name} not found in the stored contract functions."
                 logger.error(f"Smart Contract Function Execution Failed: {error}")
+
                 return error
 
             input_params_metadata = function_metadata.get('input_parameters', [])
-            expected_param_names = [param['name'] for param in input_params_metadata]
+
+            expected_param_names = [
+                param['name'] for param in input_params_metadata
+            ]
 
             for param in expected_param_names:
+
                 if param not in function_kwargs:
                     error = f"Missing required parameter: {param}"
                     logger.error(f"Smart Contract Function Execution Failed: {error}")
+
                     return error
 
             function_args = [
@@ -664,14 +745,18 @@ class SmartContractsExecutionManager:
                 contract.functions,
                 function_name
             )
+
             response_of_call = contract_function(*function_args).call()
+
             logger.info(f"Smart Contract Function Executed Successfully.")
 
         except Exception as e:
             error = e
             logger.error(f"Smart Contract Function Execution Failed: {error}")
+
             return error
 
         logger.info(f"Smart Contract Function Execution Completed.")
         final_response = str(response_of_call)
+
         return final_response

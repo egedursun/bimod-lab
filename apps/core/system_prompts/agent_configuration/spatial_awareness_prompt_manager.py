@@ -27,6 +27,7 @@ def build_spatial_awareness_prompt(user: User):
 
         '''
         """
+
     user_location = f"""
         - Registered Address: {user.profile.address or "N/A"}
         - City: {user.profile.city or "N/A"}
@@ -34,6 +35,7 @@ def build_spatial_awareness_prompt(user: User):
         - Postal Code: {user.profile.postal_code or "N/A"}
         - Coordinates: [Infer approximate coordinates from address, city, and country.]
     """
+
     current_time = f"""
         ---
         [UTC] Current Time: {datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
@@ -46,4 +48,5 @@ def build_spatial_awareness_prompt(user: User):
         """
 
     response_prompt += user_location + current_time
+
     return response_prompt

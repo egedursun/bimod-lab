@@ -15,7 +15,9 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-from apps.core.tool_calls.utils import ToolCallDescriptorNames
+from apps.core.tool_calls.utils import (
+    ToolCallDescriptorNames
+)
 
 
 def build_tool_prompt__execute_nosql_query():
@@ -90,4 +92,5 @@ def build_tool_prompt__execute_nosql_query():
         ---
 
     """
+
     return response_prompt

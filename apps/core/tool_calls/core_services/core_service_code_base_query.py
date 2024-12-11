@@ -17,8 +17,13 @@
 
 import logging
 
-from apps.core.codebase.codebase_decoder import CodeBaseDecoder
-from apps.datasource_codebase.models import CodeRepositoryStorageConnection
+from apps.core.codebase.codebase_decoder import (
+    CodeBaseDecoder
+)
+
+from apps.datasource_codebase.models import (
+    CodeRepositoryStorageConnection
+)
 
 
 logger = logging.getLogger(__name__)
@@ -47,6 +52,7 @@ def run_query_code_base(
     except Exception as e:
         logger.error(f"Error occurred while running the codebase query: {e}")
         error = f"There has been an unexpected error on running the codebase query: {e}"
+
         return error
 
     return output

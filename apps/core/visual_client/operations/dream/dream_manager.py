@@ -19,15 +19,19 @@ import logging
 
 import requests
 
-from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
+from apps.core.internal_cost_manager.costs_map import (
+    InternalServiceCosts
+)
 
 from apps.core.visual_client.utils import (
     dream_save_images_and_return_uris
 )
 
 from apps.llm_transaction.models import LLMTransaction
-from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
 
+from apps.llm_transaction.utils import (
+    LLMTransactionSourcesTypesNames
+)
 
 logger = logging.getLogger(__name__)
 
@@ -48,19 +52,29 @@ class DreamManager:
         image_size
     ):
 
-        from apps.core.generative_ai.auxiliary_clients.auxiliary_llm_visual_client import AuxiliaryLLMVisualClient
-        from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE
-        from apps.core.generative_ai.utils import ChatRoles
+        from apps.core.generative_ai.auxiliary_clients.auxiliary_llm_visual_client import (
+            AuxiliaryLLMVisualClient
+        )
+
+        from apps.core.generative_ai.utils import (
+            GPT_DEFAULT_ENCODING_ENGINE
+        )
+
+        from apps.core.generative_ai.utils import (
+            ChatRoles
+        )
 
         try:
             llm_c = AuxiliaryLLMVisualClient(
                 assistant=self.assistant,
                 chat_object=self.chat
             )
+
             logger.info("LLM Visual Client initialized.")
 
         except Exception as e:
             logger.error(f"Error occurred while initializing the LLM Visual Client: {e}")
+
             return None
 
         try:
@@ -71,11 +85,13 @@ class DreamManager:
 
             if llm_output["success"] is False:
                 logger.error(f"Error occurred while generating the image: {llm_output['message']}")
+
                 return llm_output
 
         except Exception as e:
 
             logger.error(f"Error occurred while generating the image: {e}")
+
             return {
                 "success": False,
                 "message": "Error occurred on generating the image.",
@@ -88,11 +104,15 @@ class DreamManager:
 
             try:
                 logger.info(f"Downloading the image variation from: {img_llm_uri}")
-                img_data = requests.get(img_llm_uri).content
+
+                img_data = requests.get(
+                    img_llm_uri
+                ).content
 
             except Exception as e:
 
                 logger.error(f"Error occurred while downloading the image variation: {e}")
+
                 return {
                     "success": False,
                     "message": "Error occurred while downloading the image variation",
@@ -111,12 +131,15 @@ class DreamManager:
                     transaction_source=LLMTransactionSourcesTypesNames.VARIATE_IMAGE,
                     is_tool_cost=True
                 )
+
                 tx.save()
+
                 logger.info(f"Transaction created for image variation: {tx.id}")
 
             except Exception as e:
 
                 logger.error(f"Error occurred while saving the transaction: {e}")
+
                 return {
                     "success": False,
                     "message": "Error occurred while saving the transaction.",
@@ -124,9 +147,14 @@ class DreamManager:
                 }
 
             if img_data:
-
                 logger.info("Saving the image variation and returning the URI.")
-                image_uri = dream_save_images_and_return_uris([img_data])[0]
+
+                image_uri = dream_save_images_and_return_uris(
+                    [
+                        img_data
+                    ]
+                )[0]
+
                 return {
                     "success": True,
                     "message": "",
@@ -134,6 +162,7 @@ class DreamManager:
                 }
 
         logger.error("Error occurred while downloading the image variation resulting file.")
+
         return {
             "success": False,
             "message": "Error occurred while downloading the image variation resulting file.",

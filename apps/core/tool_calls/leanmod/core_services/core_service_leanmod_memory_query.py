@@ -37,6 +37,7 @@ def run_query_leanmod_memory(
     except Exception as e:
         logger.error(f"Error occurred while executing the LeanMod message memory query: {e}")
         error_msg = f"Error occurred while executing the LeanMod message memory query: {str(e)}"
+
         return error_msg
 
     return output

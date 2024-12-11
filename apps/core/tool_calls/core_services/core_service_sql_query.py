@@ -17,9 +17,17 @@
 
 import logging
 
-from apps.core.sql.sql_decoder import InternalSQLClient
-from apps.datasource_sql.models import SQLDatabaseConnection
-from apps.datasource_sql.utils import SQLOperationTypesNames
+from apps.core.sql.sql_decoder import (
+    InternalSQLClient
+)
+
+from apps.datasource_sql.models import (
+    SQLDatabaseConnection
+)
+
+from apps.datasource_sql.utils import (
+    SQLOperationTypesNames
+)
 
 logger = logging.getLogger(__name__)
 
@@ -29,8 +37,8 @@ def run_sql_query(
     sql_query_type: str,
     query_content: str
 ):
-
     sql_response = None
+
     sql_connection = SQLDatabaseConnection.objects.get(
         id=c_id
     )
@@ -57,7 +65,9 @@ def run_sql_query(
     except Exception as e:
         logger.error(f"Error occurred while executing the SQL query: {e}")
         error_msg = f"Error occurred while executing the SQL query: {str(e)}"
+
         return error_msg
 
     logger.info(f"SQL query execution output: {sql_response}")
+
     return sql_response

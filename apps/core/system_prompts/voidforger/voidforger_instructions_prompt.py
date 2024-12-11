@@ -17,12 +17,20 @@
 
 
 def build_structured_instructions_prompt_voidforger(voidforger):
-    from apps.voidforger.models import VoidForger
-    from apps.organization.models import Organization
+    from apps.voidforger.models import (
+        VoidForger
+    )
+
+    from apps.organization.models import (
+        Organization
+    )
+
     voidforger: VoidForger
 
     other_organizations = voidforger.organizations.all()
+
     other_organizations_data = ""
+
     for org in other_organizations:
         org: Organization
         other_organizations_data += f"""

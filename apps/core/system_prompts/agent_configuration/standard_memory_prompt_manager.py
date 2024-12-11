@@ -17,10 +17,15 @@
 
 from django.contrib.auth.models import User
 
-from apps.assistants.models import Assistant
+from apps.assistants.models import (
+    Assistant
+)
 
 
-def build_standard_memory_prompt(assistant: Assistant, user: User):
+def build_standard_memory_prompt(
+    assistant: Assistant,
+    user: User
+):
 
     organization_memories = assistant.memories.filter(
         memory_type="organization-specific",

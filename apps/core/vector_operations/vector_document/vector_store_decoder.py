@@ -17,7 +17,9 @@
 
 import logging
 
-from apps.core.codebase.utils import KNOWLEDGE_BASE_PROVIDERS
+from apps.core.codebase.utils import (
+    KNOWLEDGE_BASE_PROVIDERS
+)
 
 from apps.core.vector_operations.vector_document.vector_store_executor import (
     WeaviateExecutor
@@ -31,6 +33,7 @@ class KnowledgeBaseSystemDecoder:
     def get(connection):
         if connection.provider == KNOWLEDGE_BASE_PROVIDERS["WEAVIATE"]["code"]:
             logger.info("Using Weaviate as the knowledge base system")
+
             return WeaviateExecutor(
                 connection
             )

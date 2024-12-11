@@ -16,7 +16,10 @@
 #
 
 
-from apps.core.tool_calls.utils import ToolCallDescriptorNames
+from apps.core.tool_calls.utils import (
+    ToolCallDescriptorNames
+)
+
 from config.settings import MEDIA_URL
 
 
@@ -98,4 +101,5 @@ def build_tool_prompt__edit_image():
                 file path to base URL.
 
         """
+
     return response_prompt

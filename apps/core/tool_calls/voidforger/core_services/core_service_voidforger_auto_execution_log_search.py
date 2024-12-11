@@ -26,7 +26,9 @@ def execute_voidforger_auto_execution_log_search_query(
     query
 ):
 
-    from apps.core.voidforger.voidforger_executor import VoidForgerExecutionManager
+    from apps.core.voidforger.voidforger_executor import (
+        VoidForgerExecutionManager
+    )
 
     try:
         xc = VoidForgerExecutionManager(
@@ -43,6 +45,7 @@ def execute_voidforger_auto_execution_log_search_query(
     except Exception as e:
         logger.error(f"Error occurred while executing the function: {e}")
         error = f"Error occurred while executing the function: {str(e)}"
+
         return error
 
     return search_output

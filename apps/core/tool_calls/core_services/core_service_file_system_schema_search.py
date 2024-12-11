@@ -27,12 +27,16 @@ def run_query_search_file_system_directory_schema(
     from apps.core.file_systems.file_systems_executor import (
         FileSystemsExecutor
     )
+
     from apps.datasource_file_systems.models import (
         DataSourceFileSystem
     )
 
     try:
-        connection = DataSourceFileSystem.objects.get(id=connection_id)
+        connection = DataSourceFileSystem.objects.get(
+            id=connection_id
+        )
+
         if not connection:
             return f"Connection with ID: {connection_id} does not exist."
 
@@ -47,6 +51,7 @@ def run_query_search_file_system_directory_schema(
     except Exception as e:
         logger.error(f"Error occurred while executing the SSH File System Directory Schema Search query: {str(e)}")
         error_msg = f"Error occurred while executing the SSH File System Directory Schema Search query: {str(e)}"
+
         return error_msg
 
     return output

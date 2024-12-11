@@ -15,10 +15,14 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-from apps.smart_contracts.models import BlockchainSmartContract
+from apps.smart_contracts.models import (
+    BlockchainSmartContract
+)
 
 
-def contract_syntactic_check_primary_instructions(contract_object: BlockchainSmartContract):
+def contract_syntactic_check_primary_instructions(
+    contract_object: BlockchainSmartContract
+):
     return f"""
         ### **SYNTACTIC CHECK INSTRUCTIONS:**
 

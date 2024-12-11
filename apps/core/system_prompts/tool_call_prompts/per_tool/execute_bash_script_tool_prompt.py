@@ -16,7 +16,9 @@
 #
 
 
-from apps.core.tool_calls.utils import ToolCallDescriptorNames
+from apps.core.tool_calls.utils import (
+    ToolCallDescriptorNames
+)
 
 
 def build_tool_prompt__execute_bash_script():
@@ -62,4 +64,5 @@ def build_tool_prompt__execute_bash_script():
 
             ---
         """
+
     return response_prompt

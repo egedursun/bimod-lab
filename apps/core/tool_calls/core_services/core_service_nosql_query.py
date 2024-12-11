@@ -17,10 +17,17 @@
 
 import logging
 
-from apps.core.nosql.nosql_decoder import InternalNoSQLClient
-from apps.datasource_nosql.models import NoSQLDatabaseConnection
-from apps.datasource_nosql.utils import NoSQLOperationTypesNames
+from apps.core.nosql.nosql_decoder import (
+    InternalNoSQLClient
+)
 
+from apps.datasource_nosql.models import (
+    NoSQLDatabaseConnection
+)
+
+from apps.datasource_nosql.utils import (
+    NoSQLOperationTypesNames
+)
 
 logger = logging.getLogger(__name__)
 
@@ -30,8 +37,8 @@ def run_nosql_query(
     nosql_query_type: str,
     query_content: str
 ):
-
     nosql_response = None
+
     nosql_connection = NoSQLDatabaseConnection.objects.get(
         id=c_id
     )
@@ -45,6 +52,7 @@ def run_nosql_query(
         if nosql_query_type == NoSQLOperationTypesNames.WRITE:
 
             logger.info(f"Executing NoSQL write query: {query_content}")
+
             nosql_response = client.execute_write(
                 query=query_content
             )
@@ -52,6 +60,7 @@ def run_nosql_query(
         elif nosql_query_type == NoSQLOperationTypesNames.READ:
 
             logger.info(f"Executing NoSQL read query: {query_content}")
+
             nosql_response = client.execute_read(
                 query=query_content
             )
@@ -59,7 +68,9 @@ def run_nosql_query(
     except Exception as e:
         logger.error(f"Error occurred while executing the NoSQL query: {e}")
         error_msg = f"Error occurred while executing the NoSQL query: {str(e)}"
+
         return error_msg
 
     logger.info(f"NoSQL query execution output: {nosql_response}")
+
     return nosql_response

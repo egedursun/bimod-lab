@@ -57,8 +57,9 @@ from apps.core.tool_calls.core_services.core_service_execute_smart_contract_quer
 from apps.core.tool_calls.core_services.core_service_execute_triggered_job_logs_query import (
     run_query_execute_triggered_job_logs
 )
-from apps.core.tool_calls.core_services.core_service_file_system_schema_search import \
+from apps.core.tool_calls.core_services.core_service_file_system_schema_search import (
     run_query_search_file_system_directory_schema
+)
 
 from apps.core.tool_calls.core_services.core_service_hadron_node_query import (
     run_query_execute_hadron_node
@@ -83,8 +84,10 @@ from apps.core.tool_calls.core_services.core_service_sql_schema_search import (
 from apps.core.tool_calls.input_verifiers.verify_dashboard_statistics_query import (
     verify_dashboard_statistics_query_content
 )
-from apps.core.tool_calls.input_verifiers.verify_file_system_schema_search import \
+
+from apps.core.tool_calls.input_verifiers.verify_file_system_schema_search import (
     verify_file_system_directory_schema_search_content
+)
 
 from apps.core.tool_calls.input_verifiers.verify_hadron_node_query import (
     verify_hadron_node_query_content
@@ -339,8 +342,14 @@ from apps.video_generations.models import (
     VideoGeneratorConnection
 )
 
-from apps.voidforger.models import VoidForgerActionMemoryLog
-from apps.voidforger.utils import VoidForgerActionTypesNames
+from apps.voidforger.models import (
+    VoidForgerActionMemoryLog
+)
+
+from apps.voidforger.utils import (
+    VoidForgerActionTypesNames
+)
+
 from config.settings import MEDIA_URL
 
 logger = logging.getLogger(__name__)
@@ -362,7 +371,9 @@ class ToolCallManager:
         self.tool_usage_dict_stringified = tool_usage_json_str
         self.tool_usage_dict = {}
 
-    def call_internal_tool_service(self):
+    def call_internal_tool_service(
+        self
+    ):
 
         try:
             if isinstance(self.tool_usage_dict_stringified, dict):
@@ -375,6 +386,7 @@ class ToolCallManager:
 
         except Exception as e:
             logger.error(f"Error occurred while converting the tool usage dictionary to a dictionary: {e}")
+
             return get_json_decode_error_log(
                 error_logs=str(e)
             ), None, None, None
@@ -384,11 +396,13 @@ class ToolCallManager:
         error = verify_main_call_or_query_content(
             content=self.tool_usage_dict
         )
+
         if error:
             logger.error(f"Error occurred while verifying the main call or query content: {error}")
             return error, None, None, None
 
         defined_tool_descriptor = self.tool_usage_dict.get("tool")
+
         output_tool_call = f"""
             Tool Response: {defined_tool_descriptor}
 
@@ -396,67 +410,89 @@ class ToolCallManager:
         """
 
         if defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_SQL_QUERY:
+
             error = verify_run_sql_query_content(
                 content=self.tool_usage_dict
             )
 
             if error:
                 logger.error(f"Error occurred while verifying the SQL query content: {error}")
+
                 return error, None, None, None
 
-            output_tool_call = self._handle_tool_sql_query(output_tool_call)
+            output_tool_call = self._handle_tool_sql_query(
+                output_tool_call
+            )
 
         elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_SQL_DATABASE_SCHEMA_SEARCH:
+
             error = verify_sql_database_schema_search_content(
                 content=self.tool_usage_dict
             )
 
             if error:
                 logger.error(f"Error occurred while verifying the SQL database schema search content: {error}")
+
                 return error, None, None, None
 
-            output_tool_call = self._handle_tool_sql_schema_search(output_tool_call)
+            output_tool_call = self._handle_tool_sql_schema_search(
+                output_tool_call
+            )
 
         elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_NOSQL_QUERY:
+
             error = verify_run_nosql_query_content(
                 content=self.tool_usage_dict
             )
 
             if error:
                 logger.error(f"Error occurred while verifying the NoSQL query content: {error}")
+
                 return error, None, None, None
 
-            output_tool_call = self._handle_tool_nosql_query(output_tool_call)
+            output_tool_call = self._handle_tool_nosql_query(
+                output_tool_call
+            )
 
         elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_NOSQL_DATABASE_SCHEMA_SEARCH:
+
             error = verify_nosql_database_schema_search_content(
                 content=self.tool_usage_dict
             )
 
             if error:
                 logger.error(f"Error occurred while verifying the NoSQL database schema search content: {error}")
+
                 return error, None, None, None
 
-            output_tool_call = self._handle_tool_nosql_schema_search(output_tool_call)
+            output_tool_call = self._handle_tool_nosql_schema_search(
+                output_tool_call
+            )
 
         elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_VECTOR_STORE_QUERY:
+
             error = verify_vector_store_query_content(
                 content=self.tool_usage_dict
             )
 
             if error:
                 logger.error(f"Error occurred while verifying the vector store query content: {error}")
+
                 return error, None, None, None
 
-            output_tool_call = self._handle_tool_vector_base_query(output_tool_call)
+            output_tool_call = self._handle_tool_vector_base_query(
+                output_tool_call
+            )
 
         elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_CODE_BASE_QUERY:
+
             error = verify_code_base_query_content(
                 content=self.tool_usage_dict
             )
 
             if error:
                 logger.error(f"Error occurred while verifying the code base query content: {error}")
+
                 return error, None, None, None
 
             output_tool_call = self._handle_tool_code_base_query(output_tool_call)
@@ -468,22 +504,30 @@ class ToolCallManager:
 
             if error:
                 logger.error(f"Error occurred while verifying the intra memory query content: {error}")
+
                 return error, None, None, None
 
-            output_tool_call = self._handle_tool_intra_memory_query(output_tool_call)
+            output_tool_call = self._handle_tool_intra_memory_query(
+                output_tool_call
+            )
 
         elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_SSH_SYSTEM_QUERY:
+
             error = verify_ssh_system_command_content(
                 content=self.tool_usage_dict
             )
 
             if error:
                 logger.error(f"Error occurred while verifying the SSH system command content: {error}")
+
                 return error, None, None, None
 
-            output_tool_call = self._handle_tool_ssh_system(output_tool_call)
+            output_tool_call = self._handle_tool_ssh_system(
+                output_tool_call
+            )
 
         elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_SSH_SYSTEM_DIRECTORY_SCHEMA_SEARCH:
+
             error = verify_file_system_directory_schema_search_content(
                 content=self.tool_usage_dict
             )
@@ -491,11 +535,15 @@ class ToolCallManager:
             if error:
                 logger.error(
                     f"Error occurred while verifying the SSH file system directory schema search content: {error}")
+
                 return error, None, None, None
 
-            output_tool_call = self._handle_tool_ssh_system_schema_search(output_tool_call)
+            output_tool_call = self._handle_tool_ssh_system_schema_search(
+                output_tool_call
+            )
 
         elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_WEBSITE_DATA_SEARCH_QUERY:
+
             error = verify_website_data_search_content(
                 content=self.tool_usage_dict
             )
@@ -503,6 +551,7 @@ class ToolCallManager:
             if error:
                 logger.error(
                     f"Error occurred while verifying the website data search query content: {error}")
+
                 return error, None, None, None
 
             f_uris, img_uris, output_tool_call = self._handle_tool_website_data_search(
@@ -512,7 +561,10 @@ class ToolCallManager:
             )
 
         elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_MEDIA_MANAGER_QUERY:
-            error = verify_media_manager_query_content(content=self.tool_usage_dict)
+
+            error = verify_media_manager_query_content(
+                content=self.tool_usage_dict
+            )
 
             if error:
                 logger.error(f"Error occurred while verifying the media manager query content: {error}")
@@ -525,169 +577,236 @@ class ToolCallManager:
             )
 
         elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_MEDIA_ITEM_SEARCH_QUERY:
-            error = verify_media_item_search_content(content=self.tool_usage_dict)
+
+            error = verify_media_item_search_content(
+                content=self.tool_usage_dict
+            )
 
             if error:
                 logger.error(f"Error occurred while verifying the media manager query content: {error}")
+
                 return error, None, None, None
 
-            f_uris, img_uris, output_tool_call = self._handle_tool_media_item_search(f_uris, img_uris,
-                                                                                     output_tool_call)
+            f_uris, img_uris, output_tool_call = self._handle_tool_media_item_search(
+                f_uris,
+                img_uris,
+                output_tool_call
+            )
 
         elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_HTTP_RETRIEVAL:
+
             error = verify_http_retrieval_query_content(
                 content=self.tool_usage_dict
             )
 
             if error:
                 logger.error(f"Error occurred while verifying the HTTP retrieval query content: {error}")
+
                 return error, None, None, None
 
-            output_tool_call = self._handle_tool_http_client_retrieval(output_tool_call)
+            output_tool_call = self._handle_tool_http_client_retrieval(
+                output_tool_call
+            )
 
         elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_INFER_WITH_ML:
 
             error = verify_infer_ml_query_content(
                 content=self.tool_usage_dict
             )
+
             if error:
                 logger.error(f"Error occurred while verifying the infer with ML query content: {error}")
+
                 return error, None, None, None
 
-            output_tool_call = self._handle_tool_infer_with_ml(output_tool_call)
+            output_tool_call = self._handle_tool_infer_with_ml(
+                output_tool_call
+            )
 
         elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_ANALYZE_CODE:
 
             error = verify_analyze_code_content(
                 content=self.tool_usage_dict
             )
+
             if error:
                 logger.error(f"Error occurred while verifying the analyze code content: {error}")
+
                 return error, None, None, None
 
-            f_uris, img_uris, output_tool_call = self._handle_tool_analyze_code(f_uris, img_uris, output_tool_call)
+            f_uris, img_uris, output_tool_call = self._handle_tool_analyze_code(
+                f_uris,
+                img_uris,
+                output_tool_call
+            )
 
         elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_REASONING_PROCESS:
 
             error = verify_process_reasoning_query_content(
                 content=self.tool_usage_dict
             )
+
             if error:
                 logger.error(f"Error occurred while verifying the reasoning process content: {error}")
+
                 return error, None, None, None
 
-            output_tool_call = self._handle_tool_reasoning(output_tool_call)
+            output_tool_call = self._handle_tool_reasoning(
+                output_tool_call
+            )
 
         elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_CUSTOM_FUNCTION:
 
             error = verify_run_custom_function_content(
                 content=self.tool_usage_dict
             )
+
             if error:
                 logger.error(f"Error occurred while verifying the custom function content: {error}")
+
                 return error, None, None, None
 
-            output_tool_call = self._handle_tool_execute_function(output_tool_call)
+            output_tool_call = self._handle_tool_execute_function(
+                output_tool_call
+            )
 
         elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_CUSTOM_API:
 
             error = verify_run_custom_api_content(
                 content=self.tool_usage_dict
             )
+
             if error:
                 logger.error(f"Error occurred while verifying the custom API content: {error}")
+
                 return error, None, None, None
 
-            output_tool_call = self._handle_tool_execute_api(output_tool_call)
+            output_tool_call = self._handle_tool_execute_api(
+                output_tool_call
+            )
 
         elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_CUSTOM_SCRIPT:
 
             error = verify_run_custom_script_content(
                 content=self.tool_usage_dict
             )
+
             if error:
                 logger.error(f"Error occurred while verifying the custom script content: {error}")
+
                 return error, None, None, None
 
-            output_tool_call = self._handle_tool_execute_script(output_tool_call)
+            output_tool_call = self._handle_tool_execute_script(
+                output_tool_call
+            )
 
         elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_GENERATE_IMAGE:
 
             error = verify_generate_image_content(
                 content=self.tool_usage_dict
             )
+
             if error:
                 logger.error(f"Error occurred while verifying the generate image content: {error}")
+
                 return error, None, None, None
 
-            output_tool_call = self._handle_tool_generate_image(img_uris, output_tool_call)
+            output_tool_call = self._handle_tool_generate_image(
+                img_uris,
+                output_tool_call
+            )
 
         elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_EDIT_IMAGE:
 
             error = verify_edit_image_content(
                 content=self.tool_usage_dict
             )
+
             if error:
                 logger.error(f"Error occurred while verifying the edit image content: {error}")
+
                 return error, None, None, None
 
-            output_tool_call = self._handle_tool_edit_image(img_uris, output_tool_call)
+            output_tool_call = self._handle_tool_edit_image(
+                img_uris,
+                output_tool_call
+            )
 
         elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_DREAM_IMAGE:
 
             error = verify_dream_image_content(
                 content=self.tool_usage_dict
             )
+
             if error:
                 logger.error(f"Error occurred while verifying the dream image content: {error}")
+
                 return error, None, None, None
 
-            output_tool_call = self._handle_tool_dream_image(img_uris, output_tool_call)
+            output_tool_call = self._handle_tool_dream_image(
+                img_uris,
+                output_tool_call
+            )
 
         elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_BROWSING:
 
             error = verify_browser_query_content(
                 content=self.tool_usage_dict
             )
+
             if error:
                 logger.error(f"Error occurred while verifying the browsing content: {error}")
+
                 return error, None, None, None
 
-            output_tool_call = self._handle_tool_execute_browsing(output_tool_call)
+            output_tool_call = self._handle_tool_execute_browsing(
+                output_tool_call
+            )
 
         elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_PROCESS_AUDIO:
 
             error = verify_audio_processing_query(
                 content=self.tool_usage_dict
             )
+
             if error:
                 logger.error(f"Error occurred while verifying the audio processing content: {error}")
+
                 return error, None, None, None
 
-            output_tool_call = self._handle_tool_execute_audio(output_tool_call)
+            output_tool_call = self._handle_tool_execute_audio(
+                output_tool_call
+            )
 
         elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_GENERATE_VIDEO:
 
             error = verify_generate_video_content(
                 content=self.tool_usage_dict
             )
+
             if error:
                 logger.error(f"Error occurred while verifying the generate video content: {error}")
+
                 return error, None, None, None
 
             c_id, video_generation_response = self._handle_execute_video()
 
             if video_generation_response.get("error") is not None:
                 logger.error(f"Error occurred while generating the video: {video_generation_response.get('error')}")
+
                 return video_generation_response.get("error"), None, None, None
 
             if video_generation_response.get("video_url") is None:
                 logger.error("Video URL is NULL. A problem might have happened within the generation process.")
+
                 return ("Video URL is NULL. A problem might have happened within the "
                         "generation process."), None, None, None
 
             video_url = video_generation_response.get("video_url")
-            video_generator_connection = VideoGeneratorConnection.objects.get(id=c_id)
+
+            video_generator_connection = VideoGeneratorConnection.objects.get(
+                id=c_id
+            )
 
             GeneratedVideo.objects.create(
                 organization=video_generator_connection.assistant.organization,
@@ -706,15 +825,19 @@ class ToolCallManager:
             output_tool_call += video_generation_response_raw_str
 
         elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_DASHBOARD_STATISTICS_QUERY:
+
             error = verify_dashboard_statistics_query_content(
                 content=self.tool_usage_dict
             )
 
             if error:
                 logger.error(f"Error occurred while verifying the dashboard statistics query content: {error}")
+
                 return error, None, None, None
 
-            output_tool_call = self._handle_tool_dashboard_statistics_query(output_tool_call)
+            output_tool_call = self._handle_tool_dashboard_statistics_query(
+                output_tool_call
+            )
 
         elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_HADRON_PRIME_NODE_QUERY:
             error = verify_hadron_node_query_content(
@@ -723,66 +846,90 @@ class ToolCallManager:
 
             if error:
                 logger.error(f"Error occurred while verifying the Hadron Prime Node query content: {error}")
+
                 return error, None, None, None
 
-            output_tool_call = self._handle_tool_hadron_node_query(output_tool_call)
+            output_tool_call = self._handle_tool_hadron_node_query(
+                output_tool_call
+            )
 
         elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_METAKANBAN_QUERY:
+
             error = verify_metakanban_query_content(
                 content=self.tool_usage_dict
             )
 
             if error:
                 logger.error(f"Error occurred while verifying the MetaKanban board query content: {error}")
+
                 return error, None, None, None
 
-            output_tool_call = self._handle_tool_metakanban_query(output_tool_call)
+            output_tool_call = self._handle_tool_metakanban_query(
+                output_tool_call
+            )
 
         elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_METATEMPO_QUERY:
+
             error = verify_metatempo_query_content(
                 content=self.tool_usage_dict
             )
 
             if error:
                 logger.error(f"Error occurred while verifying the MetaTempo tracker query content: {error}")
+
                 return error, None, None, None
 
-            output_tool_call = self._handle_tool_metatempo_query(output_tool_call)
+            output_tool_call = self._handle_tool_metatempo_query(
+                output_tool_call
+            )
 
         elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_ORCHESTRATION_TRIGGER:
+
             error = verify_orchestration_trigger_content(
                 content=self.tool_usage_dict
             )
 
             if error:
                 logger.error(f"Error occurred while verifying the Orchestration trigger content: {error}")
+
                 return error, None, None, None
 
-            output_tool_call = self._handle_tool_orchestration_trigger(output_tool_call)
+            output_tool_call = self._handle_tool_orchestration_trigger(
+                output_tool_call
+            )
 
         elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_SCHEDULED_JOB_LOGS_QUERY:
+
             error = verify_scheduled_job_logs_query_content(
                 content=self.tool_usage_dict
             )
 
             if error:
                 logger.error(f"Error occurred while verifying the scheduled job logs query content: {error}")
+
                 return error, None, None, None
 
-            output_tool_call = self._handle_tool_scheduled_job_logs_query(output_tool_call)
+            output_tool_call = self._handle_tool_scheduled_job_logs_query(
+                output_tool_call
+            )
 
         elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_TRIGGERED_JOB_LOGS_QUERY:
+
             error = verify_triggered_job_logs_query_content(
                 content=self.tool_usage_dict
             )
 
             if error:
                 logger.error(f"Error occurred while verifying the triggered job logs query content: {error}")
+
                 return error, None, None, None
 
-            output_tool_call = self._handle_tool_triggered_job_logs_query(output_tool_call)
+            output_tool_call = self._handle_tool_triggered_job_logs_query(
+                output_tool_call
+            )
 
         elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_SMART_CONTRACT_GENERATION_QUERY:
+
             error = verify_smart_contract_generation_query_content(
                 content=self.tool_usage_dict
             )
@@ -790,9 +937,12 @@ class ToolCallManager:
             if error:
                 logger.error(
                     f"Error occurred while verifying the Smart Contract Generation query tool content: {error}")
+
                 return error, None, None, None
 
-            output_tool_call = self._handle_tool_smart_contract_gen_query(output_tool_call)
+            output_tool_call = self._handle_tool_smart_contract_gen_query(
+                output_tool_call
+            )
 
         ##################################################
 
@@ -800,6 +950,7 @@ class ToolCallManager:
 
         else:
             logger.error(f"No tool found with the descriptor: {defined_tool_descriptor}")
+
             return get_no_tool_found_error_log(
                 query_name=defined_tool_descriptor
             ), defined_tool_descriptor, f_uris, img_uris
@@ -825,9 +976,12 @@ class ToolCallManager:
                 img_uris[i] = uri
 
         logger.info(f"Processed the files and images. Returning the output.")
+
         return output_tool_call, defined_tool_descriptor, f_uris, img_uris
 
-    def _handle_execute_video(self):
+    def _handle_execute_video(
+        self
+    ):
 
         logger.info("Executing the video generation process.")
 
@@ -854,9 +1008,13 @@ class ToolCallManager:
         )
 
         logger.info(f"Video generation response retrieved.")
+
         return c_id, output
 
-    def _handle_tool_execute_audio(self, output_tool_call):
+    def _handle_tool_execute_audio(
+        self,
+        output_tool_call
+    ):
 
         logger.info("Executing the audio processing process.")
 
@@ -882,9 +1040,13 @@ class ToolCallManager:
 
         output_tool_call += output_str
         logger.info(f"Audio processing response retrieved.")
+
         return output_tool_call
 
-    def _handle_tool_execute_browsing(self, output_tool_call):
+    def _handle_tool_execute_browsing(
+        self,
+        output_tool_call
+    ):
 
         logger.info("Executing the browsing process.")
 
@@ -917,9 +1079,14 @@ class ToolCallManager:
 
         output_tool_call += output_str
         logger.info(f"Browsing response retrieved.")
+
         return output_tool_call
 
-    def _handle_tool_dream_image(self, image_uris, output_tool_call):
+    def _handle_tool_dream_image(
+        self,
+        image_uris,
+        output_tool_call
+    ):
 
         logger.info("Executing the dream image process.")
 
@@ -944,9 +1111,14 @@ class ToolCallManager:
 
         output_tool_call += output
         logger.info(f"Dream image response retrieved.")
+
         return output_tool_call
 
-    def _handle_tool_edit_image(self, image_uris, output_tool_call):
+    def _handle_tool_edit_image(
+        self,
+        image_uris,
+        output_tool_call
+    ):
 
         logger.info("Executing the edit image process.")
 
@@ -975,6 +1147,7 @@ class ToolCallManager:
 
         output_tool_call += output_str
         logger.info(f"Edit image response retrieved.")
+
         return output_tool_call
 
     def _handle_tool_generate_image(
@@ -1008,9 +1181,13 @@ class ToolCallManager:
 
         output_tool_call += output_str
         logger.info(f"Generate image response retrieved.")
+
         return output_tool_call
 
-    def _handle_tool_execute_script(self, output_tool_call):
+    def _handle_tool_execute_script(
+        self,
+        output_tool_call
+    ):
 
         logger.info("Executing the custom script process.")
 
@@ -1028,9 +1205,13 @@ class ToolCallManager:
 
         output_tool_call += output_str
         logger.info(f"Custom script response retrieved.")
+
         return output_tool_call
 
-    def _handle_tool_execute_api(self, output_tool_call):
+    def _handle_tool_execute_api(
+        self,
+        output_tool_call
+    ):
 
         logger.info("Executing the custom API process.")
 
@@ -1056,9 +1237,13 @@ class ToolCallManager:
 
         output_tool_call += output_str
         logger.info(f"Custom API response retrieved.")
+
         return output_tool_call
 
-    def _handle_tool_execute_function(self, output_tool_call):
+    def _handle_tool_execute_function(
+        self,
+        output_tool_call
+    ):
 
         logger.info("Executing the custom function process.")
         custom_function_reference_id = self.tool_usage_dict.get("parameters").get("custom_function_reference_id")
@@ -1077,11 +1262,16 @@ class ToolCallManager:
 
         output_tool_call += output_str
         logger.info(f"Custom function response retrieved.")
+
         return output_tool_call
 
-    def _handle_tool_reasoning(self, output_tool_call):
+    def _handle_tool_reasoning(
+        self,
+        output_tool_call
+    ):
 
         logger.info("Executing the reasoning process.")
+
         query_string = self.tool_usage_dict.get("parameters").get("query")
 
         output = run_process_reasoning(
@@ -1098,11 +1288,18 @@ class ToolCallManager:
 
         output_tool_call += output_str
         logger.info(f"Reasoning response retrieved.")
+
         return output_tool_call
 
-    def _handle_tool_analyze_code(self, f_uris, img_uris, output_tool_call):
+    def _handle_tool_analyze_code(
+        self,
+        f_uris,
+        img_uris,
+        output_tool_call
+    ):
 
         logger.info("Executing the analyze code process.")
+
         file_paths = self.tool_usage_dict.get("parameters").get("file_paths")
         query_string = self.tool_usage_dict.get("parameters").get("query")
 
@@ -1121,9 +1318,13 @@ class ToolCallManager:
 
         output_tool_call += output_str
         logger.info(f"Analyze code response retrieved.")
+
         return f_uris, img_uris, output_tool_call
 
-    def _handle_tool_infer_with_ml(self, output_tool_call):
+    def _handle_tool_infer_with_ml(
+        self,
+        output_tool_call
+    ):
 
         logger.info("Executing the infer with ML process.")
 
@@ -1148,9 +1349,13 @@ class ToolCallManager:
 
         output_tool_call += output_str
         logger.info(f"Infer with ML response retrieved.")
+
         return output_tool_call
 
-    def _handle_tool_http_client_retrieval(self, output_tool_call):
+    def _handle_tool_http_client_retrieval(
+        self,
+        output_tool_call
+    ):
 
         logger.info("Executing the HTTP client retrieval process.")
         c_id = self.tool_usage_dict.get("parameters").get("media_storage_connection_id")
@@ -1170,6 +1375,7 @@ class ToolCallManager:
 
         output_tool_call += output_str
         logger.info(f"HTTP client retrieval response retrieved.")
+
         return output_tool_call
 
     def _handle_tool_website_data_search(
@@ -1232,6 +1438,7 @@ class ToolCallManager:
 
         output_tool_call += output_str
         logger.info(f"Media item search query response retrieved.")
+
         return f_uris, img_uris, output_tool_call
 
     def _handle_tool_media_manager_query(
@@ -1241,7 +1448,9 @@ class ToolCallManager:
         output_tool_call
     ):
 
-        from apps.core.tool_calls.core_services.core_service_query_media_manager import run_query_media_manager
+        from apps.core.tool_calls.core_services.core_service_query_media_manager import (
+            run_query_media_manager
+        )
 
         logger.info("Executing the media manager query process.")
         c_id = self.tool_usage_dict.get("parameters").get("media_storage_connection_id")
@@ -1266,9 +1475,13 @@ class ToolCallManager:
 
         output_tool_call += output_str
         logger.info(f"Media manager query response retrieved.")
+
         return f_uris, img_uris, output_tool_call
 
-    def _handle_tool_ssh_system(self, output_tool_call):
+    def _handle_tool_ssh_system(
+        self,
+        output_tool_call
+    ):
 
         logger.info("Executing the SSH system command process.")
         c_id = self.tool_usage_dict.get("parameters").get("file_system_connection_id")
@@ -1314,9 +1527,13 @@ class ToolCallManager:
 
         output_tool_call += output_str
         logger.info(f"SSH system command response retrieved.")
+
         return output_tool_call
 
-    def _handle_tool_ssh_system_schema_search(self, output_tool_call):
+    def _handle_tool_ssh_system_schema_search(
+        self,
+        output_tool_call
+    ):
 
         logger.info("Executing the SSH File System Directory schema search process.")
 
@@ -1336,11 +1553,16 @@ class ToolCallManager:
 
         output_tool_call += output_str
         logger.info(f"SSH File System Directory schema search response retrieved.")
+
         return output_tool_call
 
-    def _handle_tool_intra_memory_query(self, output_tool_call):
+    def _handle_tool_intra_memory_query(
+        self,
+        output_tool_call
+    ):
 
         logger.info("Executing the intra memory query process.")
+
         query = self.tool_usage_dict.get("parameters").get("query")
 
         output = run_query_intra_memory(
@@ -1356,9 +1578,13 @@ class ToolCallManager:
 
         output_tool_call += output_str
         logger.info(f"Intra memory query response retrieved.")
+
         return output_tool_call
 
-    def _handle_tool_code_base_query(self, output_tool_call):
+    def _handle_tool_code_base_query(
+        self,
+        output_tool_call
+    ):
 
         logger.info("Executing the code base query process.")
         c_id = self.tool_usage_dict.get("parameters").get("code_base_storage_connection_id")
@@ -1379,11 +1605,16 @@ class ToolCallManager:
 
         output_tool_call += output_str
         logger.info(f"Code base query response retrieved.")
+
         return output_tool_call
 
-    def _handle_tool_vector_base_query(self, output_tool_call):
+    def _handle_tool_vector_base_query(
+        self,
+        output_tool_call
+    ):
 
         logger.info("Executing the vector store query process.")
+
         c_id = self.tool_usage_dict.get("parameters").get("knowledge_base_connection_id")
         query = self.tool_usage_dict.get("parameters").get("query")
         alpha = self.tool_usage_dict.get("parameters").get("alpha")
@@ -1402,21 +1633,28 @@ class ToolCallManager:
 
         output_tool_call += output_str
         logger.info(f"Vector store query response retrieved.")
+
         return output_tool_call
 
-    def _handle_tool_sql_query(self, output_tool_call):
+    def _handle_tool_sql_query(
+        self,
+        output_tool_call
+    ):
 
         logger.info("Executing the SQL query process.")
+
         c_id = self.tool_usage_dict.get("parameters").get("database_connection_id")
         query_type = self.tool_usage_dict.get("parameters").get("type")
         sql_query = self.tool_usage_dict.get("parameters").get("sql_query")
 
         if self.assistant.is_beamguard_active is True:
+
             try:
                 xc_beamguard = BeamGuardExecutionManager(
                     assistant=self.assistant,
                     chat=self.chat
                 )
+
                 artifact = xc_beamguard.guard_sql_modifications(
                     connection_id=c_id,
                     raw_query=sql_query
@@ -1432,6 +1670,7 @@ class ToolCallManager:
 
             except Exception as e:
                 logger.error(f"Error occurred while executing the BeamGuard SQL query modifications: {e}")
+
                 return "Error occurred while executing the BeamGuard SQL query protection mechanism.", None, None, None
 
         else:
@@ -1452,9 +1691,13 @@ class ToolCallManager:
 
         output_tool_call += output_str
         logger.info(f"SQL query response retrieved.")
+
         return output_tool_call
 
-    def _handle_tool_sql_schema_search(self, output_tool_call):
+    def _handle_tool_sql_schema_search(
+        self,
+        output_tool_call
+    ):
 
         logger.info("Executing the SQL schema search process.")
         c_id = self.tool_usage_dict.get("parameters").get("connection_id")
@@ -1473,9 +1716,13 @@ class ToolCallManager:
 
         output_tool_call += output_str
         logger.info(f"SQL database schema search response retrieved.")
+
         return output_tool_call
 
-    def _handle_tool_nosql_query(self, output_tool_call):
+    def _handle_tool_nosql_query(
+        self,
+        output_tool_call
+    ):
 
         logger.info("Executing the NoSQL query process.")
         c_id = self.tool_usage_dict.get("parameters").get("database_connection_id")
@@ -1523,9 +1770,13 @@ class ToolCallManager:
 
         output_tool_call += output_str
         logger.info(f"NoSQL query response retrieved.")
+
         return output_tool_call
 
-    def _handle_tool_nosql_schema_search(self, output_tool_call):
+    def _handle_tool_nosql_schema_search(
+        self,
+        output_tool_call
+    ):
 
         logger.info("Executing the NoSQL schema search process.")
         c_id = self.tool_usage_dict.get("parameters").get("connection_id")
@@ -1544,11 +1795,16 @@ class ToolCallManager:
 
         output_tool_call += output_str
         logger.info(f"NoSQL database schema search response retrieved.")
+
         return output_tool_call
 
-    def _handle_tool_dashboard_statistics_query(self, output_tool_call):
+    def _handle_tool_dashboard_statistics_query(
+        self,
+        output_tool_call
+    ):
 
         logger.info("Executing the Dashboard Statistics query process.")
+
         user_id = self.chat.user.id
 
         output = run_query_dashboard_statistics(
@@ -1564,9 +1820,13 @@ class ToolCallManager:
 
         output_tool_call += output_str
         logger.info(f"Dashboard Statistics query response retrieved.")
+
         return output_tool_call
 
-    def _handle_tool_metakanban_query(self, output_tool_call):
+    def _handle_tool_metakanban_query(
+        self,
+        output_tool_call
+    ):
 
         logger.info("Executing the MetaKanban board query process.")
         c_id = self.tool_usage_dict.get("parameters").get("connection_id")
@@ -1585,11 +1845,16 @@ class ToolCallManager:
 
         output_tool_call += output_str
         logger.info(f"Metakanban board query response retrieved.")
+
         return output_tool_call
 
-    def _handle_tool_metatempo_query(self, output_tool_call):
+    def _handle_tool_metatempo_query(
+        self,
+        output_tool_call
+    ):
 
         logger.info("Executing the MetaTempo tracker query process.")
+
         c_id = self.tool_usage_dict.get("parameters").get("connection_id")
         query = self.tool_usage_dict.get("parameters").get("query")
         action = self.tool_usage_dict.get("parameters").get("action")
@@ -1608,11 +1873,16 @@ class ToolCallManager:
 
         output_tool_call += output_str
         logger.info(f"MetaTempo tracker query response retrieved.")
+
         return output_tool_call
 
-    def _handle_tool_orchestration_trigger(self, output_tool_call):
+    def _handle_tool_orchestration_trigger(
+        self,
+        output_tool_call
+    ):
 
         logger.info("Executing the Orchestration trigger process.")
+
         user = self.chat.user
         c_id = self.tool_usage_dict.get("parameters").get("connection_id")
         query = self.tool_usage_dict.get("parameters").get("query")
@@ -1631,9 +1901,13 @@ class ToolCallManager:
 
         output_tool_call += output_str
         logger.info(f"Orchestration trigger process response retrieved.")
+
         return output_tool_call
 
-    def _handle_tool_scheduled_job_logs_query(self, output_tool_call):
+    def _handle_tool_scheduled_job_logs_query(
+        self,
+        output_tool_call
+    ):
 
         logger.info("Executing the Scheduled Job Logs query process.")
 
@@ -1649,9 +1923,13 @@ class ToolCallManager:
 
         output_tool_call += output_str
         logger.info(f"Scheduled Job Logs query process response retrieved.")
+
         return output_tool_call
 
-    def _handle_tool_triggered_job_logs_query(self, output_tool_call):
+    def _handle_tool_triggered_job_logs_query(
+        self,
+        output_tool_call
+    ):
         logger.info("Executing the Triggered Job Logs query process.")
 
         output = run_query_execute_triggered_job_logs(
@@ -1666,16 +1944,22 @@ class ToolCallManager:
 
         output_tool_call += output_str
         logger.info(f"Triggered Job Logs query process response retrieved.")
+
         return output_tool_call
 
-    def _handle_tool_smart_contract_gen_query(self, output_tool_call):
+    def _handle_tool_smart_contract_gen_query(
+        self,
+        output_tool_call
+    ):
         logger.info("Executing the Smart Contract generation query process.")
+
         user = self.chat.user
 
         wallet_id = self.tool_usage_dict.get("parameters").get("wallet_id")
         nickname = self.tool_usage_dict.get("parameters").get("nickname")
         description = self.tool_usage_dict.get("parameters").get("description")
         category = self.tool_usage_dict.get("parameters").get("category")
+
         contract_template = self.tool_usage_dict.get("parameters").get("contract_template")
         creation_prompt = self.tool_usage_dict.get("parameters").get("creation_prompt")
         maximum_gas_limit = self.tool_usage_dict.get("parameters").get("maximum_gas_limit")
@@ -1702,9 +1986,13 @@ class ToolCallManager:
 
         output_tool_call += output_str
         logger.info(f"Smart contract generation query process response retrieved.")
+
         return output_tool_call
 
-    def _handle_tool_hadron_node_query(self, output_tool_call):
+    def _handle_tool_hadron_node_query(
+        self,
+        output_tool_call
+    ):
 
         logger.info("Executing the Hadron Node query process.")
 
@@ -1724,24 +2012,34 @@ class ToolCallManager:
 
         output_tool_call += output_str
         logger.info(f"Hadron Node query process response retrieved.")
+
         return output_tool_call
 
-    def call_internal_tool_service_lean(self):
+    def call_internal_tool_service_lean(
+        self
+    ):
 
         logger.info("Calling the internal tool service.")
 
         try:
 
-            if isinstance(self.tool_usage_dict_stringified, dict):
+            if isinstance(
+                self.tool_usage_dict_stringified,
+                dict
+            ):
                 logger.info("Tool usage dictionary is already a dictionary.")
+
                 self.tool_usage_dict = self.tool_usage_dict_stringified
 
             else:
                 logger.info("Tool usage dictionary is a string. Converting it to a dictionary.")
-                self.tool_usage_dict = json.loads(self.tool_usage_dict_stringified)
+                self.tool_usage_dict = json.loads(
+                    self.tool_usage_dict_stringified
+                )
 
         except Exception as e:
             logger.error(f"Error occurred while converting the tool usage dictionary to a dictionary: {e}")
+
             return get_json_decode_error_log(
                 error_logs=str(e)
             ), None, None, None
@@ -1753,9 +2051,11 @@ class ToolCallManager:
         )
         if error_msg:
             logger.error(f"Error occurred while verifying the main call or query content: {error_msg}")
+
             return error_msg, None, None, None
 
         defined_tool_descriptor = self.tool_usage_dict.get("tool")
+
         output_tool_call = f"""
                     Tool Response: {defined_tool_descriptor}
 
@@ -1772,6 +2072,7 @@ class ToolCallManager:
 
             assistant_id = self.tool_usage_dict.get("parameters").get("assistant_id")
             query = self.tool_usage_dict.get("parameters").get("query")
+
             image_urls = self.tool_usage_dict.get("parameters").get("image_urls")
             file_urls = self.tool_usage_dict.get("parameters").get("file_urls")
 
@@ -1789,6 +2090,7 @@ class ToolCallManager:
             )
 
             output_tool_call += expert_network_response_raw_str
+
             logger.info(f"Expert network query response retrieved.")
 
         elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_SEMANTOR_SEARCH_QUERY:
@@ -1796,6 +2098,7 @@ class ToolCallManager:
             error_msg = verify_semantor_search_query_content(
                 content=self.tool_usage_dict
             )
+
             if error_msg:
                 return error_msg, None, None, None
 
@@ -1814,6 +2117,7 @@ class ToolCallManager:
             )
 
             output_tool_call += semantor_response_raw_str
+
             logger.info(f"Semantor query response retrieved.")
 
         elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_SEMANTOR_CONSULTATION_QUERY:
@@ -1821,6 +2125,7 @@ class ToolCallManager:
             error_msg = verify_semantor_consultation_query_content(
                 content=self.tool_usage_dict
             )
+
             if error_msg:
                 return error_msg, None, None, None
 
@@ -1845,12 +2150,15 @@ class ToolCallManager:
             )
 
             output_tool_call += semantor_consult_response_raw_str
+
             logger.info(f"Semantor consultation response retrieved.")
 
         elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_INTRA_MEMORY_QUERY:
+
             error_msg = verify_leanmod_memory_query_content(
                 content=self.tool_usage_dict
             )
+
             if error_msg:
                 return error_msg, None, None, None
 
@@ -1868,6 +2176,7 @@ class ToolCallManager:
             )
 
             output_tool_call += leanmod_memory_query_output_raw_str
+
             logger.info(f"LeanMod Intra memory query response retrieved.")
 
         ##################################################
@@ -1886,6 +2195,7 @@ class ToolCallManager:
                     '''
                 """
         if f_uris:
+
             for i, uri in enumerate(f_uris):
 
                 if not uri.startswith("http"):
@@ -1894,6 +2204,7 @@ class ToolCallManager:
                 f_uris[i] = uri
 
         if img_uris:
+
             for i, uri in enumerate(img_uris):
 
                 if not uri.startswith("http"):
@@ -1902,6 +2213,7 @@ class ToolCallManager:
                 img_uris[i] = uri
 
         logger.info(f"Processed the files and images. Returning the output.")
+
         return output_tool_call, defined_tool_descriptor, f_uris, img_uris
 
     #####
@@ -1916,16 +2228,24 @@ class ToolCallManager:
         logger.info("Calling the internal tool service.")
 
         try:
-            if isinstance(self.tool_usage_dict_stringified, dict):
+            if isinstance(
+                self.tool_usage_dict_stringified,
+                dict
+            ):
                 logger.info("Tool usage dictionary is already a dictionary.")
+
                 self.tool_usage_dict = self.tool_usage_dict_stringified
 
             else:
                 logger.info("Tool usage dictionary is a string. Converting it to a dictionary.")
-                self.tool_usage_dict = json.loads(self.tool_usage_dict_stringified)
+
+                self.tool_usage_dict = json.loads(
+                    self.tool_usage_dict_stringified
+                )
 
         except Exception as e:
             logger.error(f"Error occurred while converting the tool usage dictionary to a dictionary: {e}")
+
             return get_json_decode_error_log(
                 error_logs=str(e)
             ), None, None, None
@@ -1935,8 +2255,10 @@ class ToolCallManager:
         error_msg = verify_main_call_or_query_content(
             content=self.tool_usage_dict
         )
+
         if error_msg:
             logger.error(f"Error occurred while verifying the main call or query content: {error_msg}")
+
             return error_msg, None, None, None
 
         defined_tool_descriptor = self.tool_usage_dict.get("tool")
@@ -1959,6 +2281,7 @@ class ToolCallManager:
             error_msg = verify_voidforger_old_message_search_query_content(
                 content=self.tool_usage_dict
             )
+
             if error_msg:
                 transmit_websocket_log(
                     f"""❌ VoidForger attempted to perform an execution of an invalid or unauthorized tool.""",
@@ -2040,6 +2363,7 @@ class ToolCallManager:
             error_msg = verify_voidforger_action_history_log_search_query_content(
                 content=self.tool_usage_dict
             )
+
             if error_msg:
                 transmit_websocket_log(
                     f"""❌ VoidForger attempted to perform an execution of an invalid or unauthorized tool.""",
@@ -2120,6 +2444,7 @@ class ToolCallManager:
             error_msg = verify_voidforger_auto_execution_log_search_query_content(
                 content=self.tool_usage_dict
             )
+
             if error_msg:
                 transmit_websocket_log(
                     f"""❌ VoidForger attempted to perform an execution of an invalid or unauthorized tool.""",
@@ -2200,6 +2525,7 @@ class ToolCallManager:
             error_msg = verify_voidforger_leanmod_oracle_search_query_content(
                 content=self.tool_usage_dict
             )
+
             if error_msg:
                 transmit_websocket_log(
                     f"""❌ VoidForger attempted to perform an execution of an invalid or unauthorized tool.""",
@@ -2280,6 +2606,7 @@ class ToolCallManager:
             error_msg = verify_voidforger_leanmod_oracle_command_order_content(
                 content=self.tool_usage_dict
             )
+
             if error_msg:
                 transmit_websocket_log(
                     f"""❌ VoidForger attempted to perform an execution of an invalid or unauthorized tool.""",
@@ -2301,6 +2628,7 @@ class ToolCallManager:
 
             object_id = self.tool_usage_dict.get("parameters").get("object_id")
             query = self.tool_usage_dict.get("parameters").get("query")
+
             image_urls = self.tool_usage_dict.get("parameters").get("image_urls")
             file_urls = self.tool_usage_dict.get("parameters").get("file_urls")
 
@@ -2383,16 +2711,23 @@ class ToolCallManager:
                 """
 
         if f_uris:
+
             for i, uri in enumerate(f_uris):
+
                 if not uri.startswith("http"):
                     uri = f"{MEDIA_URL}{uri}"
+
                 f_uris[i] = uri
 
         if img_uris:
+
             for i, uri in enumerate(img_uris):
+
                 if not uri.startswith("http"):
                     uri = f"{MEDIA_URL}{uri}"
+
                 img_uris[i] = uri
 
         logger.info(f"Processed the files and images. Returning the output.")
+
         return output_tool_call, defined_tool_descriptor, f_uris, img_uris

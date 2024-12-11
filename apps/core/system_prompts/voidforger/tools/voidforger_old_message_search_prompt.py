@@ -15,7 +15,10 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-from apps.core.tool_calls.utils import VoidForgerModesNames, ToolCallDescriptorNames
+from apps.core.tool_calls.utils import (
+    VoidForgerModesNames,
+    ToolCallDescriptorNames
+)
 
 
 def build_structured_tool_prompt__old_message_search_execution_voidforger():
@@ -70,4 +73,5 @@ def build_structured_tool_prompt__old_message_search_execution_voidforger():
 
             ---
         """
+
     return response_prompt

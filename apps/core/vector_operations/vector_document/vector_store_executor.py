@@ -18,10 +18,17 @@
 import logging
 
 import weaviate
-import weaviate.classes as wvc
-from weaviate.config import AdditionalConfig, Timeout
 
-from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
+import weaviate.classes as wvc
+
+from weaviate.config import (
+    AdditionalConfig,
+    Timeout
+)
+
+from apps.core.internal_cost_manager.costs_map import (
+    InternalServiceCosts
+)
 
 from apps.core.vector_operations.vector_document.handler_methods.creation_handler import (
     create_weaviate_classes_handler
@@ -49,7 +56,10 @@ from apps.datasource_knowledge_base.tasks import (
 )
 
 from apps.llm_transaction.models import LLMTransaction
-from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
+
+from apps.llm_transaction.utils import (
+    LLMTransactionSourcesTypesNames
+)
 
 logger = logging.getLogger(__name__)
 
@@ -77,11 +87,14 @@ class WeaviateExecutor:
                         insert=WEAVIATE_INSERT_TIMEOUT)
                 )
             )
+
             self.client = c
+
             logger.info(f"Connected to Weaviate successfully.")
 
         except Exception as e:
             logger.error(f"Error occurred while connecting to Weaviate: {e}")
+
             return self.client
 
         return self.client
@@ -103,10 +116,12 @@ class WeaviateExecutor:
             c = self.connect_c()
             schema = c.collections.list_all()
             self.close_c()
+
             logger.info(f"Retrieved schema: {schema}")
 
         except Exception as e:
             logger.error(f"Error occurred while retrieving schema: {e}")
+
             return None
 
         return schema
@@ -114,47 +129,60 @@ class WeaviateExecutor:
     @staticmethod
     def decode_vectorizer(vectorizer_name):
 
-        from apps.assistants.utils import EmbeddingManagersNames
+        from apps.assistants.utils import (
+            EmbeddingManagersNames
+        )
 
         if vectorizer_name == EmbeddingManagersNames.TEXT2VEC_OPENAI:
             logger.info(f"Vectorizer is set to: {vectorizer_name}")
+
             return wvc.config.Configure.Vectorizer.text2vec_openai()
 
         else:
             logger.info(f"Vectorizer is set to: {vectorizer_name}")
+
             return wvc.config.Configure.Vectorizer.text2vec_openai()
 
     def create_weaviate_classes(self):
 
         try:
             _ = self.connect_c()
+
             data = create_weaviate_classes_handler(
                 executor=self
             )
 
             logger.info(f"Created Weaviate classes successfully.")
+
             self.close_c()
 
         except Exception as e:
             logger.error(f"Error occurred while creating Weaviate classes: {e}")
+
             return None
 
         return data
 
-    def delete_weaviate_classes(self, class_name: str):
+    def delete_weaviate_classes(
+        self,
+        class_name: str
+    ):
 
         try:
             _ = self.connect_c()
+
             data = delete_weaviate_class_handler(
                 executor=self,
                 class_name=class_name
             )
+
             self.close_c()
 
             logger.info(f"Deleted Weaviate classes successfully.")
 
         except Exception as e:
             logger.error(f"Error occurred while deleting Weaviate classes: {e}")
+
             return None
 
         return data
@@ -167,6 +195,7 @@ class WeaviateExecutor:
 
         try:
             _ = self.connect_c()
+
             logger.info(f"Deleting document: {document_uuid}")
 
             data = delete_document_helper(
@@ -179,6 +208,7 @@ class WeaviateExecutor:
 
         except Exception as e:
             logger.error(f"Error occurred while deleting document: {e}")
+
             return None
 
         return data
@@ -201,6 +231,7 @@ class WeaviateExecutor:
 
         except Exception as e:
             logger.error(f"Error occurred while indexing documents: {e}")
+
             return None
 
         return
@@ -220,6 +251,7 @@ class WeaviateExecutor:
 
         except Exception as e:
             logger.error(f"Error occurred while chunking document: {e}")
+
             return None
 
         return ch
@@ -246,10 +278,12 @@ class WeaviateExecutor:
                 path=path,
                 number_of_chunks=number_of_chunks
             )
+
             logger.info(f"Embedded document successfully.")
 
         except Exception as e:
             logger.error(f"Error occurred while embedding document: {e}")
+
             return None, None, None
 
         return doc_id, doc_uuid, error
@@ -277,10 +311,12 @@ class WeaviateExecutor:
                 document_id=document_id,
                 document_uuid=document_uuid
             )
+
             logger.info(f"Embedded document chunks successfully.")
 
         except Exception as e:
             logger.error(f"Error occurred while embedding document chunks: {e}")
+
             return
 
         return errors
@@ -291,12 +327,21 @@ class WeaviateExecutor:
         alpha: float
     ):
 
-        from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE
-        from apps.core.generative_ai.utils import ChatRoles
+        from apps.core.generative_ai.utils import (
+            GPT_DEFAULT_ENCODING_ENGINE
+        )
+
+        from apps.core.generative_ai.utils import (
+            ChatRoles
+        )
 
         class_name = f"{self.connection_object.class_name}Chunks"
+
         c = self.connect_c()
-        collection = c.collections.get(class_name)
+
+        collection = c.collections.get(
+            class_name
+        )
 
         vector_store_output = collection.query.hybrid(
             query_properties=[
@@ -313,6 +358,7 @@ class WeaviateExecutor:
         for o in vector_store_output.objects:
 
             instance_obj = {}
+
             if not o.properties:
                 continue
 
@@ -339,11 +385,14 @@ class WeaviateExecutor:
                 transaction_source=LLMTransactionSourcesTypesNames.KNOWLEDGE_BASE_SEARCH,
                 is_tool_cost=True
             )
+
             tx.save()
+
             logger.info(f"Transaction saved successfully.")
 
         except Exception as e:
             logger.error(f"Error occurred while saving transaction: {e}")
+
             return None
 
         return docs

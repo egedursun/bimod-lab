@@ -17,11 +17,17 @@
 
 
 from apps.assistants.models import Assistant
-from apps.datasource_sql.models import SQLDatabaseConnection
+
+from apps.datasource_sql.models import (
+    SQLDatabaseConnection
+)
 
 
 def build_sql_data_source_prompt(assistant: Assistant):
-    sql_data_sources = SQLDatabaseConnection.objects.filter(assistant=assistant)
+    sql_data_sources = SQLDatabaseConnection.objects.filter(
+        assistant=assistant
+    )
+
     response_prompt = """
         ### **SQL DATABASE CONNECTIONS:**
 
@@ -30,6 +36,7 @@ def build_sql_data_source_prompt(assistant: Assistant):
 
     for i, sql_data_source in enumerate(sql_data_sources):
         custom_queries_of_datasource = sql_data_source.custom_queries.all()
+
         response_prompt += f"""
         [SQL Data Source ID: {sql_data_source.id}]
             DBMS Type: {sql_data_source.dbms_type}
@@ -107,6 +114,7 @@ def build_semantor_sql_data_source_prompt(temporary_sources: dict):
 
     for i, sql_data_source in enumerate(sql_data_sources):
         custom_queries_of_datasource = sql_data_source.custom_queries.all()
+
         response_prompt += f"""
         [SQL Data Source ID: {sql_data_source.id}]
             DBMS Type: {sql_data_source.dbms_type}

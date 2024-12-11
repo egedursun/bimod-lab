@@ -15,7 +15,9 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-from apps.core.tool_calls.utils import ToolCallDescriptorNames
+from apps.core.tool_calls.utils import (
+    ToolCallDescriptorNames
+)
 
 
 def build_tool_prompt__query_vector_store():
@@ -75,4 +77,5 @@ def build_tool_prompt__query_vector_store():
             ---
 
         """
+
     return response_prompt

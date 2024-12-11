@@ -17,8 +17,14 @@
 
 from django.contrib.auth.models import User
 
-from apps.assistants.models import Assistant
-from apps.projects.models import ProjectItem, ProjectTeamItem
+from apps.assistants.models import (
+    Assistant
+)
+
+from apps.projects.models import (
+    ProjectItem,
+    ProjectTeamItem
+)
 
 
 def build_agent_related_project_items_prompt(agent: Assistant) -> str:

@@ -16,7 +16,9 @@
 #
 
 
-from apps.core.tool_calls.utils import ToolCallDescriptorNames
+from apps.core.tool_calls.utils import (
+    ToolCallDescriptorNames
+)
 
 
 def build_structured_tool_prompt__expert_network_query_execution_harmoniq():
@@ -63,4 +65,5 @@ def build_structured_tool_prompt__expert_network_query_execution_harmoniq():
 
                 ---
             """
+
     return response_prompt

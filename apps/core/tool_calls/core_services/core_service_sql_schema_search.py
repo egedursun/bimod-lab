@@ -25,7 +25,10 @@ from apps.core.sql.sql_executor import (
 from apps.datasource_sql.models import (
     SQLDatabaseConnection
 )
-from apps.datasource_sql.utils import DBMSChoicesNames
+
+from apps.datasource_sql.utils import (
+    DBMSChoicesNames
+)
 
 logger = logging.getLogger(__name__)
 
@@ -35,7 +38,10 @@ def run_query_search_sql_database_schema(
     query: str
 ):
     try:
-        connection = SQLDatabaseConnection.objects.get(id=connection_id)
+        connection = SQLDatabaseConnection.objects.get(
+            id=connection_id
+        )
+
         if not connection:
             return f"Connection with ID: {connection_id} does not exist."
 
@@ -59,6 +65,7 @@ def run_query_search_sql_database_schema(
     except Exception as e:
         logger.error(f"Error occurred while executing the SQL Database Schema Search query: {str(e)}")
         error_msg = f"Error occurred while executing the SQL Database Schema Search query: {str(e)}"
+
         return error_msg
 
     return output

@@ -119,6 +119,7 @@ def run_generate_video(
         else:
 
             logger.error(f"Invalid action type: {video_generator_action_type}.")
+
             return {
                 "video_url": None,
                 "error": "The action type is not recognized. Please check the action type and try again."
@@ -134,4 +135,5 @@ def run_generate_video(
         }
 
     logger.info(f"Video generation output: {response}")
+
     return response

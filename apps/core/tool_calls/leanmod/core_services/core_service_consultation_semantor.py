@@ -29,7 +29,9 @@ def execute_semantor_consultation_query(
     image_urls,
     file_urls
 ):
-    from apps.core.semantor.semantor_executor import SemantorVectorSearchExecutionManager
+    from apps.core.semantor.semantor_executor import (
+        SemantorVectorSearchExecutionManager
+    )
 
     try:
         xc = SemantorVectorSearchExecutionManager(
@@ -50,6 +52,7 @@ def execute_semantor_consultation_query(
     except Exception as e:
         logger.error(f"Error occurred while executing the function: {e}")
         error = f"Error occurred while executing the function: {str(e)}"
+
         return error
 
     return consultation_output

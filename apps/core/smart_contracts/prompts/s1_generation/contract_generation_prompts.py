@@ -17,10 +17,14 @@
 
 import os
 
-from apps.smart_contracts.models import BlockchainSmartContract
+from apps.smart_contracts.models import (
+    BlockchainSmartContract
+)
 
 
-def contract_primary_instructions_prompt(contract_object: BlockchainSmartContract):
+def contract_primary_instructions_prompt(
+    contract_object: BlockchainSmartContract
+):
     return f"""
 
     ### **GENERAL INSTRUCTIONS:**
@@ -145,18 +149,21 @@ def contract_user_prompt_supply(contract_object: BlockchainSmartContract):
     """
 
 
-def contract_template_solidity_file_prompt(contract_object: BlockchainSmartContract):
+def contract_template_solidity_file_prompt(
+    contract_object: BlockchainSmartContract
+):
     template_file_path = contract_object.contract_template_filepath
+
     if os.path.exists(template_file_path):
+
         with open(template_file_path, 'r') as template_file:
             solidity_template_content = template_file.read()
+
     else:
         solidity_template_content = """
             < No Boilerplate Smart Contract template file found. Please generate the contract from scratch. >
         """
 
-    # fields to use: contract_object.contract_template_filepath (a file path containing the solidity file that the user
-    # selected, this file needs to be read and integrated in this prompt as well)
     return f"""
         ### **SOLIDITY SMART CONTRACT - BOILERPLATE TEMPLATE:**
 
@@ -185,8 +192,11 @@ def contract_template_solidity_file_prompt(contract_object: BlockchainSmartContr
     """
 
 
-def contract_offchain_seed_prompt(contract_object: BlockchainSmartContract):
+def contract_offchain_seed_prompt(
+    contract_object: BlockchainSmartContract
+):
     offchain_contract_template = contract_object.offchain_contract_seed
+
     if not offchain_contract_template or offchain_contract_template == "":
         offchain_contract_template = """
             < Off-chain contract data not provided. Please generate the contract from scratch. >
@@ -223,10 +233,13 @@ def contract_offchain_seed_prompt(contract_object: BlockchainSmartContract):
     """
 
 
-def contract_metadata_prompt(contract_object: BlockchainSmartContract):
-    # Extract metadata information from the contract object
+def contract_metadata_prompt(
+    contract_object: BlockchainSmartContract
+):
+
     nickname = contract_object.nickname or "< No nickname provided. >"
     description = contract_object.description or "< No description provided. >"
+
     category = contract_object.category or "< No category provided. >"
     contract_template = contract_object.contract_template or "< No template selected. >"
 
@@ -263,7 +276,10 @@ def contract_metadata_prompt(contract_object: BlockchainSmartContract):
     """
 
 
-def contract_previous_mistakes_prompt(contract_object: BlockchainSmartContract, previous_mistakes_prompt: str):
+def contract_previous_mistakes_prompt(
+    contract_object: BlockchainSmartContract,
+    previous_mistakes_prompt: str
+):
     return f"""
         ### **PREVIOUS MISTAKES TO AVOID:**
 
@@ -287,4 +303,3 @@ def contract_previous_mistakes_prompt(contract_object: BlockchainSmartContract, 
 
         -----
     """
-

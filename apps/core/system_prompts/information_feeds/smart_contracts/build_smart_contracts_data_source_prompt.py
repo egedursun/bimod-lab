@@ -25,16 +25,24 @@ from apps.smart_contracts.models import (
 
 def build_smart_contracts_data_source_prompt(assistant: Assistant):
     agent_org = assistant.organization
-    smart_contracts = BlockchainSmartContract.objects.filter(wallet__organization=agent_org)
+
+    smart_contracts = BlockchainSmartContract.objects.filter(
+        wallet__organization=agent_org
+    )
+
     response_prompt = """
         ### **BLOCKCHAIN WALLET CONNECTIONS:**
 
         '''
     """
 
-    blockchain_wallets = BlockchainWalletConnection.objects.filter(organization=agent_org)
+    blockchain_wallets = BlockchainWalletConnection.objects.filter(
+        organization=agent_org
+    )
+
     for i, wallet in enumerate(blockchain_wallets):
         wallet: BlockchainWalletConnection
+
         response_prompt += f"""
         [Wallet ID: {wallet.id}]
             Nickname: {wallet.nickname}
@@ -58,6 +66,7 @@ def build_smart_contracts_data_source_prompt(assistant: Assistant):
 
     for i, smart_contract in enumerate(smart_contracts):
         smart_contract: BlockchainSmartContract
+
         response_prompt += f"""
         [Smart Contract Data Source ID: {smart_contract.id}]
             Nickname: {smart_contract.nickname}

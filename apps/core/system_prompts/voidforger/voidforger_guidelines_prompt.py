@@ -15,12 +15,21 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-from apps.core.tool_calls.utils import VoidForgerModesNames
+from apps.core.tool_calls.utils import (
+    VoidForgerModesNames
+)
 
 
-def build_structured_primary_guidelines_voidforger(voidforger, current_mode):
-    from apps.voidforger.models import VoidForger
+def build_structured_primary_guidelines_voidforger(
+    voidforger,
+    current_mode
+):
+    from apps.voidforger.models import (
+        VoidForger
+    )
+
     voidforger: VoidForger
+
     return f"""
         ---
 

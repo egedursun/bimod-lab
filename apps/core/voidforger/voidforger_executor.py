@@ -18,11 +18,19 @@
 import logging
 import os
 import uuid
-from typing import List, Dict
+
+from typing import (
+    List,
+    Dict
+)
 
 import faiss
 import numpy as np
-from django.contrib.auth.models import User
+
+from django.contrib.auth.models import (
+    User
+)
+
 from django.utils import timezone
 
 from apps.core.generative_ai.generative_ai_decode_manager import (
@@ -33,7 +41,9 @@ from apps.core.generative_ai.gpt_openai_manager import (
     OpenAIGPTClientManager
 )
 
-from apps.core.tool_calls.utils import VoidForgerModesNames
+from apps.core.tool_calls.utils import (
+    VoidForgerModesNames
+)
 
 from apps.core.voidforger.utils import (
     VOIDFORGER_DEFAULT_SEARCH_RESULTS_OLD_CHAT_MESSAGES,
@@ -80,7 +90,11 @@ class VoidForgerExecutionManager:
         vector_dim: int = OPEN_AI_DEFAULT_EMBEDDING_VECTOR_DIMENSIONS
     ):
         self.voidforger_id = voidforger_id
-        self.voidforger = VoidForger.objects.get(id=voidforger_id)
+
+        self.voidforger = VoidForger.objects.get(
+            id=voidforger_id
+        )
+
         self.llm_model = self.voidforger.llm_model
         self.vector_dim = vector_dim
 
@@ -109,6 +123,7 @@ class VoidForgerExecutionManager:
                     self.vector_dim
                 )
             )
+
             faiss.write_index(
                 self.action_memory_logs_index,
                 self.action_memory_logs_index_path
@@ -129,12 +144,16 @@ class VoidForgerExecutionManager:
                     self.vector_dim
                 )
             )
+
             faiss.write_index(
                 self.auto_execution_logs_index,
                 self.auto_execution_logs_index_path
             )
 
-    def _generate_query_embedding(self, query: str) -> List[float]:
+    def _generate_query_embedding(
+        self,
+        query: str
+    ) -> List[float]:
 
         c = OpenAIGPTClientManager.get_naked_client(
             llm_model=self.llm_model
@@ -147,17 +166,23 @@ class VoidForgerExecutionManager:
 
         return response.data[0].embedding
 
-    def run_cycle(self, trigger):
+    def run_cycle(
+        self,
+        trigger
+    ):
 
         # If paused, do not run.
+
         if self.voidforger.runtime_status == VoidForgerRuntimeStatusesNames.PAUSED:
             error = "VoidForger is paused, cannot run."
             logger.error(error)
+
             return error
 
         # Convert to running state.
         self.voidforger.runtime_status = VoidForgerRuntimeStatusesNames.WORKING
         self.voidforger.last_auto_execution_started_at = timezone.now()
+
         self.voidforger.save()
 
         try:
@@ -169,7 +194,9 @@ class VoidForgerExecutionManager:
                 chat_source=SourcesForMultimodalChatsNames.ORCHESTRATION
             )
 
-            for current_action_index in range(self.voidforger.maximum_actions_per_cycle):
+            for current_action_index in range(
+                self.voidforger.maximum_actions_per_cycle
+            ):
 
                 try:
                     user_message = MultimodalVoidForgerChatMessage.objects.create(
@@ -232,24 +259,31 @@ class VoidForgerExecutionManager:
         except Exception as e:
             error = f"Error while processing execution cycle(s): " + str(e)
             logger.error(error)
+
             self.voidforger.runtime_status = VoidForgerRuntimeStatusesNames.ACTIVE
             self.voidforger.last_auto_execution_ended_at = timezone.now()
+
             self.voidforger.save()
+
             return error
 
         # Convert to active state.
         self.voidforger.runtime_status = VoidForgerRuntimeStatusesNames.ACTIVE
         self.voidforger.last_auto_execution_ended_at = timezone.now()
+
         self.voidforger.save()
 
         # Check the runtime cycle, and stop if it exceeds the maximum lifetime cycles.
         self.voidforger.auto_run_current_cycle += 1
+
         self.voidforger.save()
+
         if self.voidforger.auto_run_current_cycle >= self.voidforger.auto_run_max_lifetime_cycles:
             self.voidforger.auto_run_current_cycle = 0
             self.voidforger.runtime_status = VoidForgerRuntimeStatusesNames.PAUSED
             self.voidforger.last_auto_execution_started_at = None
             self.voidforger.last_auto_execution_ended_at = None
+
             self.voidforger.save()
 
             VoidForgerToggleAutoExecutionLog.objects.create(
@@ -259,6 +293,7 @@ class VoidForgerExecutionManager:
             )
 
             info_msg = "Auto Execution has ended due to reaching the maximum cycle count."
+
             logger.info(info_msg)
 
         return None
@@ -309,19 +344,24 @@ class VoidForgerExecutionManager:
         results = []
 
         for item_id, distance in zip(ids[0], distances[0]):
+
             if item_id == -1:
                 continue
+
             try:
-                instance = VoidForgerOldChatMessagesVectorData.objects.get(id=item_id)
-                results.append({
-                    "id": instance.id,
-                    "data": instance.raw_data,
-                    "distance": distance,
-                })
+                instance = VoidForgerOldChatMessagesVectorData.objects.get(
+                    id=item_id
+                )
+
+                results.append(
+                    {
+                        "id": instance.id,
+                        "data": instance.raw_data,
+                        "distance": distance,
+                    }
+                )
 
             except VoidForgerOldChatMessagesVectorData.DoesNotExist:
-                print(
-                    f"Warning: VoidForgerOldChatMessagesVectorData Instance with ID {item_id} not found in the vector database.")
                 logger.error(
                     f"VoidForgerOldChatMessagesVectorData Instance with ID {item_id} not found in the vector database.")
 
@@ -343,25 +383,35 @@ class VoidForgerExecutionManager:
         if self.action_memory_logs_index is None:
             raise ValueError("[search_action_history_logs] FAISS index not initialized or loaded properly.")
 
-        distances, ids = self.action_memory_logs_index.search(query_vector, n_results)
+        distances, ids = self.action_memory_logs_index.search(
+            query_vector,
+            n_results
+        )
+
         results = []
 
-        for item_id, distance in zip(ids[0], distances[0]):
+        for item_id, distance in zip(
+            ids[0],
+            distances[0]
+        ):
 
             if item_id == -1:
                 continue
 
             try:
-                instance = VoidForgerActionMemoryVectorData.objects.get(id=item_id)
-                results.append({
-                    "id": instance.id,
-                    "data": instance.raw_data,
-                    "distance": distance,
-                })
+                instance = VoidForgerActionMemoryVectorData.objects.get(
+                    id=item_id
+                )
+
+                results.append(
+                    {
+                        "id": instance.id,
+                        "data": instance.raw_data,
+                        "distance": distance,
+                    }
+                )
 
             except VoidForgerActionMemoryVectorData.DoesNotExist:
-                print(
-                    f"Warning: VoidForgerActionMemoryVectorData Instance with ID {item_id} not found in the vector database.")
                 logger.error(
                     f"VoidForgerActionMemoryVectorData Instance with ID {item_id} not found in the vector database.")
 
@@ -383,24 +433,35 @@ class VoidForgerExecutionManager:
         if self.auto_execution_logs_index is None:
             raise ValueError("[search_auto_execution_logs] FAISS index not initialized or loaded properly.")
 
-        distances, ids = self.auto_execution_logs_index.search(query_vector, n_results)
+        distances, ids = self.auto_execution_logs_index.search(
+            query_vector,
+            n_results
+        )
+
         results = []
 
-        for item_id, distance in zip(ids[0], distances[0]):
+        for item_id, distance in zip(
+            ids[0],
+            distances[0]
+        ):
+
             if item_id == -1:
                 continue
 
             try:
-                instance = VoidForgerAutoExecutionMemoryVectorData.objects.get(id=item_id)
-                results.append({
-                    "id": instance.id,
-                    "data": instance.raw_data,
-                    "distance": distance,
-                })
+                instance = VoidForgerAutoExecutionMemoryVectorData.objects.get(
+                    id=item_id
+                )
+
+                results.append(
+                    {
+                        "id": instance.id,
+                        "data": instance.raw_data,
+                        "distance": distance,
+                    }
+                )
 
             except VoidForgerAutoExecutionMemoryVectorData.DoesNotExist:
-                print(
-                    f"Warning: VoidForgerAutoExecutionMemoryVectorData Instance with ID {item_id} not found in the vector database.")
                 logger.error(
                     f"VoidForgerAutoExecutionMemoryVectorData Instance with ID {item_id} not found in the vector database.")
 

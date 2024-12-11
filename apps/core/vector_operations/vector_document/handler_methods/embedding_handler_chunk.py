@@ -34,18 +34,30 @@ def factory_chunk_orm_build(
     path: str,
     chunk_index: int
 ):
-    from apps.datasource_knowledge_base.models import KnowledgeBaseDocumentChunk
-    from apps.datasource_knowledge_base.models import KnowledgeBaseDocument
+    from apps.datasource_knowledge_base.models import (
+        KnowledgeBaseDocumentChunk
+    )
+
+    from apps.datasource_knowledge_base.models import (
+        KnowledgeBaseDocument
+    )
+
     _id, error = None, None
 
     try:
         chunk_vector_store = knowledge_base
-        chunk_doc = KnowledgeBaseDocument.objects.filter(id=document_id).first()
+
+        chunk_doc = KnowledgeBaseDocument.objects.filter(
+            id=document_id
+        ).first()
+
         chunk_doc_uuid = document_uuid
         chunk_doc_type = path.split(".")[-1]
         chunk_no = chunk_index
+
         chunk_ingredient = chunk["page_content"]
         chunk_metadata = chunk["metadata"]
+
         chunk_doc_uri = path
 
         chunk_orm_object = KnowledgeBaseDocumentChunk.objects.create(
@@ -58,7 +70,9 @@ def factory_chunk_orm_build(
             document=chunk_doc,
             document_uuid=chunk_doc_uuid
         )
+
         _id = chunk_orm_object.id
+
         logger.info(f"Chunk ORM object created with id: {_id}")
 
     except Exception as e:
@@ -78,8 +92,10 @@ def factory_chunk_weaviate_build(
 
     try:
         weaviate_chunk_doc_file_name = str(path)
+
         weaviate_chunk_doc_type = path.split(".")[-1]
         weaviate_chunk_no = chunk_index
+
         weaviate_chunk_ingredient = chunk["page_content"]
 
         weaviate_chunk_metadata = json.dumps(
@@ -99,6 +115,7 @@ def factory_chunk_weaviate_build(
             "chunk_metadata": weaviate_chunk_metadata,
             "created_at": weaviate_chunk_created_at
         }
+
         logger.info(f"Chunk Weaviate object instance created.")
 
     except Exception as e:

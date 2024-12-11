@@ -19,7 +19,10 @@
 from datetime import datetime
 
 
-def build_structured_place_and_time_prompt_harmoniq(organization_data: dict, user_data: dict):
+def build_structured_place_and_time_prompt_harmoniq(
+    organization_data: dict,
+    user_data: dict
+):
     response_prompt = f"""
 
             ### **YOUR ORGANIZATION:**
@@ -68,4 +71,5 @@ def build_structured_place_and_time_prompt_harmoniq(organization_data: dict, use
             """
 
     response_prompt += current_time
+
     return response_prompt

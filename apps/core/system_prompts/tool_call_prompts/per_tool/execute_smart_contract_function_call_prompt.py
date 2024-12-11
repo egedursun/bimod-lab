@@ -15,7 +15,10 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-from apps.core.tool_calls.utils import ToolCallDescriptorNames
+from apps.core.tool_calls.utils import (
+    ToolCallDescriptorNames
+)
+
 from config.settings import MEDIA_URL
 
 
@@ -102,4 +105,5 @@ def build_tool_prompt__smart_contract_function_call():
             ---
 
         """
+
     return response_prompt

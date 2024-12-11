@@ -15,7 +15,9 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-from apps.core.tool_calls.utils import ToolCallDescriptorNames
+from apps.core.tool_calls.utils import (
+    ToolCallDescriptorNames
+)
 
 
 def build_tool_prompt__website_data_search():
@@ -77,4 +79,5 @@ def build_tool_prompt__website_data_search():
             - You are expected to take in this response, and use it to provide answer to user's question.
 
     """
+
     return response_prompt

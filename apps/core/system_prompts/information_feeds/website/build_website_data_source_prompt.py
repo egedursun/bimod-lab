@@ -101,8 +101,6 @@ def build_website_data_source_prompt(assistant: Assistant):
 def build_semantor_website_data_source_prompt(temporary_sources: dict):
     website_data_sources = temporary_sources.get("data_sources").get("website_storages")
 
-    print(website_data_sources)
-
     response_prompt = """
             ### **WEBSITE STORAGE CONNECTIONS:**
 

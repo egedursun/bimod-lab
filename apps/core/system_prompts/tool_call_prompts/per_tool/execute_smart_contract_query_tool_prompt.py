@@ -15,7 +15,9 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-from apps.core.tool_calls.utils import ToolCallDescriptorNames
+from apps.core.tool_calls.utils import (
+    ToolCallDescriptorNames
+)
 
 from apps.smart_contracts.utils import (
     SmartContractCategoriesNames,
@@ -119,4 +121,5 @@ def build_tool_prompt__execute_smart_contract_generation_query():
             ---
 
         """
+
     return response_prompt

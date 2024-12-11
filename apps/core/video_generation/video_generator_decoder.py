@@ -25,7 +25,9 @@ from apps.core.video_generation.video_generation_executor import (
     VideoGenerationExecutor
 )
 
-from apps.video_generations.models import VideoGeneratorConnection
+from apps.video_generations.models import (
+    VideoGeneratorConnection
+)
 
 logger = logging.getLogger(__name__)
 
@@ -42,16 +44,18 @@ class VideoGeneratorDecoder:
             connection: VideoGeneratorConnection = VideoGeneratorConnection.objects.get(
                 id=connection_id
             )
+
             logger.info(f"Using {connection.provider} as the video generator system")
 
         except VideoGeneratorConnection.DoesNotExist:
 
             logger.error(f"Connection with id {connection_id} does not exist")
+
             return None
 
         if connection.provider == VideoGeneratorProviderTypesNames.LUMA_AI:
-
             logger.info("Using Luma AI as the video generator system")
+
             return VideoGenerationExecutor(
                 connection=connection
             )

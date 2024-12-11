@@ -22,8 +22,10 @@ from apps.core.reasoning.reasoning_executor import (
 )
 
 from apps.assistants.models import Assistant
-from apps.multimodal_chat.models import MultimodalChat
 
+from apps.multimodal_chat.models import (
+    MultimodalChat
+)
 
 logger = logging.getLogger(__name__)
 
@@ -33,7 +35,6 @@ def run_process_reasoning(
     chat_id,
     reasoning_query
 ):
-
     agent = Assistant.objects.get(
         id=agent_id
     )
@@ -55,7 +56,9 @@ def run_process_reasoning(
 
     except Exception as e:
         logger.error(f"Error occurred while processing the reasoning: {e}")
+
         return f"Failed to process the reasoning. The cause of the error is as follows: {str(e)}"
 
     logger.info(f"Reasoning output: {output}")
+
     return output

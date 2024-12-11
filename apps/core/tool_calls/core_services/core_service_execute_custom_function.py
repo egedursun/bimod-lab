@@ -17,8 +17,13 @@
 
 import logging
 
-from apps.core.flexible_modalities.custom_function_executor import CustomFunctionExecutor
-from apps.mm_functions.models import CustomFunctionReference
+from apps.core.flexible_modalities.custom_function_executor import (
+    CustomFunctionExecutor
+)
+
+from apps.mm_functions.models import (
+    CustomFunctionReference
+)
 
 logger = logging.getLogger(__name__)
 
@@ -39,12 +44,16 @@ def run_execute_custom_code(
             context_assistant=ref.assistant
         )
 
-        output = xc.execute_custom_function(input_data=function_input_values)
+        output = xc.execute_custom_function(
+            input_data=function_input_values
+        )
+
         logger.info(f"Custom function execution output: {output}")
 
     except Exception as e:
         logger.error(f"Error occurred while executing the function: {e}")
         error_msg = f"Error occurred while executing the function: {str(e)}"
+
         return error_msg
 
     return output

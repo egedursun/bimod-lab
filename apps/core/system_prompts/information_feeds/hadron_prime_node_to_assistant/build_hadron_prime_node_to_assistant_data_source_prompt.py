@@ -16,11 +16,17 @@
 #
 
 from apps.assistants.models import Assistant
-from apps.hadron_prime.models import HadronNodeAssistantConnection
+
+from apps.hadron_prime.models import (
+    HadronNodeAssistantConnection
+)
 
 
 def build_hadron_prime_node_to_assistant_data_source_prompt(assistant: Assistant):
-    node_to_assistant_data_sources = HadronNodeAssistantConnection.objects.filter(assistant=assistant)
+    node_to_assistant_data_sources = HadronNodeAssistantConnection.objects.filter(
+        assistant=assistant
+    )
+
     response_prompt = """
             ### **HADRON PRIME NODE CONNECTIONS:**
 
@@ -29,6 +35,7 @@ def build_hadron_prime_node_to_assistant_data_source_prompt(assistant: Assistant
 
     for i, node_info_feed in enumerate(node_to_assistant_data_sources):
         conn: HadronNodeAssistantConnection = node_info_feed
+
         response_prompt += f"""
                 [Connection ID: {conn.id}]
                     [Hadron Node Name: {conn.hadron_prime_node.node_name}]
@@ -51,7 +58,9 @@ def build_hadron_prime_node_to_assistant_data_source_prompt(assistant: Assistant
     return response_prompt
 
 
-def build_semantor_hadron_prime_node_to_assistant_data_source_prompt(temporary_sources: dict):
+def build_semantor_hadron_prime_node_to_assistant_data_source_prompt(
+    temporary_sources: dict
+):
     node_to_assistant_data_sources = temporary_sources.get("data_sources").get("hadron_node_connections")
 
     response_prompt = """
@@ -62,6 +71,7 @@ def build_semantor_hadron_prime_node_to_assistant_data_source_prompt(temporary_s
 
     for i, node_info_feed in enumerate(node_to_assistant_data_sources):
         conn: HadronNodeAssistantConnection = node_info_feed
+
         response_prompt += f"""
                 [Connection ID: {conn.id}]
                     [Hadron Node Name: {conn.hadron_prime_node.node_name}]
@@ -100,4 +110,5 @@ def build_lean_hadron_prime_node_to_assistant_data_source_prompt():
 
             ---
             """
+
     return response_prompt

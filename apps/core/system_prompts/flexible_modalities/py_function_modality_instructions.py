@@ -17,11 +17,17 @@
 
 
 from apps.assistants.models import Assistant
-from apps.mm_functions.models import CustomFunctionReference
+
+from apps.mm_functions.models import (
+    CustomFunctionReference
+)
 
 
 def build_functions_multi_modality_prompt(assistant: Assistant):
-    custom_function_refs = CustomFunctionReference.objects.filter(assistant=assistant)
+    custom_function_refs = CustomFunctionReference.objects.filter(
+        assistant=assistant
+    )
+
     response_prompt = """
             ### **CUSTOM FUNCTIONS:**
 
@@ -30,6 +36,7 @@ def build_functions_multi_modality_prompt(assistant: Assistant):
 
     for i, func_ref in enumerate(custom_function_refs):
         custom_function = func_ref.custom_function
+
         response_prompt += f"""
                 [Custom Function Reference ID: {func_ref.id}]
                     Function Name: {custom_function.name}
@@ -91,7 +98,9 @@ def build_functions_multi_modality_prompt(assistant: Assistant):
     return response_prompt
 
 
-def build_semantor_functions_multi_modality_prompt(temporary_sources: dict):
+def build_semantor_functions_multi_modality_prompt(
+    temporary_sources: dict
+):
     custom_function_refs = temporary_sources.get("tools").get("functions")
 
     response_prompt = """
@@ -102,6 +111,7 @@ def build_semantor_functions_multi_modality_prompt(temporary_sources: dict):
 
     for i, func_ref in enumerate(custom_function_refs):
         custom_function = func_ref.custom_function
+
         response_prompt += f"""
                 [Custom Function Reference ID: {func_ref.id}]
                     Function Name: {custom_function.name}
@@ -164,7 +174,6 @@ def build_semantor_functions_multi_modality_prompt(temporary_sources: dict):
 
 
 def build_lean_functions_multi_modality_prompt():
-    # Build the prompt
     response_prompt = """
             **CUSTOM FUNCTIONS:**
 
@@ -215,4 +224,5 @@ def build_lean_functions_multi_modality_prompt():
 
             ---
     """
+
     return response_prompt

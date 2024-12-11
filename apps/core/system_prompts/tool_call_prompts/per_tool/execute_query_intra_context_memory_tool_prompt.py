@@ -15,7 +15,9 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-from apps.core.tool_calls.utils import ToolCallDescriptorNames
+from apps.core.tool_calls.utils import (
+    ToolCallDescriptorNames
+)
 
 
 def build_tool_prompt__intra_context_memory():
@@ -60,4 +62,5 @@ def build_tool_prompt__intra_context_memory():
             accurate response to user's questions.
 
     """
+
     return response_prompt

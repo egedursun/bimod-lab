@@ -17,11 +17,18 @@
 
 
 from apps.assistants.models import Assistant
-from apps.datasource_nosql.models import NoSQLDatabaseConnection, CustomNoSQLQuery
+
+from apps.datasource_nosql.models import (
+    NoSQLDatabaseConnection,
+    CustomNoSQLQuery
+)
 
 
 def build_nosql_data_source_prompt(assistant: Assistant):
-    nosql_data_sources = NoSQLDatabaseConnection.objects.filter(assistant=assistant)
+    nosql_data_sources = NoSQLDatabaseConnection.objects.filter(
+        assistant=assistant
+    )
+
     response_prompt = """
         ### **NO-SQL DATABASE CONNECTIONS:**
 
@@ -30,7 +37,9 @@ def build_nosql_data_source_prompt(assistant: Assistant):
 
     for i, nosql_data_source in enumerate(nosql_data_sources):
         nosql_data_source: NoSQLDatabaseConnection
+
         custom_queries_of_datasource = nosql_data_source.custom_queries.all()
+
         response_prompt += f"""
         [NoSQL Data Source ID: {nosql_data_source.id}]
             NoSQL DBMS Type: {nosql_data_source.nosql_db_type}
@@ -60,6 +69,7 @@ def build_nosql_data_source_prompt(assistant: Assistant):
 
         for j, custom_query in enumerate(custom_queries_of_datasource):
             custom_query: CustomNoSQLQuery
+
             response_prompt += f"""
             [Custom NoSQL Query ID: {custom_query.id}]
                 NoSQL Query Data Source ID: {custom_query.database_connection.id}
@@ -109,7 +119,9 @@ def build_semantor_nosql_data_source_prompt(temporary_sources: dict):
 
     for i, nosql_data_source in enumerate(nosql_data_sources):
         nosql_data_source: NoSQLDatabaseConnection
+
         custom_queries_of_datasource = nosql_data_source.custom_queries.all()
+
         response_prompt += f"""
         [NoSQL Data Source ID: {nosql_data_source.id}]
             NoSQL DBMS Type: {nosql_data_source.nosql_db_type}
@@ -141,6 +153,7 @@ def build_semantor_nosql_data_source_prompt(temporary_sources: dict):
 
         for j, custom_query in enumerate(custom_queries_of_datasource):
             custom_query: CustomNoSQLQuery
+
             response_prompt += f"""
             [Custom NoSQL Query ID: {custom_query.id}]
                 NoSQL Query Data Source ID: {custom_query.database_connection.id}

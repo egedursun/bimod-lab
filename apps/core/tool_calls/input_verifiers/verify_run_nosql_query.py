@@ -16,7 +16,9 @@
 #
 
 
-from apps.datasource_nosql.models import NoSQLDatabaseConnection
+from apps.datasource_nosql.models import (
+    NoSQLDatabaseConnection
+)
 
 
 def verify_run_nosql_query_content(content: dict):

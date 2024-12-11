@@ -19,7 +19,10 @@ import json
 import logging
 
 from apps.assistants.models import Assistant
-from apps.mm_triggered_jobs.models import TriggeredJobInstance
+
+from apps.mm_triggered_jobs.models import (
+    TriggeredJobInstance
+)
 
 logger = logging.getLogger(__name__)
 
@@ -27,7 +30,6 @@ logger = logging.getLogger(__name__)
 def run_query_execute_triggered_job_logs(
     assistant: Assistant
 ):
-
     try:
 
         job_execution_logs = TriggeredJobInstance.objects.filter(
@@ -40,6 +42,7 @@ def run_query_execute_triggered_job_logs(
 
         for log in job_execution_logs:
             log: TriggeredJobInstance
+
             formatted_result.append(
                 {
                     'status': log.status,
@@ -50,11 +53,13 @@ def run_query_execute_triggered_job_logs(
                     'ended_at': log.ended_at.strftime('%Y-%m-%d %H:%M:%S') if log.ended_at else "N/A",
                 }
             )
+
         output = json.dumps(formatted_result)
 
     except Exception as e:
         logger.error(f"Error occurred while running the Triggered Job Logs query: {e}")
         error = f"There has been an unexpected error on running the Triggered Job Logs query: {e}"
+
         return error
 
     return output

@@ -17,11 +17,17 @@
 
 
 from apps.assistants.models import Assistant
-from apps.datasource_knowledge_base.models import DocumentKnowledgeBaseConnection
+
+from apps.datasource_knowledge_base.models import (
+    DocumentKnowledgeBaseConnection
+)
 
 
 def build_vector_store_data_source_prompt(assistant: Assistant):
-    knowledge_base_data_sources = DocumentKnowledgeBaseConnection.objects.filter(assistant=assistant)
+    knowledge_base_data_sources = DocumentKnowledgeBaseConnection.objects.filter(
+        assistant=assistant
+    )
+
     response_prompt = """
             ### **KNOWLEDGE BASE CONNECTIONS:**
 
@@ -30,6 +36,7 @@ def build_vector_store_data_source_prompt(assistant: Assistant):
 
     for i, knowledge_base_data_source in enumerate(knowledge_base_data_sources):
         kb: DocumentKnowledgeBaseConnection = knowledge_base_data_source
+
         response_prompt += f"""
                 [Knowledge Base Data Source ID: {kb.id}]
                     System Provider: {kb.provider}
@@ -79,6 +86,7 @@ def build_semantor_vector_store_data_source_prompt(temporary_sources: dict):
 
     for i, knowledge_base_data_source in enumerate(knowledge_base_data_sources):
         kb: DocumentKnowledgeBaseConnection = knowledge_base_data_source
+
         response_prompt += f"""
                 [Knowledge Base Data Source ID: {kb.id}]
                     System Provider: {kb.provider}

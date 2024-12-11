@@ -19,18 +19,21 @@ import logging
 
 import requests
 
-from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
+from apps.core.internal_cost_manager.costs_map import (
+    InternalServiceCosts
+)
 
 from apps.core.visual_client.utils import (
     generator_save_images_and_return_uris
 )
 
 from apps.llm_transaction.models import LLMTransaction
-from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
 
+from apps.llm_transaction.utils import (
+    LLMTransactionSourcesTypesNames
+)
 
 logger = logging.getLogger(__name__)
-
 
 
 class GeneratorManager:
@@ -49,19 +52,29 @@ class GeneratorManager:
         quality
     ):
 
-        from apps.core.generative_ai.auxiliary_clients.auxiliary_llm_visual_client import AuxiliaryLLMVisualClient
-        from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE
-        from apps.core.generative_ai.utils import ChatRoles
+        from apps.core.generative_ai.auxiliary_clients.auxiliary_llm_visual_client import (
+            AuxiliaryLLMVisualClient
+        )
+
+        from apps.core.generative_ai.utils import (
+            GPT_DEFAULT_ENCODING_ENGINE
+        )
+
+        from apps.core.generative_ai.utils import (
+            ChatRoles
+        )
 
         try:
             llm_c = AuxiliaryLLMVisualClient(
                 assistant=self.assistant,
                 chat_object=self.chat
             )
+
             logger.info("LLM Visual Client initialized.")
 
         except Exception as e:
             logger.error(f"Error occurred while initializing the LLM Visual Client: {e}")
+
             return None
 
         try:
@@ -73,11 +86,13 @@ class GeneratorManager:
 
             if llm_output["success"] is False:
                 logger.error(f"Error occurred while generating the image: {llm_output['message']}")
+
                 return llm_output
 
         except Exception as e:
 
             logger.error(f"Error occurred while generating the image: {e}")
+
             return {
                 "success": False,
                 "message": "Error occurred on generation.",
@@ -89,11 +104,15 @@ class GeneratorManager:
             img_llm_uri = llm_output["image_url"]
 
             try:
-                img_data = requests.get(img_llm_uri).content
+                img_data = requests.get(
+                    img_llm_uri
+                ).content
+
                 logger.info(f"Image downloaded from: {img_llm_uri}")
 
             except Exception as e:
                 logger.error(f"Error occurred while downloading the image: {e}")
+
                 return {
                     "success": False,
                     "message": "Error occurred on download.",
@@ -112,12 +131,15 @@ class GeneratorManager:
                     transaction_source=LLMTransactionSourcesTypesNames.GENERATE_IMAGE,
                     is_tool_cost=True
                 )
+
                 tx.save()
+
                 logger.info(f"LLM transaction saved successfully.")
 
             except Exception as e:
 
                 logger.error(f"Error occurred while saving the transaction: {e}")
+
                 return {
                     "success": False,
                     "message": "Error occurred on transaction saving.",
@@ -125,9 +147,14 @@ class GeneratorManager:
                 }
 
             if img_data:
-
                 logger.info(f"Image data found.")
-                image_uri = generator_save_images_and_return_uris([img_data])[0]
+
+                image_uri = generator_save_images_and_return_uris(
+                    [
+                        img_data
+                    ]
+                )[0]
+
                 return {
                     "success": True,
                     "message": "",
@@ -135,9 +162,9 @@ class GeneratorManager:
                 }
 
         logger.error(f"Image data not found.")
+
         return {
             "success": False,
             "message": "Error occurred on download.",
             "image_url": None
         }
-

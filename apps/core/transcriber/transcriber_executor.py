@@ -25,7 +25,9 @@ from vosk import (
     KaldiRecognizer
 )
 
-from config.settings import VOSK_MODEL_PATH
+from config.settings import (
+    VOSK_MODEL_PATH
+)
 
 logger = logging.getLogger(__name__)
 
@@ -45,15 +47,25 @@ class TranscriberExecutionManager:
 
         transcription, error = "N/A", None
 
-        # audio_data is a WAV file in bytes
         try:
 
-            audio_stream = io.BytesIO(audio_data)
-            with wave.open(audio_stream, "rb") as wf:
+            audio_stream = io.BytesIO(
+                audio_data
+            )
 
-                if wf.getnchannels() != 1 or wf.getsampwidth() != 2 or wf.getcomptype() != "NONE":
+            with wave.open(
+                audio_stream,
+                "rb"
+            ) as wf:
+
+                if (
+                    wf.getnchannels() != 1 or
+                    wf.getsampwidth() != 2 or
+                    wf.getcomptype() != "NONE"
+                ):
                     error = "Audio file must be WAV format mono PCM."
                     logger.error(error)
+
                     return transcription, error
 
                 recognizer = KaldiRecognizer(
@@ -73,12 +85,21 @@ class TranscriberExecutionManager:
                         result = recognizer.Result()
                         transcription.append(json.loads(result).get("text", ""))
 
-                transcription.append(json.loads(recognizer.FinalResult()).get("text", ""))
+                transcription.append(
+                    json.loads(
+                        recognizer.FinalResult()
+                    ).get(
+                        "text",
+                        ""
+                    )
+                )
 
         except Exception as e:
             logger.error(f"Failed to transcribe audio. Error: {e}")
             error = str(e)
+
             return "N/A", error
 
         final_transcription = " ".join(transcription)
+
         return final_transcription, None

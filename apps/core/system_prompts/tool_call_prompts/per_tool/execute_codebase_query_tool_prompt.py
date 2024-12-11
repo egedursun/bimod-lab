@@ -16,7 +16,9 @@
 #
 
 
-from apps.core.tool_calls.utils import ToolCallDescriptorNames
+from apps.core.tool_calls.utils import (
+    ToolCallDescriptorNames
+)
 
 
 def build_tool_prompt__execute_codebase_query():
@@ -74,4 +76,5 @@ def build_tool_prompt__execute_codebase_query():
             ---
 
         """
+
     return response_prompt

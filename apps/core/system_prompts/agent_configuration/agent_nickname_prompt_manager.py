@@ -15,7 +15,10 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-def build_agent_nickname_prompt(name: str, chat_name: str):
+def build_agent_nickname_prompt(
+    name: str,
+    chat_name: str
+):
     return f"""
         ### **YOUR NAME:**
 

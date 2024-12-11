@@ -16,11 +16,17 @@
 #
 
 from apps.assistants.models import Assistant
-from apps.metakanban.models import MetaKanbanAssistantConnection
+
+from apps.metakanban.models import (
+    MetaKanbanAssistantConnection
+)
 
 
 def build_metakanban_to_assistant_data_source_prompt(assistant: Assistant):
-    metakanban_to_assistant_data_sources = MetaKanbanAssistantConnection.objects.filter(assistant=assistant)
+    metakanban_to_assistant_data_sources = MetaKanbanAssistantConnection.objects.filter(
+        assistant=assistant
+    )
+
     response_prompt = """
             ### **METAKANBAN BOARD CONNECTIONS:**
 
@@ -29,6 +35,7 @@ def build_metakanban_to_assistant_data_source_prompt(assistant: Assistant):
 
     for i, info_feed in enumerate(metakanban_to_assistant_data_sources):
         conn: MetaKanbanAssistantConnection = info_feed
+
         response_prompt += f"""
                 [Connection ID: {conn.id}]
                     [MetaKanban Board Name: {conn.metakanban_board.title}]
@@ -64,6 +71,7 @@ def build_semantor_metakanban_to_assistant_data_source_prompt(temporary_sources:
 
     for i, info_feed in enumerate(metakanban_to_assistant_data_sources):
         conn: MetaKanbanAssistantConnection = info_feed
+
         response_prompt += f"""
                 [Connection ID: {conn.id}]
                     [MetaKanban Board Name: {conn.metakanban_board.title}]

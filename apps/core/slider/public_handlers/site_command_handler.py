@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import json
 import logging
 
@@ -22,7 +23,9 @@ from apps.core.generative_ai.utils import (
     GPT_DEFAULT_ENCODING_ENGINE
 )
 
-from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
+from apps.core.internal_cost_manager.costs_map import (
+    InternalServiceCosts
+)
 
 from apps.core.slider.utils import (
     find_tool_call_from_json,
@@ -32,7 +35,9 @@ from apps.core.tool_calls.input_verifiers.verify_website_data_search import (
     verify_website_data_search_content
 )
 
-from apps.llm_transaction.models import LLMTransaction
+from apps.llm_transaction.models import (
+    LLMTransaction
+)
 
 from apps.llm_transaction.utils import (
     LLMTransactionSourcesTypesNames
@@ -46,7 +51,9 @@ def handle_repo_command_public(
     command: str,
     content: str
 ):
-    from apps.core.slider.slider_executor_public import SliderExecutionManager_Public
+    from apps.core.slider.slider_executor_public import (
+        SliderExecutionManager_Public
+    )
 
     from apps.core.slider.prompt_builders import (
         build_site_command_system_prompt_public
@@ -70,6 +77,7 @@ def handle_repo_command_public(
             transaction_type=ChatRoles.USER,
             transaction_source=LLMTransactionSourcesTypesNames.SLIDER
         )
+
         logger.info(f"[handle_ai_command] Created LLMTransaction for user command: {command}")
 
     except Exception as e:
@@ -77,11 +85,13 @@ def handle_repo_command_public(
         pass
 
     output, error = None, None
+
     system_prompt = build_site_command_system_prompt_public(
         xc=xc,
         user_query=command,
         content=content
     )
+
     client = xc.naked_c
 
     try:
@@ -100,6 +110,7 @@ def handle_repo_command_public(
             transaction_type=ChatRoles.SYSTEM,
             transaction_source=LLMTransactionSourcesTypesNames.SLIDER
         )
+
         logger.info(f"[handle_ai_command] Created LLMTransaction for system prompt.")
 
     except Exception as e:
@@ -124,8 +135,10 @@ def handle_repo_command_public(
 
         choices = llm_response.choices
         first_choice = choices[0]
+
         choice_message = first_choice.message
         choice_message_content = choice_message.content
+
         logger.info(f"[handle_ai_command] Generated AI response.")
 
         try:
@@ -144,6 +157,7 @@ def handle_repo_command_public(
                 transaction_type=ChatRoles.ASSISTANT,
                 transaction_source=LLMTransactionSourcesTypesNames.SLIDER
             )
+
             logger.info(f"[handle_ai_command] Created LLMTransaction for AI response.")
 
         except Exception as e:
@@ -153,6 +167,7 @@ def handle_repo_command_public(
     except Exception as e:
         error = f"[handle_ai_command] Error executing VECTOR command: {command}. Error: {e}"
         logger.error(error)
+
         return output, error
 
     # TOOL USAGE IDENTIFICATION
@@ -164,19 +179,25 @@ def handle_repo_command_public(
         tool_counter < SLIDER_TOOL_CALL_MAXIMUM_ATTEMPTS
     ):
         tool_counter += 1
-        tool_requests_dicts = find_tool_call_from_json(choice_message_content)
+
+        tool_requests_dicts = find_tool_call_from_json(
+            choice_message_content
+        )
 
         if len(tool_requests_dicts) > 0:
             for tool_req_dict in tool_requests_dicts:
 
                 defined_tool_descriptor = tool_req_dict.get("tool", "")
+
                 output_tool_call = f"""
                         Tool Response: {defined_tool_descriptor}
 
                         '''
                     """
 
-                error = verify_website_data_search_content(content=tool_req_dict)
+                error = verify_website_data_search_content(
+                    content=tool_req_dict
+                )
 
                 if error:
                     logger.error(error)
@@ -190,10 +211,14 @@ def handle_repo_command_public(
                 output_tool_call += """
                         '''
                     """
-                context_messages.append({
-                    "content": output_tool_call,
-                    "role": "system"
-                })
+
+                context_messages.append(
+                    {
+                        "content": output_tool_call,
+                        "role": "system"
+                    }
+                )
+
         try:
             llm_response = client.chat.completions.create(
                 model=xc.copilot_llm.model_name,
@@ -207,8 +232,10 @@ def handle_repo_command_public(
 
             choices = llm_response.choices
             first_choice = choices[0]
+
             choice_message = first_choice.message
             choice_message_content = choice_message.content
+
             logger.info(f"[handle_ai_command] Generated AI response.")
 
             try:
@@ -235,12 +262,14 @@ def handle_repo_command_public(
         except Exception as e:
             logger.error(f"[handle_ai_command] Error executing VECTOR command: {command}. Error: {e}")
             error = f"[handle_ai_command] Error executing VECTOR command: {command}. Error: {e}"
+
             return output, error
 
     if tool_counter == SLIDER_TOOL_CALL_MAXIMUM_ATTEMPTS:
         error = (f"[handle_ai_command] Error executing VECTOR command: {command}. Error: Maximum tool call attempts "
                  f"reached.")
         logger.error(error)
+
         return output, error
 
     try:
@@ -255,7 +284,9 @@ def handle_repo_command_public(
             transaction_source=LLMTransactionSourcesTypesNames.SLIDER,
             is_tool_cost=True
         )
+
         tx.save()
+
         logger.info(f"[handle_ai_command] Created LLMTransaction for Slider.")
 
     except Exception as e:
@@ -263,6 +294,7 @@ def handle_repo_command_public(
         pass
 
     output = choice_message_content
+
     return output, error
 
 
@@ -292,6 +324,7 @@ def _handle_tool_website_data_search(
     )
 
     output_tool_call += output_str
+
     logger.info(f"Website data search response retrieved.")
 
     return output_tool_call

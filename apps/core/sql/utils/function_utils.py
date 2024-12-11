@@ -17,9 +17,13 @@
 
 import logging
 
-from apps.datasource_sql.models import SQLDatabaseConnection
-from apps.datasource_sql.utils import DBMSChoicesNames
+from apps.datasource_sql.models import (
+    SQLDatabaseConnection
+)
 
+from apps.datasource_sql.utils import (
+    DBMSChoicesNames
+)
 
 logger = logging.getLogger(__name__)
 
@@ -28,7 +32,9 @@ def before_execute_sql_query(
     connection: SQLDatabaseConnection
 ):
     logger.info(f"Retrieving schema for connection: {connection.name}")
+
     old_schema_json = connection.schema_data_json
+
     new_schema = {}
 
     if connection.dbms_type == DBMSChoicesNames.POSTGRESQL:
@@ -39,12 +45,13 @@ def before_execute_sql_query(
 
     if new_schema != old_schema_json:
         connection.schema_data_json = new_schema
+
         connection.save()
 
 
 def can_write_to_database(
     connection: SQLDatabaseConnection
 ):
-
     logger.info(f"Checking if the connection is read-only: {connection.name}")
+
     return not connection.is_read_only

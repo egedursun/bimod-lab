@@ -16,11 +16,17 @@
 #
 
 from apps.assistants.models import Assistant
-from apps.datasource_codebase.models import CodeRepositoryStorageConnection
+
+from apps.datasource_codebase.models import (
+    CodeRepositoryStorageConnection
+)
 
 
 def build_code_base_data_source_prompt(assistant: Assistant):
-    code_base_data_sources = CodeRepositoryStorageConnection.objects.filter(assistant=assistant)
+    code_base_data_sources = CodeRepositoryStorageConnection.objects.filter(
+        assistant=assistant
+    )
+
     response_prompt = """
             ### **CODE BASE STORAGE CONNECTIONS:**
 
@@ -29,6 +35,7 @@ def build_code_base_data_source_prompt(assistant: Assistant):
 
     for i, code_base_info_feed in enumerate(code_base_data_sources):
         kb: CodeRepositoryStorageConnection = code_base_info_feed
+
         response_prompt += f"""
                 [Code Base Storage ID: {kb.id}]
                     System Provider: {kb.provider}
@@ -78,6 +85,7 @@ def build_semantor_code_base_data_source_prompt(temporary_sources: dict):
 
     for i, code_base_info_feed in enumerate(code_base_data_sources):
         kb: CodeRepositoryStorageConnection = code_base_info_feed
+
         response_prompt += f"""
                 [Code Base Storage ID: {kb.id}]
                     System Provider: {kb.provider}

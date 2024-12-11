@@ -22,8 +22,13 @@ from apps.core.sql.sql_executor import (
     MySQLExecutor
 )
 
-from apps.core.sql.utils import SQL_DBMS_PROVIDERS
-from apps.datasource_sql.models import SQLDatabaseConnection
+from apps.core.sql.utils import (
+    SQL_DBMS_PROVIDERS
+)
+
+from apps.datasource_sql.models import (
+    SQLDatabaseConnection
+)
 
 logger = logging.getLogger(__name__)
 
@@ -36,12 +41,14 @@ class InternalSQLClient:
 
         if connection.dbms_type == SQL_DBMS_PROVIDERS["POSTGRESQL"]["code"]:
             logger.info(f"Creating PostgresSQLExecutor for connection: {connection.name}")
+
             return PostgresSQLExecutor(
                 connection
             )
 
         elif connection.dbms_type == SQL_DBMS_PROVIDERS["MYSQL"]["code"]:
             logger.info(f"Creating MySQLExecutor for connection: {connection.name}")
+
             return MySQLExecutor(
                 connection
             )

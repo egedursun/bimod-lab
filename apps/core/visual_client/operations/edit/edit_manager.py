@@ -19,14 +19,19 @@ import logging
 
 import requests
 
-from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
+from apps.core.internal_cost_manager.costs_map import (
+    InternalServiceCosts
+)
 
 from apps.core.visual_client.utils import (
     edit_save_images_and_return_uris
 )
 
 from apps.llm_transaction.models import LLMTransaction
-from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
+
+from apps.llm_transaction.utils import (
+    LLMTransactionSourcesTypesNames
+)
 
 logger = logging.getLogger(__name__)
 
@@ -48,9 +53,17 @@ class EditManager:
         image_size
     ):
 
-        from apps.core.generative_ai.auxiliary_clients.auxiliary_llm_visual_client import AuxiliaryLLMVisualClient
-        from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE
-        from apps.core.generative_ai.utils import ChatRoles
+        from apps.core.generative_ai.auxiliary_clients.auxiliary_llm_visual_client import (
+            AuxiliaryLLMVisualClient
+        )
+
+        from apps.core.generative_ai.utils import (
+            GPT_DEFAULT_ENCODING_ENGINE
+        )
+
+        from apps.core.generative_ai.utils import (
+            ChatRoles
+        )
 
         try:
 
@@ -58,10 +71,12 @@ class EditManager:
                 assistant=self.assistant,
                 chat_object=self.chat
             )
+
             logger.info("LLM Visual Client initialized.")
 
         except Exception as e:
             logger.error(f"Error occurred while initializing the LLM Visual Client: {e}")
+
             return None
 
         try:
@@ -74,11 +89,13 @@ class EditManager:
 
             if llm_output["success"] is False:
                 logger.error(f"Error occurred while generating the edit image: {llm_output['message']}")
+
                 return llm_output
 
         except Exception as e:
 
             logger.error(f"Error occurred while generating the edit image: {e}")
+
             return {
                 "success": False,
                 "message": "Error occurred while generating the edit image.",
@@ -86,15 +103,20 @@ class EditManager:
             }
 
         if llm_output["image_url"]:
+
             img_llm_uri = llm_output["image_url"]
 
             try:
-                img_data = requests.get(img_llm_uri).content
+                img_data = requests.get(
+                    img_llm_uri
+                ).content
+
                 logger.info(f"Image downloaded from: {img_llm_uri}")
 
             except Exception as e:
 
                 logger.error(f"Error occurred while downloading the edit image resulting file: {e}")
+
                 return {
                     "success": False,
                     "message": "Error occurred while downloading the edit image resulting file.",
@@ -113,7 +135,9 @@ class EditManager:
                     transaction_source=LLMTransactionSourcesTypesNames.MODIFY_IMAGE,
                     is_tool_cost=True
                 )
+
                 tx.save()
+
                 logger.info(f"LLM transaction saved successfully.")
 
             except Exception as e:
@@ -127,9 +151,14 @@ class EditManager:
 
             try:
                 if img_data:
-
                     logger.info("Saving the edit image.")
-                    image_uri = edit_save_images_and_return_uris([img_data])[0]
+
+                    image_uri = edit_save_images_and_return_uris(
+                        [
+                            img_data
+                        ]
+                    )[0]
+
                     return {
                         "success": True,
                         "message": "",
@@ -139,6 +168,7 @@ class EditManager:
             except Exception as e:
 
                 logger.error(f"Error occurred while saving the image: {e}")
+
                 return {
                     "success": False,
                     "message": "Error occurred on saving the image.",
@@ -146,6 +176,7 @@ class EditManager:
                 }
 
         logger.error("Error occurred while downloading the edit image.")
+
         return {
             "success": False,
             "message": "Error occurred on downloading the edit image.",

@@ -21,8 +21,9 @@ from apps.core.expert_networks.expert_network_executor import (
     ExpertNetworkExecutor
 )
 
-from apps.leanmod.models import ExpertNetworkAssistantReference
-
+from apps.leanmod.models import (
+    ExpertNetworkAssistantReference
+)
 
 logger = logging.getLogger(__name__)
 
@@ -33,13 +34,13 @@ def execute_expert_network_query_harmoniq(
     img_uris,
     f_uris
 ):
-
     ref = ExpertNetworkAssistantReference.objects.filter(
         id=agent_id
     ).first()
 
     if not ref:
         logger.error("The assistant-network reference with the given ID does not exist.")
+
         return "The assistant-network reference with the given ID does not exist."
 
     nx_obj = ref.network
@@ -61,6 +62,7 @@ def execute_expert_network_query_harmoniq(
     except Exception as e:
         logger.error(f"Error occurred while executing the function: {e}")
         error = f"Error occurred while executing the function: {str(e)}"
+
         return error
 
     return output

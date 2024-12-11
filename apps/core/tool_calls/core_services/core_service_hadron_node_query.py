@@ -21,7 +21,9 @@ from apps.core.hadron_prime.hadron_prime_executor import (
     HadronPrimeExecutor
 )
 
-from apps.hadron_prime.models import HadronNodeAssistantConnection
+from apps.hadron_prime.models import (
+    HadronNodeAssistantConnection
+)
 
 logger = logging.getLogger(__name__)
 
@@ -30,7 +32,6 @@ def run_query_execute_hadron_node(
     c_id: int,
     query: str
 ):
-
     try:
 
         connection = HadronNodeAssistantConnection.objects.get(
@@ -48,11 +49,13 @@ def run_query_execute_hadron_node(
 
         if error:
             logger.error(f"Error occurred while running the Hadron Node Query execution tool: {error}")
+
             return error
 
     except Exception as e:
         logger.error(f"Error occurred while running the Hadron Node Query execution tool: {e}")
         error = f"There has been an unexpected error on running the Hadron Node Query execution tool: {e}"
+
         return error
 
     return output

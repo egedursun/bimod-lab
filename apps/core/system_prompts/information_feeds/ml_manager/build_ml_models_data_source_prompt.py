@@ -17,11 +17,17 @@
 
 
 from apps.assistants.models import Assistant
-from apps.datasource_ml_models.models import DataSourceMLModelConnection
+
+from apps.datasource_ml_models.models import (
+    DataSourceMLModelConnection
+)
 
 
 def build_ml_models_data_source_prompt(assistant: Assistant):
-    ml_model_data_sources = DataSourceMLModelConnection.objects.filter(assistant=assistant)
+    ml_model_data_sources = DataSourceMLModelConnection.objects.filter(
+        assistant=assistant
+    )
+
     response_prompt = """
             ### **ML MODELS RESOURCE CONNECTIONS:**
 
@@ -39,6 +45,7 @@ def build_ml_models_data_source_prompt(assistant: Assistant):
                 """
 
         ml_model_items = ml_model_data_source.items.all()
+
         for j, model_item in enumerate(ml_model_items):
             response_prompt += f"""
                     - [ML Model Item ID: {model_item.id}]
@@ -99,6 +106,7 @@ def build_semantor_ml_models_data_source_prompt(temporary_sources: dict):
                 """
 
         ml_model_items = ml_model_data_source.items.all()
+
         for j, model_item in enumerate(ml_model_items):
             response_prompt += f"""
                     - [ML Model Item ID: {model_item.id}]

@@ -20,8 +20,14 @@ import uuid
 
 import requests
 
-from apps.core.context_memory_manager.context_memory_manager import ContextMemoryManager
-from apps.core.data_security.ner.ner_executor import NERExecutor
+from apps.core.context_memory_manager.context_memory_manager import (
+    ContextMemoryManager
+)
+
+from apps.core.data_security.ner.ner_executor import (
+    NERExecutor
+)
+
 from apps.llm_transaction.models import LLMTransaction
 
 from apps.multimodal_chat.models import (
@@ -31,7 +37,9 @@ from apps.multimodal_chat.models import (
 
 import base64 as b64
 
-from apps.voidforger.models import MultimodalVoidForgerChat
+from apps.voidforger.models import (
+    MultimodalVoidForgerChat
+)
 
 logger = logging.getLogger(__name__)
 
@@ -49,19 +57,25 @@ class HistoryBuilder:
         ner_executor: NERExecutor = None
     ):
 
-        from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE
+        from apps.core.generative_ai.utils import (
+            GPT_DEFAULT_ENCODING_ENGINE
+        )
 
         msgs = chat.chat_messages.all().order_by("sent_at")
+
         history = []
+
         temporary_uuid = uuid.uuid4()
 
         for msg in msgs:
 
             src_type = msg.sender_type
+
             if src_type == HistoryBuilder.ChatRoles.TOOL:
                 src_type = HistoryBuilder.ChatRoles.ASSISTANT
 
             message_text_content = msg.message_text_content
+
             msg_img_urls = msg.message_image_contents
             msg_f_urls = msg.message_file_contents
 
@@ -107,6 +121,7 @@ class HistoryBuilder:
                     wrapper.append(img_uri_wrapper)
 
             if msg_f_urls and src_type == HistoryBuilder.ChatRoles.USER:
+
                 for f_url in msg_f_urls:
                     file_uri_info_wrapper = {
                         "type": "text",
@@ -160,6 +175,7 @@ class HistoryBuilder:
 
             logger.info(f"Chat Transaction: {tx}")
             chat.transactions.add(tx)
+
             chat.save()
             msg.save()
 
@@ -175,6 +191,7 @@ class HistoryBuilder:
 
         from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE
         msgs = lean_chat.lean_chat_messages.all().order_by("sent_at")
+
         history = []
         temporary_uuid = uuid.uuid4()
 
@@ -185,6 +202,7 @@ class HistoryBuilder:
                 source_type = HistoryBuilder.ChatRoles.ASSISTANT
 
             txt_content = msg.message_text_content
+
             img_urls = msg.message_image_contents
             f_urls = msg.message_file_contents
 
@@ -237,6 +255,7 @@ class HistoryBuilder:
                     wrapper.append(f_uri_info_wrapper)
 
             msg_obj["content"] = wrapper
+
             if source_type != HistoryBuilder.ChatRoles.SYSTEM:
                 history.append(msg_obj)
 
@@ -257,8 +276,11 @@ class HistoryBuilder:
             )
 
             lean_chat.transactions.add(tx)
+
             lean_chat.save()
+
             logger.info(f"Lean Chat Transaction: {tx}")
+
             msg.save()
 
         history = ContextMemoryManager.handle_context_leanmod(
@@ -269,20 +291,28 @@ class HistoryBuilder:
         return history, temporary_uuid
 
     @staticmethod
-    def build_voidforger(voidforger_chat: MultimodalVoidForgerChat):
+    def build_voidforger(
+        voidforger_chat: MultimodalVoidForgerChat
+    ):
 
-        from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE
+        from apps.core.generative_ai.utils import (
+            GPT_DEFAULT_ENCODING_ENGINE
+        )
 
         msgs = voidforger_chat.voidforger_chat_messages.all().order_by("sent_at")
+
         history = []
+
         temporary_uuid = uuid.uuid4()
 
         for msg in msgs:
             source_type = msg.sender_type
+
             if source_type == HistoryBuilder.ChatRoles.TOOL:
                 source_type = HistoryBuilder.ChatRoles.ASSISTANT
 
             txt_content = msg.message_text_content
+
             img_urls = msg.message_image_contents
             f_urls = msg.message_file_contents
 
@@ -326,8 +356,8 @@ class HistoryBuilder:
                     wrapper.append(img_uri_wrapper)
 
             if f_urls and source_type == HistoryBuilder.ChatRoles.USER:
-                for f_url in f_urls:
 
+                for f_url in f_urls:
                     f_uri_info_wrapper = {
                         "type": "text",
                         "text": f"Detected File URLs: {f_url}"
@@ -336,6 +366,7 @@ class HistoryBuilder:
                     wrapper.append(f_uri_info_wrapper)
 
             msg_obj["content"] = wrapper
+
             if source_type != HistoryBuilder.ChatRoles.SYSTEM:
                 history.append(msg_obj)
 
@@ -354,6 +385,7 @@ class HistoryBuilder:
                 transaction_type=source_type.lower(),
                 transaction_source=voidforger_chat.chat_source
             )
+
             voidforger_chat.transactions.add(tx)
             voidforger_chat.save()
 

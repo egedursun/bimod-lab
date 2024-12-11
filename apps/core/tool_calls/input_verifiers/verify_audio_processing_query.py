@@ -16,7 +16,9 @@
 #
 
 
-from apps.core.audio_processing.utils import RunAudioProcessingActionTypesNames
+from apps.core.audio_processing.utils import (
+    RunAudioProcessingActionTypesNames
+)
 
 
 def verify_audio_processing_query(content: dict):

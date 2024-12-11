@@ -15,7 +15,9 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-from apps.core.tool_calls.utils import ToolCallDescriptorNames
+from apps.core.tool_calls.utils import (
+    ToolCallDescriptorNames
+)
 
 
 def build_tool_prompt__execute_ssh_file_system_command():
@@ -67,4 +69,5 @@ def build_tool_prompt__execute_ssh_file_system_command():
             ---
 
         """
+
     return response_prompt

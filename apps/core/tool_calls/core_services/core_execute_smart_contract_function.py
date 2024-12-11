@@ -23,7 +23,9 @@ from apps.core.smart_contracts.smart_contracts_executor import (
     SmartContractsExecutionManager
 )
 
-from apps.smart_contracts.models import BlockchainSmartContract
+from apps.smart_contracts.models import (
+    BlockchainSmartContract
+)
 
 logger = logging.getLogger(__name__)
 
@@ -58,7 +60,9 @@ def execute_smart_contract_function_call(
     except Exception as e:
         error = f"Error occurred while executing smart contract function call: {e}"
         logger.error(f"Error occurred while executing smart contract function call: {e}")
+
         return error
 
     logger.info(f"Smart contract function call successful.")
+
     return output

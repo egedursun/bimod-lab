@@ -19,7 +19,10 @@ import json
 import logging
 
 from apps.assistants.models import Assistant
-from apps.mm_scheduled_jobs.models import ScheduledJobInstance
+
+from apps.mm_scheduled_jobs.models import (
+    ScheduledJobInstance
+)
 
 logger = logging.getLogger(__name__)
 
@@ -46,11 +49,13 @@ def run_query_execute_scheduled_job_logs(assistant: Assistant):
                     'ended_at': log.ended_at.strftime('%Y-%m-%d %H:%M:%S') if log.ended_at else "N/A",
                 }
             )
+
         output = json.dumps(formatted_result)
 
     except Exception as e:
         logger.error(f"Error occurred while running the Scheduled Job Logs query: {e}")
         error = f"There has been an unexpected error on running the Scheduled Job Logs query: {e}"
+
         return error
 
     return output

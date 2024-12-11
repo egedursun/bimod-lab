@@ -16,7 +16,9 @@
 #
 
 
-from apps.datasource_codebase.models import CodeRepositoryStorageConnection
+from apps.datasource_codebase.models import (
+    CodeRepositoryStorageConnection
+)
 
 
 def verify_code_base_query_content(content: dict):

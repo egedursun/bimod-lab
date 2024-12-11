@@ -30,7 +30,9 @@ from apps.smart_contracts.models import (
     BlockchainWalletConnection
 )
 
-from apps.smart_contracts.utils import DeploymentStatusesNames
+from apps.smart_contracts.utils import (
+    DeploymentStatusesNames
+)
 
 logger = logging.getLogger(__name__)
 
@@ -78,12 +80,14 @@ def run_query_execute_smart_contract_generation_query(
 
         if error is not None or success is False:
             logger.error(f"Error occurred while generating the smart contract content: {error}")
+
             smart_contract_object.deployment_status = DeploymentStatusesNames.FAILED
             smart_contract_object.save()
 
     except Exception as e:
         logger.error(f"Error occurred while generating the smart contract content: {e}")
         error = f"There has been an unexpected error while generating the smart contract content: {e}"
+
         return error
 
     return "Smart contract has been successfully generated."
