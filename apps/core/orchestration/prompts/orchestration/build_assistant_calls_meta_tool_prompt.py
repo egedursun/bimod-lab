@@ -15,7 +15,10 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-from apps.core.tool_calls.utils import ToolCallDescriptorNames
+from apps.core.tool_calls.utils import (
+    ToolCallDescriptorNames
+)
+
 from apps.orchestrations.models import Maestro
 from config.settings import MEDIA_URL
 from apps.assistants.models import Assistant

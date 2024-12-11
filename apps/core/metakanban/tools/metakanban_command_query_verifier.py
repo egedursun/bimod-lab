@@ -15,7 +15,9 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-from apps.core.metakanban.utils import MetaKanbanCommandTypes
+from apps.core.metakanban.utils import (
+    MetaKanbanCommandTypes
+)
 
 
 def verify_metakanban_command_query_content(content: dict):
@@ -24,29 +26,35 @@ def verify_metakanban_command_query_content(content: dict):
             The 'parameters' field is missing from the tool_usage_json. This field is mandatory for using the Meta Kanban
             Command Execution tool. Please make sure you are defining the 'parameters' field in the tool_usage_json.
         """
+
     ps = content.get("parameters")
+
     if "action_type" not in ps:
         return """
             The 'action_type' field is missing from the 'parameters' field in the tool_usage_json. This field is mandatory
             for using the Meta Kanban Command Execution tool. Please make sure you are defining the 'action_type' field in the
             parameters field of the tool_usage_json.
         """
+
     if ps.get("action_type") not in MetaKanbanCommandTypes.as_list():
         return f"""
             The 'action_type' field in the 'parameters' field of the tool_usage_json must be one of these values:
             {MetaKanbanCommandTypes.as_list()}. This field is mandatory for using the Meta Kanban Command Execution tool.
             Please make sure you are defining the 'action_type' field in the parameters field of the tool_usage_json.
         """
+
     if "action_content" not in ps:
         return """
             The 'action_content' field is missing from the 'parameters' field in the tool_usage_json. This field is mandatory
             for using the Meta Kanban Command Execution tool. Please make sure you are defining the 'action_content' field in the
             parameters field of the tool_usage_json.
         """
+
     if type(ps.get("action_content")) is not dict:
         return """
             The 'action_content' field in the 'parameters' field of the tool_usage_json must be a dictionary. This field is
             mandatory for using the Meta Kanban Command Execution tool. Please make sure you are defining the 'action_content' field in
             the parameters field of the tool_usage_json.
         """
+
     return None

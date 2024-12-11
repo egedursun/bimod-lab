@@ -17,17 +17,24 @@
 
 import logging
 
-from apps.datasource_nosql.models import NoSQLDatabaseConnection
-from apps.datasource_nosql.utils import NoSQLDatabaseChoicesNames
+from apps.datasource_nosql.models import (
+    NoSQLDatabaseConnection
+)
 
+from apps.datasource_nosql.utils import (
+    NoSQLDatabaseChoicesNames
+)
 
 logger = logging.getLogger(__name__)
 
 
-def before_execute_nosql_query(connection: NoSQLDatabaseConnection):
-
+def before_execute_nosql_query(
+    connection: NoSQLDatabaseConnection
+):
     logger.info(f"Executing query on {connection.nosql_db_type} database: {connection.name}")
+
     old_schema_json = connection.schema_data_json
+
     new_schema = {}
 
     if connection.nosql_db_type == NoSQLDatabaseChoicesNames.COUCHBASE:
@@ -35,10 +42,11 @@ def before_execute_nosql_query(connection: NoSQLDatabaseConnection):
 
     if new_schema != old_schema_json:
         connection.schema_data_json = new_schema
+
         connection.save()
 
 
 def can_write_to_database(connection: NoSQLDatabaseConnection):
-
     logger.info(f"Checking if the connection is read-only: {connection.name}")
+
     return not connection.is_read_only

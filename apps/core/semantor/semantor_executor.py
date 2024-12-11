@@ -15,18 +15,25 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-import base64
 import logging
 import os
 
 import faiss
 import numpy as np
-from typing import List, Dict
 
-import requests
-from django.contrib.auth.models import User
+from typing import (
+    List,
+    Dict
+)
 
-from apps.assistants.models import Assistant
+from django.contrib.auth.models import (
+    User
+)
+
+from apps.assistants.models import (
+    Assistant
+)
+
 from apps.core.expert_networks.prompts.build_expert_network_to_assistant_instructions_prompt import (
     build_leanmod_to_expert_assistant_instructions_prompt
 )
@@ -35,7 +42,9 @@ from apps.core.expert_networks.prompts.error_messages import (
     DEFAULT_EXPERT_ASSISTANT_ERROR_MESSAGE
 )
 
-from apps.core.generative_ai.gpt_openai_manager import OpenAIGPTClientManager
+from apps.core.generative_ai.gpt_openai_manager import (
+    OpenAIGPTClientManager
+)
 
 from apps.core.generative_ai.utils import (
     ChatRoles,
@@ -53,7 +62,9 @@ from apps.core.semantor.utils import (
     VECTOR_INDEX_PATH_LEANMOD_ASSISTANTS
 )
 
-from apps.core.system_prompts.system_prompt_factory_builder import SystemPromptFactoryBuilder
+from apps.core.system_prompts.system_prompt_factory_builder import (
+    SystemPromptFactoryBuilder
+)
 
 from apps.core.system_prompts.voidforger.helpers.error_messages import (
     DEFAULT_LEANMOD_ASSISTANT_ERROR_MESSAGE
@@ -63,21 +74,65 @@ from apps.core.system_prompts.voidforger.tools.voidforger_to_leanmod_assistant_i
     build_voidforger_to_leanmod_assistant_instructions_prompt
 )
 
-from apps.datasource_codebase.models import CodeRepositoryStorageConnection
-from apps.datasource_file_systems.models import DataSourceFileSystem
-from apps.datasource_knowledge_base.models import DocumentKnowledgeBaseConnection
-from apps.datasource_media_storages.models import DataSourceMediaStorageConnection
-from apps.datasource_nosql.models import NoSQLDatabaseConnection
-from apps.datasource_sql.models import SQLDatabaseConnection
-from apps.datasource_website.models import DataSourceWebsiteStorageConnection
-from apps.hadron_prime.models import HadronNode
-from apps.leanmod.models import LeanAssistant
-from apps.llm_core.models import LLMCore
-from apps.metakanban.models import MetaKanbanBoard
-from apps.metatempo.models import MetaTempoConnection
-from apps.mm_apis.models import CustomAPIReference
-from apps.mm_functions.models import CustomFunctionReference
-from apps.mm_scripts.models import CustomScriptReference
+from apps.datasource_codebase.models import (
+    CodeRepositoryStorageConnection
+)
+
+from apps.datasource_file_systems.models import (
+    DataSourceFileSystem
+)
+
+from apps.datasource_knowledge_base.models import (
+    DocumentKnowledgeBaseConnection
+)
+
+from apps.datasource_media_storages.models import (
+    DataSourceMediaStorageConnection
+)
+
+from apps.datasource_nosql.models import (
+    NoSQLDatabaseConnection
+)
+
+from apps.datasource_sql.models import (
+    SQLDatabaseConnection
+)
+
+from apps.datasource_website.models import (
+    DataSourceWebsiteStorageConnection
+)
+
+from apps.hadron_prime.models import (
+    HadronNode
+)
+
+from apps.leanmod.models import (
+    LeanAssistant
+)
+
+from apps.llm_core.models import (
+    LLMCore
+)
+
+from apps.metakanban.models import (
+    MetaKanbanBoard
+)
+
+from apps.metatempo.models import (
+    MetaTempoConnection
+)
+
+from apps.mm_apis.models import (
+    CustomAPIReference
+)
+
+from apps.mm_functions.models import (
+    CustomFunctionReference
+)
+
+from apps.mm_scripts.models import (
+    CustomScriptReference
+)
 
 from apps.multimodal_chat.models import (
     MultimodalChat,
@@ -86,9 +141,17 @@ from apps.multimodal_chat.models import (
     MultimodalLeanChatMessage
 )
 
-from apps.multimodal_chat.utils import SourcesForMultimodalChatsNames
-from apps.orchestrations.models import OrchestrationReactantAssistantConnection
-from apps.projects.models import ProjectItem
+from apps.multimodal_chat.utils import (
+    SourcesForMultimodalChatsNames
+)
+
+from apps.orchestrations.models import (
+    OrchestrationReactantAssistantConnection
+)
+
+from apps.projects.models import (
+    ProjectItem
+)
 
 from apps.semantor.models import (
     AssistantVectorData,
@@ -171,7 +234,11 @@ class SemantorVectorSearchExecutionManager:
                 self.integrations_index_path
             )
 
-    def _generate_query_embedding(self, query: str) -> List[float]:
+    def _generate_query_embedding(
+        self,
+        query: str
+    ) -> List[float]:
+
         c = OpenAIGPTClientManager.get_naked_client(
             llm_model=self.llm_model
         )
@@ -198,7 +265,11 @@ class SemantorVectorSearchExecutionManager:
         if self.assistants_index is None:
             raise ValueError("[search_assistants] FAISS index not initialized or loaded properly.")
 
-        distances, ids = self.assistants_index.search(query_vector, n_results)
+        distances, ids = self.assistants_index.search(
+            query_vector,
+            n_results
+        )
+
         results = []
 
         for item_id, distance in zip(ids[0], distances[0]):
@@ -219,7 +290,6 @@ class SemantorVectorSearchExecutionManager:
                 )
 
             except AssistantVectorData.DoesNotExist:
-                print(f"Warning: Assistant Instance with ID {item_id} not found in the vector database.")
                 logger.error(f"Assistant Instance with ID {item_id} not found in the vector database.")
 
         return results
@@ -265,7 +335,6 @@ class SemantorVectorSearchExecutionManager:
                 )
 
             except IntegrationVectorData.DoesNotExist:
-                print(f"Warning: Integration Instance with ID {item_id} not found in the vector database.")
                 logger.error(f"Integration Instance with ID {item_id} not found in the vector database.")
 
         return results
@@ -303,6 +372,7 @@ class SemantorVectorSearchExecutionManager:
                 )
 
                 chat = new_chat_object
+
                 logger.info(f"Created new chat object for Semantor Network consultation: {chat}")
 
             except Exception as e:
@@ -420,6 +490,7 @@ class SemantorVectorSearchExecutionManager:
                 )
 
                 chat = temporary_chat_object
+
                 logger.info(f"Created temporary chat object for Semantor Network consultation: {chat}")
 
             except Exception as e:
@@ -432,19 +503,24 @@ class SemantorVectorSearchExecutionManager:
                     ---
                     *IMAGE URLS*
                 """
+
                 for image_url in image_urls:
                     structured_order += f"""
                     - {image_url}
                 """
+
                 structured_order += "---"
+
             if file_urls is not None:
                 structured_order += """
                     *FILE URLS*
                 """
+
                 for file_url in file_urls:
                     structured_order += f"""
                     - {file_url}
                 """
+
                 structured_order += "---"
 
             try:
@@ -464,6 +540,7 @@ class SemantorVectorSearchExecutionManager:
                 return DEFAULT_EXPERT_ASSISTANT_ERROR_MESSAGE
 
             temporary_data_source_and_tool_access = semantor_config.temporary_data_source_and_tool_access
+
             temporary_sources = {}
 
             if temporary_data_source_and_tool_access is True:
@@ -512,7 +589,8 @@ class SemantorVectorSearchExecutionManager:
             # Delete the assistant after consultation
             try:
                 temporary_assistant.delete()
-                logger.info(f"Deleted temporary assistant object after Semantor network consultation: {temporary_assistant}")
+                logger.info(
+                    f"Deleted temporary assistant object after Semantor network consultation: {temporary_assistant}")
 
             except Exception as e:
                 logger.error(f"Failed to delete temporary assistant object after Semantor network consultation: {e}")
@@ -535,10 +613,17 @@ class SemantorVectorSearchExecutionManager:
         if self.leanmod_assistants_index is None:
             raise ValueError("[search_assistants] FAISS index not initialized or loaded properly.")
 
-        distances, ids = self.leanmod_assistants_index.search(query_vector, n_results)
+        distances, ids = self.leanmod_assistants_index.search(
+            query_vector,
+            n_results
+        )
+
         results = []
 
-        for item_id, distance in zip(ids[0], distances[0]):
+        for item_id, distance in zip(
+            ids[0],
+            distances[0]
+        ):
 
             if item_id == -1:
                 continue
@@ -557,7 +642,6 @@ class SemantorVectorSearchExecutionManager:
                 )
 
             except LeanModVectorData.DoesNotExist:
-                print(f"Warning: LeanMod Assistant Instance with ID {item_id} not found in the vector database.")
                 logger.error(f"LeanMod Assistant Instance with ID {item_id} not found in the vector database.")
 
         return results
@@ -593,6 +677,7 @@ class SemantorVectorSearchExecutionManager:
             )
 
             chat = new_chat_object
+
             logger.info(f"Created new chat object for VoidForger to LeanMod Oracle consultation: {chat}")
 
         except Exception as e:
@@ -667,7 +752,10 @@ class SemantorVectorSearchExecutionManager:
 
         return output
 
-    def _gather_temporary_sources(self, temporary_assistant):
+    def _gather_temporary_sources(
+        self,
+        temporary_assistant
+    ):
         source_references = {
 
             "tools": {
@@ -729,10 +817,12 @@ class SemantorVectorSearchExecutionManager:
             assistant: Assistant
 
             assistant__data_source__browsers = assistant.datasourcebrowserconnection_set.all()
+
             if len(assistant__data_source__browsers) > 0:
                 data_source__browsers.append(assistant__data_source__browsers[0])
 
             assistant__data_source__file_systems = assistant.data_source_file_systems.all()
+
             fs_recorded_hosts = []
             fs_recorded_count = 0
 
@@ -746,11 +836,14 @@ class SemantorVectorSearchExecutionManager:
                     data_source__file_systems.append(file_system)
                     fs_recorded_hosts.append(file_system.host_url)
                     fs_recorded_count += 1
+
             ######
+
             source_references["data_sources"]["file_systems"] = data_source__file_systems
             pass
 
             assistant__data_source__sql_dbs = assistant.sql_database_connections.all()
+
             sql_recorded_hosts, sql_recorded_db_names = [], []
             sql_recorded_count = 0
 
@@ -775,6 +868,7 @@ class SemantorVectorSearchExecutionManager:
             pass
 
             assistant__data_source__nosql_dbs = assistant.nosql_database_connections.all()
+
             nosql_recorded_hosts, nosql_recorded_bucket_names = [], []
             nosql_recorded_count = 0
 
@@ -799,6 +893,7 @@ class SemantorVectorSearchExecutionManager:
             pass
 
             assistant__data_source__knowledge_bases = assistant.documentknowledgebaseconnection_set.all()
+
             kb_recorded_hosts = []
             kb_recorded_count = 0
 
@@ -819,6 +914,7 @@ class SemantorVectorSearchExecutionManager:
             pass
 
             assistant__data_source__codebases = assistant.coderepositorystorageconnection_set.all()
+
             cb_recorded_hosts = []
             cb_recorded_count = 0
 
@@ -839,6 +935,7 @@ class SemantorVectorSearchExecutionManager:
             pass
 
             assistant__data_source__website_storages = assistant.datasourcewebsitestorageconnection_set.all()
+
             recorded_website_storage_ids = []
             recorded_website_storage_count = 0
 
@@ -879,6 +976,7 @@ class SemantorVectorSearchExecutionManager:
                 data_source__ml_storages.append(assistant__data_source__ml_storages[0])
 
             assistant__data_source__projects = assistant.project_items.all()
+
             recorded_project_ids = []
             recorded_project_count = 0
 
@@ -909,6 +1007,7 @@ class SemantorVectorSearchExecutionManager:
             pass
 
             assistant__data_source__hadron_node_connections = assistant.hadronnodeassistantconnection_set.all()
+
             recorded_hadron_node_ids = []
             recorded_hadron_node_count = 0
 
@@ -929,6 +1028,7 @@ class SemantorVectorSearchExecutionManager:
             pass
 
             assistant__data_source__metakanban_board_connections = assistant.metakanbanassistantconnection_set.all()
+
             recorded_metakanban_boards = []
             recorded_metakanban_count = 0
 
@@ -974,6 +1074,7 @@ class SemantorVectorSearchExecutionManager:
             pass
 
             assistant__data_source__orchestration_trigger_connections = assistant.orchestrationreactantassistantconnection_set.all()
+
             recorded_orchestration_triggers = []
             recorded_orchestration_count = 0
 
@@ -1032,6 +1133,7 @@ class SemantorVectorSearchExecutionManager:
             pass
 
             assistant__tool__functions = assistant.customfunctionreference_set.all()
+
             recorded_function__reference_ids = []
             recorded_function_count = 0
 
@@ -1052,6 +1154,7 @@ class SemantorVectorSearchExecutionManager:
             pass
 
             assistant__tool__apis = assistant.customapireference_set.all()
+
             recorded_api__reference_ids = []
             recorded_api_count = 0
 
@@ -1072,6 +1175,7 @@ class SemantorVectorSearchExecutionManager:
             pass
 
             assistant__tool__scripts = assistant.customscriptreference_set.all()
+
             recorded_script__reference_ids = []
             recorded_script_count = 0
 

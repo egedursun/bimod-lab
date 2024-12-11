@@ -1163,9 +1163,13 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
             if response__user_roles_decision == 'yes':
 
                 # Q20: Which of the following options would work best for your requirements regarding user permissions?
+
                 response__user_roles_option = request.POST.get('response__user_roles_option')
-                if response__user_roles_option and response__user_roles_option in ['full_access', 'moderation_access',
-                                                                                   'limited_access']:
+                if response__user_roles_option and response__user_roles_option in [
+                    'full_access',
+                    'moderation_access',
+                    'limited_access'
+                ]:
 
                     # Action-030: Create new user roles
                     success_030 = action__030_user_roles_create(
@@ -1187,17 +1191,17 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
 
             else:
                 print("User opt out for adjusting the permissions / user roles for the users.")
-                return redirect("multimodal_chat:main_workspace")
+                return redirect("quick_setup_helper:success")
             ############################################################################################################
 
             # Redirect-2: Redirect to the workspace
-            print("Finished the setup successfully with user role additions. Redirecting to the workspace hub.")
-            return redirect("multimodal_chat:main_workspace")
+            print("Finished the setup successfully with user role additions. Redirecting to the success page.")
+            return redirect("quick_setup_helper:success")
 
         else:
 
             # Redirect-2: Redirect to the workspace
-            print("Finished the setup without user invitations. Redirecting to the workspace hub.")
-            return redirect("multimodal_chat:main_workspace")
+            print("Finished the setup without user invitations. Redirecting to the success page.")
+            return redirect("quick_setup_helper:success")
 
         ############################################################################################################

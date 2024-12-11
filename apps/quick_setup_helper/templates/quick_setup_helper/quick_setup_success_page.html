@@ -1,0 +1,272 @@
+<!--
+  ~ Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+  ~
+  ~ Project: Bimod.io™
+  ~ File: quick_setup_wrapper_page.html
+  ~ Last Modified: 2024-11-19 16:24:35
+  ~ Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+  ~ Created: 2024-11-19 16:24:35
+  ~
+  ~ This software is proprietary and confidential. Unauthorized copying,
+  ~ distribution, modification, or use of this software, whether for
+  ~ commercial, academic, or any other purpose, is strictly prohibited
+  ~ without the prior express written permission of BMD™ Autonomous
+  ~ Holdings.
+  ~
+  ~  For permission inquiries, please contact: admin@Bimod.io.
+  ~
+  -->
+
+{% extends layout_path %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}Quick Setup Success{% endblock %}
+
+{% block page_css %}
+  {{ block.super }}
+{% endblock page_css %}
+
+{% block content %}
+  <hr>
+  <div class="storage-integration-categories">
+    <h1 class="mt-12 mb-12">
+      <strong>
+        🚀 &nbsp; Congratulations Captain, we are all set!
+      </strong>
+    </h1>
+
+    {% if messages %}
+      {% for message in messages %}
+        <div
+          class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-info{% endif %}"
+          role="alert">
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endif %}
+
+    <hr>
+
+    <div class="card-body">
+      <div class="row gy-6 mb-6">
+
+        <!-- Quick Setup Guide / 12 -->
+        <div class="col-md-12 category-card">
+          <div class="card p-2 h-100 shadow">
+            <div class="card-body text-center">
+              <img src="{% static 'img/quick_setup_helper/qs-success-banner.png' %}" alt="AWS Icon" class="img-fluid mb-4 rounded border border-primary border-2 rounded">
+              <hr>
+              <h2 class="card-title">
+                <strong>
+                  🎯 &nbsp; What else can you do to enhance your experience?
+                </strong>
+              </h2>
+              <hr>
+              <div class="row d-flex flex-grow-1 ms-auto align-items-stretch">
+                <div class="col-4 d-flex flex-grow-1 mb-4">
+                  <div class="card bg-body text-center p-8 border border-primary border-2 rounded">
+                    <div class="card-body">
+                      <img src="{% static 'img/quick_setup_helper/qs-further-1.jpg' %}" alt="app-icon"
+                           class="img-fluid mb-4 rounded">
+                      <hr>
+                      <i class="fa fa-xl fa-comments bg-instagram p-8 rounded me-2 text-white"></i>
+                      <hr>
+                      <h4 class="card-title text-center mt-2">
+                        <strong>
+                          🤝 &nbsp; I want to chat ASAP.
+                        </strong>
+                      </h4>
+                      <hr>
+                      <div class="card-text">
+                        <p style="text-align: justify;">
+                          <strong>
+                            Got it! Click the button below and we will teleport you to your Bimod Workspace Hub
+                            where you can start chatting with your assistant right away.
+                          </strong>
+                        </p>
+                      </div>
+                      <hr>
+                      <a href="{% url 'multimodal_chat:main_workspace' %}" class="btn btn-instagram mt-4 w-100">
+                        <i class="fa fa-rocket me-2"></i>
+                        <strong>Workspace Hub</strong>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-4 d-flex flex-grow-1 mb-4">
+                  <div class="card bg-body text-center p-8 border border-primary border-2 rounded">
+                    <div class="card-body">
+                      <img src="{% static 'img/quick_setup_helper/qs-further-2.jpg' %}" alt="app-icon"
+                           class="img-fluid mb-4 rounded">
+                      <hr>
+                      <i class="fa fa-xl fa-bucket bg-instagram p-8 rounded me-2 text-white"></i>
+                      <hr>
+                      <h4 class="card-title text-center mt-2">
+                        <strong>
+                          🪣 &nbsp; Connect Cloud Buckets
+                        </strong>
+                      </h4>
+                      <hr>
+                      <div class="card-text">
+                        <p style="text-align: justify;">
+                          <strong>
+                            Connect your cloud storage buckets to your assistant to let us automatically transfer your
+                            multimedia files to your assistant storages, without any hassle.
+                          </strong>
+                        </p>
+                      </div>
+                      <hr>
+                      <a href="{% url 'datasource_media_storages:third_party_main' %}" class="btn btn-primary mt-4 w-100">
+                        <i class="fa fa-cloud me-2"></i>
+                        <strong>Connect Storage Buckets</strong>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-4 d-flex flex-grow-1 mb-4">
+                  <div class="card bg-body text-center p-8 border border-primary border-2 rounded">
+                    <div class="card-body">
+                      <img src="{% static 'img/quick_setup_helper/qs-further-3.jpg' %}" alt="app-icon"
+                           class="img-fluid mb-4 rounded">
+                      <hr>
+                      <i class="fa fa-xl fa-folder-open bg-instagram p-8 rounded me-2 text-white"></i>
+                      <hr>
+                      <h4 class="card-title text-center mt-2">
+                        <strong>
+                          📚 &nbsp; Discover Features
+                        </strong>
+                      </h4>
+                      <hr>
+                      <div class="card-text">
+                        <p style="text-align: justify;">
+                          <strong>
+                            Explore the features we offer in BimodLab and customize your account to create the most
+                            personalized experience for yourself, your teams, and your organizations.
+                          </strong>
+                        </p>
+                      </div>
+                      <hr>
+                      <a href="{% url 'dashboard:lab-landing' %}" class="btn btn-primary mt-4 w-100">
+                        <i class="fa fa-rocket me-2"></i>
+                        <strong>BimodLab Dashboard</strong>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-4 d-flex flex-grow-1 mb-4">
+                  <div class="card bg-body text-center p-8 border border-primary border-2 rounded">
+                    <div class="card-body">
+                      <img src="{% static 'img/quick_setup_helper/qs-further-4.jpg' %}" alt="app-icon"
+                           class="img-fluid mb-4 rounded">
+                      <hr>
+                      <i class="fa fa-xl fa-code bg-instagram p-8 rounded me-2 text-white"></i>
+                      <hr>
+                      <h4 class="card-title text-center mt-2">
+                        <strong>
+                          🔥 &nbsp; Connect Functions, APIs, Scripts
+                        </strong>
+                      </h4>
+                      <hr>
+                      <div class="card-text">
+                        <p style="text-align: justify;">
+                          <strong>
+                            Design and connect functions, APIs, and scripts to your assistant to let them automatically
+                            execute and automate your tasks. Turbocharge your assistants now!
+                          </strong>
+                        </p>
+                      </div>
+                      <hr>
+                      <a href="{% url 'mm_functions:list' %}" class="btn btn-primary mt-4 w-100">
+                        <i class="fa fa-code me-2"></i>
+                        <strong>Manage Functions</strong>
+                      </a>
+                      <a href="{% url 'mm_apis:list' %}" class="btn btn-primary mt-4 w-100">
+                        <i class="fa fa-network-wired me-2"></i>
+                        <strong>Manage APIs</strong>
+                      </a>
+                      <a href="{% url 'mm_scripts:list' %}" class="btn btn-primary mt-4 w-100">
+                        <i class="fa fa-terminal me-2"></i>
+                        <strong>Manage Scripts</strong>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-4 d-flex flex-grow-1 mb-4">
+                  <div class="card bg-body text-center p-8 border border-primary border-2 rounded">
+                    <div class="card-body">
+                      <img src="{% static 'img/quick_setup_helper/qs-further-5.jpg' %}" alt="app-icon"
+                           class="img-fluid mb-4 rounded">
+                      <hr>
+                      <i class="fa fa-xl fa-shield-halved bg-instagram p-8 rounded me-2 text-white"></i>
+                      <hr>
+                      <h4 class="card-title text-center mt-2">
+                        <strong>
+                          🔐 &nbsp; Enhance Data Security &amp; Privacy
+                        </strong>
+                      </h4>
+                      <hr>
+                      <div class="card-text">
+                        <p style="text-align: justify;">
+                          <strong>
+                            You can configure BeamGuard or set up Named Entity Recognition (NER) to enhance
+                            the security of your assistants and be comfortable with your data privacy.
+                          </strong>
+                        </p>
+                      </div>
+                      <hr>
+                      <a href="{% url 'beamguard:list' %}" class="btn btn-primary mt-4 w-100">
+                        <i class="fa fa-shield-alt me-2"></i>
+                        <strong>Manage BeamGuard Artifacts</strong>
+                      </a>
+                      <a href="{% url 'data_security:list_ner_integrations' %}" class="btn btn-primary mt-4 w-100">
+                        <i class="fa fa-lock me-2"></i>
+                        <strong>Manage NER Integrations</strong>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-4 d-flex flex-grow-1 mb-4">
+                  <div class="card bg-body text-center p-8 border border-primary border-2 rounded">
+                    <div class="card-body">
+                      <img src="{% static 'img/quick_setup_helper/qs-further-6.jpg' %}" alt="app-icon"
+                           class="img-fluid mb-4 rounded">
+                      <hr>
+                      <i class="fa fa-xl fa-mobile-phone bg-instagram p-8 rounded me-2 text-white"></i>
+                      <hr>
+                      <h4 class="card-title text-center mt-2">
+                        <strong>
+                          📲 &nbsp; Download Desktop &amp; Mobile Clients
+                        </strong>
+                      </h4>
+                      <hr>
+                      <div class="card-text">
+                        <p style="text-align: justify;">
+                          <strong>
+                            Download desktop &amp; mobile apps to chat with assistants on the go.
+                            Some features are only available on desktop: team tempo/time tracking &amp; meeting tracking.
+                          </strong>
+                        </p>
+                      </div>
+                      <hr>
+                      <a href="{% url 'landing:electron_copilot_releases' %}" class="btn btn-primary mt-4 w-100">
+                        <i class="fa fa-download me-2"></i>
+                        <strong>Electron Copilot (Desktop)</strong>
+                      </a>
+                      <a href="{% url 'landing:fermion_copilot_releases' %}" class="btn btn-primary mt-4 w-100">
+                        <i class="fa fa-download me-2"></i>
+                        <strong>Fermion Copilot (Mobile)</strong>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
+

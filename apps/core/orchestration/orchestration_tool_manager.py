@@ -24,14 +24,22 @@ from apps.core.orchestration.utils import (
     get_no_orchestration_tool_found_error_log
 )
 
-from apps.core.orchestration.runners.worker_tool_runner import run_worker_tool
+from apps.core.orchestration.runners.worker_tool_runner import (
+    run_worker_tool
+)
 
 from apps.core.orchestration.validators.validate_orchestration_assistant_call import (
     validate_orchestration_worker_assistant_call_execution_tool_json
 )
 
-from apps.core.tool_calls.utils import ToolCallDescriptorNames
-from apps.orchestrations.models import Maestro, OrchestrationQuery
+from apps.core.tool_calls.utils import (
+    ToolCallDescriptorNames
+)
+
+from apps.orchestrations.models import (
+    Maestro,
+    OrchestrationQuery
+)
 from config.settings import MEDIA_URL
 
 logger = logging.getLogger(__name__)
@@ -71,6 +79,7 @@ class OrchestrationToolManager:
             ), None, None, None, None
 
         file_uris, image_uris = [], []
+
         error = validate_orchestration_main_tool_json(
             tool_usage_json=self.tool_usage_json
         )
@@ -105,6 +114,7 @@ class OrchestrationToolManager:
 
             worker_assistant_id = self.tool_usage_json.get("parameters").get("assistant_id")
             query_text = self.tool_usage_json.get("parameters").get("query")
+
             file_urls = self.tool_usage_json.get("parameters").get("file_urls")
             image_urls = self.tool_usage_json.get("parameters").get("image_urls")
 
@@ -154,4 +164,5 @@ class OrchestrationToolManager:
                 image_uris[i] = uri
 
         logger.info(f"[OrchestrationToolManager.use_tool] The tool response is prepared successfully.")
+
         return tool_resp, tool_name, agent_id, file_uris, image_uris

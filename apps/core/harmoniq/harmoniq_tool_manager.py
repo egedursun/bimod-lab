@@ -18,7 +18,9 @@
 import json
 import logging
 
-from apps.core.generative_ai.auxiliary_methods.errors.error_log_prompts import get_json_decode_error_log
+from apps.core.generative_ai.auxiliary_methods.errors.error_log_prompts import (
+    get_json_decode_error_log
+)
 
 from apps.core.tool_calls.harmoniq.core_services.core_service_query_expert_network_harmoniq import (
     execute_expert_network_query_harmoniq
@@ -28,7 +30,9 @@ from apps.core.tool_calls.harmoniq.input_verifiers.verify_expert_network_query_h
     verify_expert_network_query_content_harmoniq
 )
 
-from apps.core.tool_calls.input_verifiers.verify_main_query_or_run_call import verify_main_call_or_query_content
+from apps.core.tool_calls.input_verifiers.verify_main_query_or_run_call import (
+    verify_main_call_or_query_content
+)
 
 from apps.core.tool_calls.utils import (
     ToolCallDescriptorNames,
@@ -67,15 +71,20 @@ class HarmoniqToolManager:
         except Exception as e:
 
             logger.error(f"Error occurred while converting tool usage dictionary to a dictionary: {e}")
-            return get_json_decode_error_log(error_logs=str(e)), None, None, None
+
+            return get_json_decode_error_log(
+                error_logs=str(e)
+            ), None, None, None
 
         f_uris, img_uris = [], []
+
         error_msg = verify_main_call_or_query_content(
             content=self.tool_usage_dict
         )
 
         if error_msg:
             logger.error(f"Error occurred while verifying main call or query content: {error_msg}")
+
             return error_msg, None, None, None
 
         defined_tool_descriptor = self.tool_usage_dict.get("tool")
@@ -86,13 +95,17 @@ class HarmoniqToolManager:
                 """
 
         if defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_EXPERT_NETWORK_QUERY:
-            error_msg = verify_expert_network_query_content_harmoniq(content=self.tool_usage_dict)
+
+            error_msg = verify_expert_network_query_content_harmoniq(
+                content=self.tool_usage_dict
+            )
 
             if error_msg:
                 return error_msg, None, None, None
 
             assistant_id = self.tool_usage_dict.get("parameters").get("assistant_id")
             query = self.tool_usage_dict.get("parameters").get("query")
+
             image_urls = self.tool_usage_dict.get("parameters").get("image_urls")
             file_urls = self.tool_usage_dict.get("parameters").get("file_urls")
 
@@ -113,6 +126,7 @@ class HarmoniqToolManager:
             logger.info("Expert network query executed successfully.")
 
         # NO TOOL FOUND
+
         else:
             logger.error(f"No tool found with the descriptor: {defined_tool_descriptor}")
 
@@ -129,16 +143,23 @@ class HarmoniqToolManager:
                     '''
                 """
         if f_uris:
+
             for i, uri in enumerate(f_uris):
+
                 if not uri.startswith("http"):
                     uri = f"{MEDIA_URL}{uri}"
+
                 f_uris[i] = uri
 
         if img_uris:
+
             for i, uri in enumerate(img_uris):
+
                 if not uri.startswith("http"):
                     uri = f"{MEDIA_URL}{uri}"
+
                 img_uris[i] = uri
 
         logger.info("Tool call service executed successfully.")
+
         return output_tool_call, defined_tool_descriptor, f_uris, img_uris

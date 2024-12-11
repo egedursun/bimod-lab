@@ -23,7 +23,9 @@ from io import BytesIO
 
 from asgiref.sync import async_to_sync
 
-from apps.core.harmoniq.harmoniq_prompt_builder import build_harmoniq_system_prompt
+from apps.core.harmoniq.harmoniq_prompt_builder import (
+    build_harmoniq_system_prompt
+)
 
 from apps.core.harmoniq.utils import (
     DEFAULT_HARMONIQ_MODEL,
@@ -38,7 +40,11 @@ import websockets
 import json
 
 from apps.harmoniq.models import Harmoniq
-from apps.harmoniq.utils import HARMONIQ_DEITIES_INSTRUCTIONS_MAP
+
+from apps.harmoniq.utils import (
+    HARMONIQ_DEITIES_INSTRUCTIONS_MAP
+)
+
 from apps.llm_core.models import LLMCore
 
 logger = logging.getLogger(__name__)
@@ -70,11 +76,16 @@ class OpenAIRealtimeAPIClient:
                 "OpenAI-Beta": "realtime=v1"
             }
         )
+
         logger.info("Connected to OpenAI Realtime API.")
 
     async def send_message(self, message):
         harmoniq_deity = self.harmoniq_agent.harmoniq_deity
-        harmoniq_deity_instructions = HARMONIQ_DEITIES_INSTRUCTIONS_MAP.get(harmoniq_deity, "")
+
+        harmoniq_deity_instructions = HARMONIQ_DEITIES_INSTRUCTIONS_MAP.get(
+            harmoniq_deity,
+            ""
+        )
 
         harmoniq_general_instructions = build_harmoniq_system_prompt(
             harmoniq_agent=self.harmoniq_agent,
@@ -117,15 +128,26 @@ class OpenAIRealtimeAPIClient:
             ---
         """)
 
-        event = {"type": "conversation.item.create",
-                 "item": {
-                     "type": "message",
-                     "role": "user",
-                     "content": [{"type": "input_text", "text": formal_message}]
-                 }}
+        event = {
+            "type": "conversation.item.create",
+            "item": {
+                "type": "message",
+                "role": "user",
+                "content": [
+                    {"type": "input_text",
+                     "text": formal_message
+                     }
+                ]
+            }
+        }
 
         logger.info(f"Sending message to OpenAI Realtime API.")
-        await self.ws.send(json.dumps(event))
+
+        await self.ws.send(
+            json.dumps(
+                event
+            )
+        )
 
     async def create_response(self):
 
@@ -141,6 +163,7 @@ class OpenAIRealtimeAPIClient:
         }
 
         logger.info(f"Creating response from OpenAI Realtime API.")
+
         await self.ws.send(json.dumps(event))
 
     async def receive_audio_response(self):
@@ -152,11 +175,18 @@ class OpenAIRealtimeAPIClient:
 
         while True:
             try:
-                response = await asyncio.wait_for(self.ws.recv(), timeout=timeout)
+                response = await asyncio.wait_for(
+                    self.ws.recv(),
+                    timeout=timeout
+                )
+
                 data = json.loads(response)
 
                 if data.get('type') == 'response.audio.delta':
-                    audio_base64 = data.get('delta', '')
+                    audio_base64 = data.get(
+                        'delta',
+                        ''
+                    )
 
                     if audio_base64:
                         decoded_chunk = base64.b64decode(audio_base64)
@@ -200,16 +230,28 @@ class OpenAIRealtimeAPIClient:
             except asyncio.TimeoutError:
 
                 logger.info("Timeout occurred while receiving audio response from OpenAI Realtime API.")
-                if audio_done and transcript_done and (time.time() - last_message_time) >= timeout:
+
+                if (
+                    audio_done and
+                    transcript_done and
+                    (time.time() - last_message_time) >= timeout
+                ):
                     await self.ws.close()
+
                     wav_data = pcm_to_wav(self.audio_buffer)
                     self.audio_buffer = wav_data
+
                     break
 
-    async def request_communication(self, query_text: str = None):
+    async def request_communication(
+        self,
+        query_text: str = None
+    ):
+
         logger.info("Asynchronous request to OpenAI Realtime API.")
 
         await self.connect()
+
         if query_text:
             await self.send_message(query_text)
             await self.create_response()
@@ -217,8 +259,12 @@ class OpenAIRealtimeAPIClient:
         await self.receive_audio_response()
 
 
-def sync_request_communication(api_client, query_text):
+def sync_request_communication(
+    api_client,
+    query_text
+):
     logger.info("Synchronous request to OpenAI Realtime API.")
+
     async_to_sync(api_client.request_communication)(query_text)
 
 
@@ -229,6 +275,7 @@ def pcm_to_wav(
     bits_per_sample=DEFAULT_PCM_BITS_PER_SAMPLE
 ):
     logger.info("Converting PCM data to WAV format.")
+
     byte_depth = bits_per_sample // 8
     wav_output = BytesIO()
 

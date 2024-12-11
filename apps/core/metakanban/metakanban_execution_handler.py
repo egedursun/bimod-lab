@@ -46,7 +46,11 @@ from apps.core.metakanban.utils import (
 )
 
 from apps.llm_transaction.models import LLMTransaction
-from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
+
+from apps.llm_transaction.utils import (
+    LLMTransactionSourcesTypesNames
+)
+
 from apps.metakanban.models import MetaKanbanBoard
 
 logger = logging.getLogger(__name__)
@@ -59,13 +63,22 @@ class MetaKanbanExecutionManager:
             OpenAIGPTClientManager
         )
 
-        self.board: MetaKanbanBoard = MetaKanbanBoard.objects.get(id=board_id)
+        self.board: MetaKanbanBoard = MetaKanbanBoard.objects.get(
+            id=board_id
+        )
+
         self.llm_model = self.board.llm_model
-        self.c = OpenAIGPTClientManager.get_naked_client(llm_model=self.llm_model)
+
+        self.c = OpenAIGPTClientManager.get_naked_client(
+            llm_model=self.llm_model
+        )
 
     def consult_ai(self, user_query: str):
         try:
-            system_prompt = build_metakanban_agent_prompts(board=self.board)
+            system_prompt = build_metakanban_agent_prompts(
+                board=self.board
+            )
+
             output, error = self.handle_metakanban_operation_command(
                 system_prompt=system_prompt,
                 query=user_query
@@ -74,16 +87,30 @@ class MetaKanbanExecutionManager:
         except Exception as e:
             error = f"[handle_metakanban_operation_command] Error executing MetaKanban query: {user_query}. Error: {e}"
             logger.error(error)
+
             return False, ""
 
         logger.info(f"[handle_metakanban_operation_command] AI response: {output}")
+
         return True, output
 
-    def handle_metakanban_operation_command(self, system_prompt: str, query: str):
+    def handle_metakanban_operation_command(
+        self,
+        system_prompt: str,
+        query: str
+    ):
+
         output, error = None, None
+
         context_messages = [
-            {"content": system_prompt, "role": "system"},
-            {"content": query, "role": "user"}
+            {
+                "content": system_prompt,
+                "role": "system"
+            },
+            {
+                "content": query,
+                "role": "user"
+            }
         ]
 
         try:
@@ -102,6 +129,7 @@ class MetaKanbanExecutionManager:
                 transaction_type=ChatRoles.SYSTEM,
                 transaction_source=LLMTransactionSourcesTypesNames.METAKANBAN
             )
+
             logger.info(f"[handle_metakanban_operation_command] Created LLMTransaction for system prompt.")
 
         except Exception as e:
@@ -125,6 +153,7 @@ class MetaKanbanExecutionManager:
                 transaction_type=ChatRoles.USER,
                 transaction_source=LLMTransactionSourcesTypesNames.METAKANBAN
             )
+
             logger.info(f"[handle_metakanban_operation_command] Created LLMTransaction for user prompt.")
 
         except Exception as e:
@@ -145,8 +174,10 @@ class MetaKanbanExecutionManager:
 
             choices = llm_response.choices
             first_choice = choices[0]
+
             choice_message = first_choice.message
             choice_message_content = choice_message.content
+
             logger.info(f"[handle_metakanban_operation_command] Generated AI response.")
 
             try:
@@ -165,6 +196,7 @@ class MetaKanbanExecutionManager:
                     transaction_type=ChatRoles.ASSISTANT,
                     transaction_source=LLMTransactionSourcesTypesNames.METAKANBAN
                 )
+
                 logger.info(
                     f"[handle_metakanban_operation_command] Created LLMTransaction for assistant response (primary).")
 
@@ -176,13 +208,15 @@ class MetaKanbanExecutionManager:
         except Exception as e:
             error = f"[handle_metakanban_operation_command] Error executing MetaKanban query: {query}. Error: {e}"
             logger.error(error)
+
             return output, error
 
         # BACKUP MECHANISM TO HANDLE INCORRECT REQUESTS
         if len(find_tool_call_from_json(choice_message_content)) == 0:
 
-            context_messages.append({
-                "content": f"""
+            context_messages.append(
+                {
+                    "content": f"""
                 -----
                 **FATAL ERROR**
 
@@ -196,8 +230,9 @@ class MetaKanbanExecutionManager:
 
                 -----
             """,
-                "role": "system"
-            })
+                    "role": "system"
+                }
+            )
 
             llm_response = self.c.chat.completions.create(
                 model=self.llm_model.model_name,
@@ -211,8 +246,10 @@ class MetaKanbanExecutionManager:
 
             choices = llm_response.choices
             first_choice = choices[0]
+
             choice_message = first_choice.message
             choice_message_content = choice_message.content
+
             logger.info(f"[handle_metakanban_operation_command] Generated AI response.")
 
             try:
@@ -231,6 +268,7 @@ class MetaKanbanExecutionManager:
                     transaction_type=ChatRoles.ASSISTANT,
                     transaction_source=LLMTransactionSourcesTypesNames.METAKANBAN
                 )
+
                 logger.info(
                     f"[handle_metakanban_operation_command] Created LLMTransaction for assistant response (backup).")
 
@@ -241,6 +279,7 @@ class MetaKanbanExecutionManager:
 
         # TOOL USAGE IDENTIFICATION
         tool_counter = 0
+
         context_messages.append(
             {
                 "content": choice_message_content,
@@ -264,7 +303,10 @@ class MetaKanbanExecutionManager:
                             '''
                         """
 
-                    error = verify_metakanban_command_query_content(content=tool_req_dict)
+                    error = verify_metakanban_command_query_content(
+                        content=tool_req_dict
+                    )
+
                     if error:
                         logger.error(error)
                         return error, None, None, None
@@ -277,7 +319,14 @@ class MetaKanbanExecutionManager:
                     output_tool_call += """
                             '''
                         """
-                    context_messages.append({"content": output_tool_call, "role": "system"})
+
+                    context_messages.append(
+                        {
+                            "content": output_tool_call,
+                            "role": "system"
+                        }
+                    )
+
             try:
 
                 llm_response = self.c.chat.completions.create(
@@ -292,8 +341,10 @@ class MetaKanbanExecutionManager:
 
                 choices = llm_response.choices
                 first_choice = choices[0]
+
                 choice_message = first_choice.message
                 choice_message_content = choice_message.content
+
                 logger.info(f"[handle_metakanban_operation_command] Generated AI response.")
 
                 try:
@@ -312,6 +363,7 @@ class MetaKanbanExecutionManager:
                         transaction_type=ChatRoles.ASSISTANT,
                         transaction_source=LLMTransactionSourcesTypesNames.METAKANBAN
                     )
+
                     logger.info(
                         f"[handle_metakanban_operation_command] Created LLMTransaction for assistant response.")
 
@@ -324,6 +376,7 @@ class MetaKanbanExecutionManager:
                 logger.error(
                     f"[handle_metakanban_operation_command] Error executing MetaKanban command: {query}. Error: {e}")
                 error = f"[handle_metakanban_operation_command] Error executing MetaKanban command: {query}. Error: {e}"
+
                 return output, error
 
         if tool_counter == METAKANBAN_TOOL_COMMAND_MAXIMUM_ATTEMPTS:
@@ -332,6 +385,7 @@ class MetaKanbanExecutionManager:
                 f"reached.")
 
             logger.error(error)
+
             return output, error
 
         try:
@@ -347,7 +401,9 @@ class MetaKanbanExecutionManager:
                 transaction_source=LLMTransactionSourcesTypesNames.METAKANBAN,
                 is_tool_cost=True
             )
+
             tx.save()
+
             logger.info(f"[handle_ai_command] Created LLMTransaction for MetaKanban Management by AI.")
 
         except Exception as e:
@@ -356,6 +412,7 @@ class MetaKanbanExecutionManager:
             pass
 
         output = choice_message_content
+
         return output, error
 
     def _handle_tool_metakanban_query(
@@ -366,6 +423,7 @@ class MetaKanbanExecutionManager:
 
         action_type = tool_usage_dict.get("parameters").get("action_type")
         action_content = tool_usage_dict.get("parameters").get("action_content")
+
         output, error = run_metakanban_command_query(
             board_id=self.board.id,
             action_type=action_type,
@@ -383,7 +441,7 @@ class MetaKanbanExecutionManager:
         """
 
         output_tool_call += output_str
-        print("OUTPUT TOOL CALL: ", output_tool_call)
+
         logger.info(f"[handle_metakanban_operation_command] Tool Response: {output_tool_call}")
 
         return output_tool_call

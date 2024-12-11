@@ -34,23 +34,31 @@ def build_log_snapshot_interpretation_prompt(
     board = connection.board
 
     merged_prompt = f""
+
     merged_prompt += get_generic_member_log_snapshot_prompt()
+
     merged_prompt += get_connection_metadata_prompt(
         connection=connection
     )
+
     merged_prompt += get_board_metadata_prompt(
         board=board
     )
+
     merged_prompt += get_board_labels_metadata_prompt(
         board=board
     )
+
     merged_prompt += get_board_existing_tasks_metadata_prompt(
         board=board
     )
+
     merged_prompt += get_metakanban_last_n_action_logs_prompt(
         board=board
     )
+
     merged_prompt += get_metakanban_project_metadata_prompt(
         board=board
     )
+
     return merged_prompt

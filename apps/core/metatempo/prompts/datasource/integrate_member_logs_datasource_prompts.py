@@ -21,7 +21,10 @@ from apps.metatempo.models import (
 )
 
 
-def get_member_logs_datasource_prompt(connection: MetaTempoConnection, batched_logs: list):
+def get_member_logs_datasource_prompt(
+    connection: MetaTempoConnection,
+    batched_logs: list
+):
     member_snapshot_logs_prompt = f"""
             -----
 
@@ -33,6 +36,7 @@ def get_member_logs_datasource_prompt(connection: MetaTempoConnection, batched_l
 
     for log in batched_logs:
         log: MetaTempoMemberLog
+
         member_snapshot_logs_prompt += f"""
                 ---
                 [User: {log.user.username if log.user else 'N/A'}]

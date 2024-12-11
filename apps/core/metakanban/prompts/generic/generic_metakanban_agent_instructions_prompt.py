@@ -271,4 +271,5 @@ def get_generic_instructions_metakanban(board: MetaKanbanBoard):
 
         -----
     """
+
     return generic_instructions

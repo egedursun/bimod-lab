@@ -25,7 +25,9 @@ from apps.core.http_client.utils import (
     get_transaction_could_not_saved_error_message
 )
 
-from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
+from apps.core.internal_cost_manager.costs_map import (
+    InternalServiceCosts
+)
 
 from apps.datasource_media_storages.models import (
     DataSourceMediaStorageConnection,
@@ -36,8 +38,10 @@ import requests
 import filetype
 
 from apps.llm_transaction.models import LLMTransaction
-from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
 
+from apps.llm_transaction.utils import (
+    LLMTransactionSourcesTypesNames
+)
 
 logger = logging.getLogger(__name__)
 
@@ -61,7 +65,10 @@ class HTTPClientDownloadExecutor:
         self.storage = c
 
     def retrieve(self, url: str):
-        from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE
+        from apps.core.generative_ai.utils import (
+            GPT_DEFAULT_ENCODING_ENGINE
+        )
+
         from apps.core.generative_ai.utils import ChatRoles
 
         try:
@@ -71,12 +78,14 @@ class HTTPClientDownloadExecutor:
 
             if not estimate_format:
                 logger.error(f"Could not guess the file extension for the file from url: {url}")
+
                 return get_url_could_not_resolved_error_message(url)
 
             http_response.raise_for_status()
 
         except requests.exceptions.RequestException as e:
             logger.error(f"Error downloading file from url: {e}")
+
             return get_download_from_url_failed_error_message(str(e))
 
         try:
@@ -88,11 +97,14 @@ class HTTPClientDownloadExecutor:
                 media_file_type=estimate_format,
                 file_bytes=http_response.content
             )
+
             item.save()
+
             logger.info(f"File saved to the storage: {item.full_file_path}")
 
         except Exception as e:
             logger.error(f"Error saving the file to the storage: {e}")
+
             return get_downloaded_item_could_not_saved_error_message(str(e))
 
         try:
@@ -107,11 +119,14 @@ class HTTPClientDownloadExecutor:
                 transaction_source=LLMTransactionSourcesTypesNames.DOWNLOAD_FILE,
                 is_tool_cost=True
             )
+
             tx.save()
+
             logger.info(f"Transaction saved successfully: {tx.id}")
 
         except Exception as e:
             logger.error(f"Error saving the transaction: {e}")
+
             return get_transaction_could_not_saved_error_message(str(e))
 
         return item.full_file_path
@@ -121,11 +136,14 @@ class HTTPClientDownloadExecutor:
         try:
             uuid_1 = str(uuid.uuid4())
             uuid_2 = str(uuid.uuid4())
+
             final_uuid = f"{uuid_1}_{uuid_2}"
+
             logger.info(f"Generated unique name for the file: {final_uuid}")
 
         except Exception as e:
             logger.error(f"Error occurred while generating unique name for the file: {e}")
+
             return None
 
         return final_uuid

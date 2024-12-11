@@ -39,10 +39,15 @@ def send_orchestration_message(
     logger.info(f"Sending orchestration message: {log_message}")
 
     channel_layer = get_channel_layer()
+
     group_name = f'orchestration_logs_{query_id}'
-    query_object = OrchestrationQuery.objects.get(id=query_id)
+
+    query_object = OrchestrationQuery.objects.get(
+        id=query_id
+    )
 
     maestro_id = query_object.maestro.id
+
     generic_group_name = f'orchestration_generic_logs_{maestro_id}'
 
     async_to_sync(channel_layer.group_send)(
@@ -52,6 +57,7 @@ def send_orchestration_message(
             'message': log_message
         }
     )
+
     async_to_sync(channel_layer.group_send)(
         generic_group_name,
         {
@@ -69,6 +75,7 @@ def send_orchestration_message(
                 'message': BIMOD_STREAMING_END_TAG
             }
         )
+
         async_to_sync(channel_layer.group_send)(
             generic_group_name,
             {
@@ -86,6 +93,7 @@ def send_orchestration_message(
                 'message': BIMOD_PROCESS_END
             }
         )
+
         async_to_sync(channel_layer.group_send)(
             generic_group_name,
             {
@@ -107,6 +115,7 @@ def send_orchestration_message(
                     'message': stop_tag
                 }
             )
+
             async_to_sync(channel_layer.group_send)(
                 generic_group_name,
                 {

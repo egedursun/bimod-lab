@@ -21,7 +21,10 @@ from apps.metatempo.models import (
 )
 
 
-def get_overall_logs_datasource_prompt(connection: MetaTempoConnection, batched_logs: list):
+def get_overall_logs_datasource_prompt(
+    connection: MetaTempoConnection,
+    batched_logs: list
+):
     overall_analysis_logs = f"""
                 -----
 
@@ -33,6 +36,7 @@ def get_overall_logs_datasource_prompt(connection: MetaTempoConnection, batched_
 
     for log in batched_logs:
         log: MetaTempoProjectOverallLog
+
         overall_analysis_logs += f"""
                     ---
                     [Overall Activity Summary]

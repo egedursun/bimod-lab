@@ -21,7 +21,9 @@ from uuid import uuid4
 import boto3
 import filetype
 
-from apps.core.code_analyst.utils import BIN_FILE_FORMAT
+from apps.core.code_analyst.utils import (
+    BIN_FILE_FORMAT
+)
 
 from apps.core.internal_cost_manager.costs_map import (
     InternalServiceCosts
@@ -32,7 +34,9 @@ from apps.core.media_managers.utils import (
     GENERATED_FILES_ROOT_MEDIA_PATH
 )
 
-from apps.llm_transaction.models import LLMTransaction
+from apps.llm_transaction.models import (
+    LLMTransaction
+)
 
 from apps.llm_transaction.utils import (
     LLMTransactionSourcesTypesNames
@@ -64,8 +68,13 @@ class ReasoningExecutor:
             ReasoningAuxiliaryLLMManager
         )
 
-        from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE
-        from apps.core.generative_ai.utils import ChatRoles
+        from apps.core.generative_ai.utils import (
+            GPT_DEFAULT_ENCODING_ENGINE
+        )
+
+        from apps.core.generative_ai.utils import (
+            ChatRoles
+        )
 
         try:
             llm_c = ReasoningAuxiliaryLLMManager(
@@ -83,6 +92,7 @@ class ReasoningExecutor:
             texts = llm_c.process_reasoning(
                 query=query_string
             )
+
             logger.info(
                 f"[ReasoningExecutor.execute_process_reasoning] Reasoning processed successfully."
             )
@@ -107,7 +117,9 @@ class ReasoningExecutor:
                 transaction_source=LLMTransactionSourcesTypesNames.REASONING,
                 is_tool_cost=True
             )
+
             tx.save()
+
             logger.info(
                 f"[ReasoningExecutor.execute_process_reasoning] User transaction saved successfully."
             )
@@ -153,17 +165,20 @@ class ReasoningExecutor:
         save_name = ReasoningExecutor.generate_save_name(
             extension=extension
         )
+
         s3_path = f"{GENERATED_FILES_ROOT_MEDIA_PATH}{save_name}"
         full_uri = f"{MEDIA_URL}{s3_path}"
 
         try:
             s3c = boto3.client('s3')
             bucket = settings.AWS_STORAGE_BUCKET_NAME
+
             s3c.put_object(
                 Bucket=bucket,
                 Key=s3_path,
                 Body=file_bytes
             )
+
             logger.info(
                 f"[ReasoningExecutor.save_file_and_provide_full_uri] File saved to S3 with URI: {full_uri}"
             )
@@ -181,13 +196,16 @@ class ReasoningExecutor:
     def save_image_and_provide_full_uri(image_bytes):
 
         guess_file_type = filetype.guess(image_bytes)
+
         if guess_file_type is None:
             guess_file_type = BIN_FILE_FORMAT
 
         extension = guess_file_type.extension
+
         save_name = ReasoningExecutor.generate_save_name(
             extension=extension
         )
+
         s3_path = f"{GENERATED_IMAGES_ROOT_MEDIA_PATH}{save_name}"
         full_uri = f"{MEDIA_URL}{s3_path}"
 
@@ -199,6 +217,7 @@ class ReasoningExecutor:
                 Key=s3_path,
                 Body=image_bytes
             )
+
             logger.info(
                 f"[ReasoningExecutor.save_image_and_provide_full_uri] Image saved to S3 with URI: {full_uri}"
             )
@@ -218,12 +237,18 @@ class ReasoningExecutor:
     ):
 
         f_uris = []
+
         for f_bytes, remote in file_bytes_list:
 
             try:
-                f_uri = ReasoningExecutor.save_file_and_provide_full_uri(f_bytes, remote)
+                f_uri = ReasoningExecutor.save_file_and_provide_full_uri(
+                    f_bytes,
+                    remote
+                )
+
                 if f_uri is not None:
                     f_uris.append(f_uri)
+
                 logger.info(
                     f"[ReasoningExecutor.save_files_and_provide_full_uris] File saved successfully."
                 )
@@ -246,6 +271,7 @@ class ReasoningExecutor:
 
             try:
                 f_uri = ReasoningExecutor.save_image_and_provide_full_uri(img_bytes)
+
                 if f_uri is not None:
                     f_uris.append(f_uri)
 

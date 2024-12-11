@@ -15,23 +15,45 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-
 import base64
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.http import JsonResponse
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import TemplateView
 
-from apps.core.harmoniq.harmoniq_executor import OpenAIRealtimeAPIClient, sync_request_communication
-from apps.core.harmoniq.harmoniq_tool_manager import HarmoniqToolManager
-from apps.core.harmoniq.utils import find_tool_call_from_json, MAX_ATTEMPTS_TOOL_CALL
-from apps.core.user_permissions.permission_manager import UserPermissionManager
+from apps.core.harmoniq.harmoniq_executor import (
+    OpenAIRealtimeAPIClient,
+    sync_request_communication
+)
+
+from apps.core.harmoniq.harmoniq_tool_manager import (
+    HarmoniqToolManager
+)
+
+from apps.core.harmoniq.utils import (
+    find_tool_call_from_json,
+    MAX_ATTEMPTS_TOOL_CALL
+)
+
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
 from apps.harmoniq.models import Harmoniq
-from apps.leanmod.models import ExpertNetwork, ExpertNetworkAssistantReference
+
+from apps.leanmod.models import (
+    ExpertNetwork,
+    ExpertNetworkAssistantReference
+)
+
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
@@ -45,16 +67,22 @@ class HarmoniqView_Use(LoginRequiredMixin, TemplateView):
 
         ##############################
         # PERMISSION CHECK FOR - CHAT_WITH_HARMONIQ_AGENTS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.CHAT_WITH_HARMONIQ_AGENTS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.CHAT_WITH_HARMONIQ_AGENTS
+        ):
             messages.error(self.request, "You do not have permission to chat with Harmoniq Agents.")
             return context
         ##############################
 
-        agents = Harmoniq.objects.filter(organization__users=self.request.user)
+        agents = Harmoniq.objects.filter(
+            organization__users=self.request.user
+        )
+
         context['agents'] = agents
         context['audio'] = None
         context['transcript'] = None
+
         return context
 
 
@@ -65,10 +93,19 @@ class HarmoniqCommunicationView(View):
             data = request.POST
             agent_id = data.get('agentPicker')
             msg = data.get('messageInput')
-            if not agent_id or not msg:
-                return JsonResponse({'error': 'Agent ID or message is missing'}, status=400)
 
-            harmoniq_agent = Harmoniq.objects.get(id=agent_id)
+            if not agent_id or not msg:
+                return JsonResponse(
+                    {
+                        'error': 'Agent ID or message is missing'
+                    },
+                    status=400
+                )
+
+            harmoniq_agent = Harmoniq.objects.get(
+                id=agent_id
+            )
+
             org = harmoniq_agent.organization
             user = self.request.user
 
@@ -98,13 +135,16 @@ class HarmoniqCommunicationView(View):
             expert_net_and_refs = {}
             for expert_net in harmoniq_agent.consultant_expert_networks.all():
                 expert_net: ExpertNetwork
+
                 expert_net_and_refs[expert_net.name] = {
                     "expert_network_name": expert_net.name,
                     "meta_description": expert_net.meta_description,
                     "assistant_references": {}
                 }
+
                 for ref in expert_net.assistant_references.all():
                     ref: ExpertNetworkAssistantReference
+
                     expert_net_and_refs[expert_net.name]["assistant_references"][ref.id] = {
                         "assistant_id": ref.id,
                         "assistant_name": ref.assistant.name,
@@ -112,32 +152,50 @@ class HarmoniqCommunicationView(View):
                     }
 
             api_client = OpenAIRealtimeAPIClient(
-                harmoniq_agent=harmoniq_agent, llm_model=harmoniq_agent.llm_model,
-                expert_net_and_refs=expert_net_and_refs, org_data=org_data,  user_data=user_data)
+                harmoniq_agent=harmoniq_agent,
+                llm_model=harmoniq_agent.llm_model,
+                expert_net_and_refs=expert_net_and_refs,
+                org_data=org_data,
+                user_data=user_data
+            )
 
             sync_request_communication(api_client, msg)
+
             audio_data = base64.b64encode(api_client.audio_buffer).decode('utf-8')
             transcript_data = api_client.transcript
 
             def process_tool_calls(transcript, audio, attempt=0):
+
                 if attempt > MAX_ATTEMPTS_TOOL_CALL:
                     logger.error(f"Tool calls are not successful after {MAX_ATTEMPTS_TOOL_CALL} attempts.")
+
                     return transcript, audio
+
                 json_content_of_resp = find_tool_call_from_json(transcript)
+
                 if not json_content_of_resp:
                     logger.info("No tool call found in the transcript.")
+
                     return transcript, audio
 
                 tool_resp_list = []
                 for i, tool_call in enumerate(json_content_of_resp):
-                    tool_xc = HarmoniqToolManager(agent=harmoniq_agent, tool_usage_json_str=tool_call)
+                    tool_xc = HarmoniqToolManager(
+                        agent=harmoniq_agent,
+                        tool_usage_json_str=tool_call
+                    )
+
                     tool_resp, tool_name, file_uris, image_uris = tool_xc.call_internal_tool_service_harmoniq()
-                    tool_resp_list.append(f"""
+
+                    tool_resp_list.append(
+                        f"""
                             [{i}] "tool_name": {tool_name},
                                 [{i}a.] "tool_response": {tool_resp},
                                 [{i}b.] "file_uris": {file_uris},
                                 [{i}c.] "image_uris": {image_uris}
-                        """)
+                        """
+                    )
+
                 tool_msg = f"""
                     ---
                     Tool Response List:
@@ -155,16 +213,40 @@ class HarmoniqCommunicationView(View):
 
                     ---
                 """
+
                 updated_msg = (msg + tool_msg)
-                sync_request_communication(api_client, updated_msg)
-                updated_audio_data = base64.b64encode(api_client.audio_buffer).decode('utf-8')
+
+                sync_request_communication(
+                    api_client,
+                    updated_msg
+                )
+
+                updated_audio_data = base64.b64encode(
+                    api_client.audio_buffer
+                ).decode('utf-8')
+
                 updated_transcript_data = api_client.transcript
+
                 logger.info(f"Tool calls are successful after {attempt + 1} attempts.")
+
                 return process_tool_calls(updated_transcript_data, updated_audio_data, attempt + 1)
 
             final_transcript, final_audio = process_tool_calls(transcript_data, audio_data)
             logger.info(f"Communication is successful.")
-            return JsonResponse({'transcript': final_transcript, 'audio': final_audio})
+
+            return JsonResponse(
+                {
+                    'transcript': final_transcript,
+                    'audio': final_audio
+                }
+            )
+
         except Exception as e:
             logger.error(f"Communication is not successful. Error: {str(e)}")
-            return JsonResponse({'error': str(e)}, status=400)
+
+            return JsonResponse(
+                {
+                    'error': str(e)
+                },
+                status=400
+            )

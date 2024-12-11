@@ -14,16 +14,39 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 from django.urls import path
 
-from apps.quick_setup_helper.views import QuickSetupHelperView_QuickSetupManager
-from apps.quick_setup_helper.views import QuickSetupHelperView_QuickSetupWrapperPage
+from apps.quick_setup_helper.views import (
+    QuickSetupHelperView_QuickSetupWrapperPage,
+    QuickSetupHelperView_QuickSetupManager,
+    QuickSetupHelperView_QuickSetupSuccessPage,
+)
 
 app_name = 'quick_setup_helper'
 
 urlpatterns = [
-    path("", QuickSetupHelperView_QuickSetupWrapperPage.as_view(
-        template_name="quick_setup_helper/quick_setup_wrapper_page.html"
-    ), name="wrapper"),
-    path("execute/", QuickSetupHelperView_QuickSetupManager.as_view(), name="execute"),
+    path(
+        "",
+        QuickSetupHelperView_QuickSetupWrapperPage.as_view(
+            template_name="quick_setup_helper/quick_setup_wrapper_page.html"
+        ),
+        name="wrapper"
+    ),
+
+    path(
+        "execute/",
+        QuickSetupHelperView_QuickSetupManager.as_view(
+
+        ),
+        name="execute"
+    ),
+
+    path(
+        "success/",
+        QuickSetupHelperView_QuickSetupSuccessPage.as_view(
+            template_name="quick_setup_helper/quick_setup_success_page.html"
+        ),
+        name="success"
+    ),
 ]

@@ -17,24 +17,72 @@
 
 from django.urls import path
 
-from apps.harmoniq.views import (HarmoniqView_List, HarmoniqView_Use, HarmoniqView_Create,
-                                 HarmoniqView_Update, HarmoniqView_ConfirmDelete, HarmoniqCommunicationView)
-from apps.harmoniq.views.internal.internal_test_harmoniq_views import HarmoniqView_TestInternal
+from apps.harmoniq.views import (
+    HarmoniqView_List,
+    HarmoniqView_Use,
+    HarmoniqView_Create,
+    HarmoniqView_Update,
+    HarmoniqView_ConfirmDelete,
+    HarmoniqCommunicationView
+)
+
+from apps.harmoniq.views.internal.internal_test_harmoniq_views import (
+    HarmoniqView_TestInternal
+)
 
 app_name = 'harmoniq'
 
 urlpatterns = [
-    path("use/", HarmoniqView_Use.as_view(
-        template_name="harmoniq/use_harmoniq_agent.html"), name="use"),
-    path("list/", HarmoniqView_List.as_view(
-        template_name="harmoniq/list_harmoniq_agents.html"), name="list"),
-    path("create/", HarmoniqView_Create.as_view(
-        template_name="harmoniq/create_harmoniq_agent.html"), name="create"),
-    path("update/<int:pk>/", HarmoniqView_Update.as_view(
-        template_name="harmoniq/update_harmoniq_agent.html"), name="update"),
-    path("delete/<int:pk>/", HarmoniqView_ConfirmDelete.as_view(
-        template_name="harmoniq/confirm_delete_harmoniq_agent.html"), name="confirm_delete"),
-    path("api/communicate/", HarmoniqCommunicationView.as_view(), name="harmoniq_api"),
-    path("internal/test/", HarmoniqView_TestInternal.as_view(
-        template_name="harmoniq/internal/test_harmoniq_agent.html"), name="internal_test"),
+    path(
+        "use/",
+        HarmoniqView_Use.as_view(
+            template_name="harmoniq/use_harmoniq_agent.html"
+        ),
+        name="use"
+    ),
+
+    path(
+        "list/",
+        HarmoniqView_List.as_view(
+            template_name="harmoniq/list_harmoniq_agents.html"
+        ),
+        name="list"
+    ),
+
+    path(
+        "create/",
+        HarmoniqView_Create.as_view(
+            template_name="harmoniq/create_harmoniq_agent.html"
+        ),
+        name="create"
+    ),
+
+    path(
+        "update/<int:pk>/",
+        HarmoniqView_Update.as_view(
+            template_name="harmoniq/update_harmoniq_agent.html"
+        ), name="update"
+    ),
+
+    path(
+        "delete/<int:pk>/",
+        HarmoniqView_ConfirmDelete.as_view(
+            template_name="harmoniq/confirm_delete_harmoniq_agent.html"
+        ), name="confirm_delete"
+    ),
+
+    path(
+        "api/communicate/",
+        HarmoniqCommunicationView.as_view(
+
+        ),
+        name="harmoniq_api"
+    ),
+
+    path(
+        "internal/test/",
+        HarmoniqView_TestInternal.as_view(
+            template_name="harmoniq/internal/test_harmoniq_agent.html"
+        ), name="internal_test"
+    ),
 ]

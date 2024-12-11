@@ -64,18 +64,24 @@ def build_harmoniq_system_prompt(
     name = build_structured_name_prompt_harmoniq(
         harmoniq=harmoniq_agent
     )
+
     guidelines = build_structured_primary_guidelines_harmoniq()
+
     instructions = build_structured_instructions_prompt_harmoniq(
         agent=harmoniq_agent
     )
+
     spatial_info = build_structured_place_and_time_prompt_harmoniq(
         organization_data=org_data,
         user_data=user_data
     )
+
     expert_network_prompt = build_expert_networks_multi_modality_prompt_harmoniq(
         expert_net_and_refs=expert_net_and_refs
     )
+
     tool_instructions = build_structured_tool_usage_instructions_prompt_harmoniq()
+
     nw_query_instructions = build_structured_tool_prompt__expert_network_query_execution_harmoniq()
 
     system_prompt += name
@@ -103,4 +109,5 @@ def build_harmoniq_system_prompt(
         ---
     """
     system_prompt += affirmation_prompt
+
     return system_prompt

@@ -68,26 +68,32 @@ class MetaKanbanCommandTypes:
                 "label_name": "<string value here>",
                 "label_color": f"""<One of these values here: {MetaKanbanTaskLabelColorChoiceNames.as_list()}>""",
             },
+
             MetaKanbanCommandTypes.UPDATE_LABEL: {
                 "label_id": "<integer value here>",
                 "label_name": "<string value here>",
                 "label_color": "<string value here>",
             },
+
             MetaKanbanCommandTypes.DELETE_LABEL: {
                 "label_id": "<integer value here>",
             },
+
             MetaKanbanCommandTypes.CREATE_COLUMN: {
                 "column_name": "<string value here>",
                 "position_id": "<integer value here>",
             },
+
             MetaKanbanCommandTypes.UPDATE_COLUMN: {
                 "column_id": "<integer value here>",
                 "column_name": "<string value here>",
                 "position_id": "<integer value here>",
             },
+
             MetaKanbanCommandTypes.DELETE_COLUMN: {
                 "column_id": "<integer value here>",
             },
+
             MetaKanbanCommandTypes.CREATE_TASK: {
                 "status_column_id": "<integer value here>",
                 "title": "<string value here>",
@@ -98,6 +104,7 @@ class MetaKanbanCommandTypes:
                 "assignee_ids": ["<integer value here>", "<integer value here>", "..."],
                 "task_url": "<string value here>"
             },
+
             MetaKanbanCommandTypes.UPDATE_TASK: {
                 "task_id": "<integer value here>",
                 "status_column_id": "<integer value here>",
@@ -109,20 +116,25 @@ class MetaKanbanCommandTypes:
                 "assignee_ids": ["<integer value here>", "<integer value here>", "..."],
                 "task_url": "<string value here>"
             },
+
             MetaKanbanCommandTypes.DELETE_TASK: {
                 "task_id": "<integer value here>",
             },
+
             MetaKanbanCommandTypes.ASSIGN_TASK: {
                 "task_id": "<integer value here>",
                 "assignee_ids": ["<integer value here>", "<integer value here>", "..."],
             },
+
             MetaKanbanCommandTypes.MOVE_TASK: {
                 "task_id": "<integer value here>",
                 "status_column_id": "<integer value here>",
             },
+
             MetaKanbanCommandTypes.ANALYZE: {
                 "report": "<string value here>",
             },
+
             MetaKanbanCommandTypes.INTEGRATE_MEETING_RECORDS: {
                 "record_id": "<integer value here>"
             },

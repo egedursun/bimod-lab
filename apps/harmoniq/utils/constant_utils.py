@@ -49,12 +49,17 @@ class HarmoniqDeitiesNames:
 
     @staticmethod
     def as_list():
-        return [HarmoniqDeitiesNames.ARATHREUS, HarmoniqDeitiesNames.BERATHRON,
-                HarmoniqDeitiesNames.CELESTHAR, HarmoniqDeitiesNames.DEMORTHON,
-                HarmoniqDeitiesNames.ERATHERIS]
+        return [
+            HarmoniqDeitiesNames.ARATHREUS,
+            HarmoniqDeitiesNames.BERATHRON,
+            HarmoniqDeitiesNames.CELESTHAR,
+            HarmoniqDeitiesNames.DEMORTHON,
+            HarmoniqDeitiesNames.ERATHERIS
+        ]
 
 
 HARMONIQ_DEITIES_INSTRUCTIONS_MAP = {
+
     HarmoniqDeitiesNames.ARATHREUS: f"""
     **Style, Tone & Character You Must Assume:**
     -------------
@@ -72,6 +77,7 @@ HARMONIQ_DEITIES_INSTRUCTIONS_MAP = {
     - Uses phrases like "I understand," "Let me assist you," and "It’s my pleasure to help."
     -------------
     """,
+
     HarmoniqDeitiesNames.BERATHRON: f"""
     **Style, Tone & Character You Must Assume:**
     -------------
@@ -90,6 +96,7 @@ HARMONIQ_DEITIES_INSTRUCTIONS_MAP = {
     - Phrases like "Let's cut to the chase" and "Here’s what you need."
     -------------
     """,
+
     HarmoniqDeitiesNames.CELESTHAR: f"""
     **Style, Tone & Character You Must Assume:**
     -------------
@@ -106,6 +113,7 @@ HARMONIQ_DEITIES_INSTRUCTIONS_MAP = {
     - Often uses reflective phrases like "Consider this approach," "In the long run," or "Let us contemplate the best solution."
     -------------
     """,
+
     HarmoniqDeitiesNames.DEMORTHON: f"""
     **Style, Tone & Character You Must Assume:**
     -------------
@@ -122,6 +130,7 @@ HARMONIQ_DEITIES_INSTRUCTIONS_MAP = {
     - Uses assertive language like "This is the course of action," "No need for further discussion," or "Follow this directive."
     -------------
     """,
+
     HarmoniqDeitiesNames.ERATHERIS: f"""
     **Style, Tone & Character You Must Assume:**
     -------------
@@ -141,6 +150,24 @@ HARMONIQ_DEITIES_INSTRUCTIONS_MAP = {
     """,
 }
 
-HARMONIQ_AGENT_ADMIN_LIST = ('name', 'organization', 'llm_model', 'harmoniq_deity', 'created_by_user', 'created_at')
-HARMONIQ_AGENT_ADMIN_SEARCH = ('name', 'organization__name', 'llm_model__nickname', 'created_by_user__username')
-HARMONIQ_AGENT_ADMIN_FILTER = ('organization', 'llm_model', 'harmoniq_deity', 'created_by_user', 'created_at')
+HARMONIQ_AGENT_ADMIN_LIST = (
+    'name',
+    'organization',
+    'llm_model',
+    'harmoniq_deity',
+    'created_by_user',
+    'created_at'
+)
+HARMONIQ_AGENT_ADMIN_SEARCH = (
+    'name',
+    'organization__name',
+    'llm_model__nickname',
+    'created_by_user__username'
+)
+HARMONIQ_AGENT_ADMIN_FILTER = (
+    'organization',
+    'llm_model',
+    'harmoniq_deity',
+    'created_by_user',
+    'created_at'
+)

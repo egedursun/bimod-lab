@@ -20,7 +20,8 @@ import logging
 import boto3
 
 from apps.datasource_media_storages.models import (
-    DataSourceMediaStorageConnection, DataSourceMediaStorageItem
+    DataSourceMediaStorageConnection,
+    DataSourceMediaStorageItem
 )
 
 logger = logging.getLogger(__name__)
@@ -51,6 +52,7 @@ class MediaStorageCopyClient__AWSS3Bucket:
             logger.error(
                 f"Media storage with ID '{media_storage_id}' not found."
             )
+
             return
 
     def copy_file_to_media_storage(

@@ -19,7 +19,12 @@
 from django.contrib import admin
 
 from apps.harmoniq.models import Harmoniq
-from apps.harmoniq.utils import HARMONIQ_AGENT_ADMIN_LIST, HARMONIQ_AGENT_ADMIN_SEARCH, HARMONIQ_AGENT_ADMIN_FILTER
+
+from apps.harmoniq.utils import (
+    HARMONIQ_AGENT_ADMIN_LIST,
+    HARMONIQ_AGENT_ADMIN_SEARCH,
+    HARMONIQ_AGENT_ADMIN_FILTER
+)
 
 
 @admin.register(Harmoniq)
@@ -27,4 +32,5 @@ class HarmoniqAdmin(admin.ModelAdmin):
     list_display = HARMONIQ_AGENT_ADMIN_LIST
     list_filter = HARMONIQ_AGENT_ADMIN_FILTER
     search_fields = HARMONIQ_AGENT_ADMIN_SEARCH
+
     ordering = ['-created_at']

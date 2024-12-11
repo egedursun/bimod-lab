@@ -14,18 +14,21 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
 from apps.harmoniq.models import Harmoniq
 from apps.organization.models import Organization
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
-
 
 logger = logging.getLogger(__name__)
 
@@ -36,17 +39,28 @@ class HarmoniqView_List(LoginRequiredMixin, TemplateView):
 
         ##############################
         # PERMISSION CHECK FOR - LIST_HARMONIQ_AGENTS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.LIST_HARMONIQ_AGENTS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.LIST_HARMONIQ_AGENTS
+        ):
             messages.error(self.request, "You do not have permission to list Harmoniq Agents.")
             return context
             ##############################
 
-        orgs = Organization.objects.filter(users__in=[self.request.user])
+        orgs = Organization.objects.filter(
+            users__in=[self.request.user]
+        )
+
         org_agents = {}
+
         for org in orgs:
-            agents = Harmoniq.objects.filter(organization=org)
+            agents = Harmoniq.objects.filter(
+                organization=org
+            )
+
             org_agents[org] = agents
+
         context['org_assistants'] = org_agents
         logger.info(f"Harmoniq Agents were listed by User: {self.request.user.id}.")
+
         return context

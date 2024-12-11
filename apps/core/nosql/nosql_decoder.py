@@ -17,20 +17,23 @@
 
 import logging
 
-from apps.core.nosql.nosql_executor import CouchbaseNoSQLExecutor
-from apps.core.nosql.utils import NOSQL_DBMS_PROVIDERS
-from apps.datasource_nosql.models import NoSQLDatabaseConnection
+from apps.core.nosql.nosql_executor import (
+    CouchbaseNoSQLExecutor
+)
 
+from apps.core.nosql.utils import NOSQL_DBMS_PROVIDERS
+
+from apps.datasource_nosql.models import (
+    NoSQLDatabaseConnection
+)
 
 logger = logging.getLogger(__name__)
-
 
 
 class InternalNoSQLClient:
     @staticmethod
     def get(connection: NoSQLDatabaseConnection):
-
         if connection.nosql_db_type == NOSQL_DBMS_PROVIDERS["COUCHBASE"]["code"]:
-
             logger.info(f"Creating Couchbase NoSQL client for connection: {connection.name}")
+
             return CouchbaseNoSQLExecutor(connection)

@@ -17,3 +17,4 @@
 
 from .quick_setup_wrapper_page_views import *
 from .quick_setup_manager_views import *
+from .quick_setup_success_page_views import *

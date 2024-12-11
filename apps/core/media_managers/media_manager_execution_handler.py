@@ -27,13 +27,18 @@ import filetype
 import numpy as np
 from PIL import Image
 
-from apps.core.generative_ai.gpt_openai_manager import OpenAIGPTClientManager
-from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
+from apps.core.generative_ai.gpt_openai_manager import (
+    OpenAIGPTClientManager
+)
+
+from apps.core.internal_cost_manager.costs_map import (
+    InternalServiceCosts
+)
 
 from apps.core.media_managers.helpers import (
     MediaStorageCopyClient__AWSS3Bucket,
     MediaStorageCopyClient__GCSBucket,
-    MediaStorageCopyClient__AzureBlob, MediaStorageCopyClient__GoogleDrive
+    MediaStorageCopyClient__AzureBlob,
 )
 
 from apps.core.media_managers.utils import (
@@ -51,10 +56,16 @@ from apps.core.media_managers.utils import (
     OPEN_AI_DEFAULT_EMBEDDING_VECTOR_DIMENSIONS
 )
 
-from apps.datasource_media_storages.models import MediaItemVectorData
+from apps.datasource_media_storages.models import (
+    MediaItemVectorData
+)
 
 from apps.llm_transaction.models import LLMTransaction
-from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
+
+from apps.llm_transaction.utils import (
+    LLMTransactionSourcesTypesNames
+)
+
 from config import settings
 from config.settings import MEDIA_URL
 
@@ -82,15 +93,20 @@ class MediaManager:
                     OPEN_AI_DEFAULT_EMBEDDING_VECTOR_DIMENSIONS
                 )
             )
-            faiss.write_index(self.media_items_index, self.media_items_index_path)
+            faiss.write_index(
+                self.media_items_index,
+                self.media_items_index_path
+            )
 
     @staticmethod
     def file_name_generator(file_format):
         uuid_1 = str(uuid4())
         uuid_2 = str(uuid4())
+
         return f"{uuid_1}_{uuid_2}.{file_format}"
 
     def _generate_query_embedding(self, query: str) -> List[float]:
+
         c = OpenAIGPTClientManager.get_naked_client(
             llm_model=self.connection_object.assistant.llm_model
         )
@@ -117,22 +133,32 @@ class MediaManager:
         if self.media_items_index is None:
             raise ValueError("[search_media_items] FAISS index not initialized or loaded properly.")
 
-        distances, ids = self.media_items_index.search(query_vector, n_results)
+        distances, ids = self.media_items_index.search(
+            query_vector,
+            n_results
+        )
+
         results = []
 
         for item_id, distance in zip(ids[0], distances[0]):
             if item_id == -1:
                 continue
             try:
-                instance = MediaItemVectorData.objects.get(id=item_id)
-                results.append({
-                    "id": instance.id,
-                    "data": instance.raw_data,
-                    "distance": distance,
-                })
+                instance = MediaItemVectorData.objects.get(
+                    id=item_id
+                )
+
+                results.append(
+                    {
+                        "id": instance.id,
+                        "data": instance.raw_data,
+                        "distance": distance,
+                    }
+                )
 
             except MediaItemVectorData.DoesNotExist:
                 print(f"Warning: Media Item Instance with ID {item_id} not found in the vector database.")
+
                 logger.error(f"Media Item Instance with ID {item_id} not found in the vector database.")
 
         return results
@@ -151,9 +177,12 @@ class MediaManager:
         else:
             file_format = remote.split(".")[-1]
 
-        file_name = MediaManager.file_name_generator(file_format=file_format)
+        file_name = MediaManager.file_name_generator(
+            file_format=file_format
+        )
 
         bucket_path = f"{GENERATED_FILES_ROOT_MEDIA_PATH}{file_name}"
+
         uri = f"{MEDIA_URL}{bucket_path}"
 
         try:
@@ -170,6 +199,7 @@ class MediaManager:
 
         except Exception as e:
             logger.error(f"Error occurred while saving the file to the storage: {e}")
+
             return None
 
         return uri
@@ -179,13 +209,19 @@ class MediaManager:
         img_bytes = sketch_data_map.get("sketch_image")
 
         file_name = MEDIA_PATH_FREEFORM_SKETCH + str(uuid4()) + "." + "jpeg"
+
         bucket_path = f"{GENERATED_IMAGES_ROOT_MEDIA_PATH}{file_name}"
         uri_sketch = f"{MEDIA_URL}{bucket_path}"
 
         try:
             s3c = boto3.client('s3')
             bucket = settings.AWS_STORAGE_BUCKET_NAME
-            img = Image.open(io.BytesIO(img_bytes))
+
+            img = Image.open(
+                io.BytesIO(
+                    img_bytes
+                )
+            )
 
             if img.mode == ImageModes.RGBA:
                 img = img.convert(ImageModes.RGB)
@@ -208,6 +244,7 @@ class MediaManager:
 
         except Exception as e:
             logger.error(f"Error occurred while saving the sketch to the storage: {e}")
+
             return None, None
 
         return [uri_sketch]
@@ -228,6 +265,7 @@ class MediaManager:
 
         format_edit = estimate_format.extension
         format_edit_mask = estimate_format_mask.extension
+
         file_name_edit = MEDIA_PATH_EDIT_IMAGE_BASE + str(uuid4()) + "." + format_edit
         file_name_edit_mask = MEDIA_PATH_EDIT_IMAGE_MASK + str(uuid4()) + "." + format_edit_mask
 
@@ -256,9 +294,13 @@ class MediaManager:
 
         except Exception as e:
             logger.error(f"Error occurred while saving the edit image to the storage: {e}")
+
             return None, None
 
-        return [uri_edit, uri_edit_mask]
+        return [
+            uri_edit,
+            uri_edit_mask
+        ]
 
     @staticmethod
     def save_image_and_return_uri(data):
@@ -269,7 +311,10 @@ class MediaManager:
             estimate_format = FILE_EXTENSION_BIN
 
         file_format = estimate_format.extension
-        file_name = MediaManager.file_name_generator(file_format=file_format)
+
+        file_name = MediaManager.file_name_generator(
+            file_format=file_format
+        )
 
         s3_uri = f"{GENERATED_IMAGES_ROOT_MEDIA_PATH}{file_name}"
         direct_uri = f"{MEDIA_URL}{s3_uri}"
@@ -288,6 +333,7 @@ class MediaManager:
 
         except Exception as e:
             logger.error(f"Error occurred while saving the image to the storage: {e}")
+
             return None
 
         return direct_uri
@@ -297,7 +343,11 @@ class MediaManager:
         uris = []
 
         for binary, remote in data_list:
-            uri = MediaManager.save_file_and_return_uri(binary, remote)
+
+            uri = MediaManager.save_file_and_return_uri(
+                binary,
+                remote
+            )
 
             if uri is not None:
                 uris.append(uri)
@@ -327,7 +377,11 @@ class MediaManager:
         from apps.core.generative_ai.auxiliary_clients.auxiliary_llm_analyst_client import (
             AuxiliaryLLMAnalystClient
         )
-        from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE
+
+        from apps.core.generative_ai.utils import (
+            GPT_DEFAULT_ENCODING_ENGINE
+        )
+
         from apps.core.generative_ai.utils import ChatRoles
 
         try:
@@ -335,6 +389,7 @@ class MediaManager:
                 assistant=self.connection_object.assistant,
                 chat_object=self.chat
             )
+
             logger.info("LLM Analyst Client initialized.")
 
         except Exception as e:
@@ -369,9 +424,11 @@ class MediaManager:
             transaction_source=LLMTransactionSourcesTypesNames.INTERPRET_FILE,
             is_tool_cost=True
         )
+
         tx.save()
 
         logger.info(f"Transaction saved successfully: {tx.id}")
+
         return final_output
 
     def interpretation_image_handler_method(
@@ -383,16 +440,23 @@ class MediaManager:
             AuxiliaryLLMVisionClient
         )
 
-        from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE
+        from apps.core.generative_ai.utils import (
+            GPT_DEFAULT_ENCODING_ENGINE
+        )
+
         from apps.core.generative_ai.utils import ChatRoles
 
         try:
-            llm_c = AuxiliaryLLMVisionClient(assistant=self.connection_object.assistant,
-                                             chat_object=self.chat)
+            llm_c = AuxiliaryLLMVisionClient(
+                assistant=self.connection_object.assistant,
+                chat_object=self.chat
+            )
+
             logger.info("LLM Vision Client initialized.")
 
         except Exception as e:
             logger.error(f"Error occurred while initializing LLM Vision Client: {e}")
+
             return None
 
         response = llm_c.interpret_image_content(
@@ -413,6 +477,7 @@ class MediaManager:
             transaction_source=LLMTransactionSourcesTypesNames.INTERPRET_IMAGE,
             is_tool_cost=True
         )
+
         tx.save()
 
         logger.info(f"Transaction saved successfully: {tx.id}")
@@ -449,13 +514,16 @@ class MediaManager:
 
             if success is False:
                 logger.error("Error occurred while copying AWS S3 bucket into the storage.")
+
                 return False
 
         except Exception as e:
             logger.error(f"Error occurred while copying AWS S3 bucket into the storage: {e}")
+
             return False
 
         logger.info("AWS S3 bucket copied into the storage successfully.")
+
         return True
 
     @staticmethod
@@ -480,13 +548,16 @@ class MediaManager:
 
             if success is False:
                 logger.error("Error occurred while copying GCP bucket into the storage.")
+
                 return False
 
         except Exception as e:
             logger.error(f"Error occurred while copying GCP bucket into the storage: {e}")
+
             return False
 
         logger.info("GCP bucket copied into the storage successfully.")
+
         return True
 
     @staticmethod
@@ -512,42 +583,21 @@ class MediaManager:
 
             if success is False:
                 logger.error("Error occurred while copying Azure blob container into the storage.")
+
                 return False
 
         except Exception as e:
             logger.error(f"Error occurred while copying Azure blob container into the storage: {e}")
+
             return False
 
         logger.info("Azure blob container copied into the storage successfully.")
+
         return True
 
     @staticmethod
-    def copy_google_drive_folder_items_into_storage(
-        media_storage_id,
-        credentials_json,
-        folder_id
-    ):
-        try:
-
-            xc_helper = MediaStorageCopyClient__GoogleDrive(
-                credentials_json=credentials_json,
-                media_storage_id=media_storage_id,
-            )
-
-            success = xc_helper.execute_copy_process(
-                folder_id=folder_id
-            )
-
-            if success is False:
-                logger.error("Error occurred while copying Google Drive folder items into the storage.")
-                return False
-
-        except Exception as e:
-            logger.error(f"Error occurred while copying Google Drive folder items into the storage: {e}")
-            return False
-
-        logger.info("Google Drive folder items copied into the storage successfully.")
-        return True
+    def copy_google_drive_folder_items_into_storage():
+        pass
 
     @staticmethod
     def copy_dropbox_folder_items_into_storage():

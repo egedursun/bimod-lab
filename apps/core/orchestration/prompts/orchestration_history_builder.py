@@ -34,7 +34,6 @@ from apps.orchestrations.utils import (
     OrchestrationQueryLogTypesNames
 )
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -44,10 +43,13 @@ class OrchestrationHistoryBuilder:
     def build(query_chat: OrchestrationQuery):
         chat_messages: list[OrchestrationQueryLog] = query_chat.logs.all().order_by("created_at")
         context_history = []
+
         for log in chat_messages:
             sender_type = log.log_type
+
             if sender_type == OrchestrationQueryLogTypesNames.USER:
                 sender_type = HistoryBuilder.ChatRoles.USER
+
                 message_text_content = f"""
                 **User's Direct Query:**
 
@@ -58,8 +60,10 @@ class OrchestrationHistoryBuilder:
                     {log.log_text_content}
                     ```
                 """
+
             elif sender_type == OrchestrationQueryLogTypesNames.WORKER_REQUEST:
                 sender_type = HistoryBuilder.ChatRoles.ASSISTANT
+
                 message_text_content = f"""
                 **Orchestrator's REQUEST to the Worker:**
 
@@ -72,8 +76,10 @@ class OrchestrationHistoryBuilder:
                 {log.log_text_content}
                 ```
                 """
+
             elif sender_type == OrchestrationQueryLogTypesNames.WORKER_RESPONSE:
                 sender_type = HistoryBuilder.ChatRoles.ASSISTANT
+
                 message_text_content = f"""
                 **Worker's RESPONSE to the Orchestrator:**
 
@@ -86,8 +92,10 @@ class OrchestrationHistoryBuilder:
                 {log.log_text_content}
                 ```
                 """
+
             elif sender_type == OrchestrationQueryLogTypesNames.INFO:
                 sender_type = HistoryBuilder.ChatRoles.ASSISTANT
+
                 message_text_content = f"""
                 **Orchestration Process - Information Log:**
 
@@ -99,8 +107,10 @@ class OrchestrationHistoryBuilder:
                 {log.log_text_content}
                 ```
                 """
+
             elif sender_type == OrchestrationQueryLogTypesNames.ERROR:
                 sender_type = HistoryBuilder.ChatRoles.ASSISTANT
+
                 message_text_content = f"""
                 **[!] Orchestration Process - Error Log:**
 
@@ -112,9 +122,11 @@ class OrchestrationHistoryBuilder:
                 {log.log_text_content}
                 ```
                 """
+
             elif sender_type == OrchestrationQueryLogTypesNames.MAESTRO_ANSWER:
                 sender_type = HistoryBuilder.ChatRoles.ASSISTANT
                 message_text_content = log.log_text_content
+
             else:
                 logger.error(f"[OrchestrationHistoryBuilder.build] Unknown log type: {sender_type}")
                 continue
@@ -122,30 +134,59 @@ class OrchestrationHistoryBuilder:
             message_image_urls = log.log_image_contents
             message_file_urls = log.log_file_contents
 
-            message_object = {"role": sender_type.lower()}
-            content_wrapper = [{"type": "text", "text": message_text_content}]
+            message_object = {
+                "role": sender_type.lower()
+            }
+
+            content_wrapper = [
+                {
+                    "type": "text",
+                    "text": message_text_content
+                }
+            ]
+
             if message_image_urls and sender_type == HistoryBuilder.ChatRoles.USER:
+
                 for image_url in message_image_urls:
                     # get the object from local storage
                     full_uri = f"{image_url}"
+
                     try:
                         # download image from URL
                         response = requests.get(full_uri)
+
                         # read the file
                         image_bytes = response.content
                         image_b64 = b64.b64encode(image_bytes).decode("utf-8")
+
                     except Exception as e:
                         logger.error(f"[OrchestrationHistoryBuilder.build] Error while downloading the image: {e}")
                         continue
-                    image_content_wrapper = {"type": "image_url", "image_url": {
-                        "url": f"data:image/{image_url.split('.')[-1]};base64,{image_b64}"}}
-                    image_uri_info_wrapper = {"type": "text", "text": f"Detected Image URLs: {image_url}"}
+
+                    image_content_wrapper = {
+                        "type": "image_url",
+                        "image_url": {
+                            "url": f"data:image/{image_url.split('.')[-1]};base64,{image_b64}"
+                        }
+                    }
+
+                    image_uri_info_wrapper = {
+                        "type": "text",
+                        "text": f"Detected Image URLs: {image_url}"
+                    }
+
                     content_wrapper.append(image_content_wrapper)
                     content_wrapper.append(image_uri_info_wrapper)
+
             if message_file_urls and sender_type == HistoryBuilder.ChatRoles.USER:
+
                 for file_url in message_file_urls:
                     # get the object from local storage
-                    file_uri_info_wrapper = {"type": "text", "text": f"Detected File URLs: {file_url}"}
+                    file_uri_info_wrapper = {
+                        "type": "text",
+                        "text": f"Detected File URLs: {file_url}"
+                    }
+
                     content_wrapper.append(file_uri_info_wrapper)
 
             message_object["content"] = content_wrapper
@@ -154,4 +195,5 @@ class OrchestrationHistoryBuilder:
                 context_history.append(message_object)
 
         logger.info(f"[OrchestrationHistoryBuilder.build] Built the context history for the Orchestration Query.")
+
         return context_history

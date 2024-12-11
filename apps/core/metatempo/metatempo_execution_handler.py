@@ -21,11 +21,21 @@ import logging
 from datetime import timedelta
 
 from django.contrib.auth.models import User
-from django.core.files.base import ContentFile
+
+from django.core.files.base import (
+    ContentFile
+)
+
 from django.utils import timezone
 
-from apps.core.generative_ai.utils import GPT_DEFAULT_ENCODING_ENGINE, ChatRoles
-from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
+from apps.core.generative_ai.utils import (
+    GPT_DEFAULT_ENCODING_ENGINE,
+    ChatRoles
+)
+
+from apps.core.internal_cost_manager.costs_map import (
+    InternalServiceCosts
+)
 
 from apps.core.metatempo.builders import (
     build_log_snapshot_interpretation_prompt,
@@ -40,7 +50,10 @@ from apps.core.metatempo.utils import (
 )
 
 from apps.llm_transaction.models import LLMTransaction
-from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
+
+from apps.llm_transaction.utils import (
+    LLMTransactionSourcesTypesNames
+)
 
 from apps.metatempo.models import (
     MetaTempoConnection,
@@ -49,7 +62,9 @@ from apps.metatempo.models import (
     MetaTempoProjectOverallLog
 )
 
-from apps.metatempo.utils import MetaTempoOverallLogIntervalsNames
+from apps.metatempo.utils import (
+    MetaTempoOverallLogIntervalsNames
+)
 
 logger = logging.getLogger(__name__)
 
@@ -76,12 +91,17 @@ class MetaTempoExecutionManager:
         self,
         metatempo_connection_id: int
     ):
-        from apps.core.generative_ai.gpt_openai_manager import OpenAIGPTClientManager
+        from apps.core.generative_ai.gpt_openai_manager import (
+            OpenAIGPTClientManager
+        )
+
         self.metatempo_connection = MetaTempoConnection.objects.get(
             id=metatempo_connection_id
         )
+
         self.metakanban_board = self.metatempo_connection.board
         self.llm_model = self.metakanban_board.llm_model
+
         self.c = OpenAIGPTClientManager.get_naked_client(
             llm_model=self.llm_model
         )
@@ -101,6 +121,7 @@ class MetaTempoExecutionManager:
             action_specific_system_prompt = build_log_snapshot_interpretation_prompt(
                 connection=self.metatempo_connection
             )
+
             context_messages_history.append(
                 {
                     "role": "system",
@@ -124,6 +145,7 @@ class MetaTempoExecutionManager:
                     transaction_type=ChatRoles.SYSTEM,
                     transaction_source=LLMTransactionSourcesTypesNames.METATEMPO
                 )
+
                 logger.info(f"[handle_metatempo_operation_command] Created LLMTransaction for system prompt.")
 
             except Exception as e:
@@ -133,9 +155,11 @@ class MetaTempoExecutionManager:
 
             if not log_screenshot_data:
                 logger.error("No log screenshot data provided for interpretation.")
+
                 return None, "No log screenshot data provided for interpretation."
 
             log_screenshot_base_64 = base64.b64encode(log_screenshot_data).decode("utf-8")
+
             formatted_uri = f"data:image/png;base64,{log_screenshot_base_64}"
 
             context_messages_history.append(
@@ -179,6 +203,7 @@ class MetaTempoExecutionManager:
                     transaction_type=ChatRoles.SYSTEM,
                     transaction_source=LLMTransactionSourcesTypesNames.METATEMPO
                 )
+
                 logger.info(f"[handle_metatempo_operation_command] Created LLMTransaction for system prompt.")
 
             except Exception as e:
@@ -186,7 +211,12 @@ class MetaTempoExecutionManager:
                     f"[handle_metatempo_operation_command] Error creating LLMTransaction for system prompt. Error: {e}")
                 pass
 
-            context_messages_history.append({"role": "system", "content": action_specific_system_prompt})
+            context_messages_history.append(
+                {
+                    "role": "system",
+                    "content": action_specific_system_prompt
+                }
+            )
 
         elif action_type == MetaTempoExecutionActionTypesNames.INTERPRET_OVERALL_LOGS:
 
@@ -211,6 +241,7 @@ class MetaTempoExecutionManager:
                     transaction_type=ChatRoles.SYSTEM,
                     transaction_source=LLMTransactionSourcesTypesNames.METATEMPO
                 )
+
                 logger.info(f"[handle_metatempo_operation_command] Created LLMTransaction for system prompt.")
 
             except Exception as e:
@@ -218,7 +249,12 @@ class MetaTempoExecutionManager:
                     f"[handle_metatempo_operation_command] Error creating LLMTransaction for system prompt. Error: {e}")
                 pass
 
-            context_messages_history.append({"role": "system", "content": action_specific_system_prompt})
+            context_messages_history.append(
+                {
+                    "role": "system",
+                    "content": action_specific_system_prompt
+                }
+            )
 
         elif action_type == MetaTempoExecutionActionTypesNames.ASK_LOGS_QUESTION:
 
@@ -226,10 +262,13 @@ class MetaTempoExecutionManager:
                 connection=self.metatempo_connection,
                 batched_logs=batched_logs
             )
-            context_messages_history.append({
-                "role": "system",
-                "content": action_specific_system_prompt
-            })
+
+            context_messages_history.append(
+                {
+                    "role": "system",
+                    "content": action_specific_system_prompt
+                }
+            )
 
             try:
                 tx = LLMTransaction.objects.create(
@@ -247,6 +286,7 @@ class MetaTempoExecutionManager:
                     transaction_type=ChatRoles.SYSTEM,
                     transaction_source=LLMTransactionSourcesTypesNames.METATEMPO
                 )
+
                 logger.info(f"[handle_metatempo_operation_command] Created LLMTransaction for system prompt.")
 
             except Exception as e:
@@ -256,6 +296,7 @@ class MetaTempoExecutionManager:
 
             if not interpretation_query:
                 logger.error("No interpretation query provided for logs question.")
+
                 return None, "No interpretation query provided for logs question."
 
             try:
@@ -274,6 +315,7 @@ class MetaTempoExecutionManager:
                     transaction_type=ChatRoles.USER,
                     transaction_source=LLMTransactionSourcesTypesNames.METATEMPO
                 )
+
                 logger.info(f"[handle_metatempo_operation_command] Created LLMTransaction for user prompt.")
 
             except Exception as e:
@@ -281,10 +323,16 @@ class MetaTempoExecutionManager:
                     f"[handle_metatempo_operation_command] Error creating LLMTransaction for user prompt. Error: {e}")
                 pass
 
-            context_messages_history.append({"role": "user", "content": interpretation_query})
+            context_messages_history.append(
+                {
+                    "role": "user",
+                    "content": interpretation_query
+                }
+            )
 
         else:
             logger.error("Invalid action type provided: " + action_type)
+
             return None, "Invalid action type provided: " + action_type
 
         try:
@@ -293,11 +341,13 @@ class MetaTempoExecutionManager:
                 messages=context_messages_history,
                 temperature=int(self.llm_model.temperature),
                 max_tokens=int(self.llm_model.maximum_tokens)
+
             )
             logger.info(f"Retrieved image interpretation content.")
 
         except Exception as e:
             logger.error(f"Failed to retrieve LLM interpretation content: " + str(e))
+
             return None, "Failed to retrieve LLM interpretation content: " + str(e)
 
         try:
@@ -310,6 +360,7 @@ class MetaTempoExecutionManager:
 
         except Exception as e:
             logger.error(f"Failed to process LLM interpretation content: " + str(e))
+
             return None, "Failed to process LLM interpretation content: " + str(e)
 
         try:
@@ -328,6 +379,7 @@ class MetaTempoExecutionManager:
                 transaction_type=ChatRoles.ASSISTANT,
                 transaction_source=LLMTransactionSourcesTypesNames.METATEMPO
             )
+
             logger.info(
                 f"[handle_metatempo_operation_command] Created LLMTransaction for assistant response (primary).")
 
@@ -346,6 +398,7 @@ class MetaTempoExecutionManager:
     ):
 
         # Trigger: Via API Call (POST)
+
         response_json_string, error = self._consult_ai(
             action_type=MetaTempoExecutionActionTypesNames.INTERPRET_AND_SAVE_LOG_SNAPSHOT,
             interpretation_query=f"""
@@ -358,7 +411,9 @@ class MetaTempoExecutionManager:
                 '''
 
                 -----
-            """, log_screenshot_data=log_screenshot_data)
+            """,
+            log_screenshot_data=log_screenshot_data
+        )
 
         if error:
             return None, error
@@ -386,11 +441,19 @@ class MetaTempoExecutionManager:
                 application_usage_stats=application_usage_stats,
                 timestamp=snapshot_metadata.get("timestamp")
             )
-            log_entry.screenshot_image.save('screenshot.png', ContentFile(log_screenshot_data))
+
+            log_entry.screenshot_image.save(
+                'screenshot.png',
+                ContentFile(
+                    log_screenshot_data
+                )
+            )
+
             log_entry.save()
 
         except Exception as e:
             logger.error(f"Failed to save MetaTempo member log: " + str(e))
+
             return json.dumps(response_json), "Failed to save MetaTempo member log: " + str(e)
 
         return json.dumps(response_json), error
@@ -409,6 +472,7 @@ class MetaTempoExecutionManager:
                     user=user,
                     timestamp__gte=timestamp_minus_24_hours
                 )
+
                 log_outputs, error = self._interpret_and_save_daily_logs(
                     context_user=user,
                     log_records=log_records
@@ -430,7 +494,9 @@ class MetaTempoExecutionManager:
                         transaction_source=LLMTransactionSourcesTypesNames.METATEMPO,
                         is_tool_cost=True
                     )
+
                     tx.save()
+
                     logger.info(
                         f"[interpret_and_save_daily_logs_batch] Created LLMTransaction for MetaTempo [BATCH] daily Log item.")
 
@@ -442,6 +508,7 @@ class MetaTempoExecutionManager:
         except Exception as e:
             error = "Failed to interpret and save daily logs [BATCH]: " + str(e)
             logger.error(error)
+
             return None, error
 
         return log_outputs, error
@@ -465,6 +532,7 @@ class MetaTempoExecutionManager:
 
         except Exception as e:
             logger.error(f"Failed to parse response JSON of the AI response: " + str(e))
+
             return None, "Failed to parse response JSON of the AI response: " + str(e)
 
         daily_activity_summary = response_json.get("daily_activity_summary", None)
@@ -483,10 +551,12 @@ class MetaTempoExecutionManager:
             )
 
             log_daily_entry.logs.set(log_records)
+
             log_daily_entry.save()
 
         except Exception as e:
             logger.error(f"Failed to save MetaTempo daily log: " + str(e))
+
             return json.dumps(response_json), "Failed to save MetaTempo daily log: " + str(e)
 
         return json.dumps(response_json), error
@@ -497,14 +567,19 @@ class MetaTempoExecutionManager:
 
         delta_value_hours = 0
         recording_interval = self.metatempo_connection.overall_log_intervals
+
         if recording_interval == MetaTempoOverallLogIntervalsNames.DAILY:
             delta_value_hours = 24 * 1
+
         elif recording_interval == MetaTempoOverallLogIntervalsNames.BI_DAILY:
             delta_value_hours = 24 * 2
+
         elif recording_interval == MetaTempoOverallLogIntervalsNames.WEEKLY:
             delta_value_hours = 24 * 7
+
         elif recording_interval == MetaTempoOverallLogIntervalsNames.BI_WEEKLY:
             delta_value_hours = 24 * 14
+
         elif recording_interval == MetaTempoOverallLogIntervalsNames.MONTHLY:
             delta_value_hours = 24 * 30
 
@@ -529,6 +604,7 @@ class MetaTempoExecutionManager:
 
         except Exception as e:
             logger.error(f"Failed to parse response JSON of the AI response: " + str(e))
+
             return None, "Failed to parse response JSON of the AI response: " + str(e)
 
         overall_activity_summary = response_json.get("overall_activity_summary", None)
@@ -544,10 +620,12 @@ class MetaTempoExecutionManager:
                 overall_work_intensity=overall_work_intensity,
                 overall_application_usage_stats=overall_application_usage_stats
             )
+
             log_overall_entry.save()
 
         except Exception as e:
             logger.error(f"Failed to save MetaTempo overall log: " + str(e))
+
             return json.dumps(response_json), "Failed to save MetaTempo overall log: " + str(e)
 
         return json.dumps(response_json), error
@@ -556,7 +634,10 @@ class MetaTempoExecutionManager:
         # Trigger (1): Via Web Application (AI Agent Page) (*connected to view*)
 
         overall_logs_maximum_delta = MAXIMUM_OVERALL_LOG_RETRIEVAL_INTERVAL_DAYS
-        daily_logs_timestamp_minus_interval = timezone.now() - timedelta(days=overall_logs_maximum_delta)
+
+        daily_logs_timestamp_minus_interval = timezone.now() - timedelta(
+            days=overall_logs_maximum_delta
+        )
 
         maximum_overall_logs = MetaTempoProjectOverallLog.objects.filter(
             metatempo_connection=self.metatempo_connection,

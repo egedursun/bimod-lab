@@ -33,11 +33,21 @@ def run_worker_tool(
     file_urls,
     image_urls
 ):
-    from apps.core.orchestration.orchestration_executor import OrchestrationExecutor
-    from apps.core.orchestration.utils import DEFAULT_WORKER_ASSISTANT_ERROR_MESSAGE
+    from apps.core.orchestration.orchestration_executor import (
+        OrchestrationExecutor
+    )
 
-    maestro = Maestro.objects.get(id=maestro_id)
-    query_chat = OrchestrationQuery.objects.get(id=query_id)
+    from apps.core.orchestration.utils import (
+        DEFAULT_WORKER_ASSISTANT_ERROR_MESSAGE
+    )
+
+    maestro = Maestro.objects.get(
+        id=maestro_id
+    )
+
+    query_chat = OrchestrationQuery.objects.get(
+        id=query_id
+    )
 
     try:
         executor = OrchestrationExecutor(
@@ -48,6 +58,7 @@ def run_worker_tool(
 
     except Exception as e:
         logger.error('[worker_tool_runner.run_worker_tool] An error occurred while creating the executor:', e)
+
         return DEFAULT_WORKER_ASSISTANT_ERROR_MESSAGE
 
     try:
@@ -57,11 +68,14 @@ def run_worker_tool(
             file_urls=file_urls,
             image_urls=image_urls,
         )
+
         logger.info('[worker_tool_runner.run_worker_tool] The worker assistant is asked successfully.')
 
     except Exception as e:
         logger.error('[worker_tool_runner.run_worker_tool] An error occurred while asking the worker assistant:', e)
+
         return DEFAULT_WORKER_ASSISTANT_ERROR_MESSAGE
 
     logger.info('[worker_tool_runner.run_worker_tool] The worker assistant is asked successfully.')
+
     return final_response

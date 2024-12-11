@@ -19,8 +19,14 @@ import logging
 
 import websockets
 
-from apps.core.generative_ai.utils import find_tool_call_from_json, ChatRoles
-from apps.core.orchestration.orchestration_tool_manager import OrchestrationToolManager
+from apps.core.generative_ai.utils import (
+    find_tool_call_from_json,
+    ChatRoles
+)
+
+from apps.core.orchestration.orchestration_tool_manager import (
+    OrchestrationToolManager
+)
 
 from apps.core.orchestration.prompts.calls.build_maestro_to_assistant_instructions import (
     build_maestro_to_assistant_instructions_prompt
@@ -43,7 +49,11 @@ from apps.core.orchestration.utils import (
 )
 
 from apps.assistants.models import Assistant
-from apps.multimodal_chat.models import MultimodalChat, MultimodalChatMessage
+
+from apps.multimodal_chat.models import (
+    MultimodalChat,
+    MultimodalChatMessage
+)
 
 from apps.multimodal_chat.utils import (
     BIMOD_NO_TAG_PLACEHOLDER,
@@ -57,7 +67,9 @@ from apps.orchestrations.models import (
     OrchestrationQueryLog
 )
 
-from apps.orchestrations.utils import OrchestrationQueryLogTypesNames
+from apps.orchestrations.utils import (
+    OrchestrationQueryLogTypesNames
+)
 
 logger = logging.getLogger(__name__)
 
@@ -70,12 +82,19 @@ class OrchestrationExecutor:
         query_chat
     ):
 
-        from apps.core.generative_ai.gpt_openai_manager import OpenAIGPTClientManager
+        from apps.core.generative_ai.gpt_openai_manager import (
+            OpenAIGPTClientManager
+        )
+
         self.maestro = maestro
         self.query_chat = query_chat
 
         ############################################################################################################
-        self.client = OpenAIGPTClientManager.get_naked_client(llm_model=self.maestro.llm_model)
+
+        self.client = OpenAIGPTClientManager.get_naked_client(
+            llm_model=self.maestro.llm_model
+        )
+
         ############################################################################################################
 
         self.worker_chats = {
@@ -214,6 +233,7 @@ class OrchestrationExecutor:
             for element in resp_chunks:
                 choices = element.choices
                 first_choice = choices[0]
+
                 delta = first_choice.delta
                 content = delta.content
 
@@ -298,7 +318,10 @@ class OrchestrationExecutor:
                 )
 
                 tool_resp, tool_name, agent_id, fs_urls, img_urls = tool_xc.use_tool()
-                agent = Assistant.objects.get(id=agent_id)
+
+                agent = Assistant.objects.get(
+                    id=agent_id
+                )
 
                 send_orchestration_message(
                     f""" 🧰 Worker Assistant call to: {agent.name} has been successfully delivered. """,
@@ -466,9 +489,12 @@ class OrchestrationExecutor:
         return final_resp
 
     @staticmethod
-    async def listen_to_websocket(websocket_url):
+    async def listen_to_websocket(
+        websocket_url
+    ):
         try:
             async with websockets.connect(websocket_url) as websocket:
+
                 while True:
                     msg = await websocket.recv()
 
@@ -512,9 +538,11 @@ class OrchestrationExecutor:
             chat_id = self.worker_chats[
                 assistant_id
             ]
+
             chat = MultimodalChat.objects.get(
                 id=chat_id
             )
+
             agent = Assistant.objects.get(
                 id=assistant_id
             )
@@ -566,7 +594,9 @@ class OrchestrationExecutor:
                 return DEFAULT_WORKER_ASSISTANT_ERROR_MESSAGE
 
         try:
-            from apps.core.generative_ai.gpt_openai_manager import OpenAIGPTClientManager
+            from apps.core.generative_ai.gpt_openai_manager import (
+                OpenAIGPTClientManager
+            )
 
             internal_llm_client = OpenAIGPTClientManager(
                 assistant=agent,
@@ -630,4 +660,5 @@ class OrchestrationExecutor:
         )
 
         logger.info(f"Worker Assistant response is ready.")
+
         return final_resp

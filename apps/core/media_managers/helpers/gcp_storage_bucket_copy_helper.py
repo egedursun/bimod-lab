@@ -16,18 +16,24 @@
 #
 
 import logging
+
 from google.cloud import storage
 from google.oauth2 import service_account
 
 from apps.datasource_media_storages.models import (
-    DataSourceMediaStorageConnection, DataSourceMediaStorageItem
+    DataSourceMediaStorageConnection,
+    DataSourceMediaStorageItem
 )
 
 logger = logging.getLogger(__name__)
 
 
 class MediaStorageCopyClient__GCSBucket:
-    def __init__(self, service_account_info, media_storage_id):
+    def __init__(
+        self,
+        service_account_info,
+        media_storage_id
+    ):
 
         credentials = service_account.Credentials.from_service_account_info(
             service_account_info
@@ -75,16 +81,27 @@ class MediaStorageCopyClient__GCSBucket:
             logger.error(f"Failed to copy file '{file_name}' to media storage: {str(e)}")
             raise e
 
-    def execute_copy_process(self, bucket_name, prefix=''):
+    def execute_copy_process(
+        self,
+        bucket_name,
+        prefix=''
+    ):
+
         try:
             bucket = self.gcs_client.get_bucket(bucket_name)
-            blobs = list(bucket.list_blobs(prefix=prefix))  # Convert iterator to list immediately
+            blobs = list(
+                bucket.list_blobs(
+                    prefix=prefix
+                )
+            )
 
             if not blobs:
                 print(f"No files found in bucket '{bucket_name}' under prefix '{prefix}'.")
+
                 return []
 
             for blob in blobs:
+
                 if blob.name.endswith('/') or '/' in blob.name[len(prefix):]:
                     continue
 
@@ -93,7 +110,7 @@ class MediaStorageCopyClient__GCSBucket:
 
         except Exception as e:
             logger.error(f"Failed to copy files from GCS bucket '{bucket_name}' under prefix '{prefix}': {str(e)}")
+
             return False
 
         return True
-
