@@ -38,12 +38,17 @@ from apps.core.sheetos.prompts.sheetos.whole_text_supplier_prompt import (
     build_whole_text_supply_prompt_public
 )
 
-from apps.core.sheetos.sheetos_executor import SheetosExecutionManager
+from apps.core.sheetos.sheetos_executor import (
+    SheetosExecutionManager
+)
 
 logger = logging.getLogger(__name__)
 
 
-def build_ai_command_system_prompt(xc: SheetosExecutionManager, user_query: str):
+def build_ai_command_system_prompt(
+    xc: SheetosExecutionManager,
+    user_query: str
+):
     logger.info(f"Building AI command system prompt for user query: {user_query}")
 
     combined_system_prompt = ""
@@ -93,6 +98,7 @@ def build_ai_command_system_prompt(xc: SheetosExecutionManager, user_query: str)
     combined_system_prompt += folder_and_doc_info_prompt
     combined_system_prompt += sheetos_ops_instruction_prompt
     combined_system_prompt += action_instructions_prompt
+
     return combined_system_prompt
 
 
@@ -101,7 +107,10 @@ def build_ai_command_system_prompt_public(
     user_query: str,
     content: str
 ):
-    from apps.core.sheetos.sheetos_executor_public import SheetosExecutionManager_Public
+    from apps.core.sheetos.sheetos_executor_public import (
+        SheetosExecutionManager_Public
+    )
+
     xc: SheetosExecutionManager_Public
 
     logger.info(f"Building AI command system prompt for user query: {user_query}")
@@ -109,22 +118,29 @@ def build_ai_command_system_prompt_public(
     combined_system_prompt = ""
 
     generic_instruction_prompt = ""
+
     generic_instruction_prompt += build_sheetos_agent_nickname_prompt(
         xc.copilot.name
     )
+
     generic_instruction_prompt += build_sheetos_internal_principles_prompt()
+
     generic_instruction_prompt += build_sheetos_agent_personality_prompt(
         tone=xc.copilot.tone
     )
+
     generic_instruction_prompt += build_sheetos_target_audience_prompt(
         audience=xc.copilot.audience
     )
+
     generic_instruction_prompt += build_sheetos_user_tenant_prompt(
         user=xc.copilot.created_by_user
     )
+
     generic_instruction_prompt += build_sheetos_spatial_awareness_prompt(
         user=xc.copilot.created_by_user
     )
+
     generic_instruction_prompt += build_sheetos_technical_dictionary_prompt(
         glossary=xc.copilot.glossary
     )
@@ -134,6 +150,7 @@ def build_ai_command_system_prompt_public(
     )
 
     sheetos_ops_instruction_prompt = build_sheetos_ops_instruction_prompt()
+
     action_instructions_prompt = build_sheetos_action__ai_prompt(
         user_query=user_query
     )
@@ -142,4 +159,5 @@ def build_ai_command_system_prompt_public(
     combined_system_prompt += folder_and_doc_info_prompt
     combined_system_prompt += sheetos_ops_instruction_prompt
     combined_system_prompt += action_instructions_prompt
+
     return combined_system_prompt

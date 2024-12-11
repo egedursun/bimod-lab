@@ -39,6 +39,7 @@ def find_tool_call_from_json(response: str, decoder=JSONDecoder()):
 
     while True:
         match = response.find('{', pos)
+
         if match == -1:
             break
 

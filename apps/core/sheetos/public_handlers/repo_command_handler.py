@@ -23,7 +23,9 @@ from apps.core.generative_ai.utils import (
     ChatRoles
 )
 
-from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
+from apps.core.internal_cost_manager.costs_map import (
+    InternalServiceCosts
+)
 
 from apps.core.sheetos.utils import (
     find_tool_call_from_json,
@@ -39,7 +41,10 @@ from apps.core.tool_calls.input_verifiers.verify_query_code_base import (
 )
 
 from apps.llm_transaction.models import LLMTransaction
-from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
+
+from apps.llm_transaction.utils import (
+    LLMTransactionSourcesTypesNames
+)
 
 logger = logging.getLogger(__name__)
 
@@ -49,8 +54,14 @@ def handle_repo_command_public(
     command: str,
     content: str
 ):
-    from apps.core.sheetos.prompt_builders import build_repo_command_system_prompt_public
-    from apps.core.sheetos.sheetos_executor_public import SheetosExecutionManager_Public
+    from apps.core.sheetos.prompt_builders import (
+        build_repo_command_system_prompt_public
+    )
+
+    from apps.core.sheetos.sheetos_executor_public import (
+        SheetosExecutionManager_Public
+    )
+
     xc: SheetosExecutionManager_Public
 
     try:
@@ -69,6 +80,7 @@ def handle_repo_command_public(
             transaction_type=ChatRoles.USER,
             transaction_source=LLMTransactionSourcesTypesNames.SHEETOS
         )
+
         logger.info(f"[handle_ai_command] Created LLMTransaction for user command: {command}")
 
     except Exception as e:
@@ -76,6 +88,7 @@ def handle_repo_command_public(
         pass
 
     output, error = None, None
+
     system_prompt = build_repo_command_system_prompt_public(
         xc=xc,
         user_query=command,
@@ -100,6 +113,7 @@ def handle_repo_command_public(
             transaction_type=ChatRoles.SYSTEM,
             transaction_source=LLMTransactionSourcesTypesNames.SHEETOS
         )
+
         logger.info(f"[handle_ai_command] Created LLMTransaction for system prompt.")
 
     except Exception as e:
@@ -124,8 +138,10 @@ def handle_repo_command_public(
 
         choices = llm_response.choices
         first_choice = choices[0]
+
         choice_message = first_choice.message
         choice_message_content = choice_message.content
+
         logger.info(f"[handle_ai_command] Generated AI response.")
 
         try:
@@ -144,6 +160,7 @@ def handle_repo_command_public(
                 transaction_type=ChatRoles.ASSISTANT,
                 transaction_source=LLMTransactionSourcesTypesNames.SHEETOS
             )
+
             logger.info(f"[handle_ai_command] Created LLMTransaction for AI response.")
 
         except Exception as e:
@@ -153,6 +170,7 @@ def handle_repo_command_public(
     except Exception as e:
         error = f"[handle_ai_command] Error executing VECTOR command: {command}. Error: {e}"
         logger.error(error)
+
         return output, error
 
     # TOOL USAGE IDENTIFICATION
@@ -175,10 +193,15 @@ def handle_repo_command_public(
 
                         '''
                     """
-                error = verify_code_base_query_content(content=tool_req_dict)
+
+                error = verify_code_base_query_content(
+                    content=tool_req_dict
+                )
+
                 if error:
                     logger.error(error)
                     return error, None, None, None
+
                 output_tool_call = _handle_tool_code_base_query(
                     tool_usage_dict=tool_req_dict,
                     output_tool_call=output_tool_call
@@ -188,10 +211,12 @@ def handle_repo_command_public(
                         '''
                     """
 
-                context_messages.append({
-                    "content": output_tool_call,
-                    "role": "system"
-                })
+                context_messages.append(
+                    {
+                        "content": output_tool_call,
+                        "role": "system"
+                    }
+                )
 
         try:
             llm_response = client.chat.completions.create(
@@ -206,8 +231,10 @@ def handle_repo_command_public(
 
             choices = llm_response.choices
             first_choice = choices[0]
+
             choice_message = first_choice.message
             choice_message_content = choice_message.content
+
             logger.info(f"[handle_ai_command] Generated AI response.")
 
             try:
@@ -234,12 +261,15 @@ def handle_repo_command_public(
         except Exception as e:
             logger.error(f"[handle_ai_command] Error executing VECTOR command: {command}. Error: {e}")
             error = f"[handle_ai_command] Error executing VECTOR command: {command}. Error: {e}"
+
             return output, error
 
     if tool_counter == SHEETOS_TOOL_CALL_MAXIMUM_ATTEMPTS:
         error = (f"[handle_ai_command] Error executing VECTOR command: {command}. Error: Maximum tool call attempts "
                  f"reached.")
+
         logger.error(error)
+
         return output, error
 
     try:
@@ -254,7 +284,9 @@ def handle_repo_command_public(
             transaction_source=LLMTransactionSourcesTypesNames.SHEETOS,
             is_tool_cost=True
         )
+
         tx.save()
+
         logger.info(f"[handle_ai_command] Created LLMTransaction for Sheetos.")
 
     except Exception as e:
@@ -263,10 +295,14 @@ def handle_repo_command_public(
 
     choice_message_content = choice_message_content.replace("```csv", "").replace('```', "").replace("`", "")
     output = choice_message_content
+
     return output, error
 
 
-def _handle_tool_code_base_query(tool_usage_dict, output_tool_call):
+def _handle_tool_code_base_query(
+    tool_usage_dict,
+    output_tool_call
+):
     c_id = tool_usage_dict.get("parameters").get("code_base_storage_connection_id")
     query = tool_usage_dict.get("parameters").get("query")
     alpha = tool_usage_dict.get("parameters").get("alpha")
@@ -277,8 +313,13 @@ def _handle_tool_code_base_query(tool_usage_dict, output_tool_call):
         semantic_alpha=alpha
     )
 
-    output_str = json.dumps(output, sort_keys=True, default=str)
+    output_str = json.dumps(
+        output,
+        sort_keys=True,
+        default=str
+    )
 
     output_tool_call += output_str
     logger.info(f"[handle_ai_command] Tool Response: {output_tool_call}")
+
     return output_tool_call

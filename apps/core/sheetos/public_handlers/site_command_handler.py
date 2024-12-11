@@ -14,17 +14,37 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import json
 import logging
 
-from apps.core.generative_ai.utils import ChatRoles, GPT_DEFAULT_ENCODING_ENGINE
-from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
-from apps.core.sheetos.prompt_builders.site_command_builder import build_site_command_system_prompt_public
-from apps.core.sheetos.utils import find_tool_call_from_json, SHEETOS_TOOL_CALL_MAXIMUM_ATTEMPTS
-from apps.core.tool_calls.input_verifiers.verify_website_data_search import verify_website_data_search_content
-from apps.llm_transaction.models import LLMTransaction
-from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
+from apps.core.generative_ai.utils import (
+    ChatRoles,
+    GPT_DEFAULT_ENCODING_ENGINE
+)
 
+from apps.core.internal_cost_manager.costs_map import (
+    InternalServiceCosts
+)
+
+from apps.core.sheetos.prompt_builders.site_command_builder import (
+    build_site_command_system_prompt_public
+)
+
+from apps.core.sheetos.utils import (
+    find_tool_call_from_json,
+    SHEETOS_TOOL_CALL_MAXIMUM_ATTEMPTS
+)
+
+from apps.core.tool_calls.input_verifiers.verify_website_data_search import (
+    verify_website_data_search_content
+)
+
+from apps.llm_transaction.models import LLMTransaction
+
+from apps.llm_transaction.utils import (
+    LLMTransactionSourcesTypesNames
+)
 
 logger = logging.getLogger(__name__)
 
@@ -56,6 +76,7 @@ def handle_site_command_public(
             transaction_type=ChatRoles.USER,
             transaction_source=LLMTransactionSourcesTypesNames.SHEETOS
         )
+
         logger.info(f"[handle_site_command] Created LLMTransaction for user command: {command}")
 
     except Exception as e:
@@ -88,6 +109,7 @@ def handle_site_command_public(
             transaction_type=ChatRoles.SYSTEM,
             transaction_source=LLMTransactionSourcesTypesNames.SHEETOS
         )
+
         logger.info(f"[handle_ai_command] Created LLMTransaction for system prompt.")
 
     except Exception as e:
@@ -112,8 +134,10 @@ def handle_site_command_public(
 
         choices = llm_response.choices
         first_choice = choices[0]
+
         choice_message = first_choice.message
         choice_message_content = choice_message.content
+
         logger.info(f"[handle_ai_command] Generated AI response.")
 
         try:
@@ -132,6 +156,7 @@ def handle_site_command_public(
                 transaction_type=ChatRoles.ASSISTANT,
                 transaction_source=LLMTransactionSourcesTypesNames.SHEETOS
             )
+
             logger.info(f"[handle_ai_command] Created LLMTransaction for AI response.")
 
         except Exception as e:
@@ -141,9 +166,11 @@ def handle_site_command_public(
     except Exception as e:
         error = f"[handle_ai_command] Error executing VECTOR command: {command}. Error: {e}"
         logger.error(error)
+
         return output, error
 
     # TOOL USAGE IDENTIFICATION
+
     tool_counter = 0
     context_messages = [structured_system_prompt]
 
@@ -163,10 +190,15 @@ def handle_site_command_public(
 
                         '''
                     """
-                error = verify_website_data_search_content(content=tool_req_dict)
+
+                error = verify_website_data_search_content(
+                    content=tool_req_dict
+                )
+
                 if error:
                     logger.error(error)
                     return error, None, None, None
+
                 output_tool_call = _handle_tool_website_data_search(
                     tool_usage_dict=tool_req_dict,
                     output_tool_call=output_tool_call
@@ -176,10 +208,12 @@ def handle_site_command_public(
                         '''
                     """
 
-                context_messages.append({
-                    "content": output_tool_call,
-                    "role": "system"
-                })
+                context_messages.append(
+                    {
+                        "content": output_tool_call,
+                        "role": "system"
+                    }
+                )
 
         try:
             llm_response = client.chat.completions.create(
@@ -194,8 +228,10 @@ def handle_site_command_public(
 
             choices = llm_response.choices
             first_choice = choices[0]
+
             choice_message = first_choice.message
             choice_message_content = choice_message.content
+
             logger.info(f"[handle_ai_command] Generated AI response.")
 
             try:
@@ -222,12 +258,14 @@ def handle_site_command_public(
         except Exception as e:
             logger.error(f"[handle_ai_command] Error executing VECTOR command: {command}. Error: {e}")
             error = f"[handle_ai_command] Error executing VECTOR command: {command}. Error: {e}"
+
             return output, error
 
     if tool_counter == SHEETOS_TOOL_CALL_MAXIMUM_ATTEMPTS:
         error = (f"[handle_ai_command] Error executing VECTOR command: {command}. Error: Maximum tool call attempts "
                  f"reached.")
         logger.error(error)
+
         return output, error
 
     try:
@@ -242,7 +280,9 @@ def handle_site_command_public(
             transaction_source=LLMTransactionSourcesTypesNames.SHEETOS,
             is_tool_cost=True
         )
+
         tx.save()
+
         logger.info(f"[handle_ai_command] Created LLMTransaction for Sheetos.")
 
     except Exception as e:
@@ -253,7 +293,6 @@ def handle_site_command_public(
     output = choice_message_content
 
     return output, error
-
 
 
 def _handle_tool_website_data_search(

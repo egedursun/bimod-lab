@@ -17,22 +17,41 @@
 
 import logging
 
-from apps.core.generative_ai.utils import ChatRoles, GPT_DEFAULT_ENCODING_ENGINE
-from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
-from apps.llm_transaction.models import LLMTransaction
-from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
+from apps.core.generative_ai.utils import (
+    ChatRoles,
+    GPT_DEFAULT_ENCODING_ENGINE
+)
 
+from apps.core.internal_cost_manager.costs_map import (
+    InternalServiceCosts
+)
+
+from apps.llm_transaction.models import LLMTransaction
+
+from apps.llm_transaction.utils import (
+    LLMTransactionSourcesTypesNames
+)
 
 logger = logging.getLogger(__name__)
 
 
 def handle_auto_command(xc) -> str:
-    from apps.core.sheetos.sheetos_executor import SheetosExecutionManager
-    from apps.core.sheetos.prompt_builders import build_auto_command_system_prompt
+    from apps.core.sheetos.sheetos_executor import (
+        SheetosExecutionManager
+    )
+
+    from apps.core.sheetos.prompt_builders import (
+        build_auto_command_system_prompt
+    )
+
     xc: SheetosExecutionManager
 
     output, error = None, None
-    system_prompt = build_auto_command_system_prompt(xc=xc)
+
+    system_prompt = build_auto_command_system_prompt(
+        xc=xc
+    )
+
     client = xc.naked_c
 
     try:
@@ -51,6 +70,7 @@ def handle_auto_command(xc) -> str:
             transaction_type=ChatRoles.SYSTEM,
             transaction_source=LLMTransactionSourcesTypesNames.SHEETOS
         )
+
         logger.info(f"[handle_auto_command] Created LLMTransaction for system prompt.")
 
     except Exception as e:
@@ -75,13 +95,16 @@ def handle_auto_command(xc) -> str:
 
         choices = llm_response.choices
         first_choice = choices[0]
+
         choice_message = first_choice.message
         choice_message_content = choice_message.content
+
         logger.info(f"[handle_auto_command] AUTO command response.")
 
     except Exception as e:
         logger.error(f"[handle_auto_command] Error executing AUTO command. Error: {e}")
         error = f"[handle_ai_command] Error executing AUTO command. Error: {e}"
+
         return output, error
 
     try:
@@ -100,6 +123,7 @@ def handle_auto_command(xc) -> str:
             transaction_type=ChatRoles.ASSISTANT,
             transaction_source=LLMTransactionSourcesTypesNames.SHEETOS
         )
+
         logger.info(f"[handle_auto_command] Created LLMTransaction for AUTO command response.")
 
     except Exception as e:
@@ -118,7 +142,9 @@ def handle_auto_command(xc) -> str:
             transaction_source=LLMTransactionSourcesTypesNames.SHEETOS,
             is_tool_cost=True
         )
+
         logger.info(f"[handle_auto_command] AUTO command cost.")
+
         tx.save()
 
     except Exception as e:
@@ -127,4 +153,5 @@ def handle_auto_command(xc) -> str:
 
     choice_message_content = choice_message_content.replace("```csv", "").replace('```', "").replace("`", "")
     output = choice_message_content
+
     return output, error
