@@ -17,7 +17,9 @@
 
 from django.contrib import admin
 
-from apps.datasource_codebase.models import CodeBaseRepositoryChunk
+from apps.datasource_codebase.models import (
+    CodeBaseRepositoryChunk
+)
 
 from apps.datasource_codebase.utils import (
     CODE_REPOSITORY_CHUNK_ADMIN_LIST,

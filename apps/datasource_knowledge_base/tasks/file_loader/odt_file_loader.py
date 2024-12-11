@@ -26,7 +26,10 @@ logger = logging.getLogger(__name__)
 
 
 def load_odt_content(path: str):
-    loader = UnstructuredODTLoader(file_path=path)
+    loader = UnstructuredODTLoader(
+        file_path=path
+    )
+
     docs = loader.load()
 
     clean_doc = {
@@ -49,4 +52,5 @@ def load_odt_content(path: str):
                 continue
 
     logger.info(f"[tasks.load_odt_content] ODT content loaded successfully.")
+
     return clean_doc

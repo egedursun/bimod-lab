@@ -16,7 +16,10 @@
 #
 
 from django.utils import timezone
-from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
+
+from apps.llm_transaction.utils import (
+    LLMTransactionSourcesTypesNames
+)
 
 
 class AuxiliaryCalculateMLManager:

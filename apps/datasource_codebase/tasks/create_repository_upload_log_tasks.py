@@ -25,7 +25,9 @@ def add_repository_upload_log(
     log_name
 ):
 
-    from apps.datasource_codebase.models import RepositoryProcessingLog
+    from apps.datasource_codebase.models import (
+        RepositoryProcessingLog
+    )
 
     RepositoryProcessingLog.objects.create(
         repository_full_uri=document_full_uri,
@@ -33,4 +35,5 @@ def add_repository_upload_log(
     )
 
     logger.info(f"Repository Upload Log Created: {document_full_uri} - {log_name}")
+
     return

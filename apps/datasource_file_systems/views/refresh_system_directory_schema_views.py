@@ -64,15 +64,18 @@ class FileSystemView_RefreshSchema(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         connection_id = kwargs.get('pk')
 
-        file_system = DataSourceFileSystem.objects.get(id=connection_id)
+        file_system = DataSourceFileSystem.objects.get(
+            id=connection_id
+        )
+
         if not file_system:
             messages.error(request, 'File System Connection is not found, unexpected error.')
 
         try:
 
-            # explicitly re-define the file directory tree schema for file system
             schema = FileSystemsExecutor(file_system).schema_str
             file_system.file_directory_tree = schema
+
             file_system.save()
 
             ################################################################################################
@@ -84,6 +87,7 @@ class FileSystemView_RefreshSchema(LoginRequiredMixin, View):
             ).all()
 
             storage_id = file_system.id
+
             index_path = os.path.join(
                 VECTOR_INDEX_PATH_FILE_SYSTEM_DIRECTORY_SCHEMAS,
                 f'file_system_directory_schemas_index_{storage_id}.index'
@@ -91,15 +95,23 @@ class FileSystemView_RefreshSchema(LoginRequiredMixin, View):
 
             # Clean the vector index items
             if os.path.exists(index_path):
-                index = faiss.read_index(index_path)
 
-                xids = np.array([
-                    vector_data_instance.id for vector_data_instance in vector_data_instances
-                ])
+                index = faiss.read_index(
+                    index_path
+                )
+
+                xids = np.array(
+                    [
+                        vector_data_instance.id for vector_data_instance in vector_data_instances
+                    ]
+                )
 
                 index.remove_ids(xids)
 
-                faiss.write_index(index, index_path)
+                faiss.write_index(
+                    index,
+                    index_path
+                )
 
                 logger.info(f"Removed vector data for [SSH File System] with ID {file_system.id} from index.")
 
@@ -122,7 +134,10 @@ class FileSystemView_RefreshSchema(LoginRequiredMixin, View):
 
             schema = file_system.file_directory_tree
 
-            json_text = json.dumps(schema, indent=2)
+            json_text = json.dumps(
+                schema,
+                indent=2
+            )
 
             splitter = RecursiveCharacterTextSplitter(
                 json_text,
@@ -150,7 +165,6 @@ class FileSystemView_RefreshSchema(LoginRequiredMixin, View):
                 ##############################
 
             logger.info(f"Successfully updated the vector embeddings for DataSourceFileSystem.")
-            print("All chunks have been embedded successfully.")
 
             ################################################################################################
             # / Re-Run Embedding Process

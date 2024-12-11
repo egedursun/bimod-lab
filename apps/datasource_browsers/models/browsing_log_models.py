@@ -55,6 +55,7 @@ class DataSourceBrowserBrowsingLog(models.Model):
     class Meta:
         verbose_name = "Data Source Browser Browsing Log"
         verbose_name_plural = "Data Source Browser Browsing Logs"
+
         indexes = [
             models.Index(
                 fields=[

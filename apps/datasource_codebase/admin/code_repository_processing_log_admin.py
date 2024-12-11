@@ -17,7 +17,9 @@
 
 from django.contrib import admin
 
-from apps.datasource_codebase.models import RepositoryProcessingLog
+from apps.datasource_codebase.models import (
+    RepositoryProcessingLog
+)
 
 from apps.datasource_codebase.utils import (
     CODE_REPOSITORY_LOG_ADMIN_LIST,

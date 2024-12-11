@@ -18,8 +18,16 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import get_object_or_404, redirect
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.shortcuts import (
+    get_object_or_404,
+    redirect
+)
+
 from django.views.generic import TemplateView
 
 from apps.core.user_permissions.permission_manager import (
@@ -40,7 +48,10 @@ from apps.datasource_knowledge_base.utils import (
     EMBEDDING_VECTORIZER_MODELS
 )
 
-from apps.user_permissions.utils import PermissionNames
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -104,6 +115,7 @@ class VectorStoreView_Update(LoginRequiredMixin, TemplateView):
         )
 
         if form.is_valid():
+
             form.save()
 
             logger.info(f"[views.update_knowledge_base] Knowledge Base updated successfully.")
@@ -120,4 +132,5 @@ class VectorStoreView_Update(LoginRequiredMixin, TemplateView):
 
             context = self.get_context_data(**kwargs)
             context['form'] = form
+
             return self.render_to_response(context)

@@ -18,8 +18,16 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import redirect, get_object_or_404
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.shortcuts import (
+    redirect,
+    get_object_or_404
+)
+
 from django.views import View
 
 from apps.core.user_permissions.permission_manager import (
@@ -27,7 +35,10 @@ from apps.core.user_permissions.permission_manager import (
 )
 
 from apps.data_backups.models import DataBackup
-from apps.user_permissions.utils import PermissionNames
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
 
 logger = logging.getLogger(__name__)
 
@@ -58,11 +69,13 @@ class DataBackupView_BackupDelete(LoginRequiredMixin, View):
 
         try:
             backup.delete()
+
             logger.info(f"User: {request.user} - Backup: {backup.backup_name} - Deleted.")
             messages.success(request, f"The backup '{backup.backup_name}' was deleted successfully.")
 
         except Exception as e:
             messages.error(request, f"An error occurred while trying to delete the backup: {str(e)}")
+
         logger.error(f"User: {request.user} - Backup: {backup.backup_name} - Deletion failed.")
 
         return redirect('data_backups:manage')

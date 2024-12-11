@@ -17,7 +17,9 @@
 
 from django.contrib import admin
 
-from apps.data_security.models import NERIntegration
+from apps.data_security.models import (
+    NERIntegration
+)
 
 from apps.data_security.utils import (
     NER_INTEGRATION_ADMIN_LIST,

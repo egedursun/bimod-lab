@@ -18,11 +18,17 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
-from apps.core.codebase.codebase_decoder import CodeBaseDecoder
+from apps.core.codebase.codebase_decoder import (
+    CodeBaseDecoder
+)
 
 from apps.core.user_permissions.permission_manager import (
     UserPermissionManager
@@ -43,7 +49,11 @@ from apps.datasource_codebase.utils import (
 )
 
 from apps.organization.models import Organization
-from apps.user_permissions.utils import PermissionNames
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -72,6 +82,7 @@ class CodeBaseView_RepositoryCreate(LoginRequiredMixin, TemplateView):
                     'name'
                 )
             )
+
             context['assistants'] = list(
                 user_agents.values(
                     'id',
@@ -79,6 +90,7 @@ class CodeBaseView_RepositoryCreate(LoginRequiredMixin, TemplateView):
                     'organization_id'
                 )
             )
+
             context['knowledge_bases'] = list(
                 vector_stores.values(
                     'id',
@@ -114,7 +126,10 @@ class CodeBaseView_RepositoryCreate(LoginRequiredMixin, TemplateView):
 
             return redirect('datasource_knowledge_base:create_documents')
 
-        vector_store = CodeRepositoryStorageConnection.objects.get(pk=vs_id)
+        vector_store = CodeRepositoryStorageConnection.objects.get(
+            pk=vs_id
+        )
+
         repo_url = request.POST.get('repository_url')
 
         if vs_id and repo_url:

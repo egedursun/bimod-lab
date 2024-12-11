@@ -19,7 +19,11 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
@@ -31,7 +35,10 @@ from apps.datasource_codebase.models import (
     CodeBaseRepository
 )
 
-from apps.user_permissions.utils import PermissionNames
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -41,10 +48,12 @@ class CodeBaseView_RepositoryDeleteAll(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+
         return context
 
     def get(self, request, *args, **kwargs):
         context = self.post(request, *args, **kwargs)
+
         return self.render_to_response(context)
 
     def post(self, request, *args, **kwargs):

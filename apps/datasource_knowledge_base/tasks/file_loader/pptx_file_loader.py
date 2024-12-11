@@ -25,7 +25,10 @@ logger = logging.getLogger(__name__)
 
 
 def load_pptx_content(path: str):
-    loader = UnstructuredPowerPointLoader(file_path=path)
+    loader = UnstructuredPowerPointLoader(
+        file_path=path
+    )
+
     docs = loader.load()
 
     clean_doc = {
@@ -48,4 +51,5 @@ def load_pptx_content(path: str):
                 continue
 
     logger.info(f"[tasks.load_pptx_content] PPTX content loaded successfully.")
+
     return clean_doc

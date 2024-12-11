@@ -18,7 +18,11 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.shortcuts import redirect
 from django.views.generic import DeleteView
 
@@ -30,7 +34,10 @@ from apps.datasource_codebase.models import (
     CodeRepositoryStorageConnection
 )
 
-from apps.user_permissions.utils import PermissionNames
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -43,6 +50,7 @@ class CodeBaseView_StorageDelete(LoginRequiredMixin, DeleteView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context['knowledge_base'] = self.get_object()
+
         return context
 
     def post(self, request, *args, **kwargs):
@@ -59,10 +67,12 @@ class CodeBaseView_StorageDelete(LoginRequiredMixin, DeleteView):
         ##############################
 
         logger.info(f"[CodeBaseView_StorageDelete] Deleting Code Repository Storage: {self.object}")
+
         return super().post(request, *args, **kwargs)
 
     def get_queryset(self):
         context_user = self.request.user
+
         return CodeRepositoryStorageConnection.objects.filter(
             assistant__organization__users__in=[context_user]
         )

@@ -17,7 +17,10 @@
 
 import logging
 
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.utils import timezone
 from django.views.generic import TemplateView
 
@@ -35,7 +38,11 @@ from apps.dashboard.utils.class_utils import (
 )
 
 from apps.llm_core.models import LLMCore
-from apps.organization.models import Organization
+
+from apps.organization.models import (
+    Organization
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -54,7 +61,9 @@ class DashboardView_Main(LoginRequiredMixin, TemplateView):
                 users__in=[user]
             )
 
-            manager = TransactionStatisticsManager(user=user)
+            manager = TransactionStatisticsManager(
+                user=user
+            )
 
             data_statistics = manager.statistics
             last_n_days = INITIAL_STATISTICS_N_DAYS_BACK
@@ -75,9 +84,11 @@ class DashboardView_Main(LoginRequiredMixin, TemplateView):
 
         except Exception as e:
             logger.error(f"Error getting main dashboard context data: {e}")
+
             return context
 
         logger.info(f"User: {user} - Statistics: {data_statistics}")
+
         return context
 
     def post(
@@ -93,8 +104,13 @@ class DashboardView_Main(LoginRequiredMixin, TemplateView):
         try:
             ai_model = request.POST.get("llm_model")
 
-            llm_core = LLMCore.objects.get(id=ai_model)
-            manager = TransactionStatisticsManager(user=context_user)
+            llm_core = LLMCore.objects.get(
+                id=ai_model
+            )
+
+            manager = TransactionStatisticsManager(
+                user=context_user
+            )
 
             data_statistics = manager.statistics
 
@@ -103,11 +119,15 @@ class DashboardView_Main(LoginRequiredMixin, TemplateView):
                 statistics=data_statistics
             )
 
-            context.update(response=response)
+            context.update(
+                response=response
+            )
 
         except Exception as e:
             logger.error(f"Error getting main dashboard context data: {e}")
+
             return context
 
         logger.info(f"AI Model: {llm_core.nickname} - Response: {response}")
+
         return self.render_to_response(context)

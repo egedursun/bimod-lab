@@ -50,4 +50,5 @@ def load_docx_content(path: str):
                 continue
 
     logger.info(f"[tasks.load_docx_content] DOCX content loaded successfully.")
+
     return clean_doc

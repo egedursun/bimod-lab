@@ -25,7 +25,10 @@ logger = logging.getLogger(__name__)
 
 
 def load_xlsx_content(path: str):
-    loader = UnstructuredExcelLoader(file_path=path)
+    loader = UnstructuredExcelLoader(
+        file_path=path
+    )
+
     docs = loader.load()
 
     clean_doc = {
@@ -48,4 +51,5 @@ def load_xlsx_content(path: str):
                 continue
 
     logger.info(f"[tasks.load_xlsx_content] XLSX content loaded successfully.")
+
     return clean_doc

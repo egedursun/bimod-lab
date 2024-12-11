@@ -26,7 +26,10 @@ logger = logging.getLogger(__name__)
 
 
 def load_md_content(path: str):
-    loader = UnstructuredMarkdownLoader(file_path=path)
+    loader = UnstructuredMarkdownLoader(
+        file_path=path
+    )
+
     docs = loader.load()
 
     clean_doc = {
@@ -49,4 +52,5 @@ def load_md_content(path: str):
                 continue
 
     logger.info(f"[tasks.load_md_content] MD content loaded successfully.")
+
     return clean_doc

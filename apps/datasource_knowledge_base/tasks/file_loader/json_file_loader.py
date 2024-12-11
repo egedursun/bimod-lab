@@ -61,4 +61,5 @@ def load_json_content(path: str):
                 continue
 
     logger.info(f"[tasks.load_json_content] JSON content loaded successfully.")
+
     return clean_doc

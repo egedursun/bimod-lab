@@ -17,7 +17,9 @@
 
 from django.utils import timezone
 
-from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
+from apps.llm_transaction.utils import (
+    LLMTransactionSourcesTypesNames
+)
 
 
 class AuxiliaryInformationFeedsManager:
@@ -61,7 +63,8 @@ class AuxiliaryInformationFeedsManager:
 
         for a in agents:
             txs_f = txs.filter(
-                responsible_assistant=a, created_at__gte=timezone.now() - timezone.timedelta(
+                responsible_assistant=a,
+                created_at__gte=timezone.now() - timezone.timedelta(
                     days=n_days
                 )
             )
@@ -69,6 +72,7 @@ class AuxiliaryInformationFeedsManager:
             total = 0
 
             for tx in txs_f:
+
                 if tx.transaction_source == LLMTransactionSourcesTypesNames.SQL_WRITE:
                     total += 1
 
@@ -86,6 +90,7 @@ class AuxiliaryInformationFeedsManager:
         result = {}
 
         for a in agents:
+
             txs_f = txs.filter(
                 responsible_assistant=a,
                 created_at__gte=timezone.now() - timezone.timedelta(
@@ -96,6 +101,7 @@ class AuxiliaryInformationFeedsManager:
             total = 0
 
             for tx in txs_f:
+
                 if tx.transaction_source in [
                     LLMTransactionSourcesTypesNames.SQL_READ,
                     LLMTransactionSourcesTypesNames.SQL_WRITE
@@ -116,6 +122,7 @@ class AuxiliaryInformationFeedsManager:
         result = {}
 
         for a in agents:
+
             txs_f = txs.filter(
                 responsible_assistant=a,
                 created_at__gte=timezone.now() - timezone.timedelta(
@@ -126,6 +133,7 @@ class AuxiliaryInformationFeedsManager:
             total = 0
 
             for tx in txs_f:
+
                 if tx.transaction_source == LLMTransactionSourcesTypesNames.NOSQL_READ:
                     total += 1
 
@@ -143,6 +151,7 @@ class AuxiliaryInformationFeedsManager:
         result = {}
 
         for a in agents:
+
             txs_f = txs.filter(
                 responsible_assistant=a,
                 created_at__gte=timezone.now() - timezone.timedelta(
@@ -153,6 +162,7 @@ class AuxiliaryInformationFeedsManager:
             total = 0
 
             for tx in txs_f:
+
                 if tx.transaction_source == LLMTransactionSourcesTypesNames.NOSQL_WRITE:
                     total += 1
 
@@ -170,6 +180,7 @@ class AuxiliaryInformationFeedsManager:
         result = {}
 
         for a in agents:
+
             txs_f = txs.filter(
                 responsible_assistant=a,
                 created_at__gte=timezone.now() - timezone.timedelta(
@@ -180,6 +191,7 @@ class AuxiliaryInformationFeedsManager:
             total = 0
 
             for tx in txs_f:
+
                 if tx.transaction_source in [
                     LLMTransactionSourcesTypesNames.NOSQL_READ,
                     LLMTransactionSourcesTypesNames.NOSQL_WRITE
@@ -210,6 +222,7 @@ class AuxiliaryInformationFeedsManager:
             total = 0
 
             for tx in txs_f:
+
                 if tx.transaction_source in [
                     LLMTransactionSourcesTypesNames.FILE_SYSTEM_COMMANDS
                 ]:
@@ -229,6 +242,7 @@ class AuxiliaryInformationFeedsManager:
         result = {}
 
         for a in agents:
+
             txs_f = txs.filter(
                 responsible_assistant=a,
                 created_at__gte=timezone.now() - timezone.timedelta(
@@ -239,7 +253,10 @@ class AuxiliaryInformationFeedsManager:
             total = 0
 
             for tx in txs_f:
-                if tx.transaction_source in [LLMTransactionSourcesTypesNames.BROWSING]:
+
+                if tx.transaction_source in [
+                    LLMTransactionSourcesTypesNames.BROWSING
+                ]:
                     total += 1
 
             result[a.name] = total

@@ -25,6 +25,7 @@ from apps.datasource_codebase.models import (
 class CodeRepositoryStorageForm(forms.ModelForm):
     class Meta:
         model = CodeRepositoryStorageConnection
+
         fields = [
             'provider',
             'host_url',
@@ -38,6 +39,7 @@ class CodeRepositoryStorageForm(forms.ModelForm):
             'embedding_chunk_overlap',
             'search_instance_retrieval_limit'
         ]
+
         widgets = {
             'description': forms.Textarea(
                 attrs={

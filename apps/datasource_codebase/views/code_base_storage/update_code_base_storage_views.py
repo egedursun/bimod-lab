@@ -18,8 +18,16 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import get_object_or_404, redirect
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.shortcuts import (
+    get_object_or_404,
+    redirect
+)
+
 from django.views.generic import TemplateView
 
 from apps.core.user_permissions.permission_manager import (
@@ -27,7 +35,10 @@ from apps.core.user_permissions.permission_manager import (
 )
 
 from apps.assistants.models import Assistant
-from apps.datasource_codebase.forms import CodeRepositoryStorageForm
+
+from apps.datasource_codebase.forms import (
+    CodeRepositoryStorageForm
+)
 
 from apps.datasource_codebase.models import (
     CodeRepositoryStorageConnection
@@ -38,7 +49,10 @@ from apps.datasource_codebase.utils import (
     VECTORIZERS
 )
 
-from apps.user_permissions.utils import PermissionNames
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -101,8 +115,10 @@ class CodeBaseView_StorageUpdate(LoginRequiredMixin, TemplateView):
 
         if form.is_valid():
             form.save()
+
             logger.info(f"[CodeBaseView_StorageUpdate] Code Repository Storage updated: {vector_store}")
             messages.success(request, "Code Base Storage updated successfully.")
+
             return redirect('datasource_codebase:list')
 
         else:
@@ -110,6 +126,7 @@ class CodeBaseView_StorageUpdate(LoginRequiredMixin, TemplateView):
                 f"[CodeBaseView_StorageUpdate] Error updating Code Base Storage. Please check the form for errors.")
 
             messages.error(request, "Error updating Code Base Storage. Please check the form for errors.")
+
             context = self.get_context_data(**kwargs)
             context['form'] = form
 

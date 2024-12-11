@@ -18,8 +18,16 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import get_object_or_404, redirect
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.shortcuts import (
+    get_object_or_404,
+    redirect
+)
+
 from django.views.generic import TemplateView
 
 from apps.core.user_permissions.permission_manager import (
@@ -32,8 +40,14 @@ from apps.datasource_browsers.models import (
     DataSourceBrowserConnection
 )
 
-from apps.datasource_browsers.utils import BROWSER_TYPES
-from apps.user_permissions.utils import PermissionNames
+from apps.datasource_browsers.utils import (
+    BROWSER_TYPES
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -151,7 +165,9 @@ class BrowserView_BrowserUpdate(LoginRequiredMixin, TemplateView):
         created_by_user = request.user
 
         try:
-            assistant = Assistant.objects.get(id=agent_id)
+            assistant = Assistant.objects.get(
+                id=agent_id
+            )
 
             browser_c.name = browser_name
             browser_c.description = description

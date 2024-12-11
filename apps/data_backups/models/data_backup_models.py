@@ -17,7 +17,10 @@
 
 
 from django.db import models
-from apps.data_backups.utils import BACKUP_TYPES
+
+from apps.data_backups.utils import (
+    BACKUP_TYPES
+)
 
 
 class DataBackup(models.Model):

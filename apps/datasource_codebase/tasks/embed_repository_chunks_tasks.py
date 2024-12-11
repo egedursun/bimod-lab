@@ -46,4 +46,5 @@ def embed_repository_chunks(
         error = f"[tasks.embed_repository_chunks] Error embedding the repository chunks: {e}"
 
     logger.info(f"[tasks.embed_repository_chunks] Repository chunks embedded successfully.")
+
     return error

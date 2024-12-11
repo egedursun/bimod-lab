@@ -18,7 +18,11 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.views.generic import TemplateView
 
 from apps.core.user_permissions.permission_manager import (
@@ -29,8 +33,14 @@ from apps.datasource_codebase.models import (
     CodeRepositoryStorageConnection
 )
 
-from apps.organization.models import Organization
-from apps.user_permissions.utils import PermissionNames
+from apps.organization.models import (
+    Organization
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -60,11 +70,14 @@ class CodeBaseView_StorageList(LoginRequiredMixin, TemplateView):
             conns_by_orgs = {}
 
             for org in user_orgs:
+
                 conns_by_orgs[org] = {}
+
                 for agent in org.assistants.all():
                     conns_by_orgs[org][agent] = []
 
             for org in user_orgs:
+
                 for agent in org.assistants.all():
 
                     conns = CodeRepositoryStorageConnection.objects.filter(

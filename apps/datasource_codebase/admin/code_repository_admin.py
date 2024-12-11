@@ -19,10 +19,17 @@ import logging
 
 from django.contrib import admin
 
-from apps.core.codebase.codebase_decoder import CodeBaseDecoder
-from apps.datasource_codebase.models import CodeBaseRepository
+from apps.core.codebase.codebase_decoder import (
+    CodeBaseDecoder
+)
 
-from django.contrib.admin.actions import delete_selected as django_delete_selected
+from apps.datasource_codebase.models import (
+    CodeBaseRepository
+)
+
+from django.contrib.admin.actions import (
+    delete_selected as django_delete_selected
+)
 
 from apps.datasource_codebase.utils import (
     CODEBASE_REPOSITORY_ADMIN_LIST,

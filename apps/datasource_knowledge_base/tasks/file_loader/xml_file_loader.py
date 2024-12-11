@@ -26,7 +26,10 @@ logger = logging.getLogger(__name__)
 
 
 def load_xml_content(path: str):
-    loader = UnstructuredXMLLoader(file_path=path)
+    loader = UnstructuredXMLLoader(
+        file_path=path
+    )
+
     docs = loader.load()
 
     clean_doc = {
@@ -49,4 +52,5 @@ def load_xml_content(path: str):
                 continue
 
     logger.info(f"[tasks.load_xml_content] XML content loaded successfully.")
+
     return clean_doc

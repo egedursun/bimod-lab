@@ -17,7 +17,10 @@
 
 import logging
 
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.utils import timezone
 from django.views.generic import TemplateView
 
@@ -27,7 +30,11 @@ from apps.dashboard.utils import (
 )
 
 from apps.llm_core.models import LLMCore
-from apps.organization.models import Organization
+
+from apps.organization.models import (
+    Organization
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -77,7 +84,9 @@ class DashboardView_Refresh(LoginRequiredMixin, TemplateView):
 
         except Exception as e:
             logger.error(f"Error getting main dashboard context data: {e}")
+
             return context
 
         logger.info(f"User: {user} - Statistics: {data_statistics}")
+
         return self.render_to_response(context)

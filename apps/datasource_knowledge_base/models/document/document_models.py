@@ -45,6 +45,7 @@ class KnowledgeBaseDocument(models.Model):
     )
 
     document_file_name = models.CharField(max_length=1000)
+
     document_description = models.TextField()
     document_metadata = models.JSONField()
 
@@ -75,7 +76,9 @@ class KnowledgeBaseDocument(models.Model):
     class Meta:
         verbose_name = "Knowledge Base Document"
         verbose_name_plural = "Knowledge Base Documents"
+
         ordering = ["-created_at"]
+
         indexes = [
             models.Index(fields=[
                 "knowledge_base",
@@ -99,6 +102,7 @@ class KnowledgeBaseDocument(models.Model):
         update_fields=None
     ):
         self.document_file_name = slugify(self.document_file_name)
+
         self.document_content_temporary = ""
         self.document_description = ""
 
@@ -114,7 +118,9 @@ class KnowledgeBaseDocument(models.Model):
         using=None,
         keep_parents=False
     ):
-        c = KnowledgeBaseSystemDecoder.get(self.knowledge_base)
+        c = KnowledgeBaseSystemDecoder.get(
+            self.knowledge_base
+        )
 
         if c is not None:
             o = c.delete_weaviate_document(

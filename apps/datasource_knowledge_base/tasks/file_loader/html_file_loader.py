@@ -21,12 +21,13 @@ from langchain_community.document_loaders import (
     UnstructuredHTMLLoader
 )
 
-
 logger = logging.getLogger(__name__)
 
 
 def load_html_content(path: str):
-    loader = UnstructuredHTMLLoader(file_path=path)
+    loader = UnstructuredHTMLLoader(
+        file_path=path
+    )
 
     docs = loader.load()
 
@@ -50,4 +51,5 @@ def load_html_content(path: str):
                 continue
 
     logger.info(f"[tasks.load_html_content] HTML content loaded successfully.")
+
     return clean_doc

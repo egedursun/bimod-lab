@@ -18,9 +18,17 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.core.paginator import Paginator
-from django.shortcuts import get_object_or_404
+
+from django.shortcuts import (
+    get_object_or_404
+)
+
 from django.views.generic import TemplateView
 
 from apps.core.user_permissions.permission_manager import (
@@ -31,7 +39,10 @@ from apps.datasource_browsers.models import (
     DataSourceBrowserConnection
 )
 
-from apps.user_permissions.utils import PermissionNames
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -52,7 +63,11 @@ class BrowserView_BrowserLogList(LoginRequiredMixin, TemplateView):
         ##############################
 
         c_id = kwargs.get('pk')
-        browser_c = get_object_or_404(DataSourceBrowserConnection, pk=c_id)
+
+        browser_c = get_object_or_404(
+            DataSourceBrowserConnection,
+            pk=c_id
+        )
 
         try:
             context['browser_connection'] = browser_c
@@ -71,6 +86,7 @@ class BrowserView_BrowserLogList(LoginRequiredMixin, TemplateView):
                 )
 
             paginator = Paginator(logs, 10)
+
             page_number = self.request.GET.get('page')
             page_obj = paginator.get_page(page_number)
 
@@ -83,7 +99,9 @@ class BrowserView_BrowserLogList(LoginRequiredMixin, TemplateView):
             )
 
             messages.error(self.request, 'An error occurred while listing Browsing Logs.')
+
             return context
 
         logger.info(f"User: {self.request.user} - Browser Connection: {browser_c.name} - Browsing Logs Listed.")
+
         return context

@@ -133,6 +133,7 @@ def build_weaviate_class_name(connection):
 
 def build_weaviate_intra_memory_class_name():
     randoms = build_random_alphanumeric_string()
+
     return f"ChatHistory{randoms}"
 
 
@@ -151,18 +152,21 @@ def build_random_alphanumeric_string(numeric_component=True):
         include_categories=["noun"],
         regex=r"^[a-zA-Z]+$"
     )
+
     chat_name_2 = wonderwords.RandomWord().word(
         word_min_length=4,
         word_max_length=32,
         include_categories=["noun"],
         regex=r"^[a-zA-Z]+$"
     )
+
     chat_name_3 = wonderwords.RandomWord().word(
         word_min_length=4,
         word_max_length=32,
         include_categories=["noun"],
         regex=r"^[a-zA-Z]+$"
     )
+
     chat_name_4 = wonderwords.RandomWord().word(
         word_min_length=4,
         word_max_length=32,
@@ -179,7 +183,9 @@ def build_random_alphanumeric_string(numeric_component=True):
         chat_name_4.capitalize()
     )
 
-    numeric_string = "".join(random.choice(numeric) for _ in range(8))
+    numeric_string = "".join(
+        random.choice(numeric) for _ in range(8)
+    )
 
     if numeric_component:
         return f"{alpha_string}{numeric_string}"
@@ -212,48 +218,75 @@ def document_loader(
     d = None
 
     if file_type == SupportedDocumentTypesNames.PDF:
-        d = load_pdf_content(path=file_path)
+        d = load_pdf_content(
+            path=file_path
+        )
 
     elif file_type == SupportedDocumentTypesNames.HTML:
-        d = load_html_content(path=file_path)
+        d = load_html_content(
+            path=file_path
+        )
 
     elif file_type == SupportedDocumentTypesNames.CSV:
-        d = load_csv_content(uri=file_path)
+        d = load_csv_content(
+            uri=file_path
+        )
 
     elif file_type == SupportedDocumentTypesNames.DOCX:
-        d = load_docx_content(path=file_path)
+        d = load_docx_content(
+            path=file_path
+        )
 
     elif file_type == SupportedDocumentTypesNames.IPYNB:
-        d = load_ipynb_content(path=file_path)
+        d = load_ipynb_content(
+            path=file_path
+        )
 
     elif file_type == SupportedDocumentTypesNames.JSON:
-        d = load_json_content(path=file_path)
+        d = load_json_content(
+            path=file_path
+        )
 
     elif file_type == SupportedDocumentTypesNames.XML:
-        d = load_xml_content(path=file_path)
+        d = load_xml_content(
+            path=file_path
+        )
 
     elif file_type == SupportedDocumentTypesNames.TXT:
-        d = load_txt_content(path=file_path)
+        d = load_txt_content(
+            path=file_path
+        )
 
     elif file_type == SupportedDocumentTypesNames.MD:
-        d = load_md_content(path=file_path)
+        d = load_md_content(
+            path=file_path
+        )
 
     elif file_type == SupportedDocumentTypesNames.RTF:
-        d = load_rtf_content(path=file_path)
+        d = load_rtf_content(
+            path=file_path
+        )
 
     elif file_type == SupportedDocumentTypesNames.ODT:
-        d = load_odt_content(path=file_path)
+        d = load_odt_content(
+            path=file_path
+        )
 
     elif file_type == SupportedDocumentTypesNames.POWERPOINT:
-        d = load_pptx_content(path=file_path)
+        d = load_pptx_content(
+            path=file_path
+        )
 
     elif file_type == SupportedDocumentTypesNames.XLSX:
-        d = load_xlsx_content(path=file_path)
+        d = load_xlsx_content(
+            path=file_path
+        )
 
     else:
         pass
 
     result = d
+
     logger.info(f"Document Loader: {result}")
 
     return result

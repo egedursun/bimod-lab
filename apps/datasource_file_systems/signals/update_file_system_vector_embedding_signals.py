@@ -17,19 +17,29 @@
 
 import json
 import logging
-import os
 
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain.text_splitter import (
+    RecursiveCharacterTextSplitter
+)
 
-from django.db.models.signals import post_save
+from django.db.models.signals import (
+    post_save
+)
+
 from django.dispatch import receiver
 
-from apps.core.file_systems.file_systems_executor import FileSystemsExecutor
+from apps.core.file_systems.file_systems_executor import (
+    FileSystemsExecutor
+)
+
 from apps.datasource_file_systems.models import (
     DataSourceFileSystem,
     FileSystemDirectorySchemaChunkVectorData,
 )
-from apps.datasource_file_systems.tasks import handle_embedding_task
+
+from apps.datasource_file_systems.tasks import (
+    handle_embedding_task
+)
 
 from apps.datasource_file_systems.utils import (
     FILE_SYSTEM_DIRECTORY_SCHEMA_VECTOR_CHUNK_OVERLAP,
@@ -53,6 +63,7 @@ def update_file_system_vector_embedding_after_save(
 
             schema = FileSystemsExecutor(instance).schema_str
             instance.file_directory_tree = schema
+
             instance.save()
 
             json_text = json.dumps(schema, indent=2)
@@ -65,7 +76,6 @@ def update_file_system_vector_embedding_after_save(
 
             chunks = splitter.split_text(json_text)
 
-            # Embed each chunk into the vector space
             for i, chunk in enumerate(chunks):
                 chunk_vector_data = FileSystemDirectorySchemaChunkVectorData.objects.create(
                     file_system=instance,

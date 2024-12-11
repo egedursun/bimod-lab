@@ -18,24 +18,40 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.shortcuts import redirect
-from django.views.generic import TemplateView
+
+from django.views.generic import (
+    TemplateView
+)
 
 from apps.core.user_permissions.permission_manager import (
     UserPermissionManager
 )
 
 from apps.assistants.models import Assistant
-from apps.datasource_codebase.forms import CodeRepositoryStorageForm
+
+from apps.datasource_codebase.forms import (
+    CodeRepositoryStorageForm
+)
 
 from apps.datasource_codebase.utils import (
     KNOWLEDGE_BASE_SYSTEMS,
     VECTORIZERS
 )
 
-from apps.user_permissions.utils import PermissionNames
-from config.settings import MAX_CODE_BASES_PER_ASSISTANT
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
+from config.settings import (
+    MAX_CODE_BASES_PER_ASSISTANT
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)

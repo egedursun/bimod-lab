@@ -18,13 +18,17 @@
 
 import logging
 
-from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_text_splitters import (
+    RecursiveCharacterTextSplitter
+)
 
 logger = logging.getLogger(__name__)
 
 
 def split_repository_into_chunks(connection_id, doc):
-    from apps.datasource_codebase.models import CodeRepositoryStorageConnection
+    from apps.datasource_codebase.models import (
+        CodeRepositoryStorageConnection
+    )
 
     conn = CodeRepositoryStorageConnection.objects.get(
         id=connection_id
@@ -51,4 +55,5 @@ def split_repository_into_chunks(connection_id, doc):
         chks_cleaned.append(clean_chunk)
 
     logger.info(f"Repository split into {len(chks_cleaned)} chunks.")
+
     return chks_cleaned

@@ -17,7 +17,9 @@
 
 from django.db import models
 
-from apps.data_security.utils.constant_utils import NER_LANGUAGES
+from apps.data_security.utils.constant_utils import (
+    NER_LANGUAGES
+)
 
 
 class NERIntegration(models.Model):
@@ -37,21 +39,25 @@ class NERIntegration(models.Model):
 
     encrypt_persons = models.BooleanField(default=False)  # PERSON
     encrypt_orgs = models.BooleanField(default=False)  # ORG
+
     encrypt_nationality_religion_political = models.BooleanField(default=False)  # NORP
     encrypt_facilities = models.BooleanField(default=False)  # FAC
 
     encrypt_countries_cities_states = models.BooleanField(default=False)  # GPE
     encrypt_locations = models.BooleanField(default=False)  # LOC
+
     encrypt_products = models.BooleanField(default=False)  # PRODUCT
     encrypt_events = models.BooleanField(default=False)  # EVENT
 
     encrypt_artworks = models.BooleanField(default=False)  # WORK_OF_ART
     encrypt_laws = models.BooleanField(default=False)  # LAW
+
     encrypt_languages = models.BooleanField(default=False)  # LANGUAGE
     encrypt_dates = models.BooleanField(default=False)  # DATE
 
     encrypt_times = models.BooleanField(default=False)  # TIME
     encrypt_percentages = models.BooleanField(default=False)  # PERCENT
+
     encrypt_money = models.BooleanField(default=False)  # MONEY
     encrypt_quantities = models.BooleanField(default=False)  # QUANTITY
 
@@ -74,12 +80,14 @@ class NERIntegration(models.Model):
     class Meta:
         verbose_name = 'NER Integration'
         verbose_name_plural = 'NER Integrations'
+
         unique_together = [
             [
                 'organization',
                 'name'
             ],
         ]
+
         indexes = [
             models.Index(fields=[
                 'organization'

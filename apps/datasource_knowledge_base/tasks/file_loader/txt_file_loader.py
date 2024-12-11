@@ -38,4 +38,5 @@ def load_txt_content(path: str):
         }
 
     logger.info(f"[tasks.load_txt_content] TXT content loaded successfully.")
+
     return clean_doc

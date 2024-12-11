@@ -18,17 +18,32 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import redirect, render
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.shortcuts import (
+    redirect,
+    render
+)
+
 from django.views.generic import TemplateView
 
 from apps.core.user_permissions.permission_manager import (
     UserPermissionManager
 )
 
-from apps.data_security.forms import NERIntegrationForm
+from apps.data_security.forms import (
+    NERIntegrationForm
+)
+
 from apps.organization.models import Organization
-from apps.user_permissions.utils import PermissionNames
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -39,6 +54,7 @@ class NERView_IntegrationCreate(LoginRequiredMixin, TemplateView):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
 
         context['form'] = NERIntegrationForm()
+
         context['organizations'] = Organization.objects.filter(
             users__in=[self.request.user]
         )
@@ -135,6 +151,7 @@ class NERView_IntegrationCreate(LoginRequiredMixin, TemplateView):
 
         if form.is_valid():
             form.save()
+
             logger.info(f"User: {context_user} - NER Integration: {form.cleaned_data['name']} - Created.")
 
             return redirect('data_security:list_ner_integrations')

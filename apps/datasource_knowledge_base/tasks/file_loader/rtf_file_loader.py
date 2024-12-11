@@ -25,7 +25,10 @@ logger = logging.getLogger(__name__)
 
 
 def load_rtf_content(path: str):
-    loader = UnstructuredRTFLoader(file_path=path)
+    loader = UnstructuredRTFLoader(
+        file_path=path
+    )
+
     docs = loader.load()
 
     clean_doc = {
@@ -48,4 +51,5 @@ def load_rtf_content(path: str):
                 continue
 
     logger.info(f"[tasks.load_rtf_content] RTF content loaded successfully.")
+
     return clean_doc

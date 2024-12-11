@@ -29,7 +29,9 @@ class DocumentProcessingLog(models.Model):
     class Meta:
         verbose_name = "Document Processing Log"
         verbose_name_plural = "Document Processing Logs"
+
         ordering = ["-created_at"]
+
         indexes = [
             models.Index(fields=[
                 "document_full_uri"

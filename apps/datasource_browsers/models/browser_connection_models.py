@@ -17,7 +17,9 @@
 
 from django.db import models
 
-from apps.datasource_browsers.utils import BROWSER_TYPES
+from apps.datasource_browsers.utils import (
+    BROWSER_TYPES
+)
 
 
 class DataSourceBrowserConnection(models.Model):
@@ -73,8 +75,10 @@ class DataSourceBrowserConnection(models.Model):
         unique_together = [
             ["assistant", "name"],
         ]
+
         verbose_name = "Data Source Browser Connection"
         verbose_name_plural = "Data Source Browser Connections"
+
         indexes = [
             models.Index(
                 fields=[

@@ -17,7 +17,10 @@
 
 from django.contrib import admin
 
-from apps.datasource_browsers.models import DataSourceBrowserBrowsingLog
+from apps.datasource_browsers.models import (
+    DataSourceBrowserBrowsingLog
+)
+
 from apps.datasource_browsers.utils import (
     BROWSING_LOG_ADMIN_LIST,
     BROWSING_LOG_ADMIN_SEARCH,

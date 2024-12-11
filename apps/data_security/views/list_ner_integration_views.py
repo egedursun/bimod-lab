@@ -18,14 +18,23 @@
 import logging
 
 from django.contrib import messages
-from django.views.generic import TemplateView
+
+from django.views.generic import (
+    TemplateView
+)
 
 from apps.core.user_permissions.permission_manager import (
     UserPermissionManager
 )
 
-from apps.data_security.models import NERIntegration
-from apps.user_permissions.utils import PermissionNames
+from apps.data_security.models import (
+    NERIntegration
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)

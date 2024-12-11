@@ -69,11 +69,18 @@ class DocumentKnowledgeBaseConnection(models.Model):
         blank=True
     )
 
-    vectorizer_api_key = models.CharField(max_length=1000, null=True, blank=True)
+    vectorizer_api_key = models.CharField(
+        max_length=1000,
+        null=True,
+        blank=True
+    )
+
     embedding_chunk_size = models.IntegerField(default=1024)
     embedding_chunk_overlap = models.IntegerField(default=256)
+
     schema_json = models.TextField(null=True, blank=True)
     search_instance_retrieval_limit = models.IntegerField(default=10)
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -160,12 +167,20 @@ class DocumentKnowledgeBaseConnection(models.Model):
             update_fields
         )
 
-    def delete(self, using=None, keep_parents=False):
+    def delete(
+        self,
+        using=None,
+        keep_parents=False
+    ):
 
         try:
             c = KnowledgeBaseSystemDecoder.get(self)
+
             if c is not None:
-                o = c.delete_weaviate_classes(class_name=self.class_name)
+
+                o = c.delete_weaviate_classes(
+                    class_name=self.class_name
+                )
 
                 if not o["status"]:
                     pass

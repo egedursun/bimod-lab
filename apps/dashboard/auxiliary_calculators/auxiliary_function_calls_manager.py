@@ -17,7 +17,9 @@
 
 from django.utils import timezone
 
-from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
+from apps.llm_transaction.utils import (
+    LLMTransactionSourcesTypesNames
+)
 
 
 class AuxiliaryFunctionCallsManager:
@@ -29,6 +31,7 @@ class AuxiliaryFunctionCallsManager:
     ):
 
         result = {}
+
         for a in agents:
             txs_f = txs.filter(
                 responsible_assistant=a,

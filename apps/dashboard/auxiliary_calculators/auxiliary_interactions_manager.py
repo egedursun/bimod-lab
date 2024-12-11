@@ -17,7 +17,9 @@
 
 from django.utils import timezone
 
-from apps.export_assistants.models import RequestLog
+from apps.export_assistants.models import (
+    RequestLog
+)
 
 from apps.multimodal_chat.models import (
     ChatCreationLog,

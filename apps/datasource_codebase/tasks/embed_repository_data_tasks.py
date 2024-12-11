@@ -46,4 +46,5 @@ def embed_repository_data(
         error = f"[tasks.embed_repository_data] Error embedding the repository: {e}"
 
     logger.info(f"[tasks.embed_repository_data] Repository embedded successfully.")
+
     return doc_id, doc_uuid, error

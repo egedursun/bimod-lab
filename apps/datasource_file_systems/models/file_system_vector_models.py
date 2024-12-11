@@ -15,16 +15,11 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-import hashlib
-import json
 import logging
 import os
 
-import faiss
-import numpy as np
 from django.db import models
 
-from apps.datasource_file_systems.tasks import handle_embedding_task
 from apps.datasource_file_systems.utils import (
     VECTOR_INDEX_PATH_FILE_SYSTEM_DIRECTORY_SCHEMAS
 )
@@ -57,6 +52,7 @@ class FileSystemDirectorySchemaChunkVectorData(models.Model):
     class Meta:
         verbose_name = "File System Directory Schema Chunk Vector Data"
         verbose_name_plural = "File System Directory Schema Chunk Vector Data"
+
         indexes = [
             models.Index(fields=[
                 'file_system'
@@ -71,6 +67,7 @@ class FileSystemDirectorySchemaChunkVectorData(models.Model):
 
     def get_index_path(self):
         storage_id = self.file_system.id
+
         return os.path.join(
             VECTOR_INDEX_PATH_FILE_SYSTEM_DIRECTORY_SCHEMAS,
             f'file_system_directory_schemas_index_{storage_id}.index'

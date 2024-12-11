@@ -19,9 +19,17 @@ import logging
 
 import boto3
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.shortcuts import redirect
-from django.views.generic import TemplateView
+
+from django.views.generic import (
+    TemplateView
+)
+
 from slugify import slugify
 
 from apps.core.vector_operations.vector_document.vector_store_decoder import (
@@ -32,7 +40,9 @@ from apps.core.user_permissions.permission_manager import (
     UserPermissionManager
 )
 
-from apps.assistants.models import Assistant
+from apps.assistants.models import (
+    Assistant
+)
 
 from apps.datasource_knowledge_base.models import (
     DocumentKnowledgeBaseConnection
@@ -47,8 +57,14 @@ from apps.datasource_knowledge_base.utils import (
     VectorStoreDocProcessingStatusNames
 )
 
-from apps.organization.models import Organization
-from apps.user_permissions.utils import PermissionNames
+from apps.organization.models import (
+    Organization
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from config import settings
 from config.settings import MEDIA_URL
 from web_project import TemplateLayout
@@ -72,22 +88,28 @@ class DocumentView_Create(LoginRequiredMixin, TemplateView):
 
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
 
-        context['organizations'] = list(orgs.values(
-            'id',
-            'name'
-        ))
+        context['organizations'] = list(
+            orgs.values(
+                'id',
+                'name'
+            )
+        )
 
-        context['assistants'] = list(user_agents.values(
-            'id',
-            'name',
-            'organization_id'
-        ))
+        context['assistants'] = list(
+            user_agents.values(
+                'id',
+                'name',
+                'organization_id'
+            )
+        )
 
-        context['knowledge_bases'] = list(vector_stores.values(
-            'id',
-            'name',
-            'assistant_id'
-        ))
+        context['knowledge_bases'] = list(
+            vector_stores.values(
+                'id',
+                'name',
+                'assistant_id'
+            )
+        )
 
         return self.render_to_response(context)
 
@@ -117,6 +139,7 @@ class DocumentView_Create(LoginRequiredMixin, TemplateView):
         fs = request.FILES.getlist('document_files')
 
         if vs_id and fs:
+
             agent_base_dir = vector_store.assistant.document_base_directory
             f_paths = []
 
@@ -131,6 +154,7 @@ class DocumentView_Create(LoginRequiredMixin, TemplateView):
                 )
 
                 f_paths.append(doc_uri)
+
                 add_vector_store_doc_loaded_log(
                     document_full_uri=doc_uri,
                     log_name=VectorStoreDocProcessingStatusNames.STAGED

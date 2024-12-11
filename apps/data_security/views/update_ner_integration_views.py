@@ -18,7 +18,11 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
@@ -26,9 +30,16 @@ from apps.core.user_permissions.permission_manager import (
     UserPermissionManager
 )
 
-from apps.data_security.models import NERIntegration
+from apps.data_security.models import (
+    NERIntegration
+)
+
 from apps.organization.models import Organization
-from apps.user_permissions.utils import PermissionNames
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -158,27 +169,32 @@ class NERView_IntegrationUpdate(LoginRequiredMixin, TemplateView):
 
             ner_integration.encrypt_locations = request.POST.get('encrypt_locations') == 'True'
             ner_integration.encrypt_products = request.POST.get('encrypt_products') == 'True'
+
             ner_integration.encrypt_events = request.POST.get('encrypt_events') == 'True'
             ner_integration.encrypt_artworks = request.POST.get('encrypt_artworks') == 'True'
             ner_integration.encrypt_laws = request.POST.get('encrypt_laws') == 'True'
 
             ner_integration.encrypt_languages = request.POST.get('encrypt_languages') == 'True'
             ner_integration.encrypt_dates = request.POST.get('encrypt_dates') == 'True'
+
             ner_integration.encrypt_times = request.POST.get('encrypt_times') == 'True'
             ner_integration.encrypt_percentages = request.POST.get('encrypt_percentages') == 'True'
 
             ner_integration.encrypt_money = request.POST.get('encrypt_money') == 'True'
             ner_integration.encrypt_quantities = request.POST.get('encrypt_quantities') == 'True'
+
             ner_integration.encrypt_ordinal_numbers = request.POST.get('encrypt_ordinal_numbers') == 'True'
             ner_integration.encrypt_cardinal_numbers = request.POST.get('encrypt_cardinal_numbers') == 'True'
 
             ner_integration.name = request.POST.get('name')
             ner_integration.description = request.POST.get('description')
+
             ner_integration.language = request.POST.get('language')
             organization_id = request.POST.get('organization')
 
             if organization_id:
                 ner_integration.organization_id = organization_id
+
             ner_integration.save()
 
         except Exception as e:

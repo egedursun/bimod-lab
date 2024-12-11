@@ -49,4 +49,5 @@ def load_ipynb_content(path: str):
                 continue
 
     logger.info(f"[tasks.load_ipynb_content] IPYNB content loaded successfully.")
+
     return clean_doc

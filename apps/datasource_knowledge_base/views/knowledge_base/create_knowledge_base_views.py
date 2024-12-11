@@ -18,7 +18,11 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
@@ -37,7 +41,9 @@ from apps.datasource_knowledge_base.utils import (
     EMBEDDING_VECTORIZER_MODELS
 )
 
-from apps.user_permissions.utils import PermissionNames
+from apps.user_permissions.utils import (
+    PermissionNames
+)
 
 from config.settings import (
     MAX_KNOWLEDGE_BASES_PER_ASSISTANT
@@ -55,6 +61,7 @@ class VectorStoreView_Create(LoginRequiredMixin, TemplateView):
         try:
             context_user = self.request.user
             context['user'] = context_user
+
             context['knowledge_base_systems'] = VECTORSTORE_SYSTEMS
             context['vectorizers'] = EMBEDDING_VECTORIZER_MODELS
 
@@ -70,6 +77,7 @@ class VectorStoreView_Create(LoginRequiredMixin, TemplateView):
         except Exception as e:
             logger.error(f"User: {self.request.user} - Knowledge Base - Create Error: {e}")
             messages.error(self.request, 'An error occurred while creating the knowledge base.')
+
             return context
 
         return context

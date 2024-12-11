@@ -18,7 +18,11 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
@@ -30,7 +34,10 @@ from apps.datasource_knowledge_base.models import (
     KnowledgeBaseDocument
 )
 
-from apps.user_permissions.utils import PermissionNames
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -59,6 +66,7 @@ class DocumentView_DeleteAll(LoginRequiredMixin, TemplateView):
 
         try:
             vs_id = kwargs.get('kb_id')
+
             KnowledgeBaseDocument.objects.filter(
                 knowledge_base_id=vs_id
             ).delete()

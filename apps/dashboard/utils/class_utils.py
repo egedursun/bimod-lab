@@ -96,9 +96,15 @@ class TransactionStatisticsManager:
         )
 
         self.organization_users = []
+
         for organization in self.organizations:
             self.organization_users += organization.users.all()
-        self.organization_users = list(set(self.organization_users))
+
+        self.organization_users = list(
+            set(
+                self.organization_users
+            )
+        )
 
         self.assistants = Assistant.objects.filter(
             organization__in=self.organizations
@@ -141,7 +147,9 @@ class TransactionStatisticsManager:
             "users": {},
             "ml": {},
         }
+
         self._calculate()
+
         logger.info(f"Transaction statistics calculated for User: {self.user.id}")
 
     def _calculate(self):
@@ -157,6 +165,7 @@ class TransactionStatisticsManager:
         self._calculate__modalities()
         self._calculate__tasks()
         self._calculate__users()
+
         logger.info(f"Transaction statistics calculated for User: {self.user.id}")
 
     def _calculate__users(self):
@@ -171,9 +180,11 @@ class TransactionStatisticsManager:
         self.total_internal_function_calls_per_assistants()
         self.total_external_function_calls_per_assistants()
         self.total_function_calls_per_assistants()
+
         self.total_internal_third_party_api_calls_per_assistants()
         self.total_external_third_party_api_calls_per_assistants()
         self.total_third_party_api_calls_per_assistants()
+
         self.total_internal_script_executions_per_assistants()
         self.total_external_script_executions_per_assistants()
         self.total_script_executions_per_assistants()
@@ -186,6 +197,7 @@ class TransactionStatisticsManager:
     def _calculate__files(self):
         self.total_documents_interpretations_per_assistants()
         self.total_image_interpretations_per_assistants()
+
         self.total_code_interpretations_per_assistants()
         self.total_file_downloads_per_assistants()
         self.total_multimedia_generations_per_assistants()
@@ -213,6 +225,7 @@ class TransactionStatisticsManager:
     def _calculate__tokens(self):
         self.tokens_per_organizations()
         self.tokens_per_assistants()
+
         self.tokens_per_users()
         self.tokens_per_sources()
 
@@ -222,185 +235,238 @@ class TransactionStatisticsManager:
     def _calculate__costs(self):
         self.costs_per_organizations()
         self.costs_per_assistants()
+
         self.costs_per_users()
         self.costs_per_sources()
 
     def costs_per_organizations(self):
         organization_costs = self._calculate_costs_per_organizations()
+
         self.statistics["costs"]['costs_per_organizations'] = organization_costs
 
     def costs_per_assistants(self):
         assistant_costs = self._calculate_cost_per_assistants()
+
         self.statistics["costs"]['costs_per_assistants'] = assistant_costs
 
     def costs_per_users(self):
         user_costs = self._calculate_cost_per_users()
+
         self.statistics["costs"]['costs_per_users'] = user_costs
 
     def costs_per_sources(self):
         source_costs = self._calculate_cost_per_sources()
+
         self.statistics["costs"]['costs_per_sources'] = source_costs
 
     def balance_snapshot_per_organizations(self):
         organization_balance_snapshots = self._calculate_balance_snapshot_per_organizations()
+
         self.statistics["costs"]['balance_snapshot_per_organizations'] = organization_balance_snapshots
 
     def tokens_per_organizations(self):
         organization_tokens = self._calculate_tokens_per_organizations()
+
         self.statistics["tokens"]['tokens_per_organizations'] = organization_tokens
 
     def tokens_per_assistants(self):
         assistant_tokens = self._calculate_tokens_per_assistants()
+
         self.statistics["tokens"]['tokens_per_assistants'] = assistant_tokens
 
     def tokens_per_users(self):
         user_tokens = self._calculate_tokens_per_users()
+
         self.statistics["tokens"]['tokens_per_users'] = user_tokens
 
     def tokens_per_sources(self):
         source_tokens = self._calculate_tokens_per_sources()
+
         self.statistics["tokens"]['tokens_per_sources'] = source_tokens
 
     def total_chats_per_organizations(self):
         assistant_chats = self._calculate_total_chats_per_organizations()
+
         self.statistics["communication"]['total_chats_per_organizations'] = assistant_chats
 
     def total_messages_per_organizations(self):
         assistant_messages = self._calculate_total_messages_per_organizations()
+
         self.statistics["communication"]['total_messages_per_organizations'] = assistant_messages
 
     def total_request_count_per_exported_assistants(self):
         assistant_requests = self._calculate_total_request_count_per_exported_assistants()
+
         self.statistics["exports"]['total_request_count_per_exported_assistants'] = assistant_requests
 
     def total_sql_read_queries_per_assistants(self):
         assistant_sql_read_queries = self._calculate_total_sql_read_queries_per_assistants()
+
         self.statistics["sql"]['total_sql_read_queries_per_assistants'] = assistant_sql_read_queries
 
     def total_sql_write_queries_per_assistants(self):
         assistant_sql_write_queries = self._calculate_total_sql_write_queries_per_assistants()
+
         self.statistics["sql"]['total_sql_write_queries_per_assistants'] = assistant_sql_write_queries
 
     def total_sql_queries_per_assistants(self):
         assistant_sql_queries = self._calculate_total_sql_queries_per_assistants()
+
         self.statistics["sql"]['total_sql_queries_per_assistants'] = assistant_sql_queries
 
     def total_nosql_read_queries_per_assistants(self):
         assistant_nosql_read_queries = self._calculate_total_nosql_read_queries_per_assistants()
+
         self.statistics["nosql"]['total_nosql_read_queries_per_assistants'] = assistant_nosql_read_queries
 
     def total_nosql_write_queries_per_assistants(self):
         assistant_nosql_write_queries = self._calculate_total_nosql_write_queries_per_assistants()
+
         self.statistics["nosql"]['total_nosql_write_queries_per_assistants'] = assistant_nosql_write_queries
 
     def total_nosql_queries_per_assistants(self):
         assistant_nosql_queries = self._calculate_total_nosql_queries_per_assistants()
+
         self.statistics["nosql"]['total_nosql_queries_per_assistants'] = assistant_nosql_queries
 
     def total_ssh_file_system_access_per_assistants(self):
         assistant_ssh_file_system_access = self._calculate_total_ssh_file_system_access_per_assistants()
+
         self.statistics["file_system"][
-            'total_ssh_file_system_access_per_assistants'] = assistant_ssh_file_system_access
+            'total_ssh_file_system_access_per_assistants'
+        ] = assistant_ssh_file_system_access
 
     def total_web_queries_per_assistants(self):
         assistant_web_queries = self._calculate_total_web_queries_per_assistants()
+
         self.statistics["browsing"]['total_web_queries_per_assistants'] = assistant_web_queries
 
     def total_documents_interpretations_per_assistants(self):
         assistant_documents_uploaded = self._calculate_total_document_interpretations_per_assistants()
+
         self.statistics["knowledge_base"][
-            'total_documents_interpretations_per_assistants'] = assistant_documents_uploaded
+            'total_documents_interpretations_per_assistants'
+        ] = assistant_documents_uploaded
 
     def total_image_interpretations_per_assistants(self):
         assistant_images_interpreted = self._calculate_total_image_interpretations_per_assistants()
+
         self.statistics["knowledge_base"]['total_image_interpretations_per_assistants'] = assistant_images_interpreted
 
     def total_code_interpretations_per_assistants(self):
         assistant_code_interpreted = self._calculate_total_code_interpretations_per_assistants()
+
         self.statistics["knowledge_base"]['total_code_interpretations_per_assistants'] = assistant_code_interpreted
 
     def total_file_downloads_per_assistants(self):
         assistant_file_downloads = self._calculate_total_file_downloads_per_assistants()
+
         self.statistics["knowledge_base"]['total_file_downloads_per_assistants'] = assistant_file_downloads
 
     def total_multimedia_generations_per_assistants(self):
         assistant_multimedia_generations = self._calculate_total_multimedia_generations_per_assistants()
+
         self.statistics["knowledge_base"][
-            'total_multimedia_generations_per_assistants'] = assistant_multimedia_generations
+            'total_multimedia_generations_per_assistants'
+        ] = assistant_multimedia_generations
 
     def total_knowledge_base_searches_per_assistants(self):
         assistant_knowledge_base_searches = self._calculate_total_knowledge_base_searches_per_assistants()
+
         self.statistics["knowledge_base"][
-            'total_knowledge_base_searches_per_assistants'] = assistant_knowledge_base_searches
+            'total_knowledge_base_searches_per_assistants'
+        ] = assistant_knowledge_base_searches
 
     def total_memory_saves_per_assistants(self):
         assistant_memory_saves = self._calculate_total_memory_saves_per_assistants()
+
         self.statistics["knowledge_base"]['total_memory_saves_per_assistants'] = assistant_memory_saves
 
     def total_memory_retrievals_per_assistants(self):
         assistant_memory_retrievals = self._calculate_total_memory_retrievals_per_assistants()
+
         self.statistics["knowledge_base"]['total_memory_retrievals_per_assistants'] = assistant_memory_retrievals
 
     def total_internal_function_calls_per_assistants(self):
         assistant_internal_function_calls = self._calculate_total_internal_function_calls_per_assistants()
+
         self.statistics["functions"][
-            'total_internal_function_calls_per_assistants'] = assistant_internal_function_calls
+            'total_internal_function_calls_per_assistants'
+        ] = assistant_internal_function_calls
 
     def total_external_function_calls_per_assistants(self):
         assistant_external_function_calls = self._calculate_total_external_function_calls_per_assistants()
+
         self.statistics["functions"][
-            'total_external_function_calls_per_assistants'] = assistant_external_function_calls
+            'total_external_function_calls_per_assistants'
+        ] = assistant_external_function_calls
 
     def total_function_calls_per_assistants(self):
         assistant_function_calls = self._calculate_total_function_calls_per_assistants()
+
         self.statistics["functions"]['total_function_calls_per_assistants'] = assistant_function_calls
 
     def total_internal_third_party_api_calls_per_assistants(self):
         assistant_internal_third_party_api_calls = self._calculate_total_internal_api_calls_per_assistants()
+
         self.statistics["apis"][
-            'total_internal_third_party_api_calls_per_assistants'] = assistant_internal_third_party_api_calls
+            'total_internal_third_party_api_calls_per_assistants'
+        ] = assistant_internal_third_party_api_calls
 
     def total_external_third_party_api_calls_per_assistants(self):
         assistant_external_third_party_api_calls = self._calculate_total_external_api_calls_per_assistants()
+
         self.statistics["apis"][
-            'total_external_third_party_api_calls_per_assistants'] = assistant_external_third_party_api_calls
+            'total_external_third_party_api_calls_per_assistants'
+        ] = assistant_external_third_party_api_calls
 
     def total_third_party_api_calls_per_assistants(self):
         assistant_third_party_api_calls = self._calculate_total_api_calls_per_assistants()
+
         self.statistics["apis"]['total_third_party_api_calls_per_assistants'] = assistant_third_party_api_calls
 
     def total_internal_script_executions_per_assistants(self):
         assistant_script_executions = self._calculate_total_internal_script_calls_per_assistants()
+
         self.statistics["scripts"]['total_internal_script_executions_per_assistants'] = assistant_script_executions
 
     def total_external_script_executions_per_assistants(self):
         assistant_script_executions = self._calculate_total_external_script_calls_per_assistants()
+
         self.statistics["scripts"]['total_external_script_executions_per_assistants'] = assistant_script_executions
 
     def total_script_executions_per_assistants(self):
         assistant_script_executions = self._calculate_total_script_calls_per_assistants()
+
         self.statistics["scripts"]['total_script_executions_per_assistants'] = assistant_script_executions
 
     def total_scheduled_task_executions_per_assistants(self):
         assistant_scheduled_task_executions = self._calculate_total_scheduled_jobs_per_assistants()
+
         self.statistics["crons"][
-            'total_scheduled_task_executions_per_assistants'] = assistant_scheduled_task_executions
+            'total_scheduled_task_executions_per_assistants'
+        ] = assistant_scheduled_task_executions
 
     def total_triggered_task_executions_per_assistants(self):
         assistant_triggered_task_executions = self._calculate_total_triggered_jobs_per_assistants()
+
         self.statistics["triggers"][
-            'total_triggered_task_executions_per_assistants'] = assistant_triggered_task_executions
+            'total_triggered_task_executions_per_assistants'
+        ] = assistant_triggered_task_executions
 
     def total_users_per_organizations(self):
         organization_users = self._calculate_total_users_per_organizations()
+
         self.statistics["users"]['total_users_per_organizations'] = organization_users
 
     def latest_registered_users_per_organizations(self):
         organization_users = self._calculate_latest_registered_users_per_organizations()
+
         self.statistics["users"]['latest_registered_users_per_organizations'] = organization_users
 
     def total_ml_predictions_per_assistants(self):
         assistant_ml_predictions = self._calculate_total_ml_predictions_per_assistants()
+
         self.statistics["ml"]['total_ml_predictions_per_assistants'] = assistant_ml_predictions
 
     def _calculate_costs_per_organizations(self):
@@ -409,6 +475,7 @@ class TransactionStatisticsManager:
             txs=self.transactions,
             n_days=self.last_days
         )
+
         return o
 
     def _calculate_cost_per_assistants(self):
@@ -417,6 +484,7 @@ class TransactionStatisticsManager:
             txs=self.transactions,
             n_days=self.last_days
         )
+
         return o
 
     def _calculate_cost_per_users(self):
@@ -425,6 +493,7 @@ class TransactionStatisticsManager:
             txs=self.transactions,
             n_days=self.last_days
         )
+
         return o
 
     def _calculate_cost_per_sources(self):
@@ -432,6 +501,7 @@ class TransactionStatisticsManager:
             txs=self.transactions,
             n_days=self.last_days
         )
+
         return o
 
     def _calculate_balance_snapshot_per_organizations(self):
@@ -439,6 +509,7 @@ class TransactionStatisticsManager:
             orgs=self.organizations,
             n_days=self.last_days
         )
+
         return o
 
     def _calculate_tokens_per_organizations(self):
@@ -447,6 +518,7 @@ class TransactionStatisticsManager:
             txs=self.transactions,
             n_days=self.last_days
         )
+
         return o
 
     def _calculate_tokens_per_assistants(self):
@@ -455,6 +527,7 @@ class TransactionStatisticsManager:
             txs=self.transactions,
             n_days=self.last_days
         )
+
         return o
 
     def _calculate_tokens_per_users(self):
@@ -463,6 +536,7 @@ class TransactionStatisticsManager:
             txs=self.transactions,
             n_days=self.last_days
         )
+
         return o
 
     def _calculate_tokens_per_sources(self):
@@ -470,6 +544,7 @@ class TransactionStatisticsManager:
             txs=self.transactions,
             n_days=self.last_days
         )
+
         return o
 
     def _calculate_total_chats_per_organizations(self):
@@ -477,6 +552,7 @@ class TransactionStatisticsManager:
             orgs=self.organizations,
             n_days=self.last_days
         )
+
         return o
 
     def _calculate_total_messages_per_organizations(self):
@@ -484,6 +560,7 @@ class TransactionStatisticsManager:
             orgs=self.organizations,
             n_days=self.last_days
         )
+
         return o
 
     def _calculate_total_request_count_per_exported_assistants(self):
@@ -491,6 +568,7 @@ class TransactionStatisticsManager:
             exp_agents=self.export_assistants,
             n_days=self.last_days
         )
+
         return o
 
     def _calculate_total_sql_read_queries_per_assistants(self):
@@ -499,6 +577,7 @@ class TransactionStatisticsManager:
             txs=self.transactions,
             n_days=self.last_days
         )
+
         return o
 
     def _calculate_total_sql_write_queries_per_assistants(self):
@@ -507,6 +586,7 @@ class TransactionStatisticsManager:
             txs=self.transactions,
             n_days=self.last_days
         )
+
         return o
 
     def _calculate_total_sql_queries_per_assistants(self):
@@ -515,6 +595,7 @@ class TransactionStatisticsManager:
             txs=self.transactions,
             n_days=self.last_days
         )
+
         return o
 
     def _calculate_total_nosql_read_queries_per_assistants(self):
@@ -523,6 +604,7 @@ class TransactionStatisticsManager:
             txs=self.transactions,
             n_days=self.last_days
         )
+
         return o
 
     def _calculate_total_nosql_write_queries_per_assistants(self):
@@ -531,6 +613,7 @@ class TransactionStatisticsManager:
             txs=self.transactions,
             n_days=self.last_days
         )
+
         return o
 
     def _calculate_total_nosql_queries_per_assistants(self):
@@ -539,6 +622,7 @@ class TransactionStatisticsManager:
             txs=self.transactions,
             n_days=self.last_days
         )
+
         return o
 
     def _calculate_total_ssh_file_system_access_per_assistants(self):
@@ -547,6 +631,7 @@ class TransactionStatisticsManager:
             txs=self.transactions,
             n_days=self.last_days
         )
+
         return o
 
     def _calculate_total_web_queries_per_assistants(self):
@@ -555,6 +640,7 @@ class TransactionStatisticsManager:
             txs=self.transactions,
             n_days=self.last_days
         )
+
         return o
 
     def _calculate_total_document_interpretations_per_assistants(self):
@@ -563,6 +649,7 @@ class TransactionStatisticsManager:
             txs=self.transactions,
             n_days=self.last_days
         )
+
         return o
 
     def _calculate_total_image_interpretations_per_assistants(self):
@@ -571,6 +658,7 @@ class TransactionStatisticsManager:
             txs=self.transactions,
             n_days=self.last_days
         )
+
         return o
 
     def _calculate_total_code_interpretations_per_assistants(self):
@@ -579,6 +667,7 @@ class TransactionStatisticsManager:
             txs=self.transactions,
             n_days=self.last_days
         )
+
         return o
 
     def _calculate_total_file_downloads_per_assistants(self):
@@ -587,6 +676,7 @@ class TransactionStatisticsManager:
             txs=self.transactions,
             n_days=self.last_days
         )
+
         return o
 
     def _calculate_total_multimedia_generations_per_assistants(self):
@@ -595,6 +685,7 @@ class TransactionStatisticsManager:
             txs=self.transactions,
             n_days=self.last_days
         )
+
         return o
 
     def _calculate_total_knowledge_base_searches_per_assistants(self):
@@ -603,6 +694,7 @@ class TransactionStatisticsManager:
             txs=self.transactions,
             n_days=self.last_days
         )
+
         return o
 
     def _calculate_total_memory_saves_per_assistants(self):
@@ -611,6 +703,7 @@ class TransactionStatisticsManager:
             txs=self.transactions,
             n_days=self.last_days
         )
+
         return o
 
     def _calculate_total_memory_retrievals_per_assistants(self):
@@ -619,6 +712,7 @@ class TransactionStatisticsManager:
             txs=self.transactions,
             n_days=self.last_days
         )
+
         return o
 
     def _calculate_total_internal_function_calls_per_assistants(self):
@@ -627,6 +721,7 @@ class TransactionStatisticsManager:
             txs=self.transactions,
             n_days=self.last_days
         )
+
         return o
 
     def _calculate_total_external_function_calls_per_assistants(self):
@@ -635,6 +730,7 @@ class TransactionStatisticsManager:
             txs=self.transactions,
             n_days=self.last_days
         )
+
         return o
 
     def _calculate_total_function_calls_per_assistants(self):
@@ -643,6 +739,7 @@ class TransactionStatisticsManager:
             txs=self.transactions,
             n_days=self.last_days
         )
+
         return o
 
     def _calculate_total_internal_api_calls_per_assistants(self):
@@ -651,6 +748,7 @@ class TransactionStatisticsManager:
             txs=self.transactions,
             n_days=self.last_days
         )
+
         return o
 
     def _calculate_total_external_api_calls_per_assistants(self):
@@ -659,6 +757,7 @@ class TransactionStatisticsManager:
             txs=self.transactions,
             n_days=self.last_days
         )
+
         return o
 
     def _calculate_total_api_calls_per_assistants(self):
@@ -667,6 +766,7 @@ class TransactionStatisticsManager:
             txs=self.transactions,
             n_days=self.last_days
         )
+
         return o
 
     def _calculate_total_internal_script_calls_per_assistants(self):
@@ -675,6 +775,7 @@ class TransactionStatisticsManager:
             txs=self.transactions,
             n_days=self.last_days
         )
+
         return o
 
     def _calculate_total_external_script_calls_per_assistants(self):
@@ -683,6 +784,7 @@ class TransactionStatisticsManager:
             txs=self.transactions,
             n_days=self.last_days
         )
+
         return o
 
     def _calculate_total_script_calls_per_assistants(self):
@@ -691,6 +793,7 @@ class TransactionStatisticsManager:
             txs=self.transactions,
             n_days=self.last_days
         )
+
         return o
 
     def _calculate_total_scheduled_jobs_per_assistants(self):
@@ -699,6 +802,7 @@ class TransactionStatisticsManager:
             sched_jobs=self.scheduled_jobs,
             n_days=self.last_days
         )
+
         return o
 
     def _calculate_total_triggered_jobs_per_assistants(self):
@@ -707,12 +811,14 @@ class TransactionStatisticsManager:
             trg_jobs=self.triggered_jobs,
             n_days=self.last_days
         )
+
         return o
 
     def _calculate_total_users_per_organizations(self):
         o = AuxiliaryOrganizationUsersManager.calculate_total_users_per_organizations(
             orgs=self.organizations
         )
+
         return o
 
     def _calculate_latest_registered_users_per_organizations(self):
@@ -720,6 +826,7 @@ class TransactionStatisticsManager:
             orgs=self.organizations,
             n_days=self.last_days
         )
+
         return o
 
     def _calculate_total_ml_predictions_per_assistants(self):
@@ -728,4 +835,5 @@ class TransactionStatisticsManager:
             txs=self.transactions,
             n_days=self.last_days
         )
+
         return o

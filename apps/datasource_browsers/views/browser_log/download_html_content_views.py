@@ -17,9 +17,16 @@
 
 import logging
 
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.http import HttpResponse
-from django.shortcuts import get_object_or_404
+
+from django.shortcuts import (
+    get_object_or_404
+)
+
 from django.views import View
 
 from apps.datasource_browsers.models import (

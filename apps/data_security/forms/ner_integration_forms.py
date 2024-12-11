@@ -17,7 +17,9 @@
 
 from django import forms
 
-from apps.data_security.models import NERIntegration
+from apps.data_security.models import (
+    NERIntegration
+)
 
 
 class NERIntegrationForm(forms.ModelForm):

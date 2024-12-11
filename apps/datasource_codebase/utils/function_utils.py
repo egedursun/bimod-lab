@@ -47,7 +47,12 @@ def build_random_word_string():
     chat_name_2 = chat_name_2.capitalize()
     chat_name_3 = chat_name_3.capitalize()
 
-    random_digit_string = str(random.randint(1_000_000, 9_999_999))
+    random_digit_string = str(
+        random.randint(
+            1_000_000,
+            9_999_999
+        )
+    )
 
     return "".join([
         chat_name_1,
@@ -59,7 +64,9 @@ def build_random_word_string():
 
 def convert_given_name_to_class_name(given_name: str):
     o = ""
+
     for char in given_name:
+
         if char.isalnum() and char not in [
             " ",
             "_",
@@ -108,14 +115,20 @@ def convert_given_name_to_class_name(given_name: str):
             o += char
 
     given_name_alnum_list = o.lower().capitalize()
+
     return given_name_alnum_list
 
 
 def build_weaviate_class_name_with_random(connection):
     o = convert_given_name_to_class_name(connection.name)
     randoms = build_random_word_string()
+
     return f"{o}{randoms}"
 
 
-def generate_repository_uri(base_dir, document_name, file_type):
+def generate_repository_uri(
+    base_dir,
+    document_name,
+    file_type
+):
     return f"{base_dir}{document_name.split('.')[0]}_{str(random.randint(1_000_000, 9_999_999))}.{file_type}"

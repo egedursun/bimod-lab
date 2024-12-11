@@ -392,4 +392,5 @@ def build_statistics_for_graph(statistics, context):
     context["latest_registered_users_per_organizations_values"] = list(org_latest_registers.values())
 
     logger.info("Statistics for graph built successfully.")
+
     return context

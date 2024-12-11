@@ -17,9 +17,15 @@
 
 from django.urls import path
 
-from apps.datasource_knowledge_base.views import VectorStoreView_Create, VectorStoreView_List, \
-    VectorStoreView_Update, VectorStoreView_Delete, DocumentView_Create, DocumentView_List, \
+from apps.datasource_knowledge_base.views import (
+    VectorStoreView_Create,
+    VectorStoreView_List,
+    VectorStoreView_Update,
+    VectorStoreView_Delete,
+    DocumentView_Create,
+    DocumentView_List,
     DocumentView_DeleteAll
+)
 
 app_name = "datasource_knowledge_base"
 

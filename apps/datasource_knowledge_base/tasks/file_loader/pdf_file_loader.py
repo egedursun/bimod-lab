@@ -45,36 +45,32 @@ def load_pdf_content(path: str):
     clean_doc__pymupdf = load_pdf_with_pymupdf(path)
     performance_length__pymupdf = len(clean_doc__pymupdf["page_content"])
 
-    print(" | PyPDFLoader Performance:", performance_length__pypdfloader)
-    print(" | PDFPlumber Performance:", performance_length__pdfplumber)
-    print(" | PyMuPDF Performance:", performance_length__pymupdf)
-
     if (
         performance_length__pypdfloader > performance_length__pdfplumber and
         performance_length__pypdfloader > performance_length__pymupdf
     ):
-        print("/ PyPDFLoader has the best performance.")
         clean_doc = clean_doc__pypdfloader
 
     elif (
         performance_length__pdfplumber > performance_length__pypdfloader and
         performance_length__pdfplumber > performance_length__pymupdf
     ):
-        print("/ PDFPlumber has the best performance.")
         clean_doc = clean_doc__pdfplumber
 
     elif (
         performance_length__pymupdf > performance_length__pypdfloader and
         performance_length__pymupdf > performance_length__pdfplumber
     ):
-        print("/ PyMuPDF has the best performance.")
         clean_doc = clean_doc__pymupdf
 
     return clean_doc
 
 
 def load_with_pypdfloader(path: str):
-    loader = PyPDFLoader(file_path=path)
+    loader = PyPDFLoader(
+        file_path=path
+    )
+
     docs = loader.load()
 
     clean_doc = {

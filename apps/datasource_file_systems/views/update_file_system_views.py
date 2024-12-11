@@ -18,8 +18,16 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import redirect, get_object_or_404
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.shortcuts import (
+    redirect,
+    get_object_or_404
+)
+
 from django.views.generic import TemplateView
 
 from apps.core.user_permissions.permission_manager import (
@@ -36,7 +44,10 @@ from apps.datasource_file_systems.utils import (
     DATASOURCE_FILE_SYSTEMS_OS_TYPES
 )
 
-from apps.user_permissions.utils import PermissionNames
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -68,6 +79,7 @@ class FileSystemView_Update(LoginRequiredMixin, TemplateView):
 
         except DataSourceFileSystem.DoesNotExist:
             messages.error(self.request, 'Data Source File System not found.')
+
             return redirect('datasource_file_systems:list')
 
         return context
@@ -92,12 +104,14 @@ class FileSystemView_Update(LoginRequiredMixin, TemplateView):
 
         except DataSourceFileSystem.DoesNotExist:
             messages.error(request, 'Data Source File System not found.')
+
             return redirect('datasource_file_systems:list')
 
         c.name = request.POST.get('name')
         c.description = request.POST.get('description')
         c.os_type = request.POST.get('os_type')
         assistant_id = request.POST.get('assistant')
+
         c.host_url = request.POST.get('host_url')
         c.port = request.POST.get('port', 22)
 

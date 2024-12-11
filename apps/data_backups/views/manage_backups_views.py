@@ -18,7 +18,11 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import redirect
@@ -34,7 +38,11 @@ from apps.core.user_permissions.permission_manager import (
 
 from apps.data_backups.models import DataBackup
 from apps.organization.models import Organization
-from apps.user_permissions.utils import PermissionNames
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 from apps.data_backups.utils import (
@@ -65,20 +73,24 @@ class DataBackupView_BackupManage(LoginRequiredMixin, TemplateView):
             )
 
             backups_list = DataBackup.objects.filter(
-                Q(responsible_user=self.request.user) | Q(organization__in=user_orgs)
+                Q(responsible_user=self.request.user) |
+                Q(organization__in=user_orgs)
             ).order_by('-created_at')
 
             paginator = Paginator(backups_list, 10)
+
             page_number = self.request.GET.get('page')
             page_obj = paginator.get_page(page_number)
 
         except Exception as e:
             logger.error(f"Error getting data backup list: {e}")
+
             return context
 
         context['page_obj'] = page_obj
         context['organizations'] = user_orgs
         context['backup_types'] = BACKUP_TYPES
+
         return context
 
     def post(self, request, *args, **kwargs):

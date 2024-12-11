@@ -18,7 +18,11 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
@@ -30,7 +34,10 @@ from apps.datasource_knowledge_base.models import (
     DocumentKnowledgeBaseConnection
 )
 
-from apps.user_permissions.utils import PermissionNames
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -40,7 +47,10 @@ class VectorStoreView_Delete(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
-        context['knowledge_base'] = DocumentKnowledgeBaseConnection.objects.get(pk=self.kwargs['pk'])
+
+        context['knowledge_base'] = DocumentKnowledgeBaseConnection.objects.get(
+            pk=self.kwargs['pk']
+        )
 
         return context
 

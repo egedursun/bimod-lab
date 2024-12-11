@@ -17,7 +17,10 @@
 
 import logging
 
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
@@ -30,7 +33,11 @@ from apps.dashboard.utils import (
 )
 
 from apps.llm_core.models import LLMCore
-from apps.organization.models import Organization
+
+from apps.organization.models import (
+    Organization
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -85,7 +92,9 @@ class DashboardView_ChangeStatisticsInterval(LoginRequiredMixin, TemplateView):
 
         except Exception as e:
             logger.error(f"Error getting statistics for the user: {e}")
+
             return context
 
         logger.info(f"User {user.id} requested statistics for the last {last_n_days} days.")
+
         return self.render_to_response(context)

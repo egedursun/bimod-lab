@@ -63,6 +63,7 @@ class CodeBaseRepositoryChunk(models.Model):
     class Meta:
         verbose_name = "Code Base Document Chunk"
         verbose_name_plural = "Code Base Document Chunks"
+
         ordering = ["-created_at"]
 
         indexes = [

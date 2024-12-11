@@ -18,8 +18,16 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import redirect, get_object_or_404
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.shortcuts import (
+    redirect,
+    get_object_or_404
+)
+
 from django.views.generic import TemplateView
 
 from apps.core.user_permissions.permission_manager import (
@@ -30,7 +38,10 @@ from apps.datasource_file_systems.models import (
     DataSourceFileSystem
 )
 
-from apps.user_permissions.utils import PermissionNames
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -67,7 +78,9 @@ class FileSystemView_Delete(LoginRequiredMixin, TemplateView):
         except Exception as e:
             logger.error(f"User: {request.user} - File System - Delete Error: {e}")
             messages.error(request, 'An error occurred while deleting the file system connection.')
+
             return redirect('datasource_file_systems:list')
 
         logger.info(f"[FileSystemView_Delete] File System Connection Deleted: {conn}")
+
         return redirect('datasource_file_systems:list')

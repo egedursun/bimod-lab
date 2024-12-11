@@ -16,7 +16,11 @@
 #
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.core.paginator import Paginator
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
@@ -32,8 +36,14 @@ from apps.datasource_knowledge_base.models import (
     DocumentProcessingLog
 )
 
-from apps.organization.models import Organization
-from apps.user_permissions.utils import PermissionNames
+from apps.organization.models import (
+    Organization
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 
@@ -122,6 +132,7 @@ class DocumentView_List(LoginRequiredMixin, TemplateView):
                 )
 
             context['data'] = data
+
             context['document_statuses'] = [
                 'staged',
                 'uploaded',
@@ -138,6 +149,7 @@ class DocumentView_List(LoginRequiredMixin, TemplateView):
 
         except Exception as e:
             messages.error(request, 'An error occurred while listing Knowledge Base documents.')
+
             return self.render_to_response(context)
 
         context['failed_statuses'] = ['failed']
@@ -167,6 +179,7 @@ class DocumentView_List(LoginRequiredMixin, TemplateView):
 
         except Exception as e:
             messages.error(request, 'An error occurred while deleting selected documents.')
+
             return redirect('datasource_knowledge_base:list_documents')
 
         messages.success(request, 'Selected documents deleted successfully.')

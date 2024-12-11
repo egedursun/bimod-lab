@@ -79,6 +79,7 @@ urlpatterns = [
         ),
         name='download_html'
     ),
+
     path(
         'logs/download_context/<int:pk>/',
         BrowserView_BrowserLogDownload.as_view(

@@ -18,7 +18,11 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
@@ -32,9 +36,18 @@ from apps.datasource_browsers.models import (
     DataSourceBrowserConnection
 )
 
-from apps.datasource_browsers.utils import BROWSER_TYPES
-from apps.user_permissions.utils import PermissionNames
-from config.settings import MAX_BROWSERS_PER_ASSISTANT
+from apps.datasource_browsers.utils import (
+    BROWSER_TYPES
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
+from config.settings import (
+    MAX_BROWSERS_PER_ASSISTANT
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -83,6 +96,7 @@ class BrowserView_BrowserCreate(LoginRequiredMixin, TemplateView):
 
         browser_selectivity = request.POST.get('data_selectivity', 0.5)
         min_investigation_websites = request.POST.get('minimum_investigation_sites', 2)
+
         whitelisted_exts = request.POST.getlist('whitelisted_extensions[]')
         blacklisted_exts = request.POST.getlist('blacklisted_extensions[]')
 
@@ -144,7 +158,9 @@ class BrowserView_BrowserCreate(LoginRequiredMixin, TemplateView):
         created_by_user = request.user
 
         try:
-            assistant = Assistant.objects.get(id=agent_id)
+            assistant = Assistant.objects.get(
+                id=agent_id
+            )
 
             n_browsers = assistant.datasourcebrowserconnection_set.count()
 

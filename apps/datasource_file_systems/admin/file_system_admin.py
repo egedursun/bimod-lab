@@ -17,7 +17,9 @@
 
 from django.contrib import admin
 
-from apps.datasource_file_systems.models import DataSourceFileSystem
+from apps.datasource_file_systems.models import (
+    DataSourceFileSystem
+)
 
 from apps.datasource_file_systems.utils import (
     FILE_SYSTEM_ADMIN_LIST,

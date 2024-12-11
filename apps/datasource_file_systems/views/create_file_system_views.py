@@ -18,7 +18,11 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
@@ -36,8 +40,14 @@ from apps.datasource_file_systems.utils import (
     DATASOURCE_FILE_SYSTEMS_OS_TYPES
 )
 
-from apps.user_permissions.utils import PermissionNames
-from config.settings import MAX_FILE_SYSTEMS_PER_ASSISTANT
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
+from config.settings import (
+    MAX_FILE_SYSTEMS_PER_ASSISTANT
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -58,6 +68,7 @@ class FileSystemView_Create(LoginRequiredMixin, TemplateView):
 
         context['os_choices'] = DATASOURCE_FILE_SYSTEMS_OS_TYPES
         context['user'] = context_user
+
         return context
 
     def post(self, request, *args, **kwargs):
@@ -76,24 +87,31 @@ class FileSystemView_Create(LoginRequiredMixin, TemplateView):
         description = request.POST.get('description')
         os_type = request.POST.get('os_type')
         agent_id = request.POST.get('assistant')
+
         host_url = request.POST.get('host_url')
         port = request.POST.get('port', 22)
 
         username = request.POST.get('username')
         password = request.POST.get('password')
+
         os_read_limit_tokens = request.POST.get('os_read_limit_tokens', 5_000)
         is_read_only = request.POST.get('is_read_only') == 'on'
 
         created_by_user = request.user
 
         try:
-            agent = Assistant.objects.get(id=agent_id)
+            agent = Assistant.objects.get(
+                id=agent_id
+            )
 
             n_file_systems = agent.data_source_file_systems.count()
 
             if n_file_systems > MAX_FILE_SYSTEMS_PER_ASSISTANT:
-                messages.error(request,
-                               f'Assistant has reached the maximum number of file system connections ({MAX_FILE_SYSTEMS_PER_ASSISTANT}).')
+                messages.error(
+                    request,
+                    f'Assistant has reached the maximum number of file system connections ({MAX_FILE_SYSTEMS_PER_ASSISTANT}).'
+                )
+
                 return redirect('datasource_file_systems:create')
 
             conn = DataSourceFileSystem.objects.create(

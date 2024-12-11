@@ -27,10 +27,18 @@ class BrowserTypesNames:
         return [BrowserTypesNames.GOOGLE]
 
 BROWSER_READING_ABILITIES = [
-    ("javascript", "JavaScript"), ("style", "Style"), ("inline_style", "Inline Style"), ("comments", "Comments"),
-    ("links", "Links"), ("meta", "Meta"), ("page_structure", "Page Structure"),
-    ("processing_instructions", "Processing Instructions"), ("embedded", "Embedded"), ("frames", "Frames"),
-    ("forms", "Forms"), ("keep_tags", "Keep Tags"),
+    ("javascript", "JavaScript"),
+    ("style", "Style"),
+    ("inline_style", "Inline Style"),
+    ("comments", "Comments"),
+    ("links", "Links"),
+    ("meta", "Meta"),
+    ("page_structure", "Page Structure"),
+    ("processing_instructions", "Processing Instructions"),
+    ("embedded", "Embedded"),
+    ("frames", "Frames"),
+    ("forms", "Forms"),
+    ("keep_tags", "Keep Tags"),
 ]
 
 
@@ -49,10 +57,42 @@ class BrowsingReadingAbilitiesNames:
     REMOVE_TAGS = "remove_tags"
 
 
-BROWSER_ADMIN_LIST = ['assistant', 'browser_type', 'name', 'data_selectivity', 'created_at', 'updated_at']
-BROWSER_ADMIN_SEARCH = ['assistant', 'name', 'description', 'created_at', 'updated_at']
-BROWSER_ADMIN_FILTER = ['assistant', 'browser_type', 'data_selectivity']
+BROWSER_ADMIN_LIST = [
+    'assistant',
+    'browser_type',
+    'name',
+    'data_selectivity',
+    'created_at',
+    'updated_at'
+]
+BROWSER_ADMIN_SEARCH = [
+    'assistant',
+    'name',
+    'description',
+    'created_at',
+    'updated_at'
+]
+BROWSER_ADMIN_FILTER = [
+    'assistant',
+    'browser_type',
+    'data_selectivity'
+]
 
-BROWSING_LOG_ADMIN_LIST = ['id', 'connection', 'action', 'created_at']
-BROWSING_LOG_ADMIN_SEARCH = ['connection', 'action', 'html_content', 'log_content', 'created_at']
-BROWSING_LOG_ADMIN_FILTER = ['connection', 'action', 'created_at']
+BROWSING_LOG_ADMIN_LIST = [
+    'id',
+    'connection',
+    'action',
+    'created_at'
+]
+BROWSING_LOG_ADMIN_SEARCH = [
+    'connection',
+    'action',
+    'html_content',
+    'log_content',
+    'created_at'
+]
+BROWSING_LOG_ADMIN_FILTER = [
+    'connection',
+    'action',
+    'created_at'
+]

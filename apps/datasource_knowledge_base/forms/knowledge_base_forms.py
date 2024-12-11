@@ -25,6 +25,7 @@ from apps.datasource_knowledge_base.models import (
 class DocumentKnowledgeBaseForm(forms.ModelForm):
     class Meta:
         model = DocumentKnowledgeBaseConnection
+
         fields = [
             'provider',
             'host_url',
@@ -35,8 +36,10 @@ class DocumentKnowledgeBaseForm(forms.ModelForm):
             'vectorizer',
             'vectorizer_api_key',
             'embedding_chunk_size',
-            'embedding_chunk_overlap', 'search_instance_retrieval_limit'
+            'embedding_chunk_overlap',
+            'search_instance_retrieval_limit'
         ]
+
         widgets = {
             'description': forms.Textarea(
                 attrs={

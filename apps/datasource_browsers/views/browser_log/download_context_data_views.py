@@ -18,9 +18,16 @@
 import json
 import logging
 
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.http import HttpResponse
-from django.shortcuts import get_object_or_404
+
+from django.shortcuts import (
+    get_object_or_404
+)
+
 from django.views import View
 
 from apps.datasource_browsers.models import (
@@ -58,4 +65,5 @@ class BrowserView_BrowserLogDownload(LoginRequiredMixin, View):
         ] = f'attachment; filename="{log.connection.name}_context_data_{log.created_at.strftime("%Y%m%d%H%M%S")}.json"'
 
         logger.info(f"User: {request.user} - Browser Log Context Data: {log.connection.name} - Downloaded.")
+
         return response

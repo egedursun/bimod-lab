@@ -18,8 +18,14 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import TemplateView
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.views.generic import (
+    TemplateView
+)
 
 from apps.core.user_permissions.permission_manager import (
     UserPermissionManager
@@ -31,7 +37,10 @@ from apps.datasource_file_systems.models import (
     DataSourceFileSystem
 )
 
-from apps.user_permissions.utils import PermissionNames
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -58,7 +67,9 @@ class FileSystemView_List(LoginRequiredMixin, TemplateView):
             user_orgs = context_user.organizations.all()
 
             for org in user_orgs:
+
                 conns_by_orgs[org] = {}
+
                 for agent in org.assistants.all():
                     conns_by_orgs[org][agent] = []
 
@@ -68,7 +79,11 @@ class FileSystemView_List(LoginRequiredMixin, TemplateView):
 
             for agent in agents:
                 org = agent.organization
-                conns = DataSourceFileSystem.objects.filter(assistant=agent)
+
+                conns = DataSourceFileSystem.objects.filter(
+                    assistant=agent
+                )
+
                 conns_by_orgs[org][agent].extend(conns)
 
             context['connections_by_organization'] = conns_by_orgs

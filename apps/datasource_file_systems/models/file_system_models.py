@@ -18,10 +18,6 @@ import logging
 
 from django.db import models
 
-from apps.core.file_systems.file_systems_executor import (
-    FileSystemsExecutor
-)
-
 from apps.datasource_file_systems.utils import (
     DATASOURCE_FILE_SYSTEMS_OS_TYPES
 )
@@ -135,7 +131,6 @@ class DataSourceFileSystem(models.Model):
         update_fields=None
     ):
         self.ssh_connection_uri = f"{self.username}@{self.host_url}"
-        print(self.ssh_connection_uri)
 
         super().save(
             force_insert,

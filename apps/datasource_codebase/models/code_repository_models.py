@@ -69,13 +69,16 @@ class CodeBaseRepository(models.Model):
     class Meta:
         verbose_name = "Code Base Repository"
         verbose_name_plural = "Code Base Repositories"
+
         unique_together = [
             [
                 "knowledge_base",
                 "repository_uri"
             ],
         ]
+
         ordering = ["-created_at"]
+
         indexes = [
             models.Index(fields=[
                 "knowledge_base",
@@ -115,7 +118,9 @@ class CodeBaseRepository(models.Model):
         keep_parents=False
     ):
 
-        client = CodeBaseDecoder.get(self.knowledge_base)
+        client = CodeBaseDecoder.get(
+            self.knowledge_base
+        )
 
         if client is not None:
             result = client.delete_weaviate_document(
@@ -150,4 +155,7 @@ class CodeBaseRepository(models.Model):
                     logger.error(f"Error occurred while deleting the document: {e}")
                     pass
 
-        super().delete(using, keep_parents)
+        super().delete(
+            using,
+            keep_parents
+        )

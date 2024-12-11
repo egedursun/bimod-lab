@@ -17,7 +17,9 @@
 
 from django.contrib import admin
 
-from apps.core.codebase.codebase_decoder import CodeBaseDecoder
+from apps.core.codebase.codebase_decoder import (
+    CodeBaseDecoder
+)
 
 from apps.datasource_codebase.models import (
     CodeRepositoryStorageConnection

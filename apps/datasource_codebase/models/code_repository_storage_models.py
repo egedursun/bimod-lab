@@ -17,7 +17,9 @@
 
 from django.db import models
 
-from apps.core.codebase.codebase_decoder import CodeBaseDecoder
+from apps.core.codebase.codebase_decoder import (
+    CodeBaseDecoder
+)
 
 from apps.datasource_codebase.utils import (
     KNOWLEDGE_BASE_SYSTEMS,
@@ -87,13 +89,16 @@ class CodeRepositoryStorageConnection(models.Model):
     class Meta:
         verbose_name = "Code Repository Storage Connection"
         verbose_name_plural = "Code Repository Storage Connections"
+
         ordering = ["-created_at"]
+
         unique_together = [
             [
                 'host_url',
                 'assistant'
             ],
         ]
+
         indexes = [
             models.Index(fields=[
                 "provider",
@@ -166,4 +171,7 @@ class CodeRepositoryStorageConnection(models.Model):
             if not result["status"]:
                 pass
 
-        super().delete(using, keep_parents)
+        super().delete(
+            using,
+            keep_parents
+        )

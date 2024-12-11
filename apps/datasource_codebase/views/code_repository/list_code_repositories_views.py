@@ -18,7 +18,11 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.core.paginator import Paginator
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
@@ -80,7 +84,9 @@ class CodeBaseView_RepositoryList(LoginRequiredMixin, TemplateView):
                     )
 
                     kb_data_list = []
+
                     for kb in vector_stores:
+
                         docs = CodeBaseRepository.objects.filter(
                             knowledge_base=kb
                         ).order_by('-created_at')
