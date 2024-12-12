@@ -92,7 +92,7 @@ class ChatView_MainWorkspaceStream(View):
         self._handle_record_audio(file_full_uris, request)
 
         try:
-            MultimodalVoidForgerChatMessage.objects.create(
+            user_msg = MultimodalVoidForgerChatMessage.objects.create(
                 multimodal_voidforger_chat=chat,
                 sender_type='USER',
                 message_text_content=msg_content,
@@ -108,9 +108,6 @@ class ChatView_MainWorkspaceStream(View):
             return redirect('multimodal_chat:main_workspace')
 
         try:
-            user_msg = MultimodalVoidForgerChatMessage.objects.filter(
-                multimodal_voidforger_chat=chat
-            ).last()
 
             internal_llm_client_voidforger = GenerativeAIDecodeController.get_voidforger(
                 user=request.user,

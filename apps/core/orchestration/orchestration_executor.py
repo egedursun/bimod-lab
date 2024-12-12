@@ -110,7 +110,8 @@ class OrchestrationExecutor:
     def execute_for_query(
         self,
         fs_urls=None,
-        img_urls=None
+        img_urls=None,
+        result_affirmed=False,
     ):
 
         send_orchestration_message(
@@ -470,13 +471,54 @@ class OrchestrationExecutor:
 
             return self.execute_for_query(
                 fs_urls=fs_urls,
-                img_urls=img_urls
+                img_urls=img_urls,
+                result_affirmed=False,
             )
 
         send_orchestration_message(
             f"""❇️❇️ Orchestrator has accomplished the operation processes!""",
             query_id=self.query_chat.id
         )
+
+        ###################################################################
+        # to check if tools are attempted by assistant, run one more time
+        ###################################################################
+
+
+        if result_affirmed is False:
+            # Save the assistants message
+
+            OrchestrationQueryLog.objects.create(
+                orchestration_query=self.query_chat,
+                log_type=OrchestrationQueryLogTypesNames.MAESTRO_ANSWER,
+                hidden=True,
+                log_text_content=f"""
+                    Your last response in conversation history:
+
+                    '''
+
+                    {final_resp}
+
+                    '''
+
+                    -------------------------
+
+                    [1] If you don't need to do anything: Write a follow up message, depending on the context and conversation history.
+                    [2] If in the previous message you decided to use a tool, proceed into the tool usage directly.
+                    [3] If you provided an important piece of data in the previous message, you can interpret this data to make it more clear for the user.
+
+                    -------------------------
+                """,
+            )
+
+            final_resp = self.execute_for_query(
+                fs_urls=fs_urls,
+                img_urls=img_urls,
+                result_affirmed=True
+            )
+
+        ###################################################################
+        ###################################################################
 
         _ = OrchestrationQueryLog.objects.create(
             orchestration_query=self.query_chat,
@@ -485,6 +527,8 @@ class OrchestrationExecutor:
             log_file_contents=[],
             log_image_contents=[],
         )
+
+        print("OrchestrationExecutor.execute_for_query -> final_resp: \n\n", final_resp)
 
         return final_resp
 

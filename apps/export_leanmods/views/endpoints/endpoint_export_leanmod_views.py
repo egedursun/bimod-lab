@@ -241,17 +241,13 @@ class ExportLeanmodAssistantAPIView(View):
                 file_uris = [uri.strip() for uri in file_uris if uri.strip()] if file_uris else []
                 image_uris = [uri.strip() for uri in image_uris if uri.strip()]
 
-                api_chat.lean_chat_messages.create(
+                user_message = api_chat.lean_chat_messages.create(
                     multimodal_lean_chat=api_chat,
                     sender_type=role.upper(),
                     message_text_content=content,
                     message_file_contents=file_uris,
                     message_image_contents=image_uris
                 )
-
-                user_message = api_chat.lean_chat_messages.filter(
-                    sender_type=role.upper()
-                ).last()
 
         except Exception as e:
             logger.error(f"Invalid chat history provided: {str(e)}")

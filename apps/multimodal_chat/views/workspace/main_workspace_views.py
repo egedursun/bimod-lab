@@ -156,7 +156,9 @@ class ChatView_MainWorkspace(TemplateView, LoginRequiredMixin):
             organization__in=orgs
         )
 
-        active_chat_msgs = active_chat.voidforger_chat_messages.all().order_by('sent_at') if active_chat else None
+        active_chat_msgs = active_chat.voidforger_chat_messages.filter(
+            hidden=False
+        ).order_by('sent_at') if active_chat else None
 
         context.update(
             {
@@ -253,17 +255,13 @@ class ChatView_MainWorkspace(TemplateView, LoginRequiredMixin):
             file_full_uris = self._handle_save_files(attached_files)
             self._handle_record_audio(file_full_uris, request)
 
-            MultimodalVoidForgerChatMessage.objects.create(
+            user_msg = MultimodalVoidForgerChatMessage.objects.create(
                 multimodal_voidforger_chat=chat,
                 sender_type='USER',
                 message_text_content=msg_content,
                 message_image_contents=image_full_uris,
                 message_file_contents=file_full_uris
             )
-
-            user_msg = MultimodalVoidForgerChatMessage.objects.filter(
-                multimodal_voidforger_chat=chat
-            ).last()
 
             internal_llm_client_voidforger = GenerativeAIDecodeController.get_voidforger(
                 user=request.user,

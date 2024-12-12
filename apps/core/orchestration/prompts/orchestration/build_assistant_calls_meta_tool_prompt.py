@@ -18,6 +18,8 @@
 from apps.core.tool_calls.utils import (
     ToolCallDescriptorNames
 )
+from apps.datasource_codebase.models import CodeRepositoryStorageConnection
+from apps.datasource_website.models import DataSourceWebsiteStorageConnection
 
 from apps.orchestrations.models import Maestro
 from config.settings import MEDIA_URL
@@ -246,9 +248,7 @@ def build_orchestration_workers_multi_modality_prompt(maestro):
             kb: DocumentKnowledgeBaseConnection
             response_prompt += f"""
                         [[[[Knowledge Base Data Source ID: {kb.id}]]]]
-                            [[[[[System Provider: {kb.provider}]]]]]
                             [[[[[Knowledge Base Name: {kb.name}]]]]]
-                            [[[[[Knowledge Base Class Name: {kb.class_name}]]]]]
                             [[[[[Knowledge Base Description: {kb.description}]]]]]]
                             [[[[[Number of Documents in the Knowledge Base: {kb.knowledge_base_documents.count()}]]]]]
                             [[[[[Maximum Records to Retrieve per Query (LIMIT): {kb.search_instance_retrieval_limit}]]]]]
@@ -259,6 +259,17 @@ def build_orchestration_workers_multi_modality_prompt(maestro):
                     [[[Worker Assistant File System (SSH) Connections]]]
         """
 
+        for cb in worker.coderepositorystorageconnection_set.all():
+            cb: CodeRepositoryStorageConnection
+            response_prompt += f"""
+                [Code Base Storage ID: {cb.id}]
+                    Code Base Storage Name: {cb.name}
+                    Code Base Description: {cb.description or "N/A"}
+                    Number of Repos in Storage: {cb.code_base_repositories.count()}
+                    Maximum Records to Retrieve / Query (LIMIT): {cb.search_instance_retrieval_limit}
+
+                """
+
         for fs_source in worker.data_source_file_systems.all():
             from apps.datasource_file_systems.models import (
                 DataSourceFileSystem
@@ -266,16 +277,28 @@ def build_orchestration_workers_multi_modality_prompt(maestro):
 
             fs_source: DataSourceFileSystem
             response_prompt += f"""
-                        [[[[File System Data Source ID: {fs_source.id}]]]]
-                            [[[[[Operating System Type: {fs_source.os_type}]]]]]
-                            [[[[[File System Name: {fs_source.name}]]]]]
-                            [[[[[File System Description: {fs_source.description}]]]]]
-                            [[[[[Host URL: {fs_source.host_url}]]]]]
-                            [[[[[Port: {fs_source.port}]]]]]
-                            [[[[[Username: {fs_source.username}]]]]]
-                            [[[[[Maximum Records to Retrieve per Query (LIMIT): {fs_source.os_read_limit_tokens}]]]]]
-                            [[[[[Is Read Only: {fs_source.is_read_only}]]]]]
-                            """
+            [[[[File System Data Source ID: {fs_source.id}]]]]
+                [[[[[Operating System Type: {fs_source.os_type}]]]]]
+                [[[[[File System Name: {fs_source.name}]]]]]
+                [[[[[File System Description: {fs_source.description}]]]]]
+                [[[[[Host URL: {fs_source.host_url}]]]]]
+                [[[[[Port: {fs_source.port}]]]]]
+                [[[[[Username: {fs_source.username}]]]]]
+                [[[[[Maximum Records to Retrieve per Query (LIMIT): {fs_source.os_read_limit_tokens}]]]]]
+                [[[[[Is Read Only: {fs_source.is_read_only}]]]]]
+                """
+
+        for website_data_source in worker.datasourcewebsitestorageconnection_set.all():
+            web_storage: DataSourceWebsiteStorageConnection
+            response_prompt += f"""
+            [Websites Storage ID: {website_data_source.id}]
+                Websites Storage Name: {website_data_source.name}
+                DB Description: {website_data_source.description or "N/A"}
+                Maximum Records to Retrieve / Query (LIMIT): {website_data_source.search_instance_retrieval_limit}
+                Indexing Chunk Size and Overlap: {website_data_source.embedding_chunk_size} / {website_data_source.embedding_chunk_overlap}
+                Website URLs in this Storage:
+                '''
+            """
 
         response_prompt += f"""
                     [[[Worker Assistant Machine Learning Model Connections]]]

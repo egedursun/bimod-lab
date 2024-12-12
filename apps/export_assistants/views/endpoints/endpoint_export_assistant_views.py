@@ -365,17 +365,13 @@ class ExportAssistantAPIView(View):
                 f_uris = [uri.strip() for uri in f_uris if uri.strip()] if f_uris else []
                 img_uris = [uri.strip() for uri in img_uris if uri.strip()]
 
-                api_chat.chat_messages.create(
+                user_msg = api_chat.chat_messages.create(
                     multimodal_chat=api_chat,
                     sender_type=role.upper(),
                     message_text_content=content,
                     message_file_contents=f_uris,
                     message_image_contents=img_uris
                 )
-
-                user_msg = api_chat.chat_messages.filter(
-                    sender_type=role.upper()
-                ).last()
 
         except Exception as e:
             logger.error(f"Invalid chat history provided for endpoint, {e}: {endpoint}")

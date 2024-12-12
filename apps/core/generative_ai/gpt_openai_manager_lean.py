@@ -96,7 +96,8 @@ class OpenAIGPTLeanClientManager:
         image_uris=None,
         fermion__is_fermion_supervised=False,
         fermion__export_type=None,
-        fermion__endpoint=None
+        fermion__endpoint=None,
+        result_affirmed=False
     ):
 
         from apps.multimodal_chat.models import (
@@ -752,7 +753,8 @@ class OpenAIGPTLeanClientManager:
                 prev_tool_name=prev_tool_name,
                 with_media=with_media,
                 file_uris=file_uris,
-                image_uris=image_uris
+                image_uris=image_uris,
+                result_affirmed=False
             )
 
         transmit_websocket_log(
@@ -763,6 +765,46 @@ class OpenAIGPTLeanClientManager:
             fermion__export_type=fermion__export_type,
             fermion__endpoint=fermion__endpoint
         )
+
+        ###################################################################
+        # to check if tools are attempted by assistant, run one more time
+        ###################################################################
+        if result_affirmed is False:
+            # Save the assistants message
+
+            latest_message = MultimodalLeanChatMessage.objects.create(
+                multimodal_lean_chat=self.chat,
+                sender_type=ChatRoles.ASSISTANT.upper(),
+                hidden=True,
+                message_text_content=f"""
+                    Your last response in conversation history:
+
+                    '''
+
+                    {latest_message}
+
+                    '''
+
+                    -------------------------
+
+                    [1] If you don't need to do anything: Write a follow up message, depending on the context and conversation history.
+                    [2] If in the previous message you decided to use a tool, proceed into the tool usage directly.
+                    [3] If you provided an important piece of data in the previous message, you can interpret this data to make it more clear for the user.
+
+                    -------------------------
+                """,
+            )
+
+            final_resp = self.respond_stream(
+                latest_message=latest_message,
+                with_media=with_media,
+                file_uris=file_uris,
+                image_uris=image_uris,
+                result_affirmed=True
+            )
+
+        ###################################################################
+        ###################################################################
 
         if with_media:
             return final_resp, file_uris, image_uris
@@ -775,7 +817,8 @@ class OpenAIGPTLeanClientManager:
         prev_tool_name=None,
         with_media=False,
         file_uris=None,
-        image_uris=None
+        image_uris=None,
+        result_affirmed=False
     ):
 
         from apps.multimodal_chat.models import (
@@ -1031,8 +1074,49 @@ class OpenAIGPTLeanClientManager:
                 prev_tool_name=prev_tool_name,
                 with_media=with_media,
                 file_uris=file_uris,
-                image_uris=image_uris
+                image_uris=image_uris,
+                result_affirmed=False,
             )
+
+        ###################################################################
+        # to check if tools are attempted by assistant, run one more time
+        ###################################################################
+        if result_affirmed is False:
+            # Save the assistants message
+
+            latest_message = MultimodalLeanChatMessage.objects.create(
+                multimodal_lean_chat=self.chat,
+                sender_type=ChatRoles.ASSISTANT.upper(),
+                hidden=True,
+                message_text_content=f"""
+                    Your last response in conversation history:
+
+                    '''
+
+                    {latest_message}
+
+                    '''
+
+                    -------------------------
+
+                    [1] If you don't need to do anything: Write a follow up message, depending on the context and conversation history.
+                    [2] If in the previous message you decided to use a tool, proceed into the tool usage directly.
+                    [3] If you provided an important piece of data in the previous message, you can interpret this data to make it more clear for the user.
+
+                    -------------------------
+                """,
+            )
+
+            final_resp = self.respond(
+                latest_message=latest_message,
+                with_media=with_media,
+                file_uris=file_uris,
+                image_uris=image_uris,
+                result_affirmed=True,
+            )
+
+        ###################################################################
+        ###################################################################
 
         if with_media:
             return final_resp, file_uris, image_uris

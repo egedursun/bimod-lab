@@ -54,6 +54,8 @@ class MultimodalLeanChatMessage(models.Model):
         null=True
     )
 
+    hidden = models.BooleanField(default=False)
+
     starred = models.BooleanField(default=False)
     sent_at = models.DateTimeField(auto_now_add=True)
 

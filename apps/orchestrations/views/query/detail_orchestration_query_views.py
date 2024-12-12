@@ -26,7 +26,6 @@ from apps.orchestrations.models.query import OrchestrationQuery
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -36,8 +35,10 @@ class OrchestrationView_QueryDetail(LoginRequiredMixin, TemplateView):
 
         ##############################
         # PERMISSION CHECK FOR - CREATE_AND_USE_ORCHESTRATION_CHATS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.CREATE_AND_USE_ORCHESTRATION_CHATS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.CREATE_AND_USE_ORCHESTRATION_CHATS
+        ):
             messages.error(self.request, "You do not have permission to create and use orchestration queries.")
             return context
         ##############################
@@ -45,6 +46,12 @@ class OrchestrationView_QueryDetail(LoginRequiredMixin, TemplateView):
         query_id = self.kwargs.get('query_id')
         query = get_object_or_404(OrchestrationQuery, id=query_id)
         context['query'] = query
-        context['logs'] = query.logs.all()
+
+        context['logs'] = query.logs.filter(
+            hidden=False
+        ).order_by(
+            '-created_at'
+        )
+
         logger.info(f"Orchestration query was viewed by User: {self.request.user.id}.")
         return context

@@ -132,7 +132,10 @@ class ChatView_LeanChat(TemplateView, LoginRequiredMixin):
         )
 
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
-        active_chat_msgs = active_chat.lean_chat_messages.all().order_by('sent_at') if active_chat else None
+
+        active_chat_msgs = active_chat.lean_chat_messages.filter(
+            hidden=False
+        ).order_by('sent_at') if active_chat else None
 
         context.update(
             {
@@ -223,15 +226,13 @@ class ChatView_LeanChat(TemplateView, LoginRequiredMixin):
             file_full_uris = self._handle_save_files(attached_files)
             self._handle_record_audio(file_full_uris, request)
 
-            MultimodalLeanChatMessage.objects.create(
+            user_msg = MultimodalLeanChatMessage.objects.create(
                 multimodal_lean_chat=chat,
                 sender_type='USER',
                 message_text_content=msg_content,
                 message_image_contents=image_full_uris,
                 message_file_contents=file_full_uris
             )
-
-            user_msg = MultimodalLeanChatMessage.objects.filter(multimodal_lean_chat=chat).last()
 
             internal_llm_client_lean = GenerativeAIDecodeController.get_lean(
                 user=request.user,

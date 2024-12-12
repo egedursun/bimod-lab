@@ -32,6 +32,9 @@ class OrchestrationQueryLog(models.Model):
     log_image_contents = models.JSONField(default=list, blank=True, null=True)
     log_file_contents = models.JSONField(default=list, blank=True, null=True)
     log_audio_contents = models.JSONField(default=list, blank=True, null=True)
+
+    hidden = models.BooleanField(default=False)
+
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

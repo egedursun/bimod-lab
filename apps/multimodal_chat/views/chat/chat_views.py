@@ -99,7 +99,9 @@ class ChatView_Chat(LoginRequiredMixin, TemplateView):
 
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
 
-        active_chat_msgs = active_chat.chat_messages.all().order_by('sent_at') if active_chat else None
+        active_chat_msgs = active_chat.chat_messages.filter(
+            hidden=False
+        ).order_by('sent_at') if active_chat else None
 
         context.update(
             {

@@ -30,31 +30,40 @@ class MultimodalVoidForgerChatMessage(models.Model):
         on_delete=models.CASCADE,
         related_name='voidforger_chat_messages'
     )
+
     sender_type = models.CharField(
         max_length=100,
         choices=CHAT_MESSAGE_ROLE_SENDER_TYPES
     )
+
     message_text_content = models.TextField()
+
     message_json_content = models.JSONField(
         default=dict,
         blank=True,
         null=True
     )  # Not used for now
+
     message_image_contents = models.JSONField(
         default=list,
         blank=True,
         null=True
     )
+
     message_file_contents = models.JSONField(
         default=list,
         blank=True,
         null=True
     )
+
     message_audio = models.URLField(
         max_length=10000,
         blank=True,
         null=True
     )
+
+    hidden = models.BooleanField(default=False)
+
     sent_at = models.DateTimeField(
         auto_now_add=True
     )
