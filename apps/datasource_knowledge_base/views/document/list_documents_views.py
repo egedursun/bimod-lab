@@ -32,8 +32,11 @@ from apps.core.user_permissions.permission_manager import (
 from apps.assistants.models import Assistant
 from apps.datasource_knowledge_base.models import (
     DocumentKnowledgeBaseConnection,
-    KnowledgeBaseDocument,
-    DocumentProcessingLog
+    KnowledgeBaseDocument
+)
+
+from apps.datasource_knowledge_base.tasks import (
+    handle_delete_document_item
 )
 
 from apps.organization.models import (
@@ -72,6 +75,7 @@ class DocumentView_List(LoginRequiredMixin, TemplateView):
                 agents = Assistant.objects.filter(
                     organization=org
                 )
+
                 agent_data_list = []
 
                 for agent in agents:
@@ -94,18 +98,10 @@ class DocumentView_List(LoginRequiredMixin, TemplateView):
                         doc_data_list = []
 
                         for doc in page_obj:
-                            log_entries = DocumentProcessingLog.objects.filter(
-                                document_full_uri=doc.document_uri
-                            )
-
-                            proc_statuses = [
-                                log.log_message for log in log_entries
-                            ]
 
                             doc_data_list.append(
                                 {
                                     'document': doc,
-                                    'current_statuses': proc_statuses
                                 }
                             )
 
@@ -173,9 +169,32 @@ class DocumentView_List(LoginRequiredMixin, TemplateView):
             doc_ids = request.POST.getlist('selected_documents')
 
             if doc_ids:
-                KnowledgeBaseDocument.objects.filter(
-                    id__in=doc_ids
-                ).delete()
+
+                for doc_id in doc_ids:
+
+                    doc: KnowledgeBaseDocument = KnowledgeBaseDocument.objects.get(
+                        id=doc_id
+                    )
+
+                    success = handle_delete_document_item(
+                        item=doc
+                    )
+
+                    if success is False:
+                        messages.error(
+                            self.request,
+                            "An error occurred while deleting the Document item: " + doc.document_uri
+                        )
+
+                        continue
+
+                    else:
+                        pass
+
+                pass
+
+            else:
+                pass
 
         except Exception as e:
             messages.error(request, 'An error occurred while deleting selected documents.')

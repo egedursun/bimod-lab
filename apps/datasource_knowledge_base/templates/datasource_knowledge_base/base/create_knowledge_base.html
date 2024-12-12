@@ -102,15 +102,6 @@
                  alt="Illustration for tips">
             <div class="row p-8">
               <div class="mb-6 col-6">
-                <label class="form-label" for="provider">Knowledge Base System</label>
-                <select class="form-select" id="provider" name="provider">
-                  <option value="" disabled selected>Select Knowledge Base System</option>
-                  {% for key, value in knowledge_base_systems %}
-                    <option value="{{ key }}">{{ value }}</option>
-                  {% endfor %}
-                </select>
-              </div>
-              <div class="mb-6 col-6">
                 <label class="form-label" for="assistant">Assistant</label>
                 <select class="form-select" id="assistant" name="assistant">
                   {% for assistant in assistants %}
@@ -128,16 +119,7 @@
                 <textarea class="form-control" id="description" name="description" rows="1"
                           placeholder="Enter knowledge base description"></textarea>
               </div>
-              <div class="mb-6 col-3">
-                <label class="form-label" for="host_url">Host URL</label>
-                <input type="text" class="form-control" id="host_url" name="host_url" placeholder="Enter host URL" />
-              </div>
-              <div class="mb-6 col-3">
-                <label class="form-label" for="provider_api_key">Provider API Key</label>
-                <input type="text" class="form-control" id="provider_api_key" name="provider_api_key"
-                       placeholder="Enter provider API key" />
-              </div>
-              <div class="mb-6 col-3">
+              <div class="mb-6 col-6">
                 <label class="form-label" for="vectorizer">Vectorizer</label>
                 <select class="form-select" id="vectorizer" name="vectorizer">
                   <option value="" disabled selected>Select Vectorizer</option>
@@ -145,11 +127,6 @@
                     <option value="{{ key }}">{{ value }}</option>
                   {% endfor %}
                 </select>
-              </div>
-              <div class="mb-6 col-3">
-                <label class="form-label" for="vectorizer_api_key">Vectorizer API Key</label>
-                <input type="text" class="form-control" id="vectorizer_api_key" name="vectorizer_api_key"
-                       placeholder="Enter vectorizer API key" />
               </div>
               <div class="mb-6 col-4">
                 <label class="form-label" for="embedding_chunk_size">Embedding Chunk Size</label>

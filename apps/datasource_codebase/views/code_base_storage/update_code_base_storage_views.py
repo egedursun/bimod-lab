@@ -45,7 +45,6 @@ from apps.datasource_codebase.models import (
 )
 
 from apps.datasource_codebase.utils import (
-    KNOWLEDGE_BASE_SYSTEMS,
     VECTORIZERS
 )
 
@@ -71,7 +70,6 @@ class CodeBaseView_StorageUpdate(LoginRequiredMixin, TemplateView):
 
         try:
             context['user'] = context_user
-            context['knowledge_base_systems'] = KNOWLEDGE_BASE_SYSTEMS
             context['vectorizers'] = VECTORIZERS
 
             user_orgs = context_user.organizations.all()

@@ -26,10 +26,6 @@ from django.contrib.auth.mixins import (
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
-from apps.core.codebase.codebase_decoder import (
-    CodeBaseDecoder
-)
-
 from apps.core.user_permissions.permission_manager import (
     UserPermissionManager
 )
@@ -37,15 +33,12 @@ from apps.core.user_permissions.permission_manager import (
 from apps.assistants.models import Assistant
 
 from apps.datasource_codebase.models import (
-    CodeRepositoryStorageConnection
+    CodeRepositoryStorageConnection,
+    CodeBaseRepository
 )
 
 from apps.datasource_codebase.tasks import (
-    add_repository_upload_log
-)
-
-from apps.datasource_codebase.utils import (
-    RepositoryUploadStatusNames
+    load_and_index_repository
 )
 
 from apps.organization.models import Organization
@@ -130,24 +123,27 @@ class CodeBaseView_RepositoryCreate(LoginRequiredMixin, TemplateView):
             pk=vs_id
         )
 
-        repo_url = request.POST.get('repository_url')
+        repo_url = request.POST.get('repository_uri')
 
         if vs_id and repo_url:
-            add_repository_upload_log(
-                document_full_uri=repo_url,
-                log_name=RepositoryUploadStatusNames.STAGED
+
+            # Save the repository object
+            new_repository = CodeBaseRepository.objects.create(
+                knowledge_base=vector_store,
+                repository_uri=repo_url,
+                repository_name=repo_url.split('/')[-1],
+                repository_description="",
+                created_by_user=request.user
+            )
+            new_repository.save()
+
+            success = load_and_index_repository(
+                item_id=new_repository.id
             )
 
-            add_repository_upload_log(
-                document_full_uri=repo_url,
-                log_name=RepositoryUploadStatusNames.UPLOADED
-            )
-
-            CodeBaseDecoder.get(
-                vector_store
-            ).index_repositories(
-                document_paths=[repo_url]
-            )
+            if not success:
+                logger.error('Error while indexing repositories.')
+                messages.error(request, 'Error while indexing repositories.')
 
             logger.info(f"Repositories uploaded successfully.")
             messages.success(request, 'Repositories uploaded successfully.')

@@ -16,9 +16,10 @@
 #
 
 import logging
+import traceback
 
-from apps.core.vector_operations.vector_document.vector_store_decoder import (
-    KnowledgeBaseSystemDecoder
+from apps.core.vector_operations.vector_store_executor import (
+    VectorStoreExecutor
 )
 
 from apps.datasource_knowledge_base.models import (
@@ -28,31 +29,32 @@ from apps.datasource_knowledge_base.models import (
 logger = logging.getLogger(__name__)
 
 
-def run_query_vector_store(
-    c_id: int,
-    vector_store_query: str,
-    semantic_alpha: float
+def run_query_search_document_data(
+    connection_id: str,
+    document_file_name: str,
+    query: str
 ):
-    conn = DocumentKnowledgeBaseConnection.objects.get(
-        id=c_id
-    )
-
     try:
-
-        client = KnowledgeBaseSystemDecoder().get(
-            connection=conn
+        connection = DocumentKnowledgeBaseConnection.objects.get(
+            id=connection_id
         )
 
-        output = client.search_hybrid(
-            query=vector_store_query,
-            alpha=semantic_alpha
+        if not connection:
+            return f"Connection with ID: {connection_id} does not exist."
+
+        xc = VectorStoreExecutor(
+            connection_id=connection_id
         )
 
-        logger.info(f"Knowledge base query output: {output}")
+        output = xc.search_within_document_chunks(
+            document_file_name=document_file_name,
+            query=query
+        )
 
     except Exception as e:
-        error_msg = f"Error occurred while executing the knowledge base query: {str(e)}"
-        logger.error(error_msg)
+        logger.error(f"Error occurred while executing the Document Data Search query: {str(e)}")
+        logger.error(traceback.format_exc())
+        error_msg = f"Error occurred while executing the Document Data Search query: {str(e)}"
 
         return error_msg
 

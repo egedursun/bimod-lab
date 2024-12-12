@@ -38,16 +38,9 @@ def verify_code_base_query_content(content: dict):
             parameters field of the tool_usage_json.
         """
 
-    if "alpha" not in ps:
-        return """
-            The 'alpha' field is missing from the 'parameters' field in the tool_usage_json. This field is mandatory for
-            using the Code Base Query Execution tool. Please make sure you are defining the 'alpha' field in the
-            parameters field of the tool_usage_json.
-        """
-
     c = CodeRepositoryStorageConnection.objects.get(
         id=ps.get(
-            "code_base_storage_connection_id"
+            "connection_id"
         )
     )
 

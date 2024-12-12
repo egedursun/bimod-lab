@@ -17,6 +17,5 @@
 
 
 from .code_repository_admin import *
-from .code_repository_chunk_admin import *
+from .code_repository_vector_admin import *
 from .code_repository_storage_admin import *
-from .code_repository_processing_log_admin import *

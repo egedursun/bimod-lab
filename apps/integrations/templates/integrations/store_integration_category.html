@@ -324,7 +324,17 @@
                 </select>
               </div>
               <div class="col-6 mb-3">
-                <label for="knowledge_base" class="form-label">Knowledge Base</label>
+                <label for="knowledge_base" class="form-label">
+                  Knowledge Base
+                  <div class="bg-label-warning p-1 mt-1 w-100">
+                    <small>
+                      <strong>
+                        <i class="fa fa-exclamation-triangle my-1"></i>
+                        Documents are excluded.
+                      </strong>
+                    </small>
+                  </div>
+                </label>
                 <select id="knowledge_base" name="knowledge_base" class="form-control select">
                   <option value="" selected>Choose a Knowledge Base</option>
                   {% for kb in knowledge_bases %}
@@ -334,7 +344,17 @@
               </div>
 
               <div class="col-6 mb-3">
-                <label for="code_base" class="form-label">Code Base</label>
+                <label for="code_base" class="form-label">
+                  Code Base
+                  <div class="bg-label-warning p-1 mt-1 w-100">
+                    <small>
+                      <strong>
+                        <i class="fa fa-exclamation-triangle my-1"></i>
+                        Repositories are excluded.
+                      </strong>
+                    </small>
+                  </div>
+                </label>
                 <select id="code_base" name="code_base" class="form-control select">
                   <option value="" selected>Choose a Code Base</option>
                   {% for code_base in code_bases %}

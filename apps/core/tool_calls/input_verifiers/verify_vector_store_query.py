@@ -16,13 +16,7 @@
 #
 
 
-from apps.datasource_knowledge_base.models import (
-    DocumentKnowledgeBaseConnection
-)
-
-
 def verify_vector_store_query_content(content: dict):
-
     if "parameters" not in content:
         return """
             The 'parameters' field is missing from the tool_usage_json. This field is mandatory for using the Knowledge
@@ -31,30 +25,22 @@ def verify_vector_store_query_content(content: dict):
 
     ps = content.get("parameters")
 
+    if "connection_id" not in ps:
+        return """
+            The 'connection_id' field is missing from the 'parameters' field in the tool_usage_json. This field is mandatory
+            for using the Knowledge Base Query Execution tool. Please make sure you are defining the 'connection_id' field
+            in the parameters field of the tool_usage_json.
+        """
+
+    if "document_file_name" not in ps:
+        # This field is optional, without it, the system will search all documents in the connection.
+        pass
+
     if "query" not in ps:
         return """
             The 'query' field is missing from the 'parameters' field in the tool_usage_json. This field is mandatory for
             using the Knowledge Base Query Execution tool. Please make sure you are defining the 'query' field in the
             parameters field of the tool_usage_json.
-        """
-
-    if "alpha" not in ps:
-        return """
-            The 'alpha' field is missing from the 'parameters' field in the tool_usage_json. This field is mandatory for
-            using the Knowledge Base Query Execution tool. Please make sure you are defining the 'alpha' field in the
-            parameters field of the tool_usage_json.
-        """
-
-    c = DocumentKnowledgeBaseConnection.objects.get(
-        id=ps.get(
-            "knowledge_base_connection_id"
-        )
-    )
-
-    if not c:
-        return f"""
-            The Knowledge Base Connection with the ID: {c.id} does not exist in the system.
-            Please make sure you are passing a valid knowledge base connection ID.
         """
 
     return None

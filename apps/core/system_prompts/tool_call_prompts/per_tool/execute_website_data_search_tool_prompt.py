@@ -40,7 +40,7 @@ def build_tool_prompt__website_data_search():
                 "tool": "{ToolCallDescriptorNames.EXECUTE_WEBSITE_DATA_SEARCH_QUERY}",
                 "parameters": {{
                     "connection_id": ...,
-                    "website_url": "...",
+                    "website_url": "...", (optional)
                     "query": "..."
                     }}
                 }}
@@ -63,7 +63,9 @@ def build_tool_prompt__website_data_search():
         user to first create the necessary Website Storage connections.
 
         - [2] The "website_url" field must be the URL of the website you would like to search within. This field must be
-        one of the URLs of the websites located within the Website Storage connection you have specified with an ID.
+        one of the URLs of the websites located within the Website Storage connection you have specified with an ID. If
+        you leave this field empty, the system will search within all the websites located within the Website Storage
+        connection you have specified with an ID.
 
         - [3] The "query" field must be a string you need to search in the content of the website located within the
         Website Storage connection. This string can be a question or a keyword that you would like to search within the

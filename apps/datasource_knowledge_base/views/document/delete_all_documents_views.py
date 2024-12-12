@@ -34,6 +34,10 @@ from apps.datasource_knowledge_base.models import (
     KnowledgeBaseDocument
 )
 
+from apps.datasource_knowledge_base.tasks import (
+    handle_delete_document_item
+)
+
 from apps.user_permissions.utils import (
     PermissionNames
 )
@@ -67,9 +71,22 @@ class DocumentView_DeleteAll(LoginRequiredMixin, TemplateView):
         try:
             vs_id = kwargs.get('kb_id')
 
-            KnowledgeBaseDocument.objects.filter(
+            docs = KnowledgeBaseDocument.objects.filter(
                 knowledge_base_id=vs_id
-            ).delete()
+            )
+
+            for doc in docs:
+                doc: KnowledgeBaseDocument
+
+                success = handle_delete_document_item(
+                    item=doc
+                )
+
+                if success is False:
+                    logger.error(f"An error occurred while deleting the data for Document item with ID: {doc.id}")
+                    messages.error(request, 'An error occurred while deleting all documents.')
+
+                    continue
 
         except Exception as e:
             logger.error(f"User: {request.user} - Document - Delete All Error: {e}")

@@ -222,6 +222,8 @@ media/generated/images/*
 /vectors/nosql_schema_vectors/nosql_schemas/*
 /vectors/file_system_schema_vectors/file_system_schemas/*
 /vectors/website_vectors/website_indexes/*
+/vectors/knowledge_base_vectors/knowledge_base_indexes/*
+/vectors/code_base_vectors/code_base_indexes/*
 
 # Allow __init__.py files in all subdirectories of assistants and integrations
 !/vectors/assistant_vectors/context_memories/**/__init__.py
@@ -237,3 +239,5 @@ media/generated/images/*
 !/vectors/nosql_schema_vectors/nosql_schemas/**/__init__.py
 !/vectors/file_system_schema_vectors/file_system_schemas/**/__init__.py
 !/vectors/website_vectors/website_indexes/**/__init__.py
+!/vectors/knowledge_base_vectors/knowledge_base_indexes/**/__init__.py
+!/vectors/code_base_vectors/code_base_indexes/**/__init__.py

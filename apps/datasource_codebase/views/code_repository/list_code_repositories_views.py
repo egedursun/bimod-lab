@@ -35,8 +35,11 @@ from apps.assistants.models import Assistant
 
 from apps.datasource_codebase.models import (
     CodeRepositoryStorageConnection,
-    CodeBaseRepository,
-    RepositoryProcessingLog
+    CodeBaseRepository
+)
+
+from apps.datasource_codebase.tasks import (
+    handle_delete_repository_item
 )
 
 from apps.organization.models import Organization
@@ -86,7 +89,6 @@ class CodeBaseView_RepositoryList(LoginRequiredMixin, TemplateView):
                     kb_data_list = []
 
                     for kb in vector_stores:
-
                         docs = CodeBaseRepository.objects.filter(
                             knowledge_base=kb
                         ).order_by('-created_at')
@@ -100,18 +102,10 @@ class CodeBaseView_RepositoryList(LoginRequiredMixin, TemplateView):
 
                         for doc in page_obj:
                             doc: CodeBaseRepository
-                            logs = RepositoryProcessingLog.objects.filter(
-                                repository_full_uri=doc.repository_uri
-                            )
-
-                            cur_statuses = [
-                                log.log_message for log in logs
-                            ]
 
                             doc_data_list.append(
                                 {
                                     'document': doc,
-                                    'current_statuses': cur_statuses
                                 }
                             )
 
@@ -182,11 +176,29 @@ class CodeBaseView_RepositoryList(LoginRequiredMixin, TemplateView):
             doc_ids = request.POST.getlist('selected_documents')
 
             if doc_ids:
-                CodeBaseRepository.objects.filter(
-                    id__in=doc_ids
-                ).delete()
 
-                logger.info(f"Code Repositories {doc_ids} were deleted.")
+                for doc_id in doc_ids:
+
+                    doc: CodeBaseRepository = CodeBaseRepository.objects.get(
+                        id=doc_id
+                    )
+
+                    success = handle_delete_repository_item(
+                        item=doc
+                    )
+
+                    if success is False:
+                        messages.error(
+                            self.request,
+                            "An error occurred while deleting the Code Repository item: " + doc.repository_uri
+                        )
+
+                        continue
+
+                    else:
+                        pass
+
+                    logger.info(f"Code Repositories {doc_ids} were deleted.")
 
         except Exception as e:
             logger.error(f"User: {request.user} - Code Repository - Delete Error: {e}")

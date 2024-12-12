@@ -267,8 +267,8 @@
                                              data-kb-id="{{ kb_data.knowledge_base.id }}"></th>
                                   <th style="min-width: 120px; max-width: 120px;">File Id</th>
                                   <th style="min-width:200px; max-width: 200px;">Repository Name</th>
-                                  <th style="min-width: 400px; max-width: 400px;">Status</th>
-                                  <th style="min-width: 200px; max-width: 200px;">Stored Chunks</th>
+                                  <th style="min-width: 200px; max-width: 200px;">Processed Chunks</th>
+                                  <th style="min-width: 200px; max-width: 200px;">Total Chunks</th>
                                   <th STYLE="min-width: 250px; max-width: 250px;">Connected At</th>
                                 </tr>
                                 </thead>
@@ -282,77 +282,21 @@
                                     </td>
                                     <td>{{ document_data.document.id }}</td>
                                     <td><strong>{{ document_data.document.repository_name }}</strong></td>
-                                    <td class="col-lg-4">
-                                      {% for status in document_statuses %}
-                                        {% if status in document_data.current_statuses %}
-                                          {% if status in failed_statuses %}
-                                            <span class="badge bg-danger text-white rounded">
-                                                                            <i class="fa fa-warning"></i>
-                                                                        </span>
-                                          {% elif status in partially_failed_statuses %}
-                                            <span class="badge bg-warning text-white rounded mb-1" style="width: 10%">
-                                                                            <i class="fa fa-warning"></i>
-                                                                        </span>
-                                          {% else %}
-                                            {% if status == "staged" %}
-                                              <span class="badge bg-info text-white rounded mb-1" style="width: 10%">
-                                                                              <i class="fa fa-clock"></i>
-                                                                          </span>
-                                            {% elif status == "uploaded" %}
-                                              <span class="badge bg-info text-white rounded mb-1" style="width: 10%">
-                                                                              <i class="fa fa-file-upload"></i>
-                                                                          </span>
-                                            {% elif status == "loaded" %}
-                                              <span class="badge bg-info text-white rounded mb-1" style="width: 10%">
-                                                                              <i class="fa fa-magnifying-glass"></i>
-                                                                          </span>
-                                            {% elif status == "chunked" %}
-                                              <span class="badge bg-info text-white rounded mb-1" style="width: 10%">
-                                                                              <i class="fa fa-scissors"></i>
-                                                                          </span>
-                                            {% elif status == "embedded_document" %}
-                                              <span class="badge bg-info text-white rounded mb-1" style="width: 10%">
-                                                                              <i class="fa fa-file-signature"></i>
-                                                                          </span>
-                                            {% elif status == "saved_document" %}
-                                              <span class="badge bg-info text-white rounded mb-1" style="width: 10%">
-                                                                              <i class="fa fa-file-archive"></i>
-                                                                          </span>
-                                            {% elif status == "processed_document" %}
-                                              <span class="badge bg-info text-white rounded mb-1" style="width: 10%">
-                                                                              <i class="fa fa-file-circle-check"></i>
-                                                                          </span>
-                                            {% elif status == "embedded_chunks" %}
-                                              <span class="badge bg-info text-white rounded mb-1" style="width: 10%">
-                                                                              <i class="fa fa-boxes-packing"></i>
-                                                                          </span>
-                                            {% elif status == "saved_chunks" %}
-                                              <span class="badge bg-info text-white rounded mb-1" style="width: 10%">
-                                                                              <i class="fa fa-box-archive"></i>
-                                                                          </span>
-                                            {% elif status == "processed_chunks" %}
-                                              <span class="badge bg-info text-white rounded mb-1" style="width: 10%">
-                                                                              <i class="fa fa-list-check"></i>
-                                                                          </span>
-                                            {% elif status == "completed" %}
-                                              <span class="badge bg-success text-white rounded mb-1" style="width: 10%">
-                                                                              <i class="fa fa-check-square"></i>
-                                                                          </span>
-                                            {% endif %}
-                                          {% endif %}
-                                        {% endif %}
-                                      {% endfor %}
-                                      {% if "completed" not in document_data.current_statuses %}
-                                        <span class="badge bg-warning text-white rounded mb-1" style="width: 10%">
-                                            <i class="fa fa-exclamation-triangle"></i>
-                                        </span>
-                                      {% endif %}
+                                    <td>
+                                      <div class="btn-success p-4 rounded">
+                                        <strong>
+                                          <i class="fa fa-check me-2"></i>
+                                          {{ document_data.document.n_chunks_indexed_status }}
+                                        </strong>
+                                      </div>
                                     </td>
                                     <td>
-                                      <span class="btn-success rounded p-2">
+                                      <div class="btn-dark p-4 rounded">
                                         <strong>
-                                          {{ document_data.document.repository_chunks.count }}
-                                        </strong></span>
+                                          <i class="fa fa-cubes me-2"></i>
+                                          {{ document_data.document.n_chunks }}
+                                        </strong>
+                                      </div>
                                     </td>
                                     <td>{{ document_data.document.created_at }}</td>
                                   </tr>

@@ -26,14 +26,21 @@ logger = logging.getLogger(__name__)
 
 @receiver(post_save, sender=AssistantIntegration)
 def update_integration_embedding_after_save(sender, instance, created, **kwargs):
-    from apps.semantor.models import IntegrationVectorData
-    print("here...")
+    from apps.semantor.models import (
+        IntegrationVectorData
+    )
+
     try:
-        item, success = IntegrationVectorData.objects.get_or_create(integration_assistant=instance)
+        item, success = IntegrationVectorData.objects.get_or_create(
+            integration_assistant=instance
+        )
+
         if success:
             logger.info("Integration vector data created for assistant integration.")
+
         else:
             logger.info("Integration vector data already exists; updating.")
             item.save()
+
     except Exception as e:
         logger.error(f"Error in post-save embedding update: {e}")

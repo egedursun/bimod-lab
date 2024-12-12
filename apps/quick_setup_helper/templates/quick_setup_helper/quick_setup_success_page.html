@@ -55,7 +55,8 @@
         <div class="col-md-12 category-card">
           <div class="card p-2 h-100 shadow">
             <div class="card-body text-center">
-              <img src="{% static 'img/quick_setup_helper/qs-success-banner.png' %}" alt="AWS Icon" class="img-fluid mb-4 rounded border border-primary border-2 rounded">
+              <img src="{% static 'img/quick_setup_helper/qs-success-banner.png' %}" alt="AWS Icon"
+                   class="img-fluid mb-4 rounded border border-primary border-2 rounded">
               <hr>
               <h2 class="card-title">
                 <strong>
@@ -117,7 +118,8 @@
                         </p>
                       </div>
                       <hr>
-                      <a href="{% url 'datasource_media_storages:third_party_main' %}" class="btn btn-primary mt-4 w-100">
+                      <a href="{% url 'datasource_media_storages:third_party_main' %}"
+                         class="btn btn-primary mt-4 w-100">
                         <i class="fa fa-cloud me-2"></i>
                         <strong>Connect Storage Buckets</strong>
                       </a>
@@ -127,29 +129,63 @@
                 <div class="col-4 d-flex flex-grow-1 mb-4">
                   <div class="card bg-body text-center p-8 border border-primary border-2 rounded">
                     <div class="card-body">
-                      <img src="{% static 'img/quick_setup_helper/qs-further-3.jpg' %}" alt="app-icon"
+                      <img src="{% static 'img/quick_setup_helper/qs-further-2-1.jpg' %}" alt="app-icon"
                            class="img-fluid mb-4 rounded">
                       <hr>
-                      <i class="fa fa-xl fa-folder-open bg-instagram p-8 rounded me-2 text-white"></i>
+                      <i class="fa fa-xl fa-database bg-instagram p-8 rounded me-2 text-white"></i>
                       <hr>
                       <h4 class="card-title text-center mt-2">
                         <strong>
-                          📚 &nbsp; Discover Features
+                          🛢 &nbsp; Connect Your Database
                         </strong>
                       </h4>
                       <hr>
                       <div class="card-text">
                         <p style="text-align: justify;">
                           <strong>
-                            Explore the features we offer in BimodLab and customize your account to create the most
-                            personalized experience for yourself, your teams, and your organizations.
+                            Connect your SQL or NoSQL databases to your assistant to let us automatically fetch your
+                            data and administrate your databases automatically.
                           </strong>
                         </p>
                       </div>
                       <hr>
-                      <a href="{% url 'dashboard:lab-landing' %}" class="btn btn-primary mt-4 w-100">
-                        <i class="fa fa-rocket me-2"></i>
-                        <strong>BimodLab Dashboard</strong>
+                      <a href="{% url 'datasource_sql:list' %}" class="btn btn-primary mt-4 w-100">
+                        <i class="fa fa-database me-2"></i>
+                        <strong>Manage SQL Databases</strong>
+                      </a>
+                      <a href="{% url 'datasource_sql:list' %}" class="btn btn-primary mt-4 w-100">
+                        <i class="fa fa-database me-2"></i>
+                        <strong>Manage NoSQL Databases</strong>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-4 d-flex flex-grow-1 mb-4">
+                  <div class="card bg-body text-center p-8 border border-primary border-2 rounded">
+                    <div class="card-body">
+                      <img src="{% static 'img/quick_setup_helper/qs-further-2-2.jpg' %}" alt="app-icon"
+                           class="img-fluid mb-4 rounded">
+                      <hr>
+                      <i class="fa fa-xl fa-server bg-instagram p-8 rounded me-2 text-white"></i>
+                      <hr>
+                      <h4 class="card-title text-center mt-2">
+                        <strong>
+                          🖥 &nbsp; Connect Your Server &amp; Computer
+                        </strong>
+                      </h4>
+                      <hr>
+                      <div class="card-text">
+                        <p style="text-align: justify;">
+                          <strong>
+                            Connect your remote server to your assistant via SSH to let your assistants automatically
+                            administrate your server and execute commands on your behalf.
+                          </strong>
+                        </p>
+                      </div>
+                      <hr>
+                      <a href="{% url 'datasource_file_systems:list' %}" class="btn btn-primary mt-4 w-100">
+                        <i class="fa fa-server me-2"></i>
+                        <strong>Manage SSH Servers</strong>
                       </a>
                     </div>
                   </div>
@@ -229,6 +265,41 @@
                 <div class="col-4 d-flex flex-grow-1 mb-4">
                   <div class="card bg-body text-center p-8 border border-primary border-2 rounded">
                     <div class="card-body">
+                      <img src="{% static 'img/quick_setup_helper/qs-further-2-3.jpg' %}" alt="app-icon"
+                           class="img-fluid mb-4 rounded">
+                      <hr>
+                      <i class="fa fa-xl fa-file-upload bg-instagram p-8 rounded me-2 text-white"></i>
+                      <hr>
+                      <h4 class="card-title text-center mt-2">
+                        <strong>
+                          📁 &nbsp; Index Text Documents &amp; Code Repositories
+                        </strong>
+                      </h4>
+                      <hr>
+                      <div class="card-text">
+                        <p style="text-align: justify;">
+                          <strong>
+                            Index your files and code repositories to let your assistant search and retrieve your files
+                            &amp;
+                            code snippets automatically and interpret them with ease.
+                          </strong>
+                        </p>
+                      </div>
+                      <hr>
+                      <a href="{% url 'datasource_knowledge_base:list_documents' %}" class="btn btn-primary mt-4 w-100">
+                        <i class="fa fa-lock me-2"></i>
+                        <strong>Manage Text Documents</strong>
+                      </a>
+                      <a href="{% url 'datasource_codebase:list_repositories' %}" class="btn btn-primary mt-4 w-100">
+                        <i class="fa fa-code me-2"></i>
+                        <strong>Manage Code Repositories</strong>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-4 d-flex flex-grow-1 mb-4">
+                  <div class="card bg-body text-center p-8 border border-primary border-2 rounded">
+                    <div class="card-body">
                       <img src="{% static 'img/quick_setup_helper/qs-further-6.jpg' %}" alt="app-icon"
                            class="img-fluid mb-4 rounded">
                       <hr>
@@ -244,7 +315,8 @@
                         <p style="text-align: justify;">
                           <strong>
                             Download desktop &amp; mobile apps to chat with assistants on the go.
-                            Some features are only available on desktop: team tempo/time tracking &amp; meeting tracking.
+                            Some features are only available on desktop: team tempo/time tracking &amp; meeting
+                            tracking.
                           </strong>
                         </p>
                       </div>
@@ -256,6 +328,36 @@
                       <a href="{% url 'landing:fermion_copilot_releases' %}" class="btn btn-primary mt-4 w-100">
                         <i class="fa fa-download me-2"></i>
                         <strong>Fermion Copilot (Mobile)</strong>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-4 d-flex flex-grow-1 mb-4">
+                  <div class="card bg-body text-center p-8 border border-primary border-2 rounded">
+                    <div class="card-body">
+                      <img src="{% static 'img/quick_setup_helper/qs-further-3.jpg' %}" alt="app-icon"
+                           class="img-fluid mb-4 rounded">
+                      <hr>
+                      <i class="fa fa-xl fa-folder-open bg-instagram p-8 rounded me-2 text-white"></i>
+                      <hr>
+                      <h4 class="card-title text-center mt-2">
+                        <strong>
+                          📚 &nbsp; Discover Many More Features
+                        </strong>
+                      </h4>
+                      <hr>
+                      <div class="card-text">
+                        <p style="text-align: justify;">
+                          <strong>
+                            Explore the features we offer in BimodLab and customize your account to create the most
+                            personalized experience for yourself, your teams, and your organizations.
+                          </strong>
+                        </p>
+                      </div>
+                      <hr>
+                      <a href="{% url 'dashboard:lab-landing' %}" class="btn btn-primary mt-4 w-100">
+                        <i class="fa fa-rocket me-2"></i>
+                        <strong>BimodLab Dashboard</strong>
                       </a>
                     </div>
                   </div>

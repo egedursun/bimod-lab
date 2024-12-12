@@ -119,13 +119,6 @@ def convert_given_name_to_class_name(given_name: str):
     return given_name_alnum_list
 
 
-def build_weaviate_class_name_with_random(connection):
-    o = convert_given_name_to_class_name(connection.name)
-    randoms = build_random_word_string()
-
-    return f"{o}{randoms}"
-
-
 def generate_repository_uri(
     base_dir,
     document_name,

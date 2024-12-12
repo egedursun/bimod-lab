@@ -140,7 +140,11 @@ class WebsiteExecutionManager:
 
         # Post-filter the results by website URL
 
-        if website_url in existing_urls:
+        if (
+            website_url is not None and
+            website_url != "" and
+            website_url in existing_urls
+        ):
 
             for item_id, distance in zip(
                 ids[0],

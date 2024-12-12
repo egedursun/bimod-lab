@@ -36,9 +36,9 @@ def build_tool_prompt__execute_codebase_query():
                 {{
                     "tool": "{ToolCallDescriptorNames.EXECUTE_CODE_BASE_QUERY}",
                     "parameters": {{
-                        "code_base_storage_connection_id": "...",
+                        "connection_id": "...",
+                        "repository_uri": "...", (optional)
                         "query": "...",
-                        "alpha": 0.0 <= value_of_alpha <= 1.0,
                         }}
                     }}
             '''
@@ -47,31 +47,29 @@ def build_tool_prompt__execute_codebase_query():
 
             #### **DO NOT WRITE: ** 'json' anywhere in your dictionary or next to "'''" elements.
 
-            #### **INSTRUCTIONS:** The "code_base_storage_connection_id" will be the ID of Code Base Storage Connection
+            #### **INSTRUCTIONS:** The "connection_id" will be the ID of Code Base Storage Connection
             you need to execute your query, and "query" will be the string you need to search within the code base
-            storage repos. The "alpha" is a float value between 0.0 and 1.0 that determines the weight of semantic
-            versus keyword-based search in search algorithm:
-
-                - An alpha of 1.0 means the search will be purely vector-based (semantic) search.
-                - An alpha of 0.0 means the search will be purely keyword-based.
-                - Thus, value of alpha can be adjusted between float values of 0.0 and 1.0 to adjust the balance
-                between semantic and keyword-based search, according to question of user and your judgment.
+            storage repos. The "repository_uri" is optional, and if you provide it, the search will be limited to
+            that repository only. If you do not provide it, the search will be conducted across all repositories
+            in the storage connection you have specified.
 
             To use this, you need to provide following fields 'VERY CAREFULLY':
 
             - [1] The "query" field should be a string that you would like to search within the code base storage repositories.
             This string can be a question or a keyword that you would like to search within the repositories.
 
-            - [2] The "alpha" field should be a float value between 0.0 and 1.0 that determines the weight of semantic
-            versus keyword-based search in the search algorithm.
+            - [2] The "connection_id" field should be the ID of the Code Base Storage Connection you would like to use
+            to search within the repositories. You can find the ID of the Code Base Storage Connection by checking the
+            Code Base Storage Connections that are available for you.
+
+            - [3] The "repository_uri" field is optional, and if you provide it, the search will be limited to that
+            repository only. If you do not provide it, the search will be conducted across all repositories in the storage
+            connection you have specified.
 
             #### **NOTE**: The system will provide you the results of search in the next 'assistant' message.
             This message will have a list of repository contents that are most relevant to query you have provided.
-            The fields will include "chunk_repository_file_name", which is name of the repository content containing
-            retrieved information; "chunk_number", which is the number of the chunk within repository (ordered)
-            containing retrieved information; and "chunk_content", which is the text of the chunk containing the
-            retrieved information (which is the primary field you will use to search answers for user). You are
-            expected to take in this response, and use it to provide an answer.
+            You are expected to take in this response, and use it to provide a more accurate and informative answer
+            to user's questions.
 
             ---
 

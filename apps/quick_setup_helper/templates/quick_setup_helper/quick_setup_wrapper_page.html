@@ -274,8 +274,9 @@
         <hr>
 
         <div class="bs-stepper-content mt-8 p-12">
-          <form method="post" action="{% url 'quick_setup_helper:execute' %}">
+          <form method="post" action="{% url 'quick_setup_helper:execute' %}" enctype="multipart/form-data">
             {% csrf_token %}
+
             <!-- Step 1 / Data: Organization Information -->
             <div id="organization-modern" class="content">
               <img src="{% static 'img/quick_setup_helper/step-1.png' %}" class="rounded mb-4" style="width: 100%;"
@@ -932,7 +933,7 @@
                       <span class="ms-2">SQL Information</span>
                     </strong>
                   </h6>
-                  <div class="row">
+                  <div class="row bg-body p-8 rounded">
                     <div class="mb-6 col-2">
                       <label class="form-label" for="response__internal_data_sources__sql_dbms_type">DBMS Type</label>
                       <select class="form-select" id="response__internal_data_sources__sql_dbms_type"
@@ -979,7 +980,7 @@
                       <span class="ms-2">NoSQL Information</span>
                     </strong>
                   </h6>
-                  <div class="row">
+                  <div class="row bg-body p-8 rounded">
                     <div class="mb-6 col-2">
                       <label class="form-label" for="response__internal_data_sources__nosql_db_type">DBMS Type</label>
                       <select class="form-select" id="response__internal_data_sources__nosql_db_type"
@@ -1021,7 +1022,7 @@
                       <span class="ms-2">File System / Server Information</span>
                     </strong>
                   </h6>
-                  <div class="row">
+                  <div class="row bg-body p-8 rounded">
                     <div class="mb-6 col-2">
                       <label class="form-label" for="response__internal_data_sources__file_base_os_type">OS Type</label>
                       <select class="form-select" id="response__internal_data_sources__file_base_os_type"
@@ -1061,33 +1062,21 @@
                   <h6 class="mt-6">
                     <strong>
                       <i class="fa fa-vector-square"></i>
-                      <span class="ms-2">Document Knowledge Base</span>
+                      <span class="ms-2">Knowledge Base Documents</span>
                     </strong>
                   </h6>
-                  <div class="row">
-                    <div class="mb-6 col-4">
-                      <label class="form-label" for="response__internal_data_sources__knowledge_base_provider">Knowledge
-                        Base Provider</label>
-                      <select class="form-select" id="response__internal_data_sources__knowledge_base_provider"
-                              name="response__internal_data_sources__knowledge_base_provider">
-                        <option value="weaviate" selected>Weaviate</option>
-                      </select>
+                  <div class="row bg-body p-8 rounded">
+                    <div class="mb-6 col-12">
+                      <label class="form-label" for="response__knowledge_base_documents">Upload Knowledge Base Documents
+                        (Multiple Files Allowed)</label>
+                      <input type="file" class="form-control" id="response__knowledge_base_documents"
+                             name="response__knowledge_base_documents" multiple>
                     </div>
-                    <div class="mb-6 col-4">
-                      <label class="form-label" for="response__internal_data_sources__knowledge_base_host_url">Host
-                        URL</label>
-                      <input type="text" class="form-control"
-                             id="response__internal_data_sources__knowledge_base_host_url"
-                             name="response__internal_data_sources__knowledge_base_host_url"
-                             placeholder="Enter host URL" />
-                    </div>
-                    <div class="mb-6 col-4">
-                      <label class="form-label" for="response__internal_data_sources__knowledge_base_provider_api_key">Provider
-                        API Key</label>
-                      <input type="text" class="form-control"
-                             id="response__internal_data_sources__knowledge_base_provider_api_key"
-                             name="response__internal_data_sources__knowledge_base_provider_api_key"
-                             placeholder="Enter provider API key" />
+                    <div class="row align-items-center justify-content-start mt-2 col-12" id="file_display_area">
+                      <!-- Dynamic content will be inserted here
+                        ... ... ...
+                        ... ... ...
+                      -->
                     </div>
                   </div>
                   <hr>
@@ -1095,33 +1084,41 @@
                   <h6 class="mt-6">
                     <strong>
                       <i class="fa fa-code"></i>
-                      <span class="ms-2">Code Storage Base Information</span>
+                      <span class="ms-2">Code Repositories</span>
                     </strong>
                   </h6>
-                  <div class="row">
-                    <div class="mb-6 col-4">
-                      <label class="form-label" for="response__internal_data_sources__code_base_provider">Knowledge Base
-                        Provider</label>
-                      <select class="form-select" id="response__internal_data_sources__code_base_provider"
-                              name="response__internal_data_sources__code_base_provider">
-                        <option value="weaviate" selected>Weaviate</option>
-                      </select>
+                  <div class="row bg-body p-8 rounded">
+                    <div class="mb-6 col-12">
+                      <label class="form-label" for="response__datasource_repository_url_1">🟡 &nbsp; Code Repository URL #1</label>
+                      <input type="text" class="form-control" id="response__datasource_repository_url_1"
+                             name="response__datasource_repository_url_1" placeholder="e.g. https://www.github.com/example/example.git" />
                     </div>
-                    <div class="mb-6 col-4">
-                      <label class="form-label" for="response__internal_data_sources__code_base_host_url">Host
-                        URL</label>
-                      <input type="text" class="form-control" id="response__internal_data_sources__code_base_host_url"
-                             name="response__internal_data_sources__code_base_host_url" placeholder="Enter host URL" />
+                    <div class="mb-6 col-12">
+                      <label class="form-label" for="response__datasource_repository_url_2">🟡 &nbsp; Code Repository URL #2</label>
+                      <input type="text" class="form-control" id="response__datasource_repository_url_2"
+                             name="response__datasource_repository_url_2"
+                             placeholder="Enter a GitHub Code Repository URL to index starting with https://www." />
                     </div>
-                    <div class="mb-6 col-4">
-                      <label class="form-label" for="response__internal_data_sources__code_base_provider_api_key">Provider
-                        API Key</label>
-                      <input type="text" class="form-control"
-                             id="response__internal_data_sources__code_base_provider_api_key"
-                             name="response__internal_data_sources__code_base_provider_api_key"
-                             placeholder="Enter provider API key" />
+                    <div class="mb-6 col-12">
+                      <label class="form-label" for="response__datasource_repository_url_3">🟡 &nbsp; Code Repository URL #3</label>
+                      <input type="text" class="form-control" id="response__datasource_repository_url_3"
+                             name="response__datasource_repository_url_3"
+                             placeholder="Enter a GitHub Code Repository URL to index starting with https://www." />
+                    </div>
+                    <div class="mb-6 col-12">
+                      <label class="form-label" for="response__datasource_repository_url_4">🟡 &nbsp; Code Repository URL #4</label>
+                      <input type="text" class="form-control" id="response__datasource_repository_url_4"
+                             name="response__datasource_repository_url_4"
+                             placeholder="Enter a GitHub Code Repository URL to index starting with https://www." />
+                    </div>
+                    <div class="mb-6 col-12">
+                      <label class="form-label" for="response__datasource_repository_url_5">🟡 &nbsp; Code Repository URL #5</label>
+                      <input type="text" class="form-control" id="response__datasource_repository_url_5"
+                             name="response__datasource_repository_url_5"
+                             placeholder="Enter a GitHub Code Repository URL to index starting with https://www." />
                     </div>
                   </div>
+                  <hr>
                   <!-- Website URLs to Index -->
                   <h6 class="mt-6">
                     <strong>
@@ -1129,7 +1126,7 @@
                       <span class="ms-2">Website URLs to Index</span>
                     </strong>
                   </h6>
-                  <div class="row">
+                  <div class="row bg-body p-8 rounded">
                     <div class="mb-6 col-6">
                       <label class="form-label" for="response__maximum__pages_to_index">
                         <i class="fa fa-globe me-2"></i>
@@ -1452,5 +1449,61 @@
         scheduledJobsContainer.style.display = 'none';
       }
     }
+  </script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      document.getElementById('response__knowledge_base_documents').addEventListener('change', function(event) {
+        const fileList = Array.from(event.target.files);
+        const fileDisplayArea = document.getElementById('file_display_area');
+        fileDisplayArea.innerHTML = '<h5 class="card-header"><strong>Document Staging</strong></h5><hr>';
+        fileList.forEach((file, index) => {
+          const fileSize = (file.size / 1024).toFixed(2) + ' KB';
+          const fileExtension = file.name.split('.').pop().toLowerCase();
+          const iconMap = {
+            'pdf': 'pdf.png',
+            'html': 'html.png',
+            'csv': 'csv.png',
+            'docx': 'doc.png',
+            'ipynb': 'ipynb.png',
+            'json': 'json.png',
+            'xml': 'xml.png',
+            'txt': 'txt.png',
+            'md': 'md.png',
+            'rtf': 'rtf.png',
+            'odt': 'odt.png',
+            'pptx': 'pptx.png',
+            'xlsx': 'xlsx.png'
+          };
+          const icon = iconMap[fileExtension] || 'file.png';
+          let filename_root = file.name.split('.')[0];
+          let filename_extension = file.name.split('.')[1];
+          if (filename_root.length > 64) {
+            filename_root = filename_root.substring(0, 64) + '...';
+          }
+          const fileElement = document.createElement('div');
+          fileElement.classList.add('col-lg-12');
+          fileElement.innerHTML = `
+                    <div class="badge bg-lighter d-flex align-items-center my-2">
+                        <img src="{% static 'img/icons/misc/' %}${icon}" alt="${fileExtension}" width="15" class="me-2">
+                        <span class="h6 mb-0 text-body"><strong>${filename_root}.${filename_extension}</strong> (${fileSize})</span>
+                        <button type="button" class="btn-close ms-auto" aria-label="Remove" data-index="${index}"></button>
+                    </div>
+                `;
+          fileDisplayArea.appendChild(fileElement);
+        });
+
+        document.querySelectorAll('.btn-close').forEach(button => {
+          button.addEventListener('click', function() {
+            const index = this.getAttribute('data-index');
+            fileList.splice(index, 1);
+            const dataTransfer = new DataTransfer();
+            fileList.forEach(file => dataTransfer.items.add(file));
+            document.getElementById('response__knowledge_base_documents').files = dataTransfer.files;
+            this.parentElement.remove();
+          });
+
+        });
+      });
+    });
   </script>
 {% endblock page_js %}

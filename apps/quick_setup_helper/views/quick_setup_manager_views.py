@@ -29,6 +29,10 @@ from apps.quick_setup_helper.services import (
     action__004_media_storages_create,
     action__004a_website_storages_create,
     action__004b_website_items_create,
+    action_004c_knowledge_bases_create,
+    action_004d_knowledge_base_docs_create,
+    action_004e_code_bases_create,
+    action__004f_code_base_repos_create,
     action__005_web_browsers_create,
     action__006_ml_model_storages_create,
     action__007_memories_create,
@@ -51,11 +55,10 @@ from apps.quick_setup_helper.services import (
     action__023_export_orchestrations_create,
     action__024_sql_connection_create,
     action__025_nosql_connection_create,
-    action__026_knowledge_base_connection_create,
-    action__027_code_base_connection_create,
     action__028_file_base_connection_create,
     action__029_invite_users_create,
-    action__030_user_roles_create, action__023a_export_voidforger_create,
+    action__030_user_roles_create,
+    action__023a_export_voidforger_create,
 )
 
 logger = logging.getLogger(__name__)
@@ -262,6 +265,130 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
                 print(
                     f"No Websites were provided for indexing, skipping.")
                 logger.info(request, f"No Websites were provided for indexing, skipping.")
+                pass
+
+            # Action-004c: Create the knowledge base storages for assistants
+            success_004c = action_004c_knowledge_bases_create(
+                metadata__user=context_user,
+                metadata__assistants=new_assistants,
+            )
+
+            if success_004c is False:
+                print(
+                    f"Failed to create the knowledge base storages for assistants. response__assistant_use_cases_list.")
+                messages.error(request, f"Failed to create the knowledge base storages for assistants.")
+                return redirect("quick_setup_helper:wrapper")
+
+            # Action-004d: Index the documents in the knowledge bases
+
+            response__documents = request.FILES.getlist('response__knowledge_base_documents')
+
+            if len(response__documents) != 0 and response__internal_data_sources_decision == 'yes':
+
+                success_004b = action_004d_knowledge_base_docs_create(
+                    metadata__user=context_user,
+                    metadata__assistants=new_assistants,
+                    metadata__documents=response__documents,
+                )
+
+                if success_004b is False:
+                    print(
+                        f"Failed to index the Knowledge Base Documents for Assistants. response__assistant_use_cases_list."
+                    )
+                    messages.error(
+                        request,
+                        f"Failed to index the Knowledge Base Documents for Assistants."
+                    )
+                    pass
+
+                else:
+                    print(
+                        f"Successfully indexed the Knowledge Base Documents for Assistants. response__assistant_use_cases_list."
+                    )
+                    logger.info(
+                        request,
+                        f"Successfully indexed the Knowledge Base Documents for Assistants."
+                    )
+                    pass
+
+            else:
+                print(
+                    f"No Knowledge Base Documents were provided for indexing, skipping."
+                )
+                logger.info(
+                    request,
+                    f"No Knowledge Base Documents were provided for indexing, skipping."
+                )
+                pass
+
+            # Action-004e: Create the code base storages for assistants
+            success_004e = action_004e_code_bases_create(
+                metadata__user=context_user,
+                metadata__assistants=new_assistants,
+            )
+
+            if success_004e is False:
+                print(
+                    f"Failed to create the code base storages for assistants. response__assistant_use_cases_list.")
+                messages.error(request, f"Failed to create the code base storages for assistants.")
+                return redirect("quick_setup_helper:wrapper")
+
+            # Action-004f: Index the repositories in the code bases
+
+            requested_repository_url_1 = request.POST.get('response__datasource_repository_url_1')
+            requested_repository_url_2 = request.POST.get('response__datasource_repository_url_2')
+            requested_repository_url_3 = request.POST.get('response__datasource_repository_url_3')
+            requested_repository_url_4 = request.POST.get('response__datasource_repository_url_4')
+            requested_repository_url_5 = request.POST.get('response__datasource_repository_url_5')
+
+            requested_repository_urls = []
+            if requested_repository_url_1 and requested_repository_url_1.strip() != "":
+                requested_repository_urls.append(requested_repository_url_1)
+            if requested_repository_url_2 and requested_repository_url_2.strip() != "":
+                requested_repository_urls.append(requested_repository_url_2)
+            if requested_repository_url_3 and requested_repository_url_3.strip() != "":
+                requested_repository_urls.append(requested_repository_url_3)
+            if requested_repository_url_4 and requested_repository_url_4.strip() != "":
+                requested_repository_urls.append(requested_repository_url_4)
+            if requested_repository_url_5 and requested_repository_url_5.strip() != "":
+                requested_repository_urls.append(requested_repository_url_5)
+
+            if len(requested_repository_urls) != 0 and response__internal_data_sources_decision == 'yes':
+
+                success_004f = action__004f_code_base_repos_create(
+                    metadata__user=context_user,
+                    metadata__repository_urls=requested_repository_urls,
+                    metadata__assistants=new_assistants
+                )
+
+                if success_004f is False:
+                    print(
+                        f"Failed to index the Code Repository for Assistants. response__assistant_use_cases_list."
+                    )
+                    messages.error(
+                        request,
+                        f"Failed to index the Code Repository for Assistants."
+                    )
+                    pass
+
+                else:
+                    print(
+                        f"Successfully indexed the Code Repository for Assistants. response__assistant_use_cases_list."
+                    )
+                    logger.info(
+                        request,
+                        f"Successfully indexed the Code Repository for Assistants."
+                    )
+                    pass
+
+            else:
+                print(
+                    f"No Code Repository were provided for indexing, skipping."
+                )
+                logger.info(
+                    request,
+                    f"No Code Repository were provided for indexing, skipping."
+                )
                 pass
 
             # Action-005: Create the Web Browsers for Assistants
@@ -964,81 +1091,6 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
                     pass
             else:
                 print("User opt out for adding a new NoSQL connection.")
-                pass
-
-            #       - (3) Answers for @ Knowledge Base
-            response__internal_data_sources__knowledge_base_provider = request.POST.get(
-                'response__internal_data_sources__knowledge_base_provider')
-            response__internal_data_sources__knowledge_base_host_url = request.POST.get(
-                'response__internal_data_sources__knowledge_base_host_url')
-            response__internal_data_sources__knowledge_base_provider_api_key = request.POST.get(
-                'response__internal_data_sources__knowledge_base_provider_api_key')
-
-            required_fields__data_sources__knowledge_base = [
-                response__internal_data_sources__knowledge_base_provider,
-                response__internal_data_sources__knowledge_base_host_url,
-                response__internal_data_sources__knowledge_base_provider_api_key,
-            ]
-
-            if all(field and field.strip() != "" for field in required_fields__data_sources__knowledge_base):
-
-                # Action-026: Create a new Knowledge Base connection
-                success_026 = action__026_knowledge_base_connection_create(
-                    metadata__organization=new_organization,
-                    metadata__llm_core=new_llm_model,
-                    metadata__assistants=new_assistants,
-                    response__internal_data_sources__knowledge_base_provider=response__internal_data_sources__knowledge_base_provider,
-                    response__internal_data_sources__knowledge_base_host_url=response__internal_data_sources__knowledge_base_host_url,
-                    response__internal_data_sources__knowledge_base_provider_api_key=response__internal_data_sources__knowledge_base_provider_api_key
-                )
-
-                if success_026 is False:
-                    print(
-                        f"Failed to create a new Knowledge Base connection.")
-                    messages.error(request, f"Failed to create a new Knowledge Base connection.")
-                    pass
-            else:
-                print("User opt out for adding a new Knowledge Base connection.")
-                pass
-
-            #       - (4) Answers for @ Code Base
-            response__internal_data_sources__code_base_provider = request.POST.get(
-                'response__internal_data_sources__code_base_provider'
-            )
-
-            response__internal_data_sources__code_base_host_url = request.POST.get(
-                'response__internal_data_sources__code_base_host_url'
-            )
-
-            response__internal_data_sources__code_base_provider_api_key = request.POST.get(
-                'response__internal_data_sources__code_base_provider_api_key'
-            )
-
-            required_fields__data_sources__code_base = [
-                response__internal_data_sources__code_base_provider,
-                response__internal_data_sources__code_base_host_url,
-                response__internal_data_sources__code_base_provider_api_key,
-            ]
-
-            if all(field and field.strip() != "" for field in required_fields__data_sources__code_base):
-
-                # Action-027: Create a new Code Base connection
-                success_027 = action__027_code_base_connection_create(
-                    metadata__organization=new_organization,
-                    metadata__llm_core=new_llm_model,
-                    metadata__assistants=new_assistants,
-                    response__internal_data_sources__code_base_provider=response__internal_data_sources__code_base_provider,
-                    response__internal_data_sources__code_base_host_url=response__internal_data_sources__code_base_host_url,
-                    response__internal_data_sources__code_base_provider_api_key=response__internal_data_sources__code_base_provider_api_key
-                )
-
-                if success_027 is False:
-                    print(
-                        f"Failed to create a new Code Base connection.")
-                    messages.error(request, f"Failed to create a new Code Base connection.")
-                    pass
-            else:
-                print("User opt out for adding a new Code Base connection.")
                 pass
 
             #       - (5) Answers for @ File Base (SSH)

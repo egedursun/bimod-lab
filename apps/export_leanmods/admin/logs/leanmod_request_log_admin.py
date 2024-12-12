@@ -17,7 +17,9 @@
 
 from django.contrib import admin
 
-from apps.export_leanmods.models import LeanmodRequestLog
+from apps.export_leanmods.models import (
+    LeanmodRequestLog
+)
 
 from apps.export_leanmods.utils import (
     EXPORT_LEANMOD_REQUEST_LOG_ADMIN_LIST,
@@ -31,5 +33,6 @@ class LeanmodRequestLogAdmin(admin.ModelAdmin):
     list_display = EXPORT_LEANMOD_REQUEST_LOG_ADMIN_LIST
     list_filter = EXPORT_LEANMOD_REQUEST_LOG_ADMIN_FILTER
     search_fields = EXPORT_LEANMOD_REQUEST_LOG_ADMIN_SEARCH
+
     date_hierarchy = "timestamp"
     ordering = ["-timestamp"]

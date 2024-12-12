@@ -38,9 +38,7 @@ def build_code_base_data_source_prompt(assistant: Assistant):
 
         response_prompt += f"""
                 [Code Base Storage ID: {kb.id}]
-                    System Provider: {kb.provider}
                     Code Base Storage Name: {kb.name}
-                    Code Base Class Name: {kb.class_name}
                     Code Base Description: {kb.description or "N/A"}
                     Number of Repos in Storage: {kb.code_base_repositories.count()}
                     Size of Chunks in Each Repo (tokens): {kb.embedding_chunk_size}
@@ -88,9 +86,7 @@ def build_semantor_code_base_data_source_prompt(temporary_sources: dict):
 
         response_prompt += f"""
                 [Code Base Storage ID: {kb.id}]
-                    System Provider: {kb.provider}
                     Code Base Storage Name: {kb.name}
-                    Code Base Class Name: {kb.class_name}
                     Code Base Description: {kb.description or "N/A"}
                     Number of Repos in Storage: {kb.code_base_repositories.count()}
                     Size of Chunks in Each Repo (tokens): {kb.embedding_chunk_size}

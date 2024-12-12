@@ -23,7 +23,10 @@ from apps.export_leanmods.utils import (
     generate_leanmod_assistant_custom_api_key
 )
 
-from config.settings import BASE_URL, EXPORT_LEANMOD_API_BASE_URL
+from config.settings import (
+    BASE_URL,
+    EXPORT_LEANMOD_API_BASE_URL
+)
 
 
 class ExportLeanmodAssistantAPI(models.Model):
@@ -89,10 +92,13 @@ class ExportLeanmodAssistantAPI(models.Model):
                 self.lean_assistant,
                 self.id
             )
+
             self.save()
 
         if not self.custom_api_key and (not self.is_public):
-            self.custom_api_key = generate_leanmod_assistant_custom_api_key(self.lean_assistant)
+            self.custom_api_key = generate_leanmod_assistant_custom_api_key(
+                self.lean_assistant
+            )
             self.save()
 
     def requests_in_last_hour(self):

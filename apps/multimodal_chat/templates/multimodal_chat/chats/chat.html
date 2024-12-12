@@ -792,7 +792,7 @@
                 <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
                      style="width: 100%; height:10px;"></div>
               </div>
-              <form class="form-send-message d-flex justify-content-between align-items-center mt-4" method="post"
+              <form class="form-send-message d-flex justify-content-between align-items-center mt-4 me-1" method="post"
                     style="margin-bottom: 15px;"
                     action="." enctype="multipart/form-data">
                 {% csrf_token %}
@@ -825,7 +825,7 @@
                     <input type="file" id="attach-image" name="attached_images[]" multiple hidden
                            accept=".jpeg,.png,.gif,.webp">
                   </label>
-                  <label for="attach-doc" class="form-label mb-0 me-4">
+                  <label for="attach-doc" class="form-label mb-0">
                     <i
                       class="ti ti-paperclip ti-md cursor-pointer btn btn-sm btn-text-secondary btn-icon rounded-pill mx-1 text-heading"></i>
                     <input type="file" id="attach-doc" name="attached_files[]" multiple hidden>
@@ -837,10 +837,6 @@
                     <i class="ti ti-send ti-16px ms-md-2 ms-0"></i>
                   </button>
                   -->
-                  <button id="retry-response-button" class="btn btn-danger d-flex retry-msg-btn ms-4 me-4"
-                          style="min-height: 38px;">
-                    <i class="fa fa-redo-alt ti-16px"></i>
-                  </button>
                 </div>
               </form>
               <!-- stick the button to the right side of the container -->
@@ -1310,24 +1306,12 @@
       const loadingBarWarning = document.getElementById('loadingBarWarning');
       const submitMessageButton = document.querySelector('#send-chat-message-button');
       const submitStreamMessageButton = document.querySelector('#start-streaming');
-      const retryButton = document.querySelector('#retry-response-button');
 
       submitMessageButton.addEventListener('click', function() {
         // Show the loading bar
         loadingBar.classList.remove('d-none');
         loadingBarWarning.classList.remove('d-none');
         submitMessageButton.disabled = true;
-        chatForm.submit();
-      });
-
-      // if the button is clicked, set the value of the message to "Your response either failed, or I didn't like it. Please try again."
-      retryButton.addEventListener('click', function() {
-        loadingBar.classList.remove('d-none');
-        loadingBarWarning.classList.remove('d-none');
-        submitMessageButton.disabled = true;
-        const chatInput = document.querySelector('.message-input');
-        chatInput.value = 'Your answer wasn\'t satisfactory, or you have made an error, or you have failed to provide a valid and comprehensive answer to me. Please try again.';
-        // automatically submit
         chatForm.submit();
       });
 

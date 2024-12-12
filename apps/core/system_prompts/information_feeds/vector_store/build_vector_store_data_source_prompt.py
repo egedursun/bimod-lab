@@ -39,9 +39,7 @@ def build_vector_store_data_source_prompt(assistant: Assistant):
 
         response_prompt += f"""
                 [Knowledge Base Data Source ID: {kb.id}]
-                    System Provider: {kb.provider}
                     Knowledge Base Name: {kb.name}
-                    Knowledge Base Class Name: {kb.class_name}
                     Knowledge Base Description: {kb.description or "N/A"}
                     Number of Documents in it: {kb.knowledge_base_documents.count()}
                     Size of Chunk in a Doc (tokens): {kb.embedding_chunk_size}
@@ -89,9 +87,7 @@ def build_semantor_vector_store_data_source_prompt(temporary_sources: dict):
 
         response_prompt += f"""
                 [Knowledge Base Data Source ID: {kb.id}]
-                    System Provider: {kb.provider}
                     Knowledge Base Name: {kb.name}
-                    Knowledge Base Class Name: {kb.class_name}
                     Knowledge Base Description: {kb.description or "N/A"}
                     Number of Documents in it: {kb.knowledge_base_documents.count()}
                     Size of Chunk in a Doc (tokens): {kb.embedding_chunk_size}

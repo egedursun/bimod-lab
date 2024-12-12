@@ -212,17 +212,13 @@ class ChatView_Chat(LoginRequiredMixin, TemplateView):
             file_full_uris = self._handle_save_files(attached_fs)
             self._handle_record_audio(file_full_uris, request)
 
-            MultimodalChatMessage.objects.create(
+            user_message = MultimodalChatMessage.objects.create(
                 multimodal_chat=chat,
                 sender_type='USER',
                 message_text_content=msg_content,
                 message_image_contents=image_full_uris,
                 message_file_contents=file_full_uris
             )
-
-            user_message = MultimodalChatMessage.objects.filter(
-                multimodal_chat=chat
-            ).last()
 
             internal_llm_client = GenerativeAIDecodeController.get(
                 assistant=chat.assistant,

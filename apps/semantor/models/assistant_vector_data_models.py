@@ -230,7 +230,6 @@ class AssistantVectorData(models.Model):
             kb: DocumentKnowledgeBaseConnection
             raw_data["data_sources"]["knowledge_bases"][kb.name] = {
                 "description": kb.description,
-                "provider": kb.provider,
                 "vectorizer": kb.vectorizer,
                 "documents": {}
             }
@@ -246,7 +245,6 @@ class AssistantVectorData(models.Model):
             codebase: CodeRepositoryStorageConnection
             raw_data["data_sources"]["codebases"][codebase.name] = {
                 "description": codebase.description,
-                "provider": codebase.provider,
                 "vectorizer": codebase.vectorizer,
                 "code_files": {}
             }

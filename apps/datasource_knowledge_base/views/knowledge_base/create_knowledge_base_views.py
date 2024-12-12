@@ -37,7 +37,6 @@ from apps.datasource_knowledge_base.forms import (
 )
 
 from apps.datasource_knowledge_base.utils import (
-    VECTORSTORE_SYSTEMS,
     EMBEDDING_VECTORIZER_MODELS
 )
 
@@ -62,7 +61,6 @@ class VectorStoreView_Create(LoginRequiredMixin, TemplateView):
             context_user = self.request.user
             context['user'] = context_user
 
-            context['knowledge_base_systems'] = VECTORSTORE_SYSTEMS
             context['vectorizers'] = EMBEDDING_VECTORIZER_MODELS
 
             user_orgs = context_user.organizations.all()

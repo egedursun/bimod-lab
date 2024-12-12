@@ -33,7 +33,7 @@ from apps.core.sheetos.utils import (
 )
 
 from apps.core.tool_calls.core_services.core_service_vector_store_query import (
-    run_query_vector_store
+    run_query_search_document_data
 )
 
 from apps.core.tool_calls.input_verifiers.verify_vector_store_query import (
@@ -314,14 +314,14 @@ def _handle_tool_vector_base_query(
     tool_usage_dict,
     output_tool_call
 ):
-    c_id = tool_usage_dict.get("parameters").get("knowledge_base_connection_id")
+    c_id = tool_usage_dict.get("parameters").get("connection_id")
+    document_file_name = tool_usage_dict.get("parameters").get("document_file_name")
     query = tool_usage_dict.get("parameters").get("query")
-    alpha = tool_usage_dict.get("parameters").get("alpha")
 
-    output = run_query_vector_store(
-        c_id=c_id,
-        vector_store_query=query,
-        semantic_alpha=alpha
+    output = run_query_search_document_data(
+        connection_id=c_id,
+        document_file_name=document_file_name,
+        query=query
     )
 
     output_str = json.dumps(

@@ -32,11 +32,8 @@ def verify_website_data_search_content(content: dict):
         """
 
     if "website_url" not in ps:
-        return """
-            The 'website_url' field is missing from the 'parameters' field in the tool_usage_json. This field is mandatory
-            for using the Website Data Search tool. Please make sure you are defining the 'website_url' field in the
-            parameters field of the tool_usage_json.
-        """
+        # This field is optional, without it, the system will search all website URLs data points in the connection.
+        pass
 
     if "query" not in ps:
         return """

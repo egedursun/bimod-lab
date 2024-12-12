@@ -53,6 +53,7 @@ class DataSourceWebsiteStorageConnection(models.Model):
 
     embedding_chunk_size = models.IntegerField(default=1024)
     embedding_chunk_overlap = models.IntegerField(default=256)
+
     search_instance_retrieval_limit = models.IntegerField(default=10)
 
     maximum_pages_to_index = models.IntegerField(default=1000)

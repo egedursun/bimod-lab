@@ -17,34 +17,26 @@
 
 import logging
 
-from apps.core.codebase.codebase_decoder import (
-    CodeBaseDecoder
+from apps.core.codebase.codebase_executor import (
+    CodeRepositoryExecutor
 )
-
-from apps.datasource_codebase.models import (
-    CodeRepositoryStorageConnection
-)
-
 
 logger = logging.getLogger(__name__)
 
 
 def run_query_code_base(
     c_id: int,
+    repository_uri: str,
     query_content_str: str,
-    semantic_alpha: float
 ):
-
-    conn = CodeRepositoryStorageConnection.objects.get(id=c_id)
-
     try:
-        cli = CodeBaseDecoder().get(
-            connection=conn
+        cli = CodeRepositoryExecutor(
+            connection_id=c_id
         )
 
-        output = cli.search_hybrid(
+        output = cli.search_within_code_chunks(
+            repository_uri=repository_uri,
             query=query_content_str,
-            alpha=semantic_alpha
         )
 
         logger.info(f"Code base query output: {output}")

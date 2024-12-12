@@ -15,19 +15,26 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
+import os
 
-KNOWLEDGE_BASE_SYSTEMS = [
-    ('weaviate', 'Weaviate'),
-]
+VECTOR_INDEX_PATH_CODEBASE_REPOSITORIES = os.path.join(
+    "vectors",
+    "code_base_vectors",
+    "code_base_indexes"
+)
+
+
+class OpenAIEmbeddingModels:
+    TEXT_EMBEDDING_3_LARGE = "text-embedding-3-large"
+    TEXT_EMBEDDING_3_SMALL = "text-embedding-3-small"
+    TEXT_EMBEDDING_ADA_V2 = "text-embedding-ada-002"
+
+
+OPEN_AI_DEFAULT_EMBEDDING_VECTOR_DIMENSIONS = 3072
 
 VECTORIZERS = [
     ("text2vec-openai", "Text2Vec (OpenAI)"),
 ]
-
-
-class KnowledgeBaseSystemNames:
-    WEAVIATE = 'weaviate'
-
 
 SUPPORTED_CODE_FILE_TYPES = [
     ('.py', 'Python'),
@@ -248,27 +255,10 @@ class SupportedCodeFileTypes:
         ]
 
 
-class RepositoryUploadStatusNames:
-    STAGED = 'staged'
-    UPLOADED = 'uploaded'
-    LOADED = 'loaded'
-    CHUNKED = 'chunked'
-    EMBEDDED_DOCUMENT = 'embedded_document'
-    SAVED_DOCUMENT = 'saved_document'
-    PROCESSED_DOCUMENT = 'processed_document'
-    EMBEDDED_CHUNKS = 'embedded_chunks'
-    SAVED_CHUNKS = 'saved_chunks'
-    PROCESSED_CHUNKS = 'processed_chunks'
-    COMPLETED = 'completed'
-    FAILED = 'failed'
-    PARTIALLY_FAILED = 'partially_failed'
-
-
 CODEBASE_REPOSITORY_ADMIN_LIST = [
     'knowledge_base',
     'repository_name',
     'repository_description',
-    'repository_metadata',
     'repository_uri',
     'created_at',
     'updated_at'
@@ -277,7 +267,6 @@ CODEBASE_REPOSITORY_ADMIN_FILTER = [
     'knowledge_base',
     'repository_name',
     'repository_description',
-    'repository_metadata',
     'repository_uri',
     'created_at',
     'updated_at'
@@ -286,59 +275,31 @@ CODEBASE_REPOSITORY_ADMIN_SEARCH = [
     'knowledge_base',
     'repository_name',
     'repository_description',
-    'repository_metadata',
     'repository_uri',
     'created_at',
     'updated_at'
 ]
 
 CODE_REPOSITORY_CHUNK_ADMIN_LIST = [
-    'knowledge_base',
-    'repository',
-    'chunk_repository_uri',
-    'knowledge_base_uuid',
-    'repository_uuid',
+    'repository_item',
     'created_at'
 ]
 CODE_REPOSITORY_CHUNK_ADMIN_FILTER = [
-    'repository',
-    'knowledge_base_uuid',
-    'repository_uuid',
+    'repository_item',
     'created_at'
 ]
 CODE_REPOSITORY_CHUNK_ADMIN_SEARCH = [
-    'repository',
+    'repository_item',
     'chunk_content',
     'chunk_metadata',
-    'chunk_repository_uri',
-    'knowledge_base_uuid',
     'created_at'
-]
-
-CODE_REPOSITORY_LOG_ADMIN_LIST = [
-    'repository_full_uri',
-    'log_message',
-    'created_at'
-]
-CODE_REPOSITORY_LOG_ADMIN_FILTER = [
-    'repository_full_uri',
-    'log_message',
-    'created_at'
-]
-CODE_REPOSITORY_LOG_ADMIN_SEARCH = [
-    'repository_full_uri',
-    'log_message'
 ]
 
 CODE_REPOSITORY_STORAGE_ADMIN_LIST = [
-    'provider', 'host_url',
-    'provider_api_key',
     'assistant',
     'name',
-    'class_name',
     'description',
     'vectorizer',
-    'vectorizer_api_key',
     'embedding_chunk_size',
     'embedding_chunk_overlap',
     'search_instance_retrieval_limit',
@@ -346,30 +307,21 @@ CODE_REPOSITORY_STORAGE_ADMIN_LIST = [
     'updated_at'
 ]
 CODE_REPOSITORY_STORAGE_ADMIN_FILTER = [
-    'provider',
-    'host_url',
-    'provider_api_key',
     'assistant',
     'name',
-    'class_name',
     'description',
     'vectorizer',
-    'vectorizer_api_key',
     'embedding_chunk_size',
     'embedding_chunk_overlap',
     'created_at',
     'updated_at'
 ]
 CODE_REPOSITORY_STORAGE_ADMIN_SEARCH = [
-    'provider',
-    'host_url',
-    'provider_api_key',
     'assistant',
     'name',
     'class_name',
     'description',
     'vectorizer',
-    'vectorizer_api_key',
     'embedding_chunk_size',
     'embedding_chunk_overlap',
     'search_instance_retrieval_limit',

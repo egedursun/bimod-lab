@@ -70,17 +70,13 @@ class ChatView_ChatStream(View):
         self._handle_record_audio(file_full_uris, request)
         logger.info(f"Chat was streamed by User: {context_user.id}.")
 
-        MultimodalChatMessage.objects.create(
+        user_msg = MultimodalChatMessage.objects.create(
             multimodal_chat=chat,
             sender_type='USER',
             message_text_content=message_content,
             message_image_contents=image_full_uris,
             message_file_contents=file_full_uris
         )
-
-        user_msg = MultimodalChatMessage.objects.filter(
-            multimodal_chat=chat
-        ).last()
 
         int_llm_c = GenerativeAIDecodeController.get(
             assistant=chat.assistant,

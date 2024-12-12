@@ -15,7 +15,9 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
+import io
 import logging
+import uuid
 
 import boto3
 from django.contrib import messages
@@ -32,10 +34,6 @@ from django.views.generic import (
 
 from slugify import slugify
 
-from apps.core.vector_operations.vector_document.vector_store_decoder import (
-    KnowledgeBaseSystemDecoder
-)
-
 from apps.core.user_permissions.permission_manager import (
     UserPermissionManager
 )
@@ -45,16 +43,16 @@ from apps.assistants.models import (
 )
 
 from apps.datasource_knowledge_base.models import (
-    DocumentKnowledgeBaseConnection
+    DocumentKnowledgeBaseConnection,
+    KnowledgeBaseDocument
 )
 
-from apps.datasource_knowledge_base.tasks import (
-    add_vector_store_doc_loaded_log
+from apps.datasource_knowledge_base.tasks.document.embed_document_item_tasks import (
+    load_and_index_document
 )
 
 from apps.datasource_knowledge_base.utils import (
-    generate_document_uri,
-    VectorStoreDocProcessingStatusNames
+    generate_document_uri
 )
 
 from apps.organization.models import (
@@ -132,61 +130,84 @@ class DocumentView_Create(LoginRequiredMixin, TemplateView):
 
             return redirect('datasource_knowledge_base:create_documents')
 
-        vector_store = DocumentKnowledgeBaseConnection.objects.get(
-            pk=vs_id
-        )
-
-        fs = request.FILES.getlist('document_files')
-
-        if vs_id and fs:
-
-            agent_base_dir = vector_store.assistant.document_base_directory
-            f_paths = []
-
-            for file in fs:
-                file_type = file.name.split('.')[-1]
-                structured_file_name = slugify(file.name)
-
-                doc_uri = generate_document_uri(
-                    agent_base_dir,
-                    structured_file_name,
-                    file_type
-                )
-
-                f_paths.append(doc_uri)
-
-                add_vector_store_doc_loaded_log(
-                    document_full_uri=doc_uri,
-                    log_name=VectorStoreDocProcessingStatusNames.STAGED
-                )
-
-                s3c = boto3.client('s3')
-
-                bucket = settings.AWS_STORAGE_BUCKET_NAME
-                bucket_path = f"{doc_uri.split(MEDIA_URL)[1]}"
-
-                s3c.put_object(
-                    Bucket=bucket,
-                    Key=bucket_path,
-                    Body=file
-                )
-
-                add_vector_store_doc_loaded_log(
-                    document_full_uri=doc_uri,
-                    log_name=VectorStoreDocProcessingStatusNames.UPLOADED
-                )
-
-            KnowledgeBaseSystemDecoder.get(vector_store).index_documents(
-                document_paths=f_paths
+        try:
+            vector_store = DocumentKnowledgeBaseConnection.objects.get(
+                pk=vs_id
             )
 
-            logger.info('Documents uploaded successfully.')
-            messages.success(request, 'Documents uploaded successfully.')
+            fs = request.FILES.getlist('document_files')
 
-            return redirect('datasource_knowledge_base:list_documents')
+            if vs_id and fs:
 
-        else:
-            logger.error('Please select a knowledge base and upload documents.')
-            messages.error(request, 'Please select a knowledge base and upload documents.')
+                agent_base_dir = vector_store.assistant.document_base_directory
+                f_paths = []
+                document_items = []
+
+                for file in fs:
+                    file_type = file.name.split('.')[-1]
+                    structured_file_name = slugify(file.name) + f"_{str(uuid.uuid4()).replace('-', '')}"
+
+                    doc_uri = generate_document_uri(
+                        agent_base_dir,
+                        structured_file_name,
+                        file_type
+                    )
+
+                    f_paths.append(doc_uri)
+
+                    bucket = settings.AWS_STORAGE_BUCKET_NAME
+                    bucket_path = f"{doc_uri.split(MEDIA_URL)[1]}"
+
+                    file.seek(0)
+
+                    file_buffer = io.BytesIO(
+                        file.read()
+                    )
+
+                    s3_client = boto3.client("s3")
+
+                    file_buffer.seek(0)
+
+                    s3_client.upload_fileobj(
+                        file_buffer,
+                        bucket,
+                        bucket_path
+                    )
+
+                    # Save the object item
+                    new_document = KnowledgeBaseDocument.objects.create(
+                        knowledge_base=vector_store,
+                        document_type=file_type,
+                        document_file_name=structured_file_name,
+                        document_uri=doc_uri,
+                        created_by_user=request.user
+                    )
+                    new_document.save()
+
+                    document_items.append(new_document)
+
+                    logger.info(f"Document uploaded: {structured_file_name}")
+
+                # Handle document indexing process
+                success = load_and_index_document(
+                    items=document_items
+                )
+
+                if not success:
+                    logger.error('Error while indexing documents.')
+                    messages.error(request, 'Error while indexing documents.')
+
+                logger.info('Documents uploaded successfully.')
+                messages.success(request, 'Documents uploaded successfully.')
+
+                return redirect('datasource_knowledge_base:list_documents')
+
+            else:
+                logger.error('Please select a knowledge base and upload documents.')
+                messages.error(request, 'Please select a knowledge base and upload documents.')
+
+        except Exception as e:
+            logger.error(f"Error while uploading documents: {e}")
+            messages.error(request, f"Error while uploading documents: {e}")
 
         return redirect('datasource_knowledge_base:create_documents')

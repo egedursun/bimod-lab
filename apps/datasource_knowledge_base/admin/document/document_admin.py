@@ -17,16 +17,8 @@
 
 from django.contrib import admin
 
-from apps.core.vector_operations.vector_document.vector_store_decoder import (
-    KnowledgeBaseSystemDecoder
-)
-
 from apps.datasource_knowledge_base.models import (
     KnowledgeBaseDocument
-)
-
-from django.contrib.admin.actions import (
-    delete_selected as django_delete_selected
 )
 
 from apps.datasource_knowledge_base.utils import (
@@ -46,29 +38,3 @@ class KnowledgeBaseDocumentAdmin(admin.ModelAdmin):
         'created_at',
         'updated_at'
     ]
-
-    def delete_selected(
-        self,
-        request,
-        queryset
-    ):
-
-        for obj in queryset:
-
-            c = KnowledgeBaseSystemDecoder.get(obj.knowledge_base)
-
-            if c is not None:
-
-                o = c.delete_weaviate_document(
-                    class_name=obj.knowledge_base.class_name,
-                    document_uuid=obj.document_uuid
-                )
-
-                if not o["status"]:
-                    pass
-
-        return django_delete_selected(
-            self,
-            request,
-            queryset
-        )

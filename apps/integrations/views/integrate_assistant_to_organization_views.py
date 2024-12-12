@@ -24,11 +24,20 @@ from django.views import View
 from apps.assistants.models import Assistant
 from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.datasource_browsers.models import DataSourceBrowserConnection
-from apps.datasource_codebase.models import CodeRepositoryStorageConnection, CodeBaseRepository, \
-    CodeBaseRepositoryChunk
+
+from apps.datasource_codebase.models import (
+    CodeRepositoryStorageConnection,
+    CodeBaseRepository,
+)
+
 from apps.datasource_file_systems.models import DataSourceFileSystem
-from apps.datasource_knowledge_base.models import DocumentKnowledgeBaseConnection, KnowledgeBaseDocument, \
-    KnowledgeBaseDocumentChunk
+
+from apps.datasource_knowledge_base.models import (
+    DocumentKnowledgeBaseConnection,
+    KnowledgeBaseDocument,
+    DocumentChunkVectorData
+)
+
 from apps.datasource_media_storages.models import DataSourceMediaStorageConnection, DataSourceMediaStorageItem
 from apps.datasource_ml_models.models import DataSourceMLModelConnection, DataSourceMLModelItem
 from apps.datasource_nosql.models import NoSQLDatabaseConnection, CustomNoSQLQuery
@@ -326,15 +335,6 @@ class IntegrationView_IntegrateAssistantToOrganization(LoginRequiredMixin, View)
                     duplicated_kb_document.save()
                     duplicated_knowledge_base.save()
 
-                    kb_document_chunks = kb_document.document_chunks.all()
-                    for kb_document_chunk in kb_document_chunks:
-                        kb_document_chunk: KnowledgeBaseDocumentChunk
-                        duplicated_kb_document_chunk = kb_document_chunk
-                        duplicated_kb_document_chunk: KnowledgeBaseDocumentChunk
-                        duplicated_kb_document_chunk.pk = None
-                        duplicated_kb_document_chunk.document = duplicated_kb_document
-                        duplicated_kb_document_chunk.save()
-                        duplicated_kb_document.save()
         except Exception as e:
             messages.error(request, 'An error occurred while integrating the knowledge base.')
             logger.error(f"Error occurred while integrating the knowledge base: {e}")
@@ -360,15 +360,6 @@ class IntegrationView_IntegrateAssistantToOrganization(LoginRequiredMixin, View)
                     duplicated_code_repo.save()
                     duplicated_code_base.save()
 
-                    code_repo_chunks = code_repo.repository_chunks.all()
-                    for code_repo_chunk in code_repo_chunks:
-                        code_repo_chunk: CodeBaseRepositoryChunk
-                        duplicated_code_repo_chunk = code_repo_chunk
-                        duplicated_code_repo_chunk: CodeBaseRepositoryChunk
-                        duplicated_code_repo_chunk.pk = None
-                        duplicated_code_repo_chunk.repository = duplicated_code_repo
-                        duplicated_code_repo_chunk.save()
-                        duplicated_code_repo.save()
         except Exception as e:
             messages.error(request, 'An error occurred while integrating the code base.')
             logger.error(f"Error occurred while integrating the code base: {e}")

@@ -75,7 +75,7 @@
 1. [ ] [COMPANY FORMATION] for the application. (Ege)
 2. [ ] [COMPANY ACCOUNT + CREDIT CARD] for the company. (Ege)
 3. [ ] [LEGAL DOCUMENTATION] for the company. (Ege)
-4. [ ] [PAID SERVICE ACCOUNTS] for the company, e.g. Hostinger, Bitvault, AWS, Aiven, Weaviate, Sentry, GitHub
+4. [ ] [PAID SERVICE ACCOUNTS] for the company, e.g. Hostinger, Bitvault, AWS, Aiven, Sentry, GitHub
 5. [ ] Development of [BUSINESS PLAN] for the application. (Ege)
 6. [ ] Development of [PITCH DECK PRESENTATION] for the application. (Ege)
 7. [ ] Development of [PRODUCT CATALOGUE] for the application. (Ege)
@@ -153,10 +153,6 @@
 - GitHub Account:
 - **Username:** egedursun
 - **Classic Token:** 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
-
-- Weaviate Server:
-- **Host:** Weaviate Cloud
-  - **Username:** edogandursun@gmail.com
 
 - Mobile Native Conversion No-Code Service
   - **Service Provider:** Median Co.
@@ -263,8 +259,6 @@ find . -type f -name '*.*' -print0 | xargs -0 cat | wc -l
     * Paid: monthly
   - SMTP Cloud Service: ???
     * Paid: monthly
-  - Weaviate Cloud Server: $75 / [for ~10,000 chats]
-    * Paid: monthly / $75 x 12 = $900
   - Sentry Logging Tool: $30
     * Paid: monthly / $30 x 12 = $360
   - GitHub Entreprise: $4 per user / mo x 5 users = $20
@@ -279,10 +273,9 @@ MAJOR COSTS:
 3. EMAILS: $150
 4. DATABASE (DEV): $2400
 5. DATABASE (PROD): $2400
-6. WEAVIATE: $900
-7. SENTRY LOGGING: $360
-8. GITHUB ENTREPRISE: $240
-9. AWS S3 STORAGE: $240
+6. SENTRY LOGGING: $360
+7. GITHUB ENTREPRISE: $240
+8. AWS S3 STORAGE: $240
    => $7000 (~$600 / month) ($300 per month per co-founder)
 
 COMPANY COSTS:

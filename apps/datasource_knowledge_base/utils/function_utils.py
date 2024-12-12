@@ -16,10 +16,12 @@
 #
 
 import logging
+import os
 import random
+import uuid
 import warnings
 
-from apps.core.vector_operations.vector_document.utils import (
+from apps.core.vector_operations.utils import (
     SupportedDocumentTypesNames
 )
 
@@ -121,22 +123,6 @@ def convert_given_name_to_class_name(given_name: str):
     return given_name_alnum_list
 
 
-def build_weaviate_class_name(connection):
-    given_class_name_generation = convert_given_name_to_class_name(
-        connection.name
-    )
-
-    randoms = build_name_string_for_randomized()
-
-    return f"{given_class_name_generation}{randoms}"
-
-
-def build_weaviate_intra_memory_class_name():
-    randoms = build_random_alphanumeric_string()
-
-    return f"ChatHistory{randoms}"
-
-
 def generate_document_uri(
     base_dir,
     document_name,
@@ -195,7 +181,7 @@ def build_random_alphanumeric_string(numeric_component=True):
 
 
 def document_loader(
-    file_path,
+    file_uri,
     file_type
 ):
     from apps.datasource_knowledge_base.tasks import (
@@ -213,6 +199,17 @@ def document_loader(
         load_pptx_content,
         load_xlsx_content
     )
+
+    # download file from AWS S3 bucket
+    import requests
+    response = requests.get(file_uri)
+
+    # Save file to the tmp/ folder
+    temporary_path = f"/tmp/{str(uuid.uuid4())}.{file_type}"
+    with open(temporary_path, "wb") as f:
+        f.write(response.content)
+
+    file_path = temporary_path
 
     logger.info(f"Document is being loaded: {file_path}")
     d = None
@@ -288,5 +285,8 @@ def document_loader(
     result = d
 
     logger.info(f"Document Loader: {result}")
+
+    # Clean up the temporary file
+    os.remove(temporary_path)
 
     return result

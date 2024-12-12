@@ -35,6 +35,10 @@ from apps.datasource_codebase.models import (
     CodeBaseRepository
 )
 
+from apps.datasource_codebase.tasks import (
+    handle_delete_repository_item
+)
+
 from apps.user_permissions.utils import (
     PermissionNames
 )
@@ -70,9 +74,24 @@ class CodeBaseView_RepositoryDeleteAll(LoginRequiredMixin, TemplateView):
         ##############################
 
         try:
-            CodeBaseRepository.objects.filter(
+
+            docs = CodeBaseRepository.objects.filter(
                 knowledge_base_id=vs_id
-            ).delete()
+            )
+
+            for doc in docs:
+                doc: CodeBaseRepository
+
+                success = handle_delete_repository_item(
+                    item=doc
+                )
+
+                if success is False:
+                    logger.error(
+                        f"An error occurred while deleting the data for Code Repository item with ID: {doc.id}")
+                    messages.error(request, 'An error occurred while deleting all Code Repositories.')
+
+                    continue
 
         except Exception as e:
             logger.error(f"User: {request.user} - Code Repository - Delete All Error: {e}")

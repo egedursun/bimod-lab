@@ -35,9 +35,9 @@ def build_tool_prompt__query_vector_store():
                 {{
                     "tool": "{ToolCallDescriptorNames.EXECUTE_VECTOR_STORE_QUERY}",
                     "parameters": {{
-                        "knowledge_base_connection_id": "...",
-                        "query": "...",
-                        "alpha": 0.0 <= value_of_alpha <= 1.0,
+                        "connection_id": "...",
+                        "document_file_name": "...", (optional)
+                        "query": "..."
                         }}
                     }}
             '''
@@ -46,33 +46,29 @@ def build_tool_prompt__query_vector_store():
 
             #### **DO NOT WRITE: ** 'json' anywhere in your dictionary or next to "'''" elements.
 
-            #### **INSTRUCTIONS:** The "knowledge_base_connection_id" will be the ID of Knowledge Base Connection
+            #### **INSTRUCTIONS:** The "connection_id" will be the ID of Knowledge Base Connection
             you need to execute your query on, and "query" will be the string you need to search within the knowledge
-            base documents. The "alpha" is a float value between 0.0 and 1.0 determining the weight of semantic
-            versus keyword-based search in search algorithm:
-
-                - An alpha of 1.0 means the search will be purely vector-based (semantic) search.
-                - An alpha of 0.0 means the search will be purely keyword-based.
-                - Thus, the value of alpha can be adjusted between float values of 0.0 and 1.0 to adjust balance
-                between semantic and keyword-based search, according to question of user and your judgment.
+            base documents. The "document_file_name" is optional, and if you provide it, the search will be limited to
+            the document with the specified name. Otherwise, the search will be executed on all documents within the
+            specified knowledge base connection.
 
             To use this, you need to provide following fields 'VERY CAREFULLY':
 
             - [1] The "query" must be a string you need to search within knowledge base documents. This string can be
             a question or a keyword you need to search within documents.
 
-            - [2] The "alpha" must be a float value between 0.0 and 1.0 determining the weight of semantic versus
-            keyword-based search in search algorithm.
+            - [2] The "connection_id" must be the ID of the Knowledge Base Connection you need to execute your query on.
+
+            - [3] The "document_file_name" is optional, and if you provide it, the search will be limited to the document
+            with the specified name. Otherwise, the search will be executed on all documents within the specified
+            knowledge base connection.
+
 
             ---
 
             #### **NOTE**: The system will provide you the results of search in next 'assistant' message.
-            This message will have a list of documents most relevant to query you provided. The fields will
-            include "chunk_document_file_name", which is name of the document containing the retrieved information;
-            "chunk_number", which is the no of the chunk within the document (ordered) containing the retrieved
-            info; and "chunk_content", which is text of the chunk containing the retrieved info (which is the primary
-            field you need to search answers for user). You are expected to take in this response, and use it to
-            provide an answer to user's question.
+            This message will have a list of documents most relevant to query you provided. You are expected to take
+            in this response, and use it to provide a more informed and accurate answer to user's question.
 
             ---
 

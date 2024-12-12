@@ -128,7 +128,9 @@ from apps.core.tool_calls.input_verifiers.verify_sql_schema_search import (
 from apps.core.tool_calls.input_verifiers.verify_triggered_job_logs_query import (
     verify_triggered_job_logs_query_content
 )
-from apps.core.tool_calls.input_verifiers.verify_website_data_search import verify_website_data_search_content
+from apps.core.tool_calls.input_verifiers.verify_website_data_search import (
+    verify_website_data_search_content
+)
 
 from apps.core.tool_calls.leanmod.core_services.core_service_consultation_semantor import (
     execute_semantor_consultation_query
@@ -289,7 +291,7 @@ from apps.core.tool_calls.core_services.core_service_dream_image import (
 )
 
 from apps.core.tool_calls.core_services.core_service_vector_store_query import (
-    run_query_vector_store
+    run_query_search_document_data
 )
 
 from apps.core.tool_calls.core_services.core_service_intra_memory_query import (
@@ -1587,14 +1589,14 @@ class ToolCallManager:
     ):
 
         logger.info("Executing the code base query process.")
-        c_id = self.tool_usage_dict.get("parameters").get("code_base_storage_connection_id")
+        c_id = self.tool_usage_dict.get("parameters").get("connection_id")
+        repository_uri = self.tool_usage_dict.get("parameters").get("repository_uri")
         query = self.tool_usage_dict.get("parameters").get("query")
-        alpha = self.tool_usage_dict.get("parameters").get("alpha")
 
         output = run_query_code_base(
             c_id=c_id,
+            repository_uri=repository_uri,
             query_content_str=query,
-            semantic_alpha=alpha
         )
 
         output_str = json.dumps(
@@ -1615,14 +1617,14 @@ class ToolCallManager:
 
         logger.info("Executing the vector store query process.")
 
-        c_id = self.tool_usage_dict.get("parameters").get("knowledge_base_connection_id")
+        c_id = self.tool_usage_dict.get("parameters").get("connection_id")
+        document_file_name = self.tool_usage_dict.get("parameters").get("document_file_name")
         query = self.tool_usage_dict.get("parameters").get("query")
-        alpha = self.tool_usage_dict.get("parameters").get("alpha")
 
-        output = run_query_vector_store(
-            c_id=c_id,
-            vector_store_query=query,
-            semantic_alpha=alpha
+        output = run_query_search_document_data(
+            connection_id=c_id,
+            document_file_name=document_file_name,
+            query=query,
         )
 
         output_str = json.dumps(

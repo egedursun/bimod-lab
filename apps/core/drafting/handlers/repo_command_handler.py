@@ -295,14 +295,14 @@ def _handle_tool_code_base_query(
     tool_usage_dict,
     output_tool_call
 ):
-    c_id = tool_usage_dict.get("parameters").get("code_base_storage_connection_id")
+    c_id = tool_usage_dict.get("parameters").get("connection_id")
+    repository_uri = tool_usage_dict.get("parameters").get("repository_uri")
     query = tool_usage_dict.get("parameters").get("query")
-    alpha = tool_usage_dict.get("parameters").get("alpha")
 
     output = run_query_code_base(
         c_id=c_id,
+        repository_uri=repository_uri,
         query_content_str=query,
-        semantic_alpha=alpha
     )
 
     output_str = json.dumps(
