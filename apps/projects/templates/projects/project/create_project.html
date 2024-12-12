@@ -83,8 +83,14 @@
           <form method="post" enctype="multipart/form-data" class="mt-4">
             {% csrf_token %}
             <div class="row p-8">
+              <h5 class="bg-body p-8 my-8 rounded border border-primary-subtle rounded">
+                <strong>
+                  <i class="fa fa-info-circle me-4"></i>
+                  Essential Information
+                </strong>
+              </h5>
               <div class="col-4 mb-6">
-                <label class="form-label" for="organization">Organization</label>
+                <label class="form-label" for="organization">Organization<span class="text-danger">&nbsp;*</span></label>
                 <select class="form-select" id="organization" name="organization">
                   <option value="" disabled selected>Select Organization</option>
                   {% for organization in organizations %}
@@ -93,20 +99,26 @@
                 </select>
               </div>
               <div class="col-4 mb-6">
-                <label class="form-label" for="project_name">Project Name</label>
+                <label class="form-label" for="project_name">Project Name<span class="text-danger">&nbsp;*</span></label>
                 <input type="text" class="form-control" id="project_name" name="project_name"
                        placeholder="Enter project name" required>
               </div>
               <div class="col-4 mb-6">
-                <label class="form-label" for="project_department">Project Department</label>
+                <label class="form-label" for="project_department">Project Department<span class="text-danger">&nbsp;*</span></label>
                 <input type="text" class="form-control" id="project_department" name="project_department"
                        placeholder="Enter department" required>
               </div>
               <div class="col-4 mb-6">
-                <label class="form-label" for="project_description">Project Description</label>
+                <label class="form-label" for="project_description">Project Description<span class="text-danger">&nbsp;*</span></label>
                 <textarea class="form-control" id="project_description" name="project_description"
                           placeholder="Enter project description" rows="1" required></textarea>
               </div>
+              <h5 class="bg-body p-8 my-8 rounded border border-primary-subtle rounded">
+                <strong>
+                  <i class="fa fa-cogs me-4"></i>
+                  Advanced Configurations
+                </strong>
+              </h5>
               <div class="col-3 mb-6">
                 <label class="form-label" for="project_status">Project Status</label>
                 <input type="text" class="form-control" id="project_status" name="project_status"

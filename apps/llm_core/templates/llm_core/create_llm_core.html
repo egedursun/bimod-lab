@@ -99,8 +99,14 @@
           <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="row p-8">
+              <h5 class="bg-body p-8 my-8 rounded border border-primary-subtle rounded">
+                <strong>
+                  <i class="fa fa-info-circle me-4"></i>
+                  Essential Information
+                </strong>
+              </h5>
               <div class="col-6 mb-6">
-                <label class="form-label" for="organization">Choose Organization</label>
+                <label class="form-label" for="organization">Choose Organization<span class="text-danger">&nbsp;*</span></label>
                 <select class="form-select" id="organization" name="organization">
                   {% for organization in organizations %}
                     <option value="{{ organization.id }}">{{ organization.name }}</option>
@@ -109,19 +115,13 @@
                 <div class="form-text"></div>
               </div>
               <div class="col-6 mb-6">
-                <label class="form-label" for="nickname">Nickname for the Model</label>
+                <label class="form-label" for="nickname">Nickname for the Model<span class="text-danger">&nbsp;*</span></label>
                 <input type="text" class="form-control" id="nickname" name="nickname"
                        placeholder="Enter a nickname for your new LLM model" />
                 <div class="form-text"></div>
               </div>
-              <div class="col-12 mb-6">
-                <label class="form-label" for="description">Description</label>
-                <textarea class="form-control" id="description" name="description"
-                          placeholder="Enter a description in natural langauge for this particular model configuration"></textarea>
-                <div class="form-text"></div>
-              </div>
               <div class="col-6 mb-3">
-                <label class="form-label" for="provider">Choose Model Provider</label>
+                <label class="form-label" for="provider">Choose Model Provider<span class="text-danger">&nbsp;*</span></label>
                 <select class="form-select" id="provider" name="provider">
                   {% for key, value in provider_choices %}
                     <option value="{{ key }}">{{ value }}</option>
@@ -130,17 +130,29 @@
                 <div class="form-text"></div>
               </div>
               <div class="col-6 mb-3">
-                <label class="form-label" for="api_key">Provider API Key</label>
+                <label class="form-label" for="api_key">Provider API Key<span class="text-danger">&nbsp;*</span></label>
                 <input type="text" class="form-control" id="api_key" name="api_key" placeholder="Enter API key" />
                 <div class="form-text"></div>
               </div>
               <div class="col-3 mb-3">
-                <label class="form-label" for="model_name">Model Name</label>
+                <label class="form-label" for="model_name">Model Name<span class="text-danger">&nbsp;*</span></label>
                 <select class="form-select" id="model_name" name="model_name">
                   {% for key, value in model_name_choices %}
                     <option value="{{ key }}">{{ value }}</option>
                   {% endfor %}
                 </select>
+                <div class="form-text"></div>
+              </div>
+              <h5 class="bg-body p-8 my-8 rounded border border-primary-subtle rounded">
+                <strong>
+                  <i class="fa fa-cogs me-4"></i>
+                  Advanced Configurations
+                </strong>
+              </h5>
+              <div class="col-12 mb-6">
+                <label class="form-label" for="description">Description</label>
+                <textarea class="form-control" id="description" name="description"
+                          placeholder="Enter a description in natural langauge for this particular model configuration"></textarea>
                 <div class="form-text"></div>
               </div>
               <div class="col-3 mb-3">

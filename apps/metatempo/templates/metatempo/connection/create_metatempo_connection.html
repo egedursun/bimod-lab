@@ -65,8 +65,14 @@
           <form method="post" class="mt-4">
             {% csrf_token %}
             <div class="row">
+              <h5 class="bg-body p-8 my-8 rounded border border-primary-subtle rounded">
+                <strong>
+                  <i class="fa fa-info-circle me-4"></i>
+                  Essential Information
+                </strong>
+              </h5>
               <div class="col-3 mb-4">
-                <label for="board" class="form-label">Board</label>
+                <label for="board" class="form-label">Board<span class="text-danger">&nbsp;*</span></label>
                 <select class="form-select select2" id="board" name="board" required>
                   <option value="" disabled selected>Select Board</option>
                   {% for board in boards %}
@@ -75,14 +81,15 @@
                 </select>
               </div>
               <div class="col-3 mb-4">
-                <label for="is_tracking_active" class="form-label">Tracking Active</label>
+                <label for="is_tracking_active" class="form-label">Tracking Active<span
+                  class="text-danger">&nbsp;*</span></label>
                 <select class="form-select" id="is_tracking_active" name="is_tracking_active" required>
                   <option value="True">Active</option>
                   <option value="False">Inactive</option>
                 </select>
               </div>
               <div class="col-3 mb-4">
-                <label for="overall_log_intervals" class="form-label">Overall Log Intervals</label>
+                <label for="overall_log_intervals" class="form-label">Overall Log Intervals<span class="text-danger">&nbsp;*</span></label>
                 <select class="form-select select2" id="overall_log_intervals" name="overall_log_intervals" required>
                   {% for interval in METATEMPO_OVERALL_LOG_INTERVALS %}
                     <option value="{{ interval.0 }}">{{ interval.1 }}</option>
@@ -90,7 +97,7 @@
                 </select>
               </div>
               <div class="col-3 mb-4">
-                <label for="member_log_intervals" class="form-label">Member Log Intervals</label>
+                <label for="member_log_intervals" class="form-label">Member Log Intervals<span class="text-danger">&nbsp;*</span></label>
                 <select class="form-select select2" id="member_log_intervals" name="member_log_intervals" required>
                   {% for key, value in METATEMPO_MEMBER_LOG_INTERVALS %}
                     <option value="{{ key }}">{{ value }}</option>
@@ -98,7 +105,8 @@
                 </select>
               </div>
               <div class="col-6 mb-4">
-                <label for="tracked_weekdays" class="form-label">Tracked Weekdays</label>
+                <label for="tracked_weekdays" class="form-label">Tracked Weekdays<span
+                  class="text-danger">&nbsp;*</span></label>
                 <select class="form-select select2" id="tracked_weekdays" name="tracked_weekdays" multiple="multiple">
                   <option value="Monday" selected>Monday</option>
                   <option value="Tuesday" selected>Tuesday</option>
@@ -110,14 +118,20 @@
                 </select>
               </div>
               <div class="col-3 mb-4">
-                <label for="tracking_start_time" class="form-label">Tracking Start Time (UTC)</label>
+                <label for="tracking_start_time" class="form-label">Tracking Start Time (UTC)<span class="text-danger">&nbsp;*</span></label>
                 <input type="time" class="form-control" id="tracking_start_time" name="tracking_start_time"
                        value="09:00">
               </div>
               <div class="col-3 mb-4">
-                <label for="tracking_end_time" class="form-label">Tracking End Time (UTC)</label>
+                <label for="tracking_end_time" class="form-label">Tracking End Time (UTC)<span class="text-danger">&nbsp;*</span></label>
                 <input type="time" class="form-control" id="tracking_end_time" name="tracking_end_time" value="18:00">
               </div>
+              <h5 class="bg-body p-8 my-8 rounded border border-primary-subtle rounded">
+                <strong>
+                  <i class="fa fa-cogs me-4"></i>
+                  Advanced Configurations
+                </strong>
+              </h5>
               <div class="col-12 mb-4">
                 <label for="optional_context_instructions" class="form-label">Optional Instructions</label>
                 <textarea rows="3" class="form-control" id="optional_context_instructions"

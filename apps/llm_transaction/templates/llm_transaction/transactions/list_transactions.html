@@ -93,7 +93,7 @@
       <form method="post" action="{% url 'organization:balance_transfer' %}">
         {% csrf_token %}
         <div class="mb-3">
-          <label for="source_org" class="form-label"><i class="fa fa-minus-circle me-2"></i>Source Organization</label>
+          <label for="source_org" class="form-label"><i class="fa fa-minus-circle me-2"></i>Source Organization<span class="text-danger">&nbsp;*</span></label>
           <select class="form-select" id="source_org" name="source_org" required>
             {% for org in user_organizations %}
               <option value="{{ org.id }}">
@@ -104,7 +104,7 @@
         </div>
         <div class="mb-3">
           <label for="destination_org" class="form-label"><i class="fa fa-plus-circle me-2"></i>Target
-            Organization</label>
+            Organization<span class="text-danger">&nbsp;*</span></label>
           <select class="form-select" id="destination_org" name="destination_org" required>
             {% for org in user_organizations %}
               <option value="{{ org.id }}">
@@ -114,7 +114,7 @@
           </select>
         </div>
         <div class="mb-3">
-          <label for="transfer_amount" class="form-label">Transfer Amount</label>
+          <label for="transfer_amount" class="form-label">Transfer Amount<span class="text-danger">&nbsp;*</span></label>
           <input type="number" class="form-control" id="transfer_amount" name="transfer_amount"
                  placeholder="Enter amount to transfer" required>
         </div>
@@ -298,12 +298,12 @@
                         {% csrf_token %}
                         <input type="hidden" name="org_id" value="{{ organization_data.organization.id }}">
                         <label for="promo_code" class="form-label mb-2"><strong>Do you have a promo
-                          code?</strong></label>
+                          code? (Optional)</strong></label>
                         <input type="text" class="form-control mb-2" name="promo_code" value=""
                                placeholder="You have a referral or promo code?">
                         <label for="topup_amount" class="form-label mb-2"><strong>Enter amount in USD to add to the
-                          balance.</strong></label>
-                        <div class="input-group">
+                          balance.<span class="text-danger">&nbsp;*</span></strong></label>
+                        <div class="input-group bg-body p-8 rounded">
                           <div class="input-group-prepend">
                             <span class="input-group-text pt-2 pb-2 me-2"><strong>$ (USD)</strong></span>
                           </div>

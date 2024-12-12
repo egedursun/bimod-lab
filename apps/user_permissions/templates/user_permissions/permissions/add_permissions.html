@@ -96,7 +96,7 @@
           <div class="col-5">
             <label for="organization" class="form-label">
               <i class="fa fa-building me-2"></i>
-              Choose Organization
+              Choose Organization<span class="text-danger">&nbsp;*</span>
             </label>
             <select class="form-select" id="organization" name="organization" onchange="this.form.submit()">
               <option value="" disabled selected>Select Organization</option>
@@ -119,7 +119,7 @@
           <div class="col-5">
             <label for="user" class="form-label">
               <i class="fa fa-user me-2"></i>
-              Choose User to Add Permissions
+              Choose User to Add Permissions<span class="text-danger">&nbsp;*</span>
             </label>
             <select class="form-select" id="user" name="user" {% if not selected_organization %}disabled{% endif %}
                     onchange="this.form.submit()">

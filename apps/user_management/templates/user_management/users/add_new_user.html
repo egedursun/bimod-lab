@@ -92,8 +92,15 @@
           <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="row p-8">
+              <h5 class="bg-body p-8 my-8 rounded border border-primary-subtle rounded">
+                <strong>
+                  <i class="fa fa-info-circle me-4"></i>
+                  Essential Information
+                </strong>
+              </h5>
               <div class="col-12 mb-6">
-                <label class="form-label" for="organization">Organization</label>
+                <label class="form-label" for="organization">Organization<span
+                  class="text-danger">&nbsp;*</span></label>
                 <select class="form-select" id="organization" name="organization">
                   {% for organization in organizations %}
                     <option value="{{ organization.id }}">{{ organization.name }}</option>
@@ -102,26 +109,27 @@
                 <div class="form-text"></div>
               </div>
               <div class="col-6 mb-6">
-                <label class="form-label" for="username">Username</label>
+                <label class="form-label" for="username">Username<span class="text-danger">&nbsp;*</span></label>
                 <input type="text" class="form-control" id="username" name="username" placeholder="Enter the username"
                        required />
                 <div class="form-text"></div>
               </div>
               <div class="col-6 mb-6">
-                <label class="form-label" for="email">Email</label>
+                <label class="form-label" for="email">Email<span class="text-danger">&nbsp;*</span></label>
                 <input type="email" class="form-control" id="email" name="email" placeholder="Enter the email"
                        required />
                 <div class="form-text"></div>
               </div>
               <div class="col-6 mb-2">
-                <label class="form-label" for="password">Set a Temporary Password for the User</label>
+                <label class="form-label" for="password">Set a Temporary Password for the User<span class="text-danger">&nbsp;*</span></label>
                 <input type="password" class="form-control" id="password" name="password"
                        placeholder="Enter the password"
                        required />
                 <div class="form-text"></div>
               </div>
               <div class="col-6 mb-2">
-                <label class="form-label" for="confirm_password">Confirm Password</label>
+                <label class="form-label" for="confirm_password">Confirm Password<span
+                  class="text-danger">&nbsp;*</span></label>
                 <input type="password" class="form-control" id="confirm_password" name="confirm_password"
                        placeholder="Enter the password again" required />
                 <div class="form-text"></div>
@@ -139,12 +147,18 @@
                   - Contain at least one special character. (e.g. !, @, #, ..., *) <br>
                 </small>
               </div>
-              <div class="tips-section alert alert-solid-info d-flex align-items-center mt-6" role="alert">
+              <div class="tips-section alert alert-warning border border-2 border-warning rounded d-flex align-items-center mt-6" role="alert">
                 <span class="alert-icon rounded">
                   <i class="ti ti-info-circle"></i>
                 </span>
-                Don't worry, the user will still be able to set their own password after logging in.
+                The user will still be prompted to set their own password after logging in to the platform.
               </div>
+              <h5 class="bg-body p-8 my-8 rounded border border-primary-subtle rounded">
+                <strong>
+                  <i class="fa fa-cogs me-4"></i>
+                  Advanced Configurations
+                </strong>
+              </h5>
               <div class="col-4 mb-6">
                 <label class="form-label" for="first_name">First Name</label>
                 <input type="text" class="form-control" id="first_name" name="first_name"

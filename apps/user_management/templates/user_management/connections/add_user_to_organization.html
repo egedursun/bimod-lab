@@ -92,7 +92,7 @@
             {% csrf_token %}
             <div class="row p-8">
               <div class="col-5 mb-6">
-                <label class="form-label" for="user"><i class="fa fa-user me-2"></i>Username</label>
+                <label class="form-label" for="user"><i class="fa fa-user me-2"></i>Username<span class="text-danger">&nbsp;*</span></label>
                 <select class="form-select" id="user" name="user">
                   {% for user in users %}
                     <option value="{{ user.id }}">{{ user.username }}</option>
@@ -106,7 +106,7 @@
                 </span>
               </div>
               <div class="col-5 mb-6">
-                <label class="form-label" for="organization"><i class="fa fa-building me-2"></i>Organization</label>
+                <label class="form-label" for="organization"><i class="fa fa-building me-2"></i>Organization<span class="text-danger">&nbsp;*</span></label>
                 <select class="form-select" id="organization" name="organization">
                   {% for organization in organizations %}
                     <option value="{{ organization.id }}">{{ organization.name }}</option>

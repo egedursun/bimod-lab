@@ -17,8 +17,15 @@
 
 from django.db import models
 
-from apps.finetuning.models import FineTunedModelConnection
-from apps.llm_core.utils import LARGE_LANGUAGE_MODEL_PROVIDERS, GPT_MODEL_NAMES, GPTModelNamesNames
+from apps.finetuning.models import (
+    FineTunedModelConnection
+)
+
+from apps.llm_core.utils import (
+    LARGE_LANGUAGE_MODEL_PROVIDERS,
+    GPT_MODEL_NAMES,
+    GPTModelNamesNames
+)
 
 
 class LLMCore(models.Model):

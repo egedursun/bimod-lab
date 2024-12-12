@@ -70,7 +70,7 @@
         <img src="{% static 'img/dashboard/ds-19.png' %}" class="rounded w-100" alt="Illustration for tips">
         <hr>
         <div class="mb-3">
-          <label for="organization" class="form-label"><i class="fa fa-building me-2"></i>Organization</label>
+          <label for="organization" class="form-label"><i class="fa fa-building me-2"></i>Organization<span class="text-danger">&nbsp;*</span></label>
           <select class="form-select" id="organization" name="org_id" required>
             <option value="" disabled selected>Select an organization</option>
             {% for org in organizations %}
@@ -89,8 +89,8 @@
         <h5><strong>Add Balance</strong></h5>
         <img src="{% static 'img/llm_transactions/tx-1.png' %}" class="rounded w-100" alt="Illustration for tips">
         <hr>
-        <div class="mb-3">
-          <label for="topup_amount" class="form-label"><i class="fa fa-dollar-sign me-2"></i>Amount (USD)</label>
+        <div class="mb-3 bg-body p-8 rounded">
+          <label for="topup_amount" class="form-label"><i class="fa fa-dollar-sign me-2"></i>Amount (USD)<span class="text-danger">&nbsp;*</span></label>
           <input type="number" class="form-control" id="topup_amount" name="topup_amount"
                  placeholder="Enter amount to add" required>
         </div>

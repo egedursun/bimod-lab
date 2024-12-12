@@ -160,7 +160,7 @@
           <div class="col-6">
             <label for="organization" class="form-label">
               <i class="fa fa-building me-2"></i>
-              Choose Organization
+              Choose Organization<span class="text-danger">&nbsp;*</span>
             </label>
             <select class="form-select" id="organization" name="organization" required>
               <option value="" disabled selected>Select Organization</option>
@@ -173,7 +173,7 @@
           <div class="col-6">
             <label for="role_name" class="form-label">
               <i class="fa fa-id-badge me-2"></i>
-              Role Name
+              Role Name<span class="text-danger">&nbsp;*</span>
             </label>
             <input type="text" class="form-control" id="role_name" name="role_name" placeholder="Enter role name"
                    required>
@@ -182,7 +182,7 @@
           <div class="col-12">
             <label for="role_permissions" class="form-label">
               <i class="fa fa-key me-2"></i>
-              Assign Permissions
+              Assign Permissions<span class="text-danger">&nbsp;*</span>
             </label>
             <select class="form-select" id="role_permissions" name="role_permissions" multiple="multiple" required>
               {% for permission in available_permissions %}

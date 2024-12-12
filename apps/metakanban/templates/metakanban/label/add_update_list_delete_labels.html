@@ -87,12 +87,12 @@
         {% csrf_token %}
         <div class="row">
           <div class="col-6">
-            <label for="label_name" class="form-label">Label Name</label>
+            <label for="label_name" class="form-label">Label Name<span class="text-danger">&nbsp;*</span></label>
             <input type="text" name="label_name" id="label_name" class="form-control" placeholder="Enter label name"
                    required>
           </div>
           <div class="col-6">
-            <label for="label_color" class="form-label">Label Color</label>
+            <label for="label_color" class="form-label">Label Color<span class="text-danger">&nbsp;*</span></label>
             <select name="label_color" id="label_color" class="form-select select2">
               {% for code, color in color_choices %}
                 <option value="{{ code }}">{{ color }}</option>
@@ -100,6 +100,7 @@
             </select>
           </div>
         </div>
+        <hr>
         <button type="submit" class="btn btn-primary mt-4">
           <i class="fa fa-plus me-2"></i><strong>Create Label</strong>
         </button>

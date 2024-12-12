@@ -89,7 +89,7 @@
               <div class="row">
                 <!-- Assistant Picker -->
                 <div class="col-12 mb-3">
-                  <label for="assistant_id" class="form-label">Select Assistant</label>
+                  <label for="assistant_id" class="form-label">Select Assistant<span class="text-danger">&nbsp;*</span></label>
                   <select id="assistant_id" name="assistant_id" class="form-control" required>
                     <option value="" disabled selected>Select an Assistant</option>
                     {% for assistant in assistants %}
@@ -100,7 +100,7 @@
 
                 <!-- MetaTempo Instance Picker -->
                 <div class="col-12 mb-3">
-                  <label for="instance_id" class="form-label">Select MetaTempo Tracker</label>
+                  <label for="instance_id" class="form-label">Select MetaTempo Tracker<span class="text-danger">&nbsp;*</span></label>
                   <select id="instance_id" name="instance_id" class="form-control" required>
                     <option value="" disabled selected>Select a MetaTempo Tracker</option>
                     {% for instance in metatempo_instances %}

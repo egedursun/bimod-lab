@@ -98,7 +98,7 @@
             <form class="mt-4" method="post" enctype="multipart/form-data">
               {% csrf_token %}
               <div class="mb-6 card card-border-shadow-primary p-12">
-                <label class="form-label" for="organization_id"><strong>Choose Organization</strong></label>
+                <label class="form-label" for="organization_id"><strong>Choose Organization<span class="text-danger">&nbsp;*</span></strong></label>
                 <select class="form-select" id="organization_id" name="organization_id">
                   {% for organization in organizations %}
                     <option value="{{ organization.id }}">{{ organization.name }}</option>
@@ -190,7 +190,7 @@
                 </div>
                 <div class="col-12 mb-6 card card-border-shadow-primary p-12">
                   <label class="form-label" for="monthly_hard_limit_auto_addition_amount">Monthly Auto Top-Up Hard
-                    Limit</label>
+                    Limit<span class="text-danger">&nbsp;*</span></label>
                   <input type="number" class="form-control" id="monthly_hard_limit_auto_addition_amount"
                          name="monthly_hard_limit_auto_addition_amount"
                          placeholder="Enter the maximum amount that can be automatically added to the organization's balance in a month" />

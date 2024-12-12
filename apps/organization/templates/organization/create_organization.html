@@ -103,12 +103,24 @@
           <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="row p-8">
+              <h5 class="bg-body p-8 my-8 rounded border border-primary-subtle rounded">
+                <strong>
+                  <i class="fa fa-info-circle me-4"></i>
+                  Essential Information
+                </strong>
+              </h5>
               <div class="col-4 mb-6">
-                <label class="form-label" for="name">Name</label>
+                <label class="form-label" for="name">Name<span class="text-danger">&nbsp;*</span></label>
                 <input type="text" class="form-control" id="name" name="name"
                        placeholder="Enter the trading name of your organization" />
                 <div class="form-text"></div>
               </div>
+              <h5 class="bg-body p-8 my-8 rounded border border-primary-subtle rounded">
+                <strong>
+                  <i class="fa fa-cogs me-4"></i>
+                  Advanced Configurations
+                </strong>
+              </h5>
               <div class="col-4 mb-6">
                 <label class="form-label" for="email">Primary Contact Email</label>
                 <input type="email" class="form-control" id="email" name="email"

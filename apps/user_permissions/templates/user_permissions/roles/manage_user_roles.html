@@ -95,7 +95,7 @@
             {% csrf_token %}
 
             <!-- Organization Picker -->
-            <label class="col-4 mt-4" for="organization">Organization:</label>
+            <label class="col-4 mt-4" for="organization">Organization<span class="text-danger">&nbsp;*</span></label>
             <select id="organization" name="organization_id" class="form-select" required>
               <option value="" disabled selected>Select Organization</option>
               {% for organization in organizations %}
@@ -104,7 +104,9 @@
             </select>
 
             <!-- User Picker (Initially hidden) -->
-            <label class="col-4 mt-4" for="user">User:</label>
+            <label class="col-4 mt-4" for="user">
+              <strong>User<span class="text-danger">&nbsp;*</span></strong>
+            </label>
             <select id="user" name="user_id" class="form-select" required>
               <option value="" disabled selected>Select User</option>
               {% for organization in organizations %}
@@ -115,7 +117,9 @@
             </select>
 
             <!-- Role Picker -->
-            <label class="col-4 mt-4" for="role">Role:</label>
+            <label class="col-4 mt-4" for="role">
+              <strong>Role<span class="text-danger">&nbsp;*</span></strong>
+            </label>
             <select id="role" name="role_id" class="form-select" required>
               <option value="" disabled selected>Select Role</option>
               {% for role in roles %}

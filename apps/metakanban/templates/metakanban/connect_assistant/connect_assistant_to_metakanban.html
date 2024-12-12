@@ -89,7 +89,7 @@
               <div class="row">
                 <!-- Assistant Picker -->
                 <div class="col-12 mb-3">
-                  <label for="assistant_id" class="form-label">Select Assistant</label>
+                  <label for="assistant_id" class="form-label">Select Assistant<span class="text-danger">&nbsp;*</span></label>
                   <select id="assistant_id" name="assistant_id" class="form-control" required>
                     <option value="" disabled selected>Select an Assistant</option>
                     {% for assistant in assistants %}
@@ -100,7 +100,7 @@
 
                 <!-- Board Picker -->
                 <div class="col-12 mb-3">
-                  <label for="board_id" class="form-label">Select MetaKanban Board</label>
+                  <label for="board_id" class="form-label">Select MetaKanban Board<span class="text-danger">&nbsp;*</span></label>
                   <select id="board_id" name="board_id" class="form-control" required>
                     <option value="" disabled selected>Select a MetaKanban Board</option>
                     {% for board in metakanban_boards %}
