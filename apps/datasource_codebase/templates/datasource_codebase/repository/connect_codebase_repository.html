@@ -148,7 +148,7 @@
           {% csrf_token %}
           <div class="row p-8">
             <div class="mb-6 col-6">
-              <label class="form-label" for="organization">Organization</label>
+              <label class="form-label" for="organization">Organization<span class="text-danger">&nbsp;*</span></label>
               <select class="form-select" id="organization" name="organization">
                 <option value="" disabled selected>Select Organization</option>
                 {% for org in organizations %}
@@ -157,19 +157,19 @@
               </select>
             </div>
             <div class="mb-6 col-6">
-              <label class="form-label" for="assistant">Assistant</label>
+              <label class="form-label" for="assistant">Assistant<span class="text-danger">&nbsp;*</span></label>
               <select class="form-select" id="assistant" name="assistant">
                 <option value="" disabled selected>Select Assistant</option>
               </select>
             </div>
             <div class="mb-6 col-6">
-              <label class="form-label" for="knowledge_base">Knowledge Base</label>
+              <label class="form-label" for="knowledge_base">Knowledge Base<span class="text-danger">&nbsp;*</span></label>
               <select class="form-select" id="knowledge_base" name="knowledge_base">
                 <option value="" disabled selected>Select Knowledge Base</option>
               </select>
             </div>
             <div class="mb-6 col-6">
-              <label class="form-label" for="repository_uri">Repository URL</label>
+              <label class="form-label" for="repository_uri">Repository URL<span class="text-danger">&nbsp;*</span></label>
               <input type="text" class="form-control" id="repository_uri" name="repository_uri"
                      placeholder="Enter the Git URL of the code repository you want to connect.">
             </div>

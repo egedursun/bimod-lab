@@ -107,7 +107,6 @@
            aria-controls="collapse-{{ organization.id }}">
           <div class="d-flex">
             <img class="avatar avatar-lg rounded me-4 mb-8" alt="Organization image" src="
-
               {% if organization.organization_image %}{{ organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}">
             <h4>
               <strong>{{ organization.name }}</strong>
@@ -138,7 +137,6 @@
                 {% if assistant.organization == organization %}
                   <tr>
                     <td><img class="avatar avatar-lg rounded" alt="Assistant Image" src="
-
                       {% if assistant.assistant_image %}{{ assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}">
                     </td>
                     <td style="min-width: 300px;">
@@ -146,17 +144,14 @@
                       <br>
                       <i class="fa fa-info-circle me-5 mt-2"></i><small>{{ assistant.description|linebreaksbr }}</small>
                     </td>
-                    <td>
-                      <ul class="list-unstyled overflow-auto bg-label-dark rounded p-2" style="max-height: 400px;">
+                    <td style="min-width: 600px; max-width: 600px;">
+                      <ul class="list-unstyled overflow-auto bg-body rounded p-4" style="max-height: 400px;">
                         {% for reference in assistant_api_map|get_api_item:assistant.id %}
-                          <li class="m-3 p-3 bg-label-primary border rounded d-flex align-items-start"
+                          <li class="m-3 bg-card p-4 border border-success border-2 rounded d-flex align-items-start"
                               style="min-width: 400px;">
                             <!-- API Image -->
                             <img class="avatar avatar-lg rounded me-4"
                                  src="
-
-
-
                                    {% if reference.custom_api.api_picture %}{{ reference.custom_api.api_picture.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
                                  alt="{{ reference.custom_api.name }}"
                                  style="width: 60px; height: 60px; object-fit: cover;">
@@ -190,7 +185,7 @@
                             </div>
                           </li>
                         {% empty %}
-                          <div class="alert alert-warning p-2 m-2" role="alert">
+                          <div class="alert alert-warning p-2 m-2 border border-warning border-2 rounded" role="alert">
                             <div class="">
                               <i class="fa fa-exclamation-triangle me-4"></i>
                               <strong>No internal APIs have been connected yet.</strong>
@@ -220,14 +215,16 @@
                         </button>
                       </form>
                     </td>
-                    <td style="min-width: 400px;">
-                      <ul class="list-unstyled overflow-auto bg-label-dark rounded p-2" style="max-height: 400px;">
+                    <td style="min-width: 600px; max-width: 600px;">
+                      <ul class="list-unstyled overflow-auto bg-body rounded p-4" style="max-height: 400px;">
                         {% for reference in external_api_references_map|get_api_item:assistant.id %}
-                          <li class="m-3 p-3 bg-label-primary border rounded d-flex align-items-start"
+                          <li class="m-3 bg-card p-4 border border-warning border-2 rounded d-flex align-items-start"
                               style="min-width: 400px;">
                             <!-- API Image -->
                             <img class="avatar avatar-lg rounded me-4"
                                  src="
+
+
 
                                    {% if reference.custom_api.api_picture %}{{ reference.custom_api.api_picture.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
                                  alt="{{ reference.custom_api.name }}"
@@ -261,7 +258,7 @@
                             </div>
                           </li>
                         {% empty %}
-                          <div class="alert alert-warning p-2 m-2" role="alert">
+                          <div class="alert alert-warning p-2 m-2 border border-warning border-2 rounded" role="alert">
                             <div class="">
                               <i class="fa fa-exclamation-triangle me-4"></i>
                               <strong>No internal APIs have been connected yet.</strong>

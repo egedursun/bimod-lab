@@ -51,7 +51,10 @@ class HTTPClientDownloadExecutor:
     def __init__(self, storage_id: int):
         c = None
         try:
-            c = DataSourceMediaStorageConnection.objects.get(id=storage_id)
+            c = DataSourceMediaStorageConnection.objects.get(
+                id=storage_id
+            )
+
             logger.info(f"Storage found with id: {storage_id}")
 
             if not c:
@@ -69,24 +72,36 @@ class HTTPClientDownloadExecutor:
             GPT_DEFAULT_ENCODING_ENGINE
         )
 
-        from apps.core.generative_ai.utils import ChatRoles
+        from apps.core.generative_ai.utils import (
+            ChatRoles
+        )
 
         try:
             http_response = requests.get(url)
-            estimate_format = str(filetype.guess(http_response.content).extension)
+
+            estimate_format = str(
+                filetype.guess(
+                    http_response.content
+                ).extension
+            )
+
             logger.info(f"Estimated format for the file from url: {url} is: {estimate_format}")
 
             if not estimate_format:
                 logger.error(f"Could not guess the file extension for the file from url: {url}")
 
-                return get_url_could_not_resolved_error_message(url)
+                return get_url_could_not_resolved_error_message(
+                    url
+                )
 
             http_response.raise_for_status()
 
         except requests.exceptions.RequestException as e:
             logger.error(f"Error downloading file from url: {e}")
 
-            return get_download_from_url_failed_error_message(str(e))
+            return get_download_from_url_failed_error_message(
+                str(e)
+            )
 
         try:
             file_name = self.generate_name_http_download()
@@ -105,7 +120,9 @@ class HTTPClientDownloadExecutor:
         except Exception as e:
             logger.error(f"Error saving the file to the storage: {e}")
 
-            return get_downloaded_item_could_not_saved_error_message(str(e))
+            return get_downloaded_item_could_not_saved_error_message(
+                str(e)
+            )
 
         try:
             tx = LLMTransaction(

@@ -18,7 +18,6 @@
 import logging
 
 import boto3
-from celery import shared_task
 
 from apps.datasource_media_storages.utils import (
     MEDIA_FILE_TYPES,
@@ -31,7 +30,6 @@ from config import settings
 logger = logging.getLogger(__name__)
 
 
-@shared_task
 def upload_file_to_storage(
     file_bytes: bytes,
     full_path: str,
@@ -93,6 +91,7 @@ def upload_file_to_storage(
 
         return False
 
+    print(f"[tasks.upload_file_to_storage] File uploaded successfully to storage: {full_path}")
     logger.info(f"[tasks.upload_file_to_storage] File uploaded successfully to storage: {full_path}")
 
     return True

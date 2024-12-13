@@ -91,7 +91,7 @@
               <div class="row">
                 <!-- Assistant Picker -->
                 <div class="col-12 mb-3">
-                  <label for="assistant" class="form-label">Select Assistant</label>
+                  <label for="assistant" class="form-label">Select Assistant<span class="text-danger">&nbsp;*</span></label>
                   <select id="assistant" name="assistant" class="form-control" required>
                     <option value="" disabled selected>Select an Assistant</option>
                     {% for assistant in assistants %}
@@ -230,7 +230,7 @@
             </ul>
           </nav>
         {% else %}
-          <div class="alert alert-warning">
+          <div class="alert alert-warning p-8 border border-warning border-2 rounded">
             <i class="fa fa-exclamation-triangle me-2"></i>
             <strong>No connections available.</strong>
           </div>

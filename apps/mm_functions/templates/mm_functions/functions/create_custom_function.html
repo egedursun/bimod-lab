@@ -116,12 +116,12 @@
             {% csrf_token %}
             <div class="row p-8">
               <div class="mb-6 col-4">
-                <label class="form-label" for="name">Name</label>
+                <label class="form-label" for="name">Name<span class="text-danger">&nbsp;*</span></label>
                 <input type="text" class="form-control" id="name" name="name" placeholder="Enter function name"
                        required />
               </div>
               <div class="mb-6 col-4">
-                <label class="form-label" for="description">Description</label>
+                <label class="form-label" for="description">Description<span class="text-danger">&nbsp;*</span></label>
                 <textarea class="form-control" id="description" name="description" rows="1"
                           placeholder="Enter function description" required></textarea>
               </div>
@@ -164,7 +164,7 @@
               </div>
               <hr>
               <div class="mb-6 col-12">
-                <label class="form-label" for="input_fields">Input Fields</label>
+                <label class="form-label" for="input_fields">Input Fields<span class="text-danger">&nbsp;*</span></label>
                 <table id="inputFieldsTable" class="table table-bordered">
                   <thead>
                   <tr>
@@ -204,7 +204,7 @@
                   <strong>Add New Row</strong></button>
               </div>
               <div class="mb-6 col-12">
-                <label class="form-label" for="output_fields">Output Fields</label>
+                <label class="form-label" for="output_fields">Output Fields<span class="text-danger">&nbsp;*</span></label>
                 <table id="outputFieldsTable" class="table table-bordered">
                   <thead>
                   <tr>
@@ -276,7 +276,7 @@
               </div>
               <hr>
               <div class="mb-6 col-12 rounded">
-                <label class="form-label" for="code_text">Code</label>
+                <label class="form-label" for="code_text">Code<span class="text-danger">&nbsp;*</span></label>
                 <textarea class="form-control" id="code_text" name="code_text"
                           placeholder="Enter the code for the function"></textarea>
               </div>
@@ -286,7 +286,7 @@
                        onchange="parseCodeFile(this)" />
               </div>
               <div class="mb-6 col-8">
-                <label class="form-label" for="categories">Categories</label>
+                <label class="form-label" for="categories">Categories<span class="text-danger">&nbsp;*</span></label>
                 <div id="categories" class="form-control overflow-auto" style="max-height: 200px;">
                   {% for value, label in CUSTOM_FUNCTION_CATEGORIES %}
                     <div class="form-check">

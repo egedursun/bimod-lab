@@ -181,6 +181,7 @@
               <td>
                 <img src="
 
+
                   {% if api.api_picture %}{{ api.api_picture.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
                      alt="{{ api.name }}" class="avatar rounded border border-2 border-warning">
               </td>
@@ -239,6 +240,7 @@
             <td>
               <img src="
 
+
                 {% if api.api_picture %}{{ api.api_picture.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
                    alt="{{ api.name }}" class="avatar-lg border border-2 border-warning rounded"
                    style="width: 60px; height: 60px; object-fit: cover;">
@@ -254,19 +256,71 @@
               </div>
             </td>
             <td>
-              <ul class="list-unstyled overflow-auto bg-label-dark rounded p-1"
-                  style="max-height: 400px; font-size: 10px;">
+              <ul class="list-unstyled d-flex ms-auto bg-label-secondary rounded border border-warning border-2 rounded"
+                  style="font-size: 11px; overflow: auto; max-height: 250px; min-width: 600px; max-width: 600px;">
                 {% for name, data in api.endpoints.items %}
-                  <li class="m-1 p-2 bg-label-secondary border rounded">
-                    <p class="label bg-label-light text-dark rounded p-1 m-1">
-                      <strong>{{ name }}</strong>: {{ data.description|truncatechars:64 }}
+                  <li class="badge m-1 w-100">
+                    <p class="label bg-label-light text-dark rounded p-4 m-2 border border-2 border-primary">
+                      <strong>{{ name }}</strong>: {{ data.description|truncatechars:64 }}</p>
+                    <p class="label bg-label-light text-dark rounded p-2 m-1"><strong>Path:</strong> {{ data.path }}</p>
+                    <p class="label bg-label-light text-dark rounded p-2 m-1"><strong>Method:</strong> {{ data.method }}
                     </p>
-                    <p class="label bg-label-light text-dark rounded p-1 m-1"><strong>Path:</strong> {{ data.path }}</p>
-                    <p class="label bg-label-light text-dark rounded p-1 m-1"><strong>Method:</strong> {{ data.method }}
-                    </p>
+                    <br>
+                    {% if data.header_params %}
+                      <div class="card card-border card-border-shadow-light p-2 m-1">
+                        <strong class="text-dark mb-1">Header Parameters</strong>
+                        {% for header_param in data.query_params %}
+                          {% if header_param != "" %}
+                            <p class="label bg-label-light text-dark rounded p-1 m-1">
+                              {{ header_param }}
+                            </p>
+                          {% endif %}
+                        {% endfor %}
+                      </div>
+                    {% endif %}
+                    <br>
+                    {% if data.query_params %}
+                      <div class="card card-border card-border-shadow-light p-2 m-1">
+                        <strong class="text-dark mb-1">Query Parameters</strong>
+                        {% for query_param in data.query_params %}
+                          {% if query_param != "" %}
+                            <p class="label bg-label-light text-dark rounded p-1 m-1">
+                              {{ query_param }}
+                            </p>
+                          {% endif %}
+                        {% endfor %}
+                      </div>
+                    {% endif %}
+                    <br>
+                    {% if data.path_params %}
+                      <div class="card card-border card-border-shadow-light p-2 m-1">
+                        <strong class="text-dark mb-1">Path Parameters</strong>
+                        {% for path_param in data.path_params %}
+                          {% if path_param != "" %}
+                            <p class="label bg-label-light text-dark rounded p-1 m-1">
+                              {{ path_param }}
+                            </p>
+                          {% endif %}
+                        {% endfor %}
+                      </div>
+                    {% endif %}
+                    <br>
+                    {% if data.body_params %}
+                      <div class="card card-border card-border-shadow-light p-2 m-1">
+                        <strong class="text-dark mb-1">Body Parameters</strong>
+                        {% for body_param in data.body_params %}
+                          {% if body_param != "" %}
+                            <p class="label bg-label-light text-dark rounded p-1 m-1">
+                              {{ body_param }}
+                            </p>
+                          {% endif %}
+                        {% endfor %}
+                      </div>
+                    {% endif %}
                   </li>
                 {% endfor %}
               </ul>
+
             </td>
             <td style="min-width: 300px;">
               <form method="post" class="d-inline-block">
@@ -304,6 +358,7 @@
 
 
 
+
                 {{ page_obj.previous_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}{% for cat in selected_categories %}&categories={{ cat }}{% endfor %}"><i
                 class="bi bi-chevron-left"></i></a>
             </li>
@@ -311,6 +366,7 @@
           {% for page_num in page_obj.paginator.page_range %}
             <li class="page-item {% if page_obj.number == page_num %}active{% endif %}">
               <a class="page-link" href="?page=
+
 
 
 
@@ -323,11 +379,13 @@
 
 
 
+
                 {{ page_obj.next_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}{% for cat in selected_categories %}&categories={{ cat }}{% endfor %}"><i
                 class="bi bi-chevron-right"></i></a>
             </li>
             <li class="page-item">
               <a class="page-link" href="?page=
+
 
 
 

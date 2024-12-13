@@ -142,14 +142,14 @@
                       {% if assistant.assistant_image %}{{ assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}">
                     </td>
                     <td style="min-width: 300px;">
-                      <strong><i class="fa fa-robot me-4"></i><strong{{ assistant.name }}</strong>
+                      <strong><i class="fa fa-robot me-4"></i>{{ assistant.name }}</strong>
                       <br>
                       <i class="fa fa-info-circle me-5 mt-2"></i><small>{{ assistant.description|linebreaksbr }}</small>
                     </td>
-                    <td>
-                      <ul class="list-unstyled overflow-auto bg-label-secondary rounded p-2" style="max-height: 400px;">
+                    <td style="min-width: 600px; max-width: 600px;">
+                      <ul class="list-unstyled overflow-auto bg-body rounded p-4" style="max-height: 400px;">
                         {% for reference in assistant_function_map|get_item:assistant.id %}
-                          <li class="m-3 p-3 bg-label-primary border rounded d-flex align-items-start"
+                          <li class="m-3 bg-card p-4 border border-success border-2 rounded d-flex align-items-start"
                               style="min-width: 400px;">
                             <!-- Function Image -->
                             <img class="avatar avatar-lg rounded me-4"
@@ -163,7 +163,7 @@
                             <div class="flex-grow-1 d-flex flex-column">
                               <div class="d-flex justify-content-between align-items-center">
                                 <!-- Function Name -->
-                                <strong class="text-dark"><small>{{ reference.custom_function.name }}</small></strong>
+                                <strong class="text-dark p-4"><small>{{ reference.custom_function.name }}</small></strong>
 
                                 <!-- Function Visibility Badge -->
                                 <span
@@ -187,7 +187,7 @@
                             </div>
                           </li>
                         {% empty %}
-                          <div class="alert alert-warning p-2 m-2" role="alert">
+                          <div class="alert alert-warning p-2 m-2 border border-warning border-2 rounded" role="alert">
                             <div class="">
                               <i class="fa fa-exclamation-triangle me-4"></i>
                               <strong>No internal functions connected to this assistant.</strong>
@@ -217,10 +217,10 @@
                         </button>
                       </form>
                     </td>
-                    <td>
-                      <ul class="list-unstyled overflow-auto bg-label-secondary rounded p-2" style="max-height: 400px;">
+                    <td style="min-width: 600px; max-width: 600px;">
+                      <ul class="list-unstyled overflow-auto bg-body rounded p-4" style="max-height: 400px;">
                         {% for reference in external_function_references_map|get_item:assistant.id %}
-                          <li class="m-3 p-3 bg-label-primary border rounded d-flex align-items-start"
+                          <li class="m-3 bg-card p-4 border border-warning border-2 rounded d-flex align-items-start"
                               style="min-width: 400px;">
                             <!-- Function Image -->
                             <img class="avatar avatar-lg rounded me-4"
@@ -257,7 +257,7 @@
                             </div>
                           </li>
                         {% empty %}
-                          <div class="alert alert-warning p-2 m-2" role="alert">
+                          <div class="alert alert-warning p-2 m-2 border border-2 border-warning rounded" role="alert">
                             <div class="">
                               <i class="fa fa-exclamation-triangle me-4"></i>
                               <strong>No external functions connected to this assistant.</strong>

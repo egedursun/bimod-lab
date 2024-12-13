@@ -117,7 +117,7 @@
             {% csrf_token %}
             <div class="row p-8">
               <div class="mb-6 col-4">
-                <label class="form-label" for="database_connection">Database Connection</label>
+                <label class="form-label" for="database_connection">Database Connection<span class="text-danger">&nbsp;*</span></label>
                 <select class="form-select" id="database_connection" name="database_connection">
                   <option value="" disabled selected>Select Database Connection</option>
                   {% for connection in database_connections %}
@@ -126,24 +126,16 @@
                 </select>
               </div>
               <div class="mb-6 col-4">
-                <label class="form-label" for="name">Query Name</label>
+                <label class="form-label" for="name">Query Name<span class="text-danger">&nbsp;*</span></label>
                 <input type="text" class="form-control" id="name" name="name" placeholder="Enter query name" />
               </div>
               <div class="mb-6 col-4">
-                <label class="form-label" for="description">Description</label>
+                <label class="form-label" for="description">Description<span class="text-danger">&nbsp;*</span></label>
                 <textarea class="form-control" id="description" name="description" rows="1"
                           placeholder="Enter query description"></textarea>
               </div>
-              <div class="tips-section alert alert-solid-info d-flex align-items-center mt-0" role="alert">
-              <span class="alert-icon rounded">
-                <i class="ti ti-info-circle"></i>
-              </span>
-                It is always great to put a clear and concise description for your SQL query. This will help the
-                assistant to figure out what the query is about and when to use it. You can also provide examples
-                scenarios where the query can be used.
-              </div>
               <div class="mb-6 col-12">
-                <label class="form-label" for="sql_query">SQL Query</label>
+                <label class="form-label" for="sql_query">SQL Query<span class="text-danger">&nbsp;*</span></label>
                 <textarea class="form-control rounded" id="sql_query" name="sql_query"
                           placeholder="Paste your SQL query here"></textarea>
               </div>

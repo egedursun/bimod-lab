@@ -142,6 +142,7 @@
       <div class="card">
         <div class="card-header justify-content-between align-items-center">
           <h5 class="mb-0"><strong>Create New Binexus Process</strong></h5>
+          <hr>
           <a href="{% url 'binexus:process_list' %}">
             <button class="btn btn-secondary mt-4 mb-8">
               <i class="fa fa-list me-4"></i>
@@ -154,9 +155,15 @@
           <form method="post" action="{% url 'binexus:process_create' %}">
             {% csrf_token %}
             <div class="row p-8">
-
+              <h5 class="bg-body p-8 my-8 rounded border border-primary-subtle rounded">
+                <strong>
+                  <i class="fa fa-info-circle me-4"></i>
+                  Essential Information
+                </strong>
+              </h5>
               <div class="col-4 mb-6">
-                <label class="form-label" for="organization">Organization</label>
+                <label class="form-label" for="organization">Organization<span
+                  class="text-danger">&nbsp;*</span></label>
                 <select class="form-select" id="organization" name="organization" required>
                   <option value="" disabled selected>Select Organization</option>
                   {% for org in organizations %}
@@ -166,7 +173,7 @@
               </div>
 
               <div class="col-4 mb-6">
-                <label class="form-label" for="llm_model">LLM Model</label>
+                <label class="form-label" for="llm_model">LLM Model<span class="text-danger">&nbsp;*</span></label>
                 <select class="form-select" id="llm_model" name="llm_model" required>
                   <option value="" disabled selected>Select LLM Model</option>
                   {% for model in llm_models %}
@@ -176,28 +183,39 @@
               </div>
 
               <div class="col-4 mb-6">
-                <label class="form-label" for="process_name">Process Name</label>
+                <label class="form-label" for="process_name">Process Name<span
+                  class="text-danger">&nbsp;*</span></label>
                 <input type="text" class="form-control" id="process_name" name="process_name"
                        placeholder="Enter process name" required>
               </div>
 
               <div class="col-4 mb-6">
-                <label class="form-label" for="process_description">Process Description</label>
+                <label class="form-label" for="process_description">Process Description<span
+                  class="text-danger">&nbsp;*</span></label>
                 <textarea class="form-control" id="process_description" name="process_description" rows="2"
                           placeholder="Enter a description for this process."></textarea>
               </div>
 
               <div class="col-4 mb-6">
-                <label class="form-label" for="process_objective">Process Objective</label>
+                <label class="form-label" for="process_objective">Process Objective<span
+                  class="text-danger">&nbsp;*</span></label>
                 <textarea class="form-control" id="process_objective" name="process_objective" rows="2"
                           placeholder="Enter process objective."></textarea>
               </div>
 
               <div class="col-4 mb-6">
-                <label class="form-label" for="process_success_criteria">Process Success Criteria</label>
+                <label class="form-label" for="process_success_criteria">Process Success Criteria<span
+                  class="text-danger">&nbsp;*</span></label>
                 <textarea class="form-control" id="process_success_criteria" name="process_success_criteria" rows="2"
                           placeholder="Enter success criteria for this process."></textarea>
               </div>
+
+              <h5 class="bg-body p-8 my-8 rounded border border-primary-subtle rounded">
+                <strong>
+                  <i class="fa fa-cogs me-4"></i>
+                  Advanced Configurations
+                </strong>
+              </h5>
 
               <div class="col-4 mb-6">
                 <img src="{% static 'img/binexus/bx-1.png' %}" width="100%" style="border-radius:50px;"

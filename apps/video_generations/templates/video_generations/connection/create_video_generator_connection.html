@@ -90,7 +90,7 @@
             {% csrf_token %}
             <div class="row p-8">
               <div class="col-4 mb-6">
-                <label class="form-label" for="organization">Choose Organization</label>
+                <label class="form-label" for="organization">Organization<span class="text-danger">&nbsp;*</span></label>
                 <select class="form-select" id="organization" name="organization">
                   {% for organization in organizations %}
                     <option value="{{ organization.id }}">{{ organization.name }}</option>
@@ -98,7 +98,7 @@
                 </select>
               </div>
               <div class="col-4 mb-6">
-                <label class="form-label" for="assistant">Choose Assistant</label>
+                <label class="form-label" for="assistant">Assistant<span class="text-danger">&nbsp;*</span></label>
                 <select class="form-select" id="assistant" name="assistant">
                   {% for assistant in assistants %}
                     <option value="{{ assistant.id }}">{{ assistant.name }}</option>
@@ -106,17 +106,17 @@
                 </select>
               </div>
               <div class="col-4 mb-6">
-                <label class="form-label" for="name">Name</label>
+                <label class="form-label" for="name">Name<span class="text-danger">&nbsp;*</span></label>
                 <input type="text" class="form-control" id="name" name="name"
                        placeholder="Enter a name for the connection" />
               </div>
               <div class="col-4 mb-6">
-                <label class="form-label" for="description">Description</label>
+                <label class="form-label" for="description">Description<span class="text-danger">&nbsp;*</span></label>
                 <textarea class="form-control" id="description" name="description" rows="1"
                           placeholder="Enter a description"></textarea>
               </div>
               <div class="col-4 mb-6">
-                <label class="form-label" for="provider">Provider</label>
+                <label class="form-label" for="provider">Provider<span class="text-danger">&nbsp;*</span></label>
                 <select class="form-select" id="provider" name="provider">
                   {% for key, value in provider_choices %}
                     <option value="{{ key }}">{{ value }}</option>
@@ -124,7 +124,7 @@
                 </select>
               </div>
               <div class="col-4 mb-6">
-                <label class="form-label" for="provider_api_key">Provider API Key</label>
+                <label class="form-label" for="provider_api_key">Provider API Key<span class="text-danger">&nbsp;*</span></label>
                 <input type="text" class="form-control" id="provider_api_key" name="provider_api_key"
                        placeholder="Enter the provider API key" />
               </div>

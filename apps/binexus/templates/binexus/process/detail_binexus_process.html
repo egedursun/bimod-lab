@@ -247,7 +247,7 @@
           {% for value in binexus_process.post_processing_history_average_fitness_per_epoch %}
             <span class="badge bg-info p-4 m-2"><strong>{{ value|floatformat:2 }}</strong></span>
           {% empty %}
-            <p class="alert alert-warning">
+            <p class="alert alert-warning p-4 border border-2 border-warning rounded">
               <i class="fa fa-exclamation-triangle me-2"></i>
               <strong>No average fitness history data available (yet).</strong>
             </p>
@@ -262,7 +262,7 @@
           {% for value in binexus_process.post_processing_history_best_fitness_per_epoch %}
             <span class="badge bg-success p-4 m-2"><strong>{{ value|floatformat:2 }}</strong></span>
           {% empty %}
-            <p class="alert alert-warning">
+            <p class="alert alert-warning p-4 border border-warning border-2 rounded">
               <i class="fa fa-exclamation-triangle me-2"></i>
               <strong>No best fitness history data available (yet).</strong>
             </p>
@@ -277,7 +277,7 @@
           {% for value in binexus_process.post_processing_history_worst_fitness_per_epoch %}
             <span class="badge bg-danger p-4 m-2"><strong>{{ value|floatformat:2 }}</strong></span>
           {% empty %}
-            <p class="alert alert-warning">
+            <p class="alert alert-warning p-4 border border-warning border-2 rounded">
               <i class="fa fa-exclamation-triangle me-2"></i>
               <strong>No worst fitness history data available (yet).</strong>
             </p>
@@ -305,7 +305,7 @@
             <span
               class="badge bg-info p-4 px-12 m-2"><strong>{{ binexus_process.post_processing_history_average_of_average_fitnesses|floatformat:2 }}</strong></span>
           {% else %}
-            <p class="alert alert-warning">
+            <p class="alert alert-warning p-4 border border-warning border-2 rounded">
               <i class="fa fa-exclamation-triangle me-2"></i>
               <strong>No data available for the average of average fitnesses (yet).</strong>
             </p>
@@ -321,7 +321,7 @@
             <span
               class="badge bg-success p-4 px-12 m-2"><strong>{{ binexus_process.post_processing_history_average_of_best_fitnesses|floatformat:2 }}</strong></span>
           {% else %}
-            <p class="alert alert-warning">
+            <p class="alert alert-warning p-4 border border-warning border-2 rounded">
               <i class="fa fa-exclamation-triangle me-2"></i>
               <strong>No data available for the average of best fitnesses (yet).</strong>
             </p>
@@ -337,7 +337,7 @@
             <span
               class="badge bg-danger p-4 px-12 m-2"><strong>{{ binexus_process.post_processing_history_average_of_worst_fitnesses|floatformat:2 }}</strong></span>
           {% else %}
-            <p class="alert alert-warning">
+            <p class="alert alert-warning p-4 border border-warning border-2 rounded">
               <i class="fa fa-exclamation-triangle me-2"></i>
               <strong>No data available for the average of worst fitnesses (yet).</strong>
             </p>
@@ -361,7 +361,7 @@
           <img src="{{ binexus_process.post_processing_history_visual_chart.url }}" alt="Training Output Chart"
                class="w-75 mb-4 border border-primary border-4 rounded">
         {% else %}
-          <p class="alert alert-warning">
+          <p class="alert alert-warning p-4 border border-warning border-2 rounded">
             <i class="fa fa-exclamation-triangle me-2"></i>
             <strong>No chart generated for this process (yet).</strong>
           </p>
@@ -438,7 +438,7 @@
             </table>
           </div>
         {% else %}
-          <p class="alert alert-warning">
+          <p class="alert alert-warning p-4 border border-warning border-2 rounded">
             <i class="fa fa-exclamation-triangle me-2"></i>
             <strong>No elite agents generated for this process (yet).</strong>
           </p>

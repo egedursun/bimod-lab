@@ -83,7 +83,7 @@
                  alt="Illustration for tips">
             <div class="row p-8">
               <div class="col-4 mb-6">
-                <label class="form-label" for="organization">Organization</label>
+                <label class="form-label" for="organization">Organization<span class="text-danger">&nbsp;*</span></label>
                 <select class="form-select" id="organization" name="organization" required>
                   <option value="" disabled selected>Select Organization</option>
                   {% for org in organizations %}
@@ -92,17 +92,17 @@
                 </select>
               </div>
               <div class="col-4 mb-6">
-                <label class="form-label" for="nickname">Nickname</label>
+                <label class="form-label" for="nickname">Nickname<span class="text-danger">&nbsp;*</span></label>
                 <input type="text" class="form-control" id="nickname" name="nickname"
                        placeholder="Enter nickname for the wallet." required>
               </div>
               <div class="col-4 mb-6">
-                <label class="form-label" for="description">Description</label>
+                <label class="form-label" for="description">Description<span class="text-danger">&nbsp;*</span></label>
                 <textarea class="form-control" id="description" name="description" rows="1"
                           placeholder="Enter a description for this Blockchain wallet in natural language."></textarea>
               </div>
               <div class="col-4 mb-6">
-                <label class="form-label" for="blockchain_type">Blockchain Type</label>
+                <label class="form-label" for="blockchain_type">Blockchain Type<span class="text-danger">&nbsp;*</span></label>
                 <select class="form-select" id="blockchain_type" name="blockchain_type" required>
                   <option value="" disabled selected>Select Blockchain Type</option>
                   {% for type, label in blockchain_types %}
@@ -111,12 +111,12 @@
                 </select>
               </div>
               <div class="col-4 mb-6">
-                <label class="form-label" for="wallet_address">Wallet Address</label>
+                <label class="form-label" for="wallet_address">Wallet Address<span class="text-danger">&nbsp;*</span></label>
                 <input type="text" class="form-control" id="wallet_address" name="wallet_address"
                        placeholder="Enter the address of your Blockchain wallet." required>
               </div>
               <div class="col-4 mb-6">
-                <label class="form-label" for="wallet_private_key">Wallet Private Key</label>
+                <label class="form-label" for="wallet_private_key">Wallet Private Key<span class="text-danger">&nbsp;*</span></label>
                 <input type="password" class="form-control" id="wallet_private_key" name="wallet_private_key"
                        placeholder="Enter the private key of your Blockchain wallet." required>
               </div>

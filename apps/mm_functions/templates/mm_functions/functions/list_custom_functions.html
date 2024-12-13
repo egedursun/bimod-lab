@@ -155,25 +155,25 @@
               <img src="
 
                 {% if function.function_picture %}{{ function.function_picture.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
-                   alt="{{ function.name }}" class="avatar rounded">
+                   alt="{{ function.name }}" class="avatar avatar-xl rounded">
             </td>
             <td style="min-width: 200px;"><strong>{{ function.name }}</strong></td>
             <td><strong>{{ function.created_by_user }}</strong></td>
             <td style="min-width: 300px;">{{ function.description }}</td>
             <td>
-              <div class="label bg-label-dark rounded p-2 overflow-scroll"
-                   style="min-height: 200px; max-height: 200px;">
+              <div class="label bg-label-dark rounded p-2 overflow-auto border border-warning border-2 rounded"
+                   style="min-height: 200px; max-height: 200px; min-width: 400px; max-width: 400px;">
                 {% for package in function.packages %}
-                  <div class="badge bg-light text-dark m-1">
-                    {{ package.name }}{% if package.version %} ({{ package.version }}){% endif %}
+                  <div class="badge btn-primary text-white m-1 border border-primary-subtle rounded">
+                    <strong>{{ package.name }}{% if package.version %} ({{ package.version }}){% endif %}</strong>
                   </div>
                 {% endfor %}
               </div>
             </td>
             <td>
               <ul class="list-unstyled" style="font-size: 10px;">
-                <div class="label bg-label-dark rounded p-2 overflow-scroll"
-                     style="min-height: 200px; max-height: 200px;">
+                <div class="label bg-label-dark rounded p-2 overflow-auto border border-warning border-2 rounded"
+                     style="min-height: 200px; max-height: 200px; min-width: 400px; max-width: 400px;">
                   {% for input in function.input_fields %}
                     <li class="badge bg-label-secondary rounded m-1 w-100">
                       <p class="label bg-label-light text-dark rounded p-1 m-1">
@@ -189,8 +189,8 @@
             </td>
             <td>
               <ul class="list-unstyled" style="font-size: 10px;">
-                <div class="label bg-label-dark rounded p-2 overflow-scroll"
-                     style="min-height: 200px; max-height: 200px;">
+                <div class="label bg-label-dark rounded p-2 overflow-auto border border-warning border-2 rounded"
+                     style="min-height: 200px; max-height: 200px; min-width: 400px; max-width: 400px;">
                   {% for output in function.output_fields %}
                     <li class="badge bg-label-secondary rounded m-1 w-100">
                       <p class="label bg-label-light text-dark rounded p-1 m-1">

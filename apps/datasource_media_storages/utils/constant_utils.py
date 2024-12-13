@@ -84,6 +84,7 @@ MEDIA_FILE_TYPES = (
     ('svg', 'SVG'),
     ('bmp', 'BMP'),
     ('tiff', 'TIFF'),
+    ('webp', 'WEBP'),
 
     # Audio Files
     ('mp3', 'MP3'),
@@ -143,6 +144,7 @@ class MediaManagerItemFormatTypesNames:
         SVG = 'svg'
         BMP = 'bmp'
         TIFF = 'tiff'
+        WEBP = 'webp'
 
     class Audio:
         MP3 = 'mp3'
@@ -200,7 +202,8 @@ class MediaManagerItemFormatTypesNamesLists:
         'gif',
         'svg',
         'bmp',
-        'tiff'
+        'tiff',
+        'webp',
     ]
     AUDIO = [
         'mp3',

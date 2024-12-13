@@ -95,7 +95,7 @@
             {% csrf_token %}
             <div class="row p-8">
               <div class="mb-6 col-6">
-                <label class="form-label" for="ml_model_base">ML Model Connection</label>
+                <label class="form-label" for="ml_model_base">ML Model Connection<span class="text-danger">&nbsp;*</span></label>
                 <select class="form-select" id="ml_model_base" name="ml_model_base">
                   <option value="" disabled selected>Select ML Model Connection</option>
                   {% for connection in ml_model_connections %}
@@ -104,16 +104,16 @@
                 </select>
               </div>
               <div class="mb-6 col-6">
-                <label class="form-label" for="file">Upload File</label>
+                <label class="form-label" for="file">Upload File<span class="text-danger">&nbsp;*</span></label>
                 <input type="file" class="form-control" id="file" name="file" accept=".pth">
               </div>
               <div class="mb-6 col-4">
-                <label class="form-label" for="ml_model_name">ML Model Name</label>
+                <label class="form-label" for="ml_model_name">ML Model Name<span class="text-danger">&nbsp;*</span></label>
                 <input type="text" class="form-control" id="ml_model_name" name="ml_model_name"
                        placeholder="Enter ML model name">
               </div>
               <div class="mb-6 col-4">
-                <label class="form-label" for="description">Description</label>
+                <label class="form-label" for="description">Description<span class="text-danger">&nbsp;*</span></label>
                 <textarea class="form-control" id="description" name="description" rows="1"
                           placeholder="Enter description for the ML model"></textarea>
               </div>

@@ -24,7 +24,7 @@
 {% load static %}
 {% load i18n %}
 
-{% block title %}Triggered Jobs{% endblock %}
+{% block title %}BimodLab Assistant Triggered Jobs{% endblock %}
 
 {% block vendor_css %}
   {{ block.super }}
@@ -71,9 +71,9 @@
 
 {% block content %}
   <div class="row g-6 mb-6">
-    <div class="col-sm-6 col-xl-3">
+    <div class="">
       <h3 class="mb-0">
-        <strong>Triggered Jobs</strong>
+        <strong>BimodLab Assistant Triggered Jobs</strong>
       </h3>
     </div>
   </div>
@@ -133,7 +133,7 @@
   <div class="card">
     <div class="card-header">
       <h5 class="card-title">
-        <strong>Your Triggered Jobs</strong>
+        <strong>BimodLab Assistant Triggered Jobs</strong>
       </h5>
       <img src="{% static 'img/triggered_jobs/trg-1.png' %}" class="rounded mt-4 mb-4" style="width: 100%;"
            alt="Illustration for tips">
@@ -169,32 +169,48 @@
             <td><strong>{{ job.created_by_user }}</strong></td>
             <td><strong>{{ job.trigger_assistant.name }}</strong></td>
             <td style="min-width: 400px;">
-              <strong class="bg-label-secondary rounded p-1 m-2 text-white" style="font-size: 14px;">
+              <strong class="bg-label-secondary rounded p-4 m-2 text-white" style="font-size: 14px;">
                 {{ job.endpoint_url }}
               </strong>
-              <button class="btn btn-sm btn-secondary rounded p-2 m-2 mt-3 w-25 copy-url-btn"
+              <button class="btn btn-sm btn-secondary rounded p-2 m-2 mt-6 w-25 copy-url-btn"
                       data-url="{{ job.endpoint_url }}">
                 <i class="fa fa-copy me-2"></i><strong>Copy URL</strong>
               </button>
             </td>
             <td style="min-width: 400px; max-width: 400px;">
-              <strong class="btn-info rounded p-1"
+              <strong class="btn-info rounded p-4"
                       style="min-width: 200px; max-width: 200px;">{{ job.trigger_source }}</strong>
             </td>
             <td style="min-width: 200px;">{{ job.event_type }}</td>
-            <td style="min-width: 60px; max-width: 60px;">
-              <p class="btn-warning p-1 rounded"><strong>{{ job.current_run_count }}</strong></p>
+            <td style="min-width: 200px; max-width: 200px;">
+              <p class="btn-success p-8 rounded"><strong>
+                <i class="fa fa-hashtag me-2"></i>
+                {{ job.current_run_count }}
+              </strong></p>
             </td>
-            <td style="min-width: 60px; max-width: 60px;">
-              <p class="btn-warning p-1 rounded"><strong>{{ job.maximum_runs }}</strong></p>
+            <td style="min-width: 200px; max-width: 200px;">
+              <p class="btn-warning p-8 rounded"><strong>
+                <i class="fa fa-cogs me-2"></i>
+                {{ job.maximum_runs }}
+              </strong></p>
             </td>
             <td>
-              <a href="{% url 'mm_triggered_jobs:logs' job.pk %}" class="btn btn-info"><i
+              <a href="{% url 'mm_triggered_jobs:logs' job.pk %}" class="btn btn-success"><i
                 class="fa fa-clock-rotate-left me-2"></i><strong>Execution Logs</strong></a>
             </td>
             <td>
               <a href="{% url 'mm_triggered_jobs:delete' job.pk %}" class="btn btn-danger"><i
                 class="fa fa-trash me-2"></i><strong>Delete</strong></a>
+            </td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="11">
+              <div class="alert alert-warning mt-4 p-8 border border-warning border-2 rounded" role="alert">
+                <i class="fa fa-exclamation-triangle me-2"></i><strong>
+                No triggered jobs for any of your organizations &amp; assistants are found yet.
+              </strong>
+              </div>
             </td>
           </tr>
         {% endfor %}

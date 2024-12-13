@@ -140,7 +140,6 @@
           <th>Creator</th>
           <th>Description</th>
           <th>Categories</th>
-          <th>Step Guide</th>
           <th>Scope</th>
           <th>Actions</th>
         </tr>
@@ -161,26 +160,13 @@
             <td><strong>{{ script.created_by_user }}</strong></td>
             <td style="min-width: 300px;">{{ script.description }}</td>
             <td>
-              <div class="bg-label-secondary p-2 rounded overflow-auto" style="max-height: 200px;">
+              <div class="bg-body p-4 rounded overflow-auto border border-2 border-warning rounded" style="max-height: 200px; min-width: 400px; max-width: 400px;">
                 {% for category in script.categories %}
-                  <div class="badge bg-light text-dark m-1">
-                    {{ category }}
+                  <div class="badge btn-primary text-dark m-1 p-2">
+                    <strong class="text-white">{{ category }}</strong>
                   </div>
                 {% endfor %}
               </div>
-            </td>
-            <td style="font-size: 10px;">
-              <ol>
-                <div class="bg-label-secondary p-1 rounded overflow-auto"
-                     style="min-width: 300px; max-width:300px; max-height: 200px;">
-                  {% for step in script.script_step_guide %}
-                    <li class="badge bg-label-secondary rounded w-100">
-                      <strong>Step {{ forloop.counter }}</strong>
-                      <p class="label bg-label-light text-dark rounded p-1 m-1">{{ step }}</p>
-                    </li>
-                  {% endfor %}
-                </div>
-              </ol>
             </td>
             <td>
               {% if script.is_public %}

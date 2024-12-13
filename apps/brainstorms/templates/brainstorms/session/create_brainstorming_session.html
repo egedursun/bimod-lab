@@ -101,7 +101,7 @@
 
         <div class="row g-6 mb-6">
           <div class="col-4">
-            <label for="organization" class="form-label">Select Organization</label>
+            <label for="organization" class="form-label">Select Organization<span class="text-danger">&nbsp;*</span></label>
             <select class="form-select" id="organization" name="organization" required>
               <option value="" disabled selected>Select an organization</option>
               {% for organization in organizations %}
@@ -110,7 +110,7 @@
             </select>
           </div>
           <div class="col-4">
-            <label for="llm_model" class="form-label">Select LLM Model</label>
+            <label for="llm_model" class="form-label">Select LLM Model<span class="text-danger">&nbsp;*</span></label>
             <select class="form-select select2" id="llm_model" name="llm_model" required>
               <option value="" disabled selected>Select an LLM Model</option>
               {% for llm_model in llm_models %}
@@ -119,7 +119,7 @@
             </select>
           </div>
           <div class="col-4">
-            <label for="session_name" class="form-label">Session Name</label>
+            <label for="session_name" class="form-label">Session Name<span class="text-danger">&nbsp;*</span></label>
             <input type="text" class="form-control" id="session_name" name="session_name"
                    placeholder="Enter session name"
                    required>
@@ -130,14 +130,14 @@
           <div class="col-6">
             <img src="{% static 'img/brainstorming/brs-1.png' %}" width="100%" style="border-radius:50px;"
                  class="justify-content-end me-8 p-8 image" alt="Brainstorming image">
-            <label for="topic_definition" class="form-label">Topic Definition</label>
-            <textarea class="form-control" id="topic_definition" name="topic_definition" rows="3" required></textarea>
+            <label for="topic_definition" class="form-label">Topic Definition<span class="text-danger">&nbsp;*</span></label>
+            <textarea class="form-control" id="topic_definition" name="topic_definition" placeholder="Please describe the topic of the brainstorming session in a few sentences." rows="3" required></textarea>
           </div>
           <div class="col-6">
             <img src="{% static 'img/brainstorming/brs-2.png' %}" width="100%" style="border-radius:50px;"
                  class="justify-content-end me-8 p-8 image" alt="Brainstorming image">
-            <label for="constraints" class="form-label">Constraints</label>
-            <textarea class="form-control" id="constraints" name="constraints" rows="3"></textarea>
+            <label for="constraints" class="form-label">Constraints<span class="text-danger">&nbsp;*</span></label>
+            <textarea class="form-control" id="constraints" name="constraints" placeholder="Please describe the constraints and scope-related information about the brainstorming session in a few sentences." rows="3"></textarea>
           </div>
         </div>
 

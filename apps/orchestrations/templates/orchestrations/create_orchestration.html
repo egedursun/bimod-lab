@@ -103,8 +103,14 @@
             <img src="{% static 'img/orchestration/or-1.png' %}" class="rounded mt-4 mb-4" style="width: 100%;"
                  alt="Illustration for tips">
             <div class="row p-8">
+              <h5 class="bg-body p-8 my-8 rounded border border-primary-subtle rounded">
+                <strong>
+                  <i class="fa fa-info-circle me-4"></i>
+                  Essential Information
+                </strong>
+              </h5>
               <div class="col-3 mb-6">
-                <label class="form-label" for="organization">Organization</label>
+                <label class="form-label" for="organization">Organization<span class="text-danger">&nbsp;*</span></label>
                 <select class="form-select select2" id="organization" name="organization">
                   <option value="" disabled selected>Select Organization</option>
                   {% for organization in organizations %}
@@ -113,7 +119,7 @@
                 </select>
               </div>
               <div class="col-3 mb-6">
-                <label class="form-label" for="llm_model">LLM Model</label>
+                <label class="form-label" for="llm_model">LLM Model<span class="text-danger">&nbsp;*</span></label>
                 <select class="form-select select2" id="llm_model" name="llm_model">
                   <option value="" disabled selected>Select LLM Model</option>
                   {% for llm_model in llm_models %}
@@ -122,29 +128,35 @@
                 </select>
               </div>
               <div class="col-3 mb-6">
-                <label class="form-label" for="name">Name</label>
+                <label class="form-label" for="name">Name<span class="text-danger">&nbsp;*</span></label>
                 <input type="text" class="form-control" id="name" name="name"
                        placeholder="Enter the name of your orchestration" />
               </div>
               <div class="col-3 mb-6">
-                <label class="form-label" for="maximum_assistant_limits">Maximum Assistants Limit</label>
+                <label class="form-label" for="maximum_assistant_limits">Maximum Assistants Limit<span class="text-danger">&nbsp;*</span></label>
                 <input type="number" class="form-control" id="maximum_assistant_limits" name="maximum_assistant_limits"
                        placeholder="Enter the maximum assistant limits" value="10" />
+              </div>
+              <div class="col-12 mb-6">
+                <label class="form-label" for="instructions">Instructions<span class="text-danger">&nbsp;*</span></label>
+                <textarea class="form-control" id="instructions" name="instructions" rows="2"
+                          placeholder="Enter instructions for the orchestration process"></textarea>
+              </div>
+              <h5 class="bg-body p-8 my-8 rounded border border-primary-subtle rounded">
+                <strong>
+                  <i class="fa fa-cogs me-4"></i>
+                  Advanced Configurations
+                </strong>
+              </h5>
+              <div class="col-4 mb-6">
+                <label class="form-label" for="workflow_step_guide">Step by Step Description</label>
+                <textarea class="form-control" id="workflow_step_guide" name="workflow_step_guide" rows="1"
+                          placeholder="Enter the workflow of the orchestration step by step to help assistant orchestrate the functionality during the processes."></textarea>
               </div>
               <div class="col-4 mb-6">
                 <label class="form-label" for="description">Description</label>
                 <textarea class="form-control" id="description" name="description" rows="1"
                           placeholder="Enter the description of your orchestration"></textarea>
-              </div>
-              <div class="col-4 mb-6">
-                <label class="form-label" for="instructions">Instructions</label>
-                <textarea class="form-control" id="instructions" name="instructions" rows="1"
-                          placeholder="Enter instructions for the orchestration process"></textarea>
-              </div>
-              <div class="col-4 mb-6">
-                <label class="form-label" for="workflow_step_guide">Step by Step Description</label>
-                <textarea class="form-control" id="workflow_step_guide" name="workflow_step_guide" rows="1"
-                          placeholder="Enter the workflow of the orchestration step by step to help assistant orchestrate the functionality during the processes."></textarea>
               </div>
               <div class="col-4 mb-6">
                 <label class="form-label" for="response_template">Response Template</label>
@@ -153,12 +165,12 @@
               </div>
               <div class="col-3 mb-6">
                 <label class="form-label" for="audience">Audience</label>
-                <input type="text" class="form-control" id="audience" name="audience"
+                <input type="text" class="form-control" id="audience" name="audience" value="Standard"
                        placeholder="Enter the target audience of your orchestration" />
               </div>
               <div class="col-3 mb-6">
                 <label class="form-label" for="tone">Tone</label>
-                <input type="text" class="form-control" id="tone" name="tone"
+                <input type="text" class="form-control" id="tone" name="tone" value="Standard"
                        placeholder="Enter the tone to be used in responses" />
               </div>
               <div class="col-2 mb-6">

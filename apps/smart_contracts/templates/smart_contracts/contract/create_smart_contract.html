@@ -61,6 +61,7 @@
       <div class="card">
         <div class="card-header justify-content-between align-items-center">
           <h5 class="mb-0"><strong>Create New Smart Contract</strong></h5>
+          <hr>
           <a href="{% url 'smart_contracts:contract_list' %}">
             <button class="btn btn-secondary mt-4 mb-8">
               <i class="fa fa-dashboard me-4"></i>
@@ -101,8 +102,15 @@
             <img src="{% static 'img/smart_contracts/wal-1.png' %}" class="rounded" style="width: 100%;"
                  alt="Illustration for tips">
             <div class="row p-8">
+              <h5 class="bg-body p-8 my-8 rounded border border-primary-subtle rounded">
+                <strong>
+                  <i class="fa fa-info-circle me-4"></i>
+                  Essential Information
+                </strong>
+              </h5>
+
               <div class="col-4 mb-6">
-                <label class="form-label" for="wallet">Wallet</label>
+                <label class="form-label" for="wallet">Wallet<span class="text-danger">&nbsp;*</span></label>
                 <select class="form-select" id="wallet" name="wallet" required>
                   <option value="" disabled selected>Select Wallet</option>
                   {% for wallet in wallet_connections %}
@@ -112,7 +120,7 @@
               </div>
 
               <div class="col-4 mb-6">
-                <label class="form-label" for="category">Category</label>
+                <label class="form-label" for="category">Category<span class="text-danger">&nbsp;*</span></label>
                 <select class="form-select" id="category" name="category" required>
                   <option value="" disabled selected>Select Category</option>
                   {% for value, label in contract_categories %}
@@ -122,7 +130,8 @@
               </div>
 
               <div class="col-4 mb-6">
-                <label class="form-label" for="contract_template">Contract Template</label>
+                <label class="form-label" for="contract_template">Contract Template<span
+                  class="text-danger">&nbsp;*</span></label>
                 <select class="form-select" id="contract_template" name="contract_template" required>
                   <option value="" disabled selected>Select Contract Template</option>
                   {% for value, label in contract_templates %}
@@ -132,33 +141,42 @@
               </div>
 
               <div class="col-6 mb-6">
-                <label class="form-label" for="nickname">Nickname</label>
+                <label class="form-label" for="nickname">Nickname<span class="text-danger">&nbsp;*</span></label>
                 <input type="text" class="form-control" id="nickname" name="nickname"
                        placeholder="Enter nickname for the contract." required>
               </div>
 
               <div class="col-6 mb-6">
-                <label class="form-label" for="description">Description</label>
+                <label class="form-label" for="description">Description<span class="text-danger">&nbsp;*</span></label>
                 <textarea class="form-control" id="description" name="description" rows="1"
                           placeholder="Enter a description for this Smart Contract in natural language."></textarea>
               </div>
 
-              <div class="col-12 mb-6">
-                <label class="form-label" for="offchain_contract_seed">Off-Chain Contract Seed (Optional)</label>
-                <textarea class="form-control" id="offchain_contract_seed" name="offchain_contract_seed" rows="4"
-                          placeholder="Enter the content of an off-chain (real-world) contract if you want to generate a smart contract from it."></textarea>
-              </div>
-
               <div class="col-6 mb-6">
-                <label class="form-label" for="maximum_gas_limit">Maximum Gas Limit</label>
+                <label class="form-label" for="maximum_gas_limit">Maximum Gas Limit<span
+                  class="text-danger">&nbsp;*</span></label>
                 <input type="number" class="form-control" id="maximum_gas_limit" name="maximum_gas_limit" min="20000"
                        step="1000" placeholder="Enter the maximum possible Gas you can spend.">
               </div>
 
               <div class="col-6 mb-6">
-                <label class="form-label" for="gas_price_gwei">Offer Gas Price (GWEI)</label>
+                <label class="form-label" for="gas_price_gwei">Offer Gas Price (GWEI)<span
+                  class="text-danger">&nbsp;*</span></label>
                 <input type="number" class="form-control" id="gas_price_gwei" name="gas_price_gwei" min="1" step="1"
                        placeholder="Enter the Gas Price you are willing to pay in Gwei.">
+              </div>
+
+              <h5 class="bg-body p-8 my-8 rounded border border-primary-subtle rounded">
+                <strong>
+                  <i class="fa fa-cogs me-4"></i>
+                  Advanced Configurations
+                </strong>
+              </h5>
+
+              <div class="col-12 mb-6">
+                <label class="form-label" for="offchain_contract_seed">Off-Chain Contract Seed (Optional)</label>
+                <textarea class="form-control" id="offchain_contract_seed" name="offchain_contract_seed" rows="4"
+                          placeholder="Enter the content of an off-chain (real-world) contract if you want to generate a smart contract from it."></textarea>
               </div>
 
               <div class="col-12 mb-6">

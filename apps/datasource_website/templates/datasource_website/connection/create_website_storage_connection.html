@@ -99,8 +99,14 @@
           <form method="post" enctype="multipart/form-data" class="mt-4">
             {% csrf_token %}
             <div class="row">
+              <h5 class="bg-body p-8 my-8 rounded border border-primary-subtle rounded">
+                <strong>
+                  <i class="fa fa-info-circle me-4"></i>
+                  Essential Information
+                </strong>
+              </h5>
               <div class="mb-6 col-6">
-                <label class="form-label" for="assistant_id">Assistant</label>
+                <label class="form-label" for="assistant_id">Assistant<span class="text-danger">&nbsp;*</span></label>
                 <select class="form-select" id="assistant_id" name="assistant_id">
                   {% for assistant in assistants %}
                     <option value="{{ assistant.id }}">{{ assistant.name }}</option>
@@ -108,22 +114,28 @@
                 </select>
               </div>
               <div class="mb-6 col-6">
-                <label class="form-label" for="name">Name</label>
+                <label class="form-label" for="name">Name<span class="text-danger">&nbsp;*</span></label>
                 <input type="text" class="form-control" id="name" name="name" placeholder="Enter connection name" />
               </div>
               <div class="mb-6 col-6">
-                <label class="form-label" for="description">Description</label>
+                <label class="form-label" for="description">Description<span class="text-danger">&nbsp;*</span></label>
                 <textarea class="form-control" id="description" name="description" rows="1"
                           placeholder="Describe the connection"></textarea>
               </div>
               <div class="mb-6 col-6">
-                <label class="form-label" for="vectorizer">Vectorizer Model</label>
+                <label class="form-label" for="vectorizer">Vectorizer Model<span class="text-danger">&nbsp;*</span></label>
                 <select class="form-select" id="vectorizer" name="vectorizer">
                   {% for label, name in vectorizers %}
                     <option value="{{ label }}" {% if forloop.first %}selected{% endif %}>{{ name }}</option>
                   {% endfor %}
                 </select>
               </div>
+              <h5 class="bg-body p-8 my-8 rounded border border-primary-subtle rounded">
+                <strong>
+                  <i class="fa fa-cogs me-4"></i>
+                  Advanced Configurations
+                </strong>
+              </h5>
               <div class="mb-6 col-3">
                 <label class="form-label" for="embedding_chunk_size">Embedding Chunk Size</label>
                 <input type="number" class="form-control" id="embedding_chunk_size" value="1000" min="200" max="8000"

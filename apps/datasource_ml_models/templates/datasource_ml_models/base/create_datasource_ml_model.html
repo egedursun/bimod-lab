@@ -89,8 +89,14 @@
             <img src="{% static 'img/machine_learning/ml-1.png' %}" class="rounded" style="width: 100%;"
                  alt="Illustration for tips">
             <div class="row p-8">
+              <h5 class="bg-body p-8 my-8 rounded border border-primary-subtle rounded">
+                <strong>
+                  <i class="fa fa-info-circle me-4"></i>
+                  Essential Information
+                </strong>
+              </h5>
               <div class="mb-6 col-4">
-                <label class="form-label" for="assistant">Assistant</label>
+                <label class="form-label" for="assistant">Assistant<span class="text-danger">&nbsp;*</span></label>
                 <select class="form-select" id="assistant" name="assistant">
                   {% for assistant in form.fields.assistant.queryset %}
                     <option value="{{ assistant.id }}">{{ assistant.name }}</option>
@@ -98,14 +104,20 @@
                 </select>
               </div>
               <div class="mb-6 col-4">
-                <label class="form-label" for="name">Name</label>
+                <label class="form-label" for="name">Name<span class="text-danger">&nbsp;*</span></label>
                 <input type="text" class="form-control" id="name" name="name" placeholder="Enter data source name" />
               </div>
               <div class="mb-4 col-4">
-                <label class="form-label" for="description">Description</label>
+                <label class="form-label" for="description">Description<span class="text-danger">&nbsp;*</span></label>
                 <textarea class="form-control" id="description" name="description" rows="1"
                           placeholder="Enter data source description"></textarea>
               </div>
+              <h5 class="bg-body p-8 my-8 rounded border border-primary-subtle rounded">
+                <strong>
+                  <i class="fa fa-cogs me-4"></i>
+                  Advanced Configurations
+                </strong>
+              </h5>
               <div class="mb-6 col-4">
                 <label class="form-label" for="model_object_category">Model Object Category</label>
                 <select class="form-select" id="model_object_category" name="model_object_category">

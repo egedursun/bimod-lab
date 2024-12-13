@@ -22,7 +22,7 @@
 {% load static %}
 {% load i18n %}
 
-{% block title %}Scheduled Jobs{% endblock %}
+{% block title %}BimodLab Assistant Scheduled Jobs{% endblock %}
 
 {% block vendor_css %}
   {{ block.super }}
@@ -45,9 +45,9 @@
 
 {% block content %}
   <div class="row g-6 mb-6">
-    <div class="col-sm-6 col-xl-3">
+    <div class="">
       <h3 class="mb-0">
-        <strong>Scheduled Jobs</strong>
+        <strong>BimodLab Assistant Scheduled Jobs</strong>
       </h3>
     </div>
   </div>
@@ -109,7 +109,7 @@
   <div class="card">
     <div class="card-header">
       <h5 class="card-title">
-        <strong>Your Scheduled Jobs</strong>
+        <strong>BimodLab Assistant Scheduled Jobs</strong>
       </h5>
       <img src="{% static 'img/scheduled_jobs/sch-3.png' %}" class="rounded mt-4 mb-4" style="width: 100%;"
            alt="Illustration for tips">
@@ -145,39 +145,41 @@
               <div class="btn-info rounded p-1"><strong>{{ job.assistant.name }}</strong></div>
             </td>
             <td style="min-width: 380px; max-width: 380px;">
-              <p class="bg-label-secondary rounded p-2 m-1">
+              <p class="bg-body rounded p-2 m-2 border border-primary-subtle border-3 rounded">
                 <i class="bi bi-calendar-month me-4"></i>
                 On months of the year: {% if job.month_of_year != "*" %}
                 <strong>{{ job.month_of_year }}</strong>{% else %}<strong>Every Month</strong>{% endif %}
               </p>
-              <p class="bg-label-secondary rounded p-2 m-1">
+              <p class="bg-body rounded p-2 m-2 border border-primary-subtle border-3 rounded">
                 <i class="bi bi-calendar-day me-4"></i>
                 On days of the month: {% if job.day_of_month != "*" %}
                 <strong>{{ job.day_of_month }}</strong>{% else %}<strong>Every Month Day</strong>{% endif %}
               </p>
-              <p class="bg-label-secondary rounded p-2 m-1">
+              <p class="bg-body rounded p-2 m-2 border border-primary-subtle border-3 rounded">
                 <i class="bi bi-calendar-week me-4"></i>
                 On days of the week: {% if job.day_of_week != "*" %}
                 <strong>{{ job.day_of_week }}</strong>{% else %}<strong>Every Week Day</strong>{% endif %}
               </p>
-              <p class="bg-label-secondary rounded p-2 m-1">
+              <p class="bg-body rounded p-2 m-2 border border-primary-subtle border-3 rounded">
                 <i class="bi bi-clock me-4"></i>
                 At hours of the day: {% if job.hour != "*" %}
                 <strong>{{ job.hour }}</strong>{% else %}<strong>Every Hour</strong>{% endif %}
               </p>
-              <p class="bg-label-secondary rounded p-2 m-1">
+              <p class="bg-body rounded p-2 m-2 border border-primary-subtle border-3 rounded">
                 <i class="bi bi-hourglass-split me-4"></i>
                 At minutes of the hour: {% if job.minute != "*" %}
                 <strong>{{ job.minute }}</strong>{% else %}<strong>Every Minute</strong>{% endif %}
               </p>
             </td>
             <td style="min-width: 200px; max-width: 200px;">
-              <strong class="border btn-warning p-1 rounded">
+              <strong class="border btn-success p-8 rounded">
+                <i class="fa fa-hashtag me-2"></i>
                 {{ job.current_run_count }}
               </strong>
             </td>
             <td style="min-width: 200px; max-width: 200px;">
-              <strong class="border btn-warning p-1 rounded">
+              <strong class="border btn-warning p-8 rounded">
+                <i class="fa fa-cogs me-2"></i>
                 {{ job.maximum_runs }}
               </strong>
             </td>
@@ -188,6 +190,16 @@
             <td>
               <a href="{% url 'mm_scheduled_jobs:delete' job.pk %}" class="btn btn-danger"><i
                 class="fa fa-trash me-2"></i><strong>Delete</strong></a>
+            </td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="9">
+              <div class="alert alert-warning mt-4 p-8 border border-warning border-2 rounded" role="alert">
+                <i class="fa fa-exclamation-triangle me-2"></i><strong>
+                No scheduled jobs for any of your organizations &amp; assistants are found yet.
+              </strong>
+              </div>
             </td>
           </tr>
         {% endfor %}

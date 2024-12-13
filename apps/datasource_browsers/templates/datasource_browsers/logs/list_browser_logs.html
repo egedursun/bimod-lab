@@ -95,9 +95,9 @@
   <!-- Search and Filter Form -->
   <div class="row g-4 mb-4 card card-border-shadow-primary p-4 mt-4">
     <div class="col-xl-12">
-      <h6 class="text-muted"><strong>Filter Browsing Logs</strong></h6>
-      <div class="card text-center mb-4">
-        <div class="card-header">
+      <h6 class="text-dark"><strong>Filter Browsing Logs</strong></h6>
+      <div class="card text-center mb-4 bg-body">
+        <div class="card-header mt-4">
           <div class="nav-align-top">
             <form method="get" action=".">
               <div class="input-group mb-3">
@@ -213,6 +213,17 @@
             <td style="min-width:250px;">
               <a href="{% url 'datasource_browser:download_context' log.pk %}" class="btn btn-primary"><i
                 class="bi bi-download me-4"></i><strong>Download JSON</strong></a>
+            </td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="9">
+              <div class="alert alert-warning p-8 m-4 border border-2 border-warning rounded" role="alert">
+                <div class="">
+                  <i class="fa fa-exclamation-triangle me-4"></i>
+                  <strong>No logs for this browser has been generated yet.</strong>
+                </div>
+              </div>
             </td>
           </tr>
         {% endfor %}

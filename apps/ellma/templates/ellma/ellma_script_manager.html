@@ -69,9 +69,11 @@
     <hr>
 
     <!-- New Script Creation Form -->
-    <div class="card mb-4">
+    <div class="card mb-4 border border-primary p-8 border-4 rounded">
       <div class="card-header">
-        <h4><i class="fa fa-plus-circle me-2"></i>Create New Script</h4>
+        <h4><i class="fa fa-plus-circle me-2"></i>
+          <strong>Create New Script</strong>
+        </h4>
       </div>
       <div class="card-body">
         <form method="post" action="{% url 'ellma:create-script' %}">
@@ -80,7 +82,7 @@
           <div class="row">
             <!-- Organization Picker -->
             <div class="col-md-4 mb-3">
-              <label for="organization" class="form-label">Organization</label>
+              <label for="organization" class="form-label">Organization<span class="text-danger">&nbsp;*</span></label>
               <select id="organization" name="organization" class="form-control" required>
                 <option value="" disabled selected>Select an Organization</option>
                 {% for org in organizations %}
@@ -91,7 +93,7 @@
 
             <!-- LLM Model Picker -->
             <div class="col-md-4 mb-3">
-              <label for="llm_model" class="form-label">LLM Model</label>
+              <label for="llm_model" class="form-label">LLM Model<span class="text-danger">&nbsp;*</span></label>
               <select id="llm_model" name="llm_model" class="form-control" required>
                 <option value="" disabled selected>Select an LLM Model</option>
                 {% for model in llm_models %}
@@ -102,12 +104,14 @@
 
             <!-- Script Name -->
             <div class="col-md-4 mb-3">
-              <label for="script_name" class="form-label">Script Name</label>
-              <input type="text" id="script_name" name="script_name" class="form-control" required>
+              <label for="script_name" class="form-label">Script Name<span class="text-danger">&nbsp;*</span></label>
+              <input type="text" id="script_name" name="script_name" class="form-control"
+                     placeholder="Give a name to your eLLMa script" required>
             </div>
           </div>
 
-          <button type="submit" class="btn btn-success mt-3 w-25">
+          <hr>
+          <button type="submit" class="btn btn-success mt-4 w-25">
             <i class="fa fa-file-upload me-2"></i>
             <strong>Create New Script</strong>
           </button>
@@ -169,8 +173,11 @@
               </tbody>
             </table>
           {% else %}
-            <div class="alert alert-warning">
-              <i class="fa fa-exclamation-triangle me-2"></i>No scripts available for {{ organization.name }}.
+            <div class="alert alert-warning border border-warning rounded border-2">
+              <strong>
+                <i class="fa fa-exclamation-triangle p-2 me-2"></i>
+                No scripts available for {{ organization.name }}.
+              </strong>
             </div>
           {% endif %}
         </div>

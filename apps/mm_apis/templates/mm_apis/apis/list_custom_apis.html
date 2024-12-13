@@ -162,8 +162,8 @@
             <td><strong>{{ api.created_by_user }}</strong></td>
             <td style="min-width: 300px;">{{ api.description }}</td>
             <td>
-              <ul class="list-unstyled d-flex ms-auto bg-label-secondary rounded"
-                  style="font-size: 11px; overflow: scroll; max-height: 250px;">
+              <ul class="list-unstyled d-flex ms-auto bg-label-secondary rounded border border-warning border-2 rounded"
+                  style="font-size: 11px; overflow: auto; max-height: 250px; min-width: 600px; max-width: 600px;">
                 {% for name, data in api.endpoints.items %}
                   <li class="badge m-1 w-100">
                     <p class="label bg-label-light text-dark rounded p-4 m-2 border border-2 border-primary">

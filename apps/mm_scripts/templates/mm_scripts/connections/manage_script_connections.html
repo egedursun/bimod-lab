@@ -102,6 +102,12 @@
   {% for organization in connected_organizations %}
     <div class="card mb-6">
       <div class="card-header border-bottom">
+        <h5 class="text-dark">
+          <strong>
+            <i class="fa fa-building me-4"></i>
+            {{ organization.name }}
+          </strong>
+        </h5>
         <a data-bs-toggle="collapse" href="#collapse-{{ organization.id }}" role="button" aria-expanded="true"
            aria-controls="collapse-{{ organization.id }}">
           <div class="d-flex">
@@ -110,7 +116,6 @@
 
               {% if organization.organization_image %}{{ organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
                  class="rounded me-4" width="60" height="60" alt="Organization Image">
-            <strong>{{ organization.name }}</strong>
           </div>
         </a>
         <i class="fa fa-arrow-alt-circle-up toggle-icon mt-8" data-target="#collapse-{{ organization.id }}"></i>
@@ -138,6 +143,8 @@
                   <tr>
                     <td><img class="avatar avatar-lg rounded" alt="Assistant image" src="
 
+
+
                       {% if assistant.assistant_image %}{{ assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}">
                     </td>
                     <td style="min-width: 300px;">
@@ -145,10 +152,10 @@
                       <br>
                       <i class="fa fa-info-circle me-5 mt-2"></i><small>{{ assistant.description|linebreaksbr }}</small>
                     </td>
-                    <td>
-                      <ul class="list-unstyled overflow-auto bg-label-secondary rounded p-2" style="max-height: 400px;">
+                    <td style="min-width: 600px; max-width: 600px;">
+                      <ul class="list-unstyled overflow-auto bg-body rounded p-4" style="max-height: 400px;">
                         {% for reference in assistant_script_map|get_script_item:assistant.id %}
-                          <li class="m-3 p-3 bg-label-primary border rounded d-flex align-items-start"
+                          <li class="m-3 bg-card p-4 border border-success border-2 rounded d-flex align-items-start"
                               style="min-width: 400px;">
                             <!-- Script Image -->
                             <img class="avatar avatar-lg rounded me-4"
@@ -187,7 +194,7 @@
                             </div>
                           </li>
                         {% empty %}
-                          <div class="alert alert-warning p-2 m-2" role="alert">
+                          <div class="alert alert-warning p-2 m-2 border border-warning border-2 rounded" role="alert">
                             <div class="">
                               <i class="fa fa-exclamation-triangle me-4"></i>
                               <strong>No internal scripts connected to this assistant.</strong>
@@ -217,14 +224,16 @@
                         </button>
                       </form>
                     </td>
-                    <td style="min-width: 400px;">
-                      <ul class="list-unstyled overflow-auto bg-label-secondary rounded p-2" style="max-height: 400px;">
+                    <td style="min-width: 600px; max-width: 600px;">
+                      <ul class="list-unstyled overflow-auto bg-body rounded p-4" style="max-height: 400px;">
                         {% for reference in external_script_references_map|get_script_item:assistant.id %}
-                          <li class="m-3 p-3 bg-label-primary border rounded d-flex align-items-start"
+                          <li class="m-3 bg-card p-4 border border-warning border-2 rounded d-flex align-items-start"
                               style="min-width: 400px;">
                             <!-- Script Image -->
                             <img class="avatar avatar-lg rounded me-4"
                                  src="
+
+
 
                                    {% if reference.custom_script.script_picture %}{{ reference.custom_script.script_picture.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
                                  alt="{{ reference.custom_script.name }}"
@@ -257,7 +266,7 @@
                             </div>
                           </li>
                         {% empty %}
-                          <div class="alert alert-warning p-2 m-2" role="alert">
+                          <div class="alert alert-warning p-2 m-2 border border-warning border-2 rounded" role="alert">
                             <div class="">
                               <i class="fa fa-exclamation-triangle me-4"></i>
                               <strong>No external scripts connected to this assistant.</strong>

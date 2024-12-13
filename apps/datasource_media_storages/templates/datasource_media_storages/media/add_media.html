@@ -227,7 +227,7 @@
             {% csrf_token %}
             <div class="row p-8">
               <div class="mb-6 col-6">
-                <label class="form-label" for="organization">Organization</label>
+                <label class="form-label" for="organization">Organization<span class="text-danger">&nbsp;*</span></label>
                 <select class="form-select" id="organization" name="organization">
                   <option value="" disabled selected>Select Organization</option>
                   {% for org in organizations %}
@@ -236,19 +236,19 @@
                 </select>
               </div>
               <div class="mb-6 col-6">
-                <label class="form-label" for="assistant">Assistant</label>
+                <label class="form-label" for="assistant">Assistant<span class="text-danger">&nbsp;*</span></label>
                 <select class="form-select" id="assistant" name="assistant">
                   <option value="" disabled selected>Select Assistant</option>
                 </select>
               </div>
               <div class="mb-6 col-6">
-                <label class="form-label" for="media_storage">Media Storage</label>
+                <label class="form-label" for="media_storage">Media Storage<span class="text-danger">&nbsp;*</span></label>
                 <select class="form-select" id="media_storage" name="media_storage">
                   <option value="" disabled selected>Select Media Storage</option>
                 </select>
               </div>
               <div class="mb-6 col-6">
-                <label class="form-label" for="media_files">Media Files (Multiple Files Allowed)</label>
+                <label class="form-label" for="media_files">Media Files (Multiple Files Allowed)<span class="text-danger">&nbsp;*</span></label>
                 <input type="file" class="form-control" id="media_files" name="media_files" multiple>
               </div>
               <div class="row align-items-center justify-content-start mt-2" id="file_display_area">
@@ -280,7 +280,7 @@
             <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
                  style="width: 100%; height:10px;"></div>
           </div>
-          <div class="tips-section card card-border-shadow-primary p-8 mt-12">
+          <div class="tips-section card card-border-shadow-primary p-8 mt-12 bg-body">
             <h4><strong>Supported File Formats</strong></h4>
             <small class="text-muted">
               The following file formats are supported for media files. We are planning to add more file formats in the

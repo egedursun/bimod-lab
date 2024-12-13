@@ -104,8 +104,15 @@
           <form method="post" enctype="multipart/form-data" class="mt-4">
             {% csrf_token %}
             <div class="row p-8">
-              <div class="col-3 mb-6">
-                <label class="form-label" for="organization">Organization</label>
+              <h5 class="bg-body p-8 my-8 rounded border border-primary-subtle rounded">
+                <strong>
+                  <i class="fa fa-info-circle me-4"></i>
+                  Essential Information
+                </strong>
+              </h5>
+              <div class="col-4 mb-6">
+                <label class="form-label" for="organization">Organization<span
+                  class="text-danger">&nbsp;*</span></label>
                 <select class="form-select" id="organization" name="organization">
                   <option value="" disabled selected>Select Organization</option>
                   {% for organization in organizations %}
@@ -114,8 +121,8 @@
                   {% endfor %}
                 </select>
               </div>
-              <div class="col-3 mb-6">
-                <label class="form-label" for="llm_model">LLM Model</label>
+              <div class="col-4 mb-6">
+                <label class="form-label" for="llm_model">LLM Model<span class="text-danger">&nbsp;*</span></label>
                 <select class="form-select" id="llm_model" name="llm_model">
                   <option value="" disabled selected>Select LLM Model</option>
                   {% for llm_model in llm_models %}
@@ -124,7 +131,22 @@
                   {% endfor %}
                 </select>
               </div>
-              <div class="col-3 mb-6">
+              <div class="col-4 mb-6">
+                <label class="form-label" for="name">Name<span class="text-danger">&nbsp;*</span></label>
+                <input type="text" class="form-control" id="name" name="name" placeholder="Enter assistant name" />
+              </div>
+              <div class="col-12 mb-6">
+                <label class="form-label" for="instructions">Instructions<span class="text-danger">&nbsp;*</span></label>
+                <textarea class="form-control" id="instructions" name="instructions"
+                          placeholder="Enter instructions"></textarea>
+              </div>
+              <h5 class="bg-body p-8 my-8 rounded border border-primary-subtle rounded">
+                <strong>
+                  <i class="fa fa-cogs me-4"></i>
+                  Advanced Configurations
+                </strong>
+              </h5>
+              <div class="col-4 mb-6">
                 <label class="form-label" for="ner_integration">Named Entity Recognition (NER)</label>
                 <select class="form-select" id="ner_integration" name="ner_integration">
                   <option value="" selected>No NER Policy</option>
@@ -134,19 +156,10 @@
                   {% endfor %}
                 </select>
               </div>
-              <div class="col-3 mb-6">
-                <label class="form-label" for="name">Name</label>
-                <input type="text" class="form-control" id="name" name="name" placeholder="Enter assistant name" />
-              </div>
               <div class="col-4 mb-6">
                 <label class="form-label" for="description">Description</label>
                 <textarea class="form-control" id="description" name="description"
                           placeholder="Enter assistant description" rows="2"></textarea>
-              </div>
-              <div class="col-4 mb-6">
-                <label class="form-label" for="instructions">Instructions</label>
-                <textarea class="form-control" id="instructions" name="instructions"
-                          placeholder="Enter instructions"></textarea>
               </div>
               <div class="col-4 mb-6">
                 <label class="form-label" for="response_template">Response Template</label>

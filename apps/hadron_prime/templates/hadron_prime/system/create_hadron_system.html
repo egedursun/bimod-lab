@@ -83,7 +83,7 @@
             {% csrf_token %}
             <div class="row p-8">
               <div class="col-4 mb-6">
-                <label class="form-label" for="organization">Organization</label>
+                <label class="form-label" for="organization">Organization<span class="text-danger">&nbsp;*</span></label>
                 <select class="form-select" id="organization" name="organization" required>
                   <option value="" disabled selected>Select Organization</option>
                   {% for org in organizations %}
@@ -92,12 +92,12 @@
                 </select>
               </div>
               <div class="col-4 mb-6">
-                <label class="form-label" for="system_name">System Name</label>
+                <label class="form-label" for="system_name">System Name<span class="text-danger">&nbsp;*</span></label>
                 <input type="text" class="form-control" id="system_name" name="system_name"
                        placeholder="Enter system name" required>
               </div>
               <div class="col-4 mb-6">
-                <label class="form-label" for="system_description">System Description</label>
+                <label class="form-label" for="system_description">System Description<span class="text-danger">&nbsp;*</span></label>
                 <textarea class="form-control" id="system_description" name="system_description" rows="1"
                           placeholder="Enter system description"></textarea>
               </div>

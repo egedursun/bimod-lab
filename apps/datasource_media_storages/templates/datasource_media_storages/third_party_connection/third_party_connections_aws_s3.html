@@ -93,7 +93,7 @@
               {% csrf_token %}
               <div class="row p-4">
                 <div class="col-md-6 p-2">
-                  <label for="media_storage_id" class="form-label">Media Storage</label>
+                  <label for="media_storage_id" class="form-label">Media Storage<span class="text-danger">&nbsp;*</span></label>
                   <select class="form-select" id="media_storage_id" name="media_storage_id" required>
                     {% for storage in media_storages %}
                       <option value="{{ storage.id }}">{{ storage.name }}</option>
@@ -101,20 +101,20 @@
                   </select>
                 </div>
                 <div class="col-md-6 p-2">
-                  <label for="aws_access_key_id" class="form-label">AWS Access Key ID</label>
+                  <label for="aws_access_key_id" class="form-label">AWS Access Key ID<span class="text-danger">&nbsp;*</span></label>
                   <input type="text" class="form-control" id="aws_access_key_id" name="aws_access_key_id" required>
                 </div>
                 <div class="col-md-6 p-2">
-                  <label for="aws_secret_access_key" class="form-label">AWS Secret Access Key</label>
+                  <label for="aws_secret_access_key" class="form-label">AWS Secret Access Key<span class="text-danger">&nbsp;*</span></label>
                   <input type="password" class="form-control" id="aws_secret_access_key" name="aws_secret_access_key"
                          required>
                 </div>
                 <div class="col-md-6 p-2">
-                  <label for="region_name" class="form-label">Region Name</label>
+                  <label for="region_name" class="form-label">Region Name<span class="text-danger">&nbsp;*</span></label>
                   <input type="text" class="form-control" id="region_name" name="region_name" required>
                 </div>
                 <div class="col-md-6 p-2">
-                  <label for="bucket_name" class="form-label">Bucket Name</label>
+                  <label for="bucket_name" class="form-label">Bucket Name<span class="text-danger">&nbsp;*</span></label>
                   <input type="text" class="form-control" id="bucket_name" name="bucket_name" required>
                 </div>
                 <div class="col-md-6 p-2">

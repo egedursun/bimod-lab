@@ -91,7 +91,7 @@
                  alt="Illustration for tips">
             <div class="row p-8">
               <div class="mb-6 col-12">
-                <label class="form-label" for="organization">Organization</label>
+                <label class="form-label" for="organization">Organization<span class="text-danger">&nbsp;*</span></label>
                 <select class="form-select" id="organization" name="organization">
                   {% for organization in organizations %}
                     <option value="{{ organization.id }}">{{ organization.name }}</option>
@@ -100,7 +100,7 @@
                 <div class="form-text"></div>
               </div>
               <div class="mb-6 col-12">
-                <label class="form-label" for="template_text">Template Text</label>
+                <label class="form-label" for="template_text">Template Text<span class="text-danger">&nbsp;*</span></label>
                 <textarea class="form-control" id="template_text" name="template_text" rows="3"
                           placeholder="Enter template text"></textarea>
                 <div class="form-text"></div>

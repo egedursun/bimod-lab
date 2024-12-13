@@ -22,7 +22,7 @@
 {% load static %}
 {% load i18n %}
 
-{% block title %}Create Orchestration Triggered Job{% endblock %}
+{% block title %}Create Orchestration Assistant Triggered Job{% endblock %}
 
 {% block vendor_css %}
   {{ block.super }}
@@ -43,13 +43,13 @@
           <a href="{% url 'mm_triggered_jobs:orchestration_list' %}">
             <button class="btn btn-secondary ms-4 mt-4 mb-8">
               <i class="fa fa-dashboard me-4"></i>
-              <strong> Manage Orchestration Triggered Jobs</strong>
+              <strong> Manage Orchestration Assistant Triggered Jobs</strong>
             </button>
           </a>
         </div>
         <div class="card-header d-flex justify-content-between align-items-center">
           <h5 class="mb-0">
-            <strong>Create New Orchestration Triggered Job</strong>
+            <strong>Create New Orchestration Assistant Triggered Job</strong>
           </h5>
           <small class="text-muted float-end"></small>
         </div>
@@ -88,7 +88,7 @@
             {% csrf_token %}
             <div class="row p-8">
               <div class="mb-6 col-4">
-                <label class="form-label" for="trigger_maestro">Maestro</label>
+                <label class="form-label" for="trigger_maestro">Maestro<span class="text-danger">&nbsp;*</span></label>
                 <select class="form-select" id="trigger_maestro" name="trigger_maestro">
                   {% for maestro in trigger_maestros %}
                     <option value="{{ maestro.id }}">{{ maestro.name }}</option>
@@ -96,16 +96,16 @@
                 </select>
               </div>
               <div class="mb-6 col-4">
-                <label class="form-label" for="name">Name</label>
+                <label class="form-label" for="name">Name<span class="text-danger">&nbsp;*</span></label>
                 <input type="text" class="form-control" id="name" name="name" placeholder="Enter job name" required />
               </div>
               <div class="mb-6 col-4">
-                <label class="form-label" for="task_description">Description</label>
+                <label class="form-label" for="task_description">Description<span class="text-danger">&nbsp;*</span></label>
                 <textarea class="form-control" id="task_description" name="task_description"
                           placeholder="Enter job description" required></textarea>
               </div>
               <div class="mb-6 col-12">
-                <label class="form-label" for="step_guide">Step Guide</label>
+                <label class="form-label" for="step_guide">Step Guide<span class="text-danger">&nbsp;*</span></label>
                 <table id="stepGuideTable" class="table table-bordered">
                   <thead>
                   <tr>
@@ -126,10 +126,14 @@
                   </tbody>
                 </table>
                 <button type="button" onclick="addRow('stepGuideTable')" class="btn btn-secondary d-grid w-20 mt-4">
-                  <strong>Add New Row</strong></button>
+                  <strong>
+                    <i class="fa fa-plus me-4"></i>
+                    Add New Row
+                  </strong></button>
               </div>
+              <hr>
               <div class="mb-6 col-4">
-                <label class="form-label" for="trigger_source">Trigger Source</label>
+                <label class="form-label" for="trigger_source">Trigger Source<span class="text-danger">&nbsp;*</span></label>
                 <input type="text" class="form-control" id="trigger_source" name="trigger_source"
                        placeholder="Enter trigger source" required />
                 <div class="tips-section alert alert-solid-info d-flex align-items-center mt-6" role="alert">
@@ -142,7 +146,7 @@
                 </div>
               </div>
               <div class="mb-6 col-4">
-                <label class="form-label" for="event_type">When does this event get triggered?</label>
+                <label class="form-label" for="event_type">When does this event get triggered?<span class="text-danger">&nbsp;*</span></label>
                 <input type="text" class="form-control" id="event_type" name="event_type"
                        placeholder="Enter your response in natural language" required />
                 <div class="tips-section alert alert-solid-info d-flex align-items-center mt-6" role="alert">
@@ -151,11 +155,11 @@
                 </span>
                   The event type is the type of event that triggers the job. You can provide this in natural language,
                   for example, "When a new GitHub issue is created" if this event is sent by GitHub when a new issue is
-                  created on your repository.
+                  created on your repository. This is to provide more context to assistants.
                 </div>
               </div>
               <div class="mb-6 col-4">
-                <label class="form-label" for="maximum_runs">Maximum Runs</label>
+                <label class="form-label" for="maximum_runs">Maximum Runs<span class="text-danger">&nbsp;*</span></label>
                 <input type="number" class="form-control" id="maximum_runs" name="maximum_runs" min="1" max="1000"
                        value="100" required />
                 <div class="alert alert-solid-warning d-flex align-items-center mt-6" role="alert">
@@ -171,7 +175,7 @@
             </div>
             <hr>
             <button type="submit" class="btn btn-primary d-grid mt-4 w-25"><strong>
-              <i class="fa fa-plus me-4"></i>
+              <i class="fa fa-save me-4"></i>
               Create Orchestration Triggered Job
             </strong></button>
           </form>

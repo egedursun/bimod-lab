@@ -117,12 +117,6 @@
                 <input type="text" class="form-control" id="team_name" name="team_name" placeholder="Enter team name"
                        required>
               </div>
-              <div class="col-6 mb-6">
-                <label class="form-label" for="team_description">Team Description<span
-                  class="text-danger">&nbsp;*</span></label>
-                <textarea class="form-control" id="team_description" name="team_description" rows="1"
-                          placeholder="Enter team description"></textarea>
-              </div>
               <div class="col-4 mb-6">
                 <label class="form-label" for="team_lead">Team Lead<span class="text-danger">&nbsp;*</span></label>
                 <select class="form-select select2" id="team_lead" name="team_lead" required>
@@ -132,6 +126,12 @@
                     <!-- Accessing profile field -->
                   {% endfor %}
                 </select>
+              </div>
+              <div class="col-6 mb-6">
+                <label class="form-label" for="team_description">Team Description<span
+                  class="text-danger">&nbsp;*</span></label>
+                <textarea class="form-control" id="team_description" name="team_description" rows="1"
+                          placeholder="Enter team description"></textarea>
               </div>
               <h5 class="bg-body p-8 my-8 rounded border border-primary-subtle rounded">
                 <strong>

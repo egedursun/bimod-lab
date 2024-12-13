@@ -87,7 +87,7 @@
               <div class="row">
                 <!-- Assistant Picker -->
                 <div class="col-4 mb-3">
-                  <label for="copilot_assistant" class="form-label">Co-Pilot Assistant</label>
+                  <label for="copilot_assistant" class="form-label">Co-Pilot Assistant<span class="text-danger">&nbsp;*</span></label>
                   <select id="copilot_assistant" name="copilot_assistant" class="form-control" required>
                     <option value="" disabled selected>Select an Assistant</option>
                     {% for assistant in assistants %}
@@ -98,27 +98,27 @@
 
                 <!-- Document Title -->
                 <div class="col-4 mb-3">
-                  <label for="document_title" class="form-label">Document Title</label>
+                  <label for="document_title" class="form-label">Document Title<span class="text-danger">&nbsp;*</span></label>
                   <input type="text" class="form-control" id="document_title" name="document_title" required>
                 </div>
 
                 <!-- Context Instructions -->
                 <div class="col-4 mb-3">
-                  <label for="context_instructions" class="form-label">Context Instructions</label>
+                  <label for="context_instructions" class="form-label">Context Instructions<span class="text-danger">&nbsp;*</span></label>
                   <textarea class="form-control" id="context_instructions" name="context_instructions"
                             rows="1"></textarea>
                 </div>
 
                 <!-- Target Audience -->
                 <div class="col-6 mb-3">
-                  <label for="target_audience" class="form-label">Target Audience</label>
-                  <input type="text" class="form-control" id="target_audience" name="target_audience"></input>
+                  <label for="target_audience" class="form-label">Target Audience<span class="text-danger">&nbsp;*</span></label>
+                  <input type="text" class="form-control" id="target_audience" value="Standard" name="target_audience"></input>
                 </div>
 
                 <!-- Tone -->
                 <div class="col-6 mb-3">
-                  <label for="tone" class="form-label">Tone</label>
-                  <input type="text" class="form-control" id="tone" name="tone"></input>
+                  <label for="tone" class="form-label">Tone<span class="text-danger">&nbsp;*</span></label>
+                  <input type="text" class="form-control" id="tone" value="Standard" name="tone"></input>
                 </div>
               </div>
 

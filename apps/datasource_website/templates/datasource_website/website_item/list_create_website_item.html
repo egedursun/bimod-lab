@@ -167,6 +167,7 @@
                   <div class="d-flex">
                     <img src="
 
+
                       {% if organization_data.organization_image %}{{ organization_data.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
                          class="rounded me-4" width="80" height="80" alt="Organization image">
                     <h4 class="mb-0 mt-4">
@@ -198,6 +199,7 @@
                   <div class="card-header">
                     <div class="d-flex">
                       <img src="
+
                         {% if assistant_data.assistant_image %}{{ assistant_data.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
                            class="rounded me-4" width="60" height="60" alt="Assistant image">
                       <h4 class="mb-0 ms-4"><strong>{{ assistant_data.name }}</strong></h4>
@@ -206,7 +208,7 @@
                   </div>
                   <div id="collapse-assistant-{{ assistant_data.id }}" class="card-body collapse show">
                     {% for storage_data in storages %}
-                      <div class="card mb-4">
+                      <div class="card mb-4 border border-success border-2 rounded">
                         <div class="card-header">
                           <h5 class="mb-0">
                             <strong>
@@ -226,7 +228,7 @@
                                 <!-- Website URL Input -->
                                 <div class="mb-3">
                                   <label for="website_url_{{ storage_data.id }}" class="form-label"><strong>Website Root
-                                    URL</strong></label>
+                                    URL<span class="text-danger">&nbsp;*</span></strong></label>
                                   <input type="url" id="website_url_{{ storage_data.id }}" name="website_url"
                                          class="form-control" placeholder="Enter website root URL" required>
                                 </div>
@@ -235,7 +237,7 @@
                                 <!-- Crawling Methodology Input -->
                                 <div class="mb-3">
                                   <label for="crawling_methodology_{{ storage_data.id }}" class="form-label"><strong>Crawling
-                                    Methodology</strong></label>
+                                    Methodology<span class="text-danger">&nbsp;*</span></strong></label>
                                   <select id="crawling_methodology_{{ storage_data.id }}" name="crawling_methodology"
                                           class="form-select" required>
                                     <option value="" disabled selected>Select Crawling Methodology</option>
@@ -339,7 +341,8 @@
                             {% empty %}
                               <tr>
                                 <td colspan="4" class="">
-                                  <div class="alert alert-warning p-8" role="alert">
+                                  <div class="alert alert-warning p-8 border border-warning border-2 rounded"
+                                       role="alert">
                                     <i class="fa fa-exclamation-triangle me-4"></i>
                                     <strong>
                                       No website items are found in this storage (yet).
@@ -354,7 +357,7 @@
                       </div>
                     {% empty %}
                       <div class="card-body">
-                        <div class="alert alert-warning p-8" role="alert">
+                        <div class="alert alert-warning p-8 border border-warning border-2 rounded" role="alert">
                           <i class="fa fa-exclamation-triangle me-4"></i>
                           <strong>
                             No website storages are found in this storage (yet).

@@ -14,18 +14,21 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
+from django.utils import timezone
 from django.views.generic import TemplateView
 
 from apps.core.user_permissions.permission_manager import UserPermissionManager
 from apps.support_system.forms.support_ticket_forms import SupportTicketForm
+from apps.support_system.models import SupportTicket
+from apps.support_system.utils import MAXIMUM_TICKET_FREQUENCY_ONCE_EVERY_HOURS_PER_USER
 from apps.user_permissions.utils import PermissionNames
 from web_project import TemplateLayout
-
 
 logger = logging.getLogger(__name__)
 
@@ -39,13 +42,32 @@ class SupportView_TicketCreate(LoginRequiredMixin, TemplateView):
 
     def post(self, request, *args, **kwargs):
 
+        max_freq = MAXIMUM_TICKET_FREQUENCY_ONCE_EVERY_HOURS_PER_USER
+
         ##############################
         # PERMISSION CHECK FOR - CREATE_SUPPORT_TICKETS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.CREATE_SUPPORT_TICKETS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.CREATE_SUPPORT_TICKETS
+        ):
             messages.error(self.request, "You do not have permission to create support tickets.")
             return redirect('support_system:list')
         ##############################
+
+        # Get the date of the latest support ticket of the user
+        latest_ticket_date: SupportTicket = SupportTicket.objects.filter(
+            user=self.request.user
+        ).latest('created_at')
+
+        # If 12 hours have not passed since the last support ticket, return an error message
+        if (
+            latest_ticket_date.created_at + timezone.timedelta(hours=max_freq)
+        ) > timezone.now():
+            messages.error(
+                self.request,
+                f"You have already created a support ticket in the last {max_freq} hours. You can only create one support ticket within {max_freq} hours."
+            )
+            return redirect('support_system:list')
 
         form = SupportTicketForm(request.POST, request.FILES)
         if form.is_valid():

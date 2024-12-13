@@ -98,7 +98,7 @@
             {% csrf_token %}
             <div class="row p-8">
               <div class="mb-6 col-5">
-                <label class="form-label" for="assistant">Assistant</label>
+                <label class="form-label" for="assistant">Assistant<span class="text-danger">&nbsp;*</span></label>
                 <select class="form-select" id="assistant" name="assistant">
                   <option value="" disabled selected>Select Assistant</option>
                   {% for assistant in assistants %}
@@ -107,12 +107,12 @@
                 </select>
               </div>
               <div class="mb-6 col-5">
-                <label class="form-label" for="request_limit_per_hour">Request Limit Per Hour</label>
-                <input type="number" class="form-control" id="request_limit_per_hour" name="request_limit_per_hour"
+                <label class="form-label" for="request_limit_per_hour">Request Limit Per Hour<span class="text-danger">&nbsp;*</span></label>
+                <input type="number" class="form-control" id="request_limit_per_hour" value="10000" name="request_limit_per_hour"
                        placeholder="Enter request limit per hour" />
               </div>
               <div class="mb-6 col-2">
-                <label class="form-label" for="is_public">Public</label>
+                <label class="form-label" for="is_public">Public Endpoint<span class="text-danger">&nbsp;*</span></label>
                 <br>
                 <label class="switch switch-square switch-lg mt-2">
                   <input type="checkbox" class="switch-input" id="is_public" name="is_public">

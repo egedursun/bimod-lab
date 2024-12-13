@@ -20,6 +20,7 @@ from django.shortcuts import redirect
 from django.contrib.auth.models import User, Group
 from django.contrib import messages
 from django.conf import settings
+from django.utils import timezone
 
 from apps.notifications.models import NotificationItem
 from apps.notifications.utils import NotificationTitleCategoryChoicesNames, NotificationFAIconChoicesNames, \
@@ -64,24 +65,44 @@ class RegisterView(AuthView):
         if User.objects.filter(username=username, email=email).exists():
             messages.error(request, "User already exists, Try logging in.")
             return self.render_to_response(self.get_context_data())
+
         elif User.objects.filter(email=email).exists():
             messages.error(request, "Email already exists.")
             return self.render_to_response(self.get_context_data())
+
         elif User.objects.filter(username=username).exists():
             messages.error(request, "Username already exists.")
             return self.render_to_response(self.get_context_data())
 
-        created_user = User.objects.create_user(username=username, email=email, password=password)
+        try:
+            birthdate.strftime('%Y-%m-%d')
+
+        except Exception as e:
+            messages.error(request, "Invalid date format detected, please fix your birthdate manually on your profile.")
+            birthdate = timezone.now()
+
+        created_user = User.objects.create_user(
+            username=username,
+            email=email,
+            password=password
+        )
+
         created_user.set_password(password)
         created_user.is_staff = False
         created_user.is_superuser = True
         created_user.save()
 
-        user_group, created = Group.objects.get_or_create(name="tenant")
+        user_group, created = Group.objects.get_or_create(
+            name="tenant"
+        )
+
         created_user.groups.add(user_group)
         token = str(uuid.uuid4())
 
-        user_profile, created = Profile.objects.get_or_create(user=created_user)
+        user_profile, created = Profile.objects.get_or_create(
+            user=created_user
+        )
+
         user_profile.email_token = token
         user_profile.email = email
         user_profile.username = username
@@ -96,17 +117,23 @@ class RegisterView(AuthView):
         user_profile.profile_picture = profile_picture
         user_profile.free_credits = settings.NEW_USER_FREE_CREDITS if hasattr(settings, 'NEW_USER_FREE_CREDITS') else 0
 
-        primary_admin = User.objects.filter(username="admin").first()
+        primary_admin = User.objects.filter(
+            username="admin"
+        ).first()
+
         user_profile.created_by_user = primary_admin
+
         user_profile.save()
+
         send_verification_email(email, token)
+
         if settings.EMAIL_HOST_USER and settings.EMAIL_HOST_PASSWORD:
             messages.success(request, "Verification email sent successfully")
+
         else:
             messages.error(request, "Email settings are not configured. Unable to send verification email.")
         request.session['email'] = email
 
-        """
         welcome_notification = NotificationItem.objects.create(
             user=created_user,
             notification_sender_type=NotificationSenderTypeNames.WELCOME,
@@ -116,6 +143,5 @@ class RegisterView(AuthView):
                                  " to verify your email address for your own security and privacy. If you need help,"
                                  " please contact us via the support page.")
         welcome_notification.save()
-        """
 
         return redirect("verify-email-page")

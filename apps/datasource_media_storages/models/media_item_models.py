@@ -132,11 +132,17 @@ class DataSourceMediaStorageItem(models.Model):
 
             self.full_file_path = f"{MEDIA_URL}{relative_path}"
 
-            upload_file_to_storage.delay(
-                file_bytes=self.file_bytes,
-                full_path=relative_path,
-                media_category=self.storage_base.media_category
-            )
+            try:
+                upload_file_to_storage(
+                    file_bytes=self.file_bytes,
+                    full_path=relative_path,
+                    media_category=self.storage_base.media_category
+                )
+
+                print(f"File uploaded to storage: {self.full_file_path}")
+
+            except Exception as e:
+                logger.error(f"Error uploading file to storage: {e}")
 
         self.file_bytes = None
 

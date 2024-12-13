@@ -85,7 +85,7 @@
             {% csrf_token %}
             <!-- Organization Selection -->
             <div class="mb-3">
-              <label for="organization" class="form-label">Select Organization</label>
+              <label for="organization" class="form-label">Select Organization<span class="text-danger">&nbsp;*</span></label>
               <select class="form-select" id="organization" name="organization_id" required>
                 {% for org in organizations %}
                   <option value="{{ org.id }}">{{ org.name }}</option>
@@ -95,7 +95,7 @@
 
             <!-- Notification Type Selection -->
             <div class="mb-3">
-              <label for="notification_category" class="form-label">Select Notification Type</label>
+              <label for="notification_category" class="form-label">Select Notification Type<span class="text-danger">&nbsp;*</span></label>
               <select class="form-select" id="notification_category" name="notification_category" required>
                 {% for value, label in notification_categories %}
                   <option value="{{ value }}">{{ label }}</option>
@@ -105,7 +105,7 @@
 
             <!-- Notification Text -->
             <div class="mb-3">
-              <label for="notification_text" class="form-label">Notification Text</label>
+              <label for="notification_text" class="form-label">Notification Text<span class="text-danger">&nbsp;*</span></label>
               <textarea class="form-control" id="notification_text" name="notification_text" required></textarea>
             </div>
 
@@ -152,7 +152,7 @@
             {% empty %}
               <tr>
                 <td colspan="6">
-                  <div class="alert alert-warning p-4 mt-4" role="alert">
+                  <div class="alert alert-warning p-4 mt-4 border border-warning border-2 rounded" role="alert">
                     <i class="fa fa-exclamation-triangle me-2"></i>
                     <strong>No notifications have been created yet.</strong>
                   </div>

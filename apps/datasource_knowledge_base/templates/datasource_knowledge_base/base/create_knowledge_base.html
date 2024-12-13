@@ -101,8 +101,14 @@
             <img src="{% static 'img/knowledge_bases/kbs-1.png' %}" class="rounded mt-4" style="width: 100%;"
                  alt="Illustration for tips">
             <div class="row p-8">
+              <h5 class="bg-body p-8 my-8 rounded border border-primary-subtle rounded">
+                <strong>
+                  <i class="fa fa-info-circle me-4"></i>
+                  Essential Information
+                </strong>
+              </h5>
               <div class="mb-6 col-6">
-                <label class="form-label" for="assistant">Assistant</label>
+                <label class="form-label" for="assistant">Assistant<span class="text-danger">&nbsp;*</span></label>
                 <select class="form-select" id="assistant" name="assistant">
                   {% for assistant in assistants %}
                     <option value="{{ assistant.id }}">{{ assistant.name }}</option>
@@ -111,23 +117,29 @@
                 <div class="form-text"></div>
               </div>
               <div class="mb-6 col-6">
-                <label class="form-label" for="name">Name</label>
+                <label class="form-label" for="name">Name<span class="text-danger">&nbsp;*</span></label>
                 <input type="text" class="form-control" id="name" name="name" placeholder="Enter knowledge base name" />
               </div>
               <div class="mb-6 col-6">
-                <label class="form-label" for="description">Description</label>
+                <label class="form-label" for="description">Description<span class="text-danger">&nbsp;*</span></label>
                 <textarea class="form-control" id="description" name="description" rows="1"
                           placeholder="Enter knowledge base description"></textarea>
               </div>
               <div class="mb-6 col-6">
-                <label class="form-label" for="vectorizer">Vectorizer</label>
+                <label class="form-label" for="vectorizer">Vectorizer<span class="text-danger">&nbsp;*</span></label>
                 <select class="form-select" id="vectorizer" name="vectorizer">
                   <option value="" disabled selected>Select Vectorizer</option>
                   {% for key, value in vectorizers %}
-                    <option value="{{ key }}">{{ value }}</option>
+                    <option value="{{ key }}" {% if forloop.first %}selected{% endif %}>{{ value }}</option>
                   {% endfor %}
                 </select>
               </div>
+              <h5 class="bg-body p-8 my-8 rounded border border-primary-subtle rounded">
+                <strong>
+                  <i class="fa fa-cogs me-4"></i>
+                  Advanced Configurations
+                </strong>
+              </h5>
               <div class="mb-6 col-4">
                 <label class="form-label" for="embedding_chunk_size">Embedding Chunk Size</label>
                 <!-- slider bar here -->

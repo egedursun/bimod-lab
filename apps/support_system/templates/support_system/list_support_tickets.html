@@ -80,15 +80,19 @@
            alt="Illustration for tips">
     </div>
 
-    {% if messages %}
-      {% for message in messages %}
-        <div
-          class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
-          role="alert">
-          {{ message }}
-        </div>
-      {% endfor %}
-    {% endif %}
+    <div class="ms-4 me-4 p-4">
+      {% if messages %}
+        {% for message in messages %}
+          <div
+            class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
+            role="alert">
+            {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
+    </div>
+
+    <hr>
 
     <div class="card-datatable table-responsive p-8 mt-4">
       <a href="{% url 'support_system:create' %}">
@@ -156,7 +160,7 @@
             </td>
           </tr>
         {% empty %}
-          <div class="alert alert-warning p-8 m-4" role="alert">
+          <div class="alert alert-warning p-8 m-4 border border-warning border-2 rounded" role="alert">
             <div class="">
               <i class="fa fa-exclamation-triangle me-4"></i>
               <strong>No support tickets have been created yet.</strong>

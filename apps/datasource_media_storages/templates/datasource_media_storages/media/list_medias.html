@@ -322,7 +322,7 @@
                               <i class="fa fa-info-circle me-4"></i>
                               {{ storage_data.storage.description }}
                             </strong></small>
-                          <div class="row d-flex justify-content-between mt-4">
+                          <div class="row d-flex justify-content-between mt-4 p-8 bg-body rounded">
                             <div class="col-9">
                               <form method="post" action="{% url 'datasource_media_storages:fetch_file_from_url' %}"
                                     class="d-flex align-items-center">
@@ -478,7 +478,7 @@
                       </div>
                     {% empty %}
                       <div class="card-body">
-                        <div class="alert alert-warning p-8" role="alert">
+                        <div class="alert alert-warning p-8 border border-2 border-warning rounded" role="alert">
                           <i class="fa fa-exclamation-triangle me-4"></i>
                           <strong>No media files found in this storage.</strong>
                         </div>
@@ -488,7 +488,7 @@
                 </div>
               {% empty %}
                 <div class="card-body">
-                  <div class="alert alert-warning p-8" role="alert">
+                  <div class="alert alert-warning p-8 border border-2 border-warning rounded" role="alert">
                     <i class="fa fa-exclamation-triangle me-4"></i>
                     <strong>No media storages found for this assistant.</strong>
                   </div>

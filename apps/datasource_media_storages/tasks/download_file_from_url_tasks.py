@@ -19,12 +19,10 @@ import logging
 import uuid
 
 import filetype
-from celery import shared_task
 
 logger = logging.getLogger(__name__)
 
 
-@shared_task
 def download_file_from_url(storage_id: int, url: str):
     from apps.datasource_media_storages.models import (
         DataSourceMediaStorageConnection,
@@ -42,7 +40,17 @@ def download_file_from_url(storage_id: int, url: str):
 
         return False
 
-    file_format = url.split('.')[-1]
+    try:
+        file_format = url.split('.')[-1]
+
+        if len(file_format) > 8:
+            logger.error(f"[tasks.download_file_from_url] Invalid file format: {file_format}")
+            file_format = 'webp'  # Assume WEBP in case of error
+
+    except Exception as e:
+        logger.error(f"[tasks.download_file_from_url] Error extracting file format: {e}")
+        file_format = 'webp'  # Assume WEBP in case of error
+
     f_generated = None
 
     try:

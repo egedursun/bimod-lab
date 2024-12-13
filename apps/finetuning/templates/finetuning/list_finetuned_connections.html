@@ -119,7 +119,7 @@
       {% csrf_token %}
       <div class="row p-8">
         <div class="mb-6 col-4">
-          <label class="form-label" for="organization">Organization</label>
+          <label class="form-label" for="organization">Organization<span class="text-danger">&nbsp;*</span></label>
           <select class="form-select" id="organization" name="organization">
             <option value="" disabled selected>Select Organization</option>
             {% for org in organizations %}
@@ -128,7 +128,7 @@
           </select>
         </div>
         <div class="mb-6 col-4">
-          <label class="form-label" for="provider">Model Provider</label>
+          <label class="form-label" for="provider">Model Provider<span class="text-danger">&nbsp;*</span></label>
           <select class="form-select" id="provider" name="provider">
             <option value="" disabled selected>Select Provider</option>
             {% for provider in providers %}
@@ -137,15 +137,15 @@
           </select>
         </div>
         <div class="mb-6 col-4">
-          <label class="form-label" for="model_name">Model Name</label>
-          <input type="text" class="form-control" id="model_name" name="model_name" placeholder="Enter Model Name">
+          <label class="form-label" for="model_name">Model Name<span class="text-danger">&nbsp;*</span></label>
+          <input type="text" class="form-control" id="model_name" name="model_name" placeholder="Enter model name as it is defined in the provider's system">
         </div>
         <div class="mb-6 col-4">
-          <label class="form-label" for="nickname">Nickname</label>
-          <input type="text" class="form-control" id="nickname" name="nickname" placeholder="Enter Nickname">
+          <label class="form-label" for="nickname">Nickname<span class="text-danger">&nbsp;*</span></label>
+          <input type="text" class="form-control" id="nickname" name="nickname" placeholder="Enter a nickname for the model, for internal use">
         </div>
         <div class="mb-6 col-4">
-          <label class="form-label" for="model_type">Model Type</label>
+          <label class="form-label" for="model_type">Model Type<span class="text-danger">&nbsp;*</span></label>
           <select class="form-select" id="model_type" name="model_type">
             <option value="" disabled selected>Select Model Type</option>
             {% for model_type in model_types %}
@@ -154,14 +154,14 @@
           </select>
         </div>
         <div class="mb-6 col-4">
-          <label class="form-label" for="provider_api_key">Provider API Key</label>
+          <label class="form-label" for="provider_api_key">Provider API Key<span class="text-danger">&nbsp;*</span></label>
           <input type="text" class="form-control" id="provider_api_key" name="provider_api_key"
-                 placeholder="Enter Provider API Key">
+                 placeholder="Enter the API key for the model provider">
         </div>
         <div class="mb-0 col-12">
-          <label class="form-label" for="model_description">Model Description</label>
+          <label class="form-label" for="model_description">Model Description<span class="text-danger">&nbsp;*</span></label>
           <textarea class="form-control" id="model_description" name="model_description"
-                    placeholder="Enter Model Description"></textarea>
+                    placeholder="Enter a description for internal use"></textarea>
         </div>
       </div>
       <button type="submit" class="btn btn-success d-grid w-25 ms-8 mt-4 mb-8">
@@ -238,7 +238,7 @@
             </div>
           {% empty %}
             <div class="w-100 ms-4 pe-12">
-              <div class="alert alert-warning p-8" role="alert">
+              <div class="alert alert-warning p-8 border border-warning border-2 rounded" role="alert">
                 <i class="fa fa-exclamation-triangle me-2"></i>
                 <strong>No fine-tuned models found for this organization.</strong>
               </div>

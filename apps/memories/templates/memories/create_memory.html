@@ -100,7 +100,7 @@
                  alt="Illustration for tips">
             <div class="row p-6">
               <div class="mb-6 col-4">
-                <label class="form-label" for="organization">Organization</label>
+                <label class="form-label" for="organization">Organization<span class="text-danger">&nbsp;*</span></label>
                 <select class="form-select" id="organization" name="organization">
                   {% for organization in organizations %}
                     <option value="{{ organization.id }}">{{ organization.name }}</option>
@@ -109,7 +109,7 @@
                 <div class="form-text"></div>
               </div>
               <div class="mb-6 col-4">
-                <label class="form-label" for="assistant">Assistant</label>
+                <label class="form-label" for="assistant">Assistant<span class="text-danger">&nbsp;*</span></label>
                 <select class="form-select" id="assistant" name="assistant">
                   {% for assistant in assistants %}
                     <option value="{{ assistant.id }}">{{ assistant.name }}</option>
@@ -118,7 +118,7 @@
                 <div class="form-text"></div>
               </div>
               <div class="mb-6 col-4">
-                <label class="form-label" for="memory_type">Memory Type</label>
+                <label class="form-label" for="memory_type">Memory Type<span class="text-danger">&nbsp;*</span></label>
                 <select class="form-select" id="memory_type" name="memory_type">
                   <option value="organization-specific">Organization-Specific</option>
                   <option value="user-specific">User-Specific</option>
@@ -127,7 +127,7 @@
                 <div class="form-text"></div>
               </div>
               <div class="mb-6 col-12">
-                <label class="form-label" for="memory_text_content">Memory Content</label>
+                <label class="form-label" for="memory_text_content">Memory Content<span class="text-danger">&nbsp;*</span></label>
                 <textarea class="form-control" id="memory_text_content" name="memory_text_content"
                           placeholder="Enter memory content"></textarea>
                 <div class="form-text"></div>

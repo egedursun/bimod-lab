@@ -186,6 +186,20 @@
       </div>
     </div>
 
+    <hr>
+
+    {% if messages %}
+      {% for message in messages %}
+        <div
+          class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-info{% endif %}"
+          role="alert">
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endif %}
+
+    <hr>
+
     {% for organization_data in connections_by_organization %}
       <div class="row mb-4">
         <div class="col-12">
@@ -197,13 +211,16 @@
                   <div class="d-flex">
                     <img src="
 
+
                       {% if organization_data.organization.organization_image %}{{ organization_data.organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
                          class="avatar avatar-lg me-4 rounded" width="60" alt="Avatar">
                     <h4 class="mb-0 mt-4">
                       <strong>{{ organization_data.organization.name }}</strong>
                     </h4>
                   </div>
-                  <small class="text-muted">{{ organization_data.organization.email }}</small>
+                  <small class="text-muted">
+                    <strong>{{ organization_data.organization.description }}</strong>
+                  </small>
                   <div class="card-datatable table-responsive">
                     <a href="{% url 'datasource_ml_models:item_create' %}">
                       <button class="btn btn-info mt-4 mb-4">
@@ -227,6 +244,7 @@
                   <div class="card-header">
                     <div class="d-flex">
                       <img src="
+
                         {% if assistant_data.assistant.assistant_image %}{{ assistant_data.assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
                            class="avatar avatar-lg me-4 rounded" width="60" alt="Avatar">
                       <h4 class="mb-0">
@@ -239,13 +257,15 @@
                       <div class="card mb-4">
                         <div class="card-header">
                           <h5 class="mb-0"><strong>{{ storage_data.connection.name }}</strong></h5>
-                          <p class="bg-label-info rounded p-2 mt-4 mb-4 w-20">
+                          <p class="bg-primary text-dark rounded p-2 mt-4 mb-4 w-20">
                             {% if storage_data.connection.model_object_category == "pth" %}
                               <i class="fa fa-database me-4"></i>
                             {% endif %}
                             <strong>{{ storage_data.connection.model_object_category|capfirst }} Storage</strong>
                           </p>
-                          <small class="text-muted">{{ storage_data.connection.description }}</small>
+                          <small class="text-muted">
+                            <strong>{{ storage_data.connection.description }}</strong>
+                          </small>
                         </div>
                         <div id="collapse-storage-{{ storage_data.connection.id }}" class="card-body collapse show">
                           <div class="table-responsive">
@@ -276,7 +296,7 @@
                                     <td>{{ item_data.id }}</td>
                                     <td><strong>{{ item_data.ml_model_name }}</strong></td>
                                     <td class="w-50">
-                                      {{ item_data.description }}
+                                      <strong>{{ item_data.description }}</strong>
                                     </td>
                                     <td>
                                       <strong
@@ -339,7 +359,7 @@
                         </div>
                       </div>
                     {% empty %}
-                      <div class="alert alert-warning" role="alert">
+                      <div class="alert alert-warning p-8 border border-2 border-warning rounded" role="alert">
                         <i class="fa fa-exclamation-triangle me-4"></i>
                         <strong>No ML model instances found in this connection.</strong>
                       </div>
@@ -347,7 +367,7 @@
                   </div>
                 </div>
               {% empty %}
-                <div class="alert alert-warning" role="alert">
+                <div class="alert alert-warning p-8 border border-2 border-warning rounded" role="alert">
                   <i class="fa fa-exclamation-triangle me-4"></i>
                   <strong>No ML model connections found for this assistant.</strong>
                 </div>

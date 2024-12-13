@@ -103,8 +103,14 @@
             <img src="{% static 'img/sql_databases/sql-1.png' %}" class="rounded mt-4" style="width: 100%;"
                  alt="Illustration for tips">
             <div class="row p-8">
+              <h5 class="bg-body p-8 my-8 rounded border border-primary-subtle rounded">
+                <strong>
+                  <i class="fa fa-info-circle me-4"></i>
+                  Essential Information
+                </strong>
+              </h5>
               <div class="mb-6 col-6">
-                <label class="form-label" for="dbms_type">DBMS Type</label>
+                <label class="form-label" for="dbms_type">DBMS Type<span class="text-danger">&nbsp;*</span></label>
                 <select class="form-select" id="dbms_type" name="dbms_type">
                   <option value="" disabled selected>Select DBMS Type</option>
                   {% for key, value in dbms_choices %}
@@ -113,7 +119,7 @@
                 </select>
               </div>
               <div class="mb-6 col-6">
-                <label class="form-label" for="assistant">Assistant</label>
+                <label class="form-label" for="assistant">Assistant<span class="text-danger">&nbsp;*</span></label>
                 <select class="form-select" id="assistant" name="assistant">
                   {% for assistant in assistants %}
                     <option value="{{ assistant.id }}">{{ assistant.name }}</option>
@@ -122,38 +128,38 @@
                 <div class="form-text"></div>
               </div>
               <div class="mb-6 col-3">
-                <label class="form-label" for="name">Name</label>
+                <label class="form-label" for="name">Name<span class="text-danger">&nbsp;*</span></label>
                 <input type="text" class="form-control" id="name" name="name" placeholder="Enter data source name" />
               </div>
               <div class="mb-6 col-3">
-                <label class="form-label" for="description">Description</label>
+                <label class="form-label" for="description">Description<span class="text-danger">&nbsp;*</span></label>
                 <textarea class="form-control" id="description" name="description" rows="1"
                           placeholder="Enter data source description"></textarea>
               </div>
               <div class="mb-6 col-3">
-                <label class="form-label" for="host">Host</label>
+                <label class="form-label" for="host">Host<span class="text-danger">&nbsp;*</span></label>
                 <input type="text" class="form-control" id="host" name="host" placeholder="Enter host" />
               </div>
               <div class="mb-6 col-3">
-                <label class="form-label" for="port">Port</label>
+                <label class="form-label" for="port">Port<span class="text-danger">&nbsp;*</span></label>
                 <input type="number" class="form-control" id="port" name="port" placeholder="Enter port" />
               </div>
               <div class="mb-6 col-3">
-                <label class="form-label" for="database_name">Database Name</label>
+                <label class="form-label" for="database_name">Database Name<span class="text-danger">&nbsp;*</span></label>
                 <input type="text" class="form-control" id="database_name" name="database_name"
                        placeholder="Enter database name" />
               </div>
               <div class="mb-6 col-3">
-                <label class="form-label" for="username">Username</label>
+                <label class="form-label" for="username">Username<span class="text-danger">&nbsp;*</span></label>
                 <input type="text" class="form-control" id="username" name="username" placeholder="Enter username" />
               </div>
               <div class="mb-6 col-3">
-                <label class="form-label" for="password">Password</label>
+                <label class="form-label" for="password">Password<span class="text-danger">&nbsp;*</span></label>
                 <input type="password" class="form-control" id="password" name="password"
                        placeholder="Enter password" />
               </div>
               <div class="mb-6 col-3">
-                <label class="form-label" for="is_read_only">Read-Only</label>
+                <label class="form-label" for="is_read_only">Read-Only<span class="text-danger">&nbsp;*</span></label>
                 <br>
                 <label class="switch switch-square switch-lg mt-2">
                   <input type="checkbox" class="switch-input" id="isReadOnlyCheckbox" name="is_read_only" checked>
@@ -163,6 +169,12 @@
               </span>
                 </label>
               </div>
+              <h5 class="bg-body p-8 my-8 rounded border border-primary-subtle rounded">
+                <strong>
+                  <i class="fa fa-cogs me-4"></i>
+                  Advanced Configurations
+                </strong>
+              </h5>
               <div class="mb-6 col-6">
                 <label class="form-label" for="one_time_sql_retrieval_instance_limit">Maximum Record Retrieval per
                   Request</label>

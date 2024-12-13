@@ -91,7 +91,7 @@
             <div class="row">
               <!-- Organization -->
               <div class="col-6 mb-6">
-                <label class="form-label" for="organization">Organization</label>
+                <label class="form-label" for="organization">Organization<span class="text-danger">&nbsp;*</span></label>
                 <select class="form-select" id="organization" name="organization">
                   {% for organization in organizations %}
                     <option value="{{ organization.id }}">{{ organization.name }}</option>
@@ -101,20 +101,20 @@
 
               <!-- Name -->
               <div class="col-6 mb-6">
-                <label class="form-label" for="name">Name</label>
+                <label class="form-label" for="name">Name<span class="text-danger">&nbsp;*</span></label>
                 <input type="text" class="form-control" id="name" name="name" placeholder="Enter NER Policy Name" />
               </div>
 
               <!-- Description -->
               <div class="col-6 mb-6">
-                <label class="form-label" for="description">Description</label>
+                <label class="form-label" for="description">Description<span class="text-danger">&nbsp;*</span></label>
                 <textarea class="form-control" id="description" name="description" rows="1"
                           placeholder="Enter description for your policy in natural language."></textarea>
               </div>
 
               <!-- Language -->
               <div class="col-6 mb-6">
-                <label class="form-label" for="language">Language</label>
+                <label class="form-label" for="language">Language<span class="text-danger">&nbsp;*</span></label>
                 <select class="form-select" id="language" name="language">
                   <option value="en" selected>English</option>
                 </select>

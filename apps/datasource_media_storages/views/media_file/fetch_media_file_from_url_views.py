@@ -84,7 +84,7 @@ class MediaView_ItemHTTPRetrieval(LoginRequiredMixin, TemplateView):
         try:
             mm_id_int = int(mm_id)
 
-            download_file_from_url.delay(
+            download_file_from_url(
                 storage_id=mm_id_int,
                 url=retrieval_uri
             )

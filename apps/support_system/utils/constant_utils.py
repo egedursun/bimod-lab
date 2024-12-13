@@ -51,3 +51,5 @@ TICKET_STATUS_PRIORITY_MAP = {
     'resolved': TicketStatusPriorityMapScoreNames.RESOLVED,
     'closed': TicketStatusPriorityMapScoreNames.CLOSED
 }
+
+MAXIMUM_TICKET_FREQUENCY_ONCE_EVERY_HOURS_PER_USER = 12

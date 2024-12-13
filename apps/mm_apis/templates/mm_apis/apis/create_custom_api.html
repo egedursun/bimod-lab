@@ -103,11 +103,11 @@
             {% csrf_token %}
             <div class="row p-8">
               <div class="mb-6 col-6">
-                <label class="form-label" for="name">Name</label>
+                <label class="form-label" for="name">Name<span class="text-danger">&nbsp;*</span></label>
                 <input type="text" class="form-control" id="name" name="name" placeholder="Enter API name" required />
               </div>
               <div class="mb-6 col-6">
-                <label class="form-label" for="description">Description</label>
+                <label class="form-label" for="description">Description<span class="text-danger">&nbsp;*</span></label>
                 <textarea class="form-control" id="description" name="description" placeholder="Enter API description"
                           rows="1"
                           required></textarea>
@@ -117,7 +117,7 @@
                 <input type="file" class="form-control" id="api_picture" name="api_picture" />
               </div>
               <div class="mb-6 col-3">
-                <label class="form-label" for="authentication_type">Authentication Type</label>
+                <label class="form-label" for="authentication_type">Authentication Type<span class="text-danger">&nbsp;*</span></label>
                 <select name="authentication_type" class="form-select">
                   {% for value, label in CUSTOM_API_AUTHENTICATION_TYPES %}
                     <option value="{{ value }}">{{ label }}</option>
@@ -130,12 +130,12 @@
                        placeholder="Enter authentication token" />
               </div>
               <div class="mb-6 col-3">
-                <label class="form-label" for="base_url">Base URL</label>
+                <label class="form-label" for="base_url">Base URL<span class="text-danger">&nbsp;*</span></label>
                 <input type="text" class="form-control" id="base_url" name="base_url" placeholder="Enter base URL"
                        required />
               </div>
               <div class="mb-6 col-12" style="overflow-x: scroll;">
-                <label class="form-label" for="endpoints">Endpoints</label>
+                <label class="form-label" for="endpoints">Endpoints<span class="text-danger">&nbsp;*</span></label>
                 <table id="endpointsTable" class="table table-bordered">
                   <thead>
                   <tr>
@@ -244,7 +244,7 @@
                   Add New Endpoint</strong></button>
               </div>
               <div class="mb-6 col-8">
-                <label class="form-label" for="categories">Categories</label>
+                <label class="form-label" for="categories">Categories<span class="text-danger">&nbsp;*</span></label>
                 <div id="categories" class="form-control overflow-auto" style="max-height: 200px;">
                   {% for value, label in CUSTOM_API_CATEGORIES %}
                     <div class="form-check">

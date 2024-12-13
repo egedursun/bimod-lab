@@ -87,7 +87,7 @@
             {% csrf_token %}
             <!-- Organization Selection -->
             <div class="mb-3">
-              <label for="organization" class="form-label">Select Organization</label>
+              <label for="organization" class="form-label">Select Organization<span class="text-danger">&nbsp;*</span></label>
               <select class="form-select" id="organization" name="organization" required>
                 {% for organization in organizations %}
                   <option value="{{ organization.id }}">{{ organization.name }}</option>
@@ -97,13 +97,13 @@
 
             <!-- Backup Name -->
             <div class="mb-3">
-              <label for="backup_name" class="form-label">Backup Name</label>
+              <label for="backup_name" class="form-label">Backup Name<span class="text-danger">&nbsp;*</span></label>
               <input type="text" class="form-control" id="backup_name" name="backup_name" required>
             </div>
 
             <!-- Password and Confirmation -->
             <div class="mb-3">
-              <label for="backup_password" class="form-label">Password</label>
+              <label for="backup_password" class="form-label">Password<span class="text-danger">&nbsp;*</span></label>
               <div class="input-group">
                 <input type="password" class="form-control" id="backup_password" name="backup_password" required>
                 <button type="button" class="btn btn-outline-secondary" id="togglePassword" title="Show/Hide Password">
@@ -112,13 +112,13 @@
               </div>
             </div>
             <div class="mb-3">
-              <label for="confirm_password" class="form-label">Confirm Password</label>
+              <label for="confirm_password" class="form-label">Confirm Password<span class="text-danger">&nbsp;*</span></label>
               <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
             </div>
 
             <!-- Data Type Selection -->
             <div class="mb-3">
-              <label for="backup_model" class="form-label">Select Data to Backup</label>
+              <label for="backup_model" class="form-label">Select Data to Backup<span class="text-danger">&nbsp;*</span></label>
               <select class="form-select" id="backup_model" name="backup_model" required>
                 {% for value, label in backup_types %}
                   <option value="{{ value }}">{{ label }}</option>
@@ -184,7 +184,7 @@
             {% empty %}
               <tr>
                 <td colspan="6">
-                  <div class="alert alert-warning p-4 mt-4" role="alert">
+                  <div class="alert alert-warning p-8 mt-4 border border-warning border-2 rounded" role="alert">
                     <i class="fa fa-exclamation-triangle me-2"></i>
                     <strong>No backups have been generated yet.</strong>
                   </div>

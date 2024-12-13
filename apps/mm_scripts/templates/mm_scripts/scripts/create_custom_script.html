@@ -116,12 +116,12 @@
             {% csrf_token %}
             <div class="row p-8">
               <div class="mb-6 col-4">
-                <label class="form-label" for="name">Name</label>
+                <label class="form-label" for="name">Name<span class="text-danger">&nbsp;*</span></label>
                 <input type="text" class="form-control" id="name" name="name" placeholder="Enter script name"
                        required />
               </div>
               <div class="mb-6 col-4">
-                <label class="form-label" for="description">Description</label>
+                <label class="form-label" for="description">Description<span class="text-danger">&nbsp;*</span></label>
                 <textarea class="form-control" id="description" name="description" rows="1"
                           placeholder="Enter script description"
                           required></textarea>
@@ -131,7 +131,7 @@
                 <input type="file" class="form-control" id="script_picture" name="script_picture" />
               </div>
               <div class="mb-6 col-12">
-                <label class="form-label" for="code_text">Code</label>
+                <label class="form-label" for="code_text">Code<span class="text-danger">&nbsp;*</span></label>
                 <textarea class="form-control" id="code_text" name="code_text"
                           placeholder="Enter the code for the script"></textarea>
               </div>
@@ -141,7 +141,7 @@
                        onchange="parseCodeFile(this)" />
               </div>
               <div class="mb-6 col-12">
-                <label class="form-label" for="script_step_guide">Step Guide</label>
+                <label class="form-label" for="script_step_guide">Step Guide<span class="text-danger">&nbsp;*</span></label>
                 <table id="stepGuideTable" class="table table-bordered">
                   <thead>
                   <tr>

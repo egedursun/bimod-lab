@@ -88,16 +88,16 @@
           <form id="formAuthentication" class="mb-6" action="{% url 'register' %}" method="post">
             {% csrf_token %}
             <div class="mb-6">
-              <label for="username" class="form-label">Username</label>
+              <label for="username" class="form-label">Username<span class="text-danger">&nbsp;*</span></label>
               <input type="text" class="form-control" id="username" name="username" placeholder="Enter your username"
                      autofocus>
             </div>
             <div class="mb-6">
-              <label for="email" class="form-label">Email</label>
+              <label for="email" class="form-label">Email<span class="text-danger">&nbsp;*</span></label>
               <input type="text" class="form-control" id="email" name="email" placeholder="Enter your email">
             </div>
             <div class="mb-6 form-password-toggle">
-              <label class="form-label" for="password">Password</label>
+              <label class="form-label" for="password">Password<span class="text-danger">&nbsp;*</span></label>
               <div class="input-group input-group-merge">
                 <input type="password" id="password" class="form-control" name="password"
                        placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
@@ -107,7 +107,7 @@
             </div>
             <!-- confirm the password -->
             <div class="mb-6 form-password-toggle">
-              <label class="form-label" for="confirm_password">Confirm Password</label>
+              <label class="form-label" for="confirm_password">Confirm Password<span class="text-danger">&nbsp;*</span></label>
               <div class="input-group input-group-merge">
                 <input type="password" id="confirm_password" class="form-control" name="confirm_password"
                        placeholder="&#xB7;&#xB7;&#xB7;&#xB7;&#xB7;&#xB7;&#xB7;&#xB7;&#xB7;&#xB7;&#xB7;&#xB7;"
@@ -116,7 +116,7 @@
               </div>
             </div>
 
-            <div class="alert alert-solid-secondary d-flex align-items-center mt-6 text-small" role="alert">
+            <div class="alert bg-body border border-primary-subtle border-2 p-4 rounded d-flex align-items-center mt-6 text-small" role="alert">
                 <span class="alert-icon rounded">
                   <i class="ti ti-info-circle"></i>
                 </span>

@@ -86,8 +86,14 @@
             <img src="{% static 'img/media_storages/mul-1.png' %}" class="rounded" style="width: 100%;"
                  alt="Illustration for tips">
             <div class="row p-8">
+              <h5 class="bg-body p-8 my-8 rounded border border-primary-subtle rounded">
+                <strong>
+                  <i class="fa fa-info-circle me-4"></i>
+                  Essential Information
+                </strong>
+              </h5>
               <div class="mb-6 col-6">
-                <label class="form-label" for="media_category">Media Category</label>
+                <label class="form-label" for="media_category">Media Category<span class="text-danger">&nbsp;*</span></label>
                 <select class="form-select" id="media_category" name="media_category">
                   <option value="" disabled selected>Select Media Category</option>
                   {% for key, value in media_categories %}
@@ -96,7 +102,7 @@
                 </select>
               </div>
               <div class="mb-6 col-6">
-                <label class="form-label" for="assistant">Assistant</label>
+                <label class="form-label" for="assistant">Assistant<span class="text-danger">&nbsp;*</span></label>
                 <select class="form-select" id="assistant" name="assistant">
                   {% for assistant in assistants %}
                     <option value="{{ assistant.id }}">{{ assistant.name }}</option>
@@ -105,14 +111,20 @@
                 <div class="form-text"></div>
               </div>
               <div class="mb-6 col-6">
-                <label class="form-label" for="name">Name</label>
+                <label class="form-label" for="name">Name<span class="text-danger">&nbsp;*</span></label>
                 <input type="text" class="form-control" id="name" name="name" placeholder="Enter storage name" />
               </div>
               <div class="mb-6 col-6">
-                <label class="form-label" for="description">Description</label>
+                <label class="form-label" for="description">Description<span class="text-danger">&nbsp;*</span></label>
                 <textarea class="form-control" id="description" name="description" rows="1"
                           placeholder="Enter storage description"></textarea>
               </div>
+              <h5 class="bg-body p-8 my-8 rounded border border-primary-subtle rounded">
+                <strong>
+                  <i class="fa fa-cogs me-4"></i>
+                  Advanced Configurations
+                </strong>
+              </h5>
               <div class="mb-6 col-6">
                 <label class="form-label" for="interpretation_temperature">Interpretation Temperature</label>
                 <input type="number" class="form-control" id="interpretation_temperature"

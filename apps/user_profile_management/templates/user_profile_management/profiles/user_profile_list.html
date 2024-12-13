@@ -233,7 +233,7 @@
               <div class="row mt-4">
                 {% for item in saved_cards %}
                   <div class="col-md-4 mb-4 mt-4">
-                    <div class="card card-border-shadow-primary border border-1 border-primary">
+                    <div class="card bg-body border border-2 border-primary-subtle rounded">
                       <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center">
                           <div class="row p-2">
@@ -288,7 +288,7 @@
                   </div>
                 {% empty %}
                   <div class="col-md-12 mt-2">
-                    <div class="alert alert-warning" role="alert">
+                    <div class="alert alert-warning p-8 border border-2 border-warning rounded" role="alert">
                       <i class="fa fa-exclamation-triangle me-2"></i>
                       <strong>No saved payment cards found for the account.</strong>
                     </div>
@@ -326,24 +326,24 @@
                 {% csrf_token %}
                 <div class="row">
                   <div class="mb-4 col-sm-6">
-                    <label for="name_on_card" class="form-label">Name on Card</label>
+                    <label for="name_on_card" class="form-label">Name on Card<span class="text-danger">&nbsp;*</span></label>
                     <input type="text" id="name_on_card" name="name_on_card" class="form-control"
                            placeholder="John Doe" required />
                   </div>
                   <div class="mb-4 col-sm-6">
-                    <label for="card_number" class="form-label">Card Number</label>
+                    <label for="card_number" class="form-label">Card Number<span class="text-danger">&nbsp;*</span></label>
                     <input type="text" id="card_number" name="card_number" class="form-control" maxlength="19"
                            placeholder="0000-0000-0000-0000"
                            required />
                   </div>
                   <div class="mb-4 col-sm-2">
-                    <label for="card_expiration_month" class="form-label">Expiration Month</label>
+                    <label for="card_expiration_month" class="form-label">Expiration Month<span class="text-danger">&nbsp;*</span></label>
                     <input type="text" id="card_expiration_month" name="card_expiration_month" placeholder="MM"
                            class="form-control"
                            maxlength="2" required />
                   </div>
                   <div class="mb-4 col-sm-2">
-                    <label for="card_expiration_year" class="form-label">Expiration Year</label>
+                    <label for="card_expiration_year" class="form-label">Expiration Year<span class="text-danger">&nbsp;*</span></label>
                     <input type="text" id="card_expiration_year" name="card_expiration_year" placeholder="YY"
                            class="form-control"
                            maxlength="2" required />
@@ -351,7 +351,7 @@
                   <div class="mb-4 col-sm-2">
                   </div>
                   <div class="mb-4 col-sm-2">
-                    <label for="card_cvc" class="form-label">CVC</label>
+                    <label for="card_cvc" class="form-label">CVC Number<span class="text-danger">&nbsp;*</span></label>
                     <input type="text" id="card_cvc" name="card_cvc" class="form-control" placeholder="000X"
                            maxlength="4" required />
                   </div>

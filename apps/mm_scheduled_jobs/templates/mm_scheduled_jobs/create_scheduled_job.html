@@ -22,7 +22,7 @@
 {% load static %}
 {% load i18n %}
 
-{% block title %}Create Scheduled Job{% endblock %}
+{% block title %}Create BimodLab Assistant Scheduled Job{% endblock %}
 
 {% block vendor_css %}
   {{ block.super }}
@@ -43,13 +43,13 @@
           <a href="{% url 'mm_scheduled_jobs:list' %}">
             <button class="btn btn-secondary ms-4 mt-4 mb-8">
               <i class="fa fa-dashboard me-4"></i>
-              <strong> Manage Scheduled Jobs</strong>
+              <strong> Manage BimodLab Assistant Scheduled Jobs</strong>
             </button>
           </a>
         </div>
         <div class="card-header d-flex justify-content-between align-items-center">
           <h5 class="mb-0">
-            <strong>Create New Scheduled Job</strong>
+            <strong>Create New BimodLab Assistant Scheduled Job</strong>
           </h5>
           <small class="text-muted float-end"></small>
         </div>
@@ -86,7 +86,7 @@
             {% csrf_token %}
             <div class="row p-8">
               <div class="mb-6 col-4">
-                <label class="form-label" for="assistant">Assistant</label>
+                <label class="form-label" for="assistant">Assistant<span class="text-danger">&nbsp;*</span></label>
                 <select class="form-select" id="assistant" name="assistant">
                   {% for assistant in assistants %}
                     <option value="{{ assistant.id }}">{{ assistant.name }}</option>
@@ -94,16 +94,16 @@
                 </select>
               </div>
               <div class="mb-6 col-4">
-                <label class="form-label" for="name">Name</label>
+                <label class="form-label" for="name">Name<span class="text-danger">&nbsp;*</span></label>
                 <input type="text" class="form-control" id="name" name="name" placeholder="Enter job name" required />
               </div>
               <div class="mb-6 col-4">
-                <label class="form-label" for="task_description">Description</label>
+                <label class="form-label" for="task_description">Description<span class="text-danger">&nbsp;*</span></label>
                 <textarea class="form-control" id="task_description" name="task_description" rows="1"
                           placeholder="Enter job description" required></textarea>
               </div>
               <div class="mb-6 col-12">
-                <label class="form-label" for="step_guide">Step Guide</label>
+                <label class="form-label" for="step_guide">Step Guide<span class="text-danger">&nbsp;*</span></label>
                 <table id="stepGuideTable" class="table table-bordered">
                   <thead>
                   <tr>

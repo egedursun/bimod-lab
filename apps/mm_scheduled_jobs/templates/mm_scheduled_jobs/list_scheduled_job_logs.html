@@ -21,7 +21,7 @@
 {% load static %}
 {% load i18n %}
 
-{% block title %}Execution Logs for {{ scheduled_job.name }}{% endblock %}
+{% block title %}BimodLab Assistant Execution Logs for {{ scheduled_job.name }}{% endblock %}
 
 {% block vendor_css %}
   {{ block.super }}
@@ -45,9 +45,9 @@
 {% block content %}
 
   <a href="{% url 'mm_scheduled_jobs:list' %}">
-    <button class="btn btn-secondary my-4 w-25">
+    <button class="btn btn-secondary my-4">
       <i class="fa fa-chevron-left me-4"></i>
-      <strong> Back to Scheduled jobs</strong>
+      <strong> Back to BimodLab Assistant Scheduled Jobs</strong>
     </button>
   </a>
 
@@ -56,7 +56,7 @@
   <div class="row g-6 mb-6">
     <div class="">
       <h3 class="mb-0">
-        <strong>Execution Logs</strong>
+        <strong>BimodLab Assistant Scheduled Job Execution Logs</strong>
       </h3>
       <h5 class="mb-0">
         <i class="fa fa-user-clock me-2 mt-4"></i>
@@ -101,7 +101,7 @@
     <img src="{% static 'img/scheduled_jobs/sch-2.png' %}" class="rounded mt-4 mb-4" style="width: 100%;"
          alt="Illustration for tips">
     <div class="col-xl-12">
-      <h5 class="text-muted"><strong>Filter Execution Logs</strong></h5>
+      <h5 class="text-dark"><strong>Filter Execution Logs</strong></h5>
       <div class="card text-center mb-4">
         <div class="card-header">
           <div class="nav-align-top">
@@ -159,13 +159,23 @@
               </p>
             </td>
             <td>
-              <strong class="btn-info p-2 m-2 rounded">
-                <i class="fa fa-hashtag"></i>
+              <strong class="btn-success p-8 m-2 rounded">
+                <i class="fa fa-hashtag me-2"></i>
                 {{ instance.execution_index }} / {{ instance.scheduled_job.maximum_runs }}
               </strong>
             </td>
             <td>{{ instance.started_at }}</td>
             <td>{{ instance.ended_at }}</td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="6">
+              <div class="alert alert-warning mt-4 p-8 border border-warning border-2 rounded" role="alert">
+                <i class="fa fa-exclamation-triangle me-2"></i><strong>
+                No scheduled jobs for any of your organizations &amp; assistants are found yet.
+              </strong>
+              </div>
+            </td>
           </tr>
         {% endfor %}
         </tbody>
