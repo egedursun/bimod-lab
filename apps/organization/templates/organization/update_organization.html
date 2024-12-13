@@ -63,6 +63,7 @@
             <img src="
 
 
+
               {% if organization.organization_image %}{{ organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
                  class="rounded" width="170" height="170" alt="Organization Image">
             <h3 class="mb-0">
@@ -190,10 +191,12 @@
               </div>
               <div class="col-4 mb-6">
                 <label class="form-label" for="country">Country</label>
-                <input type="text" class="form-control" id="country" name="country"
-                       placeholder="Enter organization country"
-                       value="{% if organization.country %}{{ organization.country }}{% endif %}" />
-                <div class="form-text"></div>
+                <select id="country" name="country" class="select form-select">
+                  <option value="">Select</option>
+                  {% for country in countries %}
+                    <option value="{% if organization.country %}{{ organization.country }}{% endif %}">{{ country }}</option>
+                  {% endfor %}
+                </select>
               </div>
               <div class="col-4 mb-6">
                 <label class="form-label" for="postal_code">Postal Code</label>

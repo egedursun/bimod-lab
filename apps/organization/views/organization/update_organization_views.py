@@ -14,19 +14,38 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import redirect, get_object_or_404
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.shortcuts import (
+    redirect,
+    get_object_or_404
+)
+
 from django.views.generic import TemplateView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.organization.forms import OrganizationForm
-from apps.organization.models import Organization
-from apps.user_permissions.utils import PermissionNames
-from web_project import TemplateLayout
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
 
+from apps.organization.forms import (
+    OrganizationForm
+)
+
+from apps.organization.models import Organization
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
+from auth.utils import COUNTRIES
+from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
 
@@ -35,11 +54,22 @@ class OrganizationView_OrganizationUpdate(TemplateView, LoginRequiredMixin):
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+
         context_user = self.request.user
-        org = Organization.objects.filter(users__in=[context_user], id=kwargs['pk']).first()
+
+        org = Organization.objects.filter(
+            users__in=[context_user],
+            id=kwargs['pk']
+        ).first()
+
         context['organization'] = org
         context['user'] = context_user
-        context['form'] = OrganizationForm(instance=org)
+        context['countries'] = COUNTRIES
+
+        context['form'] = OrganizationForm(
+            instance=org
+        )
+
         return context
 
     def post(self, request, *args, **kwargs):
@@ -47,8 +77,10 @@ class OrganizationView_OrganizationUpdate(TemplateView, LoginRequiredMixin):
 
         ##############################
         # PERMISSION CHECK FOR - UPDATE_ORGANIZATIONS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.UPDATE_ORGANIZATIONS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.UPDATE_ORGANIZATIONS
+        ):
             messages.error(self.request, "You do not have permission to update organizations.")
             return redirect('organization:list')
         ##############################
