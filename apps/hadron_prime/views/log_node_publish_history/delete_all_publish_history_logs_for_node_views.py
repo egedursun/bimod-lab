@@ -14,17 +14,30 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.shortcuts import redirect
 from django.views import View
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.hadron_prime.models import HadronNode, HadronTopicMessage
-from apps.user_permissions.utils import PermissionNames
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
 
+from apps.hadron_prime.models import (
+    HadronNode,
+    HadronTopicMessage
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
 
 logger = logging.getLogger(__name__)
 
@@ -36,23 +49,41 @@ class HadronPrimeView_DeleteAllNodePublishHistoryLogs(LoginRequiredMixin, View):
 
     def post(self, request, *args, **kwargs):
         node_id = kwargs.get('pk')
-        sender_node = HadronNode.objects.get(id=node_id)
-        hadron_publish_history_logs = HadronTopicMessage.objects.filter(sender_node=sender_node)
+
+        sender_node = HadronNode.objects.get(
+            id=node_id
+        )
+
+        hadron_publish_history_logs = HadronTopicMessage.objects.filter(
+            sender_node=sender_node
+        )
 
         ##############################
         # PERMISSION CHECK FOR - DELETE_HADRON_NODE_PUBLISH_HISTORY_LOGS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.DELETE_HADRON_NODE_PUBLISH_HISTORY_LOGS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.DELETE_HADRON_NODE_PUBLISH_HISTORY_LOGS
+        ):
             messages.error(self.request, "You do not have permission to delete hadron node publish history nodes.")
-            return redirect('hadron_prime:detail_hadron_node', pk=node_id)
+
+            return redirect(
+                'hadron_prime:detail_hadron_node',
+                pk=node_id
+            )
         ##############################
 
         try:
             for hadron_publish_history_log in hadron_publish_history_logs:
                 hadron_publish_history_log.delete()
+
             logger.info(f"All hadron publish history logs associated with the node have been deleted.")
             messages.success(request, "All hadron publish history logs associated with the node have been deleted.")
+
         except Exception as e:
             logger.error(f"Error deleting hadron publish history logs for node: {e}")
             messages.error(request, f"Error deleting hadron publish history logs for node: {e}")
-        return redirect('hadron_prime:detail_hadron_node', pk=node_id)
+
+        return redirect(
+            'hadron_prime:detail_hadron_node',
+            pk=node_id
+        )

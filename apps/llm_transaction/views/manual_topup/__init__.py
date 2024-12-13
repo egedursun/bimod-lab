@@ -14,8 +14,5 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from .create_manual_topup_views import *

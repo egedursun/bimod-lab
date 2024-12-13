@@ -18,16 +18,29 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import redirect, get_object_or_404
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.shortcuts import (
+    redirect,
+    get_object_or_404
+)
+
 from django.views import View
 
 from apps.core.user_permissions.permission_manager import (
     UserPermissionManager
 )
 
-from apps.export_leanmods.models import ExportLeanmodAssistantAPI
-from apps.user_permissions.utils import PermissionNames
+from apps.export_leanmods.models import (
+    ExportLeanmodAssistantAPI
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
 
 logger = logging.getLogger(__name__)
 

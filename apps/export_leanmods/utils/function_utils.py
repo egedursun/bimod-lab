@@ -20,13 +20,19 @@ import logging
 import random
 import string
 
-from apps.leanmod.models import LeanAssistant
+from apps.leanmod.models import (
+    LeanAssistant
+)
+
 from config import settings
 
 logger = logging.getLogger(__name__)
 
 
-def generate_leanmod_assistant_endpoint(assistant: LeanAssistant, export_id: int):
+def generate_leanmod_assistant_endpoint(
+    assistant: LeanAssistant,
+    export_id: int
+):
     logger.info(f"Generating LeanMod Assistant Endpoint for Assistant: {assistant}")
 
     org_id = assistant.organization.id
@@ -34,6 +40,7 @@ def generate_leanmod_assistant_endpoint(assistant: LeanAssistant, export_id: int
     export_id = export_id
 
     endpoint_str = f"{str(org_id)}/{str(assistant_id)}/{str(export_id)}/"
+
     return endpoint_str
 
 

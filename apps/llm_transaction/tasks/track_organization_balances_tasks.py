@@ -14,16 +14,16 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
+
 import logging
 
 from celery import shared_task
 
-from apps.llm_transaction.models import OrganizationBalanceSnapshot
-from apps.organization.models import Organization
+from apps.llm_transaction.models import (
+    OrganizationBalanceSnapshot
+)
 
+from apps.organization.models import Organization
 
 logger = logging.getLogger(__name__)
 
@@ -31,8 +31,15 @@ logger = logging.getLogger(__name__)
 @shared_task
 def track_organization_balances():
     all_orgs = Organization.objects.all()
+
     for org in all_orgs:
-        ss = OrganizationBalanceSnapshot(organization=org, balance=org.balance)
+        ss = OrganizationBalanceSnapshot(
+            organization=org,
+            balance=org.balance
+        )
+
         ss.save()
+
     logger.info(f"Organization balances were tracked.")
+
     return True

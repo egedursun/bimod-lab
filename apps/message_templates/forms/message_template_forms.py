@@ -14,17 +14,27 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from django import forms
 
-from apps.message_templates.models import MessageTemplate
+from apps.message_templates.models import (
+    MessageTemplate
+)
 
 
 class MessageTemplateForm(forms.ModelForm):
     class Meta:
         model = MessageTemplate
-        fields = ['organization', 'template_text']
-        widgets = {'template_text': forms.Textarea(attrs={'rows': 5, 'class': 'form-control'})}
+        fields = [
+            'organization',
+            'template_text'
+        ]
+
+        widgets = {
+            'template_text': forms.Textarea(
+                attrs={
+                    'rows': 5,
+                    'class': 'form-control'
+                }
+            )
+        }

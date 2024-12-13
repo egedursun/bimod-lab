@@ -17,9 +17,15 @@
 
 from django.contrib import admin
 
-from apps.meta_integrations.models import MetaIntegrationTeam
-from apps.meta_integrations.utils import META_INTEGRATION_TEAM_ADMIN_LIST, META_INTEGRATION_TEAM_ADMIN_FILTER, \
+from apps.meta_integrations.models import (
+    MetaIntegrationTeam
+)
+
+from apps.meta_integrations.utils import (
+    META_INTEGRATION_TEAM_ADMIN_LIST,
+    META_INTEGRATION_TEAM_ADMIN_FILTER,
     META_INTEGRATION_TEAM_ADMIN_SEARCH
+)
 
 
 @admin.register(MetaIntegrationTeam)
@@ -27,4 +33,5 @@ class MetaIntegrationTeamAdmin(admin.ModelAdmin):
     list_display = META_INTEGRATION_TEAM_ADMIN_LIST
     list_filter = META_INTEGRATION_TEAM_ADMIN_FILTER
     search_fields = META_INTEGRATION_TEAM_ADMIN_SEARCH
+
     ordering = ['created_at']

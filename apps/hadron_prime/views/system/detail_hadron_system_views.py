@@ -15,13 +15,28 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.core.paginator import Paginator
 from django.views.generic import TemplateView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.hadron_prime.models import HadronSystem, HadronNode, HadronTopic
-from apps.user_permissions.utils import PermissionNames
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
+from apps.hadron_prime.models import (
+    HadronSystem,
+    HadronNode,
+    HadronTopic
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 
@@ -32,22 +47,37 @@ class HadronPrimeView_DetailHadronSystem(LoginRequiredMixin, TemplateView):
 
         ##############################
         # PERMISSION CHECK FOR - LIST_HADRON_SYSTEMS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.LIST_HADRON_SYSTEMS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.LIST_HADRON_SYSTEMS
+        ):
             messages.error(self.request, "You do not have permission to list Hadron Systems.")
             return context
         ##############################
 
-        system = HadronSystem.objects.get(pk=system_id)
-        nodes = HadronNode.objects.filter(system=system)
-        topics = HadronTopic.objects.filter(system=system)
+        system = HadronSystem.objects.get(
+            pk=system_id
+        )
+
+        nodes = HadronNode.objects.filter(
+            system=system
+        )
+
+        topics = HadronTopic.objects.filter(
+            system=system
+        )
+
         nodes_paginator = Paginator(nodes, 10)
         topics_paginator = Paginator(topics, 10)
+
         nodes_page_number = self.request.GET.get('nodes_page')
         topics_page_number = self.request.GET.get('topics_page')
+
         nodes_page_obj = nodes_paginator.get_page(nodes_page_number)
         topics_page_obj = topics_paginator.get_page(topics_page_number)
+
         context['hadron_system'] = system
         context['nodes_page_obj'] = nodes_page_obj
         context['topics_page_obj'] = topics_page_obj
+
         return context

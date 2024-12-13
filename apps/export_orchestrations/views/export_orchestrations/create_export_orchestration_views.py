@@ -18,18 +18,36 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import redirect, get_object_or_404
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.shortcuts import (
+    redirect,
+    get_object_or_404
+)
+
 from django.views.generic import TemplateView
 
 from apps.core.user_permissions.permission_manager import (
     UserPermissionManager
 )
 
-from apps.export_orchestrations.models import ExportOrchestrationAPI
-from apps.orchestrations.models import Maestro
+from apps.export_orchestrations.models import (
+    ExportOrchestrationAPI
+)
+
+from apps.orchestrations.models import (
+    Maestro
+)
+
 from apps.user_permissions.utils import PermissionNames
-from config.settings import MAX_ORCHESTRATIONS_EXPORTS_ORGANIZATION
+
+from config.settings import (
+    MAX_ORCHESTRATIONS_EXPORTS_ORGANIZATION
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -40,12 +58,14 @@ class ExportOrchestrationView_Create(TemplateView, LoginRequiredMixin):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
 
         user_context = self.request.user
+
         agents = Maestro.objects.filter(
             organization__users__in=[user_context]
         )
 
         context["user"] = user_context
         context["assistants"] = agents
+
         return context
 
     def post(self, request, *args, **kwargs):
@@ -61,7 +81,12 @@ class ExportOrchestrationView_Create(TemplateView, LoginRequiredMixin):
         ##############################
 
         agent_id = request.POST.get('assistant')
-        agent = get_object_or_404(Maestro, pk=agent_id)
+
+        agent = get_object_or_404(
+            Maestro,
+            pk=agent_id
+        )
+
         is_public = request.POST.get('is_public') == 'on'
         req_limit_hourly = request.POST.get('request_limit_per_hour')
 
@@ -71,6 +96,7 @@ class ExportOrchestrationView_Create(TemplateView, LoginRequiredMixin):
             logger.error(
                 f"User: {request.user.id} tried to create more than {MAX_ORCHESTRATIONS_EXPORTS_ORGANIZATION} "
                 f"Export Orchestration APIs.")
+
             messages.error(request, f"Maximum number of Export Orchestration APIs reached for the organization.")
 
             return self.render_to_response(self.get_context_data())
@@ -92,9 +118,11 @@ class ExportOrchestrationView_Create(TemplateView, LoginRequiredMixin):
             org = agent.organization
 
             if not org.exported_orchestrations:
-                org.exported_orchestrations.set([
-                    new_export_assistant
-                ])
+                org.exported_orchestrations.set(
+                    [
+                        new_export_assistant
+                    ]
+                )
 
             else:
                 org.exported_orchestrations.add(new_export_assistant)

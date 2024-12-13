@@ -17,15 +17,35 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import redirect, get_object_or_404
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.shortcuts import (
+    redirect,
+    get_object_or_404
+)
+
 from django.views import View
 
 from apps.assistants.models import Assistant
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.formica.models import FormicaGoogleAppsConnection
-from apps.formica.utils import generate_google_apps_connection_api_key
-from apps.user_permissions.utils import PermissionNames
+
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
+from apps.formica.models import (
+    FormicaGoogleAppsConnection
+)
+
+from apps.formica.utils import (
+    generate_google_apps_connection_api_key
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
 
 logger = logging.getLogger(__name__)
 
@@ -38,32 +58,45 @@ class FormicaView_GoogleAppsConnectionCreate(LoginRequiredMixin, View):
 
         ##############################
         # PERMISSION CHECK FOR - ADD_FORMICA_GOOGLE_APPS_CONNECTIONS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.ADD_FORMICA_GOOGLE_APPS_CONNECTIONS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.ADD_FORMICA_GOOGLE_APPS_CONNECTIONS
+        ):
             messages.error(self.request, "You do not have permission to add Formica Google Apps Connections.")
             return redirect('formica:google_apps_connections_list')
         ##############################
 
         assistant_id = request.POST.get('assistant')
+
         if not assistant_id:
             messages.error(request, "Assistant field is required.")
+
             return redirect('formica:google_apps_connections_list')
 
         try:
-            assistant = get_object_or_404(Assistant, id=assistant_id)
+            assistant = get_object_or_404(
+                Assistant,
+                id=assistant_id
+            )
+
             connection, created = FormicaGoogleAppsConnection.objects.get_or_create(
-                owner_user=request.user, formica_assistant=assistant,
+                owner_user=request.user,
+                formica_assistant=assistant,
                 defaults={'connection_api_key': generate_google_apps_connection_api_key()}
             )
 
             if not created:
                 messages.warning(request, "A connection for this model already exists. Please renew if necessary.")
+
             else:
                 messages.success(request, "Connection successfully created.")
+
         except Exception as e:
             logger.error(f"Error creating Google Apps Connection: {e}")
             messages.error(request, "Error creating Google Apps Connection.")
+
             return redirect('formica:google_apps_connections_list')
 
         logger.info(f"Google Apps Connection was created by User: {request.user.id}.")
+
         return redirect('formica:google_apps_connections_list')

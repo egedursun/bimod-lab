@@ -19,7 +19,11 @@ from django.db import models
 
 
 class HadronNodeSpeechLog(models.Model):
-    node = models.ForeignKey('HadronNode', on_delete=models.CASCADE)
+    node = models.ForeignKey(
+        'HadronNode',
+        on_delete=models.CASCADE
+    )
+
     user_query_text = models.TextField(null=True, blank=True)
     speech_log = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -30,7 +34,12 @@ class HadronNodeSpeechLog(models.Model):
     class Meta:
         verbose_name = 'Hadron Node Speech Log'
         verbose_name_plural = 'Hadron Node Speech Logs'
+
         ordering = ['-created_at']
+
         indexes = [
-            models.Index(fields=['node', 'created_at']),
+            models.Index(fields=[
+                'node',
+                'created_at'
+            ]),
         ]

@@ -20,12 +20,17 @@ from django.db import models
 
 
 class HadronStateErrorActionStateErrorLog(models.Model):
-    node = models.ForeignKey('hadron_prime.HadronNode', on_delete=models.CASCADE)
+    node = models.ForeignKey(
+        'hadron_prime.HadronNode',
+        on_delete=models.CASCADE
+    )
+
     old_state = models.TextField()
     old_error = models.TextField()
     action = models.TextField()
     new_state = models.TextField()
     new_error = models.TextField()
+
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -34,8 +39,16 @@ class HadronStateErrorActionStateErrorLog(models.Model):
     class Meta:
         verbose_name = 'Hadron State-Error-Action-State-Error Log'
         verbose_name_plural = 'Hadron State-Error-Action-State-Error Logs'
+
         ordering = ['-created_at']
+
         indexes = [
-            models.Index(fields=['node', 'action']),
-            models.Index(fields=['node', 'created_at']),
+            models.Index(fields=[
+                'node',
+                'action'
+            ]),
+            models.Index(fields=[
+                'node',
+                'created_at'
+            ]),
         ]

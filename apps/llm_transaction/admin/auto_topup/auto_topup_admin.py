@@ -14,17 +14,20 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from django.contrib import admin
 
-from apps.llm_transaction.models import AutoBalanceTopUpModel
-from apps.llm_transaction.utils import AUTO_TOP_UP_ADMIN_LIST
+from apps.llm_transaction.models import (
+    AutoBalanceTopUpModel
+)
+
+from apps.llm_transaction.utils import (
+    AUTO_TOP_UP_ADMIN_LIST
+)
 
 
 @admin.register(AutoBalanceTopUpModel)
 class AutoBalanceTopUpModelAdmin(admin.ModelAdmin):
     list_display = AUTO_TOP_UP_ADMIN_LIST
+
     ordering = ["-created_at"]

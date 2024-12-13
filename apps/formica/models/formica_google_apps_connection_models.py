@@ -20,8 +20,18 @@ from django.db import models
 
 
 class FormicaGoogleAppsConnection(models.Model):
-    formica_assistant = models.ForeignKey('assistants.Assistant', on_delete=models.CASCADE, null=True, blank=True)
-    owner_user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    formica_assistant = models.ForeignKey(
+        'assistants.Assistant',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True
+    )
+
+    owner_user = models.ForeignKey(
+        'auth.User',
+        on_delete=models.CASCADE
+    )
+
     connection_api_key = models.CharField(max_length=4000)
 
     created_at = models.DateTimeField(auto_now_add=True)
@@ -33,11 +43,23 @@ class FormicaGoogleAppsConnection(models.Model):
     class Meta:
         verbose_name = 'Formica Google Apps Connection'
         verbose_name_plural = 'Formica Google Apps Connections'
+
         indexes = [
-            models.Index(fields=['formica_assistant']),
-            models.Index(fields=['owner_user']),
-            models.Index(fields=['formica_assistant', 'owner_user']),
+            models.Index(fields=[
+                'formica_assistant'
+            ]),
+            models.Index(fields=[
+                'owner_user'
+            ]),
+            models.Index(fields=[
+                'formica_assistant',
+                'owner_user'
+            ]),
         ]
+
         unique_together = [
-            ['formica_assistant', 'owner_user'],
+            [
+                'formica_assistant',
+                'owner_user'
+            ],
         ]

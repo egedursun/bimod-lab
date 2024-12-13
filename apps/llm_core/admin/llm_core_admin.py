@@ -18,7 +18,12 @@
 from django.contrib import admin
 
 from apps.llm_core.models import LLMCore
-from apps.llm_core.utils import LLM_CORE_ADMIN_LIST, LLM_CORE_ADMIN_FILTER, LLM_CORE_ADMIN_SEARCH
+
+from apps.llm_core.utils import (
+    LLM_CORE_ADMIN_LIST,
+    LLM_CORE_ADMIN_FILTER,
+    LLM_CORE_ADMIN_SEARCH
+)
 
 
 @admin.register(LLMCore)
@@ -26,5 +31,6 @@ class LLMCoreAdmin(admin.ModelAdmin):
     list_display = LLM_CORE_ADMIN_LIST
     list_filter = LLM_CORE_ADMIN_FILTER
     search_fields = LLM_CORE_ADMIN_SEARCH
+
     date_hierarchy = "created_at"
     ordering = ["-created_at"]

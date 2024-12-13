@@ -14,9 +14,5 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
-#
 from .transfer_balance_views import *

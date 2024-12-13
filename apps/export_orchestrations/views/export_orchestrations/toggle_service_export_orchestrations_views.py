@@ -18,16 +18,29 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import redirect, get_object_or_404
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.shortcuts import (
+    redirect,
+    get_object_or_404
+)
+
 from django.views import View
 
 from apps.core.user_permissions.permission_manager import (
     UserPermissionManager
 )
 
-from apps.export_orchestrations.models import ExportOrchestrationAPI
-from apps.user_permissions.utils import PermissionNames
+from apps.export_orchestrations.models import (
+    ExportOrchestrationAPI
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
 
 logger = logging.getLogger(__name__)
 
@@ -44,7 +57,11 @@ class ExportOrchestrationView_ToggleService(LoginRequiredMixin, View):
             return redirect('export_orchestrations:list')
         ##############################
 
-        exp_agent = get_object_or_404(ExportOrchestrationAPI, pk=self.kwargs['pk'])
+        exp_agent = get_object_or_404(
+            ExportOrchestrationAPI,
+            pk=self.kwargs['pk']
+        )
+
         exp_agent.is_online = not exp_agent.is_online
 
         exp_agent.save()
@@ -53,5 +70,14 @@ class ExportOrchestrationView_ToggleService(LoginRequiredMixin, View):
 
         return redirect('export_orchestrations:list')
 
-    def get(self, request, *args, **kwargs):
-        return self.post(request, *args, **kwargs)
+    def get(
+        self,
+        request,
+        *args,
+        **kwargs
+    ):
+        return self.post(
+            request,
+            *args,
+            **kwargs
+        )

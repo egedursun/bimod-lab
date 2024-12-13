@@ -24,9 +24,21 @@ class LLMCoreForm(forms.ModelForm):
     class Meta:
         model = LLMCore
         fields = [
-            'nickname', 'description', 'provider', 'api_key', 'model_name', 'temperature', 'maximum_tokens',
-            'stop_sequences', 'top_p', 'frequency_penalty', 'presence_penalty', 'organization',
+            'nickname',
+            'description',
+            'provider',
+            'api_key',
+            'model_name',
+            'temperature',
+            'maximum_tokens',
+            'stop_sequences',
+            'top_p',
+            'frequency_penalty',
+            'presence_penalty',
+            'organization',
         ]
 
     def clean_model_name(self):
-        return self.cleaned_data.get('model_name')
+        return self.cleaned_data.get(
+            'model_name'
+        )

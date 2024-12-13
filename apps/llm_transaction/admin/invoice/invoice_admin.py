@@ -14,19 +14,22 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from django.contrib import admin
 
-from apps.llm_transaction.models import TransactionInvoice
-from apps.llm_transaction.utils import INVOICE_ADMIN_LIST
+from apps.llm_transaction.models import (
+    TransactionInvoice
+)
+
+from apps.llm_transaction.utils import (
+    INVOICE_ADMIN_LIST
+)
 
 
 @admin.register(TransactionInvoice)
 class TransactionInvoiceAdmin(admin.ModelAdmin):
     list_display = INVOICE_ADMIN_LIST
+
     ordering = ["-transaction_date"]
     date_hierarchy = "transaction_date"
     readonly_fields = ["transaction_date"]

@@ -17,12 +17,15 @@
 
 from django import forms
 
-from apps.finetuning.models import FineTunedModelConnection
+from apps.finetuning.models import (
+    FineTunedModelConnection
+)
 
 
 class FineTunedModelConnectionForm(forms.ModelForm):
     class Meta:
         model = FineTunedModelConnection
+
         fields = [
             'organization',
             'nickname',

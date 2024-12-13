@@ -19,13 +19,28 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import get_object_or_404, redirect
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.shortcuts import (
+    get_object_or_404,
+    redirect
+)
+
 from django.views.generic import TemplateView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
 from apps.hadron_prime.models import HadronTopic
-from apps.user_permissions.utils import PermissionNames
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -35,8 +50,14 @@ class HadronPrimeView_DeleteHadronTopic(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         topic_id = kwargs.get('pk')
-        hadron_topic = get_object_or_404(HadronTopic, id=topic_id)
+
+        hadron_topic = get_object_or_404(
+            HadronTopic,
+            id=topic_id
+        )
+
         context['hadron_topic'] = hadron_topic
+
         return context
 
     def post(self, request, *args, **kwargs):
@@ -44,21 +65,32 @@ class HadronPrimeView_DeleteHadronTopic(LoginRequiredMixin, TemplateView):
 
         ##############################
         # PERMISSION CHECK FOR - DELETE_HADRON_TOPICS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.DELETE_HADRON_TOPICS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.DELETE_HADRON_TOPICS
+        ):
             messages.error(self.request, "You do not have permission to delete Hadron Topics.")
             return redirect('hadron_prime:list_hadron_system')
         ##############################
 
-        hadron_topic = get_object_or_404(HadronTopic, id=topic_id)
+        hadron_topic = get_object_or_404(
+            HadronTopic,
+            id=topic_id
+        )
 
         try:
             hadron_topic.delete()
+
         except Exception as e:
             logger.error(f"Error deleting Hadron Topic: {e}")
             messages.error(request, f"Error deleting Hadron Topic: {e}")
-            return redirect('hadron_prime:detail_hadron_topic', pk=topic_id)
+
+            return redirect(
+                'hadron_prime:detail_hadron_topic',
+                pk=topic_id
+            )
 
         logger.info(f'Hadron Topic "{hadron_topic.topic_name}" has been deleted successfully.')
         messages.success(request, f'Hadron Topic "{hadron_topic.topic_name}" has been deleted successfully.')
+
         return redirect('hadron_prime:list_hadron_system')

@@ -14,18 +14,29 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.leanmod.models import LeanAssistant
-from apps.user_permissions.utils import PermissionNames
-from web_project import TemplateLayout
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
 
+from apps.leanmod.models import LeanAssistant
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
+from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
 
@@ -34,7 +45,11 @@ class LeanModAssistantView_Delete(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         agent_id = kwargs.get('pk')
-        context['lean_assistant'] = LeanAssistant.objects.get(id=agent_id)
+
+        context['lean_assistant'] = LeanAssistant.objects.get(
+            id=agent_id
+        )
+
         return context
 
     def post(self, request, *args, **kwargs):
@@ -42,21 +57,30 @@ class LeanModAssistantView_Delete(LoginRequiredMixin, TemplateView):
 
         ##############################
         # PERMISSION CHECK FOR - DELETE_LEAN_ASSISTANT
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.DELETE_LEAN_ASSISTANT):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.DELETE_LEAN_ASSISTANT
+        ):
             messages.error(self.request, "You do not have permission to delete LeanMod assistants.")
             return redirect('leanmod:list')
         ##############################
 
         try:
-            leanmod_agent = LeanAssistant.objects.get(id=agent_id)
+            leanmod_agent = LeanAssistant.objects.get(
+                id=agent_id
+            )
+
             leanmod_agent.delete()
+
             logger.info(f"Lean Assistant {leanmod_agent.name} was deleted by User: {self.request.user.id}.")
             messages.success(request, f"Lean Assistant '{leanmod_agent.name}' was deleted successfully.")
+
         except LeanAssistant.DoesNotExist:
             logger.error("The Lean Assistant does not exist.")
             messages.error(request, "The Lean Assistant does not exist.")
+
         except Exception as e:
             logger.error(f"An error occurred while deleting the Lean Assistant: {e}")
             messages.error(request, f"An error occurred while deleting the Lean Assistant: {e}")
+
         return redirect('leanmod:list')

@@ -14,19 +14,39 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 from django.urls import path
 
-from apps.integrations.views import (IntegrationView_IntegrationCategoryStore,
-                                     IntegrationView_IntegrationCategoriesList,
-                                     IntegrationView_IntegrateAssistantToOrganization)
+from apps.integrations.views import (
+    IntegrationView_IntegrationCategoryStore,
+    IntegrationView_IntegrationCategoriesList,
+    IntegrationView_IntegrateAssistantToOrganization
+)
 
 app_name = 'integrations'
 
 urlpatterns = [
-    path("categories/", IntegrationView_IntegrationCategoriesList.as_view(
-        template_name="integrations/list_integration_categories.html"), name="list"),
-    path("categories/<slug:category_slug>/", IntegrationView_IntegrationCategoryStore.as_view(
-        template_name="integrations/store_integration_category.html"), name="store"),
+    path(
+        "categories/",
+        IntegrationView_IntegrationCategoriesList.as_view(
+            template_name="integrations/list_integration_categories.html"
+        ),
+        name="list"
+    ),
 
-    path("integrate/", IntegrationView_IntegrateAssistantToOrganization.as_view(), name="integrate"),
+    path(
+        "categories/<slug:category_slug>/",
+        IntegrationView_IntegrationCategoryStore.as_view(
+            template_name="integrations/store_integration_category.html"
+        ),
+        name="store"
+    ),
+
+    path(
+        "integrate/",
+        IntegrationView_IntegrateAssistantToOrganization.as_view(
+
+        ),
+        name="integrate"
+    ),
 ]

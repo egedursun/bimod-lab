@@ -17,7 +17,10 @@
 
 from django.views.generic import TemplateView
 
-from web_project import TemplateLayout, TemplateHelper
+from web_project import (
+    TemplateLayout,
+    TemplateHelper
+)
 
 
 class LandingView_Index(TemplateView):
@@ -36,4 +39,5 @@ class LandingView_Index(TemplateView):
         )
 
         TemplateHelper.map_context(context)
+
         return context

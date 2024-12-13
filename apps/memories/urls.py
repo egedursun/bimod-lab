@@ -17,12 +17,36 @@
 
 from django.urls import path
 
-from apps.memories.views import AssistantMemoryView_List, AssistantMemoryView_Create, AssistantMemoryView_Delete
+from apps.memories.views import (
+    AssistantMemoryView_List,
+    AssistantMemoryView_Create,
+    AssistantMemoryView_Delete
+)
 
 app_name = "memories"
 
 urlpatterns = [
-    path("list/", AssistantMemoryView_List.as_view(template_name="memories/list_memories.html"), name="list"),
-    path("create/", AssistantMemoryView_Create.as_view(template_name="memories/create_memory.html"), name="create"),
-    path("delete/<int:pk>/", AssistantMemoryView_Delete.as_view(), name="delete"),
+    path(
+        "list/",
+        AssistantMemoryView_List.as_view(
+            template_name="memories/list_memories.html"
+        ),
+        name="list"
+    ),
+
+    path(
+        "create/",
+        AssistantMemoryView_Create.as_view(
+            template_name="memories/create_memory.html"
+        ),
+        name="create"
+    ),
+
+    path(
+        "delete/<int:pk>/",
+        AssistantMemoryView_Delete.as_view(
+
+        ),
+        name="delete"
+    ),
 ]

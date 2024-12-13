@@ -14,9 +14,13 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.views.generic import TemplateView
 
 from apps.organization.models import Organization
@@ -30,13 +34,23 @@ class Transactions_ManualTopUpCreate(LoginRequiredMixin, TemplateView):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
 
         try:
-            selected_org = Organization.objects.filter(users__in=[self.request.user]).first()
+            selected_org = Organization.objects.filter(
+                users__in=[self.request.user]
+            ).first()
+
             context['selected_organization'] = selected_org
-            orgs = Organization.objects.filter(users__in=[self.request.user]).all()
+
+            orgs = Organization.objects.filter(
+                users__in=[self.request.user]
+            ).all()
+
             context['organizations'] = orgs
+
         except Exception as e:
             logger.error(f"Error getting context data for Manual Top Up: {e}")
+
             return context
 
         logger.info(f"Manual Top Up was created by User: {self.request.user.id}.")
+
         return context

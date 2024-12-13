@@ -29,6 +29,7 @@ class OrchestratorRequestLog(models.Model):
     class Meta:
         verbose_name = "Request Orchestration Log"
         verbose_name_plural = "Request Orchestration Logs"
+
         ordering = ['-timestamp']
 
         indexes = [

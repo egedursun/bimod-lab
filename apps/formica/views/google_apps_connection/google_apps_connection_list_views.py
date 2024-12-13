@@ -16,15 +16,35 @@
 #
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.core.paginator import (
+    Paginator,
+    PageNotAnInteger,
+    EmptyPage
+)
+
 from django.views.generic import TemplateView
 
 from apps.assistants.models import Assistant
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.formica.models import FormicaGoogleAppsConnection
+
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
+from apps.formica.models import (
+    FormicaGoogleAppsConnection
+)
+
 from apps.organization.models import Organization
-from apps.user_permissions.utils import PermissionNames
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 
@@ -34,29 +54,43 @@ class FormicaView_GoogleAppsConnectionList(LoginRequiredMixin, TemplateView):
 
         ##############################
         # PERMISSION CHECK FOR - LIST_FORMICA_GOOGLE_APPS_CONNECTIONS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.LIST_FORMICA_GOOGLE_APPS_CONNECTIONS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.LIST_FORMICA_GOOGLE_APPS_CONNECTIONS
+        ):
             messages.error(self.request, "You do not have permission to list Formica Google Apps Connections.")
             return context
         ##############################
 
         try:
-            connections = FormicaGoogleAppsConnection.objects.filter(owner_user=self.request.user)
-            user_orgs = Organization.objects.filter(users__in=[self.request.user])
-            context['assistants'] = Assistant.objects.filter(organization__in=user_orgs)
+            connections = FormicaGoogleAppsConnection.objects.filter(
+                owner_user=self.request.user
+            )
+
+            user_orgs = Organization.objects.filter(
+                users__in=[self.request.user]
+            )
+
+            context['assistants'] = Assistant.objects.filter(
+                organization__in=user_orgs
+            )
 
             paginator = Paginator(connections, 10)
             page = self.request.GET.get('page')
 
             try:
                 paginated_connections = paginator.page(page)
+
             except PageNotAnInteger:
                 paginated_connections = paginator.page(1)
+
             except EmptyPage:
                 paginated_connections = paginator.page(paginator.num_pages)
 
             context['connections'] = paginated_connections
+
         except Exception as e:
             messages.error(self.request, "Error listing Formica Google Apps Connections.")
             context['connections'] = []
+
         return context

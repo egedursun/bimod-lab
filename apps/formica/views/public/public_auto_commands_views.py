@@ -19,12 +19,23 @@
 import logging
 
 from django.http import JsonResponse
-from django.utils.decorators import method_decorator
-from django.views import View
-from django.views.decorators.csrf import csrf_exempt
 
-from apps.core.formica.formica_executor_public import FormicaExecutionManager_Public
-from apps.formica.utils import is_valid_google_apps_authentication_key
+from django.utils.decorators import (
+    method_decorator
+)
+
+from django.views import View
+from django.views.decorators.csrf import (
+    csrf_exempt
+)
+
+from apps.core.formica.formica_executor_public import (
+    FormicaExecutionManager_Public
+)
+
+from apps.formica.utils import (
+    is_valid_google_apps_authentication_key
+)
 
 logger = logging.getLogger(__name__)
 
@@ -32,28 +43,60 @@ logger = logging.getLogger(__name__)
 @method_decorator(csrf_exempt, name='dispatch')
 class FormicaView_PublicGenerateViaAutoCommand(View):
 
-    def get(self, request, *args, **kwargs):
-        return self.post(request, *args, **kwargs)
+    def get(
+        self,
+        request,
+        *args,
+        **kwargs
+    ):
+        return self.post(
+            request,
+            *args,
+            **kwargs
+        )
 
     def post(self, request, *args, **kwargs):
         text_content = request.POST.get('text_content')
+
         if text_content is None:
             logger.error(f"Text Content is None, assuming empty string.")
             text_content = ""
 
         # auth key check
+
         authentication_key = request.POST.get('authentication_key')
+
         if authentication_key is None:
             logger.error(f"Google Apps Authentication Key is required.")
-            return JsonResponse({"output": None, "message": "Google Apps Authentication Key is required."})
 
-        connection_object = is_valid_google_apps_authentication_key(authentication_key=authentication_key)
+            return JsonResponse(
+                {
+                    "output": None,
+                    "message": "Google Apps Authentication Key is required."
+                }
+            )
+
+        connection_object = is_valid_google_apps_authentication_key(
+            authentication_key=authentication_key
+        )
+
         if not connection_object:
             logger.error(f"Invalid Google Apps Authentication Key.")
-            return JsonResponse({"output": None, "message": "Invalid Google Apps Authentication Key."})
 
-        xc = FormicaExecutionManager_Public(formica_google_apps_connection=connection_object,
-                                            text_content=text_content)
+            return JsonResponse(
+                {
+                    "output": None,
+                    "message": "Invalid Google Apps Authentication Key."
+                }
+            )
+
+        xc = FormicaExecutionManager_Public(
+            formica_google_apps_connection=connection_object,
+            text_content=text_content
+        )
+
         response_json = xc.execute_auto_command()
+
         logger.info(f"Auto Command was executed for Google Apps Connection: {connection_object}")
+
         return JsonResponse(response_json)

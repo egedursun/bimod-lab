@@ -45,5 +45,11 @@ MEMORIES_ADMIN_LIST = [
     "memory_text_content",
     "created_at",
 ]
-MEMORIES_ADMIN_FILTER = ["memory_type"]
-MEMORIES_ADMIN_SEARCH = ["user__username", "assistant__name"]
+
+MEMORIES_ADMIN_FILTER = [
+    "memory_type"
+]
+MEMORIES_ADMIN_SEARCH = [
+    "user__username",
+    "assistant__name"
+]

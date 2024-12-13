@@ -14,9 +14,6 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 MESSAGE_TEMPLATE_ADMIN_LIST = [
     "user",
@@ -25,5 +22,14 @@ MESSAGE_TEMPLATE_ADMIN_LIST = [
     "created_at",
     "updated_at",
 ]
-MESSAGE_TEMPLATE_ADMIN_FILTER = ["user", "organization", "created_at", "updated_at"]
-MESSAGE_TEMPLATE_ADMIN_SEARCH = ["user", "organization", "template_text"]
+MESSAGE_TEMPLATE_ADMIN_FILTER = [
+    "user",
+    "organization",
+    "created_at",
+    "updated_at"
+]
+MESSAGE_TEMPLATE_ADMIN_SEARCH = [
+    "user",
+    "organization",
+    "template_text"
+]

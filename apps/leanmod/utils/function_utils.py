@@ -18,5 +18,9 @@ import random
 
 
 def build_randomized_suffix_for_name():
-    from apps.leanmod.utils import RANDOM_NAME_SUFFIX_MIN_VALUE, RANDOM_NAME_SUFFIX_MAX_VALUE
+    from apps.leanmod.utils import (
+        RANDOM_NAME_SUFFIX_MIN_VALUE,
+        RANDOM_NAME_SUFFIX_MAX_VALUE
+    )
+
     return f"{str(random.randint(RANDOM_NAME_SUFFIX_MIN_VALUE, RANDOM_NAME_SUFFIX_MAX_VALUE))}"

@@ -29,8 +29,15 @@ class Harmoniq(models.Model):
         on_delete=models.CASCADE
     )
 
-    llm_model = models.ForeignKey('llm_core.LLMCore', on_delete=models.CASCADE)
-    created_by_user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    llm_model = models.ForeignKey(
+        'llm_core.LLMCore',
+        on_delete=models.CASCADE
+    )
+
+    created_by_user = models.ForeignKey(
+        'auth.User',
+        on_delete=models.CASCADE
+    )
 
     consultant_expert_networks = models.ManyToManyField(
         "leanmod.ExpertNetwork",
@@ -57,6 +64,7 @@ class Harmoniq(models.Model):
     class Meta:
         verbose_name = 'Harmoniq Agent'
         verbose_name_plural = 'Harmoniq Agents'
+
         ordering = ['-created_at']
 
         unique_together = [

@@ -21,9 +21,16 @@ import logging
 import re
 
 from django.http import JsonResponse
-from django.utils.decorators import method_decorator
+
+from django.utils.decorators import (
+    method_decorator
+)
+
 from django.views import View
-from django.views.decorators.csrf import csrf_exempt
+
+from django.views.decorators.csrf import (
+    csrf_exempt
+)
 
 from apps.core.orchestration.orchestration_executor import (
     OrchestrationExecutor
@@ -59,8 +66,6 @@ class ExportOrchestrationAPIHealthCheckView(View):
         match = re.match(pattern, endpoint)
 
         if match:
-            organization_id = int(match.group('organization_id'))
-            assistant_id = int(match.group('assistant_id'))
             export_id = int(match.group('export_id'))
 
         else:
@@ -139,8 +144,6 @@ class ExportOrchestrationAPIView(View):
         match = re.match(pattern, endpoint)
 
         if match:
-            organization_id = int(match.group('organization_id'))
-            assistant_id = int(match.group('assistant_id'))
             export_id = int(match.group('export_id'))
 
         else:
@@ -155,6 +158,7 @@ class ExportOrchestrationAPIView(View):
             )
 
         api_key = request.headers.get('Authorization', None)
+
         if api_key and "Bearer" in api_key:
             api_key = api_key.replace("Bearer ", "").strip()
 
@@ -223,27 +227,36 @@ class ExportOrchestrationAPIView(View):
 
             if len(chat_history) == 0:
                 logger.error("Chat history is empty.")
+
                 raise ValueError("Chat history is empty.")
 
             if "role" not in chat_history[0]:
                 logger.error("Each of the chat history elements must contain 'role' key.")
+
                 raise ValueError("Each of the chat history elements must contain 'role' key, which can either"
                                  "be 'system', 'assistant' or 'user'.")
 
-            if chat_history[0]["role"] not in ["system", "assistant", "user"]:
+            if chat_history[0]["role"] not in [
+                "system",
+                "assistant",
+                "user"
+            ]:
                 logger.error(
                     "Invalid chat history: The 'role' key in the first element of the chat history must be either 'system',"
                     "'assistant' or 'user'.")
+
                 raise ValueError("The 'role' key in the first element of the chat history must be either 'system',"
                                  "'assistant' or 'user'.")
 
             if "content" not in chat_history[0]:
                 logger.error("Each of the chat history elements must contain 'content' key.")
+
                 raise ValueError("Each of the chat history elements must contain 'content' key.")
 
             if not isinstance(chat_history[0]["content"], str):
                 logger.error(
                     "Invalid chat history: The 'content' key in the first element of the chat history must be a string.")
+
                 raise ValueError("The 'content' key in the first element of the chat history must be a string.")
 
         except Exception as e:
@@ -261,7 +274,6 @@ class ExportOrchestrationAPIView(View):
         api_chat: OrchestrationQuery = None
         try:
             for msg in chat_history:
-                role = msg["role"]
                 content = msg["content"]
                 f_uris = []
                 img_uris = []
@@ -313,6 +325,7 @@ class ExportOrchestrationAPIView(View):
                 )
 
                 api_chat.logs.add(query_log)
+
                 api_chat.save()
 
         except Exception as e:
@@ -372,4 +385,7 @@ class ExportOrchestrationAPIView(View):
 
         logger.info(f"Orchestration executed successfully for endpoint: {endpoint}")
 
-        return JsonResponse(response_data, status=ExportOrchestrationRequestStatusCodes.OK)
+        return JsonResponse(
+            response_data,
+            status=ExportOrchestrationRequestStatusCodes.OK
+        )

@@ -14,17 +14,30 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.shortcuts import redirect
 from django.views import View
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.hadron_prime.models import HadronNodeExecutionLog, HadronNode
-from apps.user_permissions.utils import PermissionNames
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
 
+from apps.hadron_prime.models import (
+    HadronNodeExecutionLog,
+    HadronNode
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
 
 logger = logging.getLogger(__name__)
 
@@ -36,23 +49,41 @@ class HadronPrimeView_DeleteAllNodeExecutionLogs(LoginRequiredMixin, View):
 
     def post(self, request, *args, **kwargs):
         node_id = kwargs.get('pk')
-        node = HadronNode.objects.get(id=node_id)
-        hadron_node_exec_logs = HadronNodeExecutionLog.objects.filter(node=node)
+
+        node = HadronNode.objects.get(
+            id=node_id
+        )
+
+        hadron_node_exec_logs = HadronNodeExecutionLog.objects.filter(
+            node=node
+        )
 
         ##############################
         # PERMISSION CHECK FOR - DELETE_HADRON_NODE_EXECUTION_LOGS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.DELETE_HADRON_NODE_EXECUTION_LOGS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.DELETE_HADRON_NODE_EXECUTION_LOGS
+        ):
             messages.error(self.request, "You do not have permission to delete hadron node execution nodes.")
-            return redirect('hadron_prime:detail_hadron_node', pk=node_id)
+
+            return redirect(
+                'hadron_prime:detail_hadron_node',
+                pk=node_id
+            )
         ##############################
 
         try:
             for hadron_node_exec_log in hadron_node_exec_logs:
                 hadron_node_exec_log.delete()
+
             logger.info(f"All hadron execution logs associated with the node have been deleted.")
             messages.success(request, "All hadron execution logs associated with the node have been deleted.")
+
         except Exception as e:
             logger.error(f"Error deleting hadron execution logs for node: {e}")
             messages.error(request, f"Error deleting hadron execution logs for node: {e}")
-        return redirect('hadron_prime:detail_hadron_node', pk=node_id)
+
+        return redirect(
+            'hadron_prime:detail_hadron_node',
+            pk=node_id
+        )

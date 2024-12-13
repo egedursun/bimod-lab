@@ -19,10 +19,19 @@ import json
 import logging
 import re
 
-from django.http import JsonResponse
-from django.utils.decorators import method_decorator
+from django.http import (
+    JsonResponse
+)
+
+from django.utils.decorators import (
+    method_decorator
+)
+
 from django.views import View
-from django.views.decorators.csrf import csrf_exempt
+
+from django.views.decorators.csrf import (
+    csrf_exempt
+)
 
 from apps.core.generative_ai.generative_ai_decode_manager import (
     GenerativeAIDecodeController
@@ -33,7 +42,9 @@ from apps.export_leanmods.models import (
     LeanmodRequestLog
 )
 
-from apps.export_leanmods.utils import LeanModAssistantStatusCodes
+from apps.export_leanmods.utils import (
+    LeanModAssistantStatusCodes
+)
 
 from apps.multimodal_chat.models import (
     MultimodalLeanChat,
@@ -45,7 +56,9 @@ from apps.multimodal_chat.utils import (
     SourcesForMultimodalChatsNames
 )
 
-from config.consumers import APIExportTypesNames
+from config.consumers import (
+    APIExportTypesNames
+)
 
 logger = logging.getLogger(__name__)
 
@@ -60,8 +73,6 @@ class ExportLeanmodAssistantAPIHealthCheckView(View):
         match = re.match(pattern, endpoint)
 
         if match:
-            organization_id = int(match.group('organization_id'))
-            assistant_id = int(match.group('assistant_id'))
             export_id = int(match.group('export_id'))
 
         else:
@@ -76,7 +87,9 @@ class ExportLeanmodAssistantAPIHealthCheckView(View):
             )
 
         try:
-            export_assistant = ExportLeanmodAssistantAPI.objects.get(id=export_id)
+            export_assistant = ExportLeanmodAssistantAPI.objects.get(
+                id=export_id
+            )
 
         except ExportLeanmodAssistantAPI.DoesNotExist:
 
@@ -93,6 +106,7 @@ class ExportLeanmodAssistantAPIHealthCheckView(View):
 
         if not export_assistant.is_online:
             logger.error(f"The LeanMod  is currently offline: {endpoint}")
+
             return JsonResponse(
                 {
                     "message": "The LeanMod endpoint is currently offline. Please try again later.",
@@ -121,8 +135,6 @@ class ExportLeanmodAssistantAPIView(View):
         match = re.match(pattern, endpoint)
 
         if match:
-            organization_id = int(match.group('organization_id'))
-            assistant_id = int(match.group('assistant_id'))
             export_id = int(match.group('export_id'))
 
         else:
@@ -180,9 +192,13 @@ class ExportLeanmodAssistantAPIView(View):
                 status=LeanModAssistantStatusCodes.UNAUTHORIZED
             )
 
-        LeanmodRequestLog.objects.create(export_lean_assistant=exp_agent)
+        LeanmodRequestLog.objects.create(
+            export_lean_assistant=exp_agent
+        )
+
         if exp_agent.requests_in_last_hour() > exp_agent.request_limit_per_hour:
             logger.error(f"The API request limit has been reached for endpoint: {endpoint}")
+
             return JsonResponse(
                 {
                     "error": "The API request limit has been reached. Please try again later.",
@@ -202,18 +218,22 @@ class ExportLeanmodAssistantAPIView(View):
             options = body.get('options', {})
 
             process_log_streaming_enabled = False
+
             if "streaming_options" in options:
                 streaming_options = options.get("streaming_options", {})
 
                 if "process_log_streaming" in streaming_options:
                     process_log_streaming_enabled = streaming_options.get("process_log_streaming", False)
+
                 else:
                     pass
+
             else:
                 pass
 
             if len(chat_history) == 0:
                 logger.error("Chat history is empty.")
+
                 raise ValueError("Chat history is empty.")
 
             api_chat = MultimodalLeanChat.objects.create(
@@ -238,8 +258,13 @@ class ExportLeanmodAssistantAPIView(View):
                 if "image_uris" in message and message["image_uris"] != "":
                     image_uris = message.get("image_uris", "").split(",") if message.get("image_uris") else []
 
-                file_uris = [uri.strip() for uri in file_uris if uri.strip()] if file_uris else []
-                image_uris = [uri.strip() for uri in image_uris if uri.strip()]
+                file_uris = [
+                    uri.strip() for uri in file_uris if uri.strip()
+                ] if file_uris else []
+
+                image_uris = [
+                    uri.strip() for uri in image_uris if uri.strip()
+                ] if image_uris else []
 
                 user_message = api_chat.lean_chat_messages.create(
                     multimodal_lean_chat=api_chat,
@@ -284,6 +309,7 @@ class ExportLeanmodAssistantAPIView(View):
 
         except Exception as e:
             logger.error(f"Error generating response for endpoint: {endpoint}")
+
             return JsonResponse(
                 {
                     "message": "Internal server error: " + str(e),

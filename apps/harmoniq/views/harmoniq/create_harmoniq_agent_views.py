@@ -18,7 +18,11 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
@@ -27,12 +31,18 @@ from apps.core.user_permissions.permission_manager import (
 )
 
 from apps.harmoniq.models import Harmoniq
-from apps.harmoniq.utils import HARMONIQ_DEITIES
+
+from apps.harmoniq.utils import (
+    HARMONIQ_DEITIES
+)
 
 from apps.leanmod.models import ExpertNetwork
 from apps.llm_core.models import LLMCore
 from apps.organization.models import Organization
-from apps.user_permissions.utils import PermissionNames
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
 
 from web_project import TemplateLayout
 
@@ -74,6 +84,7 @@ class HarmoniqView_Create(LoginRequiredMixin, TemplateView):
 
         org = request.POST.get('organization')
         llm_model = request.POST.get('llm_model')
+
         name = request.POST.get('name')
         desc = request.POST.get('description')
 
@@ -82,7 +93,13 @@ class HarmoniqView_Create(LoginRequiredMixin, TemplateView):
         nw_ids = request.POST.getlist('expert_networks')
 
         try:
-            if org and llm_model and name and desc and harmoniq_deity:
+            if (
+                org and
+                llm_model and
+                name and
+                desc and
+                harmoniq_deity
+            ):
                 harmoniq_agent = Harmoniq.objects.create(
                     organization_id=org,
                     llm_model_id=llm_model,
@@ -100,6 +117,10 @@ class HarmoniqView_Create(LoginRequiredMixin, TemplateView):
                         )
 
                         harmoniq_agent.consultant_expert_networks.add(nw)
+
+                    pass
+
+                pass
 
                 harmoniq_agent.save()
 

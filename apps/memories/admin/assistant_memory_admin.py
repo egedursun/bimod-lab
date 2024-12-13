@@ -17,8 +17,15 @@
 
 from django.contrib import admin
 
-from apps.memories.models import AssistantMemory
-from apps.memories.utils import MEMORIES_ADMIN_LIST, MEMORIES_ADMIN_FILTER, MEMORIES_ADMIN_SEARCH
+from apps.memories.models import (
+    AssistantMemory
+)
+
+from apps.memories.utils import (
+    MEMORIES_ADMIN_LIST,
+    MEMORIES_ADMIN_FILTER,
+    MEMORIES_ADMIN_SEARCH
+)
 
 
 @admin.register(AssistantMemory)
@@ -26,4 +33,5 @@ class AssistantMemoryAdmin(admin.ModelAdmin):
     list_display = MEMORIES_ADMIN_LIST
     list_filter = MEMORIES_ADMIN_FILTER
     search_fields = MEMORIES_ADMIN_SEARCH
+
     date_hierarchy = "created_at"

@@ -19,8 +19,12 @@
 from django.contrib import admin
 
 from apps.formica.models import FormicaGoogleAppsConnection
-from apps.formica.utils import FORMICA_GOOGLE_APPS_CONNECTION_ADMIN_LIST, FORMICA_GOOGLE_APPS_CONNECTION_ADMIN_FILTER, \
+
+from apps.formica.utils import (
+    FORMICA_GOOGLE_APPS_CONNECTION_ADMIN_LIST,
+    FORMICA_GOOGLE_APPS_CONNECTION_ADMIN_FILTER,
     FORMICA_GOOGLE_APPS_CONNECTION_ADMIN_SEARCH
+)
 
 
 @admin.register(FormicaGoogleAppsConnection)
@@ -28,4 +32,5 @@ class DraftingGoogleAppsConnectionAdmin(admin.ModelAdmin):
     list_display = FORMICA_GOOGLE_APPS_CONNECTION_ADMIN_LIST
     list_filter = FORMICA_GOOGLE_APPS_CONNECTION_ADMIN_FILTER
     search_fields = FORMICA_GOOGLE_APPS_CONNECTION_ADMIN_SEARCH
+
     ordering = ('-created_at', '-updated_at')

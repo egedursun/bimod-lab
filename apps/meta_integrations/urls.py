@@ -14,18 +14,39 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 from django.urls import path
-from apps.meta_integrations.views import MetaIntegrationView_MetaIntegrationCategoryList, \
-    MetaIntegrationView_MetaIntegrationCategoryStore, MetaIntegrationView_IntegrateMetaIntegrationTeam
+
+from apps.meta_integrations.views import (
+    MetaIntegrationView_MetaIntegrationCategoryList,
+    MetaIntegrationView_MetaIntegrationCategoryStore,
+    MetaIntegrationView_IntegrateMetaIntegrationTeam
+)
 
 app_name = "meta_integrations"
 
 urlpatterns = [
-    path('categories/', MetaIntegrationView_MetaIntegrationCategoryList.as_view(
-        template_name="meta_integrations/meta_integration_categories_list.html"), name="list"),
-    path('categories/<slug:category_slug>/',
-         MetaIntegrationView_MetaIntegrationCategoryStore.as_view(
-             template_name="meta_integrations/store_meta_integration_category.html"), name="store"),
+    path(
+        'categories/',
+        MetaIntegrationView_MetaIntegrationCategoryList.as_view(
+            template_name="meta_integrations/meta_integration_categories_list.html"
+        ),
+        name="list"
+    ),
 
-    path('integrate/', MetaIntegrationView_IntegrateMetaIntegrationTeam.as_view(), name="integrate"),
+    path(
+        'categories/<slug:category_slug>/',
+        MetaIntegrationView_MetaIntegrationCategoryStore.as_view(
+            template_name="meta_integrations/store_meta_integration_category.html"
+        ),
+        name="store"
+    ),
+
+    path(
+        'integrate/',
+        MetaIntegrationView_IntegrateMetaIntegrationTeam.as_view(
+
+        ),
+        name="integrate"
+    ),
 ]

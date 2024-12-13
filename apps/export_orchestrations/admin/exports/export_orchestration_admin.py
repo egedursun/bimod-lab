@@ -17,7 +17,9 @@
 
 from django.contrib import admin
 
-from apps.export_orchestrations.models import ExportOrchestrationAPI
+from apps.export_orchestrations.models import (
+    ExportOrchestrationAPI
+)
 
 from apps.export_orchestrations.utils import (
     EXPORT_ORCHESTRATION_ADMIN_LIST,
@@ -31,5 +33,6 @@ class ExportOrchestrationAssistantAPIAdmin(admin.ModelAdmin):
     list_display = EXPORT_ORCHESTRATION_ADMIN_LIST
     list_filter = EXPORT_ORCHESTRATION_ADMIN_FILTER
     search_fields = EXPORT_ORCHESTRATION_ADMIN_SEARCH
+
     date_hierarchy = "created_at"
     ordering = ["-created_at"]

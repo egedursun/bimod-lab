@@ -37,7 +37,9 @@ from django.views.generic import (
     TemplateView
 )
 
-from apps.assistants.models import Assistant
+from apps.assistants.models import (
+    Assistant
+)
 
 from apps.core.user_permissions.permission_manager import (
     UserPermissionManager

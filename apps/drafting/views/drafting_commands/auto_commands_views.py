@@ -40,7 +40,9 @@ from apps.core.user_permissions.permission_manager import (
     UserPermissionManager
 )
 
-from apps.drafting.models import DraftingDocument
+from apps.drafting.models import (
+    DraftingDocument
+)
 
 from apps.user_permissions.utils import (
     PermissionNames
@@ -56,7 +58,11 @@ class DraftingView_GenerateViaAutoCommand(LoginRequiredMixin, View):
 
     def post(self, request, *args, **kwargs):
         document_id = request.POST.get('document_id')
-        document = get_object_or_404(DraftingDocument, pk=document_id)
+
+        document = get_object_or_404(
+            DraftingDocument,
+            pk=document_id
+        )
 
         ##############################
         # PERMISSION CHECK FOR - UPDATE_DRAFTING_DOCUMENTS

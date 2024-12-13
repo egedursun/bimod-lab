@@ -89,7 +89,9 @@ class ExportOrchestrationAPI(models.Model):
             self.save()
 
         if not self.custom_api_key and (not self.is_public):
-            self.custom_api_key = generate_orchestration_custom_api_key(self.orchestrator)
+            self.custom_api_key = generate_orchestration_custom_api_key(
+                self.orchestrator
+            )
 
             self.save()
 

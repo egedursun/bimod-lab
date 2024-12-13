@@ -19,16 +19,31 @@
 from django.db import models
 
 
-from apps.hadron_prime.utils import HADRON_TOPIC_CATEGORIES
+from apps.hadron_prime.utils import (
+    HADRON_TOPIC_CATEGORIES
+)
 
 
 class HadronTopic(models.Model):
-    system = models.ForeignKey('HadronSystem', on_delete=models.CASCADE)
+    system = models.ForeignKey(
+        'HadronSystem',
+        on_delete=models.CASCADE
+    )
+
     topic_name = models.CharField(max_length=4000)
     topic_description = models.TextField()
     topic_purpose = models.TextField()
-    topic_category = models.CharField(max_length=100, choices=HADRON_TOPIC_CATEGORIES)
-    created_by_user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+
+    topic_category = models.CharField(
+        max_length=100,
+        choices=HADRON_TOPIC_CATEGORIES
+    )
+
+    created_by_user = models.ForeignKey(
+        'auth.User',
+        on_delete=models.CASCADE
+    )
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -38,13 +53,31 @@ class HadronTopic(models.Model):
     class Meta:
         verbose_name = 'Hadron Topic'
         verbose_name_plural = 'Hadron Topics'
+
         ordering = ['-created_at']
+
         unique_together = [
-            ["system", "topic_name"],
+            [
+                "system",
+                "topic_name"
+            ],
         ]
+
         indexes = [
-            models.Index(fields=['system', 'topic_name']),
-            models.Index(fields=['system', 'created_by_user']),
-            models.Index(fields=['system', 'created_at']),
-            models.Index(fields=['system', 'updated_at']),
+            models.Index(fields=[
+                'system',
+                'topic_name'
+            ]),
+            models.Index(fields=[
+                'system',
+                'created_by_user'
+            ]),
+            models.Index(fields=[
+                'system',
+                'created_at'
+            ]),
+            models.Index(fields=[
+                'system',
+                'updated_at'
+            ]),
         ]

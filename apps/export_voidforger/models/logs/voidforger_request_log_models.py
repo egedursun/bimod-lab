@@ -29,7 +29,9 @@ class VoidForgerRequestLog(models.Model):
     class Meta:
         verbose_name = "Request VoidForger Log"
         verbose_name_plural = "Request VoidForger Logs"
+
         ordering = ['-timestamp']
+
         indexes = [
             models.Index(fields=[
                 'export_voidforger'

@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib.auth.models import User
@@ -22,7 +23,11 @@ from django.views.generic import TemplateView
 from django.core.mail import send_mail
 
 from config import settings
-from web_project import TemplateLayout, TemplateHelper
+
+from web_project import (
+    TemplateLayout,
+    TemplateHelper
+)
 
 logger = logging.getLogger(__name__)
 
@@ -30,6 +35,7 @@ logger = logging.getLogger(__name__)
 class LandingView_ContactFormSubmit(TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+
         context.update(
             {
                 "layout": "blank",
@@ -42,14 +48,17 @@ class LandingView_ContactFormSubmit(TemplateView):
         )
 
         TemplateHelper.map_context(context)
+
         return context
 
     def post(self, request, *args, **kwargs):
         full_name = request.POST['fullname']
         email = request.POST['email']
         msg = request.POST['message']
+
         username = request.POST['username']
         usernames = User.objects.values_list('username', flat=True)
+
         email_msg = f"""
         Full Name: {full_name}
         Email: {email}
@@ -102,4 +111,5 @@ class LandingView_ContactFormSubmit(TemplateView):
         )
 
         logger.info(f"Contact Form was submitted by User: {request.user.id}.")
+
         return redirect("landing:contact_form_submit", )

@@ -18,18 +18,36 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import redirect, get_object_or_404
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.shortcuts import (
+    redirect,
+    get_object_or_404
+)
+
 from django.views.generic import TemplateView
 
 from apps.core.user_permissions.permission_manager import (
     UserPermissionManager
 )
 
-from apps.export_voidforger.models import ExportVoidForgerAPI
-from apps.user_permissions.utils import PermissionNames
+from apps.export_voidforger.models import (
+    ExportVoidForgerAPI
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from apps.voidforger.models import VoidForger
-from config.settings import MAX_VOIDFORGER_EXPORTS_ORGANIZATION
+
+from config.settings import (
+    MAX_VOIDFORGER_EXPORTS_ORGANIZATION
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -93,6 +111,7 @@ class ExportVoidForgerView_Create(TemplateView, LoginRequiredMixin):
         ##############################
 
         agent_id = request.POST.get('assistant')
+
         agent = get_object_or_404(
             VoidForger,
             pk=agent_id
@@ -107,6 +126,7 @@ class ExportVoidForgerView_Create(TemplateView, LoginRequiredMixin):
             logger.error(
                 f"User: {request.user.id} tried to create more than {MAX_VOIDFORGER_EXPORTS_ORGANIZATION} "
                 f"Export VoidForger APIs.")
+
             messages.error(request, f"Maximum number of Export VoidForger APIs reached for the organization.")
 
             return self.render_to_response(self.get_context_data())

@@ -19,13 +19,28 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import get_object_or_404, redirect
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.shortcuts import (
+    get_object_or_404,
+    redirect
+)
+
 from django.views.generic import TemplateView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
 from apps.hadron_prime.models import HadronNode
-from apps.user_permissions.utils import PermissionNames
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -34,28 +49,51 @@ logger = logging.getLogger(__name__)
 class HadronPrimeView_DeleteHadronNode(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
-        node = get_object_or_404(HadronNode, id=kwargs['pk'])
+
+        node = get_object_or_404(
+            HadronNode,
+            id=kwargs['pk']
+        )
+
         context['node'] = node
+
         return context
 
     def post(self, request, *args, **kwargs):
-        node = get_object_or_404(HadronNode, id=kwargs['pk'])
+        node = get_object_or_404(
+            HadronNode,
+            id=kwargs['pk']
+        )
 
         ##############################
         # PERMISSION CHECK FOR - DELETE_HADRON_NODES
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.DELETE_HADRON_NODES):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.DELETE_HADRON_NODES
+        ):
             messages.error(self.request, "You do not have permission to delete Hadron Nodes.")
-            return redirect('hadron_prime:detail_hadron_node', pk=node.id)
+            return redirect(
+                'hadron_prime:detail_hadron_node',
+                pk=node.id
+            )
         ##############################
 
         try:
             node.delete()
+
         except Exception as e:
             logger.error(f"Error deleting Hadron Node: {e}")
             messages.error(request, f"Error deleting Hadron Node: {e}")
-            return redirect('hadron_prime:detail_hadron_node', pk=node.id)
+
+            return redirect(
+                'hadron_prime:detail_hadron_node',
+                pk=node.id
+            )
 
             logger.info(f'Hadron Node "{node.node_name}" deleted by user "{request.user}".')
             messages.success(request, f'The Hadron Node "{node.node_name}" was successfully deleted.')
-        return redirect('hadron_prime:detail_hadron_system', pk=node.system.id)
+
+        return redirect(
+            'hadron_prime:detail_hadron_system',
+            pk=node.system.id
+        )

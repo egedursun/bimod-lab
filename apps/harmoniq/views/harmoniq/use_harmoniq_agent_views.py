@@ -26,7 +26,11 @@ from django.contrib.auth.mixins import (
 
 from django.http import JsonResponse
 from django.views import View
-from django.views.decorators.csrf import csrf_exempt
+
+from django.views.decorators.csrf import (
+    csrf_exempt
+)
+
 from django.views.generic import TemplateView
 
 from apps.core.harmoniq.harmoniq_executor import (
@@ -54,7 +58,10 @@ from apps.leanmod.models import (
     ExpertNetworkAssistantReference
 )
 
-from apps.user_permissions.utils import PermissionNames
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -133,6 +140,7 @@ class HarmoniqCommunicationView(View):
             }
 
             expert_net_and_refs = {}
+
             for expert_net in harmoniq_agent.consultant_expert_networks.all():
                 expert_net: ExpertNetwork
 
@@ -164,7 +172,11 @@ class HarmoniqCommunicationView(View):
             audio_data = base64.b64encode(api_client.audio_buffer).decode('utf-8')
             transcript_data = api_client.transcript
 
-            def process_tool_calls(transcript, audio, attempt=0):
+            def process_tool_calls(
+                transcript,
+                audio,
+                attempt=0
+            ):
 
                 if attempt > MAX_ATTEMPTS_TOOL_CALL:
                     logger.error(f"Tool calls are not successful after {MAX_ATTEMPTS_TOOL_CALL} attempts.")
@@ -229,7 +241,11 @@ class HarmoniqCommunicationView(View):
 
                 logger.info(f"Tool calls are successful after {attempt + 1} attempts.")
 
-                return process_tool_calls(updated_transcript_data, updated_audio_data, attempt + 1)
+                return process_tool_calls(
+                    updated_transcript_data,
+                    updated_audio_data,
+                    attempt + 1
+                )
 
             final_transcript, final_audio = process_tool_calls(transcript_data, audio_data)
             logger.info(f"Communication is successful.")

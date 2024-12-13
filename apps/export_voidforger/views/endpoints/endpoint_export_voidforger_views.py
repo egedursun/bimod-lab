@@ -20,9 +20,16 @@ import logging
 import re
 
 from django.http import JsonResponse
-from django.utils.decorators import method_decorator
+
+from django.utils.decorators import (
+    method_decorator
+)
+
 from django.views import View
-from django.views.decorators.csrf import csrf_exempt
+
+from django.views.decorators.csrf import (
+    csrf_exempt
+)
 
 from apps.core.generative_ai.generative_ai_decode_manager import (
     GenerativeAIDecodeController
@@ -47,7 +54,9 @@ from apps.voidforger.models import (
     MultimodalVoidForgerChatMessage
 )
 
-from config.consumers import APIExportTypesNames
+from config.consumers import (
+    APIExportTypesNames
+)
 
 logger = logging.getLogger(__name__)
 
@@ -61,8 +70,6 @@ class ExportVoidForgerAPIStatusView(View):
         match = re.match(pattern, endpoint)
 
         if match:
-            organization_id = int(match.group('organization_id'))
-            assistant_id = int(match.group('assistant_id'))
             export_id = int(match.group('export_id'))
 
         else:
@@ -70,21 +77,6 @@ class ExportVoidForgerAPIStatusView(View):
             return JsonResponse(
                 {
                     "message": "Invalid path parameters.",
-                    "data": {},
-                    "status": ExportVoidForgerRequestStatusCodes.NOT_FOUND
-                },
-                status=ExportVoidForgerRequestStatusCodes.NOT_FOUND
-            )
-
-        try:
-            export_assistant = ExportVoidForgerAPI.objects.get(
-                id=export_id
-            )
-
-        except ExportVoidForgerAPI.DoesNotExist:
-            return JsonResponse(
-                {
-                    "message": "Invalid VoidForger endpoint",
                     "data": {},
                     "status": ExportVoidForgerRequestStatusCodes.NOT_FOUND
                 },
@@ -184,8 +176,6 @@ class ExportVoidForgerAPIStatusView(View):
         match = re.match(pattern, endpoint)
 
         if match:
-            organization_id = int(match.group('organization_id'))
-            assistant_id = int(match.group('assistant_id'))
             export_id = int(match.group('export_id'))
 
         else:
@@ -322,6 +312,7 @@ class ExportVoidForgerAPIStatusView(View):
 
                 else:
                     logger.error(f"Invalid VoidForger status provided: {new_status_data}")
+
                     return JsonResponse(
                         {
                             "message": "Invalid VoidForger status provided.",
@@ -338,8 +329,10 @@ class ExportVoidForgerAPIStatusView(View):
                         metadata=metadata,
                         responsible_user=self.request.user
                     )
+
                 except Exception as e:
                     logger.error(f"Error creating VoidForger toggle auto execution log: {str(e)}")
+
                     return JsonResponse(
                         {
                             "message": "Internal server error: " + str(e),
@@ -364,10 +357,12 @@ class ExportVoidForgerAPIStatusView(View):
                 export_assistant.voidforger.auto_run_trigger_interval_minutes = new_auto_run_trigger_interval
 
             logger.info(f"Updating status for endpoint: {endpoint}")
+
             export_assistant.voidforger.save()
 
         except Exception as e:
             logger.error(f"Error updating status for endpoint: {endpoint}")
+
             return JsonResponse(
                 {
                     "message": "Internal server error: " + str(e),
@@ -378,6 +373,7 @@ class ExportVoidForgerAPIStatusView(View):
             )
 
         logger.info(f"Status updated successfully for endpoint: {endpoint}")
+
         return JsonResponse(
             {
                 "message": "The VoidForger status information has been updated successfully.",
@@ -412,8 +408,6 @@ class ExportVoidForgerAPIManualTriggerView(View):
         match = re.match(pattern, endpoint)
 
         if match:
-            organization_id = int(match.group('organization_id'))
-            assistant_id = int(match.group('assistant_id'))
             export_id = int(match.group('export_id'))
 
         else:
@@ -427,22 +421,8 @@ class ExportVoidForgerAPIManualTriggerView(View):
                 status=ExportVoidForgerRequestStatusCodes.NOT_FOUND
             )
 
-        try:
-            export_assistant = ExportVoidForgerAPI.objects.get(
-                id=export_id
-            )
-
-        except ExportVoidForgerAPI.DoesNotExist:
-            return JsonResponse(
-                {
-                    "message": "Invalid VoidForger endpoint",
-                    "data": {},
-                    "status": ExportVoidForgerRequestStatusCodes.NOT_FOUND
-                },
-                status=ExportVoidForgerRequestStatusCodes.NOT_FOUND
-            )
-
         api_key = request.headers.get('Authorization', None)
+
         if api_key and "Bearer" in api_key:
             api_key = api_key.replace("Bearer ", "").strip()
 
@@ -512,7 +492,10 @@ class ExportVoidForgerAPIManualTriggerView(View):
                 voidforger_id=voidforger_id
             )
 
-            error = xc.run_cycle(trigger=VoidForgerModesNames.MANUAL)
+            error = xc.run_cycle(
+                trigger=VoidForgerModesNames.MANUAL
+            )
+
             if error:
                 return JsonResponse(
                     {
@@ -528,6 +511,7 @@ class ExportVoidForgerAPIManualTriggerView(View):
         except Exception as e:
 
             logger.error(f"Error triggering manual run for endpoint: {endpoint}")
+
             return JsonResponse(
                 {
                     "message": "Internal server error: " + str(e),
@@ -551,12 +535,11 @@ class ExportVoidForgerAPIManualTriggerView(View):
 class ExportVoidForgerAPIHealthCheckView(View):
     def post(self, request, *args, **kwargs):
         endpoint = request.path
+
         pattern = r'^/app/export_voidforger/health/voidforger_assistants/(?P<organization_id>\d+)/(?P<assistant_id>\d+)/(?P<export_id>\d+)/$'
         match = re.match(pattern, endpoint)
 
         if match:
-            organization_id = int(match.group('organization_id'))
-            assistant_id = int(match.group('assistant_id'))
             export_id = int(match.group('export_id'))
 
         else:
@@ -587,6 +570,7 @@ class ExportVoidForgerAPIHealthCheckView(View):
 
         if not export_assistant.is_online:
             logger.error(f"The VoidForger endpoint is currently offline: {endpoint}")
+
             return JsonResponse(
                 {
                     "message": "The VoidForger endpoint is currently offline. Please try again later.",
@@ -628,12 +612,11 @@ class ExportVoidForgerAPIHealthCheckView(View):
 class ExportVoidForgerAPIView(View):
     def post(self, request, *args, **kwargs):
         endpoint = request.path
+
         pattern = r'^/app/export_voidforger/exported/voidforger_assistants/(?P<organization_id>\d+)/(?P<assistant_id>\d+)/(?P<export_id>\d+)/$'
         match = re.match(pattern, endpoint)
 
         if match:
-            organization_id = int(match.group('organization_id'))
-            assistant_id = int(match.group('assistant_id'))
             export_id = int(match.group('export_id'))
 
         else:
@@ -648,6 +631,7 @@ class ExportVoidForgerAPIView(View):
             )
 
         api_key = request.headers.get('Authorization', None)
+
         if api_key and "Bearer" in api_key:
             api_key = api_key.replace("Bearer ", "").strip()
 
@@ -670,6 +654,7 @@ class ExportVoidForgerAPIView(View):
 
         if not export_assistant.is_online:
             logger.error(f"The VoidForger endpoint is currently offline: {endpoint}")
+
             return JsonResponse(
                 {
                     "message": "The VoidForger endpoint is currently offline. Please try again later.",
@@ -717,13 +702,20 @@ class ExportVoidForgerAPIView(View):
             options = body.get('options', {})
 
             process_log_streaming_enabled = False
+
             if "streaming_options" in options:
                 streaming_options = options.get("streaming_options", {})
 
                 if "process_log_streaming" in streaming_options:
-                    process_log_streaming_enabled = streaming_options.get("process_log_streaming", False)
+
+                    process_log_streaming_enabled = streaming_options.get(
+                        "process_log_streaming",
+                        False
+                    )
+
                 else:
                     pass
+
             else:
                 pass
 
@@ -740,6 +732,7 @@ class ExportVoidForgerAPIView(View):
             )
 
             user_message = None
+
             for message in chat_history:
                 role = message["role"]
                 content = message["content"]
@@ -752,8 +745,13 @@ class ExportVoidForgerAPIView(View):
                 if "image_uris" in message and message["image_uris"] != "":
                     image_uris = message.get("image_uris", "").split(",") if message.get("image_uris") else []
 
-                file_uris = [uri.strip() for uri in file_uris if uri.strip()] if file_uris else []
-                image_uris = [uri.strip() for uri in image_uris if uri.strip()]
+                file_uris = [
+                    uri.strip() for uri in file_uris if uri.strip()
+                ] if file_uris else []
+
+                image_uris = [
+                    uri.strip() for uri in image_uris if uri.strip()
+                ]
 
                 user_message = api_chat.voidforger_chat_messages.create(
                     multimodal_voidforger_chat=api_chat,
@@ -798,6 +796,7 @@ class ExportVoidForgerAPIView(View):
 
         except Exception as e:
             logger.error(f"Error generating response for endpoint: {endpoint}")
+
             return JsonResponse(
                 {
                     "message": "Internal server error: " + str(e),
@@ -831,4 +830,8 @@ class ExportVoidForgerAPIView(View):
         }
 
         logger.info(f"VoidForger executed successfully for endpoint: {endpoint}")
-        return JsonResponse(response_data, status=ExportVoidForgerRequestStatusCodes.OK)
+
+        return JsonResponse(
+            response_data,
+            status=ExportVoidForgerRequestStatusCodes.OK
+        )

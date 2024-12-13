@@ -14,14 +14,27 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.shortcuts import redirect
 from django.views import View
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.hadron_prime.models import HadronNodeAssistantConnection
-from apps.user_permissions.utils import PermissionNames
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
+from apps.hadron_prime.models import (
+    HadronNodeAssistantConnection
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
 
 
 class HadronPrimeView_AssistantConnectionDelete(LoginRequiredMixin, View):
@@ -34,18 +47,27 @@ class HadronPrimeView_AssistantConnectionDelete(LoginRequiredMixin, View):
 
         ##############################
         # PERMISSION CHECK FOR - DISCONNECT_ASSISTANTS_FROM_HADRON_NODE
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.DISCONNECT_ASSISTANTS_FROM_HADRON_NODE):
-            messages.error(self.request, "You do not have permission to disconnect an assistant from a Hadron Prime Node.")
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.DISCONNECT_ASSISTANTS_FROM_HADRON_NODE
+        ):
+            messages.error(self.request,
+                           "You do not have permission to disconnect an assistant from a Hadron Prime Node.")
             return redirect("hadron_prime:connect_assistant")
         ##############################
 
         try:
-            connection = HadronNodeAssistantConnection.objects.get(id=connection_id)
+            connection = HadronNodeAssistantConnection.objects.get(
+                id=connection_id
+            )
+
             connection.delete()
+
         except Exception as e:
             messages.error(request, "An error occurred while deleting the connection: " + str(e))
+
             return redirect("hadron_prime:connect_assistant")
 
         messages.success(request, "Connection deleted successfully.")
+
         return redirect("hadron_prime:connect_assistant")

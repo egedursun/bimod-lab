@@ -46,33 +46,104 @@ class HadronTopicCategoriesNames:
         ]
 
 
-HADRON_NODE_ADMIN_LIST = ['node_name', 'system', 'created_by_user', 'created_at', 'updated_at']
-HADRON_NODE_ADMIN_FILTER = ['system', 'created_by_user', 'created_at', 'updated_at']
-HADRON_NODE_ADMIN_SEARCH = ['node_name', 'system', 'created_by_user']
+HADRON_NODE_ADMIN_LIST = [
+    'node_name',
+    'system',
+    'created_by_user',
+    'created_at',
+    'updated_at'
+]
+HADRON_NODE_ADMIN_FILTER = [
+    'system',
+    'created_by_user',
+    'created_at',
+    'updated_at'
+]
+HADRON_NODE_ADMIN_SEARCH = [
+    'node_name',
+    'system',
+    'created_by_user'
+]
 
-HADRON_SAS_LOG_ADMIN_LIST = ['node', 'old_state', 'action', 'new_state', 'created_at']
-HADRON_SAS_LOG_ADMIN_FILTER = ['node', 'action']
-HADRON_SAS_LOG_ADMIN_SEARCH = ['node', 'action']
+HADRON_SAS_LOG_ADMIN_LIST = [
+    'node',
+    'old_state',
+    'action',
+    'new_state',
+    'created_at'
+]
+HADRON_SAS_LOG_ADMIN_FILTER = [
+    'node',
+    'action'
+]
+HADRON_SAS_LOG_ADMIN_SEARCH = [
+    'node',
+    'action'
+]
 
-HADRON_SYSTEM_ADMIN_LIST = ['organization', 'system_name', 'created_by_user', 'created_at', 'updated_at']
-HADRON_SYSTEM_ADMIN_FILTER = ['organization', 'created_by_user']
-HADRON_SYSTEM_ADMIN_SEARCH = ['system_name', 'system_description']
+HADRON_SYSTEM_ADMIN_LIST = [
+    'organization',
+    'system_name',
+    'created_by_user',
+    'created_at',
+    'updated_at'
+]
+HADRON_SYSTEM_ADMIN_FILTER = [
+    'organization',
+    'created_by_user'
+]
+HADRON_SYSTEM_ADMIN_SEARCH = [
+    'system_name',
+    'system_description'
+]
 
-HADRON_TOPIC_ADMIN_LIST = ['topic_name', 'system', 'topic_category', 'created_by_user', 'created_at']
-HADRON_TOPIC_ADMIN_FILTER = ['system', 'created_by_user']
-HADRON_TOPIC_ADMIN_SEARCH = ['topic_name', 'system__system_name', 'created_by_user__username']
+HADRON_TOPIC_ADMIN_LIST = [
+    'topic_name',
+    'system',
+    'topic_category',
+    'created_by_user',
+    'created_at'
+]
+HADRON_TOPIC_ADMIN_FILTER = [
+    'system',
+    'created_by_user'
+]
+HADRON_TOPIC_ADMIN_SEARCH = [
+    'topic_name',
+    'system__system_name',
+    'created_by_user__username'
+]
 
-HADRON_TOPIC_MESSAGE_ADMIN_LIST = ['topic', 'sender_node', 'created_at']
-HADRON_TOPIC_MESSAGE_ADMIN_FILTER = ['topic', 'sender_node', 'created_at']
-HADRON_TOPIC_MESSAGE_ADMIN_SEARCH = ['topic', 'sender_node', 'created_at']
+HADRON_TOPIC_MESSAGE_ADMIN_LIST = [
+    'topic',
+    'sender_node',
+    'created_at'
+]
+HADRON_TOPIC_MESSAGE_ADMIN_FILTER = [
+    'topic',
+    'sender_node',
+    'created_at'
+]
+HADRON_TOPIC_MESSAGE_ADMIN_SEARCH = [
+    'topic',
+    'sender_node',
+    'created_at'
+]
 
-HADRON_NODE_EXECUTION_LOG_ADMIN_LIST = ('node', 'created_at')
-HADRON_NODE_EXECUTION_LOG_ADMIN_FILTER = ('node', 'created_at')
-HADRON_NODE_EXECUTION_LOG_ADMIN_SEARCH = ('node', 'created_at')
-
+HADRON_NODE_EXECUTION_LOG_ADMIN_LIST = (
+    'node',
+    'created_at'
+)
+HADRON_NODE_EXECUTION_LOG_ADMIN_FILTER = (
+    'node',
+    'created_at'
+)
+HADRON_NODE_EXECUTION_LOG_ADMIN_SEARCH = (
+    'node',
+    'created_at'
+)
 
 HADRON_NODE_AUTHENTICATION_KEY_TOKEN_SIZE = 64
-
 
 HADRON_NODE_EXECUTION_STATUSES = [
     ('DEACTIVE', 'DEACTIVE'),
@@ -101,11 +172,35 @@ class HadronNodeExecutionStatusesNames:
         ]
 
 
-HADRON_NODE_SPEECH_LOG_ADMIN_LIST = ('node', 'created_at')
-HADRON_NODE_SPEECH_LOG_ADMIN_SEARCH = ('node__name', 'speech_log')
-HADRON_NODE_SPEECH_LOG_ADMIN_FILTER = ('node', 'created_at')
-HADRON_NODE_ASSISTANT_CONNECTION_ADMIN_LIST = ["hadron_prime_node", "assistant", "created_by_user", "created_at",
-                                               "updated_at"]
-HADRON_NODE_ASSISTANT_CONNECTION_ADMIN_FILTER = ["hadron_prime_node", "assistant", "created_by_user", "created_at",
-                                                 "updated_at"]
-HADRON_NODE_ASSISTANT_CONNECTION_ADMIN_SEARCH = ["hadron_prime_node", "assistant", "created_by_user"]
+HADRON_NODE_SPEECH_LOG_ADMIN_LIST = (
+    'node',
+    'created_at'
+)
+HADRON_NODE_SPEECH_LOG_ADMIN_SEARCH = (
+    'node__name',
+    'speech_log'
+)
+HADRON_NODE_SPEECH_LOG_ADMIN_FILTER = (
+    'node',
+    'created_at'
+)
+
+HADRON_NODE_ASSISTANT_CONNECTION_ADMIN_LIST = [
+    "hadron_prime_node",
+    "assistant",
+    "created_by_user",
+    "created_at",
+    "updated_at"
+]
+HADRON_NODE_ASSISTANT_CONNECTION_ADMIN_FILTER = [
+    "hadron_prime_node",
+    "assistant",
+    "created_by_user",
+    "created_at",
+    "updated_at"
+]
+HADRON_NODE_ASSISTANT_CONNECTION_ADMIN_SEARCH = [
+    "hadron_prime_node",
+    "assistant",
+    "created_by_user"
+]

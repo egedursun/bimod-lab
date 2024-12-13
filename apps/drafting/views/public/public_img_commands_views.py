@@ -60,12 +60,12 @@ class DraftingView_PublicGenerateViaImgCommand(View):
                 }
             )
 
-        text_content = request.POST.get('text_content')
+        text_content = request.POST.get('text_content', "")
         if text_content is None:
             logger.error(f"Text Content is None, assuming empty string.")
-            text_content = ""
 
         # auth key check
+
         authentication_key = request.POST.get('authentication_key')
 
         if authentication_key is None:

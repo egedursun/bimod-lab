@@ -20,13 +20,19 @@ import logging
 import random
 import string
 
-from apps.orchestrations.models import Maestro
+from apps.orchestrations.models import (
+    Maestro
+)
+
 from config import settings
 
 logger = logging.getLogger(__name__)
 
 
-def generate_orchestration_endpoint(assistant: Maestro, export_id: int):
+def generate_orchestration_endpoint(
+    assistant: Maestro,
+    export_id: int
+):
     org_id = assistant.organization.id
     assistant_id = assistant.id
     export_id = export_id
@@ -40,9 +46,11 @@ def generate_orchestration_custom_api_key(assistant: Maestro):
     logger.info(f"Generating custom API key for assistant {assistant.id}")
     assistant_id = assistant.id
     organization_id = assistant.organization.id
+
     organization_name = assistant.organization.name
     assistant_name = assistant.name
     instructions = assistant.instructions
+
     llm_model_name = assistant.llm_model.model_name
     llm_model_temperature = assistant.llm_model.temperature
     llm_model_max_tokens = assistant.llm_model.maximum_tokens

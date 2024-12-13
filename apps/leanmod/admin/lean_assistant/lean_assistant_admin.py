@@ -20,8 +20,15 @@
 
 from django.contrib import admin
 
-from apps.leanmod.models import LeanAssistant
-from apps.leanmod.utils import LEAN_ASSISTANT_ADMIN_LIST, LEAN_ASSISTANT_ADMIN_FILTER, LEAN_ASSISTANT_ADMIN_SEARCH
+from apps.leanmod.models import (
+    LeanAssistant
+)
+
+from apps.leanmod.utils import (
+    LEAN_ASSISTANT_ADMIN_LIST,
+    LEAN_ASSISTANT_ADMIN_FILTER,
+    LEAN_ASSISTANT_ADMIN_SEARCH
+)
 
 
 @admin.register(LeanAssistant)
@@ -29,5 +36,6 @@ class LeanAssistantAdmin(admin.ModelAdmin):
     list_display = LEAN_ASSISTANT_ADMIN_LIST
     list_filter = LEAN_ASSISTANT_ADMIN_FILTER
     search_fields = LEAN_ASSISTANT_ADMIN_SEARCH
+
     date_hierarchy = "created_at"
     ordering = ["-created_at"]

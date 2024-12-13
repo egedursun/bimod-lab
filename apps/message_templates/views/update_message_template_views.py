@@ -14,19 +14,42 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import get_object_or_404, redirect, render
-from django.views.generic import TemplateView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.message_templates.forms import MessageTemplateForm
-from apps.message_templates.models import MessageTemplate
-from apps.user_permissions.utils import PermissionNames
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.shortcuts import (
+    get_object_or_404,
+    redirect,
+    render
+)
+
+from django.views.generic import (
+    TemplateView
+)
+
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
+from apps.message_templates.forms import (
+    MessageTemplateForm
+)
+
+from apps.message_templates.models import (
+    MessageTemplate
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
-
 
 logger = logging.getLogger(__name__)
 
@@ -35,28 +58,59 @@ class MessageTemplateView_Update(TemplateView, LoginRequiredMixin):
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+
         orgs = self.request.user.organizations.all()
-        msg_tmpl = get_object_or_404(MessageTemplate, pk=self.kwargs['pk'])
-        context['form'] = MessageTemplateForm(instance=msg_tmpl)
+
+        msg_tmpl = get_object_or_404(
+            MessageTemplate,
+            pk=self.kwargs['pk']
+        )
+
+        context['form'] = MessageTemplateForm(
+            instance=msg_tmpl
+        )
+
         context['message_template'] = msg_tmpl
         context['organizations'] = orgs
+
         return context
 
     def post(self, request, *args, **kwargs):
 
         ##############################
         # PERMISSION CHECK FOR - UPDATE_TEMPLATE_MESSAGES
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.UPDATE_TEMPLATE_MESSAGES):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.UPDATE_TEMPLATE_MESSAGES
+        ):
             messages.error(self.request, "You do not have permission to update template messages.")
             return redirect('message_templates:list')
         ##############################
 
-        msg_tmpl = get_object_or_404(MessageTemplate, pk=self.kwargs['pk'])
-        form = MessageTemplateForm(request.POST, instance=msg_tmpl)
+        msg_tmpl = get_object_or_404(
+            MessageTemplate,
+            pk=self.kwargs['pk']
+        )
+
+        form = MessageTemplateForm(
+            request.POST,
+            instance=msg_tmpl
+        )
+
         if form.is_valid():
             form.save()
+
             logger.info(f"Message Template was updated by User: {self.request.user.id}.")
+
             return redirect('message_templates:list')
+
         logger.error(f"Message Template update failed by User: {self.request.user.id}.")
-        return render(request, self.template_name, {'form': form, 'message_template': msg_tmpl})
+
+        return render(
+            request,
+            self.template_name,
+            {
+                'form': form,
+                'message_template': msg_tmpl
+            }
+        )

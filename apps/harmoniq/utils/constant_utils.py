@@ -28,7 +28,10 @@ class HarmoniqInputModesTypes:
 
     @staticmethod
     def as_list():
-        return [HarmoniqInputModesTypes.TEXT, HarmoniqInputModesTypes.AUDIO]
+        return [
+            HarmoniqInputModesTypes.TEXT,
+            HarmoniqInputModesTypes.AUDIO
+        ]
 
 
 HARMONIQ_DEITIES = [

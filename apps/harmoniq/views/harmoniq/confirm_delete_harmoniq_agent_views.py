@@ -18,7 +18,10 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
 
 from django.shortcuts import (
     get_object_or_404,
@@ -32,7 +35,11 @@ from apps.core.user_permissions.permission_manager import (
 )
 
 from apps.harmoniq.models import Harmoniq
-from apps.user_permissions.utils import PermissionNames
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)

@@ -18,10 +18,16 @@
 import logging
 
 from django.http import JsonResponse
-from django.utils.decorators import method_decorator
+
+from django.utils.decorators import (
+    method_decorator
+)
+
 from django.views import View
 
-from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import (
+    csrf_exempt
+)
 
 from apps.core.formica.formica_executor_public import (
     FormicaExecutionManager_Public
@@ -91,7 +97,9 @@ class FormicaView_PublicGenerateViaSiteCommand(View):
             text_content=text_content
         )
 
-        response_json = xc.execute_site_command(command=command)
+        response_json = xc.execute_site_command(
+            command=command
+        )
 
         logger.info(f"Site Command was executed for Google Apps Connection: {connection_object}")
 

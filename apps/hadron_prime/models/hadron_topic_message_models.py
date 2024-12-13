@@ -20,9 +20,19 @@ from django.db import models
 
 
 class HadronTopicMessage(models.Model):
-    topic = models.ForeignKey('hadron_prime.HadronTopic', on_delete=models.CASCADE)
-    sender_node = models.ForeignKey('hadron_prime.HadronNode', on_delete=models.CASCADE, related_name='sender_node')
+    topic = models.ForeignKey(
+        'hadron_prime.HadronTopic',
+        on_delete=models.CASCADE
+    )
+
+    sender_node = models.ForeignKey(
+        'hadron_prime.HadronNode',
+        on_delete=models.CASCADE,
+        related_name='sender_node'
+    )
+
     message = models.TextField()
+
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -31,8 +41,16 @@ class HadronTopicMessage(models.Model):
     class Meta:
         verbose_name = 'Hadron Topic Message'
         verbose_name_plural = 'Hadron Topic Messages'
+
         ordering = ['-created_at']
+
         indexes = [
-            models.Index(fields=['topic', 'sender_node']),
-            models.Index(fields=['topic', 'created_at']),
+            models.Index(fields=[
+                'topic',
+                'sender_node'
+            ]),
+            models.Index(fields=[
+                'topic',
+                'created_at'
+            ]),
         ]

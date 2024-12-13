@@ -14,17 +14,28 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.views.generic import TemplateView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.leanmod.models import ExpertNetwork
-from apps.user_permissions.utils import PermissionNames
-from web_project import TemplateLayout
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
 
+from apps.leanmod.models import ExpertNetwork
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
+from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
 
@@ -35,14 +46,22 @@ class ExpertNetworkView_List(LoginRequiredMixin, TemplateView):
 
         ##############################
         # PERMISSION CHECK FOR - LIST_EXPERT_NETWORKS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.LIST_EXPERT_NETWORKS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.LIST_EXPERT_NETWORKS
+        ):
             messages.error(self.request, "You do not have permission to list Expert Network.")
             return context
         ##############################
 
-        nws = ExpertNetwork.objects.prefetch_related('assistant_references__assistant','organization').filter(
-            organization__users__in=[self.request.user]).all()
+        nws = ExpertNetwork.objects.prefetch_related(
+            'assistant_references__assistant',
+            'organization'
+        ).filter(
+            organization__users__in=[self.request.user]
+        ).all()
+
         context['expert_networks'] = nws
         logger.info(f"Expert Networks were listed by User: {self.request.user.id}.")
+
         return context

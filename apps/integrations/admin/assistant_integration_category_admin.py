@@ -17,9 +17,15 @@
 
 from django.contrib import admin
 
-from apps.integrations.models import AssistantIntegrationCategory
-from apps.integrations.utils import ASSISTANT_INTEGRATION_CATEGORY_ADMIN_LIST, \
-    ASSISTANT_INTEGRATION_CATEGORY_ADMIN_SEARCH, ASSISTANT_INTEGRATION_CATEGORY_ADMIN_FILTER
+from apps.integrations.models import (
+    AssistantIntegrationCategory
+)
+
+from apps.integrations.utils import (
+    ASSISTANT_INTEGRATION_CATEGORY_ADMIN_LIST,
+    ASSISTANT_INTEGRATION_CATEGORY_ADMIN_SEARCH,
+    ASSISTANT_INTEGRATION_CATEGORY_ADMIN_FILTER
+)
 
 
 @admin.register(AssistantIntegrationCategory)
@@ -27,4 +33,5 @@ class AssistantIntegrationCategoryAdmin(admin.ModelAdmin):
     list_display = ASSISTANT_INTEGRATION_CATEGORY_ADMIN_LIST
     search_fields = ASSISTANT_INTEGRATION_CATEGORY_ADMIN_SEARCH
     list_filter = ASSISTANT_INTEGRATION_CATEGORY_ADMIN_FILTER
+
     ordering = ['-created_at']

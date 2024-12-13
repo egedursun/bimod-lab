@@ -16,15 +16,25 @@
 #
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.views.generic import TemplateView
 
 from apps.core.user_permissions.permission_manager import (
     UserPermissionManager
 )
 
-from apps.meta_integrations.models import MetaIntegrationCategory
-from apps.user_permissions.utils import PermissionNames
+from apps.meta_integrations.models import (
+    MetaIntegrationCategory
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 
@@ -52,4 +62,5 @@ class MetaIntegrationView_MetaIntegrationCategoryList(LoginRequiredMixin, Templa
             total_boiler_plate_teams += category.metaintegrationteam_set.count()
 
         context['total_teams'] = total_boiler_plate_teams
+
         return context

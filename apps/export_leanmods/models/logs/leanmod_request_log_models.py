@@ -29,6 +29,7 @@ class LeanmodRequestLog(models.Model):
     class Meta:
         verbose_name = "Request LeanMod Log"
         verbose_name_plural = "Request LeanMod Logs"
+
         ordering = ['-timestamp']
 
         indexes = [

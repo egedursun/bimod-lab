@@ -14,16 +14,32 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import get_object_or_404, redirect
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.shortcuts import (
+    get_object_or_404,
+    redirect
+)
+
 from django.views.generic import TemplateView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
 from apps.hadron_prime.models import HadronSystem
-from apps.user_permissions.utils import PermissionNames
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -33,8 +49,14 @@ class HadronPrimeView_DeleteHadronSystem(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         system_id = kwargs.get('pk')
-        hadron_system = get_object_or_404(HadronSystem, id=system_id)
+
+        hadron_system = get_object_or_404(
+            HadronSystem,
+            id=system_id
+        )
+
         context['hadron_system'] = hadron_system
+
         return context
 
     def post(self, request, *args, **kwargs):
@@ -42,21 +64,32 @@ class HadronPrimeView_DeleteHadronSystem(LoginRequiredMixin, TemplateView):
 
         ##############################
         # PERMISSION CHECK FOR - DELETE_HADRON_SYSTEMS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.DELETE_HADRON_SYSTEMS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.DELETE_HADRON_SYSTEMS
+        ):
             messages.error(self.request, "You do not have permission to delete Hadron Systems.")
             return redirect('hadron_prime:list_hadron_system')
         ##############################
 
-        hadron_system = get_object_or_404(HadronSystem, id=system_id)
+        hadron_system = get_object_or_404(
+            HadronSystem,
+            id=system_id
+        )
 
         try:
             hadron_system.delete()
+
         except Exception as e:
             logger.error(f"Error deleting Hadron System: {e}")
             messages.error(request, f"Error deleting Hadron System: {e}")
-            return redirect('hadron_prime:detail_hadron_system', pk=system_id)
+
+            return redirect(
+                'hadron_prime:detail_hadron_system',
+                pk=system_id
+            )
 
             logger.info(f'Hadron System "{hadron_system.system_name}" has been deleted successfully.')
             messages.success(request, f'Hadron System "{hadron_system.system_name}" has been deleted successfully.')
+
         return redirect('hadron_prime:list_hadron_system')

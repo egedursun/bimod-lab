@@ -26,7 +26,9 @@ class LargeLanguageModelProvidersNames:
 
     @staticmethod
     def as_list():
-        return [LargeLanguageModelProvidersNames.OPENAI_GPT]
+        return [
+            LargeLanguageModelProvidersNames.OPENAI_GPT
+        ]
 
 
 GPT_MODEL_NAMES = [
@@ -35,6 +37,7 @@ GPT_MODEL_NAMES = [
     ("gpt-4", "gpt-4"),
 ]
 
+
 class GPTModelNamesNames:
     GPT_4O = "gpt-4o"
     GPT_4_TURBO = "gpt-4-turbo"
@@ -42,8 +45,34 @@ class GPTModelNamesNames:
 
     @staticmethod
     def as_list():
-        return [GPTModelNamesNames.GPT_4O, GPTModelNamesNames.GPT_4_TURBO, GPTModelNamesNames.GPT_4]
+        return [
+            GPTModelNamesNames.GPT_4O,
+            GPTModelNamesNames.GPT_4_TURBO,
+            GPTModelNamesNames.GPT_4
+        ]
 
-LLM_CORE_ADMIN_LIST = ("nickname", "provider", "model_name", "temperature", "created_at", "updated_at")
-LLM_CORE_ADMIN_FILTER = ("nickname", "provider", "model_name", "temperature", "created_at", "updated_at")
-LLM_CORE_ADMIN_SEARCH = ("nickname", "provider", "model_name", "temperature", "created_at", "updated_at")
+
+LLM_CORE_ADMIN_LIST = (
+    "nickname",
+    "provider",
+    "model_name",
+    "temperature",
+    "created_at",
+    "updated_at"
+)
+LLM_CORE_ADMIN_FILTER = (
+    "nickname",
+    "provider",
+    "model_name",
+    "temperature",
+    "created_at",
+    "updated_at"
+)
+LLM_CORE_ADMIN_SEARCH = (
+    "nickname",
+    "provider",
+    "model_name",
+    "temperature",
+    "created_at",
+    "updated_at"
+)

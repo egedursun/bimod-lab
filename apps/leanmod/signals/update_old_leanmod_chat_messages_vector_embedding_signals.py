@@ -17,23 +17,41 @@
 
 import logging
 
-from django.db.models.signals import post_save
+from django.db.models.signals import (
+    post_save
+)
+
 from django.dispatch import receiver
 
-from apps.leanmod.models import LeanModOldChatMessagesVectorData
-from apps.multimodal_chat.models import MultimodalLeanChatMessage
+from apps.leanmod.models import (
+    LeanModOldChatMessagesVectorData
+)
+
+from apps.multimodal_chat.models import (
+    MultimodalLeanChatMessage
+)
 
 logger = logging.getLogger(__name__)
 
 
 @receiver(post_save, sender=MultimodalLeanChatMessage)
-def update_leanmod_old_chat_messages_vector_embedding_after_save(sender, instance, created, **kwargs):
+def update_leanmod_old_chat_messages_vector_embedding_after_save(
+    sender,
+    instance,
+    created,
+    **kwargs
+):
     try:
-        item, success = LeanModOldChatMessagesVectorData.objects.get_or_create(leanmod_chat_message=instance)
+        item, success = LeanModOldChatMessagesVectorData.objects.get_or_create(
+            leanmod_chat_message=instance
+        )
+
         if success:
             logger.info("LeanModOldChatMessagesVectorData created for MultimodalLeanChatMessage.")
+
         else:
             logger.info("LeanModOldChatMessagesVectorData already exists; updating.")
             item.save()
+
     except Exception as e:
         logger.error(f"Error in post-save embedding update: {e}")

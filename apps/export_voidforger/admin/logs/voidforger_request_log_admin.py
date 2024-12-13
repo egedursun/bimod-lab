@@ -17,7 +17,9 @@
 
 from django.contrib import admin
 
-from apps.export_voidforger.models import VoidForgerRequestLog
+from apps.export_voidforger.models import (
+    VoidForgerRequestLog
+)
 
 from apps.export_voidforger.utils import (
     EXPORT_VOIDFORGER_LOG_ADMIN_LIST,

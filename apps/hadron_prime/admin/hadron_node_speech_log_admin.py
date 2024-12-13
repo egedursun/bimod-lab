@@ -17,9 +17,15 @@
 
 from django.contrib import admin
 
-from apps.hadron_prime.models.hadron_node_speech_log_models import HadronNodeSpeechLog
-from apps.hadron_prime.utils import HADRON_NODE_SPEECH_LOG_ADMIN_LIST, HADRON_NODE_SPEECH_LOG_ADMIN_SEARCH, \
+from apps.hadron_prime.models.hadron_node_speech_log_models import (
+    HadronNodeSpeechLog
+)
+
+from apps.hadron_prime.utils import (
+    HADRON_NODE_SPEECH_LOG_ADMIN_LIST,
+    HADRON_NODE_SPEECH_LOG_ADMIN_SEARCH,
     HADRON_NODE_SPEECH_LOG_ADMIN_FILTER
+)
 
 
 @admin.register(HadronNodeSpeechLog)
@@ -27,4 +33,5 @@ class HadronNodeSpeechLogAdmin(admin.ModelAdmin):
     list_display = HADRON_NODE_SPEECH_LOG_ADMIN_LIST
     search_fields = HADRON_NODE_SPEECH_LOG_ADMIN_SEARCH
     list_filter = HADRON_NODE_SPEECH_LOG_ADMIN_FILTER
+
     ordering = ('-created_at',)

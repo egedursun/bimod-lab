@@ -19,7 +19,12 @@
 from django.contrib import admin
 
 from apps.hadron_prime.models import HadronSystem
-from apps.hadron_prime.utils import HADRON_SYSTEM_ADMIN_LIST, HADRON_SYSTEM_ADMIN_FILTER, HADRON_SYSTEM_ADMIN_SEARCH
+
+from apps.hadron_prime.utils import (
+    HADRON_SYSTEM_ADMIN_LIST,
+    HADRON_SYSTEM_ADMIN_FILTER,
+    HADRON_SYSTEM_ADMIN_SEARCH
+)
 
 
 @admin.register(HadronSystem)
@@ -27,4 +32,5 @@ class HadronSystemAdmin(admin.ModelAdmin):
     list_display = HADRON_SYSTEM_ADMIN_LIST
     list_filter = HADRON_SYSTEM_ADMIN_FILTER
     search_fields = HADRON_SYSTEM_ADMIN_SEARCH
+
     ordering = ['-created_at']

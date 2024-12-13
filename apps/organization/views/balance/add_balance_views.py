@@ -44,16 +44,25 @@ class OrganizationView_AddBalanceCredits(TemplateView, LoginRequiredMixin):
 
         ##############################
         # PERMISSION CHECK FOR - ADD_BALANCE_TO_ORGANIZATION
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.ADD_BALANCE_TO_ORGANIZATION):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.ADD_BALANCE_TO_ORGANIZATION
+        ):
             messages.error(self.request, "You do not have permission to add balance to organizations.")
             return redirect('llm_transaction:list')
         ##############################
 
         org_id = request.POST.get('org_id')
-        org = get_object_or_404(Organization, id=org_id, users__in=[context_user])
+        org = get_object_or_404(
+            Organization,
+            id=org_id,
+            users__in=[context_user]
+        )
+
         topup_amount = float(request.POST.get('topup_amount'))
+
         promo_code = request.POST.get('promo_code')
+
         if float(topup_amount) <= 0:
             logger.error(f"User: {context_user.id} tried to top up with an invalid amount: {topup_amount}")
             messages.error(request, 'Top up amount must be greater than zero.')
@@ -70,7 +79,8 @@ class OrganizationView_AddBalanceCredits(TemplateView, LoginRequiredMixin):
         if topup_amount >= int(BALANCE_ADDITION_BONUS_THRESHOLD__SPECIFIER_4):
             bulk_addition_bonus_percentage = int(BALANCE_ADDITION_BONUS_PERCENTAGE__GTE_50000)
         bulk_addition_bonus = float(float(topup_amount) * (bulk_addition_bonus_percentage) / 100)
-        messages.success(request, f'You have received a {bulk_addition_bonus_percentage}% (${round(bulk_addition_bonus, 2)}) bonus for adding ${topup_amount} to your account.')
+        messages.success(request,
+                         f'You have received a {bulk_addition_bonus_percentage}% (${round(bulk_addition_bonus, 2)}) bonus for adding ${topup_amount} to your account.')
         topup_amount += bulk_addition_bonus
 
         bonus_pct_referrer, bonus_pct_referee = 0, 0

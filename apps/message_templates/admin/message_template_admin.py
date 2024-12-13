@@ -14,15 +14,18 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from django.contrib import admin
 
-from apps.message_templates.models import MessageTemplate
-from apps.message_templates.utils import MESSAGE_TEMPLATE_ADMIN_LIST, MESSAGE_TEMPLATE_ADMIN_FILTER, \
+from apps.message_templates.models import (
+    MessageTemplate
+)
+
+from apps.message_templates.utils import (
+    MESSAGE_TEMPLATE_ADMIN_LIST,
+    MESSAGE_TEMPLATE_ADMIN_FILTER,
     MESSAGE_TEMPLATE_ADMIN_SEARCH
+)
 
 
 @admin.register(MessageTemplate)
@@ -30,4 +33,5 @@ class MessageTemplateAdmin(admin.ModelAdmin):
     list_display = MESSAGE_TEMPLATE_ADMIN_LIST
     search_fields = MESSAGE_TEMPLATE_ADMIN_SEARCH
     list_filter = MESSAGE_TEMPLATE_ADMIN_FILTER
+
     ordering = ["-created_at"]

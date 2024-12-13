@@ -21,15 +21,27 @@ from io import BytesIO
 
 import qrcode
 import tiktoken
-from django.core.files.base import ContentFile
-from django.template.loader import render_to_string
+
+from django.core.files.base import (
+    ContentFile
+)
+
+from django.template.loader import (
+    render_to_string
+)
 
 logger = logging.getLogger(__name__)
 
 
-def process_and_calculate_number_of_billable_tokens(encoding_engine, text):
+def process_and_calculate_number_of_billable_tokens(
+    encoding_engine,
+    text
+):
     try:
-        encoding = tiktoken.get_encoding(encoding_engine)
+        encoding = tiktoken.get_encoding(
+            encoding_engine
+        )
+
         tokens = encoding.encode(str(text))
 
     except Exception as e:
@@ -38,8 +50,12 @@ def process_and_calculate_number_of_billable_tokens(encoding_engine, text):
     return len(tokens)
 
 
-def calculate_total_llm_model_costs(model, number_of_tokens):
+def calculate_total_llm_model_costs(
+    model,
+    number_of_tokens
+):
     try:
+
         from apps.llm_transaction.utils import (
             LLMCostsPerMillionTokens
         )
@@ -58,7 +74,10 @@ def calculate_total_llm_model_costs(model, number_of_tokens):
     return llm_cost
 
 
-def calculate_service_costs_of_platform(llm_cost, tool_service_fee_absolute_rate=0.000000):
+def calculate_service_costs_of_platform(
+    llm_cost,
+    tool_service_fee_absolute_rate=0.000000
+):
     try:
         from apps.llm_transaction.utils import (
             INTERNAL_PROFIT_MARGIN_FOR_LLM
@@ -87,7 +106,10 @@ def calculate_value_added_tax(internal_service_cost):
     return tax_cost
 
 
-def calculate_final_billable_cost(internal_service_cost, tax_cost):
+def calculate_final_billable_cost(
+    internal_service_cost,
+    tax_cost
+):
     try:
         result = internal_service_cost + tax_cost
 
@@ -98,7 +120,10 @@ def calculate_final_billable_cost(internal_service_cost, tax_cost):
     return result
 
 
-def calculate_final_cost_total(llm_cost, billable_cost):
+def calculate_final_cost_total(
+    llm_cost,
+    billable_cost
+):
     try:
         result = llm_cost + billable_cost
 
@@ -133,11 +158,18 @@ def sum_costs(transactions):
 
 def barcode_generator(hashed_string):
     logger.info(f"Generating barcode for hashed string: {hashed_string}")
+
     try:
-        img = qrcode.make(hashed_string)
+        img = qrcode.make(
+            hashed_string
+        )
+
         buffer = BytesIO()
 
-        img.save(buffer, format="PNG")
+        img.save(
+            buffer,
+            format="PNG"
+        )
 
         buffer.seek(0)
 
@@ -145,18 +177,28 @@ def barcode_generator(hashed_string):
         logger.error(f"Error occurred while generating barcode: {str(e)}")
         return None
 
-    return ContentFile(buffer.getvalue(), name=f"QR_{hashed_string}.png")
+    return ContentFile(
+        buffer.getvalue(),
+        name=f"QR_{hashed_string}.png"
+    )
 
 
-def invoice_paper_generator(invoice_object, barcode_data):
+def invoice_paper_generator(
+    invoice_object,
+    barcode_data
+):
     logger.info(f"Generating invoice: {invoice_object.invoice_number}")
+
     import base64
 
     org = invoice_object.organization
     user = invoice_object.responsible_user
 
     barcode_data = barcode_data.file
-    barcode_data = base64.b64encode(barcode_data.getvalue()).decode('utf-8')
+
+    barcode_data = base64.b64encode(
+        barcode_data.getvalue()
+    ).decode('utf-8')
 
     try:
         html_content = render_to_string(
@@ -169,11 +211,15 @@ def invoice_paper_generator(invoice_object, barcode_data):
             }
         )
 
-        file_content = ContentFile(html_content.encode('utf-8'))
+        file_content = ContentFile(
+            html_content.encode('utf-8')
+        )
+
         filename = f"invoice_{str(invoice_object.invoice_number)}.html"
 
     except Exception as e:
         logger.error(f"Error occurred while generating invoice: {str(e)}")
+
         return None, None
 
     return filename, file_content

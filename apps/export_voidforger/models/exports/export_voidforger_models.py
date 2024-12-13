@@ -91,10 +91,12 @@ class ExportVoidForgerAPI(models.Model):
         if not self.endpoint:
             self.endpoint = BASE_URL + "/" + EXPORT_VOIDFORGER_API_BASE_URL + "/" + generate_voidforger_endpoint(
                 self.voidforger, self.id)
+
             self.save()
 
         if not self.custom_api_key and (not self.is_public):
             self.custom_api_key = generate_voidforger_custom_api_key(self.voidforger)
+
             self.save()
 
     def requests_in_last_hour(self):
@@ -112,10 +114,17 @@ class ExportVoidForgerAPI(models.Model):
     class Meta:
         verbose_name = "Export VoidForger API"
         verbose_name_plural = "Export VoidForger APIs"
+
         ordering = ['-created_at']
+
         unique_together = [
-            ['organization', 'voidforger', 'is_public'],
+            [
+                'organization',
+                'voidforger',
+                'is_public'
+            ],
         ]
+
         indexes = [
             models.Index(fields=[
                 'voidforger'

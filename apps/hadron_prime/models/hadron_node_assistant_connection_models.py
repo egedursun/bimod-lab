@@ -20,10 +20,21 @@ from django.db import models
 
 
 class HadronNodeAssistantConnection(models.Model):
-    hadron_prime_node = models.ForeignKey("hadron_prime.HadronNode", on_delete=models.CASCADE)
-    assistant = models.ForeignKey("assistants.Assistant", on_delete=models.CASCADE)
+    hadron_prime_node = models.ForeignKey(
+        "hadron_prime.HadronNode",
+        on_delete=models.CASCADE
+    )
 
-    created_by_user = models.ForeignKey("auth.User", on_delete=models.CASCADE)
+    assistant = models.ForeignKey(
+        "assistants.Assistant",
+        on_delete=models.CASCADE
+    )
+
+    created_by_user = models.ForeignKey(
+        "auth.User",
+        on_delete=models.CASCADE
+    )
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -32,12 +43,24 @@ class HadronNodeAssistantConnection(models.Model):
 
     class Meta:
         unique_together = [
-            ["hadron_prime_node", "assistant"],
+            [
+                "hadron_prime_node",
+                "assistant"
+            ],
         ]
+
         verbose_name = "Hadron Node Assistant Connection"
         verbose_name_plural = "Hadron Node Assistant Connections"
+
         ordering = ["-created_at"]
+
         indexes = [
-            models.Index(fields=["hadron_prime_node", "assistant"]),
-            models.Index(fields=["assistant", "hadron_prime_node"]),
+            models.Index(fields=[
+                "hadron_prime_node",
+                "assistant"
+            ]),
+            models.Index(fields=[
+                "assistant",
+                "hadron_prime_node"
+            ]),
         ]

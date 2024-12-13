@@ -14,16 +14,32 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import redirect, get_object_or_404
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.shortcuts import (
+    redirect,
+    get_object_or_404
+)
+
 from django.views.generic import DeleteView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
 from apps.llm_core.models import LLMCore
-from apps.user_permissions.utils import PermissionNames
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -35,29 +51,41 @@ class LLMView_Delete(DeleteView, LoginRequiredMixin):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         user = self.request.user
         context['user'] = user
+
         return context
 
     def post(self, request, *args, **kwargs):
         ##############################
         # PERMISSION CHECK FOR - UPDATE_LLM_CORES
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.DELETE_LLM_CORES):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.DELETE_LLM_CORES
+        ):
             messages.error(self.request, "You do not have permission to delete LLM Cores.")
             return redirect('llm_core:list')
         ##############################
 
-        llm_core = get_object_or_404(LLMCore, id=kwargs['pk'])
+        llm_core = get_object_or_404(
+            LLMCore,
+            id=kwargs['pk']
+        )
 
         try:
             llm_core.delete()
+
         except Exception as e:
             logger.error(f"An error occurred while deleting LLM Core {llm_core.nickname}. Error: {str(e)}")
             messages.error(request, f"An error occurred while deleting LLM Core {llm_core.nickname}. Error: {str(e)}")
+
             return redirect('llm_core:list')
 
         logger.info(f"LLM Core {llm_core.nickname} was deleted by User: {self.request.user.id}.")
+
         return redirect('llm_core:list')
 
     def get_queryset(self):
         user = self.request.user
-        return LLMCore.objects.filter(organization__in=user.organizations.all())
+
+        return LLMCore.objects.filter(
+            organization__in=user.organizations.all()
+        )

@@ -16,29 +16,89 @@
 #
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import TemplateView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.datasource_browsers.models import DataSourceBrowserConnection
-from apps.datasource_codebase.models import CodeRepositoryStorageConnection
-from apps.datasource_file_systems.models import DataSourceFileSystem
-from apps.datasource_knowledge_base.models import DocumentKnowledgeBaseConnection
-from apps.datasource_media_storages.models import DataSourceMediaStorageConnection
-from apps.datasource_ml_models.models import DataSourceMLModelConnection
-from apps.datasource_nosql.models import NoSQLDatabaseConnection
-from apps.datasource_sql.models import SQLDatabaseConnection
-from apps.datasource_website.models import DataSourceWebsiteStorageConnection
-from apps.hadron_prime.models import HadronNodeAssistantConnection
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.views.generic import (
+    TemplateView
+)
+
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
+from apps.datasource_browsers.models import (
+    DataSourceBrowserConnection
+)
+
+from apps.datasource_codebase.models import (
+    CodeRepositoryStorageConnection
+)
+
+from apps.datasource_file_systems.models import (
+    DataSourceFileSystem
+)
+
+from apps.datasource_knowledge_base.models import (
+    DocumentKnowledgeBaseConnection
+)
+
+from apps.datasource_media_storages.models import (
+    DataSourceMediaStorageConnection
+)
+
+from apps.datasource_ml_models.models import (
+    DataSourceMLModelConnection
+)
+
+from apps.datasource_nosql.models import (
+    NoSQLDatabaseConnection
+)
+
+from apps.datasource_sql.models import (
+    SQLDatabaseConnection
+)
+
+from apps.datasource_website.models import (
+    DataSourceWebsiteStorageConnection
+)
+
+from apps.hadron_prime.models import (
+    HadronNodeAssistantConnection
+)
+
 from apps.llm_core.models import LLMCore
-from apps.meta_integrations.models import MetaIntegrationCategory, MetaIntegrationTeam
-from apps.metakanban.models import MetaKanbanAssistantConnection
-from apps.metatempo.models import MetaTempoAssistantConnection
-from apps.orchestrations.models import OrchestrationReactantAssistantConnection
+
+from apps.meta_integrations.models import (
+    MetaIntegrationCategory,
+    MetaIntegrationTeam
+)
+
+from apps.metakanban.models import (
+    MetaKanbanAssistantConnection
+)
+
+from apps.metatempo.models import (
+    MetaTempoAssistantConnection
+)
+
+from apps.orchestrations.models import (
+    OrchestrationReactantAssistantConnection
+)
+
 from apps.organization.models import Organization
 from apps.projects.models import ProjectItem
-from apps.user_permissions.utils import PermissionNames
-from apps.video_generations.models import VideoGeneratorConnection
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
+from apps.video_generations.models import (
+    VideoGeneratorConnection
+)
+
 from web_project import TemplateLayout
 
 
@@ -49,8 +109,10 @@ class MetaIntegrationView_MetaIntegrationCategoryStore(LoginRequiredMixin, Templ
 
         ##############################
         # PERMISSION CHECK FOR - LIST_PLUG_AND_PLAY_TEAMS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.LIST_PLUG_AND_PLAY_TEAMS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.LIST_PLUG_AND_PLAY_TEAMS
+        ):
             messages.error(self.request, "You do not have permission to list plug and play teams.")
             return context
         ##############################
@@ -126,7 +188,9 @@ class MetaIntegrationView_MetaIntegrationCategoryStore(LoginRequiredMixin, Templ
 
         meta_integrations = MetaIntegrationTeam.objects.filter(
             meta_integration_category__category_slug=self.kwargs['category_slug']
-        ).order_by("meta_integration_name")
+        ).order_by(
+            "meta_integration_name"
+        )
 
         context['category'] = category
         context['organizations'] = user_organizations

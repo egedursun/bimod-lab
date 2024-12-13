@@ -18,9 +18,15 @@
 
 from django.contrib import admin
 
-from apps.integrations.models import AssistantIntegration
-from apps.integrations.utils import ASSISTANT_INTEGRATION_ADMIN_LIST, ASSISTANT_INTEGRATION_ADMIN_SEARCH, \
+from apps.integrations.models import (
+    AssistantIntegration
+)
+
+from apps.integrations.utils import (
+    ASSISTANT_INTEGRATION_ADMIN_LIST,
+    ASSISTANT_INTEGRATION_ADMIN_SEARCH,
     ASSISTANT_INTEGRATION_ADMIN_FILTER
+)
 
 
 @admin.register(AssistantIntegration)
@@ -28,4 +34,5 @@ class AssistantIntegrationAdmin(admin.ModelAdmin):
     list_display = ASSISTANT_INTEGRATION_ADMIN_LIST
     search_fields = ASSISTANT_INTEGRATION_ADMIN_SEARCH
     list_filter = ASSISTANT_INTEGRATION_ADMIN_FILTER
+
     ordering = ['-created_at']

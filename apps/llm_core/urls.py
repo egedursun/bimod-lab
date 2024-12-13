@@ -17,17 +17,45 @@
 
 from django.urls import path
 
-from .views import LLMView_Create, LLMView_Update, LLMView_Delete, LLMView_List
+from .views import (
+    LLMView_Create,
+    LLMView_Update,
+    LLMView_Delete,
+    LLMView_List
+)
 
 app_name = "llm_core"
 
 urlpatterns = [
-    path('create/', LLMView_Create.as_view(template_name="llm_core/create_llm_core.html"),
-         name="create"),
-    path('list/', LLMView_List.as_view(template_name="llm_core/list_llm_cores.html"),
-         name="list"),
-    path('update/<int:pk>/', LLMView_Update.as_view(template_name="llm_core/update_llm_core.html"),
-         name="update"),
-    path('delete/<int:pk>/', LLMView_Delete.as_view(template_name="llm_core/llm_core_confirm_delete.html"),
-         name="delete")
+    path(
+        'create/',
+        LLMView_Create.as_view(
+            template_name="llm_core/create_llm_core.html"
+        ),
+        name="create"
+    ),
+
+    path(
+        'list/',
+        LLMView_List.as_view(
+            template_name="llm_core/list_llm_cores.html"
+        ),
+        name="list"
+    ),
+
+    path(
+        'update/<int:pk>/',
+        LLMView_Update.as_view(
+            template_name="llm_core/update_llm_core.html"
+        ),
+        name="update"
+    ),
+
+    path(
+        'delete/<int:pk>/',
+        LLMView_Delete.as_view(
+            template_name="llm_core/llm_core_confirm_delete.html"
+        ),
+        name="delete"
+    )
 ]

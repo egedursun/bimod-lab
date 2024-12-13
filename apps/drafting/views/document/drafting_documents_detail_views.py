@@ -33,10 +33,6 @@ from apps.drafting.models import (
     DraftingDocument
 )
 
-from apps.organization.models import (
-    Organization
-)
-
 from apps.user_permissions.utils import (
     PermissionNames
 )
@@ -61,9 +57,6 @@ class DraftingView_DocumentDetail(TemplateView, LoginRequiredMixin):
         ##############################
 
         try:
-            user_orgs = Organization.objects.filter(
-                users__in=[self.request.user]
-            )
 
             document_id = self.kwargs.get('document_id')
 

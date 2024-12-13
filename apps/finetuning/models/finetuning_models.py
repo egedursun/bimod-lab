@@ -66,6 +66,7 @@ class FineTunedModelConnection(models.Model):
     class Meta:
         verbose_name = 'Fine-Tuned Model Connection'
         verbose_name_plural = 'Fine-Tuned Model Connections'
+
         ordering = ['-created_at']
 
         unique_together = [

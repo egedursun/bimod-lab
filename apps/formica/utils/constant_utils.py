@@ -16,9 +16,23 @@
 #
 
 
-FORMICA_GOOGLE_APPS_CONNECTION_ADMIN_LIST = ['formica_assistant', 'owner_user', 'connection_api_key', 'created_at',
-                                             'updated_at']
-FORMICA_GOOGLE_APPS_CONNECTION_ADMIN_FILTER = ['formica_assistant', 'owner_user', 'created_at', 'updated_at']
-FORMICA_GOOGLE_APPS_CONNECTION_ADMIN_SEARCH = ['formica_assistant', 'owner_user', 'connection_api_key']
+FORMICA_GOOGLE_APPS_CONNECTION_ADMIN_LIST = [
+    'formica_assistant',
+    'owner_user',
+    'connection_api_key',
+    'created_at',
+    'updated_at'
+]
+FORMICA_GOOGLE_APPS_CONNECTION_ADMIN_FILTER = [
+    'formica_assistant',
+    'owner_user',
+    'created_at',
+    'updated_at'
+]
+FORMICA_GOOGLE_APPS_CONNECTION_ADMIN_SEARCH = [
+    'formica_assistant',
+    'owner_user',
+    'connection_api_key'
+]
 
 FORMICA_GOOGLE_APPS_CONNECTION_API_KEY_DEFAULT_LENGTH = 64

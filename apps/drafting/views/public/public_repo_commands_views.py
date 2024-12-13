@@ -67,6 +67,7 @@ class DraftingView_PublicGenerateViaRepoCommand(View):
             text_content = ""
 
         # auth key check
+
         authentication_key = request.POST.get('authentication_key')
 
         if authentication_key is None:

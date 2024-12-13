@@ -20,10 +20,20 @@ from django.db import models
 
 
 class HadronSystem(models.Model):
-    organization = models.ForeignKey('organization.Organization', on_delete=models.CASCADE)
+    organization = models.ForeignKey(
+        'organization.Organization',
+        on_delete=models.CASCADE
+    )
+
     system_name = models.CharField(max_length=4000, unique=True)
+
     system_description = models.TextField()
-    created_by_user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+
+    created_by_user = models.ForeignKey(
+        'auth.User',
+        on_delete=models.CASCADE
+    )
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -33,13 +43,31 @@ class HadronSystem(models.Model):
     class Meta:
         verbose_name = 'Hadron System'
         verbose_name_plural = 'Hadron Systems'
+
         ordering = ['-created_at']
+
         unique_together = [
-            ['organization', 'system_name'],
+            [
+                'organization',
+                'system_name'
+            ],
         ]
+
         indexes = [
-            models.Index(fields=['organization', 'system_name']),
-            models.Index(fields=['organization', 'created_by_user']),
-            models.Index(fields=['organization', 'created_at']),
-            models.Index(fields=['organization', 'updated_at']),
+            models.Index(fields=[
+                'organization',
+                'system_name'
+            ]),
+            models.Index(fields=[
+                'organization',
+                'created_by_user'
+            ]),
+            models.Index(fields=[
+                'organization',
+                'created_at'
+            ]),
+            models.Index(fields=[
+                'organization',
+                'updated_at'
+            ]),
         ]

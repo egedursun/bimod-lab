@@ -20,13 +20,19 @@ import logging
 import random
 import string
 
-from apps.voidforger.models import VoidForger
+from apps.voidforger.models import (
+    VoidForger
+)
+
 from config import settings
 
 logger = logging.getLogger(__name__)
 
 
-def generate_voidforger_endpoint(voidforger: VoidForger, export_id: int):
+def generate_voidforger_endpoint(
+    voidforger: VoidForger,
+    export_id: int
+):
     org_id = voidforger.llm_model.organization.id
     assistant_id = voidforger.id
     export_id = export_id
@@ -39,6 +45,7 @@ def generate_voidforger_custom_api_key(voidforger: VoidForger):
     logger.info(f"Generating custom API key for VoidForger {voidforger.id}")
     organization_id = voidforger.llm_model.organization.id
     organization_name = voidforger.llm_model.organization.name
+
     llm_model_name = voidforger.llm_model.model_name
     llm_model_temperature = voidforger.llm_model.temperature
     llm_model_max_tokens = voidforger.llm_model.maximum_tokens

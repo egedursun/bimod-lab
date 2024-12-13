@@ -14,17 +14,25 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from django.db import models
 
 
 class OrganizationBalanceSnapshot(models.Model):
-    organization = models.ForeignKey('organization.Organization', on_delete=models.SET_NULL,
-                                     related_name='balance_snapshots', null=True)
-    balance = models.DecimalField(max_digits=12, decimal_places=6, null=True, blank=True)
+    organization = models.ForeignKey(
+        'organization.Organization',
+        on_delete=models.SET_NULL,
+        related_name='balance_snapshots',
+        null=True
+    )
+
+    balance = models.DecimalField(
+        max_digits=12,
+        decimal_places=6,
+        null=True,
+        blank=True
+    )
+
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -33,9 +41,18 @@ class OrganizationBalanceSnapshot(models.Model):
     class Meta:
         verbose_name = "Organization Balance Snapshot"
         verbose_name_plural = "Organization Balance Snapshots"
+
         ordering = ["-created_at"]
+
         indexes = [
-            models.Index(fields=['organization']),
-            models.Index(fields=['created_at']),
-            models.Index(fields=['organization', 'created_at']),
+            models.Index(fields=[
+                'organization'
+            ]),
+            models.Index(fields=[
+                'created_at'
+            ]),
+            models.Index(fields=[
+                'organization',
+                'created_at'
+            ]),
         ]

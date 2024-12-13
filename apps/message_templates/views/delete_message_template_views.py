@@ -14,16 +14,36 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import redirect, get_object_or_404
-from django.views.generic import DeleteView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.message_templates.models import MessageTemplate
-from apps.user_permissions.utils import PermissionNames
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.shortcuts import (
+    redirect,
+    get_object_or_404
+)
+
+from django.views.generic import (
+    DeleteView
+)
+
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
+from apps.message_templates.models import (
+    MessageTemplate
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -31,6 +51,7 @@ logger = logging.getLogger(__name__)
 
 class MessageTemplateView_Delete(DeleteView, LoginRequiredMixin):
     model = MessageTemplate
+
     success_url = 'message_templates:list'
 
     def get_context_data(self, **kwargs):
@@ -43,21 +64,36 @@ class MessageTemplateView_Delete(DeleteView, LoginRequiredMixin):
     def post(self, request, *args, **kwargs):
         ##############################
         # PERMISSION CHECK FOR - REMOVE_TEMPLATE_MESSAGES
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.REMOVE_TEMPLATE_MESSAGES):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.REMOVE_TEMPLATE_MESSAGES
+        ):
             messages.error(self.request, "You do not have permission to delete template messages.")
             return redirect('message_templates:list')
         ##############################
 
-        msg_tmpl = get_object_or_404(MessageTemplate, id=self.kwargs['pk'])
+        msg_tmpl = get_object_or_404(
+            MessageTemplate,
+            id=self.kwargs['pk']
+        )
 
         try:
             msg_tmpl.delete()
+
         except Exception as e:
             logger.error(f"Error deleting Message Template: {e}")
-            return redirect(self.success_url)
+
+            return redirect(
+                self.success_url
+            )
 
         success_message = "Message template deleted successfully."
+
         logger.info(f"Message Template was deleted by User: {self.request.user.id}.")
-        messages.success(request, success_message)
+
+        messages.success(
+            request,
+            success_message
+        )
+
         return redirect(self.success_url)

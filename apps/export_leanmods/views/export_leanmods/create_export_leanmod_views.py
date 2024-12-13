@@ -14,18 +14,40 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import redirect, get_object_or_404
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.shortcuts import (
+    redirect,
+    get_object_or_404
+)
+
 from django.views.generic import TemplateView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.export_leanmods.models import ExportLeanmodAssistantAPI
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
+from apps.export_leanmods.models import (
+    ExportLeanmodAssistantAPI
+)
+
 from apps.leanmod.models import LeanAssistant
-from apps.user_permissions.utils import PermissionNames
-from config.settings import MAX_LEANMODS_EXPORTS_ORGANIZATION
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
+from config.settings import (
+    MAX_LEANMODS_EXPORTS_ORGANIZATION
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -44,6 +66,7 @@ class ExportLeanModView_Create(TemplateView, LoginRequiredMixin):
 
         context["user"] = user_context
         context["assistants"] = agents
+
         return context
 
     def post(self, request, *args, **kwargs):
@@ -59,17 +82,25 @@ class ExportLeanModView_Create(TemplateView, LoginRequiredMixin):
         ##############################
 
         agent_id = request.POST.get('assistant')
-        agent = get_object_or_404(LeanAssistant, pk=agent_id)
+
+        agent = get_object_or_404(
+            LeanAssistant,
+            pk=agent_id
+        )
+
         is_public = request.POST.get('is_public') == 'on'
+
         req_limit_hourly = request.POST.get('request_limit_per_hour')
 
         if ExportLeanmodAssistantAPI.objects.filter(
             created_by_user=request.user
         ).count() > MAX_LEANMODS_EXPORTS_ORGANIZATION:
+
             logger.error(f"User: {request.user.id} tried to create more than {MAX_LEANMODS_EXPORTS_ORGANIZATION} "
                          f"Export LeanMod Assistant APIs.")
 
             messages.error(request, f"Maximum number of Export LeanMod Assistant APIs reached for the organization.")
+
             return self.render_to_response(self.get_context_data())
 
         if not agent_id or not req_limit_hourly:
@@ -77,6 +108,7 @@ class ExportLeanModView_Create(TemplateView, LoginRequiredMixin):
                 f"User: {request.user.id} tried to create Export LeanMod Assistant API without required fields.")
 
             messages.error(request, "LeanMod Assistant ID and Request Limit Per Hour are required.")
+
             return self.render_to_response(self.get_context_data())
 
         try:
@@ -96,6 +128,7 @@ class ExportLeanModView_Create(TemplateView, LoginRequiredMixin):
                 org.exported_leanmods.add(new_exp_leanmod)
 
             org.save()
+
             logger.info(f"Export LeanMod Assistant API was created by User: {request.user.id}.")
             messages.success(request, "Export LeanMod Assistant API created successfully!")
 

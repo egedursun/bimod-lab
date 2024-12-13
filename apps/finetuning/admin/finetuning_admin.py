@@ -17,7 +17,9 @@
 
 from django.contrib import admin
 
-from apps.finetuning.models import FineTunedModelConnection
+from apps.finetuning.models import (
+    FineTunedModelConnection
+)
 
 from apps.finetuning.utils import (
     FINETUNING_ADMIN_LIST,

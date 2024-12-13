@@ -16,12 +16,33 @@
 #
 
 
-ASSISTANT_INTEGRATION_ADMIN_LIST = ['integration_name', 'integration_category', 'integration_audience',
-                                    'integration_tone']
-ASSISTANT_INTEGRATION_ADMIN_SEARCH = ['integration_name', 'integration_category', 'integration_audience',
-                                      'integration_tone']
-ASSISTANT_INTEGRATION_ADMIN_FILTER = ['integration_category', 'integration_audience', 'integration_tone']
+ASSISTANT_INTEGRATION_ADMIN_LIST = [
+    'integration_name',
+    'integration_category',
+    'integration_audience',
+    'integration_tone'
+]
+ASSISTANT_INTEGRATION_ADMIN_SEARCH = [
+    'integration_name',
+    'integration_category',
+    'integration_audience',
+    'integration_tone'
+]
+ASSISTANT_INTEGRATION_ADMIN_FILTER = [
+    'integration_category',
+    'integration_audience',
+    'integration_tone'
+]
 
-ASSISTANT_INTEGRATION_CATEGORY_ADMIN_LIST = ['category_name', 'created_at', 'updated_at']
-ASSISTANT_INTEGRATION_CATEGORY_ADMIN_SEARCH = ['category_name']
-ASSISTANT_INTEGRATION_CATEGORY_ADMIN_FILTER = ['created_at', 'updated_at']
+ASSISTANT_INTEGRATION_CATEGORY_ADMIN_LIST = [
+    'category_name',
+    'created_at',
+    'updated_at'
+]
+ASSISTANT_INTEGRATION_CATEGORY_ADMIN_SEARCH = [
+    'category_name'
+]
+ASSISTANT_INTEGRATION_CATEGORY_ADMIN_FILTER = [
+    'created_at',
+    'updated_at'
+]

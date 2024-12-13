@@ -118,10 +118,13 @@ class ExportLeanmodAssistantAPI(models.Model):
     class Meta:
         verbose_name = "Export LeanMod Assistant API"
         verbose_name_plural = "Export LeanMod Assistant APIs"
+
         ordering = ['-created_at']
+
         unique_together = [
             ["organization", "lean_assistant", "is_public"],
         ]
+
         indexes = [
             models.Index(fields=[
                 'lean_assistant'

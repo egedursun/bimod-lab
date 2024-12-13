@@ -17,9 +17,15 @@
 
 from django.contrib import admin
 
-from apps.meta_integrations.models import MetaIntegrationCategory
-from apps.meta_integrations.utils import META_INTEGRATION_CATEGORY_ADMIN_LIST, META_INTEGRATION_CATEGORY_ADMIN_FILTER, \
+from apps.meta_integrations.models import (
+    MetaIntegrationCategory
+)
+
+from apps.meta_integrations.utils import (
+    META_INTEGRATION_CATEGORY_ADMIN_LIST,
+    META_INTEGRATION_CATEGORY_ADMIN_FILTER,
     META_INTEGRATION_CATEGORY_ADMIN_SEARCH
+)
 
 
 @admin.register(MetaIntegrationCategory)
@@ -27,4 +33,5 @@ class MetaIntegrationCategoryAdmin(admin.ModelAdmin):
     list_display = META_INTEGRATION_CATEGORY_ADMIN_LIST
     search_fields = META_INTEGRATION_CATEGORY_ADMIN_SEARCH
     list_filter = META_INTEGRATION_CATEGORY_ADMIN_FILTER
+
     ordering = ['created_at']

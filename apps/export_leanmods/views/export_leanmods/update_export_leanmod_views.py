@@ -18,17 +18,33 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import get_object_or_404, redirect, render
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.shortcuts import (
+    get_object_or_404,
+    redirect,
+    render
+)
+
 from django.views.generic import TemplateView
 
 from apps.core.user_permissions.permission_manager import (
     UserPermissionManager
 )
 
-from apps.export_leanmods.models import ExportLeanmodAssistantAPI
+from apps.export_leanmods.models import (
+    ExportLeanmodAssistantAPI
+)
+
 from apps.leanmod.models import LeanAssistant
-from apps.user_permissions.utils import PermissionNames
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -38,7 +54,11 @@ class ExportLeanModView_Update(TemplateView, LoginRequiredMixin):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
 
-        exp_agent = get_object_or_404(ExportLeanmodAssistantAPI, pk=self.kwargs['pk'])
+        exp_agent = get_object_or_404(
+            ExportLeanmodAssistantAPI,
+            pk=self.kwargs['pk']
+        )
+
         context['export_assistant'] = exp_agent
 
         context['assistants'] = LeanAssistant.objects.filter(
@@ -97,4 +117,8 @@ class ExportLeanModView_Update(TemplateView, LoginRequiredMixin):
                 ).all()
             })
 
-        return render(request, self.template_name, context)
+        return render(
+            request,
+            self.template_name,
+            context
+        )

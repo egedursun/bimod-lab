@@ -21,11 +21,23 @@ from slugify import slugify
 
 
 class AssistantIntegrationCategory(models.Model):
-    category_name = models.CharField(max_length=1000, null=False, blank=False, unique=True)
+    category_name = models.CharField(
+        max_length=1000,
+        null=False,
+        blank=False,
+        unique=True
+    )
+
     category_description = models.TextField(null=True, blank=True)
     category_image_url = models.URLField(null=True, blank=True)
     tags = models.JSONField(null=True, blank=True)
-    category_slug = models.SlugField(max_length=1000, null=True, blank=True, unique=True)
+
+    category_slug = models.SlugField(
+        max_length=1000,
+        null=True,
+        blank=True,
+        unique=True
+    )
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -36,11 +48,15 @@ class AssistantIntegrationCategory(models.Model):
     class Meta:
         verbose_name = 'Assistant Integration Category'
         verbose_name_plural = 'Assistant Integration Categories'
+
         indexes = [
-            models.Index(fields=['category_name']),
+            models.Index(
+                fields=['category_name']
+            ),
         ]
 
     def save(self, *args, **kwargs):
         if not self.category_slug:
             self.category_slug = slugify(self.category_name)
+
         super(AssistantIntegrationCategory, self).save(*args, **kwargs)

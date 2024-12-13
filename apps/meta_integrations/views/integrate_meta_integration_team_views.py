@@ -20,42 +20,116 @@ import random
 import uuid
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.core.files import File
-from django.core.files.storage import default_storage
+
+from django.core.files.storage import (
+    default_storage
+)
+
 from django.shortcuts import redirect
 from django.views import View
 
 from apps.assistants.models import Assistant
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.datasource_browsers.models import DataSourceBrowserConnection
-from apps.datasource_codebase.models import CodeRepositoryStorageConnection, CodeBaseRepositoryChunk, \
+
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
+from apps.datasource_browsers.models import (
+    DataSourceBrowserConnection
+)
+
+from apps.datasource_codebase.models import (
+    CodeRepositoryStorageConnection,
     CodeBaseRepository
-from apps.datasource_file_systems.models import DataSourceFileSystem
+)
+
+from apps.datasource_file_systems.models import (
+    DataSourceFileSystem
+)
 
 from apps.datasource_knowledge_base.models import (
     DocumentKnowledgeBaseConnection,
     KnowledgeBaseDocument
 )
 
-from apps.datasource_media_storages.models import DataSourceMediaStorageConnection, DataSourceMediaStorageItem
-from apps.datasource_ml_models.models import DataSourceMLModelConnection, DataSourceMLModelItem
-from apps.datasource_nosql.models import NoSQLDatabaseConnection, CustomNoSQLQuery
-from apps.datasource_sql.models import SQLDatabaseConnection, CustomSQLQuery
-from apps.datasource_website.models import DataSourceWebsiteStorageConnection
-from apps.hadron_prime.models import HadronNodeAssistantConnection
-from apps.leanmod.models import ExpertNetwork, ExpertNetworkAssistantReference, LeanAssistant
-from apps.llm_core.models import LLMCore
-from apps.meta_integrations.models import MetaIntegrationCategory, MetaIntegrationTeam
-from apps.meta_integrations.utils import META_INTEGRATION_ORCHESTRATOR_STANDARD_INSTRUCTIONS, \
+from apps.datasource_media_storages.models import (
+    DataSourceMediaStorageConnection,
+    DataSourceMediaStorageItem
+)
+
+from apps.datasource_ml_models.models import (
+    DataSourceMLModelConnection,
+    DataSourceMLModelItem
+)
+
+from apps.datasource_nosql.models import (
+    NoSQLDatabaseConnection,
+    CustomNoSQLQuery
+)
+
+from apps.datasource_sql.models import (
+    SQLDatabaseConnection,
+    CustomSQLQuery
+)
+
+from apps.datasource_website.models import (
+    DataSourceWebsiteStorageConnection
+)
+
+from apps.hadron_prime.models import (
+    HadronNodeAssistantConnection
+)
+
+from apps.leanmod.models import (
+    ExpertNetwork,
+    ExpertNetworkAssistantReference,
+    LeanAssistant
+)
+
+from apps.llm_core.models import (
+    LLMCore
+)
+
+from apps.meta_integrations.models import (
+    MetaIntegrationCategory,
+    MetaIntegrationTeam
+)
+
+from apps.meta_integrations.utils import (
+    META_INTEGRATION_ORCHESTRATOR_STANDARD_INSTRUCTIONS,
     META_INTEGRATION_LEANMOD_STANDARD_INSTRUCTIONS
-from apps.metakanban.models import MetaKanbanAssistantConnection
-from apps.metatempo.models import MetaTempoAssistantConnection
-from apps.orchestrations.models import Maestro, OrchestrationReactantAssistantConnection
+)
+
+from apps.metakanban.models import (
+    MetaKanbanAssistantConnection
+)
+
+from apps.metatempo.models import (
+    MetaTempoAssistantConnection
+)
+
+from apps.orchestrations.models import (
+    Maestro,
+    OrchestrationReactantAssistantConnection
+)
+
 from apps.organization.models import Organization
 from apps.projects.models import ProjectItem
-from apps.user_permissions.utils import PermissionNames
-from apps.video_generations.models import VideoGeneratorConnection
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
+from apps.video_generations.models import (
+    VideoGeneratorConnection
+)
+
 from config import settings
 
 logger = logging.getLogger(__name__)
@@ -69,7 +143,11 @@ class MetaIntegrationView_IntegrateMetaIntegrationTeam(LoginRequiredMixin, View)
     def post(self, request, *args, **kwargs):
 
         category_id = request.POST.get('category_id')
-        category = MetaIntegrationCategory.objects.get(id=category_id)
+
+        category = MetaIntegrationCategory.objects.get(
+            id=category_id
+        )
+
         user = request.user
 
         ##############################
@@ -90,6 +168,7 @@ class MetaIntegrationView_IntegrateMetaIntegrationTeam(LoginRequiredMixin, View)
 
         organization_id = request.POST.get('organization')
         llm_model_id = request.POST.get('llm_model')
+
         web_browser_id = request.POST.get('web_browser')
         file_system_id = request.POST.get('file_system')
         sql_database_id = request.POST.get('sql_database')
@@ -97,9 +176,11 @@ class MetaIntegrationView_IntegrateMetaIntegrationTeam(LoginRequiredMixin, View)
         knowledge_base_id = request.POST.get('knowledge_base')
         code_base_id = request.POST.get('code_base')
         website_storage_id = request.POST.get('website_storage')
+
         media_storage_id = request.POST.get('media_storage')
         ml_storage_id = request.POST.get('ml_storage')
         video_generator_id = request.POST.get('video_generator')
+
         project_item_id = request.POST.get('project_item')
         hadron_node_conn_id = request.POST.get('hadron_node')
         metakanban_conn_id = request.POST.get('metakanban')
@@ -213,7 +294,9 @@ class MetaIntegrationView_IntegrateMetaIntegrationTeam(LoginRequiredMixin, View)
         created_team_members = []
 
         for integration_data in integration_assistants:
+
             # Step 2.1: Create the assistant
+
             created_assistant = Assistant.objects.create(
                 organization=organization,
                 llm_model=llm_model,
@@ -241,7 +324,11 @@ class MetaIntegrationView_IntegrateMetaIntegrationTeam(LoginRequiredMixin, View)
             )
 
             if project_item:
-                created_assistant.project_items.set([project_item])
+                created_assistant.project_items.set(
+                    [
+                        project_item
+                    ]
+                )
 
             created_assistant.save()
 
@@ -252,6 +339,7 @@ class MetaIntegrationView_IntegrateMetaIntegrationTeam(LoginRequiredMixin, View)
                     duplicated_web_browser.pk = None
                     duplicated_web_browser.assistant = created_assistant
                     duplicated_web_browser.created_by_user = user
+
                     duplicated_web_browser.save()
                     created_assistant.save()
 
@@ -260,12 +348,14 @@ class MetaIntegrationView_IntegrateMetaIntegrationTeam(LoginRequiredMixin, View)
                 logger.error(f"Error occurred while integrating the web browser: {e}")
 
             # Step 2.3: Create a copy of the file system
+
             try:
                 if file_system:
                     duplicated_file_system = file_system
                     duplicated_file_system.pk = None
                     duplicated_file_system.assistant = created_assistant
                     duplicated_file_system.created_by_user = user
+
                     duplicated_file_system.save()
                     created_assistant.save()
 
@@ -274,6 +364,7 @@ class MetaIntegrationView_IntegrateMetaIntegrationTeam(LoginRequiredMixin, View)
                 logger.error(f"Error occurred while integrating the file system: {e}")
 
             # Step 2.4: Create a copy of the video generator
+
             try:
                 if video_generator:
                     duplicated_video_generator = video_generator
@@ -281,6 +372,7 @@ class MetaIntegrationView_IntegrateMetaIntegrationTeam(LoginRequiredMixin, View)
                     duplicated_video_generator.organization = organization
                     duplicated_video_generator.assistant = created_assistant
                     duplicated_video_generator.created_by_user = user
+
                     duplicated_video_generator.save()
                     created_assistant.save()
 
@@ -289,6 +381,7 @@ class MetaIntegrationView_IntegrateMetaIntegrationTeam(LoginRequiredMixin, View)
                 logger.error(f"Error occurred while integrating the video generator: {e}")
 
             # Step 2.5: Create a copy of the SQL database
+
             try:
                 if sql_database:
                     sql_database: SQLDatabaseConnection
@@ -296,6 +389,7 @@ class MetaIntegrationView_IntegrateMetaIntegrationTeam(LoginRequiredMixin, View)
                     duplicated_sql_database.pk = None
                     duplicated_sql_database.assistant = created_assistant
                     duplicated_sql_database.created_by_user = user
+
                     duplicated_sql_database.save()
                     created_assistant.save()
 
@@ -307,6 +401,7 @@ class MetaIntegrationView_IntegrateMetaIntegrationTeam(LoginRequiredMixin, View)
                         duplicated_sql_query: CustomSQLQuery
                         duplicated_sql_query.pk = None
                         duplicated_sql_query.database_connection = duplicated_sql_database
+
                         duplicated_sql_query.save()
                         duplicated_sql_database.save()
 
@@ -315,6 +410,7 @@ class MetaIntegrationView_IntegrateMetaIntegrationTeam(LoginRequiredMixin, View)
                 logger.error(f"Error occurred while integrating the SQL database: {e}")
 
             # Step 2.6: Create a copy of the NoSQL database
+
             try:
                 if nosql_database:
                     nosql_database: NoSQLDatabaseConnection
@@ -322,6 +418,7 @@ class MetaIntegrationView_IntegrateMetaIntegrationTeam(LoginRequiredMixin, View)
                     duplicated_nosql_database.pk = None
                     duplicated_nosql_database.assistant = created_assistant
                     duplicated_nosql_database.created_by_user = user
+
                     duplicated_nosql_database.save()
                     created_assistant.save()
 
@@ -333,6 +430,7 @@ class MetaIntegrationView_IntegrateMetaIntegrationTeam(LoginRequiredMixin, View)
                         duplicated_nosql_query: CustomNoSQLQuery
                         duplicated_nosql_query.pk = None
                         duplicated_nosql_query.database_connection = duplicated_nosql_database
+
                         duplicated_nosql_query.save()
                         duplicated_nosql_database.save()
 
@@ -341,6 +439,7 @@ class MetaIntegrationView_IntegrateMetaIntegrationTeam(LoginRequiredMixin, View)
                 logger.error(f"Error occurred while integrating the NoSQL database: {e}")
 
             # Step 2.7: Create a copy of the knowledge base
+
             try:
                 if knowledge_base:
                     knowledge_base: DocumentKnowledgeBaseConnection
@@ -348,6 +447,7 @@ class MetaIntegrationView_IntegrateMetaIntegrationTeam(LoginRequiredMixin, View)
                     duplicated_knowledge_base: DocumentKnowledgeBaseConnection
                     duplicated_knowledge_base.pk = None
                     duplicated_knowledge_base.assistant = created_assistant
+
                     duplicated_knowledge_base.save()
                     created_assistant.save()
 
@@ -359,6 +459,7 @@ class MetaIntegrationView_IntegrateMetaIntegrationTeam(LoginRequiredMixin, View)
                         duplicated_kb_document: KnowledgeBaseDocument
                         duplicated_kb_document.pk = None
                         duplicated_kb_document.knowledge_base = duplicated_knowledge_base
+
                         duplicated_kb_document.save()
                         duplicated_knowledge_base.save()
 
@@ -367,6 +468,7 @@ class MetaIntegrationView_IntegrateMetaIntegrationTeam(LoginRequiredMixin, View)
                 logger.error(f"Error occurred while integrating the knowledge base: {e}")
 
             # Step 2.8: Create a copy of the code base
+
             try:
                 if code_base:
                     code_base: CodeRepositoryStorageConnection
@@ -374,6 +476,7 @@ class MetaIntegrationView_IntegrateMetaIntegrationTeam(LoginRequiredMixin, View)
                     duplicated_code_base: CodeRepositoryStorageConnection
                     duplicated_code_base.pk = None
                     duplicated_code_base.assistant = created_assistant
+
                     duplicated_code_base.save()
                     created_assistant.save()
 
@@ -385,6 +488,7 @@ class MetaIntegrationView_IntegrateMetaIntegrationTeam(LoginRequiredMixin, View)
                         duplicated_code_repo: CodeBaseRepository
                         duplicated_code_repo.pk = None
                         duplicated_code_repo.knowledge_base = duplicated_code_base
+
                         duplicated_code_repo.save()
                         duplicated_code_base.save()
 
@@ -393,6 +497,7 @@ class MetaIntegrationView_IntegrateMetaIntegrationTeam(LoginRequiredMixin, View)
                 logger.error(f"Error occurred while integrating the code base: {e}")
 
             # Step 2.9: Create a copy of the web storage
+
             try:
                 if website_storage:
                     website_storage: DataSourceWebsiteStorageConnection
@@ -400,6 +505,7 @@ class MetaIntegrationView_IntegrateMetaIntegrationTeam(LoginRequiredMixin, View)
                     duplicated_website_storage: DataSourceWebsiteStorageConnection
                     duplicated_website_storage.pk = None
                     duplicated_website_storage.assistant = created_assistant
+
                     duplicated_website_storage.save()
                     created_assistant.save()
 
@@ -408,6 +514,7 @@ class MetaIntegrationView_IntegrateMetaIntegrationTeam(LoginRequiredMixin, View)
                 logger.error(f"Error occurred while integrating the website storage: {e}")
 
             # Step 2.10: Create a copy of the media storage
+
             try:
                 if media_storage:
                     media_storage: DataSourceMediaStorageConnection
@@ -415,6 +522,7 @@ class MetaIntegrationView_IntegrateMetaIntegrationTeam(LoginRequiredMixin, View)
                     duplicated_media_storage: DataSourceMediaStorageConnection
                     duplicated_media_storage.pk = None
                     duplicated_media_storage.assistant = created_assistant
+
                     duplicated_media_storage.save()
                     created_assistant.save()
 
@@ -425,6 +533,7 @@ class MetaIntegrationView_IntegrateMetaIntegrationTeam(LoginRequiredMixin, View)
                         duplicated_media_file: DataSourceMediaStorageItem
                         duplicated_media_file.pk = None
                         duplicated_media_file.storage_base = duplicated_media_storage
+
                         duplicated_media_file.save()
                         duplicated_media_storage.save()
 
@@ -433,6 +542,7 @@ class MetaIntegrationView_IntegrateMetaIntegrationTeam(LoginRequiredMixin, View)
                 logger.error(f"Error occurred while integrating the media storage: {e}")
 
             # Step 2.11: Create a copy of the ML storage
+
             try:
                 if ml_storage:
                     ml_storage: DataSourceMLModelConnection
@@ -440,6 +550,7 @@ class MetaIntegrationView_IntegrateMetaIntegrationTeam(LoginRequiredMixin, View)
                     duplicated_ml_storage: DataSourceMLModelConnection
                     duplicated_ml_storage.pk = None
                     duplicated_ml_storage.assistant = created_assistant
+
                     duplicated_ml_storage.save()
                     created_assistant.save()
 
@@ -450,6 +561,7 @@ class MetaIntegrationView_IntegrateMetaIntegrationTeam(LoginRequiredMixin, View)
                         duplicated_ml_model: DataSourceMLModelItem
                         duplicated_ml_model.pk = None
                         duplicated_ml_model.ml_model_base = duplicated_ml_storage
+
                         duplicated_ml_model.save()
                         duplicated_ml_storage.save()
 
@@ -458,6 +570,7 @@ class MetaIntegrationView_IntegrateMetaIntegrationTeam(LoginRequiredMixin, View)
                 logger.error(f"Error occurred while integrating the ML storage: {e}")
 
             # Step 2.12: Create a copy of the Hadron Node connection
+
             try:
                 if hadron_node:
                     hadron_node: HadronNodeAssistantConnection
@@ -465,6 +578,7 @@ class MetaIntegrationView_IntegrateMetaIntegrationTeam(LoginRequiredMixin, View)
                     duplicated_hadron_node: HadronNodeAssistantConnection
                     duplicated_hadron_node.pk = None
                     duplicated_hadron_node.assistant = created_assistant
+
                     duplicated_hadron_node.save()
                     created_assistant.save()
 
@@ -476,6 +590,7 @@ class MetaIntegrationView_IntegrateMetaIntegrationTeam(LoginRequiredMixin, View)
                 logger.error(f"Error occurred while integrating the Hadron Node <> Assistant connection: {e}")
 
             # Step 2.13: Create a copy of the MetaKanban connection
+
             try:
                 if metakanban:
                     metakanban: MetaKanbanAssistantConnection
@@ -483,6 +598,7 @@ class MetaIntegrationView_IntegrateMetaIntegrationTeam(LoginRequiredMixin, View)
                     duplicated_metakanban: MetaKanbanAssistantConnection
                     duplicated_metakanban.pk = None
                     duplicated_metakanban.assistant = created_assistant
+
                     duplicated_metakanban.save()
                     created_assistant.save()
 
@@ -492,6 +608,7 @@ class MetaIntegrationView_IntegrateMetaIntegrationTeam(LoginRequiredMixin, View)
                 logger.error(f"Error occurred while integrating the MetaKanban <> Assistant connection: {e}")
 
             # Step 2.14: Create a copy of the MetaTempo connection
+
             try:
                 if metatempo:
                     metatempo: MetaTempoAssistantConnection
@@ -499,6 +616,7 @@ class MetaIntegrationView_IntegrateMetaIntegrationTeam(LoginRequiredMixin, View)
                     duplicated_metatempo: MetaTempoAssistantConnection
                     duplicated_metatempo.pk = None
                     duplicated_metatempo.assistant = created_assistant
+
                     duplicated_metatempo.save()
                     created_assistant.save()
 
@@ -515,6 +633,7 @@ class MetaIntegrationView_IntegrateMetaIntegrationTeam(LoginRequiredMixin, View)
                     duplicated_orchestration: OrchestrationReactantAssistantConnection
                     duplicated_orchestration.pk = None
                     duplicated_orchestration.assistant = created_assistant
+
                     duplicated_orchestration.save()
                     created_assistant.save()
 
@@ -543,7 +662,11 @@ class MetaIntegrationView_IntegrateMetaIntegrationTeam(LoginRequiredMixin, View)
                 created_by_user=user,
                 last_updated_by_user=user
             )
-            orchestration_maestro.workers.set(created_team_members)
+
+            orchestration_maestro.workers.set(
+                created_team_members
+            )
+
             orchestration_maestro.save()
 
         except Exception as e:
@@ -559,6 +682,7 @@ class MetaIntegrationView_IntegrateMetaIntegrationTeam(LoginRequiredMixin, View)
                 created_by_user=user,
                 last_updated_by_user=user
             )
+
             expert_network.save()
 
             for team_member in created_team_members:
@@ -591,12 +715,24 @@ class MetaIntegrationView_IntegrateMetaIntegrationTeam(LoginRequiredMixin, View)
             ]
 
             if available_images:
-                random_image = random.choice(available_images)
-                random_image_path = os.path.join(static_image_directory, random_image)
+                random_image = random.choice(
+                    available_images
+                )
+
+                random_image_path = os.path.join(
+                    static_image_directory,
+                    random_image
+                )
+
                 unique_filename = f'lean_assistant_images/{uuid.uuid4()}.png'
 
                 with open(random_image_path, 'rb') as img_file:
-                    default_storage.save(unique_filename, File(img_file))
+                    default_storage.save(
+                        unique_filename,
+                        File(
+                            img_file
+                        )
+                    )
 
             created_lean_assistant = LeanAssistant.objects.create(
                 organization=organization,
@@ -608,7 +744,12 @@ class MetaIntegrationView_IntegrateMetaIntegrationTeam(LoginRequiredMixin, View)
                 last_updated_by_user=user
             )
 
-            created_lean_assistant.expert_networks.set([expert_network])
+            created_lean_assistant.expert_networks.set(
+                [
+                    expert_network
+                ]
+            )
+
             created_lean_assistant.save()
 
         except Exception as e:
@@ -616,4 +757,8 @@ class MetaIntegrationView_IntegrateMetaIntegrationTeam(LoginRequiredMixin, View)
             logger.error(f"Error occurred while integrating the expert network and lean assistant: {e}")
 
         messages.success(request, 'Team member assistants has been integrated to the organization successfully.')
-        return redirect('meta_integrations:store', category.category_slug)
+
+        return redirect(
+            'meta_integrations:store',
+            category.category_slug
+        )

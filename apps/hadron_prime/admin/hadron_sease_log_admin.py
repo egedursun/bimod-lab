@@ -18,8 +18,15 @@
 
 from django.contrib import admin
 
-from apps.hadron_prime.models import HadronStateErrorActionStateErrorLog
-from apps.hadron_prime.utils import HADRON_SAS_LOG_ADMIN_LIST, HADRON_SAS_LOG_ADMIN_FILTER, HADRON_SAS_LOG_ADMIN_SEARCH
+from apps.hadron_prime.models import (
+    HadronStateErrorActionStateErrorLog
+)
+
+from apps.hadron_prime.utils import (
+    HADRON_SAS_LOG_ADMIN_LIST,
+    HADRON_SAS_LOG_ADMIN_FILTER,
+    HADRON_SAS_LOG_ADMIN_SEARCH
+)
 
 
 @admin.register(HadronStateErrorActionStateErrorLog)
@@ -27,4 +34,5 @@ class HadronStateErrorActionStateErrorLogAdmin(admin.ModelAdmin):
     list_display = HADRON_SAS_LOG_ADMIN_LIST
     list_filter = HADRON_SAS_LOG_ADMIN_FILTER
     search_fields = HADRON_SAS_LOG_ADMIN_SEARCH
+
     ordering = ['-created_at']

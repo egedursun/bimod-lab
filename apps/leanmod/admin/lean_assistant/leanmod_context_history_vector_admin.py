@@ -14,11 +14,18 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-from apps.leanmod.models import LeanModOldChatMessagesVectorData
+
+from apps.leanmod.models import (
+    LeanModOldChatMessagesVectorData
+)
+
 from django.contrib import admin
 
-from apps.leanmod.utils import LEANMOD_OLD_CHAT_MESSAGES_VECTOR_DATA_ADMIN_LIST, \
-    LEANMOD_OLD_CHAT_MESSAGES_VECTOR_DATA_ADMIN_FILTER, LEANMOD_OLD_CHAT_MESSAGES_VECTOR_DATA_ADMIN_SEARCH
+from apps.leanmod.utils import (
+    LEANMOD_OLD_CHAT_MESSAGES_VECTOR_DATA_ADMIN_LIST,
+    LEANMOD_OLD_CHAT_MESSAGES_VECTOR_DATA_ADMIN_FILTER,
+    LEANMOD_OLD_CHAT_MESSAGES_VECTOR_DATA_ADMIN_SEARCH
+)
 
 
 @admin.register(LeanModOldChatMessagesVectorData)
@@ -26,4 +33,5 @@ class LeanModOldChatMessagesVectorDataAdmin(admin.ModelAdmin):
     list_display = LEANMOD_OLD_CHAT_MESSAGES_VECTOR_DATA_ADMIN_LIST
     list_filter = LEANMOD_OLD_CHAT_MESSAGES_VECTOR_DATA_ADMIN_FILTER
     search_fields = LEANMOD_OLD_CHAT_MESSAGES_VECTOR_DATA_ADMIN_SEARCH
+
     ordering = ['-created_at']

@@ -14,17 +14,28 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.views.generic import TemplateView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.organization.models import Organization
-from apps.user_permissions.utils import PermissionNames
-from web_project import TemplateLayout
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
 
+from apps.organization.models import Organization
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
+from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
 
@@ -36,16 +47,26 @@ class LeanModAssistantView_List(LoginRequiredMixin, TemplateView):
 
         ##############################
         # PERMISSION CHECK FOR - LIST_LEAN_ASSISTANT
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.LIST_LEAN_ASSISTANT):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.LIST_LEAN_ASSISTANT
+        ):
             messages.error(self.request, "You do not have permission to list LeanMod assistants.")
             return context
         ##############################
 
         org_lean_agents = {}
-        orgs = Organization.objects.prefetch_related('lean_assistants').filter(users__in=[self.request.user]).all()
+
+        orgs = Organization.objects.prefetch_related(
+            'lean_assistants'
+        ).filter(
+            users__in=[self.request.user]
+        ).all()
+
         for organization in orgs:
             org_lean_agents[organization] = organization.lean_assistants.all()
+
         context['org_lean_assistants'] = org_lean_agents
         logger.info(f"LeanMod Assistants were listed by User: {self.request.user.id}.")
+
         return context

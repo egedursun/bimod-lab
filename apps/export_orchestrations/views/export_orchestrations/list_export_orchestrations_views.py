@@ -18,8 +18,14 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import TemplateView
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.views.generic import (
+    TemplateView
+)
 
 from apps.core.user_permissions.permission_manager import (
     UserPermissionManager
@@ -30,7 +36,10 @@ from apps.export_orchestrations.models import (
 )
 
 from apps.organization.models import Organization
-from apps.user_permissions.utils import PermissionNames
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
 
 from config.settings import (
     MAX_ORCHESTRATIONS_EXPORTS_ORGANIZATION
@@ -60,7 +69,10 @@ class ExportOrchestrationView_List(TemplateView, LoginRequiredMixin):
 
         try:
             org_data = []
-            orgs = Organization.objects.filter(users=user_context)
+
+            orgs = Organization.objects.filter(
+                users=user_context
+            )
 
             for org in orgs:
                 n_exp_agents = org.exported_orchestrations.count()

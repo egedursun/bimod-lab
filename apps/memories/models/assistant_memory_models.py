@@ -17,15 +17,37 @@
 
 from django.db import models
 
-from apps.memories.utils import AGENT_STANDARD_MEMORY_TYPES
+from apps.memories.utils import (
+    AGENT_STANDARD_MEMORY_TYPES
+)
 
 
 class AssistantMemory(models.Model):
-    user = models.ForeignKey("auth.User", on_delete=models.CASCADE)
-    organization = models.ForeignKey("organization.Organization", on_delete=models.CASCADE, null=True, blank=True)
-    assistant = models.ForeignKey("assistants.Assistant", on_delete=models.CASCADE)
-    memory_type = models.CharField(max_length=50, choices=AGENT_STANDARD_MEMORY_TYPES, default="user-specific")
+    user = models.ForeignKey(
+        "auth.User",
+        on_delete=models.CASCADE
+    )
+
+    organization = models.ForeignKey(
+        "organization.Organization",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True
+    )
+
+    assistant = models.ForeignKey(
+        "assistants.Assistant",
+        on_delete=models.CASCADE
+    )
+
+    memory_type = models.CharField(
+        max_length=50,
+        choices=AGENT_STANDARD_MEMORY_TYPES,
+        default="user-specific"
+    )
+
     memory_text_content = models.TextField(default="")
+
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -34,10 +56,25 @@ class AssistantMemory(models.Model):
     class Meta:
         verbose_name = "Memory"
         verbose_name_plural = "Memories"
+
         ordering = ["-created_at"]
+
         indexes = [
-            models.Index(fields=["assistant", "user", "created_at"]),
-            models.Index(fields=["assistant", "user"]),
-            models.Index(fields=["assistant", "created_at"]),
-            models.Index(fields=["user", "created_at"]),
+            models.Index(fields=[
+                "assistant",
+                "user",
+                "created_at"
+            ]),
+            models.Index(fields=[
+                "assistant",
+                "user"
+            ]),
+            models.Index(fields=[
+                "assistant",
+                "created_at"
+            ]),
+            models.Index(fields=[
+                "user",
+                "created_at"
+            ]),
         ]

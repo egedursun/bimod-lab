@@ -18,16 +18,30 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import redirect, get_object_or_404
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.shortcuts import (
+    redirect,
+    get_object_or_404
+)
+
 from django.views.generic import DeleteView
 
 from apps.core.user_permissions.permission_manager import (
     UserPermissionManager
 )
 
-from apps.export_leanmods.models import ExportLeanmodAssistantAPI
-from apps.user_permissions.utils import PermissionNames
+from apps.export_leanmods.models import (
+    ExportLeanmodAssistantAPI
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -55,7 +69,11 @@ class ExportLeanModView_Delete(LoginRequiredMixin, DeleteView):
             return redirect('export_leanmods:list')
         ##############################
 
-        exp_leanmod = get_object_or_404(ExportLeanmodAssistantAPI, id=self.kwargs['pk'])
+        exp_leanmod = get_object_or_404(
+            ExportLeanmodAssistantAPI,
+            id=self.kwargs['pk']
+        )
+
         exp_leanmod.delete()
 
         success_message = "Export LeanMod Assistant deleted successfully."
