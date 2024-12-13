@@ -18,18 +18,40 @@
 from json import JSONDecoder
 
 
-def detect_tool_call(output: str, decoder=JSONDecoder()):
+def detect_tool_call(
+    output: str,
+    decoder=JSONDecoder()
+):
     objects_json_list = []
-    output = output.replace("\n", "").replace("'", '"')
+
+    output = output.replace(
+        "\n",
+        ""
+    ).replace(
+        "'",
+        '"'
+    )
+
     pos = 0
+
     while True:
-        match = output.find('{', pos)
+        match = output.find(
+            '{',
+            pos
+        )
+
         if match == -1:
             break
+
         try:
-            res, idx = decoder.raw_decode(output[match:])
+            res, idx = decoder.raw_decode(
+                output[match:]
+            )
+
             objects_json_list.append(res)
             pos = match + idx
+
         except ValueError:
             pos = match + 1
+
     return objects_json_list

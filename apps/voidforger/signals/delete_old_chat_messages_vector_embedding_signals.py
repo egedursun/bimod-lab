@@ -14,21 +14,33 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 import os
 
 import faiss
 import numpy as np
-from django.db.models.signals import pre_delete
+
+from django.db.models.signals import (
+    pre_delete
+)
+
 from django.dispatch import receiver
 
-from apps.voidforger.models import MultimodalVoidForgerChatMessage, VoidForgerOldChatMessagesVectorData
+from apps.voidforger.models import (
+    MultimodalVoidForgerChatMessage,
+    VoidForgerOldChatMessagesVectorData
+)
 
 logger = logging.getLogger(__name__)
 
 
 @receiver(pre_delete, sender=MultimodalVoidForgerChatMessage)
-def remove_vector_from_index_on_voidforger_chat_message_delete(sender, instance, **kwargs):
+def remove_vector_from_index_on_voidforger_chat_message_delete(
+    sender,
+    instance,
+    **kwargs
+):
     try:
         vector_data_instances = VoidForgerOldChatMessagesVectorData.objects.filter(
             voidforger_chat_message=instance
@@ -42,12 +54,19 @@ def remove_vector_from_index_on_voidforger_chat_message_delete(sender, instance,
 
         if os.path.exists(index_path):
             index = faiss.read_index(index_path)
+
             xids = np.array(
-                [vector_data_instance.id for vector_data_instance in vector_data_instances]
+                [
+                    vector_data_instance.id for vector_data_instance in vector_data_instances
+                ]
             )
 
             index.remove_ids(xids)
-            faiss.write_index(index, index_path)
+            faiss.write_index(
+                index,
+                index_path
+            )
+
             logger.info(f"Removed vector data for MultimodalVoidForgerChatMessage with ID {instance.id} from index.")
             print(f"Removed vector data for MultimodalVoidForgerChatMessage with ID {instance.id} from index.")
 

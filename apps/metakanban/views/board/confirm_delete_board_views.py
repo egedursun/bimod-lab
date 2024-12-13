@@ -14,14 +14,30 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import get_object_or_404, redirect
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.shortcuts import (
+    get_object_or_404,
+    redirect
+)
+
 from django.views.generic import TemplateView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
 from apps.metakanban.models import MetaKanbanBoard
-from apps.user_permissions.utils import PermissionNames
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 
@@ -29,28 +45,43 @@ class MetaKanbanView_BoardConfirmDelete(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         board_id = self.kwargs.get("board_id")
-        context['board'] = get_object_or_404(MetaKanbanBoard, id=board_id)
+
+        context['board'] = get_object_or_404(
+            MetaKanbanBoard,
+            id=board_id
+        )
+
         return context
 
     def post(self, request, *args, **kwargs):
 
         ##############################
         # PERMISSION CHECK FOR - DELETE_METAKANBAN_BOARD
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.DELETE_METAKANBAN_BOARD):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.DELETE_METAKANBAN_BOARD
+        ):
             messages.error(self.request, "You do not have permission to delete a kanban board.")
             return redirect('metakanban:board_list')
         ##############################
 
         board_id = self.kwargs.get("board_id")
-        board = get_object_or_404(MetaKanbanBoard, id=board_id)
+
+        board = get_object_or_404(
+            MetaKanbanBoard,
+            id=board_id
+        )
 
         try:
             board_title = board.title
+
             board.delete()
+
         except Exception as e:
             messages.error(request, f'Error deleting kanban board: {e}')
+
             return redirect('metakanban:board_list')
 
         messages.success(request, f'The kanban board "{board_title}" was deleted successfully.')
+
         return redirect("metakanban:board_list")

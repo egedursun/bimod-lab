@@ -16,16 +16,27 @@
 #
 
 
-from django.utils.deprecation import MiddlewareMixin
+from django.utils.deprecation import (
+    MiddlewareMixin
+)
 
-from config.consts.loading_bar_content import CONTENT_MIX
+from config.consts.loading_bar_content import (
+    CONTENT_MIX
+)
 
 
 class LoadingBarMiddleware(MiddlewareMixin):
-    def process_template_response(self, request, response):
+    def process_template_response(
+        self,
+        request,
+        response
+    ):
         if 'text/html' in response['Content-Type']:
             response.render()
+
             content = response.content.decode()
             loading_bar_html = CONTENT_MIX
+
             response.content = content.replace('</body>', loading_bar_html + '</body>')
+
         return response

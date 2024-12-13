@@ -20,11 +20,21 @@ from django.db import models
 
 
 class MetaKanbanStatusColumn(models.Model):
-    board = models.ForeignKey('MetaKanbanBoard', on_delete=models.CASCADE)
+    board = models.ForeignKey(
+        'MetaKanbanBoard',
+        on_delete=models.CASCADE
+    )
+
     column_name = models.CharField(max_length=10000, unique=True)
     position_id = models.IntegerField(default=0)
 
-    created_by_user = models.ForeignKey('auth.User', on_delete=models.CASCADE, null=True, blank=True)
+    created_by_user = models.ForeignKey(
+        'auth.User',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True
+    )
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -35,13 +45,38 @@ class MetaKanbanStatusColumn(models.Model):
         verbose_name = 'Meta Kanban Status Column'
         verbose_name_plural = 'Meta Kanban Status Columns'
         ordering = ['position_id']
+
         indexes = [
-            models.Index(fields=['created_at']),
-            models.Index(fields=['updated_at']),
-            models.Index(fields=['created_by_user']),
-            models.Index(fields=['column_name']),
-            models.Index(fields=['created_at', 'updated_at']),
-            models.Index(fields=['created_at', 'updated_at', 'created_by_user']),
-            models.Index(fields=['created_at', 'updated_at', 'column_name']),
-            models.Index(fields=['created_at', 'updated_at', 'column_name', 'created_by_user']),
+            models.Index(fields=[
+                'created_at'
+            ]),
+            models.Index(fields=[
+                'updated_at'
+            ]),
+            models.Index(fields=[
+                'created_by_user'
+            ]),
+            models.Index(fields=[
+                'column_name'
+            ]),
+            models.Index(fields=[
+                'created_at',
+                'updated_at'
+            ]),
+            models.Index(fields=[
+                'created_at',
+                'updated_at',
+                'created_by_user'
+            ]),
+            models.Index(fields=[
+                'created_at',
+                'updated_at',
+                'column_name'
+            ]),
+            models.Index(fields=[
+                'created_at',
+                'updated_at',
+                'column_name',
+                'created_by_user'
+            ]),
         ]

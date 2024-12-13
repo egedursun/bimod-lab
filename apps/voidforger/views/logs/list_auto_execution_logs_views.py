@@ -16,13 +16,33 @@
 #
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from django.views.generic import TemplateView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.user_permissions.utils import PermissionNames
-from apps.voidforger.models import VoidForger
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.core.paginator import (
+    Paginator,
+    PageNotAnInteger,
+    EmptyPage
+)
+
+from django.views.generic import (
+    TemplateView
+)
+
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
+from apps.voidforger.models import (
+    VoidForger
+)
+
 from web_project import TemplateLayout
 
 
@@ -38,14 +58,21 @@ class VoidForgerView_ListVoidForgerAutoExecutionLogs(LoginRequiredMixin, Templat
             user=self.request.user,
             operation=PermissionNames.LIST_VOIDFORGER_AUTO_EXECUTION_MEMORY_LOGS
         ):
-            messages.error(self.request, "You do not have permission to list VoidForger Auto Execution Memory Logs.")
+            messages.error(
+                self.request,
+                "You do not have permission to list VoidForger Auto Execution Memory Logs."
+            )
             return context
         ##############################
 
-        voidforger = VoidForger.objects.get(user=user)
-        auto_execution_logs = voidforger.voidforgertoggleautoexecutionlog_set.all().order_by('-timestamp')
+        voidforger = VoidForger.objects.get(
+            user=user
+        )
 
-        # Paginate logs
+        auto_execution_logs = voidforger.voidforgertoggleautoexecutionlog_set.all().order_by(
+            '-timestamp'
+        )
+
         paginator = Paginator(auto_execution_logs, 10)
         page = self.request.GET.get('page', 1)
 
@@ -60,4 +87,5 @@ class VoidForgerView_ListVoidForgerAutoExecutionLogs(LoginRequiredMixin, Templat
 
         context['auto_execution_logs'] = logs
         context['voidforger'] = voidforger
+
         return context

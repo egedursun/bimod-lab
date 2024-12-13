@@ -14,33 +14,69 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-from django.contrib.admin.models import LogEntry
-from django.db.models.signals import post_save, post_delete, pre_save
-from django.dispatch import receiver
+
+
+from django.db.models.signals import (
+    post_save,
+    post_delete
+)
+
+from django.dispatch import (
+    receiver
+)
+
 from django.db import transaction
 
-from apps.audit_logs.models import AuditLog
-from config.utils.constant_utils import EXCLUDE_MODELS_FROM_AUDIT_LOGS
+from apps.audit_logs.models import (
+    AuditLog
+)
+
+from config.utils.constant_utils import (
+    EXCLUDE_MODELS_FROM_AUDIT_LOGS
+)
 
 
 @receiver(post_save)
-def log_save(sender, instance, created, **kwargs):
+def log_save(
+    sender,
+    instance,
+    created,
+    **kwargs
+):
     if sender in EXCLUDE_MODELS_FROM_AUDIT_LOGS:
         return
 
     with transaction.atomic():
+
         if created:
+
             if not hasattr(instance, 'id') or not instance.id:
                 pass
+
             else:
-                AuditLog.objects.create(action='create', model_name=sender.__name__, object_id=instance.id)
+                AuditLog.objects.create(
+                    action='create',
+                    model_name=sender.__name__,
+                    object_id=instance.id
+                )
+
         else:
             if not hasattr(instance, 'id') or not instance.id:
                 pass
+
             else:
-                audit_log = AuditLog(action='update', model_name=sender.__name__, object_id=instance.id)
+                audit_log = AuditLog(
+                    action='update',
+                    model_name=sender.__name__,
+                    object_id=instance.id
+                )
+
                 if hasattr(instance, '_old_instance') and instance._old_instance:
-                    audit_log.save_changes(instance._old_instance, instance)
+                    audit_log.save_changes(
+                        instance._old_instance,
+                        instance
+                    )
+
                 audit_log.save()
 
 
@@ -50,7 +86,13 @@ def log_delete(sender, instance, **kwargs):
         return
 
     with transaction.atomic():
+
         if not hasattr(instance, 'id') or not instance.id:
             pass
+
         else:
-            AuditLog.objects.create(action='delete', model_name=sender.__name__, object_id=instance.id)
+            AuditLog.objects.create(
+                action='delete',
+                model_name=sender.__name__,
+                object_id=instance.id
+            )

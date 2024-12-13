@@ -19,7 +19,10 @@
 from django.contrib import admin
 
 from auth.models import UserCreditCard
-from auth.utils import CREDIT_CARD_ADMIN_LIST
+
+from auth.utils import (
+    CREDIT_CARD_ADMIN_LIST
+)
 
 
 @admin.register(UserCreditCard)

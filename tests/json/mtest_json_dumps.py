@@ -21,21 +21,23 @@ import json
 
 def mtest_json_dumps():
     tx = {
-      'blockHash': '0xabc123',
-      'blockNumber': 1234567,
-      'contractAddress': '0xContractAddress',
-      'cumulativeGasUsed': 21000,
-      'from': '0xSenderAddress',
-      'gasUsed': 21000,
-      'logs': [],
-      'status': 1,
-      'to': '0xReceiverAddress',
-      'transactionHash': '0xTransactionHash',
-      'transactionIndex': 0
+        'blockHash': '0xabc123',
+        'blockNumber': 1234567,
+        'contractAddress': '0xContractAddress',
+        'cumulativeGasUsed': 21000,
+        'from': '0xSenderAddress',
+        'gasUsed': 21000,
+        'logs': [],
+        'status': 1,
+        'to': '0xReceiverAddress',
+        'transactionHash': '0xTransactionHash',
+        'transactionIndex': 0
     }
+
     txs = json.dumps(tx)
+
     with open('txs.txt', 'w') as f:
-      f.write(txs)
+        f.write(txs)
 
 
 if __name__ == '__main__':

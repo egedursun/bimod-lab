@@ -16,11 +16,18 @@
 #
 
 
-from django.utils.deprecation import MiddlewareMixin
+from django.utils.deprecation import (
+    MiddlewareMixin
+)
 
 
 class ContentTypeMiddleware(MiddlewareMixin):
-    def process_response(self, request, response):
+    def process_response(
+        self,
+        request,
+        response
+    ):
         if request.path.endswith("manifest.json"):
             response["Content-Type"] = "application/json"
+
         return response

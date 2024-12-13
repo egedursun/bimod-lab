@@ -17,10 +17,15 @@
 
 from django.contrib import admin
 
-from apps.voidforger.models import VoidForgerAutoExecutionMemoryVectorData
-from apps.voidforger.utils import VOIDFORGER_AUTO_EXECUTION_MEMORY_VECTOR_DATA_ADMIN_LIST, \
-    VOIDFORGER_AUTO_EXECUTION_MEMORY_VECTOR_DATA_ADMIN_FILTER, \
+from apps.voidforger.models import (
+    VoidForgerAutoExecutionMemoryVectorData
+)
+
+from apps.voidforger.utils import (
+    VOIDFORGER_AUTO_EXECUTION_MEMORY_VECTOR_DATA_ADMIN_LIST,
+    VOIDFORGER_AUTO_EXECUTION_MEMORY_VECTOR_DATA_ADMIN_FILTER,
     VOIDFORGER_AUTO_EXECUTION_MEMORY_VECTOR_DATA_ADMIN_SEARCH
+)
 
 
 @admin.register(VoidForgerAutoExecutionMemoryVectorData)
@@ -28,4 +33,5 @@ class VoidForgerAutoExecutionMemoryVectorDataAdmin(admin.ModelAdmin):
     list_display = VOIDFORGER_AUTO_EXECUTION_MEMORY_VECTOR_DATA_ADMIN_LIST
     list_filter = VOIDFORGER_AUTO_EXECUTION_MEMORY_VECTOR_DATA_ADMIN_FILTER
     search_fields = VOIDFORGER_AUTO_EXECUTION_MEMORY_VECTOR_DATA_ADMIN_SEARCH
+
     ordering = ('-created_at', '-updated_at')

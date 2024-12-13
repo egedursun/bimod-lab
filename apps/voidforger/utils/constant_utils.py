@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import os
 
 from config.settings import BASE_DIR
@@ -101,9 +102,26 @@ class OpenAIEmbeddingModels:
 
 OPEN_AI_DEFAULT_EMBEDDING_VECTOR_DIMENSIONS = 3072
 
-VECTOR_INDEX_PATH_ACTION_MEMORIES = os.path.join(BASE_DIR, 'vectors', 'voidforger_vectors', 'action_memories')
-VECTOR_INDEX_PATH_AUTO_EXECUTION_MEMORIES = os.path.join(BASE_DIR, 'vectors', 'voidforger_vectors', 'auto_execution_memories')
-VECTOR_INDEX_PATH_CHAT_MESSAGES = os.path.join(BASE_DIR, 'vectors', 'voidforger_vectors', 'chat_messages')
+VECTOR_INDEX_PATH_ACTION_MEMORIES = os.path.join(
+    BASE_DIR,
+    'vectors',
+    'voidforger_vectors',
+    'action_memories'
+)
+
+VECTOR_INDEX_PATH_AUTO_EXECUTION_MEMORIES = os.path.join(
+    BASE_DIR,
+    'vectors',
+    'voidforger_vectors',
+    'auto_execution_memories'
+)
+
+VECTOR_INDEX_PATH_CHAT_MESSAGES = os.path.join(
+    BASE_DIR,
+    'vectors',
+    'voidforger_vectors',
+    'chat_messages'
+)
 
 VOIDFORGER_CHAT_ADMIN_LIST = [
     'id',

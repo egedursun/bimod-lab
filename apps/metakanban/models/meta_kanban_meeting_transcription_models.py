@@ -20,11 +20,16 @@ from django.db import models
 
 
 class MetaKanbanMeetingTranscription(models.Model):
-    board = models.ForeignKey('MetaKanbanBoard', on_delete=models.CASCADE)
+    board = models.ForeignKey(
+        'MetaKanbanBoard',
+        on_delete=models.CASCADE
+    )
+
     meeting_transcription_text = models.TextField()
 
     is_processed_with_ai = models.BooleanField(default=False)
-    meeting_transcription_key_takeaways = models.JSONField(null=True, blank=True)  # AI-Generated
+
+    meeting_transcription_key_takeaways = models.JSONField(null=True, blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -35,12 +40,31 @@ class MetaKanbanMeetingTranscription(models.Model):
     class Meta:
         verbose_name = 'Meta Kanban Meeting Transcription'
         verbose_name_plural = 'Meta Kanban Meeting Transcriptions'
+
         ordering = ['-created_at']
+
         indexes = [
-            models.Index(fields=['board', 'is_processed_with_ai']),
-            models.Index(fields=['board', 'is_processed_with_ai', 'created_at']),
-            models.Index(fields=['board', 'created_at']),
-            models.Index(fields=['is_processed_with_ai']),
-            models.Index(fields=['is_processed_with_ai', 'created_at']),
-            models.Index(fields=['created_at']),
+            models.Index(fields=[
+                'board',
+                'is_processed_with_ai'
+            ]),
+            models.Index(fields=[
+                'board',
+                'is_processed_with_ai',
+                'created_at'
+            ]),
+            models.Index(fields=[
+                'board',
+                'created_at'
+            ]),
+            models.Index(fields=[
+                'is_processed_with_ai'
+            ]),
+            models.Index(fields=[
+                'is_processed_with_ai',
+                'created_at'
+            ]),
+            models.Index(fields=[
+                'created_at'
+            ]),
         ]

@@ -14,15 +14,36 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import get_object_or_404, redirect
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+from django.shortcuts import (
+    get_object_or_404,
+    redirect
+)
+
 from django.views import View
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.metakanban.models import MetaKanbanBoard, MetaKanbanTaskLabel, MetaKanbanChangeLog
-from apps.metakanban.utils import MetaKanbanChangeLogActionTypes
-from apps.user_permissions.utils import PermissionNames
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
+from apps.metakanban.models import (
+    MetaKanbanBoard,
+    MetaKanbanTaskLabel,
+    MetaKanbanChangeLog
+)
+
+from apps.metakanban.utils import (
+    MetaKanbanChangeLogActionTypes
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
 
 
 class MetaKanbanView_LabelCreate(LoginRequiredMixin, View):
@@ -35,10 +56,15 @@ class MetaKanbanView_LabelCreate(LoginRequiredMixin, View):
 
         ##############################
         # PERMISSION CHECK FOR - ADD_METAKANBAN_TASK_LABEL
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.ADD_METAKANBAN_TASK_LABEL):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.ADD_METAKANBAN_TASK_LABEL
+        ):
             messages.error(self.request, "You do not have permission to add a kanban task label.")
-            return redirect('metakanban:board_detail', board_id=board_id)
+            return redirect(
+                'metakanban:board_detail',
+                board_id=board_id
+            )
         ##############################
 
         board = get_object_or_404(MetaKanbanBoard, id=board_id)
@@ -47,21 +73,28 @@ class MetaKanbanView_LabelCreate(LoginRequiredMixin, View):
 
         if label_name and label_color:
             MetaKanbanTaskLabel.objects.create(
-                board=board, label_name=label_name, label_color=label_color, created_by_user=request.user
+                board=board,
+                label_name=label_name,
+                label_color=label_color,
+                created_by_user=request.user
             )
             messages.success(request, "Label created successfully.")
+
         else:
             messages.error(request, "Both label name and color are required.")
 
         try:
-            # Add the change log for the change in the board.
             MetaKanbanChangeLog.objects.create(
                 board=board,
                 action_type=MetaKanbanChangeLogActionTypes.Label.CREATE_LABEL,
                 action_details="Label '" + label_name + "' with the color '" + label_color + "' has been created.",
                 change_by_user=request.user
             )
+
         except Exception as e:
             messages.error(request, "Label change log could not be created. Error: " + str(e))
 
-        return redirect("metakanban:label_list", board_id=board_id)
+        return redirect(
+            "metakanban:label_list",
+            board_id=board_id
+        )

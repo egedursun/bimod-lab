@@ -17,8 +17,15 @@
 
 from django.contrib import admin
 
-from apps.voidforger.models import VoidForger
-from apps.voidforger.utils import VOIDFORGER_ADMIN_LIST, VOIDFORGER_ADMIN_FILTER, VOIDFORGER_ADMIN_SEARCH
+from apps.voidforger.models import (
+    VoidForger
+)
+
+from apps.voidforger.utils import (
+    VOIDFORGER_ADMIN_LIST,
+    VOIDFORGER_ADMIN_FILTER,
+    VOIDFORGER_ADMIN_SEARCH
+)
 
 
 @admin.register(VoidForger)
@@ -26,4 +33,5 @@ class VoidForgerAdmin(admin.ModelAdmin):
     list_display = VOIDFORGER_ADMIN_LIST
     list_filter = VOIDFORGER_ADMIN_FILTER
     search_fields = VOIDFORGER_ADMIN_SEARCH
+
     ordering = ('-created_at',)

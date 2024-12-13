@@ -14,14 +14,29 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.core.paginator import Paginator
 from django.views.generic import TemplateView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.metakanban.models import MetaKanbanChangeLog, MetaKanbanBoard
-from apps.user_permissions.utils import PermissionNames
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
+from apps.metakanban.models import (
+    MetaKanbanChangeLog,
+    MetaKanbanBoard
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 
@@ -31,20 +46,29 @@ class MetaKanbanView_BoardLogList(LoginRequiredMixin, TemplateView):
 
         ##############################
         # PERMISSION CHECK FOR - LIST_METAKANBAN_BOARD
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.LIST_METAKANBAN_BOARD):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.LIST_METAKANBAN_BOARD
+        ):
             messages.error(self.request, "You do not have permission to list kanban boards.")
             return context
         ##############################
 
         board_id = self.kwargs.get('board_id')
-        board = MetaKanbanBoard.objects.get(id=board_id)
 
-        logs_list = MetaKanbanChangeLog.objects.filter(board_id=board_id).order_by('-timestamp').all()
+        board = MetaKanbanBoard.objects.get(
+            id=board_id
+        )
+
+        logs_list = MetaKanbanChangeLog.objects.filter(
+            board_id=board_id
+        ).order_by('-timestamp').all()
+
         paginator = Paginator(logs_list, 10)
         page_number = self.request.GET.get('page')
         page_obj = paginator.get_page(page_number)
 
         context['board'] = board
         context['page_obj'] = page_obj
+
         return context

@@ -19,14 +19,23 @@ import logging
 
 from django.db import models
 
-from apps.assistants.utils import AGENT_SPEECH_LANGUAGES
-from apps.voidforger.utils import VOIDFORGER_RUNTIME_STATUSES, VoidForgerRuntimeStatusesNames
+from apps.assistants.utils import (
+    AGENT_SPEECH_LANGUAGES
+)
+
+from apps.voidforger.utils import (
+    VOIDFORGER_RUNTIME_STATUSES,
+    VoidForgerRuntimeStatusesNames
+)
 
 logger = logging.getLogger(__name__)
 
 
 class VoidForger(models.Model):
-    user = models.OneToOneField('auth.User', on_delete=models.CASCADE)
+    user = models.OneToOneField(
+        'auth.User',
+        on_delete=models.CASCADE
+    )
 
     llm_model = models.ForeignKey(
         'llm_core.LLMCore',
@@ -34,7 +43,12 @@ class VoidForger(models.Model):
         null=True,
         blank=True
     )
-    organizations = models.ManyToManyField('organization.Organization', blank=True)
+
+    organizations = models.ManyToManyField(
+        'organization.Organization',
+        blank=True
+    )
+
     additional_instructions = models.TextField(null=True, blank=True)
 
     tone = models.CharField(
@@ -76,16 +90,26 @@ class VoidForger(models.Model):
         using=None,
         update_fields=None
     ):
-        from apps.organization.models import Organization
-        from apps.llm_core.models import LLMCore
+        from apps.organization.models import (
+            Organization
+        )
 
-        organizations = Organization.objects.filter(users__in=[self.user])
+        from apps.llm_core.models import (
+            LLMCore
+        )
+
+        organizations = Organization.objects.filter(
+            users__in=[self.user]
+        )
 
         if not self.pk:
-            available_llms = LLMCore.objects.filter(organization__in=organizations)
+            available_llms = LLMCore.objects.filter(
+                organization__in=organizations
+            )
 
             if len(available_llms) > 0:
                 self.llm_model = available_llms[0]
+
             else:
                 logger.error(f"No LLM model available for VoidForger, defaulting to no LLM mode")
                 self.llm_model = None
@@ -102,11 +126,15 @@ class VoidForger(models.Model):
 
         except Exception as e:
             logger.error(f"Error while setting organizations for VoidForger, defaulting to no organization mode: {e}")
-            self.organizations.set([])
+
+            self.organizations.set(
+                []
+            )
 
     class Meta:
         verbose_name = "VoidForger"
         verbose_name_plural = "VoidForgers"
+
         indexes = [
             models.Index(fields=[
                 'user'

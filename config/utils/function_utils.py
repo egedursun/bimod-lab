@@ -16,7 +16,9 @@
 #
 
 
-from django.shortcuts import redirect
+from django.shortcuts import (
+    redirect
+)
 
 
 def trigger_error(request):

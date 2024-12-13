@@ -19,7 +19,9 @@ import logging
 
 from django.db import models
 
-from apps.multimodal_chat.utils import CHAT_MESSAGE_ROLE_SENDER_TYPES
+from apps.multimodal_chat.utils import (
+    CHAT_MESSAGE_ROLE_SENDER_TYPES
+)
 
 logger = logging.getLogger(__name__)
 
@@ -42,7 +44,7 @@ class MultimodalVoidForgerChatMessage(models.Model):
         default=dict,
         blank=True,
         null=True
-    )  # Not used for now
+    )
 
     message_image_contents = models.JSONField(
         default=list,
@@ -74,7 +76,9 @@ class MultimodalVoidForgerChatMessage(models.Model):
     class Meta:
         verbose_name = "Multimodal VoidForger Chat Message"
         verbose_name_plural = "Multimodal VoidForger Chat Messages"
+
         ordering = ["-sent_at"]
+
         indexes = [
             models.Index(fields=[
                 'multimodal_voidforger_chat'
@@ -104,19 +108,26 @@ class MultimodalVoidForgerChatMessage(models.Model):
             ]),
         ]
 
-    def token_cost_surpasses_the_balance(self, total_billable_cost):
+    def token_cost_surpasses_the_balance(
+        self,
+        total_billable_cost
+    ):
         return self.multimodal_voidforger_chat.voidforger.llm_model.organization.balance < total_billable_cost
 
     def save(self, *args, **kwargs):
-        from apps.voidforger.models import MultimodalVoidForgerChat
+        from apps.voidforger.models import (
+            MultimodalVoidForgerChat
+        )
+
         super().save(*args, **kwargs)
 
         MultimodalVoidForgerChat.objects.get(
             id=self.multimodal_voidforger_chat.id
         ).voidforger_chat_messages.add(self)
 
-        # create the vector object on creation of the message object
-        from apps.voidforger.models import VoidForgerOldChatMessagesVectorData
+        from apps.voidforger.models import (
+            VoidForgerOldChatMessagesVectorData
+        )
 
         try:
             _, _ = VoidForgerOldChatMessagesVectorData.objects.get_or_create(

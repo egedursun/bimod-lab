@@ -14,26 +14,39 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from celery import shared_task
 from django.utils import timezone
 
-from apps.core.tool_calls.utils import VoidForgerModesNames
-from apps.core.voidforger.voidforger_executor import VoidForgerExecutionManager
-from apps.voidforger.utils import VoidForgerRuntimeStatusesNames
+from apps.core.tool_calls.utils import (
+    VoidForgerModesNames
+)
+
+from apps.core.voidforger.voidforger_executor import (
+    VoidForgerExecutionManager
+)
+
+from apps.voidforger.utils import (
+    VoidForgerRuntimeStatusesNames
+)
 
 logger = logging.getLogger(__name__)
 
 
 @shared_task
 def execute_voidforgers_auto_cycle():
-    from apps.voidforger.models import VoidForger
+    from apps.voidforger.models import (
+        VoidForger
+    )
+
     voidforger_instances = VoidForger.objects.filter(
         runtime_status=VoidForgerRuntimeStatusesNames.ACTIVE
     )
 
     logger.info(f"VoidForger auto cycle execution started for {len(voidforger_instances)} VoidForgers.")  ###
+
     current_time = timezone.now()
 
     for voidforger_instance in voidforger_instances:
@@ -48,16 +61,17 @@ def execute_voidforgers_auto_cycle():
         logger.info(f"Time difference in minutes: {time_difference_minutes}")
 
         if time_difference_minutes is None or (time_difference_minutes >= interval_execution_minutes):
-            # Dispatch a subtask for this instance
             logger.info(f"Dispatching subtask for VoidForger with ID: {voidforger_instance.id}.")
-            execute_single_voidforger_cycle.delay(voidforger_instance.id)
+
+            execute_single_voidforger_cycle.delay(
+                voidforger_instance.id
+            )
 
     return True
 
 
 @shared_task
 def execute_single_voidforger_cycle(voidforger_id):
-
     from apps.voidforger.models import VoidForger
 
     try:
@@ -70,12 +84,17 @@ def execute_single_voidforger_cycle(voidforger_id):
             voidforger_id=voidforger_instance.id
         )
 
-        error = xc.run_cycle(trigger=VoidForgerModesNames.AUTOMATED)
+        error = xc.run_cycle(
+            trigger=VoidForgerModesNames.AUTOMATED
+        )
+
         if error:
             logger.error(f"Error occurred while executing auto cycle for VoidForger with ID {voidforger_id}.")
+
             return False
 
     except Exception as e:
         logger.error(f"Error occurred while executing auto cycle for VoidForger with ID {voidforger_id}.")
         logger.error(e)
+
         return False

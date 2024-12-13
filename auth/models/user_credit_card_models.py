@@ -16,20 +16,63 @@
 #
 
 
-from django.contrib.auth.models import User
+from django.contrib.auth.models import (
+    User
+)
+
 from django.db import models
 
 
 class UserCreditCard(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='credit_cards', blank=True, null=True)
-    profile = models.ForeignKey('Profile', on_delete=models.CASCADE, related_name='credit_cards', blank=True,
-                                null=True)
-    name_on_card = models.CharField(max_length=255, null=False, blank=False)
-    card_number = models.CharField(max_length=16, null=False, blank=False)
-    card_expiration_month = models.CharField(max_length=2, null=False, blank=False)
-    card_expiration_year = models.CharField(max_length=2, null=False, blank=False)
-    card_cvc = models.CharField(max_length=4, null=False, blank=False)
-    created_at = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='credit_cards',
+        blank=True,
+        null=True
+    )
+
+    profile = models.ForeignKey(
+        'Profile',
+        on_delete=models.CASCADE,
+        related_name='credit_cards',
+        blank=True,
+        null=True
+    )
+
+    name_on_card = models.CharField(
+        max_length=255,
+        null=False,
+        blank=False
+    )
+
+    card_number = models.CharField(
+        max_length=16,
+        null=False,
+        blank=False
+    )
+
+    card_expiration_month = models.CharField(
+        max_length=2,
+        null=False,
+        blank=False
+    )
+
+    card_expiration_year = models.CharField(
+        max_length=2,
+        null=False,
+        blank=False
+    )
+
+    card_cvc = models.CharField(
+        max_length=4,
+        null=False,
+        blank=False
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True
+    )
 
     def __str__(self):
         return f"{self.user.username} - {self.name_on_card}"
@@ -37,14 +80,34 @@ class UserCreditCard(models.Model):
     class Meta:
         verbose_name = "Credit Card"
         verbose_name_plural = "Credit Cards"
+
         ordering = ["-created_at"]
+
         indexes = [
-            models.Index(fields=['user', 'name_on_card', 'card_number', 'created_at']),
             models.Index(
-                fields=['user', 'name_on_card', 'card_number', 'card_expiration_month', 'card_expiration_year',
-                        'card_cvc', 'created_at'])
+                fields=[
+                    'user',
+                    'name_on_card',
+                    'card_number',
+                    'created_at'
+                ]
+            ),
+            models.Index(
+                fields=[
+                    'user',
+                    'name_on_card',
+                    'card_number',
+                    'card_expiration_month',
+                    'card_expiration_year',
+                    'card_cvc',
+                    'created_at'
+                ]
+            )
         ]
+
     def save(self, *args, **kwargs):
         self.name_on_card = self.name_on_card.upper()
+
         super(UserCreditCard, self).save(*args, **kwargs)
+
         self.user.profile.credit_cards.add(self)

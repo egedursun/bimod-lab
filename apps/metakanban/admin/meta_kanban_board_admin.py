@@ -17,9 +17,15 @@
 
 from django.contrib import admin
 
-from apps.metakanban.models.meta_kanban_board_models import MetaKanbanBoard
-from apps.metakanban.utils import META_KANBAN_BOARD_ADMIN_LIST, META_KANBAN_BOARD_ADMIN_FILTER, \
+from apps.metakanban.models.meta_kanban_board_models import (
+    MetaKanbanBoard
+)
+
+from apps.metakanban.utils import (
+    META_KANBAN_BOARD_ADMIN_LIST,
+    META_KANBAN_BOARD_ADMIN_FILTER,
     META_KANBAN_BOARD_ADMIN_SEARCH
+)
 
 
 @admin.register(MetaKanbanBoard)
@@ -27,4 +33,14 @@ class MetaKanbanBoardAdmin(admin.ModelAdmin):
     list_display = META_KANBAN_BOARD_ADMIN_LIST
     search_fields = META_KANBAN_BOARD_ADMIN_SEARCH
     list_filter = META_KANBAN_BOARD_ADMIN_FILTER
-    ordering = ['id', 'project', 'llm_model', 'title', 'description', 'created_by_user', 'created_at', 'updated_at']
+
+    ordering = [
+        'id',
+        'project',
+        'llm_model',
+        'title',
+        'description',
+        'created_by_user',
+        'created_at',
+        'updated_at'
+    ]

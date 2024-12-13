@@ -14,17 +14,40 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import redirect, get_object_or_404
-from django.views.generic import DeleteView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.multimodal_chat.utils import SourcesForMultimodalChatsNames
-from apps.user_permissions.utils import PermissionNames
-from apps.voidforger.models import MultimodalVoidForgerChat
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.shortcuts import (
+    redirect,
+    get_object_or_404
+)
+
+from django.views.generic import (
+    DeleteView
+)
+
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
+from apps.multimodal_chat.utils import (
+    SourcesForMultimodalChatsNames
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
+from apps.voidforger.models import (
+    MultimodalVoidForgerChat
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -38,6 +61,7 @@ class VoidForgerView_DeleteVoidForgerChat(LoginRequiredMixin, DeleteView):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         chat = self.get_object()
         context['chat'] = chat
+
         return context
 
     def get_queryset(self):
@@ -69,7 +93,9 @@ class VoidForgerView_DeleteVoidForgerChat(LoginRequiredMixin, DeleteView):
         except Exception as e:
             logger.error(f"VoidForger chat deletion failed. Error: {e}")
             messages.error(request, f'The VoidForger chat could not be deleted.')
+
             return redirect('multimodal_chat:main_workspace')
 
         logger.info(f"VoidForger chat was deleted by User: {self.request.user.id}.")
+
         return redirect('multimodal_chat:main_workspace')

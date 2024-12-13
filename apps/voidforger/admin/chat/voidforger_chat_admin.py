@@ -17,9 +17,15 @@
 
 from django.contrib import admin
 
-from apps.voidforger.models import MultimodalVoidForgerChat
-from apps.voidforger.utils import VOIDFORGER_CHAT_ADMIN_LIST, VOIDFORGER_CHAT_ADMIN_FILTER, \
+from apps.voidforger.models import (
+    MultimodalVoidForgerChat
+)
+
+from apps.voidforger.utils import (
+    VOIDFORGER_CHAT_ADMIN_LIST,
+    VOIDFORGER_CHAT_ADMIN_FILTER,
     VOIDFORGER_CHAT_ADMIN_SEARCH
+)
 
 
 @admin.register(MultimodalVoidForgerChat)
@@ -27,4 +33,5 @@ class MultimodalVoidForgerChatAdmin(admin.ModelAdmin):
     list_display = VOIDFORGER_CHAT_ADMIN_LIST
     list_filter = VOIDFORGER_CHAT_ADMIN_FILTER
     search_fields = VOIDFORGER_CHAT_ADMIN_SEARCH
+
     ordering = ['-created_at']

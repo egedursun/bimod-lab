@@ -14,19 +14,44 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-from django.db.models.signals import post_save
+
+from django.db.models.signals import (
+    post_save
+)
+
 from django.dispatch import receiver
 
-from auth.models import BimodEmailAnnouncement, Profile
-from auth.utils import send_announcement_email
+from auth.models import (
+    BimodEmailAnnouncement,
+    Profile
+)
+
+from auth.utils import (
+    send_announcement_email
+)
 
 
 @receiver(post_save, sender=BimodEmailAnnouncement)
-def announcement_email_signal(sender, instance, created, **kwargs):
+def announcement_email_signal(
+    sender,
+    instance,
+    created,
+    **kwargs
+):
     if created:
-        all_user_emails = list(Profile.objects.values_list('email', flat=True))
-        send_announcement_email(
-            recipient_emails=all_user_emails, title_raw=instance.title_raw, body_raw=instance.body_raw
+        all_user_emails = list(
+            Profile.objects.values_list(
+                'email',
+                flat=True
+            )
         )
+
+        send_announcement_email(
+            recipient_emails=all_user_emails,
+            title_raw=instance.title_raw,
+            body_raw=instance.body_raw
+        )
+
         print(f"Announcement email sent to {len(all_user_emails)} users.")
+
     return

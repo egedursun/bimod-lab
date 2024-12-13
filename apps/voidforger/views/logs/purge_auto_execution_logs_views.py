@@ -16,13 +16,25 @@
 #
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.shortcuts import redirect
 from django.views import View
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.user_permissions.utils import PermissionNames
-from apps.voidforger.models import VoidForger
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
+from apps.voidforger.models import (
+    VoidForger
+)
 
 
 class VoidForgerView_PurgeAutoExecutionLogs(LoginRequiredMixin, View):
@@ -43,7 +55,11 @@ class VoidForgerView_PurgeAutoExecutionLogs(LoginRequiredMixin, View):
 
         try:
             voidforger_id = kwargs.get('voidforger_id')
-            voidforger = VoidForger.objects.get(id=voidforger_id)
+
+            voidforger = VoidForger.objects.get(
+                id=voidforger_id
+            )
+
             auto_execution_memory_logs = voidforger.voidforgertoggleautoexecutionlog_set.all()
 
             for auto_execution_memory_log in auto_execution_memory_logs:
@@ -51,7 +67,9 @@ class VoidForgerView_PurgeAutoExecutionLogs(LoginRequiredMixin, View):
 
         except Exception as e:
             messages.error(request, f"Error purging auto execution memory logs: {e}")
+
             return redirect('voidforger:list_auto_execution_logs')
 
         messages.success(request, "Auto execution memory logs purged successfully.")
+
         return redirect('voidforger:list_auto_execution_logs')

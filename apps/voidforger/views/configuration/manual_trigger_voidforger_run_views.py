@@ -16,14 +16,29 @@
 #
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.shortcuts import redirect
 from django.views import View
 
-from apps.core.tool_calls.utils import VoidForgerModesNames
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.core.voidforger.voidforger_executor import VoidForgerExecutionManager
-from apps.user_permissions.utils import PermissionNames
+from apps.core.tool_calls.utils import (
+    VoidForgerModesNames
+)
+
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
+from apps.core.voidforger.voidforger_executor import (
+    VoidForgerExecutionManager
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
 
 
 class VoidForgerView_ManualTriggerVoidForgerRun(LoginRequiredMixin, View):
@@ -44,20 +59,26 @@ class VoidForgerView_ManualTriggerVoidForgerRun(LoginRequiredMixin, View):
 
         try:
             voidforger_id = kwargs.get('voidforger_id')
+
             xc = VoidForgerExecutionManager(
                 user=self.request.user,
                 voidforger_id=voidforger_id
             )
 
-            error = xc.run_cycle(trigger=VoidForgerModesNames.MANUAL)
+            error = xc.run_cycle(
+                trigger=VoidForgerModesNames.MANUAL
+            )
 
             if error:
                 messages.error(self.request, "VoidForger execution has failed: " + str(error))
+
                 return redirect('voidforger:configuration')
 
         except Exception as e:
             messages.error(self.request, "VoidForger execution has failed: " + str(e))
+
             return redirect('voidforger:configuration')
 
         messages.success(self.request, "VoidForger execution has been triggered successfully.")
+
         return redirect('voidforger:configuration')

@@ -19,13 +19,25 @@ from django.db import models
 
 
 class MetaKanbanBoard(models.Model):
-    project = models.ForeignKey('projects.ProjectItem', on_delete=models.CASCADE)
-    llm_model = models.ForeignKey('llm_core.LLMCore', on_delete=models.CASCADE)
+    project = models.ForeignKey(
+        'projects.ProjectItem',
+        on_delete=models.CASCADE
+    )
+
+    llm_model = models.ForeignKey(
+        'llm_core.LLMCore',
+        on_delete=models.CASCADE
+    )
+
     title = models.CharField(max_length=10000)
     description = models.TextField()
     connection_api_key = models.CharField(max_length=1000)
 
-    created_by_user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    created_by_user = models.ForeignKey(
+        'auth.User',
+        on_delete=models.CASCADE
+    )
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -35,30 +47,121 @@ class MetaKanbanBoard(models.Model):
     class Meta:
         verbose_name = 'Meta Kanban Board'
         verbose_name_plural = 'Meta Kanban Boards'
+
         unique_together = [
-            ["project", "title"],
+            [
+                "project",
+                "title"
+            ],
         ]
+
         ordering = ['-created_at']
+
         indexes = [
-            models.Index(fields=['created_at']),
-            models.Index(fields=['updated_at']),
-            models.Index(fields=['project']),
-            models.Index(fields=['llm_model']),
-            models.Index(fields=['created_by_user']),
-            models.Index(fields=['title']),
-            models.Index(fields=['created_at', 'updated_at']),
-            models.Index(fields=['created_at', 'updated_at', 'project']),
-            models.Index(fields=['created_at', 'updated_at', 'llm_model']),
-            models.Index(fields=['created_at', 'updated_at', 'created_by_user']),
-            models.Index(fields=['created_at', 'updated_at', 'title']),
-            models.Index(fields=['created_at', 'updated_at', 'project', 'llm_model']),
-            models.Index(fields=['created_at', 'updated_at', 'project', 'created_by_user']),
-            models.Index(fields=['created_at', 'updated_at', 'project', 'title']),
-            models.Index(fields=['created_at', 'updated_at', 'llm_model', 'created_by_user']),
-            models.Index(fields=['created_at', 'updated_at', 'llm_model', 'title']),
-            models.Index(fields=['created_at', 'updated_at', 'created_by_user', 'title']),
-            models.Index(fields=['created_at', 'updated_at', 'project', 'llm_model', 'created_by_user']),
-            models.Index(fields=['created_at', 'updated_at', 'project', 'llm_model', 'title']),
-            models.Index(fields=['created_at', 'updated_at', 'project', 'created_by_user', 'title']),
-            models.Index(fields=['created_at', 'updated_at', 'llm_model', 'created_by_user', 'title']),
+            models.Index(fields=[
+                'created_at'
+            ]),
+            models.Index(fields=[
+                'updated_at'
+            ]),
+            models.Index(fields=[
+                'project'
+            ]),
+            models.Index(fields=[
+                'llm_model'
+            ]),
+            models.Index(fields=[
+                'created_by_user'
+            ]),
+            models.Index(fields=[
+                'title'
+            ]),
+            models.Index(fields=[
+                'created_at',
+                'updated_at'
+            ]),
+            models.Index(fields=[
+                'created_at',
+                'updated_at',
+                'project'
+            ]),
+            models.Index(fields=[
+                'created_at',
+                'updated_at',
+                'llm_model'
+            ]),
+            models.Index(fields=[
+                'created_at',
+                'updated_at',
+                'created_by_user'
+            ]),
+            models.Index(fields=[
+                'created_at',
+                'updated_at',
+                'title'
+            ]),
+            models.Index(fields=[
+                'created_at',
+                'updated_at',
+                'project',
+                'llm_model'
+            ]),
+            models.Index(fields=[
+                'created_at',
+                'updated_at',
+                'project',
+                'created_by_user'
+            ]),
+            models.Index(fields=[
+                'created_at',
+                'updated_at',
+                'project',
+                'title'
+            ]),
+            models.Index(fields=[
+                'created_at',
+                'updated_at',
+                'llm_model',
+                'created_by_user'
+            ]),
+            models.Index(fields=[
+                'created_at',
+                'updated_at',
+                'llm_model',
+                'title'
+            ]),
+            models.Index(fields=[
+                'created_at',
+                'updated_at',
+                'created_by_user',
+                'title'
+            ]),
+            models.Index(fields=[
+                'created_at',
+                'updated_at',
+                'project',
+                'llm_model',
+                'created_by_user'
+            ]),
+            models.Index(fields=[
+                'created_at',
+                'updated_at',
+                'project',
+                'llm_model',
+                'title'
+            ]),
+            models.Index(fields=[
+                'created_at',
+                'updated_at',
+                'project',
+                'created_by_user',
+                'title'
+            ]),
+            models.Index(fields=[
+                'created_at',
+                'updated_at',
+                'llm_model',
+                'created_by_user',
+                'title'
+            ]),
         ]

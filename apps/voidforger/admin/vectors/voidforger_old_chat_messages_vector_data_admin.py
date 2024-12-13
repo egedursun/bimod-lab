@@ -17,9 +17,15 @@
 
 from django.contrib import admin
 
-from apps.voidforger.models import VoidForgerOldChatMessagesVectorData
-from apps.voidforger.utils import VOIDFORGER_OLD_CHAT_MESSAGES_VECTOR_DATA_ADMIN_LIST, \
-    VOIDFORGER_OLD_CHAT_MESSAGES_VECTOR_DATA_ADMIN_FILTER, VOIDFORGER_OLD_CHAT_MESSAGES_VECTOR_DATA_ADMIN_SEARCH
+from apps.voidforger.models import (
+    VoidForgerOldChatMessagesVectorData
+)
+
+from apps.voidforger.utils import (
+    VOIDFORGER_OLD_CHAT_MESSAGES_VECTOR_DATA_ADMIN_LIST,
+    VOIDFORGER_OLD_CHAT_MESSAGES_VECTOR_DATA_ADMIN_FILTER,
+    VOIDFORGER_OLD_CHAT_MESSAGES_VECTOR_DATA_ADMIN_SEARCH
+)
 
 
 @admin.register(VoidForgerOldChatMessagesVectorData)
@@ -27,4 +33,5 @@ class VoidForgerOldChatMessagesVectorDataAdmin(admin.ModelAdmin):
     list_display = VOIDFORGER_OLD_CHAT_MESSAGES_VECTOR_DATA_ADMIN_LIST
     list_filter = VOIDFORGER_OLD_CHAT_MESSAGES_VECTOR_DATA_ADMIN_FILTER
     search_fields = VOIDFORGER_OLD_CHAT_MESSAGES_VECTOR_DATA_ADMIN_SEARCH
+
     ordering = ['-created_at']

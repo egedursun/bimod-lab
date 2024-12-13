@@ -34,28 +34,61 @@ class MetaKanbanTaskPrioritiesNames:
 
     @staticmethod
     def as_list():
-        return [MetaKanbanTaskPrioritiesNames.UNCATEGORIZED, MetaKanbanTaskPrioritiesNames.LOW,
-                MetaKanbanTaskPrioritiesNames.MEDIUM, MetaKanbanTaskPrioritiesNames.HIGH,
-                MetaKanbanTaskPrioritiesNames.URGENT]
+        return [
+            MetaKanbanTaskPrioritiesNames.UNCATEGORIZED,
+            MetaKanbanTaskPrioritiesNames.LOW,
+            MetaKanbanTaskPrioritiesNames.MEDIUM,
+            MetaKanbanTaskPrioritiesNames.HIGH,
+            MetaKanbanTaskPrioritiesNames.URGENT
+        ]
 
 
-META_KANBAN_BOARD_ADMIN_LIST = ['id', 'project', 'llm_model', 'title', 'created_by_user', 'created_at', 'updated_at']
-META_KANBAN_BOARD_ADMIN_FILTER = ['id', 'project', 'llm_model', 'title', 'created_by_user', 'created_at', 'updated_at']
-META_KANBAN_BOARD_ADMIN_SEARCH = ['id', 'project', 'llm_model', 'title', 'created_by_user', 'created_at', 'updated_at']
+META_KANBAN_BOARD_ADMIN_LIST = [
+    'id',
+    'project',
+    'llm_model',
+    'title',
+    'created_by_user',
+    'created_at',
+    'updated_at'
+]
+META_KANBAN_BOARD_ADMIN_FILTER = [
+    'id',
+    'project',
+    'llm_model',
+    'title',
+    'created_by_user',
+    'created_at',
+    'updated_at'
+]
+META_KANBAN_BOARD_ADMIN_SEARCH = [
+    'id',
+    'project',
+    'llm_model',
+    'title',
+    'created_by_user',
+    'created_at',
+    'updated_at'
+]
 
 META_KANBAN_CHANGE_LOG_ACTION_TYPES = [
     # Tasks
+
     ('create_task', 'Create Task'),
     ('update_task', 'Update Task'),
     ('delete_task', 'Delete Task'),
     ('move_task', 'Move Task'),
     ('assign_task', 'Assign Task'),
+
     # Column
+
     ('create_column', 'Create Column'),
     ('update_column', 'Update Column'),
     ('delete_column', 'Delete Column'),
     ('move_column', 'Move Column'),
+
     # Label
+
     ('create_label', 'Create Label'),
     ('update_label', 'Update Label'),
     ('delete_label', 'Delete Label'),
@@ -72,9 +105,13 @@ class MetaKanbanChangeLogActionTypes:
 
         @staticmethod
         def as_list():
-            return [MetaKanbanChangeLogActionTypes.Task.CREATE_TASK, MetaKanbanChangeLogActionTypes.Task.UPDATE_TASK,
-                    MetaKanbanChangeLogActionTypes.Task.DELETE_TASK, MetaKanbanChangeLogActionTypes.Task.MOVE_TASK,
-                    MetaKanbanChangeLogActionTypes.Task.ASSIGN_TASK]
+            return [
+                MetaKanbanChangeLogActionTypes.Task.CREATE_TASK,
+                MetaKanbanChangeLogActionTypes.Task.UPDATE_TASK,
+                MetaKanbanChangeLogActionTypes.Task.DELETE_TASK,
+                MetaKanbanChangeLogActionTypes.Task.MOVE_TASK,
+                MetaKanbanChangeLogActionTypes.Task.ASSIGN_TASK
+            ]
 
     class Column:
         CREATE_COLUMN = 'create_column'
@@ -84,10 +121,12 @@ class MetaKanbanChangeLogActionTypes:
 
         @staticmethod
         def as_list():
-            return [MetaKanbanChangeLogActionTypes.Column.CREATE_COLUMN,
-                    MetaKanbanChangeLogActionTypes.Column.UPDATE_COLUMN,
-                    MetaKanbanChangeLogActionTypes.Column.DELETE_COLUMN,
-                    MetaKanbanChangeLogActionTypes.Column.MOVE_COLUMN]
+            return [
+                MetaKanbanChangeLogActionTypes.Column.CREATE_COLUMN,
+                MetaKanbanChangeLogActionTypes.Column.UPDATE_COLUMN,
+                MetaKanbanChangeLogActionTypes.Column.DELETE_COLUMN,
+                MetaKanbanChangeLogActionTypes.Column.MOVE_COLUMN
+            ]
 
     class Label:
         CREATE_LABEL = 'create_label'
@@ -96,9 +135,11 @@ class MetaKanbanChangeLogActionTypes:
 
         @staticmethod
         def as_list():
-            return [MetaKanbanChangeLogActionTypes.Label.CREATE_LABEL,
-                    MetaKanbanChangeLogActionTypes.Label.UPDATE_LABEL,
-                    MetaKanbanChangeLogActionTypes.Label.DELETE_LABEL]
+            return [
+                MetaKanbanChangeLogActionTypes.Label.CREATE_LABEL,
+                MetaKanbanChangeLogActionTypes.Label.UPDATE_LABEL,
+                MetaKanbanChangeLogActionTypes.Label.DELETE_LABEL
+            ]
 
     @staticmethod
     def as_list():
@@ -112,20 +153,64 @@ class MetaKanbanChangeLogActionTypes:
         ]
 
 
-META_KANBAN_CHANGE_LOG_ADMIN_LIST = ['board', 'action_type', 'change_by_user', 'timestamp']
-META_KANBAN_CHANGE_LOG_ADMIN_FILTER = ['board', 'action_type', 'change_by_user']
-META_KANBAN_CHANGE_LOG_ADMIN_SEARCH = ['board', 'action_type', 'change_by_user']
+META_KANBAN_CHANGE_LOG_ADMIN_LIST = [
+    'board',
+    'action_type',
+    'change_by_user',
+    'timestamp'
+]
+META_KANBAN_CHANGE_LOG_ADMIN_FILTER = [
+    'board',
+    'action_type',
+    'change_by_user'
+]
+META_KANBAN_CHANGE_LOG_ADMIN_SEARCH = [
+    'board',
+    'action_type',
+    'change_by_user'
+]
 
-META_KANBAN_STATUS_COLUMN_LIST = ('id', 'board', 'column_name', 'position_id', 'created_by_user',
-                                  'created_at', 'updated_at')
-META_KANBAN_STATUS_COLUMN_FILTER = ('board', 'created_by_user', 'created_at', 'updated_at')
-META_KANBAN_STATUS_COLUMN_SEARCH = ('column_name',)
+META_KANBAN_STATUS_COLUMN_LIST = (
+    'id',
+    'board',
+    'column_name',
+    'position_id',
+    'created_by_user',
+    'created_at',
+    'updated_at'
+)
+META_KANBAN_STATUS_COLUMN_FILTER = (
+    'board',
+    'created_by_user',
+    'created_at',
+    'updated_at'
+)
+META_KANBAN_STATUS_COLUMN_SEARCH = (
+    'column_name',
+)
 
-META_KANBAN_TASK_ADMIN_LIST = ['title', 'board', 'status_column', 'priority', 'due_date',
-                               'created_by_user', 'created_at', 'updated_at']
-META_KANBAN_TASK_ADMIN_FILTER = ['board', 'status_column', 'priority', 'due_date', 'created_by_user',
-                                 'created_at', 'updated_at']
-META_KANBAN_TASK_ADMIN_SEARCH = ('title',)
+META_KANBAN_TASK_ADMIN_LIST = [
+    'title',
+    'board',
+    'status_column',
+    'priority',
+    'due_date',
+    'created_by_user',
+    'created_at',
+    'updated_at'
+]
+META_KANBAN_TASK_ADMIN_FILTER = [
+    'board',
+    'status_column',
+    'priority',
+    'due_date',
+    'created_by_user',
+    'created_at',
+    'updated_at'
+]
+META_KANBAN_TASK_ADMIN_SEARCH = (
+    'title',
+)
 
 META_KANBAN_TASK_LABEL_COLOR_CHOICES = [
     ('#FF0000', 'Red'),
@@ -178,17 +263,55 @@ class MetaKanbanTaskLabelColorChoiceNames:
         ]
 
 
-META_KANBAN_TASK_LABEL_ADMIN_LIST = ('label_name', 'label_color', 'created_by_user', 'created_at', 'updated_at')
-META_KANBAN_TASK_LABEL_ADMIN_FILTER = ('label_color', 'created_by_user', 'created_at', 'updated_at')
-META_KANBAN_TASK_LABEL_ADMIN_SEARCH = ('label_name',)
+META_KANBAN_TASK_LABEL_ADMIN_LIST = (
+    'label_name',
+    'label_color',
+    'created_by_user',
+    'created_at',
+    'updated_at'
+)
+META_KANBAN_TASK_LABEL_ADMIN_FILTER = (
+    'label_color',
+    'created_by_user',
+    'created_at',
+    'updated_at'
+)
+META_KANBAN_TASK_LABEL_ADMIN_SEARCH = (
+    'label_name',
+)
 
-META_KANBAN_MEETING_TRANSCRIPTION_ADMIN_LIST = ('board', 'is_processed_with_ai', 'created_at', 'updated_at')
-META_KANBAN_MEETING_TRANSCRIPTION_ADMIN_FILTER = ('is_processed_with_ai', 'created_at', 'updated_at')
-META_KANBAN_MEETING_TRANSCRIPTION_ADMIN_SEARCH = ('board', 'meeting_transcription_text',
-                                                  'meeting_transcription_key_takeaways')
-
+META_KANBAN_MEETING_TRANSCRIPTION_ADMIN_LIST = (
+    'board',
+    'is_processed_with_ai',
+    'created_at',
+    'updated_at'
+)
+META_KANBAN_MEETING_TRANSCRIPTION_ADMIN_FILTER = (
+    'is_processed_with_ai',
+    'created_at',
+    'updated_at'
+)
+META_KANBAN_MEETING_TRANSCRIPTION_ADMIN_SEARCH = (
+    'board',
+    'meeting_transcription_text',
+    'meeting_transcription_key_takeaways'
+)
 
 META_KANBAN_BOARD_API_KEY_DEFAULT_LENGTH = 64
-METAKANBAN_ASSISTANT_CONNECTION_ADMIN_LIST = ["metakanban_board", "assistant", "created_by_user", "created_at", "updated_at"]
-METAKANBAN_ASSISTANT_CONNECTION_ADMIN_SEARCH = ["metakanban_board__name", "assistant__name", "created_by_user__username"]
-METAKANBAN_ASSISTANT_CONNECTION_ADMIN_FILTER = ["created_at", "updated_at"]
+
+METAKANBAN_ASSISTANT_CONNECTION_ADMIN_LIST = [
+    "metakanban_board",
+    "assistant",
+    "created_by_user",
+    "created_at",
+    "updated_at"
+]
+METAKANBAN_ASSISTANT_CONNECTION_ADMIN_SEARCH = [
+    "metakanban_board__name",
+    "assistant__name",
+    "created_by_user__username"
+]
+METAKANBAN_ASSISTANT_CONNECTION_ADMIN_FILTER = [
+    "created_at",
+    "updated_at"
+]

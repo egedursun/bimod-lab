@@ -19,7 +19,9 @@ import logging
 
 from django.db import models
 
-from apps.voidforger.utils import VOIDFORGER_TOGGLE_AUTO_EXECUTION_ACTION_TYPES
+from apps.voidforger.utils import (
+    VOIDFORGER_TOGGLE_AUTO_EXECUTION_ACTION_TYPES
+)
 
 logger = logging.getLogger(__name__)
 
@@ -29,11 +31,17 @@ class VoidForgerToggleAutoExecutionLog(models.Model):
         'voidforger.VoidForger',
         on_delete=models.CASCADE
     )
+
     action_type = models.CharField(
         max_length=20,
         choices=VOIDFORGER_TOGGLE_AUTO_EXECUTION_ACTION_TYPES
     )
-    metadata = models.JSONField(default=dict, blank=True, null=True)
+
+    metadata = models.JSONField(
+        default=dict,
+        blank=True,
+        null=True
+    )
 
     responsible_user = models.ForeignKey(
         'auth.User',
@@ -49,8 +57,9 @@ class VoidForgerToggleAutoExecutionLog(models.Model):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
 
-        # create the vector object on creation of the log object
-        from apps.voidforger.models import VoidForgerAutoExecutionMemoryVectorData
+        from apps.voidforger.models import (
+            VoidForgerAutoExecutionMemoryVectorData
+        )
 
         try:
             _, _ = VoidForgerAutoExecutionMemoryVectorData.objects.get_or_create(
@@ -64,8 +73,10 @@ class VoidForgerToggleAutoExecutionLog(models.Model):
 
     class Meta:
         ordering = ['-timestamp']
+
         verbose_name = 'VoidForger Toggle Auto Execution Log'
         verbose_name_plural = 'VoidForger Toggle Auto Execution Logs'
+
         indexes = [
             models.Index(fields=[
                 'voidforger',

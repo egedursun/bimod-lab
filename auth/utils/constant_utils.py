@@ -72,14 +72,45 @@ class ForumRewardActionsNames:
     GET_MERIT = 'get_merit'
 
 
-MEMBER_ADMIN_LIST = ("user", "email", "is_verified", "is_accredited_by_staff", "created_at",)
+MEMBER_ADMIN_LIST = (
+    "user",
+    "email",
+    "is_verified",
+    "is_accredited_by_staff",
+    "created_at",
+)
 
-PROMO_CODE_ADMIN_LIST = ("user", "code", "bonus_percentage_referrer", "bonus_percentage_referee", "is_active",
-                         "current_referrals", "max_referral_limit", "datetime_limit", "created_at",)
+PROMO_CODE_ADMIN_LIST = (
+    "user",
+    "code",
+    "bonus_percentage_referrer",
+    "bonus_percentage_referee",
+    "is_active",
+    "current_referrals",
+    "max_referral_limit",
+    "datetime_limit",
+    "created_at",
+)
 
-CREDIT_CARD_ADMIN_LIST = ("name_on_card", "card_number", "card_expiration_month", "card_expiration_year",
-                          "card_cvc", "created_at",)
+CREDIT_CARD_ADMIN_LIST = (
+    "name_on_card",
+    "card_number",
+    "card_expiration_month",
+    "card_expiration_year",
+    "card_cvc",
+    "created_at",
+)
 
-BIMOID_EMAIL_ANNOUNCEMENT_ADMIN_LIST = ['email_subject_raw', 'title_raw', 'created_at']
-BIMOID_EMAIL_ANNOUNCEMENT_ADMIN_SEARCH = ['email_subject_raw', 'title_raw', 'body_raw']
-BIMOID_EMAIL_ANNOUNCEMENT_ADMIN_FILTER = ['created_at']
+BIMOID_EMAIL_ANNOUNCEMENT_ADMIN_LIST = [
+    'email_subject_raw',
+    'title_raw',
+    'created_at'
+]
+BIMOID_EMAIL_ANNOUNCEMENT_ADMIN_SEARCH = [
+    'email_subject_raw',
+    'title_raw',
+    'body_raw'
+]
+BIMOID_EMAIL_ANNOUNCEMENT_ADMIN_FILTER = [
+    'created_at'
+]

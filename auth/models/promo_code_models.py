@@ -18,14 +18,28 @@
 
 from django.db import models
 
-from auth.utils import REFERRAL_DEFAULT_BONUS_PERCENTAGE
+from auth.utils import (
+    REFERRAL_DEFAULT_BONUS_PERCENTAGE
+)
 
 
 class PromoCode(models.Model):
-    user = models.ForeignKey("auth.User", on_delete=models.CASCADE, related_name="promo_codes")
+    user = models.ForeignKey(
+        "auth.User",
+        on_delete=models.CASCADE,
+        related_name="promo_codes"
+    )
+
     code = models.CharField(max_length=255)
-    bonus_percentage_referrer = models.IntegerField(default=REFERRAL_DEFAULT_BONUS_PERCENTAGE)
-    bonus_percentage_referee = models.IntegerField(default=REFERRAL_DEFAULT_BONUS_PERCENTAGE)
+
+    bonus_percentage_referrer = models.IntegerField(
+        default=REFERRAL_DEFAULT_BONUS_PERCENTAGE
+    )
+
+    bonus_percentage_referee = models.IntegerField(
+        default=REFERRAL_DEFAULT_BONUS_PERCENTAGE
+    )
+
     is_active = models.BooleanField(default=True)
     current_referrals = models.IntegerField(default=0)
     max_referral_limit = models.IntegerField(default=0)
@@ -38,9 +52,17 @@ class PromoCode(models.Model):
     class Meta:
         verbose_name = "Promo Code"
         verbose_name_plural = "Promo Codes"
+
         ordering = ["-created_at"]
+
         indexes = [
-            models.Index(fields=["code"]),
-            models.Index(fields=["is_active"]),
-            models.Index(fields=["created_at"]),
+            models.Index(fields=[
+                "code"
+            ]),
+            models.Index(fields=[
+                "is_active"
+            ]),
+            models.Index(fields=[
+                "created_at"
+            ]),
         ]

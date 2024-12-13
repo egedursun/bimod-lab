@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 import os
 
@@ -22,13 +23,20 @@ import numpy as np
 from django.db.models.signals import pre_delete
 from django.dispatch import receiver
 
-from apps.voidforger.models import VoidForgerActionMemoryLog, VoidForgerActionMemoryVectorData
+from apps.voidforger.models import (
+    VoidForgerActionMemoryLog,
+    VoidForgerActionMemoryVectorData
+)
 
 logger = logging.getLogger(__name__)
 
 
 @receiver(pre_delete, sender=VoidForgerActionMemoryLog)
-def remove_vector_from_index_on_voidforger_action_memory_delete(sender, instance, **kwargs):
+def remove_vector_from_index_on_voidforger_action_memory_delete(
+    sender,
+    instance,
+    **kwargs
+):
     try:
         vector_data_instance = VoidForgerActionMemoryVectorData.objects.get(
             voidforger_action_memory=instance
@@ -38,13 +46,21 @@ def remove_vector_from_index_on_voidforger_action_memory_delete(sender, instance
 
         if os.path.exists(index_path):
             index = faiss.read_index(index_path)
+
             xids = np.array(
-                [vector_data_instance.id],
+                [
+                    vector_data_instance.id
+                ],
                 dtype=np.int64
             )
 
             index.remove_ids(xids)
-            faiss.write_index(index, index_path)
+
+            faiss.write_index(
+                index,
+                index_path
+            )
+
             logger.info(f"Removed vector data for VoidForgerActionMemoryLog with ID {instance.id} from index.")
             print(f"Removed vector data for VoidForgerActionMemoryLog with ID {instance.id} from index.")
 

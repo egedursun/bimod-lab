@@ -32,9 +32,17 @@ class BimodEmailAnnouncement(models.Model):
     class Meta:
         verbose_name = 'Bimod Email Announcement'
         verbose_name_plural = 'Bimod Email Announcements'
+
         ordering = ['-created_at']
+
         indexes = [
-            models.Index(fields=['created_at']),
-            models.Index(fields=['title_raw']),
-            models.Index(fields=['email_subject_raw']),
+            models.Index(fields=[
+                'created_at'
+            ]),
+            models.Index(fields=[
+                'title_raw'
+            ]),
+            models.Index(fields=[
+                'email_subject_raw'
+            ]),
         ]

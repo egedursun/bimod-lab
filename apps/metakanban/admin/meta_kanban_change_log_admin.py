@@ -18,9 +18,15 @@
 
 from django.contrib import admin
 
-from apps.metakanban.models.meta_kanban_change_log_models import MetaKanbanChangeLog
-from apps.metakanban.utils import META_KANBAN_CHANGE_LOG_ADMIN_LIST, META_KANBAN_CHANGE_LOG_ADMIN_FILTER, \
+from apps.metakanban.models.meta_kanban_change_log_models import (
+    MetaKanbanChangeLog
+)
+
+from apps.metakanban.utils import (
+    META_KANBAN_CHANGE_LOG_ADMIN_LIST,
+    META_KANBAN_CHANGE_LOG_ADMIN_FILTER,
     META_KANBAN_CHANGE_LOG_ADMIN_SEARCH
+)
 
 
 @admin.register(MetaKanbanChangeLog)
@@ -28,4 +34,5 @@ class MetaKanbanChangeLogAdmin(admin.ModelAdmin):
     list_display = META_KANBAN_CHANGE_LOG_ADMIN_LIST
     list_filter = META_KANBAN_CHANGE_LOG_ADMIN_FILTER
     search_fields = META_KANBAN_CHANGE_LOG_ADMIN_SEARCH
+
     ordering = ['-timestamp']

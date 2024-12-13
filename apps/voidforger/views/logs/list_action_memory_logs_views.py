@@ -16,13 +16,31 @@
 #
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.core.paginator import (
+    Paginator,
+    PageNotAnInteger,
+    EmptyPage
+)
+
 from django.views.generic import TemplateView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.user_permissions.utils import PermissionNames
-from apps.voidforger.models import VoidForger
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
+from apps.voidforger.models import (
+    VoidForger
+)
+
 from web_project import TemplateLayout
 
 
@@ -42,11 +60,19 @@ class VoidForgerView_ListActionMemoryLogs(LoginRequiredMixin, TemplateView):
             return context
         ##############################
 
-        voidforger = VoidForger.objects.get(user=user)
-        action_memory_logs = voidforger.voidforgeractionmemorylog_set.all().order_by('-timestamp')
+        voidforger = VoidForger.objects.get(
+            user=user
+        )
 
-        # Paginate logs
-        paginator = Paginator(action_memory_logs, 10)
+        action_memory_logs = voidforger.voidforgeractionmemorylog_set.all().order_by(
+            '-timestamp'
+        )
+
+        paginator = Paginator(
+            action_memory_logs,
+            10
+        )
+
         page = self.request.GET.get('page', 1)
 
         try:
@@ -60,4 +86,5 @@ class VoidForgerView_ListActionMemoryLogs(LoginRequiredMixin, TemplateView):
 
         context['action_memory_logs'] = logs
         context['voidforger'] = voidforger
+
         return context

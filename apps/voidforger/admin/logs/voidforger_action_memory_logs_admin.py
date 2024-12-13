@@ -17,9 +17,15 @@
 
 from django.contrib import admin
 
-from apps.voidforger.models import VoidForgerActionMemoryLog
-from apps.voidforger.utils import VOIDFORGER_ACTION_MEMORY_LOG_ADMIN_LIST, VOIDFORGER_ACTION_MEMORY_LOG_ADMIN_FILTER, \
+from apps.voidforger.models import (
+    VoidForgerActionMemoryLog
+)
+
+from apps.voidforger.utils import (
+    VOIDFORGER_ACTION_MEMORY_LOG_ADMIN_LIST,
+    VOIDFORGER_ACTION_MEMORY_LOG_ADMIN_FILTER,
     VOIDFORGER_ACTION_MEMORY_LOG_ADMIN_SEARCH
+)
 
 
 @admin.register(VoidForgerActionMemoryLog)
@@ -27,4 +33,5 @@ class VoidForgerActionMemoryLogAdmin(admin.ModelAdmin):
     list_display = VOIDFORGER_ACTION_MEMORY_LOG_ADMIN_LIST
     list_filter = VOIDFORGER_ACTION_MEMORY_LOG_ADMIN_FILTER
     search_fields = VOIDFORGER_ACTION_MEMORY_LOG_ADMIN_SEARCH
+
     ordering = ['-timestamp']

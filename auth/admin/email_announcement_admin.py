@@ -18,9 +18,15 @@
 
 from django.contrib import admin
 
-from auth.models import BimodEmailAnnouncement
-from auth.utils import BIMOID_EMAIL_ANNOUNCEMENT_ADMIN_LIST, BIMOID_EMAIL_ANNOUNCEMENT_ADMIN_SEARCH, \
+from auth.models import (
+    BimodEmailAnnouncement
+)
+
+from auth.utils import (
+    BIMOID_EMAIL_ANNOUNCEMENT_ADMIN_LIST,
+    BIMOID_EMAIL_ANNOUNCEMENT_ADMIN_SEARCH,
     BIMOID_EMAIL_ANNOUNCEMENT_ADMIN_FILTER
+)
 
 
 @admin.register(BimodEmailAnnouncement)
@@ -28,4 +34,5 @@ class BimodEmailAnnouncementAdmin(admin.ModelAdmin):
     list_display = BIMOID_EMAIL_ANNOUNCEMENT_ADMIN_LIST
     search_fields = BIMOID_EMAIL_ANNOUNCEMENT_ADMIN_SEARCH
     list_filter = BIMOID_EMAIL_ANNOUNCEMENT_ADMIN_FILTER
+
     readonly_fields = ['created_at']

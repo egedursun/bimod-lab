@@ -18,7 +18,10 @@
 from django.contrib import admin
 
 from auth.models import PromoCode
-from auth.utils import PROMO_CODE_ADMIN_LIST
+
+from auth.utils import (
+    PROMO_CODE_ADMIN_LIST
+)
 
 
 @admin.register(PromoCode)

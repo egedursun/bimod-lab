@@ -18,11 +18,17 @@
 from django.contrib import admin
 
 from auth.models import Profile
-from auth.utils import MEMBER_ADMIN_LIST
+
+from auth.utils import (
+    MEMBER_ADMIN_LIST
+)
 
 
 class Member(admin.ModelAdmin):
     list_display = MEMBER_ADMIN_LIST
 
 
-admin.site.register(Profile, Member)
+admin.site.register(
+    Profile,
+    Member
+)

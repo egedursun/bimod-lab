@@ -18,16 +18,33 @@
 
 from django.db import models
 
-from apps.metakanban.utils import META_KANBAN_TASK_LABEL_COLOR_CHOICES, MetaKanbanTaskLabelColorChoiceNames
+from apps.metakanban.utils import (
+    META_KANBAN_TASK_LABEL_COLOR_CHOICES,
+    MetaKanbanTaskLabelColorChoiceNames
+)
 
 
 class MetaKanbanTaskLabel(models.Model):
-    board = models.ForeignKey('MetaKanbanBoard', on_delete=models.CASCADE)
-    label_name = models.CharField(max_length=10000, unique=True)
-    label_color = models.CharField(max_length=100, choices=META_KANBAN_TASK_LABEL_COLOR_CHOICES,
-                                   default=MetaKanbanTaskLabelColorChoiceNames.NAVY)
+    board = models.ForeignKey(
+        'MetaKanbanBoard',
+        on_delete=models.CASCADE
+    )
 
-    created_by_user = models.ForeignKey('auth.User', on_delete=models.CASCADE, null=True, blank=True)
+    label_name = models.CharField(max_length=10000, unique=True)
+
+    label_color = models.CharField(
+        max_length=100,
+        choices=META_KANBAN_TASK_LABEL_COLOR_CHOICES,
+        default=MetaKanbanTaskLabelColorChoiceNames.NAVY
+    )
+
+    created_by_user = models.ForeignKey(
+        'auth.User',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True
+
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -37,14 +54,40 @@ class MetaKanbanTaskLabel(models.Model):
     class Meta:
         verbose_name = 'Meta Kanban Task Label'
         verbose_name_plural = 'Meta Kanban Task Labels'
+
         ordering = ['-created_at']
+
         indexes = [
-            models.Index(fields=['created_at']),
-            models.Index(fields=['updated_at']),
-            models.Index(fields=['created_by_user']),
-            models.Index(fields=['label_name']),
-            models.Index(fields=['created_at', 'updated_at']),
-            models.Index(fields=['created_at', 'updated_at', 'created_by_user']),
-            models.Index(fields=['created_at', 'updated_at', 'label_name']),
-            models.Index(fields=['created_at', 'updated_at', 'label_name', 'created_by_user']),
+            models.Index(fields=[
+                'created_at'
+            ]),
+            models.Index(fields=[
+                'updated_at'
+            ]),
+            models.Index(fields=[
+                'created_by_user'
+            ]),
+            models.Index(fields=[
+                'label_name'
+            ]),
+            models.Index(fields=[
+                'created_at',
+                'updated_at'
+            ]),
+            models.Index(fields=[
+                'created_at',
+                'updated_at',
+                'created_by_user'
+            ]),
+            models.Index(fields=[
+                'created_at',
+                'updated_at',
+                'label_name'
+            ]),
+            models.Index(fields=[
+                'created_at',
+                'updated_at',
+                'label_name',
+                'created_by_user'
+            ]),
         ]

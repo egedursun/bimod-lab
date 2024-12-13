@@ -15,26 +15,14 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-# Template Settings
-# ------------------------------------------------------------------------------
-
-
-# Theme layout templates directory
-
-# Template config
-# ? Easily change the template configuration from here
-# ? Replace this object with template-config/demo-*.py file's TEMPLATE_CONFIG to change the template configuration as per our demos
 TEMPLATE_CONFIG = {
     "layout": "vertical",  # Options[String]: vertical(default), horizontal
     "theme": "theme-default",  # Options[String]: theme-default(default), theme-bordered, theme-semi-dark
     "style": "dark",  # Options[String]: light(default), dark, system mode
     "rtl_support": True,  # options[Boolean]: True(default), False # To provide RTLSupport or not
-    "rtl_mode": False,
-    # options[Boolean]: False(default), True # To set layout to RTL layout  (myRTLSupport must be True for rtl mode)
-    "has_customizer": True,
-    # options[Boolean]: True(default), False # Display customizer or not THIS WILL REMOVE INCLUDED JS FILE. SO LOCAL STORAGE WON'T WORK
-    "display_customizer": True,
-    # options[Boolean]: True(default), False # Display customizer UI or not, THIS WON'T REMOVE INCLUDED JS FILE. SO LOCAL STORAGE WILL WORK
+    "rtl_mode": False, # options[Boolean]: False(default), True # To set layout to RTL layout  (myRTLSupport must be True for rtl mode)
+    "has_customizer": True, # options[Boolean]: True(default), False # Display customizer or not THIS WILL REMOVE INCLUDED JS FILE. SO LOCAL STORAGE WON'T WORK
+    "display_customizer": True, # options[Boolean]: True(default), False # Display customizer UI or not, THIS WON'T REMOVE INCLUDED JS FILE. SO LOCAL STORAGE WILL WORK
     "content_layout": "compact",  # options[String]: 'compact', 'wide' (compact=container-xxl, wide=container-fluid)
     "navbar_type": "fixed",  # options[String]: 'fixed', 'static', 'hidden' (Only for vertical Layout)
     "header_type": "fixed",  # options[String]: 'static', 'fixed' (for horizontal layout only)
@@ -54,8 +42,6 @@ TEMPLATE_CONFIG = {
     ],  # To show/hide customizer options
 }
 
-# Theme Variables
-# ? Personalize template by changing theme variables (For ex: Name, URL Version etc...)
 THEME_VARIABLES = {
     "creator_name": "Bimod.io",
     "creator_url": "https://www.bimod.io/",
@@ -65,21 +51,20 @@ THEME_VARIABLES = {
     "template_free": False,
     "template_description": "Bimod.io is an AI-powered AIaaS provider that helps you to build, train, and deploy your own AI assistant in minutes and automate your business processes.",
     "template_keyword": "django, django admin, dashboard, bootstrap 5 dashboard, bootstrap 5 design, bootstrap 5",
-    "facebook_url": "https://www.facebook.com/pixinvents/",
-    "twitter_url": "https://twitter.com/pixinvents",
-    "github_url": "https://github.com/pixinvent",
-    "dribbble_url": "https://dribbble.com/pixinvent",
-    "instagram_url": "https://www.instagram.com/pixinvents/",
-    "license_url": "https://themeforest.net/licenses/standard",
-    "live_preview": "https://demos.pixinvent.com/vuexy-html-django-admin-template/demo-1/",
-    "product_page": "https://1.envato.market/vuexy_admin",
-    "support": "https://pixinvent.ticksy.com/",
-    "more_themes": "https://1.envato.market/pixinvent_portfolio",
-    "documentation": "https://demos.pixinvent.com/vuexy-html-admin-template/documentation/django-introduction.html",
-    "changelog": "https://demos.pixinvent.com/vuexy/changelog.html",
-    "git_repository": "vuexy-html-django-admin-template",
-    "git_repo_access": "https://tools.pixinvent.com/github/github-access",
+    "facebook_url": "",
+    "twitter_url": "",
+    "github_url": "",
+    "dribbble_url": "",
+    "instagram_url": "",
+    "license_url": "",
+    "live_preview": "",
+    "product_page": "",
+    "support": "",
+    "more_themes": "",
+    "documentation": "",
+    "changelog": "",
+    "git_repository": "",
+    "git_repo_access": "",
 }
 
-# ! Don't change THEME_LAYOUT_DIR unless it's required
 THEME_LAYOUT_DIR = "layout"

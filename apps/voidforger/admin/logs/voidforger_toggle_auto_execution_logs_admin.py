@@ -17,9 +17,15 @@
 
 from django.contrib import admin
 
-from apps.voidforger.models import VoidForgerToggleAutoExecutionLog
-from apps.voidforger.utils import VOIDFORGER_TOGGLE_AUTO_EXECUTION_LOG_ADMIN_LIST, \
-    VOIDFORGER_TOGGLE_AUTO_EXECUTION_LOG_ADMIN_FILTER, VOIDFORGER_TOGGLE_AUTO_EXECUTION_LOG_ADMIN_SEARCH
+from apps.voidforger.models import (
+    VoidForgerToggleAutoExecutionLog
+)
+
+from apps.voidforger.utils import (
+    VOIDFORGER_TOGGLE_AUTO_EXECUTION_LOG_ADMIN_LIST,
+    VOIDFORGER_TOGGLE_AUTO_EXECUTION_LOG_ADMIN_FILTER,
+    VOIDFORGER_TOGGLE_AUTO_EXECUTION_LOG_ADMIN_SEARCH
+)
 
 
 @admin.register(VoidForgerToggleAutoExecutionLog)
@@ -27,4 +33,5 @@ class VoidForgerToggleAutoExecutionLogAdmin(admin.ModelAdmin):
     list_display = VOIDFORGER_TOGGLE_AUTO_EXECUTION_LOG_ADMIN_LIST
     list_filter = VOIDFORGER_TOGGLE_AUTO_EXECUTION_LOG_ADMIN_FILTER
     search_fields = VOIDFORGER_TOGGLE_AUTO_EXECUTION_LOG_ADMIN_SEARCH
+
     ordering = ['-timestamp']

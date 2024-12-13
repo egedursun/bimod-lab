@@ -15,9 +15,13 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-from django.contrib.admin.models import LogEntry
+from django.contrib.admin.models import (
+    LogEntry
+)
 
-from apps.audit_logs.models import AuditLog
+from apps.audit_logs.models import (
+    AuditLog
+)
 
 HTTP_STATUS_QUERY_TAG = 'http_status'
 HTTP_STATUS_ERROR_TAG_VALUE = 'error'

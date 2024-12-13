@@ -16,13 +16,24 @@
 #
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.shortcuts import redirect
 from django.views import View
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
 from apps.organization.models import Organization
-from apps.user_permissions.utils import PermissionNames
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from apps.voidforger.models import VoidForger
 
 
@@ -44,17 +55,24 @@ class VoidForgerView_RefreshVoidForgerConnections(LoginRequiredMixin, View):
 
         try:
             voidforger_id = kwargs.get('voidforger_id')
-            voidforger = VoidForger.objects.get(id=voidforger_id)
+
+            voidforger = VoidForger.objects.get(
+                id=voidforger_id
+            )
 
             user_orgs = Organization.objects.filter(
                 users__in=[self.request.user]
             )
 
-            voidforger.organizations.set(user_orgs)
+            voidforger.organizations.set(
+                user_orgs
+            )
 
         except Exception as e:
             messages.error(self.request, "VoidForger not found.")
+
             return redirect('voidforger:configuration')
 
         messages.success(self.request, "VoidForger connections refreshed with all organizations of user.")
+
         return redirect('voidforger:configuration')

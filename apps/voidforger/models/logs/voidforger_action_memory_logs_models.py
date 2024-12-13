@@ -14,11 +14,14 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.db import models
 
-from apps.voidforger.utils import VOIDFORGER_ACTION_TYPES
+from apps.voidforger.utils import (
+    VOIDFORGER_ACTION_TYPES
+)
 
 logger = logging.getLogger(__name__)
 
@@ -28,10 +31,12 @@ class VoidForgerActionMemoryLog(models.Model):
         'voidforger.VoidForger',
         on_delete=models.CASCADE
     )
+
     action_type = models.CharField(
         max_length=255,
         choices=VOIDFORGER_ACTION_TYPES
     )
+
     action_order_raw_text = models.TextField(null=True, blank=True)
 
     timestamp = models.DateTimeField(auto_now_add=True)
@@ -43,6 +48,7 @@ class VoidForgerActionMemoryLog(models.Model):
         ordering = ['-timestamp']
         verbose_name = 'VoidForger Action Memory Log'
         verbose_name_plural = 'VoidForger Action Memory Logs'
+
         indexes = [
             models.Index(fields=[
                 'voidforger',
@@ -62,8 +68,9 @@ class VoidForgerActionMemoryLog(models.Model):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
 
-        # create the vector object on creation of the log object
-        from apps.voidforger.models import VoidForgerActionMemoryVectorData
+        from apps.voidforger.models import (
+            VoidForgerActionMemoryVectorData
+        )
 
         try:
             _, _ = VoidForgerActionMemoryVectorData.objects.get_or_create(

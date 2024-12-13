@@ -14,21 +14,33 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 import os
 
 import faiss
 import numpy as np
-from django.db.models.signals import pre_delete
+
+from django.db.models.signals import (
+    pre_delete
+)
+
 from django.dispatch import receiver
 
-from apps.voidforger.models import VoidForgerToggleAutoExecutionLog, VoidForgerAutoExecutionMemoryVectorData
+from apps.voidforger.models import (
+    VoidForgerToggleAutoExecutionLog,
+    VoidForgerAutoExecutionMemoryVectorData
+)
 
 logger = logging.getLogger(__name__)
 
 
 @receiver(pre_delete, sender=VoidForgerToggleAutoExecutionLog)
-def remove_vector_from_index_on_auto_execution_memory_delete(sender, instance, **kwargs):
+def remove_vector_from_index_on_auto_execution_memory_delete(
+    sender,
+    instance,
+    **kwargs
+):
     try:
         vector_data_instance = VoidForgerAutoExecutionMemoryVectorData.objects.get(
             voidforger_auto_execution_memory=instance
@@ -38,13 +50,21 @@ def remove_vector_from_index_on_auto_execution_memory_delete(sender, instance, *
 
         if os.path.exists(index_path):
             index = faiss.read_index(index_path)
+
             xids = np.array(
-                [vector_data_instance.id],
+                [
+                    vector_data_instance.id
+                ],
                 dtype=np.int64
             )
 
             index.remove_ids(xids)
-            faiss.write_index(index, index_path)
+
+            faiss.write_index(
+                index,
+                index_path
+            )
+
             logger.info(f"Removed vector data for VoidForgerToggleAutoExecutionLog with ID {instance.id} from index.")
             print(f"Removed vector data for VoidForgerToggleAutoExecutionLog with ID {instance.id} from index.")
 

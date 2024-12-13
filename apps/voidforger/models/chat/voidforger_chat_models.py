@@ -17,7 +17,9 @@
 
 from django.db import models
 
-from apps.multimodal_chat.utils import SOURCES_FOR_MULTIMODAL_CHATS
+from apps.multimodal_chat.utils import (
+    SOURCES_FOR_MULTIMODAL_CHATS
+)
 
 
 class MultimodalVoidForgerChat(models.Model):
@@ -40,6 +42,7 @@ class MultimodalVoidForgerChat(models.Model):
     )
 
     chat_name = models.CharField(max_length=255)
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -60,7 +63,9 @@ class MultimodalVoidForgerChat(models.Model):
     class Meta:
         verbose_name = "Multimodal VoidForger Chat"
         verbose_name_plural = "Multimodal VoidForger Chats"
+
         ordering = ["-created_at"]
+
         indexes = [
             models.Index(fields=[
                 'voidforger'

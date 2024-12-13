@@ -14,18 +14,30 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
-from django.db.models.signals import post_save
+from django.db.models.signals import (
+    post_save
+)
+
 from django.dispatch import receiver
 
-from apps.voidforger.models import MultimodalVoidForgerChatMessage, VoidForgerOldChatMessagesVectorData
+from apps.voidforger.models import (
+    MultimodalVoidForgerChatMessage,
+    VoidForgerOldChatMessagesVectorData
+)
 
 logger = logging.getLogger(__name__)
 
 
 @receiver(post_save, sender=MultimodalVoidForgerChatMessage)
-def update_voidforger_old_chat_messages_vector_embedding_after_save(sender, instance, created, **kwargs):
+def update_voidforger_old_chat_messages_vector_embedding_after_save(
+    sender,
+    instance,
+    created,
+    **kwargs
+):
     try:
         item, success = VoidForgerOldChatMessagesVectorData.objects.get_or_create(
             voidforger_chat_message=instance
@@ -36,6 +48,7 @@ def update_voidforger_old_chat_messages_vector_embedding_after_save(sender, inst
 
         else:
             logger.info("VoidForgerOldChatMessagesVectorData already exists; updating.")
+
             item.save()
 
     except Exception as e:

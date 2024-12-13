@@ -14,19 +14,24 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 from django.urls import path
 
-from apps.voidforger.views import (VoidForgerView_ListVoidForgerAutoExecutionLogs,
-                                   VoidForgerView_ManualTriggerVoidForgerRun,
-                                   VoidForgerView_RefreshVoidForgerConnections, VoidForgerView_DeleteVoidForgerChat,
-                                   VoidForgerView_AutoRunVoidForger, VoidForgerView_PurgeAutoExecutionLogs,
-                                   VoidForgerView_PurgeActionMemoryLogs, VoidForgerView_ListActionMemoryLogs,
-                                   VoidForgerView_Configuration)
+from apps.voidforger.views import (
+    VoidForgerView_ListVoidForgerAutoExecutionLogs,
+    VoidForgerView_ManualTriggerVoidForgerRun,
+    VoidForgerView_RefreshVoidForgerConnections,
+    VoidForgerView_DeleteVoidForgerChat,
+    VoidForgerView_AutoRunVoidForger,
+    VoidForgerView_PurgeAutoExecutionLogs,
+    VoidForgerView_PurgeActionMemoryLogs,
+    VoidForgerView_ListActionMemoryLogs,
+    VoidForgerView_Configuration
+)
 
 app_name = 'voidforger'
 
 urlpatterns = [
-    # Configuration-related
     path(
         "configuration/",
         VoidForgerView_Configuration.as_view(
@@ -34,18 +39,21 @@ urlpatterns = [
         ),
         name="configuration"
     ),
+
     path(
         "connections/refresh/<int:voidforger_id>/",
         VoidForgerView_RefreshVoidForgerConnections.as_view(
         ),
         name="refresh_connections"
     ),
+
     path(
         "auto/run/<int:voidforger_id>/",
         VoidForgerView_AutoRunVoidForger.as_view(
         ),
         name="auto_run"
     ),
+
     path(
         "manual/run/<int:voidforger_id>/",
         VoidForgerView_ManualTriggerVoidForgerRun.as_view(
@@ -53,7 +61,8 @@ urlpatterns = [
         name="manual_run"
     ),
 
-    # Logs-related
+    #####
+
     path(
         "auto_execution/logs/",
         VoidForgerView_ListVoidForgerAutoExecutionLogs.as_view(
@@ -81,7 +90,8 @@ urlpatterns = [
         name="purge_action_memory_logs"
     ),
 
-    # Chat-related
+    #####
+
     path(
         "chat/delete/<int:pk>/",
         VoidForgerView_DeleteVoidForgerChat.as_view(

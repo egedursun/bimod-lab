@@ -16,21 +16,45 @@
 #
 import logging
 
-from django.db.models.signals import post_save
-from django.dispatch import receiver
+from django.db.models.signals import (
+    post_save
+)
+
+from django.dispatch import (
+    receiver
+)
+
 from django.utils import timezone
 
 from auth.models import Profile
-from auth.utils import send_accreditation_approval_email
+
+from auth.utils import (
+    send_accreditation_approval_email
+)
 
 logger = logging.getLogger(__name__)
 
 
 @receiver(post_save, sender=Profile)
-def send_approval_email(sender, instance, **kwargs):
-    if instance.is_accredited_by_staff and instance.accreditation_email_sent_at is None:
+def send_approval_email(
+    sender,
+    instance,
+    **kwargs
+):
+    if (
+        instance.is_accredited_by_staff and
+        instance.accreditation_email_sent_at is None
+    ):
         logger.info(f"Accreditation email sent to the administrator candidate user.")
-        send_accreditation_approval_email(email=instance.email)
+
+        send_accreditation_approval_email(
+            email=instance.email
+        )
+
         print(f"Accreditation email sent to the administrator candidate user.")
+
         instance.accreditation_email_sent_at = timezone.now()
-        instance.save(update_fields=['accreditation_email_sent_at'])
+
+        instance.save(
+            update_fields=['accreditation_email_sent_at']
+        )

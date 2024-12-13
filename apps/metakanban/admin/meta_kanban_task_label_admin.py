@@ -17,9 +17,15 @@
 
 from django.contrib import admin
 
-from apps.metakanban.models import MetaKanbanTaskLabel
-from apps.metakanban.utils import META_KANBAN_TASK_LABEL_ADMIN_LIST, META_KANBAN_TASK_LABEL_ADMIN_FILTER, \
+from apps.metakanban.models import (
+    MetaKanbanTaskLabel
+)
+
+from apps.metakanban.utils import (
+    META_KANBAN_TASK_LABEL_ADMIN_LIST,
+    META_KANBAN_TASK_LABEL_ADMIN_FILTER,
     META_KANBAN_TASK_LABEL_ADMIN_SEARCH
+)
 
 
 @admin.register(MetaKanbanTaskLabel)
@@ -27,4 +33,5 @@ class MetaKanbanTaskLabelAdmin(admin.ModelAdmin):
     list_display = META_KANBAN_TASK_LABEL_ADMIN_LIST
     list_filter = META_KANBAN_TASK_LABEL_ADMIN_FILTER
     search_fields = META_KANBAN_TASK_LABEL_ADMIN_SEARCH
+
     ordering = ('-created_at',)

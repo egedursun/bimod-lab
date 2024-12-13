@@ -18,31 +18,67 @@
 import os
 
 
-def process_landing_html_files(directory, output_dir):
-    """Process all HTML files within 'landing' directories in the specified directory."""
-    os.makedirs(output_dir, exist_ok=True)
-    output_html_path = os.path.join(output_dir, "landing_html_data.txt")
+def process_landing_html_files(
+    directory,
+    output_dir
+):
+    os.makedirs(
+        output_dir,
+        exist_ok=True
+    )
 
-    with open(output_html_path, 'w', encoding='utf-8') as html_file:
+    output_html_path = os.path.join(
+        output_dir,
+        "landing_html_data.txt"
+    )
+
+    with open(
+        output_html_path,
+        'w',
+        encoding='utf-8'
+    ) as html_file:
+
         for root, dirs, files in os.walk(directory):
-            # Check if 'landing' is part of the current directory path
+
             if 'landing' in root.split(os.sep):
+
                 for file in files:
+
                     if file.endswith('.html'):
-                        file_path = os.path.join(root, file)
-                        write_file_contents(file_path, html_file)
+                        file_path = os.path.join(
+                            root,
+                            file
+                        )
+
+                        write_file_contents(
+                            file_path,
+                            html_file
+                        )
     print(f"HTML data written to: {output_html_path}")
 
 
-def write_file_contents(file_path, output_file):
-    """Write the contents of a file to the given output file."""
-    with open(file_path, 'r', encoding='utf-8') as file:
+def write_file_contents(
+    file_path,
+    output_file
+):
+    with open(
+        file_path,
+        'r',
+        encoding='utf-8'
+    ) as file:
         contents = file.read()
-    output_file.write(f"Contents of {file_path}:\n{contents}\n\n")
+
+    output_file.write(
+        f"Contents of {file_path}:\n{contents}\n\n"
+    )
 
 
 # Replace '../../apps' with the actual path to your apps directory if it differs
+
 apps_directory = '../../apps'
 output_directory = 'output'
 
-process_landing_html_files(apps_directory, output_directory)
+process_landing_html_files(
+    apps_directory,
+    output_directory
+)

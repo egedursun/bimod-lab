@@ -14,18 +14,30 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
-from django.db.models.signals import post_save
+from django.db.models.signals import (
+    post_save
+)
+
 from django.dispatch import receiver
 
-from apps.voidforger.models import VoidForgerAutoExecutionMemoryVectorData, VoidForgerToggleAutoExecutionLog
+from apps.voidforger.models import (
+    VoidForgerAutoExecutionMemoryVectorData,
+    VoidForgerToggleAutoExecutionLog
+)
 
 logger = logging.getLogger(__name__)
 
 
 @receiver(post_save, sender=VoidForgerToggleAutoExecutionLog)
-def update_voidforger_toggle_auto_execution_memory_vector_embedding_after_save(sender, instance, created, **kwargs):
+def update_voidforger_toggle_auto_execution_memory_vector_embedding_after_save(
+    sender,
+    instance,
+    created,
+    **kwargs
+):
     try:
         item, success = VoidForgerAutoExecutionMemoryVectorData.objects.get_or_create(
             voidforger_auto_execution_memory=instance
@@ -36,6 +48,7 @@ def update_voidforger_toggle_auto_execution_memory_vector_embedding_after_save(s
 
         else:
             logger.info("VoidForgerAutoExecutionMemoryVectorData already exists; updating.")
+
             item.save()
 
     except Exception as e:

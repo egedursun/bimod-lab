@@ -16,51 +16,100 @@
 #
 #
 
-from django.shortcuts import render, redirect
+from django.shortcuts import (
+    render,
+    redirect
+)
+
 from django.contrib import messages
 from auth.models import Profile
-from auth.utils import is_valid_password
+
+from auth.utils import (
+    is_valid_password
+)
+
 from auth.views import AuthView
-from django.contrib.auth import authenticate, login
+
+from django.contrib.auth import (
+    authenticate,
+    login
+)
 
 
 class ResetPasswordView(AuthView):
     def get(self, request, token):
+
         if request.user.is_authenticated:
             return redirect("dashboard:lab-landing")
+
         return super().get(request)
 
     def post(self, request, token):
         try:
-            profile = Profile.objects.get(forget_password_token=token)
+            profile = Profile.objects.get(
+                forget_password_token=token
+            )
+
         except Profile.DoesNotExist:
             messages.error(request, "Invalid or expired token.")
+
             return redirect("forgot-password")
 
         if request.method == "POST":
             new_password = request.POST.get("password")
             confirm_password = request.POST.get("confirm-password")
+
             if not (new_password and confirm_password):
                 messages.error(request, "Please fill all fields.")
-                return render(request, "reset-password")
 
-            is_valid, message = is_valid_password(password=new_password)
+                return render(
+                    request,
+                    "reset-password"
+                )
+
+            is_valid, message = is_valid_password(
+                password=new_password
+            )
+
             if not is_valid:
                 messages.error(request, message)
-                return render(request, "reset-password")
+                return render(
+                    request,
+                    "reset-password"
+                )
+
             if new_password != confirm_password:
                 messages.error(request, "Passwords do not match.")
-                return render(request, "reset-password")
+
+                return render(
+                    request,
+                    "reset-password"
+                )
 
             user = profile.user
-            user.set_password(new_password)
+
+            user.set_password(
+                new_password
+            )
+
             user.save()
+
             profile.forget_password_token = ""
+
             profile.save()
-            authenticated_user = authenticate(request, username=user.username, password=new_password)
+
+            authenticated_user = authenticate(
+                request,
+                username=user.username,
+                password=new_password
+            )
+
             if authenticated_user:
                 login(request, authenticated_user)
+
                 return redirect("dashboard:lab-landing")
+
             else:
                 messages.success(request, "Password reset successful. Please log in.")
+
                 return redirect("login")

@@ -17,9 +17,15 @@
 
 from django.contrib import admin
 
-from apps.metakanban.models.meta_kanban_column_models import MetaKanbanStatusColumn
-from apps.metakanban.utils import META_KANBAN_STATUS_COLUMN_LIST, META_KANBAN_STATUS_COLUMN_FILTER, \
+from apps.metakanban.models.meta_kanban_column_models import (
+    MetaKanbanStatusColumn
+)
+
+from apps.metakanban.utils import (
+    META_KANBAN_STATUS_COLUMN_LIST,
+    META_KANBAN_STATUS_COLUMN_FILTER,
     META_KANBAN_STATUS_COLUMN_SEARCH
+)
 
 
 @admin.register(MetaKanbanStatusColumn)
@@ -27,4 +33,5 @@ class MetaKanbanStatusColumnAdmin(admin.ModelAdmin):
     list_display = META_KANBAN_STATUS_COLUMN_LIST
     list_filter = META_KANBAN_STATUS_COLUMN_FILTER
     search_fields = META_KANBAN_STATUS_COLUMN_SEARCH
+
     ordering = ('position_id', 'created_at')
