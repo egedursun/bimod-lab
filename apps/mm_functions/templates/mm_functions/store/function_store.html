@@ -187,7 +187,7 @@
 
 
 
-                  {% if function.function_picture %}{{ function.function_picture.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+                  {% if function.function_picture %}{{ function.function_picture.url }}{% else %}{% static 'img/avatars/org-0.jpg' %}{% endif %}"
                      alt="{{ function.name }}" class="avatar rounded border border-2 border-warning">
               </td>
               <td style="max-width: 180px;"><strong>{{ function.name }}</strong></td>
@@ -254,7 +254,7 @@
 
 
 
-                {% if function.function_picture %}{{ function.function_picture.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+                {% if function.function_picture %}{{ function.function_picture.url }}{% else %}{% static 'img/avatars/org-0.jpg' %}{% endif %}"
                    alt="{{ function.name }}"
                    class="avatar rounded border border-2 {% if function.is_featured %}border-warning{% else %}border-secondary{% endif %}"
                    style="width: 60px; height: 60px; object-fit: cover;">

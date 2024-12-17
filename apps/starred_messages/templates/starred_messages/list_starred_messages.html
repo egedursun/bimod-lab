@@ -96,7 +96,7 @@
           <div class="mb-4 card card-border-shadow-primary p-8">
             <div class="d-flex">
               <img src="
-                {% if messages.0.assistant.assistant_image %}{{ messages.0.assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+                {% if messages.0.assistant.assistant_image %}{{ messages.0.assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.jpg' %}{% endif %}"
                    alt="Avatar" class="rounded me-4" style="width: 80px; height: 80px;" />
               <h5>
                 <strong>{{ assistant_name }}</strong>
@@ -112,7 +112,7 @@
                           <div class="me-4">
                             <img src="
 
-                              {% if message.assistant.assistant_image %}{{ message.assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+                              {% if message.assistant.assistant_image %}{{ message.assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.jpg' %}{% endif %}"
                                  alt="Avatar" class="rounded" width="70" height="70" />
                           </div>
                           <div class="me-2">

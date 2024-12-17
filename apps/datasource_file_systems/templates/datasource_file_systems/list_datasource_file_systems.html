@@ -77,7 +77,7 @@
           <div class="d-flex">
             <img src="
 
-              {% if organization.organization_image %}{{ organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+              {% if organization.organization_image %}{{ organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.jpg' %}{% endif %}"
                  class="rounded me-4" width="60" height="60" alt="Organization image">
             <h4>
               <strong>{{ organization.name }}</strong>
@@ -96,7 +96,7 @@
             <div class="d-flex">
               <img src="
 
-                {% if assistant.assistant_image %}{{ assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+                {% if assistant.assistant_image %}{{ assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.jpg' %}{% endif %}"
                    class="rounded me-4" width="80" height="80" alt="Assistant image">
               <h5 class="assistant-title mt-4"><strong>{{ assistant.name }}</strong></h5>
             </div>

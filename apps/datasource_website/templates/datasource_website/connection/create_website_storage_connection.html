@@ -96,6 +96,11 @@
 
           <hr>
 
+          <img src="{% static 'img/browsers/brw-1.jpg' %}" class="rounded mt-4" style="width: 100%;"
+               alt="Illustration for tips">
+
+          <hr>
+
           <form method="post" enctype="multipart/form-data" class="mt-4">
             {% csrf_token %}
             <div class="row">
@@ -123,7 +128,8 @@
                           placeholder="Describe the connection"></textarea>
               </div>
               <div class="mb-6 col-6">
-                <label class="form-label" for="vectorizer">Vectorizer Model<span class="text-danger">&nbsp;*</span></label>
+                <label class="form-label" for="vectorizer">Vectorizer Model<span
+                  class="text-danger">&nbsp;*</span></label>
                 <select class="form-select" id="vectorizer" name="vectorizer">
                   {% for label, name in vectorizers %}
                     <option value="{{ label }}" {% if forloop.first %}selected{% endif %}>{{ name }}</option>

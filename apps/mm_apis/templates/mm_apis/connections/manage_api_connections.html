@@ -107,7 +107,7 @@
            aria-controls="collapse-{{ organization.id }}">
           <div class="d-flex">
             <img class="avatar avatar-lg rounded me-4 mb-8" alt="Organization image" src="
-              {% if organization.organization_image %}{{ organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}">
+              {% if organization.organization_image %}{{ organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.jpg' %}{% endif %}">
             <h4>
               <strong>{{ organization.name }}</strong>
             </h4>
@@ -137,7 +137,7 @@
                 {% if assistant.organization == organization %}
                   <tr>
                     <td><img class="avatar avatar-lg rounded" alt="Assistant Image" src="
-                      {% if assistant.assistant_image %}{{ assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}">
+                      {% if assistant.assistant_image %}{{ assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.jpg' %}{% endif %}">
                     </td>
                     <td style="min-width: 300px;">
                       <strong><i class="fa fa-robot me-4"></i>{{ assistant.name }}</strong>
@@ -152,7 +152,7 @@
                             <!-- API Image -->
                             <img class="avatar avatar-lg rounded me-4"
                                  src="
-                                   {% if reference.custom_api.api_picture %}{{ reference.custom_api.api_picture.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+                                   {% if reference.custom_api.api_picture %}{{ reference.custom_api.api_picture.url }}{% else %}{% static 'img/avatars/org-0.jpg' %}{% endif %}"
                                  alt="{{ reference.custom_api.name }}"
                                  style="width: 60px; height: 60px; object-fit: cover;">
 
@@ -226,7 +226,7 @@
 
 
 
-                                   {% if reference.custom_api.api_picture %}{{ reference.custom_api.api_picture.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+                                   {% if reference.custom_api.api_picture %}{{ reference.custom_api.api_picture.url }}{% else %}{% static 'img/avatars/org-0.jpg' %}{% endif %}"
                                  alt="{{ reference.custom_api.name }}"
                                  style="width: 60px; height: 60px; object-fit: cover;">
 

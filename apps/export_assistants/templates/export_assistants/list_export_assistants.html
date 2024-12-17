@@ -111,7 +111,7 @@
 
 
 
-                  {% if data.organization.organization_image %}{{ data.organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+                  {% if data.organization.organization_image %}{{ data.organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.jpg' %}{% endif %}"
                      alt="Organization Logo" class="rounded me-4" width="60">
                 <h5 class="mb-1">
                   <strong>
@@ -146,7 +146,7 @@
                       <img src="{{ export_assistant.assistant.assistant_image.url }}" alt="Assistant Image" class="me-4"
                            width="35">
                     {% else %}
-                      <img src="{% static 'img/avatars/org-0.png' %}" alt="Assistant Image" class="me-4" width="35">
+                      <img src="{% static 'img/avatars/org-0.jpg' %}" alt="Assistant Image" class="me-4" width="35">
                     {% endif %}
                     <div>
                       <h6 class="mb-0"><strong>{{ export_assistant.assistant.name }}</strong></h6>
@@ -198,7 +198,7 @@
               <img src="{{ export_assistant.assistant.assistant_image.url }}" alt="Assistant Image"
                    class="rounded w-px-100">
             {% else %}
-              <img src="{% static 'img/avatars/org-0.png' %}" alt="Assistant Image" class="rounded w-px-100">
+              <img src="{% static 'img/avatars/org-0.jpg' %}" alt="Assistant Image" class="rounded w-px-100">
             {% endif %}
           </div>
           <h5 class="mb-0 card-title"><strong>{{ export_assistant.assistant.name }}</strong></h5>

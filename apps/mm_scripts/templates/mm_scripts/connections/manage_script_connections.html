@@ -114,7 +114,7 @@
             <img src="
 
 
-              {% if organization.organization_image %}{{ organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+              {% if organization.organization_image %}{{ organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.jpg' %}{% endif %}"
                  class="rounded me-4" width="60" height="60" alt="Organization Image">
           </div>
         </a>
@@ -145,7 +145,7 @@
 
 
 
-                      {% if assistant.assistant_image %}{{ assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}">
+                      {% if assistant.assistant_image %}{{ assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.jpg' %}{% endif %}">
                     </td>
                     <td style="min-width: 300px;">
                       <strong><i class="fa fa-robot me-4"></i>{{ assistant.name }}</strong>
@@ -162,7 +162,7 @@
                                  src="
 
 
-                                   {% if reference.custom_script.script_picture %}{{ reference.custom_script.script_picture.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+                                   {% if reference.custom_script.script_picture %}{{ reference.custom_script.script_picture.url }}{% else %}{% static 'img/avatars/org-0.jpg' %}{% endif %}"
                                  alt="{{ reference.custom_script.name }}"
                                  style="width: 60px; height: 60px; object-fit: cover;">
 
@@ -235,7 +235,7 @@
 
 
 
-                                   {% if reference.custom_script.script_picture %}{{ reference.custom_script.script_picture.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+                                   {% if reference.custom_script.script_picture %}{{ reference.custom_script.script_picture.url }}{% else %}{% static 'img/avatars/org-0.jpg' %}{% endif %}"
                                  alt="{{ reference.custom_script.name }}"
                                  style="width: 60px; height: 60px; object-fit: cover;">
 

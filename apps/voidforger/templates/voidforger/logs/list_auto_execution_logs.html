@@ -153,18 +153,18 @@
                                           </span>
                     {% else %}
                       <span class="badge bg-primary p-4 w-100">
-                                            <strong>
-                                              <i class="fa fa-robot me-2"></i>
-                                              System
-                                            </strong>
-                                          </span>
+                        <strong>
+                          <i class="fa fa-robot me-2"></i>
+                          System
+                        </strong>
+                      </span>
                     {% endif %}
                   </td>
                 </tr>
               {% empty %}
                 <tr>
                   <td colspan="4" class="text-center">
-                    <div class="alert alert-warning">
+                    <div class="alert alert-warning border border-warning border-2 rounded">
                       <i class="fa fa-exclamation-triangle me-2"></i>No auto execution logs found.
                     </div>
                   </td>
@@ -215,8 +215,9 @@
               </ul>
             </nav>
           {% else %}
-            <div class="alert alert-warning">
-              <i class="fa fa-exclamation-triangle me-2"></i>No auto execution logs found.
+            <div class="alert alert-warning border border-warning border-2 rounded">
+              <i class="fa fa-exclamation-triangle me-2"></i>
+              No auto execution logs found.
             </div>
           {% endif %}
         </div>

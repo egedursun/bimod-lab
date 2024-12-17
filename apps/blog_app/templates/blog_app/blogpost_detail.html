@@ -62,8 +62,8 @@
             <strong>{{ post.title }}</strong>
           </h2>
           <hr>
-          <p>
-            <i class="ti ti-user me-2 mt-4"></i>
+          <p class="mt-4">
+            <i class="ti ti-user me-2"></i>
             {{ post.author.username }}
           </p>
           <p>
@@ -73,7 +73,7 @@
           <p>
             <i class="ti ti-tag me-2"></i>
             {% for tag in post.tags.all %}
-              <span class="badge bg-primary rounded p-1 m-1">
+              <span class="badge bg-primary rounded p-2 m-1">
                 <strong>#{{ tag.name }}</strong>
               </span>
             {% endfor %}
@@ -106,7 +106,7 @@
               </li>
             {% empty %}
               <li class="mb-4">
-                <div class="alert alert-info p-4 border border-warning border-2 rounded" role="alert">
+                <div class="alert alert-warning p-4 border border-warning border-2 rounded" role="alert">
                   <strong>
                     <i class="fa fa-info-circle me-2"></i>
                     No related content found for this post (yet).

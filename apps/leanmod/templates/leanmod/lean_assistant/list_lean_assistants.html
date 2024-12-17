@@ -95,7 +95,7 @@
            aria-expanded="false" aria-controls="collapse-{{ organization.id }}">
           <div class="d-flex">
             <img src="
-              {% if organization.organization_image %}{{ organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+              {% if organization.organization_image %}{{ organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.jpg' %}{% endif %}"
                  alt="Organization Image" class="rounded" width="60">
             <h4>
               <strong class="ms-4">{{ organization.name }}</strong>
@@ -142,7 +142,7 @@
                   <img class="rounded" src="{{ lean_assistant.lean_assistant_image.url }}" alt="Lean Assistant Image"
                        width="50">
                 {% else %}
-                  <img class="rounded" src="{% static 'img/avatars/org-0.png' %}" alt="Lean Assistant Image" width="50">
+                  <img class="rounded" src="{% static 'img/avatars/org-0.jpg' %}" alt="Lean Assistant Image" width="50">
                 {% endif %}
               </td>
               <td><strong>{{ lean_assistant.name }}</strong></td>

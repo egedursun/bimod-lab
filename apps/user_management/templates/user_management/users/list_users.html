@@ -120,7 +120,7 @@
             <img src="
 
 
-              {% if organization.organization_image %}{{ organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+              {% if organization.organization_image %}{{ organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.jpg' %}{% endif %}"
                  class="rounded" width="60" height="60" alt="Organization Image">
             <h4><strong class="ms-4">{{ organization.name }}</strong></h4>
           </div>
@@ -178,7 +178,7 @@
                   <img src="{{ user.profile.profile_picture.url }}" class="rounded" width="60" height="60"
                        alt="User Image">
                 {% else %}
-                  <img src="{% static 'img/avatars/user-0.png' %}" class="rounded" width="60" height="60"
+                  <img src="{% static 'img/avatars/user-0.jpg' %}" class="rounded" width="60" height="60"
                        alt="User Image">
                 {% endif %}
               </td>

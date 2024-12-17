@@ -109,7 +109,7 @@
           <div class="d-flex">
             <img src="
 
-              {% if organization.organization_image %}{{ organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+              {% if organization.organization_image %}{{ organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.jpg' %}{% endif %}"
                  class="rounded me-4" width="60" height="60" alt="Organization Image">
             <h4><strong>{{ organization.name }}</strong></h4>
           </div>
@@ -139,7 +139,7 @@
                   <tr>
                     <td><img class="avatar avatar-lg rounded" alt="Assistant image" src="
 
-                      {% if assistant.assistant_image %}{{ assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}">
+                      {% if assistant.assistant_image %}{{ assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.jpg' %}{% endif %}">
                     </td>
                     <td style="min-width: 300px;">
                       <strong><i class="fa fa-robot me-4"></i>{{ assistant.name }}</strong>
@@ -155,7 +155,7 @@
                             <img class="avatar avatar-lg rounded me-4"
                                  src="
 
-                                   {% if reference.custom_function.function_picture %}{{ reference.custom_function.function_picture.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+                                   {% if reference.custom_function.function_picture %}{{ reference.custom_function.function_picture.url }}{% else %}{% static 'img/avatars/org-0.jpg' %}{% endif %}"
                                  alt="{{ reference.custom_function.name }}"
                                  style="width: 60px; height: 60px; object-fit: cover;">
 
@@ -226,7 +226,7 @@
                             <img class="avatar avatar-lg rounded me-4"
                                  src="
 
-                                   {% if reference.custom_function.function_picture %}{{ reference.custom_function.function_picture.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+                                   {% if reference.custom_function.function_picture %}{{ reference.custom_function.function_picture.url }}{% else %}{% static 'img/avatars/org-0.jpg' %}{% endif %}"
                                  alt="{{ reference.custom_function.name }}"
                                  style="width: 60px; height: 60px; object-fit: cover;">
 

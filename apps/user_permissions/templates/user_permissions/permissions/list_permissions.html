@@ -96,7 +96,7 @@
           <div class="d-flex">
             <img src="
 
-              {% if organization.organization_image %}{{ organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
+              {% if organization.organization_image %}{{ organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.jpg' %}{% endif %}"
                  width="60" class="rounded me-4" alt="Organization image">
             <h4>
               <strong>{{ organization.name }}</strong>
@@ -121,7 +121,7 @@
                 <div class="d-flex">
                   <img src="
 
-                    {% if user.profile.profile_picture %}{{ user.profile.profile_picture.url }}{% else %}{% static 'img/avatars/user-0.png' %}{% endif %}"
+                    {% if user.profile.profile_picture %}{{ user.profile.profile_picture.url }}{% else %}{% static 'img/avatars/user-0.jpg' %}{% endif %}"
                        width="40" class="rounded me-4" alt="User image">
                   <a class="collapsed" data-bs-toggle="collapse" href="#collapse-{{ user.id }}" role="button"
                      aria-expanded="false" aria-controls="collapse-{{ user.id }}">

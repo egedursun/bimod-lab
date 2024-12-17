@@ -65,7 +65,7 @@
     <div class="row g-4 mb-4 mt-8 card card-border-shadow-primary p-4">
       <div class="col-xl-12">
         <h5 class="text-muted"><strong>Search Posts</strong></h5>
-        <img src="{% static 'img/blog_app/blg-1.png' %}" class="rounded mt-8 mb-8" style="width: 100%;"
+        <img src="{% static 'img/blog_app/blg-1.jpg' %}" class="rounded mt-8 mb-8" style="width: 100%;"
              alt="Illustration for tips">
         <div class="card text-center mb-4">
           <div class="card-header">
@@ -96,10 +96,13 @@
               {% for post in page_obj %}
                 <div class="col-xl-4 col-md-6 d-flex">
                   <div class="card border shadow-none">
-                    <img class="card-img-top rounded" src="
+                    <a class="btn btn-sm btn-label-primary" href="{% url 'blog_app:post_detail' slug=post.slug %}">
+                      <img class="card-img-top rounded" src="
 
-                      {% if post.thumbnail_image %}{{ post.thumbnail_image.url }}{% else %}{% static 'img/custom-illustrations-v2/i2-1.png' %}{% endif %}"
-                         alt="{{ post.title }}">
+
+                        {% if post.thumbnail_image %}{{ post.thumbnail_image.url }}{% else %}{% static 'img/custom-illustrations-v2/i2-1.png' %}{% endif %}"
+                           alt="{{ post.title }}">
+                    </a>
                     <div class="card-body">
                       <h5 class="my-3"><strong><a
                         href="{% url 'blog_app:post_detail' slug=post.slug %}">{{ post.title }}</a></strong></h5>
