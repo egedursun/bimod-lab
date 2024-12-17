@@ -21,7 +21,6 @@ BEAMGUARD_ARTIFACT_TYPES = [
     ("file_system", "File System"),
 ]
 
-
 BEAMGUARD_CONFIRMATION_STATUSES = [
     ("pending", "Pending"),
     ("confirmed", "Confirmed"),
@@ -69,6 +68,7 @@ BEAMGUARD_ARTIFACT_ADMIN_SEARCH = (
 )
 BEAMGUARD_ARTIFACT_ADMIN_FILTER = (
     'assistant',
+    'confirmation_status',
     'type',
     'created_at'
 )

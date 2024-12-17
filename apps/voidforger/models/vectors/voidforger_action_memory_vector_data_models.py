@@ -24,6 +24,7 @@ import os
 import faiss
 import numpy as np
 from django.db import models
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 from apps.voidforger.utils import (
     OPEN_AI_DEFAULT_EMBEDDING_VECTOR_DIMENSIONS,
@@ -84,10 +85,29 @@ class VoidForgerActionMemoryVectorData(models.Model):
         )
 
     def save(self, *args, **kwargs):
+
+        action_raw_order_truncated = (
+            self.voidforger_action_memory.action_order_raw_text
+        )
+
+        splitter = RecursiveCharacterTextSplitter(
+            action_raw_order_truncated,
+            chunk_size=3_000,
+            chunk_overlap=0
+        )
+
+        chunks = splitter.split_text(action_raw_order_truncated)
+
+        if len(chunks) > 2:
+            action_raw_order_truncated = chunks[0] + " ... " + chunks[-1]
+
+        else:
+            action_raw_order_truncated = " ".join(chunks) if chunks else ""
+
         raw_data = {
             "voidforger_id": self.voidforger_action_memory.voidforger.id,
             "action_type": self.voidforger_action_memory.action_type,
-            "action_order_raw_text": self.voidforger_action_memory.action_order_raw_text,
+            "action_order_raw_text": action_raw_order_truncated,
             "timestamp": self.voidforger_action_memory.timestamp.strftime("%Y-%m-%d %H:%M:%S"),
         }
 

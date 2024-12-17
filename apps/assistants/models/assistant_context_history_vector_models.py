@@ -24,9 +24,13 @@ import faiss
 import numpy as np
 from django.db import models
 
+from langchain_text_splitters import (
+    RecursiveCharacterTextSplitter
+)
+
 from apps.assistants.utils import (
     VECTOR_INDEX_PATH_ASSISTANT_CHAT_MESSAGES,
-    ContextManagementStrategyNames
+    ContextManagementStrategyNames,
 )
 
 from apps.core.semantor.utils import (
@@ -101,15 +105,38 @@ class AssistantOldChatMessagesVectorData(models.Model):
 
     def save(self, *args, **kwargs):
 
-        if self.assistant_chat_message.multimodal_chat.assistant.context_overflow_strategy == ContextManagementStrategyNames.VECTORIZE:
+        if (
+            self.assistant_chat_message.multimodal_chat.assistant.context_overflow_strategy ==
+            ContextManagementStrategyNames.VECTORIZE
+        ):
             # Vectorize the messages if it is within the context management strategy of the Assistant object
+
+            vectorization_text = (
+                self.assistant_chat_message.message_text_content
+            )
+
+            splitter = RecursiveCharacterTextSplitter(
+                vectorization_text,
+                chunk_size=3_000,
+                chunk_overlap=0
+            )
+
+            chunks = splitter.split_text(vectorization_text)
+
+            if len(chunks) > 2:
+                vectorization_text = chunks[0] + " ... " + chunks[-1]
+
+            else:
+                vectorization_text = " ".join(chunks) if chunks else ""
+
+            print("Vectorization Text: ", vectorization_text)
 
             raw_data = {
                 "assistant_id": self.assistant_chat_message.multimodal_chat.assistant.id,
                 "chat_id": self.assistant_chat_message.multimodal_chat.id,
                 "chat_message_id": self.assistant_chat_message.id,
                 "sender_type": self.assistant_chat_message.sender_type,
-                "message_text_content": self.assistant_chat_message.message_text_content,
+                "message_text_content": vectorization_text,
                 "message_image_contents": self.assistant_chat_message.message_image_contents,
                 "message_file_contents": self.assistant_chat_message.message_file_contents,
                 "message_audio": self.assistant_chat_message.message_audio,

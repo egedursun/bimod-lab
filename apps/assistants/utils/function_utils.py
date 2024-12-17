@@ -17,6 +17,7 @@
 
 import random
 import string
+import tiktoken
 
 from apps.assistants.utils import (
     RANDOM_SUFFIX_MAXIMUM_VALUE,
@@ -36,3 +37,11 @@ def generate_random_string(length=16):
 
 def generate_random_name_suffix():
     return f"{str(random.randint(RANDOM_SUFFIX_MINIMUM_VALUE, RANDOM_SUFFIX_MAXIMUM_VALUE))}"
+
+
+def count_string_tokens(text: str, encoding_name='cl100k_base'):
+    encoding = tiktoken.get_encoding(encoding_name)
+    tokens = encoding.encode(text)
+
+    return len(tokens)
+

@@ -50,10 +50,12 @@ VECTOR_INDEX_PATH_INTEGRATIONS = os.path.join(
 ANNOY_DEFAULT_NUMBER_OF_TREES = 10
 
 ASSISTANT_VECTOR_DATA_ADMIN_LIST = (
+    'assistant',
     'created_at',
     'updated_at'
 )
 ASSISTANT_VECTOR_DATA_ADMIN_FILTER = (
+    'assistant',
     'created_at',
     'updated_at'
 )

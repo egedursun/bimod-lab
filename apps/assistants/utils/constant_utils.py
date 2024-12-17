@@ -132,8 +132,8 @@ class MultiStepReasoningCapabilityModelNames:
 AGENT_ADMIN_DISPLAY_FIELDS = (
     "organization",
     "response_language",
-    "llm_model", "name",
-    "instructions",
+    "llm_model",
+    "name",
     "audience",
     "tone",
     "time_awareness",

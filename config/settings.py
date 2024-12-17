@@ -514,6 +514,34 @@ MAX_TEAMS_PER_PROJECT = int(
     )
 )
 
+MAX_HADRON_NODES_PER_ASSISTANT = int(
+    os.environ.get(
+        "MAX_HADRON_NODES_PER_ASSISTANT",
+        default="3"
+    )
+)
+
+MAX_METAKANBAN_BOARDS_PER_ASSISTANT = int(
+    os.environ.get(
+        "MAX_METAKANBAN_BOARDS_PER_ASSISTANT",
+        default="3"
+    )
+)
+
+MAX_METATEMPO_TRACKERS_PER_ASSISTANT = int(
+    os.environ.get(
+        "MAX_METATEMPO_TRACKERS_PER_ASSISTANT",
+        default="3"
+    )
+)
+
+MAX_ORCHESTRATION_TRIGGERS_PER_ASSISTANT = int(
+    os.environ.get(
+        "MAX_ORCHESTRATION_TRIGGERS_PER_ASSISTANT",
+        default="3"
+    )
+)
+
 MAX_FUNCTIONS_PER_ASSISTANT = int(
     os.environ.get(
         "MAX_FUNCTIONS_PER_ASSISTANT",

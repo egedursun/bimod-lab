@@ -81,13 +81,17 @@ from apps.datasource_sql.models import (
     CustomSQLQuery
 )
 
-from apps.mm_apis.models import CustomAPIReference
+from apps.mm_apis.models import (
+    CustomAPIReference
+)
 
 from apps.mm_functions.models import (
     CustomFunctionReference
 )
 
-from apps.mm_scripts.models import CustomScriptReference
+from apps.mm_scripts.models import (
+    CustomScriptReference
+)
 
 from apps.projects.models import (
     ProjectItem,
@@ -96,6 +100,25 @@ from apps.projects.models import (
 
 from apps.video_generations.models import (
     VideoGeneratorConnection
+)
+
+from config.settings import (
+    MAX_BROWSERS_PER_ASSISTANT,
+    MAX_SQL_DBS_PER_ASSISTANT,
+    MAX_FILE_SYSTEMS_PER_ASSISTANT,
+    MAX_NOSQL_DBS_PER_ASSISTANT,
+    MAX_KNOWLEDGE_BASES_PER_ASSISTANT,
+    MAX_MEDIA_STORAGES_PER_ASSISTANT,
+    MAX_ML_STORAGES_PER_ASSISTANT,
+    MAX_PROJECTS_PER_ASSISTANT,
+    MAX_VIDEO_GENERATORS_PER_ASSISTANT,
+    MAX_FUNCTIONS_PER_ASSISTANT,
+    MAX_APIS_PER_ASSISTANT,
+    MAX_SCRIPTS_PER_ASSISTANT,
+    MAX_HADRON_NODES_PER_ASSISTANT,
+    MAX_METAKANBAN_BOARDS_PER_ASSISTANT,
+    MAX_METATEMPO_TRACKERS_PER_ASSISTANT,
+    MAX_ORCHESTRATION_TRIGGERS_PER_ASSISTANT
 )
 
 logger = logging.getLogger(__name__)
@@ -256,6 +279,8 @@ class AssistantVectorData(models.Model):
             self._save_embedding()
 
         else:
+            print("Raw data has not changed for Assistant with ID {self.assistant.id}. Skipping embedding generation.")
+
             logger.info(
                 f"Raw data has not changed for Assistant with ID {self.assistant.id}. Skipping embedding generation.")
 
@@ -287,7 +312,6 @@ class AssistantVectorData(models.Model):
             browser: DataSourceBrowserConnection
 
             raw_data["data_sources"]["browsers"][browser.name] = {
-                "description": browser.description,
                 "type": browser.browser_type,
                 "data_selectivity": browser.data_selectivity,
                 "minimum_investigation_websites": browser.minimum_investigation_sites,
@@ -324,7 +348,6 @@ class AssistantVectorData(models.Model):
 
                 raw_data["data_sources"]["sql_dbs"][sql_db.name]["queries"][query.name] = {
                     "query_content": query.sql_query,
-                    "description": query.description,
                 }
 
         # Data Sources: NoSQL DBs
@@ -347,8 +370,8 @@ class AssistantVectorData(models.Model):
 
                 raw_data["data_sources"]["nosql_dbs"][nosql_db.name]["queries"][query.name] = {
                     "query_content": query.nosql_query,
-                    "description": query.description,
                 }
+
         # Data Sources: Knowledge Bases
 
         for kb in assistant_kbs:
@@ -357,17 +380,8 @@ class AssistantVectorData(models.Model):
             raw_data["data_sources"]["knowledge_bases"][kb.name] = {
                 "description": kb.description,
                 "vectorizer": kb.vectorizer,
-                "documents": {}
             }
 
-            # Internal: Documents
-
-            for doc in kb.knowledge_base_documents.all():
-                doc: KnowledgeBaseDocument
-
-                raw_data["data_sources"]["knowledge_bases"][kb.name]["documents"][doc.document_file_name] = {
-                    "document_type": doc.document_type,
-                }
         # Data Sources: Code Bases
 
         for codebase in assistant_codebases:
@@ -376,17 +390,7 @@ class AssistantVectorData(models.Model):
             raw_data["data_sources"]["codebases"][codebase.name] = {
                 "description": codebase.description,
                 "vectorizer": codebase.vectorizer,
-                "code_files": {}
             }
-
-            # Internal: Repositories
-
-            for repo in codebase.code_base_repositories.all():
-                repo: CodeBaseRepository
-
-                raw_data["data_sources"]["codebases"][codebase.name]["code_files"][repo.repository_name] = {
-                    "repository_uri": repo.repository_uri,
-                }
 
         # Data Sources: Media Storages
 
@@ -440,7 +444,6 @@ class AssistantVectorData(models.Model):
                 team: ProjectTeamItem
 
                 raw_data["data_sources"]["projects"][project.project_name]["teams"][team.team_name] = {
-                    "description": team.team_description,
                     "team_lead": team.team_lead.username,
                 }
 
@@ -450,7 +453,6 @@ class AssistantVectorData(models.Model):
             video_generator: VideoGeneratorConnection
 
             raw_data["data_sources"]["video_generators"][video_generator.name] = {
-                "description": video_generator.description,
                 "provider": video_generator.provider,
             }
 
@@ -493,6 +495,122 @@ class AssistantVectorData(models.Model):
                 hadron_node_connection.orchestration_maestro.name] = {
                 "orchestrator_description": hadron_node_connection.orchestration_maestro.description,
             }
+
+        # Pruning data sources and tools
+
+        if len(raw_data["data_sources"]["browsers"]) > MAX_BROWSERS_PER_ASSISTANT:
+            raw_data["data_sources"]["browsers"] = dict(
+                list(
+                    raw_data["data_sources"]["browsers"].items()
+                )[:MAX_BROWSERS_PER_ASSISTANT]
+            )
+
+        if len(raw_data["data_sources"]["file_systems"]) > MAX_FILE_SYSTEMS_PER_ASSISTANT:
+            raw_data["data_sources"]["file_systems"] = dict(
+                list(
+                    raw_data["data_sources"]["file_systems"].items()
+                )[:MAX_FILE_SYSTEMS_PER_ASSISTANT]
+            )
+
+        if len(raw_data["data_sources"]["sql_dbs"]) > MAX_SQL_DBS_PER_ASSISTANT:
+            raw_data["data_sources"]["sql_dbs"] = dict(
+                list(
+                    raw_data["data_sources"]["sql_dbs"].items()
+                )[:MAX_SQL_DBS_PER_ASSISTANT]
+            )
+
+        if len(raw_data["data_sources"]["nosql_dbs"]) > MAX_NOSQL_DBS_PER_ASSISTANT:
+            raw_data["data_sources"]["nosql_dbs"] = dict(
+                list(
+                    raw_data["data_sources"]["nosql_dbs"].items()
+                )[:MAX_NOSQL_DBS_PER_ASSISTANT]
+            )
+
+        if len(raw_data["data_sources"]["knowledge_bases"]) > MAX_KNOWLEDGE_BASES_PER_ASSISTANT:
+            raw_data["data_sources"]["knowledge_bases"] = dict(
+                list(
+                    raw_data["data_sources"]["knowledge_bases"].items()
+                )[:MAX_KNOWLEDGE_BASES_PER_ASSISTANT]
+            )
+
+        if len(raw_data["data_sources"]["codebases"]) > MAX_KNOWLEDGE_BASES_PER_ASSISTANT:
+            raw_data["data_sources"]["codebases"] = dict(
+                list(
+                    raw_data["data_sources"]["codebases"].items()
+                )[:MAX_KNOWLEDGE_BASES_PER_ASSISTANT]
+            )
+
+        if len(raw_data["data_sources"]["media_storages"]) > MAX_MEDIA_STORAGES_PER_ASSISTANT:
+            raw_data["data_sources"]["media_storages"] = dict(
+                list(
+                    raw_data["data_sources"]["media_storages"].items()
+                )[:MAX_MEDIA_STORAGES_PER_ASSISTANT]
+            )
+
+        if len(raw_data["data_sources"]["ml_storages"]) > MAX_ML_STORAGES_PER_ASSISTANT:
+            raw_data["data_sources"]["ml_storages"] = dict(
+                list(
+                    raw_data["data_sources"]["ml_storages"].items()
+                )[:MAX_ML_STORAGES_PER_ASSISTANT]
+            )
+
+        if len(raw_data["data_sources"]["projects"]) > MAX_PROJECTS_PER_ASSISTANT:
+            raw_data["data_sources"]["projects"] = dict(
+                list(
+                    raw_data["data_sources"]["projects"].items()
+                )[:MAX_PROJECTS_PER_ASSISTANT]
+            )
+
+        if len(raw_data["data_sources"]["video_generators"]) > MAX_VIDEO_GENERATORS_PER_ASSISTANT:
+            raw_data["data_sources"]["video_generators"] = dict(
+                list(
+                    raw_data["data_sources"]["video_generators"].items()
+                )[:MAX_VIDEO_GENERATORS_PER_ASSISTANT]
+            )
+
+        if len(raw_data["data_sources"]["hadron_node_connections"]) > MAX_HADRON_NODES_PER_ASSISTANT:
+            raw_data["data_sources"]["hadron_node_connections"] = dict(
+                list(
+                    raw_data["data_sources"]["hadron_node_connections"].items()
+                )[:MAX_HADRON_NODES_PER_ASSISTANT]
+            )
+
+        if len(raw_data["data_sources"]["metakanban_board_connections"]) > MAX_METAKANBAN_BOARDS_PER_ASSISTANT:
+            raw_data["data_sources"]["metakanban_board_connections"] = dict(
+                list(
+                    raw_data["data_sources"]["metakanban_board_connections"].items()
+                )[:MAX_HADRON_NODES_PER_ASSISTANT]
+            )
+
+        if len(raw_data["data_sources"]["metatempo_tracker_connections"]) > MAX_METATEMPO_TRACKERS_PER_ASSISTANT:
+            raw_data["data_sources"]["metatempo_tracker_connections"] = dict(
+                list(
+                    raw_data["data_sources"]["metatempo_tracker_connections"].items()
+                )[:MAX_METATEMPO_TRACKERS_PER_ASSISTANT]
+            )
+
+        if len(
+            raw_data["data_sources"]["orchestration_trigger_connections"]) > MAX_ORCHESTRATION_TRIGGERS_PER_ASSISTANT:
+            raw_data["data_sources"]["orchestration_trigger_connections"] = dict(
+                list(
+                    raw_data["data_sources"]["orchestration_trigger_connections"].items()
+                )[:MAX_ORCHESTRATION_TRIGGERS_PER_ASSISTANT]
+            )
+
+        if len(raw_data["tools"]["functions"]) > MAX_FUNCTIONS_PER_ASSISTANT:
+            raw_data["tools"]["functions"] = list(
+                raw_data["tools"]["functions"]
+            )[:MAX_FUNCTIONS_PER_ASSISTANT]
+
+        if len(raw_data["tools"]["apis"]) > MAX_APIS_PER_ASSISTANT:
+            raw_data["tools"]["apis"] = list(
+                raw_data["tools"]["apis"]
+            )[:MAX_APIS_PER_ASSISTANT]
+
+        if len(raw_data["tools"]["scripts"]) > MAX_SCRIPTS_PER_ASSISTANT:
+            raw_data["tools"]["scripts"] = list(
+                raw_data["tools"]["scripts"]
+            )[:MAX_SCRIPTS_PER_ASSISTANT]
 
         return raw_data
 

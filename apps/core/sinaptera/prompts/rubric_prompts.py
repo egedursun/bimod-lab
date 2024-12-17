@@ -33,7 +33,9 @@ class RubricWeights:
 def get_evaluation_rubric_prompt(
     sinaptera_configuration: SinapteraConfiguration
 ):
-    user_defined_metrics_list = sinaptera_configuration.additional_rubric_criteria
+    user_defined_metrics_list = (
+        sinaptera_configuration.additional_rubric_criteria
+    )
 
     user_defined_criteria = []
 
@@ -61,7 +63,13 @@ def get_evaluation_rubric_prompt(
             ..........
         """
 
-        user_defined_criteria.append(criterion_data_formatted)
+        user_defined_criteria.append(
+            criterion_data_formatted
+        )
+
+    user_defined_criteria_str = '\n\n'.join(
+        user_defined_criteria
+    )
 
     evaluation_rubric = f"""
 
@@ -123,7 +131,7 @@ def get_evaluation_rubric_prompt(
         available for them, and formatted as above. If none are provided, ignore this section.
 
         ```
-        {f"{'\n\n'.join(user_defined_criteria)}"}
+        {user_defined_criteria_str}
         ```
 
         **IMPORTANT NOTES:**

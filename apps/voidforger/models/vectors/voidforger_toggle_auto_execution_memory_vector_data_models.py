@@ -24,6 +24,7 @@ import os
 import faiss
 import numpy as np
 from django.db import models
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 from apps.voidforger.utils import (
     VECTOR_INDEX_PATH_AUTO_EXECUTION_MEMORIES,
@@ -85,10 +86,30 @@ class VoidForgerAutoExecutionMemoryVectorData(models.Model):
 
     def save(self, *args, **kwargs):
 
+        execution_metadata_truncated = (
+            self.voidforger_auto_execution_memory.metadata
+        )
+
+        splitter = RecursiveCharacterTextSplitter(
+            execution_metadata_truncated,
+            chunk_size=3_000,
+            chunk_overlap=0
+        )
+
+        chunks = splitter.split_text(execution_metadata_truncated)
+
+        if len(chunks) > 2:
+            execution_metadata_truncated = chunks[0] + " ... " + chunks[-1]
+
+        else:
+            execution_metadata_truncated = " ".join(chunks) if chunks else ""
+
+        print(execution_metadata_truncated)
+
         raw_data = {
             "voidforger_id": self.voidforger_auto_execution_memory.voidforger.id,
             "action_type": self.voidforger_auto_execution_memory.action_type,
-            "metadata": self.voidforger_auto_execution_memory.metadata,
+            "metadata": execution_metadata_truncated,
             "timestamp": self.voidforger_auto_execution_memory.timestamp.strftime("%Y-%m-%d %H:%M:%S"),
         }
 

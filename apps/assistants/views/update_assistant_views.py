@@ -186,4 +186,6 @@ class AssistantView_Update(LoginRequiredMixin, TemplateView):
 
         logger.info(f"Assistant has been updated. ")
 
+        messages.success(request, "Assistant has been updated successfully.")
+
         return redirect('assistants:update', pk=agent_id)

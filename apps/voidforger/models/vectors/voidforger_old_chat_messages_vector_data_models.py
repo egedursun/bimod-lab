@@ -24,6 +24,10 @@ import faiss
 import numpy as np
 from django.db import models
 
+from langchain_text_splitters import (
+    RecursiveCharacterTextSplitter
+)
+
 from apps.voidforger.utils import (
     VECTOR_INDEX_PATH_CHAT_MESSAGES,
     OpenAIEmbeddingModels,
@@ -85,12 +89,30 @@ class VoidForgerOldChatMessagesVectorData(models.Model):
 
     def save(self, *args, **kwargs):
 
+        vectorization_text = (
+            self.voidforger_chat_message.message_text_content
+        )
+
+        splitter = RecursiveCharacterTextSplitter(
+            vectorization_text,
+            chunk_size=3_000,
+            chunk_overlap=0
+        )
+
+        chunks = splitter.split_text(vectorization_text)
+
+        if len(chunks) > 2:
+            vectorization_text = chunks[0] + " ... " + chunks[-1]
+
+        else:
+            vectorization_text = " ".join(chunks) if chunks else ""
+
         raw_data = {
             "voidforger_id": self.voidforger_chat_message.multimodal_voidforger_chat.voidforger.id,
             "chat_id": self.voidforger_chat_message.multimodal_voidforger_chat.id,
             "chat_message_id": self.voidforger_chat_message.id,
             "sender_type": self.voidforger_chat_message.sender_type,
-            "message_text_content": self.voidforger_chat_message.message_text_content,
+            "message_text_content": vectorization_text,
             "message_image_contents": self.voidforger_chat_message.message_image_contents,
             "message_file_contents": self.voidforger_chat_message.message_file_contents,
             "message_audio": self.voidforger_chat_message.message_audio,
