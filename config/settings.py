@@ -1246,7 +1246,7 @@ JAZZMIN_SETTINGS = {
 # FIXTURE DEPLOYMENT ATTEMPTS CONFIGURATIONS
 #####################################################################################################################
 
-ATTEMPT_FIXTURE_DEPLOYMENT = True
+ATTEMPT_FIXTURE_DEPLOYMENT = False
 
 SKIP_FIXTURE_EMBEDDINGS = True
 
