@@ -18,7 +18,11 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
@@ -69,10 +73,15 @@ class TriggeredJobView_Create(LoginRequiredMixin, TemplateView):
 
         if form.is_valid():
 
-            triggered_job: TriggeredJob = form.save(commit=False)
+            triggered_job: TriggeredJob = form.save(
+                commit=False
+            )
 
             assistant_id = request.POST.get('trigger_assistant')
-            trigger_assistant = Assistant.objects.get(id=assistant_id)
+
+            trigger_assistant = Assistant.objects.get(
+                id=assistant_id
+            )
 
             n_triggered_jobs = trigger_assistant.triggered_jobs.count()
 

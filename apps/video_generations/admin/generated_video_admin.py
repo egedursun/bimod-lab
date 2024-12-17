@@ -18,9 +18,15 @@
 
 from django.contrib import admin
 
-from apps.video_generations.models import GeneratedVideo
-from apps.video_generations.utils import GENERATED_VIDEO_ADMIN_LIST, GENERATED_VIDEO_ADMIN_FILTER, \
+from apps.video_generations.models import (
+    GeneratedVideo
+)
+
+from apps.video_generations.utils import (
+    GENERATED_VIDEO_ADMIN_LIST,
+    GENERATED_VIDEO_ADMIN_FILTER,
     GENERATED_VIDEO_ADMIN_SEARCH
+)
 
 
 @admin.register(GeneratedVideo)
@@ -28,4 +34,5 @@ class GeneratedVideoAdmin(admin.ModelAdmin):
     list_display = GENERATED_VIDEO_ADMIN_LIST
     list_filter = GENERATED_VIDEO_ADMIN_FILTER
     search_fields = GENERATED_VIDEO_ADMIN_SEARCH
+
     ordering = ('created_at', 'updated_at')

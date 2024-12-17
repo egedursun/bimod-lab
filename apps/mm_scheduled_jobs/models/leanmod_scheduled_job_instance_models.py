@@ -47,8 +47,10 @@ class LeanModScheduledJobInstance(models.Model):
 
     class Meta:
         ordering = ['-started_at']
+
         verbose_name = 'LeanMod Scheduled Job Instance'
         verbose_name_plural = 'LeanMod Scheduled Job Instances'
+
         indexes = [
             models.Index(fields=[
                 'scheduled_job',

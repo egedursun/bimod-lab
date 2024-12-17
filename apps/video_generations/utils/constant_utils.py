@@ -15,13 +15,45 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-GENERATED_VIDEO_ADMIN_LIST = ('organization', 'assistant', 'multimodal_chat', 'created_by_user', 'created_at',
-                              'updated_at')
-GENERATED_VIDEO_ADMIN_FILTER = ('organization', 'assistant', 'multimodal_chat', 'created_by_user', 'created_at',
-                                'updated_at')
-GENERATED_VIDEO_ADMIN_SEARCH = ('organization', 'assistant', 'multimodal_chat', 'created_by_user', 'created_at',
-                                'updated_at')
+GENERATED_VIDEO_ADMIN_LIST = (
+    'organization',
+    'assistant',
+    'multimodal_chat',
+    'created_by_user',
+    'created_at',
+    'updated_at'
+)
+GENERATED_VIDEO_ADMIN_FILTER = (
+    'organization',
+    'assistant',
+    'multimodal_chat',
+    'created_by_user',
+    'created_at',
+    'updated_at'
+)
+GENERATED_VIDEO_ADMIN_SEARCH = (
+    'organization',
+    'assistant',
+    'multimodal_chat',
+    'created_by_user',
+    'created_at',
+    'updated_at'
+)
 
-VIDEO_GENERATOR_ADMIN_LIST = ('name', 'provider', 'organization', 'assistant')
-VIDEO_GENERATOR_ADMIN_FILTER = ('provider', 'organization', 'assistant')
-VIDEO_GENERATOR_ADMIN_SEARCH = ('name', 'provider', 'organization__name', 'assistant__name')
+VIDEO_GENERATOR_ADMIN_LIST = (
+    'name',
+    'provider',
+    'organization',
+    'assistant'
+)
+VIDEO_GENERATOR_ADMIN_FILTER = (
+    'provider',
+    'organization',
+    'assistant'
+)
+VIDEO_GENERATOR_ADMIN_SEARCH = (
+    'name',
+    'provider',
+    'organization__name',
+    'assistant__name'
+)

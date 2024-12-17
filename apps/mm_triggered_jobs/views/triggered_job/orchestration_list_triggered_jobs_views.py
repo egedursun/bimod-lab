@@ -18,7 +18,11 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.views.generic import TemplateView
@@ -31,7 +35,10 @@ from apps.mm_triggered_jobs.models import (
     OrchestrationTriggeredJob
 )
 
-from apps.user_permissions.utils import PermissionNames
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -50,12 +57,17 @@ class TriggeredJobView_OrchestrationList(LoginRequiredMixin, TemplateView):
             operation=PermissionNames.LIST_ORCHESTRATION_TRIGGERS
         ):
             messages.error(self.request, "You do not have permission to list orchestration triggered jobs.")
+
             return context
         ##############################
 
         search_query = self.request.GET.get('search', '')
         user_orgs = self.request.user.organizations.all()
-        org_maestros = user_orgs.values_list('maestros', flat=True)
+
+        org_maestros = user_orgs.values_list(
+            'maestros',
+            flat=True
+        )
 
         triggered_jobs_list = OrchestrationTriggeredJob.objects.filter(
             trigger_maestro__in=org_maestros

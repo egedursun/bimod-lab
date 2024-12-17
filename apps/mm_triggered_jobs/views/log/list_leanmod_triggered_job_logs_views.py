@@ -37,7 +37,10 @@ from apps.mm_triggered_jobs.models import (
     LeanModTriggeredJobInstance
 )
 
-from apps.user_permissions.utils import PermissionNames
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -56,6 +59,7 @@ class TriggeredJobView_LeanModLogList(LoginRequiredMixin, TemplateView):
             operation=PermissionNames.LIST_LEANMOD_TRIGGERS
         ):
             messages.error(self.request, "You do not have permission to list LeanMod triggered jobs.")
+
             return context
         ##############################
 

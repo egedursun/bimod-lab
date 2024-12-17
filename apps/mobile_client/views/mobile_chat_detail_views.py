@@ -14,9 +14,13 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 from django.views.generic import TemplateView
 
-from web_project import TemplateLayout, TemplateHelper
+from web_project import (
+    TemplateLayout,
+    TemplateHelper
+)
 
 
 class MobileChatView_ChatDetail(TemplateView):
@@ -33,4 +37,5 @@ class MobileChatView_ChatDetail(TemplateView):
                 ),
             }
         )
+
         return context

@@ -14,17 +14,34 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.views.generic import TemplateView
 
 from apps.assistants.models import Assistant
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.metatempo.models import MetaTempoConnection, MetaTempoAssistantConnection
+
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
+from apps.metatempo.models import (
+    MetaTempoConnection,
+    MetaTempoAssistantConnection
+)
+
 from apps.organization.models import Organization
-from apps.user_permissions.utils import PermissionNames
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -33,12 +50,26 @@ logger = logging.getLogger(__name__)
 class MetaTempoView_ConnectAssistantToMetaTempo(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
-        user_orgs = Organization.objects.filter(users__in=[self.request.user]).all()
-        assistants = Assistant.objects.filter(organization__in=user_orgs).all()
-        metatempo_instances = MetaTempoConnection.objects.filter(board__llm_model__organization__in=user_orgs).all()
+
+        user_orgs = Organization.objects.filter(
+            users__in=[self.request.user]
+        ).all()
+
+        assistants = Assistant.objects.filter(
+            organization__in=user_orgs
+        ).all()
+
+        metatempo_instances = MetaTempoConnection.objects.filter(
+            board__llm_model__organization__in=user_orgs
+        ).all()
+
         context["assistants"] = assistants
         context["metatempo_instances"] = metatempo_instances
-        context["existing_connections"] = MetaTempoAssistantConnection.objects.filter(assistant__organization__in=user_orgs).all()
+
+        context["existing_connections"] = MetaTempoAssistantConnection.objects.filter(
+            assistant__organization__in=user_orgs
+        ).all()
+
         return context
 
     def post(self, request, *args, **kwargs):
@@ -47,14 +78,22 @@ class MetaTempoView_ConnectAssistantToMetaTempo(LoginRequiredMixin, TemplateView
 
         ##############################
         # PERMISSION CHECK FOR - CONNECT_ASSISTANTS_TO_METATEMPO
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.CONNECT_ASSISTANTS_TO_METATEMPO):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.CONNECT_ASSISTANTS_TO_METATEMPO
+        ):
             messages.error(self.request, "You do not have permission to connect an assistant to a MetaTempo tracker.")
+
             return self.render_to_response(self.get_context_data())
         ##############################
 
-        assistant = Assistant.objects.get(id=assistant_id)
-        metatempo_instance = MetaTempoConnection.objects.get(id=instance_id)
+        assistant = Assistant.objects.get(
+            id=assistant_id
+        )
+
+        metatempo_instance = MetaTempoConnection.objects.get(
+            id=instance_id
+        )
 
         try:
             MetaTempoAssistantConnection.objects.create(
@@ -62,9 +101,15 @@ class MetaTempoView_ConnectAssistantToMetaTempo(LoginRequiredMixin, TemplateView
                 metatempo_instance=metatempo_instance,
                 created_by_user=self.request.user
             )
+
         except Exception as e:
-            messages.error(self.request, f"Error while connecting assistant to MetaTempo tracker: {e}")
+            messages.error(
+                self.request,
+                f"Error while connecting assistant to MetaTempo tracker: {e}"
+            )
+
             logger.error(f"Error while connecting assistant to MetaTempo tracker: {e}")
 
         messages.success(self.request, "Assistant connected to MetaTempo tracker successfully.")
+
         return self.render_to_response(self.get_context_data())

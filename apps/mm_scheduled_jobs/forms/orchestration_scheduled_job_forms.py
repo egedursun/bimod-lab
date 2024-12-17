@@ -25,6 +25,7 @@ from apps.mm_scheduled_jobs.models import (
 class OrchestrationScheduledJobForm(forms.ModelForm):
     class Meta:
         model = OrchestrationScheduledJob
+
         fields = [
             'name',
             'task_description',
@@ -36,6 +37,7 @@ class OrchestrationScheduledJobForm(forms.ModelForm):
             'month_of_year',
             'maximum_runs'
         ]
+
         widgets = {
             'step_guide': forms.Textarea(
                 attrs={
@@ -51,6 +53,7 @@ class OrchestrationScheduledJobForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(OrchestrationScheduledJobForm, self).__init__(*args, **kwargs)
+
         self.fields['step_guide'].required = False
 
     def clean(self):

@@ -14,16 +14,27 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.shortcuts import redirect
 from django.views import View
 
 from apps.binexus.models import BinexusEliteAgent
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.user_permissions.utils import PermissionNames
+
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
 
 logger = logging.getLogger(__name__)
 
@@ -31,18 +42,26 @@ logger = logging.getLogger(__name__)
 class SettingsView_DeleteAllBinexusEliteAgents(View, LoginRequiredMixin):
     def post(self, request, *args, **kwargs):
         user = request.user
-        elite_agents = BinexusEliteAgent.objects.filter(binexus_process__organization__users__in=[user]).all()
+
+        elite_agents = BinexusEliteAgent.objects.filter(
+            binexus_process__organization__users__in=[user]
+        ).all()
+
         confirmation_field = request.POST.get('confirmation', None)
+
         if confirmation_field != 'CONFIRM DELETING ALL BINEXUS ELITE AGENTS':
             logger.error(f"Invalid confirmation field: {confirmation_field}")
             messages.error(request, "Invalid confirmation field. Please confirm the deletion by typing "
                                     "exactly 'CONFIRM DELETING ALL BINEXUS ELITE AGENTS'.")
+
             return redirect('user_settings:settings')
 
         ##############################
         # PERMISSION CHECK FOR - DELETE_BINEXUS_ELITES
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.DELETE_BINEXUS_ELITES):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.DELETE_BINEXUS_ELITES
+        ):
             messages.error(self.request, "You do not have permission to delete binexus elite agents.")
             return redirect('user_settings:settings')
         ##############################
@@ -50,9 +69,12 @@ class SettingsView_DeleteAllBinexusEliteAgents(View, LoginRequiredMixin):
         try:
             for elite_agent in elite_agents:
                 elite_agent.delete()
+
             logger.info(f"All Binexus Elite Agents associated with User: {user.id} have been deleted.")
             messages.success(request, "All Binexus Elite Agents associated with your account have been deleted.")
+
         except Exception as e:
             logger.error(f"Error deleting binexus elite agents: {e}")
             messages.error(request, f"Error deleting binexus elite agents: {e}")
+
         return redirect('user_settings:settings')

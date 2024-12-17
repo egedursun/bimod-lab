@@ -17,9 +17,15 @@
 
 from django.contrib import admin
 
-from apps.ml_model_store.models import MLModelIntegration
-from apps.ml_model_store.utils import ML_MODEL_INTEGRATION_ADMIN_LIST, ML_MODEL_INTEGRATION_ADMIN_FILTER, \
+from apps.ml_model_store.models import (
+    MLModelIntegration
+)
+
+from apps.ml_model_store.utils import (
+    ML_MODEL_INTEGRATION_ADMIN_LIST,
+    ML_MODEL_INTEGRATION_ADMIN_FILTER,
     ML_MODEL_INTEGRATION_ADMIN_SEARCH
+)
 
 
 @admin.register(MLModelIntegration)
@@ -27,4 +33,5 @@ class MLModelIntegrationAdmin(admin.ModelAdmin):
     list_display = ML_MODEL_INTEGRATION_ADMIN_LIST
     list_filter = ML_MODEL_INTEGRATION_ADMIN_FILTER
     search_fields = ML_MODEL_INTEGRATION_ADMIN_SEARCH
+
     ordering = ["-created_at"]

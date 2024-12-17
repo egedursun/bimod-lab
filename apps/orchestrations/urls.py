@@ -14,44 +14,104 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from django.urls import path
 
-from apps.orchestrations.views import (OrchestrationView_Create, OrchestrationView_Update, OrchestrationView_QueryList, \
-                                       OrchestrationView_List, OrchestrationView_Delete,
-                                       OrchestrationView_QueryDelete,
-                                       OrchestrationView_QueryDetail, OrchestrationView_QueryRerun,
-                                       OrchestrationView_ConnectReactantAssistantToOrchestration,
-                                       OrchestrationView_AssistantConnectionDelete)
+from apps.orchestrations.views import (
+    OrchestrationView_Create,
+    OrchestrationView_Update,
+    OrchestrationView_QueryList,
+    OrchestrationView_List,
+    OrchestrationView_Delete,
+    OrchestrationView_QueryDelete,
+    OrchestrationView_QueryDetail,
+    OrchestrationView_QueryRerun,
+    OrchestrationView_ConnectReactantAssistantToOrchestration,
+    OrchestrationView_AssistantConnectionDelete
+)
 
 app_name = "orchestrations"
 
 urlpatterns = [
-    path("create/", OrchestrationView_Create.as_view(
-        template_name="orchestrations/create_orchestration.html"), name="create"),
-    path("list/", OrchestrationView_List.as_view(
-        template_name="orchestrations/list_orchestrations.html"), name="list"),
-    path("update/<int:pk>/", OrchestrationView_Update.as_view(
-        template_name="orchestrations/update_orchestration.html"), name="update"),
-    path("delete/<int:pk>/", OrchestrationView_Delete.as_view(
-        template_name="orchestrations/delete_orchestration.html"), name="delete"),
-    path("query/<int:pk>/list/", OrchestrationView_QueryList.as_view(
-        template_name="orchestrations/query_list_orchestration.html"), name="query_list"),
-    path("query/<int:pk>/delete/<int:query_id>/", OrchestrationView_QueryDelete.as_view(
-        template_name="orchestrations/query_confirm_delete_orchestration.html"), name="query_delete"),
-    path("query/<int:pk>/detail/<int:query_id>/", OrchestrationView_QueryDetail.as_view(
-        template_name="orchestrations/query_detail_orchestration.html"), name="query_detail"),
-    path("query/<int:pk>/rerun/<int:query_id>/", OrchestrationView_QueryRerun.as_view(
-        template_name="orchestrations/query_detail_orchestration.html"), name="query_rerun"),
+    path(
+        "create/",
+        OrchestrationView_Create.as_view(
+            template_name="orchestrations/create_orchestration.html"
+        ),
+        name="create"
+    ),
+
+    path(
+        "list/",
+        OrchestrationView_List.as_view(
+            template_name="orchestrations/list_orchestrations.html"
+        ),
+        name="list"
+    ),
+
+    path(
+        "update/<int:pk>/",
+        OrchestrationView_Update.as_view(
+            template_name="orchestrations/update_orchestration.html"
+        ),
+        name="update"
+    ),
+
+    path(
+        "delete/<int:pk>/",
+        OrchestrationView_Delete.as_view(
+            template_name="orchestrations/delete_orchestration.html"
+        ),
+        name="delete"
+    ),
+
+    path(
+        "query/<int:pk>/list/",
+        OrchestrationView_QueryList.as_view(
+            template_name="orchestrations/query_list_orchestration.html"
+        ),
+        name="query_list"
+    ),
+
+    path(
+        "query/<int:pk>/delete/<int:query_id>/",
+        OrchestrationView_QueryDelete.as_view(
+            template_name="orchestrations/query_confirm_delete_orchestration.html"
+        ),
+        name="query_delete"
+    ),
+
+    path(
+        "query/<int:pk>/detail/<int:query_id>/",
+        OrchestrationView_QueryDetail.as_view(
+            template_name="orchestrations/query_detail_orchestration.html"
+        ),
+        name="query_detail"
+    ),
+
+    path(
+        "query/<int:pk>/rerun/<int:query_id>/",
+        OrchestrationView_QueryRerun.as_view(
+            template_name="orchestrations/query_detail_orchestration.html"
+        ),
+        name="query_rerun"
+    ),
 
     #####
 
-    # Connect Assistant to MetaKanban
-    path("connect/assistant/", OrchestrationView_ConnectReactantAssistantToOrchestration.as_view(
-        template_name="orchestrations/connect_reactant_assistant.html"), name="connect_assistant"),
-    path("disconnect/assistant/<int:pk>/", OrchestrationView_AssistantConnectionDelete.as_view(),
-         name="disconnect_assistant"),
+    path(
+        "connect/assistant/",
+        OrchestrationView_ConnectReactantAssistantToOrchestration.as_view(
+            template_name="orchestrations/connect_reactant_assistant.html"
+        ),
+        name="connect_assistant"
+    ),
+
+    path
+    ("disconnect/assistant/<int:pk>/",
+     OrchestrationView_AssistantConnectionDelete.as_view(
+
+     ),
+     name="disconnect_assistant"
+     ),
 ]

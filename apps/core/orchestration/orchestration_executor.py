@@ -14,10 +14,8 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-
+import json
 import logging
-
-import websockets
 
 from apps.core.generative_ai.utils import (
     find_tool_call_from_json,
@@ -41,14 +39,19 @@ from apps.core.orchestration.prompts.orchestration_prompt_builder import (
 )
 
 from apps.core.orchestration.utils import (
-    send_orchestration_message,
     embed_orchestration_tool_call_in_prompt,
     DEFAULT_ORCHESTRATION_ERROR_MESSAGE,
     DEFAULT_WORKER_ASSISTANT_ERROR_MESSAGE,
-    get_orchestration_json_decode_error_log
 )
 
 from apps.assistants.models import Assistant
+
+from apps.core.sinaptera.sinaptera_executor import (
+    SinapteraBoosterManager
+)
+from apps.core.sinaptera.utils import (
+    SinapteraCallerTypes
+)
 
 from apps.multimodal_chat.models import (
     MultimodalChat,
@@ -59,7 +62,9 @@ from apps.multimodal_chat.utils import (
     BIMOD_NO_TAG_PLACEHOLDER,
     BIMOD_STREAMING_END_TAG,
     BIMOD_PROCESS_END,
-    SourcesForMultimodalChatsNames
+    SourcesForMultimodalChatsNames,
+    transmit_websocket_log,
+    TransmitWebsocketLogSenderType
 )
 
 from apps.orchestrations.models import (
@@ -87,7 +92,7 @@ class OrchestrationExecutor:
         )
 
         self.maestro = maestro
-        self.query_chat = query_chat
+        self.query_chat: OrchestrationQuery = query_chat
 
         ############################################################################################################
 
@@ -109,14 +114,16 @@ class OrchestrationExecutor:
 
     def execute_for_query(
         self,
+        latest_message=None,
         fs_urls=None,
         img_urls=None,
         result_affirmed=False,
     ):
 
-        send_orchestration_message(
-            f""" 🤖 Orchestrator has started processing the query.""",
-            query_id=self.query_chat.id
+        transmit_websocket_log(
+            log_message=f""" 🤖 Orchestrator has started processing the query.""",
+            chat_id=self.query_chat.id,
+            sender_type=TransmitWebsocketLogSenderType.ORCHESTRATION,
         )
 
         query_chat = self.query_chat
@@ -129,16 +136,18 @@ class OrchestrationExecutor:
         except Exception as e:
             logger.error(f"Error while setting the connection and user: {e}")
 
-            send_orchestration_message(
-                f"""🚨 Error while setting the connection and user: {e}""",
-                query_id=self.query_chat.id
+            transmit_websocket_log(
+                log_message=f"""🚨 Error while setting the connection and user: {e}""",
+                chat_id=self.query_chat.id,
+                sender_type=TransmitWebsocketLogSenderType.ORCHESTRATION,
             )
 
             return DEFAULT_ORCHESTRATION_ERROR_MESSAGE
 
-        send_orchestration_message(
-            f"""📡 Connection and user are successfully set.""",
-            query_id=self.query_chat.id
+        transmit_websocket_log(
+            log_message=f"""📡 Connection and user are successfully set.""",
+            chat_id=self.query_chat.id,
+            sender_type=TransmitWebsocketLogSenderType.ORCHESTRATION,
         )
 
         try:
@@ -155,16 +164,18 @@ class OrchestrationExecutor:
 
             logger.error(f"Error while creating the system prompt for the orchestration process: {e}")
 
-            send_orchestration_message(
-                f"""🚨 Error while creating the system prompt for the orchestration process: {e}""",
-                query_id=self.query_chat.id
+            transmit_websocket_log(
+                log_message=f"""🚨 Error while creating the system prompt for the orchestration process: {e}""",
+                chat_id=self.query_chat.id,
+                sender_type=TransmitWebsocketLogSenderType.ORCHESTRATION,
             )
 
             return DEFAULT_ORCHESTRATION_ERROR_MESSAGE
 
-        send_orchestration_message(
-            f"""📝 System prompt is successfully created.""",
-            query_id=self.query_chat.id
+        transmit_websocket_log(
+            log_message=f"""📝 System prompt is successfully created.""",
+            chat_id=self.query_chat.id,
+            sender_type=TransmitWebsocketLogSenderType.ORCHESTRATION,
         )
 
         try:
@@ -178,221 +189,299 @@ class OrchestrationExecutor:
 
             logger.error(f"Error while creating the history prompt for the orchestration process: {e}")
 
-            send_orchestration_message(
-                f"""🚨 Error while creating the history prompt for the orchestration process: {e}""",
-                query_id=self.query_chat.id
+            transmit_websocket_log(
+                log_message=f"""🚨 Error while creating the history prompt for the orchestration process: {e}""",
+                chat_id=self.query_chat.id,
+                sender_type=TransmitWebsocketLogSenderType.ORCHESTRATION,
             )
 
             return DEFAULT_ORCHESTRATION_ERROR_MESSAGE
 
-        send_orchestration_message(
-            f"""📝 History prompt is successfully created. """,
-            query_id=self.query_chat.id
+        transmit_websocket_log(
+            log_message=f"""📝 History prompt is successfully created. """,
+            chat_id=self.query_chat.id,
+            sender_type=TransmitWebsocketLogSenderType.ORCHESTRATION,
         )
 
-        send_orchestration_message(
-            f""" 📡 Generating response in cooperation with the orchestrator...""",
-            query_id=self.query_chat.id
+        transmit_websocket_log(
+            log_message=f""" 📡 Generating response in cooperation with the orchestrator...""",
+            chat_id=self.query_chat.id,
+            sender_type=TransmitWebsocketLogSenderType.ORCHESTRATION,
         )
 
         try:
-            resp_chunks = c.chat.completions.create(
-                model=self.maestro.llm_model.model_name,
-                messages=prompt_msgs,
-                temperature=float(self.maestro.llm_model.temperature),
-                frequency_penalty=float(self.maestro.llm_model.frequency_penalty),
-                presence_penalty=float(self.maestro.llm_model.presence_penalty),
-                max_tokens=int(self.maestro.llm_model.maximum_tokens),
-                top_p=float(self.maestro.llm_model.top_p),
-                stream=True
+
+            tree_booster: SinapteraBoosterManager = SinapteraBoosterManager(
+                user=user,
+                llm_core=self.query_chat.maestro.llm_model,
+                caller_type=SinapteraCallerTypes.ORCHESTRATOR,
             )
+
+            if (
+                tree_booster.sinaptera_configuration.is_active_on_assistants is True and
+                result_affirmed is False
+            ):
+
+                resp = tree_booster.execute(
+                    structured_conversation_history=prompt_msgs,
+                    chat_id=self.query_chat.id,
+                )
+
+            else:
+
+                resp = c.chat.completions.create(
+                    model=self.maestro.llm_model.model_name,
+                    messages=prompt_msgs,
+                    temperature=float(self.maestro.llm_model.temperature),
+                    frequency_penalty=float(self.maestro.llm_model.frequency_penalty),
+                    presence_penalty=float(self.maestro.llm_model.presence_penalty),
+                    max_tokens=int(self.maestro.llm_model.maximum_tokens),
+                    top_p=float(self.maestro.llm_model.top_p)
+                )
 
         except Exception as e:
+            logger.error(f"Error occurred while retrieving the response from the language model: {str(e)}")
 
-            logger.error(f"Error occurred while generating the response in cooperation with the orchestrator: {e}")
-
-            send_orchestration_message(
-                f""" 🚨 Error occurred while generating the response in cooperation with the orchestrator: {str(e)}""",
-                query_id=self.query_chat.id
+            transmit_websocket_log(
+                f"""🚨 A critical error occurred while retrieving the response from the language model.""",
+                stop_tag=BIMOD_PROCESS_END,
+                chat_id=self.maestro.id,
+                sender_type=TransmitWebsocketLogSenderType.ORCHESTRATION,
             )
 
             return DEFAULT_ORCHESTRATION_ERROR_MESSAGE
 
-        send_orchestration_message(
-            f""" 🧨 Response streamer is ready to process the response. """,
-            query_id=self.query_chat.id
+        transmit_websocket_log(
+            f"""🧨 Response streamer is ready to process the response. """,
+            chat_id=self.query_chat.id,
+            sender_type=TransmitWebsocketLogSenderType.ORCHESTRATION,
         )
 
         try:
 
-            send_orchestration_message(
-                f"""⚓ Orchestration Response generation is in progress...""",
-                query_id=self.query_chat.id
+            if (
+                tree_booster is not None and
+                tree_booster.sinaptera_configuration.is_active_on_assistants is True and
+                result_affirmed is False
+            ):
+                acc_resp = resp
+
+            else:
+
+                choices = resp.choices
+                first_choice = choices[0]
+                choice_message = first_choice.message
+                acc_resp = choice_message.content
+
+            transmit_websocket_log(
+                f"""{acc_resp}""",
+                stop_tag=BIMOD_NO_TAG_PLACEHOLDER,
+                chat_id=self.query_chat.id,
+                sender_type=TransmitWebsocketLogSenderType.ORCHESTRATION,
             )
 
-            acc_resp = ""
-            for element in resp_chunks:
-                choices = element.choices
-                first_choice = choices[0]
-
-                delta = first_choice.delta
-                content = delta.content
-
-                if content is not None:
-                    acc_resp += content
-
-                    send_orchestration_message(
-                        f"""{content}""",
-                        stop_tag=BIMOD_NO_TAG_PLACEHOLDER,
-                        query_id=self.query_chat.id
-                    )
-
-            send_orchestration_message(
+            transmit_websocket_log(
                 f"""""",
                 stop_tag=BIMOD_STREAMING_END_TAG,
-                query_id=self.query_chat.id
+                chat_id=self.query_chat.id,
+                sender_type=TransmitWebsocketLogSenderType.ORCHESTRATION,
             )
 
-            send_orchestration_message(
-                f"""🔌 Orchestration generation iterations has been successfully accomplished.""",
-                query_id=self.query_chat.id
+            transmit_websocket_log(
+                f"""🔌 Generation iterations has been successfully accomplished.""",
+                chat_id=self.query_chat.id,
+                sender_type=TransmitWebsocketLogSenderType.ORCHESTRATION,
             )
 
-            send_orchestration_message(
-                f"""📦 Orchestrator is preparing the response...""",
-                query_id=self.query_chat.id
+            transmit_websocket_log(
+                f"""📦 Preparing the response...""",
+                chat_id=self.query_chat.id,
+                sender_type=TransmitWebsocketLogSenderType.ORCHESTRATION,
             )
 
         except Exception as e:
+            logger.error(f"Error occurred while processing the response from the language model: {str(e)}")
 
-            logger.error(f"Error occurred while processing the Orchestration response from the language model: {e}")
-
-            send_orchestration_message(
-                f"""🚨 A critical error occurred while processing the Orchestration response from the language model.""",
-                stop_tag=BIMOD_PROCESS_END, query_id=self.query_chat.id
+            transmit_websocket_log(
+                f""" 🚨 A critical error occurred while processing the response from the language model.""",
+                stop_tag=BIMOD_PROCESS_END,
+                chat_id=self.query_chat.id,
+                sender_type=TransmitWebsocketLogSenderType.ORCHESTRATION,
             )
 
             return DEFAULT_ORCHESTRATION_ERROR_MESSAGE
 
-        send_orchestration_message(
-            f"""🕹️ Raw Orchestration response stream has been successfully delivered.""",
-            query_id=self.query_chat.id
+        transmit_websocket_log(
+            log_message=f"""🕹️ Raw Orchestration response stream has been successfully delivered.""",
+            chat_id=self.query_chat.id,
+            sender_type=TransmitWebsocketLogSenderType.ORCHESTRATION,
         )
 
         final_resp = acc_resp
-        send_orchestration_message(
-            f"""🧲 Transactional information has been successfully processed.""",
-            query_id=self.query_chat.id
+
+        final_resp_object = OrchestrationQueryLog.objects.create(
+            orchestration_query=self.query_chat,
+            log_type=OrchestrationQueryLogTypesNames.MAESTRO_ANSWER,
+            log_text_content=final_resp,
+            log_file_contents=[],
+            log_image_contents=[],
+        )
+
+        transmit_websocket_log(
+            log_message=f"""🧲 Transactional information has been successfully processed.""",
+            chat_id=self.query_chat.id,
+            sender_type=TransmitWebsocketLogSenderType.ORCHESTRATION,
         )
 
         tool_name, agent_id = None, None
-        tool_resp, json_part = None, None
+        tool_resp_list, json_content_of_resp = [], []
 
         if find_tool_call_from_json(final_resp):
-            send_orchestration_message(
-                f"""🛠️ Worker assistant call detected in the response. Processing with the worker execution steps...""",
-                query_id=self.query_chat.id
+
+            transmit_websocket_log(
+                log_message=f"""🛠️ Worker assistant call detected in the response. Processing with the worker execution steps...""",
+                chat_id=self.query_chat.id,
+                sender_type=TransmitWebsocketLogSenderType.ORCHESTRATION,
             )
 
-            send_orchestration_message(
-                f"""🧰 Identifying the valid worker assistant calls...""",
-                query_id=self.query_chat.id
+            transmit_websocket_log(
+                log_message=f"""🧰 Identifying the valid worker assistant calls...""",
+                chat_id=self.query_chat.id,
+                sender_type=TransmitWebsocketLogSenderType.ORCHESTRATION,
             )
 
-            json_part = find_tool_call_from_json(final_resp)[0]  # for now only a single JSON at a time
+            json_content_of_resp = find_tool_call_from_json(final_resp)
 
-            send_orchestration_message(
-                f""" 💡️ Worker assistant usage call has been identified. """,
-                query_id=self.query_chat.id
+            transmit_websocket_log(
+                log_message=f""" 💡️ Worker assistant usage calls have been identified. """,
+                chat_id=self.query_chat.id,
+                sender_type=TransmitWebsocketLogSenderType.ORCHESTRATION,
             )
 
-            send_orchestration_message(
-                f"""🧮 Executing the worker assistant call... """,
-                query_id=self.query_chat.id
-            )
+            tool_name, tool_resp = None, None
 
-            try:
-                tool_xc = OrchestrationToolManager(
-                    maestro=self.maestro,
-                    query_chat=self.query_chat,
-                    tool_usage_json_str=json_part
+            for i, json_part in enumerate(json_content_of_resp):
+
+                transmit_websocket_log(
+                    log_message=f"""🧮 Executing the worker assistant call... """,
+                    chat_id=self.query_chat.id,
+                    sender_type=TransmitWebsocketLogSenderType.ORCHESTRATION,
                 )
 
-                tool_resp, tool_name, agent_id, fs_urls, img_urls = tool_xc.use_tool()
+                try:
 
-                agent = Assistant.objects.get(
-                    id=agent_id
-                )
+                    tool_xc = OrchestrationToolManager(
+                        maestro=self.maestro,
+                        query_chat=self.query_chat,
+                        tool_usage_json_str=json_part
+                    )
 
-                send_orchestration_message(
-                    f""" 🧰 Worker Assistant call to: {agent.name} has been successfully delivered. """,
-                    query_id=self.query_chat.id
-                )
+                    tool_resp, tool_name, agent_id, fs_urls, img_urls = tool_xc.use_tool()
 
-                send_orchestration_message(
-                    f""" 📦 Worker Assistant Response from: '{agent.name}' is being delivered to the Orchestrator for further actions...""",
-                    query_id=self.query_chat.id
-                )
+                    agent = Assistant.objects.get(
+                        id=agent_id
+                    )
 
-                send_orchestration_message(
-                    f"""🎯 Tool response from: '{agent.name}' has been successfully delivered to the Orchestrator.""",
-                    query_id=self.query_chat.id
-                )
+                    transmit_websocket_log(
+                        log_message=f""" 🧰 Worker Assistant call to: {agent.name} has been successfully delivered. """,
+                        chat_id=self.query_chat.id,
+                        sender_type=TransmitWebsocketLogSenderType.ORCHESTRATION,
+                    )
 
-            except Exception as e:
+                    transmit_websocket_log(
+                        log_message=f""" 📦 Worker Assistant Response from: '{agent.name}' is being delivered to the Orchestrator for further actions...""",
+                        chat_id=self.query_chat.id,
+                        sender_type=TransmitWebsocketLogSenderType.ORCHESTRATION,
+                    )
 
-                logger.error(f"Error occurred while calling the worker assistant: {e}")
+                    transmit_websocket_log(
+                        log_message=f"""🎯 Tool response from: '{agent.name}' has been successfully delivered to the Orchestrator.""",
+                        chat_id=self.query_chat.id,
+                        sender_type=TransmitWebsocketLogSenderType.ORCHESTRATION,
+                    )
 
-                send_orchestration_message(
-                    f"""🚨 Error occurred while calling the worker assistant. Attempting to recover... """,
-                    query_id=self.query_chat.id
-                )
+                    tool_resp_list.append(
+                        json.dumps(
+                            {
+                                "tool_name": tool_name,
+                                "tool_response": tool_resp,
+                                "file_uris": fs_urls,
+                                "status": "SUCCESS",
+                                "image_uris": img_urls,
+                            },
+                            indent=4
+                        )
+                    )
 
-                if tool_name is not None:
-                    tool_resp = f"""
-                         ---
-                         There has been an error while executing the tool: {tool_name}
-                         Insights:
-                            - Tool Name field is not None, unlikely to be related to the lack of tool in the system.
-                         Error Log: {get_orchestration_json_decode_error_log(error_logs=str(e))}
-                         ---
-                    """
+                except Exception as e:
 
-                else:
-                    tool_resp = f"""
-                        ---
-                        There has been an error while executing the tool.
-                        Insights:
-                            - Tool Name field is None, likely to be related to the lack of tool in the system.
-                        Error Log: {get_orchestration_json_decode_error_log(error_logs=str(e))}
-                        ---
-                    """
+                    logger.error(f"Error occurred while calling the worker assistant: {e}")
 
-                send_orchestration_message(
-                    f"""🚨 Error logs have been delivered to the assistant. Proceeding with the next actions...""",
-                    query_id=self.query_chat.id
-                )
+                    transmit_websocket_log(
+                        log_message=f"""🚨 Error occurred while calling the worker assistant. Attempting to recover... """,
+                        chat_id=self.query_chat.id,
+                        sender_type=TransmitWebsocketLogSenderType.ORCHESTRATION,
+                    )
 
-        send_orchestration_message(
-            f""" 🧠 The Orchestrator is inspecting the responses of the worker assistants... """,
-            query_id=self.query_chat.id
+                    if tool_name is not None:
+                        tool_resp_list.append(
+                            json.dumps(
+                                {
+                                    "tool_name": tool_name,
+                                    "tool_response": tool_resp,
+                                    "file_uris": [],
+                                    "image_uris": [],
+                                    "status": "FAILED",
+                                    "error_logs": str(e)
+                                },
+                                indent=4
+                            )
+                        )
+
+                    else:
+
+                        tool_resp_list.append(
+                            json.dumps(
+                                {
+                                    "tool_name": "NO VALID TOOL NAME",
+                                    "tool_response": tool_resp,
+                                    "file_uris": [],
+                                    "image_uris": [],
+                                    "status": "FAILED",
+                                    "error_logs": str(e)
+                                }
+                            )
+                        )
+
+                    transmit_websocket_log(
+                        log_message=f"""🚨 Error logs have been delivered to the assistant. Proceeding with the next actions...""",
+                        chat_id=self.query_chat.id,
+                        sender_type=TransmitWebsocketLogSenderType.ORCHESTRATION,
+                    )
+
+        transmit_websocket_log(
+            log_message=f""" 🧠 The Orchestrator is inspecting the responses of the worker assistants... """,
+            chat_id=self.query_chat.id,
+            sender_type=TransmitWebsocketLogSenderType.ORCHESTRATION,
         )
 
-        if tool_resp is not None:
+        if tool_resp_list:
 
-            send_orchestration_message(
-                f"""📦 Orchestration records for the worker tool calls are being prepared...""",
-                query_id=self.query_chat.id
+            transmit_websocket_log(
+                log_message=f"""📦 Orchestration records for the worker tool calls are being prepared...""",
+                chat_id=self.query_chat.id,
+                sender_type=TransmitWebsocketLogSenderType.ORCHESTRATION,
             )
 
             try:
+
                 self.query_chat: OrchestrationQuery
 
                 tool_req = OrchestrationQueryLog.objects.create(
                     orchestration_query=self.query_chat,
                     log_type=OrchestrationQueryLogTypesNames.WORKER_REQUEST,
                     log_text_content=embed_orchestration_tool_call_in_prompt(
-                        json_part=json_part
+                        json_part=json_content_of_resp
                     ),
                     log_file_contents=[],
                     log_image_contents=[],
@@ -401,37 +490,43 @@ class OrchestrationExecutor:
                     )
                 )
 
-                self.query_chat.logs.add(tool_req)
+                self.query_chat.logs.add(
+                    tool_req
+                )
+
                 self.query_chat.save()
 
-                send_orchestration_message(
-                    f"""⚙️ Worker Assistant call records have been prepared. Proceeding with the next actions... """,
-                    query_id=self.query_chat.id
+                transmit_websocket_log(
+                    log_message=f"""⚙️ Worker Assistant call records have been prepared. Proceeding with the next actions... """,
+                    chat_id=self.query_chat.id,
+                    sender_type=TransmitWebsocketLogSenderType.ORCHESTRATION,
                 )
 
             except Exception as e:
 
                 logger.error(f"Error occurred while recording the tool request: {e}")
 
-                send_orchestration_message(
-                    f""" 🚨 A critical error occurred while recording the tool request. Cancelling the process.""",
+                transmit_websocket_log(
+                    log_message=f""" 🚨 A critical error occurred while recording the tool request. Cancelling the process.""",
+                    chat_id=self.query_chat.id,
                     stop_tag=BIMOD_PROCESS_END,
-                    query_id=self.query_chat.id
+                    sender_type=TransmitWebsocketLogSenderType.ORCHESTRATION,
                 )
 
                 return DEFAULT_ORCHESTRATION_ERROR_MESSAGE
 
             try:
 
-                send_orchestration_message(
-                    f"""📦 Orchestration communication records for the Worker Assistant responses are being prepared...""",
-                    query_id=self.query_chat.id
+                transmit_websocket_log(
+                    log_message=f"""📦 Orchestration communication records for the Worker Assistant responses are being prepared...""",
+                    chat_id=self.query_chat.id,
+                    sender_type=TransmitWebsocketLogSenderType.ORCHESTRATION,
                 )
 
                 tool_msg = OrchestrationQueryLog.objects.create(
                     orchestration_query=self.query_chat,
                     log_type=OrchestrationQueryLogTypesNames.WORKER_RESPONSE,
-                    log_text_content=str(tool_resp),
+                    log_text_content=str(tool_resp_list),
                     log_file_contents=fs_urls,
                     log_image_contents=img_urls,
                     context_worker=Assistant.objects.get(
@@ -439,51 +534,60 @@ class OrchestrationExecutor:
                     )
                 )
 
-                self.query_chat.logs.add(tool_msg)
+                self.query_chat.logs.add(
+                    tool_msg
+                )
+
                 self.query_chat.save()
 
-                send_orchestration_message(
-                    f"""⚙️ Worker Assistant response records have been prepared. Proceeding with the next actions... """,
-                    query_id=self.query_chat.id
+                transmit_websocket_log(
+                    log_message=f"""⚙️ Worker Assistant response records have been prepared. Proceeding with the next actions... """,
+                    chat_id=self.query_chat.id,
+                    sender_type=TransmitWebsocketLogSenderType.ORCHESTRATION,
                 )
 
             except Exception as e:
 
                 logger.error(f"Error occurred while recording the Worker Assistant response: {e}")
 
-                send_orchestration_message(
-                    f"""🚨 A critical error occurred while recording the Worker Assistant response. Cancelling the process.""",
+                transmit_websocket_log(
+                    log_message=f"""🚨 A critical error occurred while recording the Worker Assistant response. Cancelling the process.""",
+                    chat_id=self.query_chat.id,
                     stop_tag=BIMOD_PROCESS_END,
-                    query_id=self.query_chat.id
+                    sender_type=TransmitWebsocketLogSenderType.ORCHESTRATION,
                 )
 
                 return DEFAULT_ORCHESTRATION_ERROR_MESSAGE
 
-            send_orchestration_message(
-                f"""❇️ Orchestrator transactions have been successfully prepared for the current level of operations.""",
-                query_id=self.query_chat.id
+            transmit_websocket_log(
+                log_message=f"""❇️ Orchestrator transactions have been successfully prepared for the current level of operations.""",
+                chat_id=self.query_chat.id,
+                sender_type=TransmitWebsocketLogSenderType.ORCHESTRATION,
             )
 
-            send_orchestration_message(
-                f""" 🚀 The Orchestrator is getting prepared for the next level of operations... """,
-                query_id=self.query_chat.id
+            transmit_websocket_log(
+                log_message=f""" 🚀 The Orchestrator is getting prepared for the next level of operations... """,
+                chat_id=self.query_chat.id,
+                sender_type=TransmitWebsocketLogSenderType.ORCHESTRATION,
             )
 
             return self.execute_for_query(
                 fs_urls=fs_urls,
                 img_urls=img_urls,
+                latest_message=final_resp_object,
                 result_affirmed=False,
             )
 
-        send_orchestration_message(
-            f"""❇️❇️ Orchestrator has accomplished the operation processes!""",
-            query_id=self.query_chat.id
+        transmit_websocket_log(
+            log_message=f"""❇️❇️ Orchestrator has accomplished the operation processes!""",
+            chat_id=self.query_chat.id,
+            stop_tag=BIMOD_PROCESS_END,
+            sender_type=TransmitWebsocketLogSenderType.ORCHESTRATION,
         )
 
         ###################################################################
         # to check if tools are attempted by assistant, run one more time
         ###################################################################
-
 
         if result_affirmed is False:
             # Save the assistants message
@@ -497,7 +601,7 @@ class OrchestrationExecutor:
 
                     '''
 
-                    {final_resp}
+                    {final_resp_object.log_text_content}
 
                     '''
 
@@ -511,39 +615,17 @@ class OrchestrationExecutor:
                 """,
             )
 
-            final_resp = self.execute_for_query(
+            final_resp_object = self.execute_for_query(
                 fs_urls=fs_urls,
                 img_urls=img_urls,
-                result_affirmed=True
+                latest_message=final_resp_object,
+                result_affirmed=True,
             )
 
         ###################################################################
         ###################################################################
 
-        _ = OrchestrationQueryLog.objects.create(
-            orchestration_query=self.query_chat,
-            log_type=OrchestrationQueryLogTypesNames.MAESTRO_ANSWER,
-            log_text_content=final_resp,
-            log_file_contents=[],
-            log_image_contents=[],
-        )
-
-        print("OrchestrationExecutor.execute_for_query -> final_resp: \n\n", final_resp)
-
-        return final_resp
-
-    @staticmethod
-    async def listen_to_websocket(
-        websocket_url
-    ):
-        try:
-            async with websockets.connect(websocket_url) as websocket:
-
-                while True:
-                    msg = await websocket.recv()
-
-        except Exception as e:
-            pass
+        return final_resp_object
 
     def ask_worker_assistant(
         self,
@@ -553,30 +635,34 @@ class OrchestrationExecutor:
         image_urls=None
     ):
 
-        send_orchestration_message(
-            f"""🧑‍🚀 >> Worker Assistant began processing the order. """,
-            query_id=self.query_chat.id
+        transmit_websocket_log(
+            log_message=f"""🧑‍🚀 >> Worker Assistant began processing the order. """,
+            chat_id=self.query_chat.id,
+            sender_type=TransmitWebsocketLogSenderType.ORCHESTRATION,
         )
 
-        send_orchestration_message(
-            f"""🧑‍🚀⚙️ >> Worker Assistant is preparing the instructions for the order.""",
-            query_id=self.query_chat.id
+        transmit_websocket_log(
+            log_message=f"""🧑‍🚀⚙️ >> Worker Assistant is preparing the instructions for the order.""",
+            chat_id=self.query_chat.id,
+            sender_type=TransmitWebsocketLogSenderType.ORCHESTRATION,
         )
 
         structured_maestro_order = build_maestro_to_assistant_instructions_prompt(
             maestro_query_text=maestro_query
         )
 
-        send_orchestration_message(
-            f"""🧑‍🚀✅ >> Worker Assistant has successfully prepared the instructions for the order.""",
-            query_id=self.query_chat.id
+        transmit_websocket_log(
+            log_message=f"""🧑‍🚀✅ >> Worker Assistant has successfully prepared the instructions for the order.""",
+            chat_id=self.query_chat.id,
+            sender_type=TransmitWebsocketLogSenderType.ORCHESTRATION,
         )
 
         if assistant_id in self.worker_chats:
 
-            send_orchestration_message(
-                f"""🧑‍🚀🔍 >> Worker Assistant already has a chat object. Connecting to the chat object...""",
-                query_id=self.query_chat.id
+            transmit_websocket_log(
+                log_message=f"""🧑‍🚀🔍 >> Worker Assistant already has a chat object. Connecting to the chat object...""",
+                chat_id=self.query_chat.id,
+                sender_type=TransmitWebsocketLogSenderType.ORCHESTRATION,
             )
 
             chat_id = self.worker_chats[
@@ -593,9 +679,10 @@ class OrchestrationExecutor:
 
         else:
 
-            send_orchestration_message(
-                f"""🧑‍🚀🔧 >> Worker Assistant does not yet have a chat object. Creating a chat object for the assistant... """,
-                query_id=self.query_chat.id
+            transmit_websocket_log(
+                log_message=f"""🧑‍🚀🔧 >> Worker Assistant does not yet have a chat object. Creating a chat object for the assistant... """,
+                chat_id=self.query_chat.id,
+                sender_type=TransmitWebsocketLogSenderType.ORCHESTRATION,
             )
 
             try:
@@ -622,17 +709,19 @@ class OrchestrationExecutor:
                     id=chat_id
                 )
 
-                send_orchestration_message(
-                    f""" 🧑‍🚀🔧✅ >> Worker Assistant chat object has been successfully created.""",
-                    query_id=self.query_chat.id
+                transmit_websocket_log(
+                    log_message=f""" 🧑‍🚀🔧✅ >> Worker Assistant chat object has been successfully created.""",
+                    chat_id=self.query_chat.id,
+                    sender_type=TransmitWebsocketLogSenderType.ORCHESTRATION,
                 )
 
             except Exception as e:
                 logger.error(f"Error while creating the chat object for the Worker Assistant: {e}")
 
-                send_orchestration_message(
-                    f"""🧑‍🚀🔧🚨 >> Error while creating the chat object for the Worker Assistant: {e}""",
-                    query_id=self.query_chat.id
+                transmit_websocket_log(
+                    log_message=f"""🧑‍🚀🔧🚨 >> Error while creating the chat object for the Worker Assistant: {e}""",
+                    chat_id=self.query_chat.id,
+                    sender_type=TransmitWebsocketLogSenderType.ORCHESTRATION,
                 )
 
                 return DEFAULT_WORKER_ASSISTANT_ERROR_MESSAGE
@@ -650,9 +739,10 @@ class OrchestrationExecutor:
         except Exception as e:
             logger.error(f"Error while creating the internal LLM client for the Worker Assistant: {e}")
 
-            send_orchestration_message(
-                f"""🧑‍🚀🚨 Error while setting the connection and user: {e} """,
-                query_id=self.query_chat.id
+            transmit_websocket_log(
+                log_message=f"""🧑‍🚀🚨 Error while setting the connection and user: {e} """,
+                chat_id=self.query_chat.id,
+                sender_type=TransmitWebsocketLogSenderType.ORCHESTRATION,
             )
 
             return DEFAULT_WORKER_ASSISTANT_ERROR_MESSAGE
@@ -683,7 +773,7 @@ class OrchestrationExecutor:
 
             structured_maestro_order += "---"
 
-        MultimodalChatMessage.objects.create(
+        structured_maestro_order_object = MultimodalChatMessage.objects.create(
             multimodal_chat=chat,
             sender_type='USER',
             message_text_content=structured_maestro_order,
@@ -692,7 +782,7 @@ class OrchestrationExecutor:
         )
 
         final_resp = internal_llm_client.respond_stream(
-            latest_message=structured_maestro_order,
+            latest_message=structured_maestro_order_object,
             image_uris=image_urls,
             file_uris=file_urls
         )

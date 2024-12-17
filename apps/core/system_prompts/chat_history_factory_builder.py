@@ -131,7 +131,9 @@ class HistoryBuilder:
                     wrapper.append(file_uri_info_wrapper)
 
             msg_obj["content"] = wrapper
+
             if src_type != HistoryBuilder.ChatRoles.SYSTEM:
+
                 ####################################################################################################
                 # NER INTEGRATION - ENCRYPTION
                 ####################################################################################################

@@ -27,11 +27,13 @@
 {% block vendor_css %}
   {{ block.super }}
   <link rel="stylesheet" href="{% static 'vendor/libs/bootstrap-maxlength/bootstrap-maxlength.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}" />
 {% endblock vendor_css %}
 
 {% block vendor_js %}
   {{ block.super }}
   <script src="{% static 'vendor/libs/bootstrap-maxlength/bootstrap-maxlength.js' %}"></script>
+  <script src="{% static 'vendor/libs/sweetalert2/sweetalert2.js' %}"></script>
 {% endblock vendor_js %}
 
 {% block page_css %}
@@ -94,6 +96,34 @@
 {% block page_js %}
   {{ block.super }}
   <script src="{% static 'js/app-chat.js' %}"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const resetLinks = document.querySelectorAll('.reset-chat-history-button');
+      resetLinks.forEach(function(link) {
+        link.addEventListener('click', function(event) {
+          event.preventDefault();
+
+          Swal.fire({
+            title: 'Are you sure?',
+            text: 'You won\'t be able to revert this action.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete chat messages!',
+            cancelButtonText: 'No, cancel!',
+            customClass: {
+              confirmButton: 'btn btn-danger me-2 waves-effect waves-light',
+              cancelButton: 'btn btn-label-secondary waves-effect waves-light'
+            },
+            buttonsStyling: false
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.href = link.href;
+            }
+          });
+        });
+      });
+    });
+  </script>
 {% endblock page_js %}
 
 {% block content %}
@@ -147,6 +177,8 @@
           <div class="avatar avatar-xl avatar-online chat-sidebar-avatar">
             <img src="
 
+
+
               {% if user.profile.profile_picture %}{{ user.profile.profile_picture.url }}{% else %}{% static 'img/avatars/0.png' %}{% endif %}"
                  alt="Avatar" class="rounded">
           </div>
@@ -196,6 +228,8 @@
                     <div class="d-flex align-items-center">
                       <div class="flex-shrink-0 avatar avatar-md">
                         <img src="
+
+
 
                           {% if assistant.lean_assistant_image %}{{ assistant.lean_assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
                              alt="Avatar" class="rounded-pill">
@@ -295,6 +329,8 @@
                         {% if chat.id != active_chat.id %}style="border-style: solid; border-width: 1px; border-color: AccentColor; animation: ease-in-out 2s infinite alternate border-color-change;"{% endif %}>
                         <img src="
 
+
+
                           {% if chat.lean_assistant.lean_assistant_image %}{{ chat.lean_assistant.lean_assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
                              class="rounded-pill" alt="Lean Assistant Image">
                       </div>
@@ -390,6 +426,8 @@
                   <div class="flex-shrink-0 avatar avatar-online">
                     <img src="
 
+
+
                       {% if active_chat.lean_assistant.lean_assistant_image %}{{ active_chat.lean_assistant.lean_assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
                          class="rounded" data-bs-toggle="sidebar" data-overlay data-target="#app-chat-sidebar-right"
                          alt="Lean Assistant Image">
@@ -431,6 +469,12 @@
                           <i class="fa fa-archive me-2"></i>Archive
                         </strong>
                       </a>
+                      <a class="dropdown-item bg-label-info mb-2 reset-chat-history-button"
+                         href="{% url 'multimodal_chat:clean_history_lean' active_chat.id %}">
+                        <strong>
+                          <i class="fa fa-broom me-2"></i>Clean History
+                        </strong>
+                      </a>
                       <a class="dropdown-item bg-label-danger"
                          href="{% url 'multimodal_chat:delete_lean' active_chat.id %}">
                         <strong>
@@ -450,6 +494,8 @@
                         <div class="user-avatar flex-shrink-0 me-4">
                           <div class="avatar avatar-xl">
                             <img src="
+
+
 
                               {% if active_chat.lean_assistant.lean_assistant_image %}{{ active_chat.lean_assistant.lean_assistant_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
                                  alt="Avatar" class="rounded">
@@ -574,6 +620,8 @@
                           <div class="user-avatar flex-shrink-0 ms-4">
                             <div class="avatar avatar-xl">
                               <img src="
+
+
 
                                 {% if user.profile.profile_picture %}{{ user.profile.profile_picture.url }}{% else %}{% static 'img/avatars/0.png' %}{% endif %}"
                                    alt="Avatar" class="rounded">

@@ -19,10 +19,21 @@ from django.db import models
 
 
 class MetaTempoAssistantConnection(models.Model):
-    metatempo_instance = models.ForeignKey("metatempo.MetaTempoConnection", on_delete=models.CASCADE)
-    assistant = models.ForeignKey("assistants.Assistant", on_delete=models.CASCADE)
+    metatempo_instance = models.ForeignKey(
+        "metatempo.MetaTempoConnection",
+        on_delete=models.CASCADE
+    )
 
-    created_by_user = models.ForeignKey("auth.User", on_delete=models.CASCADE)
+    assistant = models.ForeignKey(
+        "assistants.Assistant",
+        on_delete=models.CASCADE
+    )
+
+    created_by_user = models.ForeignKey(
+        "auth.User",
+        on_delete=models.CASCADE
+    )
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -31,12 +42,23 @@ class MetaTempoAssistantConnection(models.Model):
 
     class Meta:
         unique_together = [
-            ["metatempo_instance", "assistant"],
+            [
+                "metatempo_instance",
+                "assistant"
+            ],
         ]
         verbose_name = "Meta Tempo Assistant Connection"
         verbose_name_plural = "Meta Tempo Assistant Connections"
+
         ordering = ["-created_at"]
+
         indexes = [
-            models.Index(fields=["metatempo_instance", "assistant"]),
-            models.Index(fields=["assistant", "metatempo_instance"]),
+            models.Index(fields=[
+                "metatempo_instance",
+                "assistant"
+            ]),
+            models.Index(fields=[
+                "assistant",
+                "metatempo_instance"
+            ]),
         ]

@@ -14,18 +14,36 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import get_object_or_404, redirect
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.shortcuts import (
+    get_object_or_404,
+    redirect
+)
+
 from django.views.generic import TemplateView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.support_system.models import SupportTicket, SupportTicketResponse
-from apps.user_permissions.utils import PermissionNames
-from web_project import TemplateLayout
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
 
+from apps.support_system.models import (
+    SupportTicket,
+    SupportTicketResponse
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
+from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
 
@@ -36,30 +54,57 @@ class SupportView_TicketDetail(LoginRequiredMixin, TemplateView):
 
         ##############################
         # PERMISSION CHECK FOR - LIST_SUPPORT_TICKETS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.LIST_SUPPORT_TICKETS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.LIST_SUPPORT_TICKETS
+        ):
             messages.error(self.request, "You do not have permission to view support tickets.")
+
             return context
         ##############################
 
-        ticket = get_object_or_404(SupportTicket, pk=self.kwargs['pk'], user=self.request.user)
+        ticket = get_object_or_404(
+            SupportTicket,
+            pk=self.kwargs['pk'],
+            user=self.request.user
+        )
+
         context['ticket'] = ticket
         context['responses'] = ticket.responses.all().order_by('created_at')
+
         return context
 
     def post(self, request, *args, **kwargs):
 
         ##############################
         # PERMISSION CHECK FOR - UPDATE_SUPPORT_TICKETS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.UPDATE_SUPPORT_TICKETS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.UPDATE_SUPPORT_TICKETS
+        ):
             messages.error(self.request, "You do not have permission to update/modify support tickets.")
+
             return redirect('support_system:list')
         ##############################
 
-        ticket = get_object_or_404(SupportTicket, pk=self.kwargs['pk'], user=request.user)
+        ticket = get_object_or_404(
+            SupportTicket,
+            pk=self.kwargs['pk'],
+            user=request.user
+        )
+
         output = request.POST.get('response')
+
         if output:
-            SupportTicketResponse.objects.create(ticket=ticket, user=request.user, response=output)
+            SupportTicketResponse.objects.create(
+                ticket=ticket,
+                user=request.user,
+                response=output
+            )
+
         logger.info(f"Support ticket response was added by User: {request.user.id}.")
-        return redirect('support_system:detail', pk=ticket.pk)
+
+        return redirect(
+            'support_system:detail',
+            pk=ticket.pk
+        )

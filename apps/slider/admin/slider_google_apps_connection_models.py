@@ -17,9 +17,15 @@
 
 from django.contrib import admin
 
-from apps.slider.models import SliderGoogleAppsConnection
-from apps.slider.utils import SLIDER_GOOGLE_APPS_CONNECTION_ADMIN_LIST, SLIDER_GOOGLE_APPS_CONNECTION_ADMIN_FILTER, \
+from apps.slider.models import (
+    SliderGoogleAppsConnection
+)
+
+from apps.slider.utils import (
+    SLIDER_GOOGLE_APPS_CONNECTION_ADMIN_LIST,
+    SLIDER_GOOGLE_APPS_CONNECTION_ADMIN_FILTER,
     SLIDER_GOOGLE_APPS_CONNECTION_ADMIN_SEARCH
+)
 
 
 @admin.register(SliderGoogleAppsConnection)
@@ -27,4 +33,5 @@ class SliderGoogleAppsConnectionAdmin(admin.ModelAdmin):
     list_display = SLIDER_GOOGLE_APPS_CONNECTION_ADMIN_LIST
     list_filter = SLIDER_GOOGLE_APPS_CONNECTION_ADMIN_FILTER
     search_fields = SLIDER_GOOGLE_APPS_CONNECTION_ADMIN_SEARCH
+
     ordering = ('-created_at', '-updated_at')

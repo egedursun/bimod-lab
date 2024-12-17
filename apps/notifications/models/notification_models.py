@@ -38,20 +38,47 @@ class OrderedNotificationManager(models.Manager):
 
 
 class NotificationItem(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='associated_notifications', null=True,
-                             blank=True)
-    organization = models.ForeignKey('organization.Organization', null=True, blank=True, on_delete=models.CASCADE)
-    notification_sender_type = models.CharField(max_length=1000, choices=NOTIFICATION_SENDER_TYPES,
-                                                default=NotificationSenderTypeNames.BIMOD_TEAM)
-    notification_title_category = models.CharField(max_length=1000, choices=NOTIFICATION_TITLE_CATEGORY_CHOICES,
-                                                   default='info')
-    notification_fa_icon = models.CharField(max_length=1000, choices=NOTIFICATION_FA_ICON_CHOICES,
-                                            default='fa fa-bell')
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='associated_notifications',
+        null=True,
+        blank=True
+    )
+
+    organization = models.ForeignKey(
+        'organization.Organization',
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE
+    )
+
+    notification_sender_type = models.CharField(
+        max_length=1000,
+        choices=NOTIFICATION_SENDER_TYPES,
+        default=NotificationSenderTypeNames.BIMOD_TEAM
+    )
+
+    notification_title_category = models.CharField(
+        max_length=1000,
+        choices=NOTIFICATION_TITLE_CATEGORY_CHOICES,
+        default='info'
+    )
+    notification_fa_icon = models.CharField(
+        max_length=1000,
+        choices=NOTIFICATION_FA_ICON_CHOICES,
+        default='fa fa-bell'
+    )
 
     notification_message = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
-    readers = models.ManyToManyField('auth.User', related_name='read_notifications', blank=True)
+    readers = models.ManyToManyField(
+        'auth.User',
+        related_name='read_notifications',
+        blank=True
+    )
+
     objects = OrderedNotificationManager()
 
     def __str__(self):
@@ -60,50 +87,108 @@ class NotificationItem(models.Model):
     class Meta:
         verbose_name = 'Notification Item'
         verbose_name_plural = 'Notification Items'
+
         ordering = ('-created_at',)
+
         indexes = [
-            models.Index(fields=['organization', 'created_at']),
-            models.Index(fields=['notification_sender_type', 'created_at']),
-            models.Index(fields=['notification_title_category', 'created_at']),
-            models.Index(fields=['notification_fa_icon', 'created_at']),
-            models.Index(fields=['created_at']),
+            models.Index(fields=[
+                'organization',
+                'created_at'
+            ]),
+            models.Index(fields=[
+                'notification_sender_type',
+                'created_at'
+            ]),
+            models.Index(fields=[
+                'notification_title_category',
+                'created_at'
+            ]),
+            models.Index(fields=[
+                'notification_fa_icon',
+                'created_at'
+            ]),
+            models.Index(fields=[
+                'created_at'
+            ]),
         ]
 
     @staticmethod
-    def add_notification_to_user(notification, user):
+    def add_notification_to_user(
+        notification,
+        user
+    ):
         try:
             if notification not in user.profile.notifications.all():
-                user.profile.notifications.add(notification)
+
+                user.profile.notifications.add(
+                    notification
+                )
                 logger.info(f"Notification added to user: {user}")
+
             else:
                 logger.info("Notification already added to user, skipping...")
+
         except Exception as e:
             logger.error(f"Error adding notification to user: {e}")
 
     @staticmethod
-    def add_notification_to_users(notification, acting_user):
+    def add_notification_to_users(
+        notification,
+        acting_user
+    ):
         orgs_users = []
+
         if notification.notification_sender_type == NotificationSenderTypeNames.SYSTEM:
-            user_orgs = Organization.objects.filter(users__in=[acting_user])
+            user_orgs = Organization.objects.filter(
+                users__in=[acting_user]
+            )
+
             for org in user_orgs:
                 orgs_users += org.users.all()
-            orgs_users = list(set(orgs_users))
+
+            orgs_users = list(
+                set(
+                    orgs_users
+                )
+            )
+
         elif notification.notification_sender_type == NotificationSenderTypeNames.BIMOD_TEAM:
-            orgs_users = User.objects.all()  # Send to all users
+            orgs_users = User.objects.all()
 
         for user in orgs_users:
             try:
+
                 if notification not in user.profile.notifications.all():
                     user.profile.notifications.add(notification)
                     logger.info(f"Notification added to user: {user}")
+
                 else:
                     logger.info("Notification already added to user, skipping...")
+
             except Exception as e:
                 logger.error(f"Error adding notification to user: {e}")
 
-    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
-        super().save(force_insert, force_update, using, update_fields)
+    def save(
+        self,
+        force_insert=False,
+        force_update=False,
+        using=None,
+        update_fields=None
+    ):
+        super().save(
+            force_insert,
+            force_update,
+            using,
+            update_fields
+        )
         if self.notification_sender_type == NotificationSenderTypeNames.BIMOD_TEAM:
-            self.add_notification_to_users(notification=self, acting_user=None)
+            self.add_notification_to_users(
+                notification=self,
+                acting_user=None
+            )
+
         elif self.notification_sender_type == NotificationSenderTypeNames.WELCOME:
-            self.add_notification_to_user(notification=self, user=self.user)
+            self.add_notification_to_user(
+                notification=self,
+                user=self.user
+            )

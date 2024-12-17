@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import random
 
 
@@ -22,24 +23,49 @@ def generate_random_object_id_string():
     random_letter_0 = random.choice("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
     random_letter_1 = random.choice("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
     random_letter_2 = random.choice("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
-    random_number_string = str(random.randint(100_000, 999_999))
+
+    random_number_string = str(
+        random.randint(
+            100_000,
+            999_999
+        )
+    )
+
     random_data_object_id_string = f"{random_letter_0}{random_letter_1}{random_letter_2}{random_number_string}"
+
     return random_data_object_id_string
 
 
 def extract_username_from_email(email):
     name_prefix = email.split("@")[0]
-    numeric_suffix = str(random.randint(100, 999))
+
+    numeric_suffix = str(
+        random.randint(
+            100,
+            999
+        )
+    )
+
     username = f"{name_prefix}{numeric_suffix}"
+
     return username
 
 
 def create_temporary_password():
     uppercase_letter = random.choice("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
     lowercase_letters = random.choices("abcdefghijklmnopqrstuvwxyz", k=8)
+
     digits = random.choices("0123456789", k=2)
     special_characters = random.choices("!@#$%&*+=.?", k=2)
+
     password_characters = [uppercase_letter] + lowercase_letters + digits + special_characters
-    random.shuffle(password_characters)
-    temporary_password = "".join(password_characters)
+
+    random.shuffle(
+        password_characters
+    )
+
+    temporary_password = "".join(
+        password_characters
+    )
+
     return temporary_password

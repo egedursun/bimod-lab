@@ -18,7 +18,9 @@
 
 from django.contrib import admin
 
-from apps.mm_scheduled_jobs.models import ScheduledJob
+from apps.mm_scheduled_jobs.models import (
+    ScheduledJob
+)
 
 from apps.mm_scheduled_jobs.utils import (
     SCHEDULED_JOB_ADMIN_LIST,

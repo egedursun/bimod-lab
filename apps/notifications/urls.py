@@ -14,16 +14,39 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 from django.urls import path
 
-from apps.notifications.views import (NotificationView_ItemListCreate, NotificationView_ItemDelete,
-                                      NotificationView_MarkAllAsRead)
+from apps.notifications.views import (
+    NotificationView_ItemListCreate,
+    NotificationView_ItemDelete,
+    NotificationView_MarkAllAsRead
+)
 
 app_name = 'notifications'
 
 urlpatterns = [
-    path("list/", NotificationView_ItemListCreate.as_view(
-        template_name="notifications/list_create_notification.html"), name="list_create"),
-    path("delete/<int:pk>/", NotificationView_ItemDelete.as_view(), name="delete"),
-    path("mark_all_as_read/", NotificationView_MarkAllAsRead.as_view(), name="mark_all_as_read"),
+    path(
+        "list/",
+        NotificationView_ItemListCreate.as_view(
+            template_name="notifications/list_create_notification.html"
+        ),
+        name="list_create"
+    ),
+
+    path(
+        "delete/<int:pk>/",
+        NotificationView_ItemDelete.as_view(
+
+        ),
+        name="delete"
+    ),
+
+    path(
+        "mark_all_as_read/",
+        NotificationView_MarkAllAsRead.as_view(
+
+        ),
+        name="mark_all_as_read"
+    ),
 ]

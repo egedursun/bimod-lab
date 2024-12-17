@@ -17,7 +17,9 @@
 
 from django.contrib import admin
 
-from apps.multimodal_chat.models import MultimodalLeanChatMessage
+from apps.multimodal_chat.models import (
+    MultimodalLeanChatMessage
+)
 
 from apps.multimodal_chat.utils import (
     MULTIMODAL_LEAN_CHAT_MESSAGE_ADMIN_LIST,
@@ -31,7 +33,9 @@ class MultimodalLeanChatMessageAdmin(admin.ModelAdmin):
     list_display = MULTIMODAL_LEAN_CHAT_MESSAGE_ADMIN_LIST
     list_filter = MULTIMODAL_LEAN_CHAT_MESSAGE_ADMIN_FILTER
     search_fields = MULTIMODAL_LEAN_CHAT_MESSAGE_ADMIN_SEARCH
+
     readonly_fields = ['sent_at']
+
     list_per_page = 20
     list_max_show_all = 100
     list_editable = []

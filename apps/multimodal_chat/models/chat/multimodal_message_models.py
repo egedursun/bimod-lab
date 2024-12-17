@@ -17,8 +17,13 @@
 
 from django.db import models
 
-from apps.multimodal_chat.utils import CHAT_MESSAGE_ROLE_SENDER_TYPES
-from apps.starred_messages.models import StarredMessage
+from apps.multimodal_chat.utils import (
+    CHAT_MESSAGE_ROLE_SENDER_TYPES
+)
+
+from apps.starred_messages.models import (
+    StarredMessage
+)
 
 
 class MultimodalChatMessage(models.Model):
@@ -70,33 +75,88 @@ class MultimodalChatMessage(models.Model):
     class Meta:
         verbose_name = "Multimodal Chat Message"
         verbose_name_plural = "Multimodal Chat Messages"
+
         ordering = ["-sent_at"]
+
         indexes = [
-            models.Index(fields=['multimodal_chat']),
-            models.Index(fields=['sender_type']),
-            models.Index(fields=['starred']),
-            models.Index(fields=['sent_at']),
-            models.Index(fields=['multimodal_chat', 'sender_type']),
-            models.Index(fields=['multimodal_chat', 'starred']),
-            models.Index(fields=['multimodal_chat', 'sent_at']),
-            models.Index(fields=['sender_type', 'starred']),
-            models.Index(fields=['sender_type', 'sent_at']),
-            models.Index(fields=['starred', 'sent_at']),
-            models.Index(fields=['multimodal_chat', 'sender_type', 'starred']),
-            models.Index(fields=['multimodal_chat', 'sender_type', 'sent_at']),
-            models.Index(fields=['multimodal_chat', 'starred', 'sent_at']),
-            models.Index(fields=['sender_type', 'starred', 'sent_at']),
-            models.Index(fields=['multimodal_chat', 'sender_type', 'starred', 'sent_at']),
+            models.Index(fields=[
+                'multimodal_chat'
+            ]),
+            models.Index(fields=[
+                'sender_type'
+            ]),
+            models.Index(fields=[
+                'starred'
+            ]),
+            models.Index(fields=[
+                'sent_at'
+            ]),
+            models.Index(fields=[
+                'multimodal_chat',
+                'sender_type'
+            ]),
+            models.Index(fields=[
+                'multimodal_chat',
+                'starred'
+            ]),
+            models.Index(fields=[
+                'multimodal_chat',
+                'sent_at'
+            ]),
+            models.Index(fields=[
+                'sender_type',
+                'starred'
+            ]),
+            models.Index(fields=[
+                'sender_type',
+                'sent_at'
+            ]),
+            models.Index(fields=[
+                'starred',
+                'sent_at'
+            ]),
+            models.Index(fields=[
+                'multimodal_chat',
+                'sender_type',
+                'starred'
+            ]),
+            models.Index(fields=[
+                'multimodal_chat',
+                'sender_type',
+                'sent_at'
+            ]),
+            models.Index(fields=[
+                'multimodal_chat',
+                'starred',
+                'sent_at'
+            ]),
+            models.Index(fields=[
+                'sender_type',
+                'starred',
+                'sent_at'
+            ]),
+            models.Index(fields=[
+                'multimodal_chat',
+                'sender_type',
+                'starred',
+                'sent_at'
+            ]),
         ]
 
     def get_organization_balance(self):
         return self.multimodal_chat.organization.balance
 
-    def token_cost_surpasses_the_balance(self, total_billable_cost):
+    def token_cost_surpasses_the_balance(
+        self,
+        total_billable_cost
+    ):
         return self.multimodal_chat.organization.balance < total_billable_cost
 
     def save(self, *args, **kwargs):
-        from apps.multimodal_chat.models import MultimodalChat
+        from apps.multimodal_chat.models import (
+            MultimodalChat
+        )
+
         super().save(*args, **kwargs)
 
         MultimodalChat.objects.get(
@@ -118,7 +178,10 @@ class MultimodalChatMessage(models.Model):
                     sender_type=self.sender_type
                 )
 
-                self.multimodal_chat.starred_messages.add(new_starred_message)
+                self.multimodal_chat.starred_messages.add(
+                    new_starred_message
+                )
+
                 self.multimodal_chat.save()
 
             else:

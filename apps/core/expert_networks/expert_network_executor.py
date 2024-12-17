@@ -125,7 +125,7 @@ class ExpertNetworkExecutor:
 
             structured_order += "---"
 
-        MultimodalChatMessage.objects.create(
+        structured_order_object = MultimodalChatMessage.objects.create(
             multimodal_chat=chat,
             sender_type='USER',
             message_text_content=structured_order,
@@ -133,8 +133,8 @@ class ExpertNetworkExecutor:
             message_file_contents=file_urls
         )
 
-        output = llm_client.respond(
-            latest_message=structured_order,
+        output = llm_client.respond_stream(
+            latest_message=structured_order_object,
             image_uris=image_urls,
             file_uris=file_urls
         )

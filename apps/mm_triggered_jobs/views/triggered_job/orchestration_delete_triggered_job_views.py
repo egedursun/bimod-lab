@@ -18,8 +18,16 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import get_object_or_404, redirect
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.shortcuts import (
+    get_object_or_404,
+    redirect
+)
+
 from django.views.generic import TemplateView
 
 from apps.core.user_permissions.permission_manager import (
@@ -50,6 +58,7 @@ class TriggeredJobView_OrchestrationDelete(LoginRequiredMixin, TemplateView):
         )
 
         context['triggered_job'] = triggered_job
+
         return context
 
     def post(self, request, *args, **kwargs):
@@ -60,6 +69,7 @@ class TriggeredJobView_OrchestrationDelete(LoginRequiredMixin, TemplateView):
             operation=PermissionNames.DELETE_ORCHESTRATION_TRIGGERS
         ):
             messages.error(self.request, "You do not have permission to delete orchestration triggered jobs.")
+
             return redirect('mm_triggered_jobs:orchestration_list')
         ##############################
 

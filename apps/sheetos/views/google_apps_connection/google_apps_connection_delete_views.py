@@ -15,13 +15,29 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import get_object_or_404, redirect
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.shortcuts import (
+    get_object_or_404,
+    redirect
+)
+
 from django.views import View
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.sheetos.models import SheetosGoogleAppsConnection
-from apps.user_permissions.utils import PermissionNames
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
+from apps.sheetos.models import (
+    SheetosGoogleAppsConnection
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
 
 
 class SheetosView_GoogleAppsConnectionDelete(LoginRequiredMixin, View):
@@ -33,21 +49,29 @@ class SheetosView_GoogleAppsConnectionDelete(LoginRequiredMixin, View):
 
         ##############################
         # PERMISSION CHECK FOR - DELETE_SHEETOS_GOOGLE_APPS_CONNECTIONS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.DELETE_SHEETOS_GOOGLE_APPS_CONNECTIONS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.DELETE_SHEETOS_GOOGLE_APPS_CONNECTIONS
+        ):
             messages.error(self.request, "You do not have permission to delete Sheetos Google Apps Connections.")
+
             return redirect('sheetos:google_apps_connections_list')
         ##############################
 
-        connection = get_object_or_404(SheetosGoogleAppsConnection, id=connection_id, owner_user=request.user)
+        connection = get_object_or_404(
+            SheetosGoogleAppsConnection,
+            id=connection_id,
+            owner_user=request.user
+        )
 
         try:
             connection.delete()
+
         except Exception as e:
             messages.error(request, "An error occurred while deleting the connection.")
+
             return redirect('sheetos:google_apps_connections_list')
 
         messages.success(request, "Connection successfully deleted.")
+
         return redirect('sheetos:google_apps_connections_list')
-
-

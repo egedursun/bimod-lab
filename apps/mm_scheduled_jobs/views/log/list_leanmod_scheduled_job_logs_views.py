@@ -14,10 +14,15 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
@@ -32,7 +37,10 @@ from apps.mm_scheduled_jobs.models import (
     LeanModScheduledJobInstance
 )
 
-from apps.user_permissions.utils import PermissionNames
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -51,6 +59,7 @@ class ScheduledJobView_LeanModLogList(LoginRequiredMixin, TemplateView):
             operation=PermissionNames.LIST_LEANMOD_SCHEDULED_JOBS
         ):
             messages.error(self.request, "You do not have permission to list LeanMod scheduled jobs.")
+
             return context
         ##############################
 

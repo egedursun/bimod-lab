@@ -19,16 +19,36 @@ import decimal
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import redirect, get_object_or_404
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.shortcuts import (
+    redirect,
+    get_object_or_404
+)
+
 from django.views import View
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.llm_transaction.models import TransactionInvoice
-from apps.llm_transaction.utils import InvoiceTypesNames, AcceptedMethodsOfPaymentNames
-from apps.organization.models import Organization
-from apps.user_permissions.utils import PermissionNames
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
 
+from apps.llm_transaction.models import (
+    TransactionInvoice
+)
+
+from apps.llm_transaction.utils import (
+    InvoiceTypesNames,
+    AcceptedMethodsOfPaymentNames
+)
+
+from apps.organization.models import Organization
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
 
 logger = logging.getLogger(__name__)
 
@@ -39,51 +59,87 @@ class OrganizationView_TransferBalance(LoginRequiredMixin, View):
 
         ##############################
         # PERMISSION CHECK FOR - TRANSFER_BALANCE_BETWEEN_ORGANIZATIONS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.TRANSFER_BALANCE_BETWEEN_ORGANIZATIONS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.TRANSFER_BALANCE_BETWEEN_ORGANIZATIONS
+        ):
             messages.error(self.request, "You do not have permission to transfer balance between organizations.")
+
             return redirect('llm_transaction:list')
         ##############################
 
         source_org_id = request.POST.get('source_org')
         destination_org_id = request.POST.get('destination_org')
         transfer_amount = request.POST.get('transfer_amount')
+
         if transfer_amount is None:
             logger.error(f"User: {request.user.id} tried to transfer with an invalid amount: {transfer_amount}")
             messages.error(request, "Invalid transfer amount.")
+
             return redirect('llm_transaction:list')
+
         try:
-            transfer_amount = decimal.Decimal(transfer_amount)
+            transfer_amount = decimal.Decimal(
+                transfer_amount
+            )
+
         except decimal.InvalidOperation:
             logger.error(f"User: {request.user.id} tried to transfer with an invalid amount: {transfer_amount}")
             messages.error(request, "Invalid transfer amount.")
+
             return redirect('llm_transaction:list')
+
         if transfer_amount <= 0:
             logger.error(f"User: {request.user.id} tried to transfer with an invalid amount: {transfer_amount}")
             messages.error(request, "Transfer amount must be greater than zero.")
+
             return redirect('llm_transaction:list')
+
         if source_org_id == destination_org_id:
             logger.error(f"User: {request.user.id} tried to transfer to the same organization.")
             messages.error(request, "Source and destination organizations cannot be the same.")
+
             return redirect('llm_transaction:list')
 
-        source_org = get_object_or_404(Organization, id=source_org_id, users__in=[request.user])
-        destination_org = get_object_or_404(Organization, id=destination_org_id, users__in=[request.user])
+        source_org = get_object_or_404(
+            Organization,
+            id=source_org_id,
+            users__in=[request.user]
+        )
+
+        destination_org = get_object_or_404(
+            Organization,
+            id=destination_org_id,
+            users__in=[request.user]
+        )
+
         if source_org.balance < transfer_amount:
             logger.error(f"User: {request.user.id} tried to transfer with insufficient balance: {transfer_amount}")
             messages.error(request, "Insufficient balance in the source organization.")
+
             return redirect('llm_transaction:list')
 
         source_org.balance -= transfer_amount
         destination_org.balance += transfer_amount
+
         source_org.save()
+
         destination_org.save()
+
         TransactionInvoice.objects.create(
-            organization=destination_org, responsible_user=request.user,
-            transaction_type=InvoiceTypesNames.TRANSFERRED_CREDITS, amount_added=transfer_amount,
-            payment_method=AcceptedMethodsOfPaymentNames.INTERNAL_TRANSFER,)
+            organization=destination_org,
+            responsible_user=request.user,
+            transaction_type=InvoiceTypesNames.TRANSFERRED_CREDITS,
+            amount_added=transfer_amount,
+            payment_method=AcceptedMethodsOfPaymentNames.INTERNAL_TRANSFER,
+        )
+
         logger.info(f"Balance transferred from Organization: {source_org.id} to Organization: {destination_org.id} "
                     f"by User: {request.user.id}.")
-        messages.success(request,
-                         f"${transfer_amount} successfully transferred from {source_org.name} to {destination_org.name}.")
+
+        messages.success(
+            request,
+            f"${transfer_amount} successfully transferred from {source_org.name} to {destination_org.name}."
+        )
+
         return redirect('llm_transaction:list')

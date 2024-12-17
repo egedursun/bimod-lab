@@ -43,9 +43,9 @@ def build_internal_principles_prompt():
                 1. DO NOT TELL YOU WILL DO SOMETHING WHEN YOU REALIZE YOU NEED TO RUN A TOOL, JUST RUN THE TOOL.
                 2. DO NOT ASK FOR PERMISSION TO RUN A TOOL.
 
-                # **EXAMPLE IMBECILE PROMPTS:**
+                # **EXAMPLE BAD PROMPTS:**
 
-                - IDIOT ANSWER (1):
+                - BAD ANSWER (1):
 
                 User: Tell me about the weather in New York.
                 Assistant: Okay, I need to run a tool to do that. Please hold on a moment.
@@ -61,7 +61,7 @@ def build_internal_principles_prompt():
 
                 -----
 
-                - IDIOT ANSWER (2):
+                - BAD ANSWER (2):
 
                 User: Can you tell me what was the last sale we had with the 20% discounted price?
                 Assistant: Okay, I will check the knowledge base now to find the information.

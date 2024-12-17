@@ -14,17 +14,29 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.shortcuts import redirect
 from django.views import View
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.mm_functions.models import CustomFunction
-from apps.user_permissions.utils import PermissionNames
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
 
+from apps.mm_functions.models import (
+    CustomFunction
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
 
 logger = logging.getLogger(__name__)
 
@@ -32,18 +44,26 @@ logger = logging.getLogger(__name__)
 class SettingsView_DeleteAllFunctions(View, LoginRequiredMixin):
     def post(self, request, *args, **kwargs):
         user = request.user
-        user_functions = CustomFunction.objects.filter(created_by_user=user).all()
+
+        user_functions = CustomFunction.objects.filter(
+            created_by_user=user
+        ).all()
+
         confirmation_field = request.POST.get('confirmation', None)
+
         if confirmation_field != 'CONFIRM DELETING ALL FUNCTIONS':
             messages.error(request, "Invalid confirmation field. Please confirm the deletion by typing "
                                     "exactly 'CONFIRM DELETING ALL FUNCTIONS'.")
             logger.error(f"Invalid confirmation field: {confirmation_field}")
+
             return redirect('user_settings:settings')
 
         ##############################
         # PERMISSION CHECK FOR - DELETE_FUNCTIONS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.DELETE_FUNCTIONS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.DELETE_FUNCTIONS
+        ):
             messages.error(self.request, "You do not have permission to delete custom functions.")
             return redirect('user_settings:settings')
         ##############################
@@ -51,9 +71,12 @@ class SettingsView_DeleteAllFunctions(View, LoginRequiredMixin):
         try:
             for function in user_functions:
                 function.delete()
+
             messages.success(request, "All functions associated with your account have been deleted.")
             logger.info(f"All functions associated with User: {user.id} have been deleted.")
+
         except Exception as e:
             messages.error(request, f"Error deleting functions: {e}")
             logger.error(f"Error deleting functions: {e}")
+
         return redirect('user_settings:settings')

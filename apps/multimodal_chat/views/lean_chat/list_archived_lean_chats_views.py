@@ -18,17 +18,43 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import get_object_or_404
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.shortcuts import (
+    get_object_or_404
+)
+
 from django.views.generic import TemplateView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.leanmod.models import LeanAssistant
-from apps.message_templates.models import MessageTemplate
-from apps.multimodal_chat.models import MultimodalLeanChat
-from apps.multimodal_chat.utils import SourcesForMultimodalChatsNames
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
+from apps.leanmod.models import (
+    LeanAssistant
+)
+
+from apps.message_templates.models import (
+    MessageTemplate
+)
+
+from apps.multimodal_chat.models import (
+    MultimodalLeanChat
+)
+
+from apps.multimodal_chat.utils import (
+    SourcesForMultimodalChatsNames
+)
+
 from apps.organization.models import Organization
-from apps.user_permissions.utils import PermissionNames
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from config.settings import MEDIA_URL
 from web_project import TemplateLayout
 
@@ -48,6 +74,7 @@ class ChatView_LeanChatListArchivedChats(LoginRequiredMixin, TemplateView):
             operation=PermissionNames.CREATE_AND_USE_LEAN_CHATS
         ):
             messages.error(self.request, "You do not have permission to create and use LeanMod chats.")
+
             return context
         ##############################
 
@@ -86,7 +113,9 @@ class ChatView_LeanChatListArchivedChats(LoginRequiredMixin, TemplateView):
 
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
 
-        active_chat_msgs = active_chat.lean_chat_messages.all().order_by('sent_at') if active_chat else None
+        active_chat_msgs = active_chat.lean_chat_messages.all().order_by(
+            'sent_at'
+        ) if active_chat else None
 
         context.update(
             {
@@ -100,4 +129,5 @@ class ChatView_LeanChatListArchivedChats(LoginRequiredMixin, TemplateView):
         )
 
         logger.info(f"LeanMod chats were listed for User: {self.request.user.id}.")
+
         return context

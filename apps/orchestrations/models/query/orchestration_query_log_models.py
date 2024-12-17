@@ -14,24 +14,53 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from django.db import models
 
-from apps.orchestrations.utils import ORCHESTRATION_QUERY_LOG_TYPES
+from apps.orchestrations.utils import (
+    ORCHESTRATION_QUERY_LOG_TYPES
+)
 
 
 class OrchestrationQueryLog(models.Model):
-    orchestration_query = models.ForeignKey('orchestrations.OrchestrationQuery', on_delete=models.CASCADE,
-                                            related_name='logs')
-    log_type = models.CharField(max_length=100, choices=ORCHESTRATION_QUERY_LOG_TYPES, default="info")
-    context_worker = models.ForeignKey('assistants.Assistant', on_delete=models.SET_NULL, blank=True, null=True)
+    orchestration_query = models.ForeignKey(
+        'orchestrations.OrchestrationQuery',
+        on_delete=models.CASCADE,
+        related_name='logs'
+    )
+
+    log_type = models.CharField(
+        max_length=100,
+        choices=ORCHESTRATION_QUERY_LOG_TYPES,
+        default="info"
+    )
+
+    context_worker = models.ForeignKey(
+        'assistants.Assistant',
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True
+    )
+
     log_text_content = models.TextField()
-    log_image_contents = models.JSONField(default=list, blank=True, null=True)
-    log_file_contents = models.JSONField(default=list, blank=True, null=True)
-    log_audio_contents = models.JSONField(default=list, blank=True, null=True)
+
+    log_image_contents = models.JSONField(
+        default=list,
+        blank=True,
+        null=True
+    )
+
+    log_file_contents = models.JSONField(
+        default=list,
+        blank=True,
+        null=True
+    )
+
+    log_audio_contents = models.JSONField(
+        default=list,
+        blank=True,
+        null=True
+    )
 
     hidden = models.BooleanField(default=False)
 
@@ -43,9 +72,23 @@ class OrchestrationQueryLog(models.Model):
     class Meta:
         verbose_name = "Orchestration Query Log"
         verbose_name_plural = "Orchestration Query Logs"
+
         indexes = [
-            models.Index(fields=["orchestration_query"]),
-            models.Index(fields=["created_at"]),
-            models.Index(fields=["orchestration_query", "created_at"]),
+            models.Index(fields=[
+                "orchestration_query"
+            ]),
+            models.Index(fields=[
+                "created_at"
+            ]),
+            models.Index(fields=[
+                "orchestration_query",
+                "created_at"
+            ]),
         ]
-        unique_together = [["orchestration_query", "created_at"]]
+
+        unique_together = [
+            [
+                "orchestration_query",
+                "created_at"
+            ]
+        ]

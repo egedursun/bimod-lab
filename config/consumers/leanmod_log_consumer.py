@@ -25,7 +25,7 @@ from channels.generic.websocket import (
 class LeanModLogConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         lean_chat_id = self.scope['url_route']['kwargs']['lean_chat_id']
-        self.group_name = f'logs_{lean_chat_id}'
+        self.group_name = f'leanmod_logs_{lean_chat_id}'
 
         await self.channel_layer.group_add(
             self.group_name,

@@ -14,11 +14,18 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from apps.assistants.models import Assistant
-from apps.datasource_nosql.models import NoSQLDatabaseConnection
-from apps.quick_setup_helper.utils import generate_random_object_id_string
+
+from apps.datasource_nosql.models import (
+    NoSQLDatabaseConnection
+)
+
+from apps.quick_setup_helper.utils import (
+    generate_random_object_id_string
+)
 
 logger = logging.getLogger(__name__)
 
@@ -59,7 +66,9 @@ def action__025_nosql_connection_create(
 
     except Exception as e:
         logger.error(f"Error in action__025_nosql_connection_create: {str(e)}")
+
         return False
 
     logger.info("action__025_nosql_connection_create completed successfully.")
+
     return True

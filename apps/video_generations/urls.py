@@ -17,18 +17,45 @@
 
 from django.urls import path
 
-from apps.video_generations.views import (VideoGeneratorView_Create, VideoGeneratorView_Update,
-                                          VideoGeneratorView_Connections, VideoGeneratorView_ConfirmDelete)
+from apps.video_generations.views import (
+    VideoGeneratorView_Create,
+    VideoGeneratorView_Update,
+    VideoGeneratorView_Connections,
+    VideoGeneratorView_ConfirmDelete
+)
 
 app_name = 'video_generations'
 
 urlpatterns = [
-    path('create/', VideoGeneratorView_Create.as_view(
-        template_name='video_generations/connection/create_video_generator_connection.html'), name='create'),
-    path('update/<int:pk>/', VideoGeneratorView_Update.as_view(
-        template_name='video_generations/connection/update_video_generator_connection.html'), name='update'),
-    path('list/', VideoGeneratorView_Connections.as_view(
-        template_name='video_generations/connection/list_video_generator_connections.html'), name='list'),
-    path('delete/<int:pk>/', VideoGeneratorView_ConfirmDelete.as_view(
-        template_name='video_generations/connection/confirm_delete_video_generator_connection.html'), name='delete'),
+    path(
+        'create/',
+        VideoGeneratorView_Create.as_view(
+            template_name='video_generations/connection/create_video_generator_connection.html'
+        ),
+        name='create'
+    ),
+
+    path(
+        'update/<int:pk>/',
+        VideoGeneratorView_Update.as_view(
+            template_name='video_generations/connection/update_video_generator_connection.html'
+        ),
+        name='update'
+    ),
+
+    path(
+        'list/',
+        VideoGeneratorView_Connections.as_view(
+            template_name='video_generations/connection/list_video_generator_connections.html'
+        ),
+        name='list'
+    ),
+
+    path(
+        'delete/<int:pk>/',
+        VideoGeneratorView_ConfirmDelete.as_view(
+            template_name='video_generations/connection/confirm_delete_video_generator_connection.html'
+        ),
+        name='delete'
+    ),
 ]

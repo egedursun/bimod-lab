@@ -18,14 +18,34 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import get_object_or_404, redirect
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.shortcuts import (
+    get_object_or_404,
+    redirect
+)
+
 from django.views.generic import DeleteView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.multimodal_chat.models import MultimodalChat
-from apps.multimodal_chat.utils import SourcesForMultimodalChatsNames
-from apps.user_permissions.utils import PermissionNames
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
+from apps.multimodal_chat.models import (
+    MultimodalChat
+)
+
+from apps.multimodal_chat.utils import (
+    SourcesForMultimodalChatsNames
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -40,6 +60,7 @@ class ChatView_ChatDelete(LoginRequiredMixin, DeleteView):
         chat = self.get_object()
 
         context['chat'] = chat
+
         return context
 
     def get_queryset(self):
@@ -56,6 +77,7 @@ class ChatView_ChatDelete(LoginRequiredMixin, DeleteView):
             operation=PermissionNames.REMOVE_CHATS
         ):
             messages.error(self.request, "You do not have permission to remove chats.")
+
             return redirect('multimodal_chat:chat')
         ##############################
 
@@ -68,4 +90,5 @@ class ChatView_ChatDelete(LoginRequiredMixin, DeleteView):
         chat.delete()
 
         logger.info(f"Chat was deleted by User: {self.request.user.id}.")
+
         return redirect('multimodal_chat:chat')

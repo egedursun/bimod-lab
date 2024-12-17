@@ -14,21 +14,32 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
 from apps.assistants.models import Assistant
 from apps.llm_core.models import LLMCore
 from apps.orchestrations.forms import MaestroForm
 from apps.organization.models import Organization
-from apps.user_permissions.utils import PermissionNames
-from web_project import TemplateLayout
 
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
+from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
 
@@ -37,9 +48,19 @@ class OrchestrationView_Create(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context['form'] = MaestroForm()
-        context['organizations'] = Organization.objects.filter(users=self.request.user)
-        context['llm_models'] = LLMCore.objects.filter(organization__in=context['organizations'])
-        context['assistants'] = Assistant.objects.filter(organization__in=context['organizations'])
+
+        context['organizations'] = Organization.objects.filter(
+            users=self.request.user
+        )
+
+        context['llm_models'] = LLMCore.objects.filter(
+            organization__in=context['organizations']
+        )
+
+        context['assistants'] = Assistant.objects.filter(
+            organization__in=context['organizations']
+        )
+
         return context
 
     def post(self, request, *args, **kwargs):
@@ -47,25 +68,42 @@ class OrchestrationView_Create(LoginRequiredMixin, TemplateView):
 
         ##############################
         # PERMISSION CHECK FOR - ADD_ORCHESTRATIONS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.ADD_ORCHESTRATIONS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.ADD_ORCHESTRATIONS
+        ):
             messages.error(self.request, "You do not have permission to create orchestrations.")
+
             return redirect('orchestrations:list')
         ##############################
 
         if form.is_valid():
-            maestro = form.save(commit=False)
+            maestro = form.save(
+                commit=False
+            )
+
             maestro.created_by_user = request.user
             maestro.last_updated_by_user = request.user
+
             maestro.save()
+
             workers = request.POST.getlist('workers')
-            maestro.workers.set(workers)
+
+            maestro.workers.set(
+                workers
+            )
+
             logger.info(f"Orchestration was created by User: {self.request.user.id}.")
+
             return redirect('orchestrations:list')
+
         else:
             error_msgs = form.errors
             context = self.get_context_data(**kwargs)
+
             context['form'] = form
             context['error_messages'] = error_msgs
+
             logger.error(f"Orchestration creation failed by User: {self.request.user.id}.")
+
             return self.render_to_response(context)

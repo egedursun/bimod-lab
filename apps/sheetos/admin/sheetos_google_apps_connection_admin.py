@@ -17,9 +17,15 @@
 
 from django.contrib import admin
 
-from apps.sheetos.models import SheetosGoogleAppsConnection
-from apps.sheetos.utils import SHEETOS_GOOGLE_APPS_CONNECTION_ADMIN_LIST, SHEETOS_GOOGLE_APPS_CONNECTION_ADMIN_FILTER, \
+from apps.sheetos.models import (
+    SheetosGoogleAppsConnection
+)
+
+from apps.sheetos.utils import (
+    SHEETOS_GOOGLE_APPS_CONNECTION_ADMIN_LIST,
+    SHEETOS_GOOGLE_APPS_CONNECTION_ADMIN_FILTER,
     SHEETOS_GOOGLE_APPS_CONNECTION_ADMIN_SEARCH
+)
 
 
 @admin.register(SheetosGoogleAppsConnection)
@@ -27,4 +33,5 @@ class SheetosGoogleAppsConnectionAdmin(admin.ModelAdmin):
     list_display = SHEETOS_GOOGLE_APPS_CONNECTION_ADMIN_LIST
     list_filter = SHEETOS_GOOGLE_APPS_CONNECTION_ADMIN_FILTER
     search_fields = SHEETOS_GOOGLE_APPS_CONNECTION_ADMIN_SEARCH
+
     ordering = ('-created_at', '-updated_at')

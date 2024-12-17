@@ -18,7 +18,11 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.shortcuts import redirect
 from django.views import View
 
@@ -32,7 +36,9 @@ from apps.core.user_permissions.permission_manager import (
     UserPermissionManager
 )
 
-from apps.user_permissions.utils import PermissionNames
+from apps.user_permissions.utils import (
+    PermissionNames
+)
 
 logger = logging.getLogger(__name__)
 
@@ -51,11 +57,18 @@ class BinexusView_ProcessExecute(LoginRequiredMixin, View):
             operation=PermissionNames.EXECUTE_BINEXUS_PROCESSES
         ):
             messages.error(self.request, "You do not have permission to execute Binexus Processes.")
-            return redirect('binexus:process_detail', pk=kwargs.get('pk'))
+
+            return redirect(
+                'binexus:process_detail',
+                pk=kwargs.get('pk')
+            )
         ##############################
 
         process_id = kwargs.get('pk')
-        process_object: BinexusProcess = BinexusProcess.objects.get(id=process_id)
+
+        process_object: BinexusProcess = BinexusProcess.objects.get(
+            id=process_id
+        )
 
         try:
             xc = BinexusExecutionManager(

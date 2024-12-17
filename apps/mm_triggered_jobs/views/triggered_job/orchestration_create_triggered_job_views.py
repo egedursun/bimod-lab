@@ -18,7 +18,11 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
@@ -36,8 +40,15 @@ from apps.mm_triggered_jobs.models import (
 
 from apps.orchestrations.models import Maestro
 from apps.organization.models import Organization
-from apps.user_permissions.utils import PermissionNames
-from config.settings import MAX_TRIGGERED_JOBS_PER_MAESTRO
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
+from config.settings import (
+    MAX_TRIGGERED_JOBS_PER_MAESTRO
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -69,15 +80,21 @@ class TriggeredJobView_OrchestrationCreate(LoginRequiredMixin, TemplateView):
             operation=PermissionNames.ADD_ORCHESTRATION_TRIGGERS
         ):
             messages.error(self.request, "You do not have permission to add orchestration triggered jobs.")
+
             return redirect('mm_triggered_jobs:orchestration_list')
         ##############################
 
         if form.is_valid():
 
-            triggered_job: OrchestrationTriggeredJob = form.save(commit=False)
+            triggered_job: OrchestrationTriggeredJob = form.save(
+                commit=False
+            )
 
             maestro_id = request.POST.get('trigger_maestro')
-            trigger_maestro = Maestro.objects.get(id=maestro_id)
+
+            trigger_maestro = Maestro.objects.get(
+                id=maestro_id
+            )
 
             n_triggered_jobs = trigger_maestro.triggered_jobs.count()
 

@@ -17,9 +17,15 @@
 
 from django.contrib import admin
 
-from apps.video_generations.models import VideoGeneratorConnection
-from apps.video_generations.utils import VIDEO_GENERATOR_ADMIN_LIST, VIDEO_GENERATOR_ADMIN_FILTER, \
+from apps.video_generations.models import (
+    VideoGeneratorConnection
+)
+
+from apps.video_generations.utils import (
+    VIDEO_GENERATOR_ADMIN_LIST,
+    VIDEO_GENERATOR_ADMIN_FILTER,
     VIDEO_GENERATOR_ADMIN_SEARCH
+)
 
 
 @admin.register(VideoGeneratorConnection)

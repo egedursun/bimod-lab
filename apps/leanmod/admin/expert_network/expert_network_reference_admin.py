@@ -14,13 +14,12 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from django.contrib import admin
 
-from apps.leanmod.models import ExpertNetworkAssistantReference
+from apps.leanmod.models import (
+    ExpertNetworkAssistantReference
+)
 
 from apps.leanmod.utils import (
     EXPERT_NETWORK_REFERENCE_ADMIN_LIST,

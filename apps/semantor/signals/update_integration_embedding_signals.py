@@ -14,18 +14,29 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
-from django.db.models.signals import post_save
+from django.db.models.signals import (
+    post_save
+)
+
 from django.dispatch import receiver
 
-from apps.integrations.models import AssistantIntegration
+from apps.integrations.models import (
+    AssistantIntegration
+)
 
 logger = logging.getLogger(__name__)
 
 
 @receiver(post_save, sender=AssistantIntegration)
-def update_integration_embedding_after_save(sender, instance, created, **kwargs):
+def update_integration_embedding_after_save(
+    sender,
+    instance,
+    created,
+    **kwargs
+):
     from apps.semantor.models import (
         IntegrationVectorData
     )
@@ -40,6 +51,7 @@ def update_integration_embedding_after_save(sender, instance, created, **kwargs)
 
         else:
             logger.info("Integration vector data already exists; updating.")
+
             item.save()
 
     except Exception as e:

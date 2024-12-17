@@ -15,7 +15,6 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-
 from django.contrib import admin
 
 from apps.multimodal_chat.models import MultimodalChat
@@ -32,13 +31,28 @@ class MultimodalChatAdmin(admin.ModelAdmin):
     list_display = MULTIMODAL_CHAT_ADMIN_LIST
     list_filter = MULTIMODAL_CHAT_ADMIN_FILTER
     search_fields = MULTIMODAL_CHAT_ADMIN_SEARCH
+
     readonly_fields = ['created_at', 'updated_at']
+
     list_per_page = 20
     list_max_show_all = 100
     list_editable = []
+
     list_display_links = ["organization"]
+
     list_select_related = False
     list_display_links_details = False
 
-    def save_model(self, request, obj, form, change):
-        super().save_model(request, obj, form, change)
+    def save_model(
+        self,
+        request,
+        obj,
+        form,
+        change
+    ):
+        super().save_model(
+            request,
+            obj,
+            form,
+            change
+        )

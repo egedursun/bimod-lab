@@ -18,7 +18,11 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.views.generic import TemplateView
@@ -27,8 +31,14 @@ from apps.core.user_permissions.permission_manager import (
     UserPermissionManager
 )
 
-from apps.mm_triggered_jobs.models import TriggeredJob
-from apps.user_permissions.utils import PermissionNames
+from apps.mm_triggered_jobs.models import (
+    TriggeredJob
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -52,7 +62,11 @@ class TriggeredJobView_List(LoginRequiredMixin, TemplateView):
 
         search_query = self.request.GET.get('search', '')
         user_orgs = self.request.user.organizations.all()
-        org_agents = user_orgs.values_list('assistants', flat=True)
+
+        org_agents = user_orgs.values_list(
+            'assistants',
+            flat=True
+        )
 
         triggered_jobs_list = TriggeredJob.objects.filter(
             trigger_assistant__in=org_agents
@@ -74,4 +88,5 @@ class TriggeredJobView_List(LoginRequiredMixin, TemplateView):
         context['search_query'] = search_query
 
         logger.info(f"Triggered Jobs were listed by User: {self.request.user.id}.")
+
         return context

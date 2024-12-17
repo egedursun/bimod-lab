@@ -17,7 +17,9 @@
 
 from django.contrib import admin
 
-from apps.mm_triggered_jobs.models import LeanModTriggeredJob
+from apps.mm_triggered_jobs.models import (
+    LeanModTriggeredJob
+)
 
 from apps.mm_triggered_jobs.utils import (
     LEANMOD_TRIGGERED_JOB_ADMIN_LIST,

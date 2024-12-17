@@ -18,12 +18,19 @@
 
 from django.contrib import admin
 
-from apps.support_system.models import SupportTicketResponse
-from apps.support_system.utils import SUPPORT_TICKET_RESPONSE_ADMIN_LIST, SUPPORT_TICKET_RESPONSE_ADMIN_SEARCH
+from apps.support_system.models import (
+    SupportTicketResponse
+)
+
+from apps.support_system.utils import (
+    SUPPORT_TICKET_RESPONSE_ADMIN_LIST,
+    SUPPORT_TICKET_RESPONSE_ADMIN_SEARCH
+)
 
 
 @admin.register(SupportTicketResponse)
 class SupportTicketResponseAdmin(admin.ModelAdmin):
     list_display = SUPPORT_TICKET_RESPONSE_ADMIN_LIST
     search_fields = SUPPORT_TICKET_RESPONSE_ADMIN_SEARCH
+
     date_hierarchy = 'created_at'

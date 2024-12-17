@@ -18,7 +18,11 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
@@ -28,7 +32,10 @@ from apps.core.user_permissions.permission_manager import (
     UserPermissionManager
 )
 
-from apps.user_permissions.utils import PermissionNames
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -39,7 +46,10 @@ class BinexusView_ProcessDelete(LoginRequiredMixin, TemplateView):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
 
         process_id = self.kwargs.get('pk')
-        binexus_process = BinexusProcess.objects.get(id=process_id)
+
+        binexus_process = BinexusProcess.objects.get(
+            id=process_id
+        )
 
         context['binexus_process'] = binexus_process
         return context
@@ -58,7 +68,10 @@ class BinexusView_ProcessDelete(LoginRequiredMixin, TemplateView):
 
         try:
             process_id = self.kwargs.get('pk')
-            binexus_process = BinexusProcess.objects.get(id=process_id)
+
+            binexus_process = BinexusProcess.objects.get(
+                id=process_id
+            )
 
             binexus_process.delete()
 

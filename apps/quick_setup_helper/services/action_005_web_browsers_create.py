@@ -14,12 +14,22 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from apps.assistants.models import Assistant
-from apps.datasource_browsers.models import DataSourceBrowserConnection
-from apps.datasource_browsers.utils import BrowserTypesNames
-from apps.quick_setup_helper.utils import generate_random_object_id_string
+
+from apps.datasource_browsers.models import (
+    DataSourceBrowserConnection
+)
+
+from apps.datasource_browsers.utils import (
+    BrowserTypesNames
+)
+
+from apps.quick_setup_helper.utils import (
+    generate_random_object_id_string
+)
 
 logger = logging.getLogger(__name__)
 
@@ -47,7 +57,9 @@ def action__005_web_browsers_create(
 
     except Exception as e:
         logger.error(f"Error in action__005_web_browsers_create: {str(e)}")
+
         return False
 
     logger.info("action__005_web_browsers_create completed successfully.")
+
     return True

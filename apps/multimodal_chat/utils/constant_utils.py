@@ -169,3 +169,11 @@ class ChatPostActionSpecifiers:
     NEW_CHAT_WITH_ASSISTANT_SPECIFIER = 'assistant_id'
     CHANGE_CHAT_NAME_SPECIFIER = 'new_chat_name'
     STARRING_MESSAGE_SPECIFIER = 'starred_message'
+
+    @staticmethod
+    def as_list():
+        return [
+            ChatPostActionSpecifiers.NEW_CHAT_WITH_ASSISTANT_SPECIFIER,
+            ChatPostActionSpecifiers.CHANGE_CHAT_NAME_SPECIFIER,
+            ChatPostActionSpecifiers.STARRING_MESSAGE_SPECIFIER,
+        ]

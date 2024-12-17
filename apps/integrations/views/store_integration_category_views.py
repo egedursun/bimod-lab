@@ -120,7 +120,7 @@ class IntegrationView_IntegrationCategoryStore(LoginRequiredMixin, TemplateView)
         ##############################
 
         category = AssistantIntegrationCategory.objects.get(
-            ategory_slug=self.kwargs['category_slug']
+            category_slug=self.kwargs['category_slug']
         )
 
         user_organizations = Organization.objects.filter(

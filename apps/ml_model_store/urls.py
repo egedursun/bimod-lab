@@ -16,13 +16,27 @@
 #
 from django.urls import path
 
-from apps.ml_model_store.views import MLModelStoreView_IntegrateMLModel, MLModelStoreView_StoreMLModelsList
+from apps.ml_model_store.views import (
+    MLModelStoreView_IntegrateMLModel,
+    MLModelStoreView_StoreMLModelsList
+)
 
 app_name = 'ml_model_store'
 
 urlpatterns = [
-    path('list/', MLModelStoreView_StoreMLModelsList.as_view(
-        template_name='ml_model_store/store_ml_models_list.html'), name='list'),
+    path(
+        'list/',
+        MLModelStoreView_StoreMLModelsList.as_view(
+            template_name='ml_model_store/store_ml_models_list.html'
+        ),
+        name='list'
+    ),
 
-    path("integrate/", MLModelStoreView_IntegrateMLModel.as_view(), name="integrate"),
+    path(
+        "integrate/",
+        MLModelStoreView_IntegrateMLModel.as_view(
+
+        ),
+        name="integrate"
+    ),
 ]

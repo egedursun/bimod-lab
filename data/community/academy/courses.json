@@ -76,7 +76,11 @@
       "Authentication Guide",
       "Admin Education",
       "Administrative Setup",
-      "Admin Account Guide"
+      "Admin Account Guide",
+      "Quick Setup",
+      "Setup Wizard",
+      "Account Setup",
+      "Quick Start Guide"
     ]
   },
   {
@@ -788,7 +792,29 @@
       "Local Network",
       "Global Network",
       "Semantor Hub",
-      "Assistants Hub"
+      "Assistants Hub",
+      "Plug & Play Assistants",
+      "Plug & Play Teams",
+      "Ready Assistants",
+      "Ready Teams",
+      "Boilerplate Assistants",
+      "Boilerplate Teams",
+      "Prebuilt Assistants",
+      "Prebuilt Teams",
+      "Sinaptera",
+      "Chain of Thoughts",
+      "Chain of Thoughts Network",
+      "CoT",
+      "o1",
+      "Tree of Thoughts",
+      "ToT",
+      "Prompt Chaining",
+      "Reasoning",
+      "Reasoning Network",
+      "Tree Reasoning",
+      "Deep Reasoning",
+      "Deep Reasoning Network",
+      "Deep Reasoning Hub"
     ]
   },
   {
@@ -874,7 +900,15 @@
       "Data Management Strategies",
       "Safe Data Practices",
       "AI Data Interaction",
-      "Data Control Measures"
+      "Data Control Measures",
+      "BeamGuard",
+      "BeamGuard Watch",
+      "Data Guardrail",
+      "Guardrail",
+      "BeamGuard Security",
+      "SQL Injections",
+      "Preventing Data Leaks",
+      "Data Loss"
     ]
   },
   {
@@ -1936,7 +1970,15 @@
       "Web Automation Strategies",
       "Web Task Optimization",
       "Browser Operations",
-      "Web Content Tracking"
+      "Web Content Tracking",
+      "Website Indexing",
+      "Indexing Websites",
+      "Web Data Indexing",
+      "Web Data Mining",
+      "Web Scraping",
+      "Scraping",
+      "Web Data Extraction",
+      "Web Data Analysis"
     ]
   },
   {
@@ -2676,7 +2718,15 @@
       "Process Execution Insights",
       "Dynamic Task Scheduling",
       "Log Analysis and Interpretation",
-      "Assistant-Enhanced Job Scheduling"
+      "Assistant-Enhanced Job Scheduling",
+      "LeanMod Scheduled Jobs",
+      "LeanMod Triggered Jobs",
+      "LeanMod Job Management",
+      "LeanMod Job Logs",
+      "Orchestrator Scheduled Jobs",
+      "Orchestrator Triggered Jobs",
+      "Orchestrator Job Management",
+      "Orchestrator Job Logs"
     ]
   },
   {

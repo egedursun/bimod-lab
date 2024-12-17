@@ -15,16 +15,27 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-
 import logging
 
 from django.http import JsonResponse
-from django.utils.decorators import method_decorator
-from django.views import View
-from django.views.decorators.csrf import csrf_exempt
 
-from apps.core.slider.slider_executor_public import SliderExecutionManager_Public
-from apps.slider.utils import is_valid_google_apps_authentication_key
+from django.utils.decorators import (
+    method_decorator
+)
+
+from django.views import View
+
+from django.views.decorators.csrf import (
+    csrf_exempt
+)
+
+from apps.core.slider.slider_executor_public import (
+    SliderExecutionManager_Public
+)
+
+from apps.slider.utils import (
+    is_valid_google_apps_authentication_key
+)
 
 logger = logging.getLogger(__name__)
 
@@ -37,33 +48,73 @@ class SliderView_PublicGenerateViaSelectCommand(View):
 
     def post(self, request, *args, **kwargs):
         selected_text = request.POST.get('selected_text', "")
+
         if selected_text is None:
             logger.error(f"Selected Text is required.")
-            return JsonResponse({"output": None, "message": "Selected Text is required."})
+
+            return JsonResponse(
+                {
+                    "output": None,
+                    "message": "Selected Text is required."
+                }
+            )
 
         text_content = request.POST.get('text_content')
+
         if text_content is None:
             logger.error(f"Text Content is None, assuming empty string.")
             text_content = ""
 
         command = request.POST.get('command')
+
         if command is None:
             logger.error(f"Select Command is required.")
-            return JsonResponse({"output": None, "message": "Select Command is required."})
+
+            return JsonResponse(
+                {
+                    "output": None,
+                    "message": "Select Command is required."
+                }
+            )
 
         # auth key check
+
         authentication_key = request.POST.get('authentication_key')
+
         if authentication_key is None:
             logger.error(f"Google Apps Authentication Key is required.")
-            return JsonResponse({"output": None, "message": "Google Apps Authentication Key is required."})
 
-        connection_object = is_valid_google_apps_authentication_key(authentication_key=authentication_key)
+            return JsonResponse(
+                {
+                    "output": None,
+                    "message": "Google Apps Authentication Key is required."
+                }
+            )
+
+        connection_object = is_valid_google_apps_authentication_key(
+            authentication_key=authentication_key
+        )
+
         if not connection_object:
             logger.error(f"Invalid Google Apps Authentication Key.")
-            return JsonResponse({"output": None, "message": "Invalid Google Apps Authentication Key."})
 
-        xc = SliderExecutionManager_Public(slider_google_apps_connection=connection_object,
-                                           text_content=text_content)
-        response_json = xc.execute_select_command(selected_text=selected_text, command=command)
+            return JsonResponse(
+                {
+                    "output": None,
+                    "message": "Invalid Google Apps Authentication Key."
+                }
+            )
+
+        xc = SliderExecutionManager_Public(
+            slider_google_apps_connection=connection_object,
+            text_content=text_content
+        )
+
+        response_json = xc.execute_select_command(
+            selected_text=selected_text,
+            command=command
+        )
+
         logger.info(f"Select Command was executed for Google Apps Connection: {connection_object}")
+
         return JsonResponse(response_json)

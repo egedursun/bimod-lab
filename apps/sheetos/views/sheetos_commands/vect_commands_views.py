@@ -14,18 +14,39 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.http import JsonResponse
-from django.shortcuts import get_object_or_404, redirect
+
+from django.shortcuts import (
+    get_object_or_404,
+    redirect
+)
+
 from django.views import View
 
-from apps.core.sheetos.sheetos_executor import SheetosExecutionManager
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.sheetos.models import SheetosDocument
-from apps.user_permissions.utils import PermissionNames
+from apps.core.sheetos.sheetos_executor import (
+    SheetosExecutionManager
+)
+
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
+from apps.sheetos.models import (
+    SheetosDocument
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
 
 logger = logging.getLogger(__name__)
 
@@ -37,25 +58,47 @@ class SheetosView_GenerateViaVectCommand(LoginRequiredMixin, View):
 
     def post(self, request, *args, **kwargs):
         document_id = request.POST.get('document_id')
-        document = get_object_or_404(SheetosDocument, pk=document_id)
+
+        document = get_object_or_404(
+            SheetosDocument,
+            pk=document_id
+        )
 
         ##############################
         # PERMISSION CHECK FOR - UPDATE_SHEETOS_DOCUMENTS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.UPDATE_SHEETOS_DOCUMENTS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.UPDATE_SHEETOS_DOCUMENTS
+        ):
             messages.error(self.request, "You do not have permission to update Sheetos Documents.")
-            return redirect('sheetos:documents_detail',
-                            folder_id=document.document_folder.id, document_id=document_id)
+
+            return redirect(
+                'sheetos:documents_detail',
+                folder_id=document.document_folder.id,
+                document_id=document_id
+            )
         ##############################
 
         try:
             command = request.POST.get('command')
-            xc = SheetosExecutionManager(sheetos_document=document)
-            response_json = xc.execute_vect_command(command=command)
+
+            xc = SheetosExecutionManager(
+                sheetos_document=document
+            )
+
+            response_json = xc.execute_vect_command(
+                command=command
+            )
+
         except Exception as e:
             messages.error(request, f"An error occurred while executing the Vect Command: {str(e)}")
-            return redirect('sheetos:documents_detail',
-                            folder_id=document.document_folder.id, document_id=document_id)
+
+            return redirect(
+                'sheetos:documents_detail',
+                folder_id=document.document_folder.id,
+                document_id=document_id
+            )
 
         logger.info(f"Vect Command was executed for Sheetos Document: {document.id}.")
+
         return JsonResponse(response_json)

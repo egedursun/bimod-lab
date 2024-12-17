@@ -14,13 +14,16 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 import uuid
-
 
 logger = logging.getLogger(__name__)
 
 
 def generate_venv_uuid_string():
     logger.info("Generating UUID string for Virtual Environment.")
-    return str(uuid.uuid4())
+
+    return str(
+        uuid.uuid4()
+    )

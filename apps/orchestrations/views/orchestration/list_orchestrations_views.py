@@ -14,16 +14,28 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.views.generic import TemplateView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
 from apps.orchestrations.models import Maestro
 from apps.organization.models import Organization
-from apps.user_permissions.utils import PermissionNames
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -35,17 +47,31 @@ class OrchestrationView_List(LoginRequiredMixin, TemplateView):
 
         ##############################
         # PERMISSION CHECK FOR - LIST_ORCHESTRATIONS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.LIST_ORCHESTRATIONS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.LIST_ORCHESTRATIONS
+        ):
             messages.error(self.request, "You do not have permission to list orchestrations.")
+
             return context
         ##############################
 
-        user_orgs = Organization.objects.filter(users__in=[self.request.user])
-        orchestrations = Maestro.objects.filter(organization__in=user_orgs)
+        user_orgs = Organization.objects.filter(
+            users__in=[self.request.user]
+        )
+
+        orchestrations = Maestro.objects.filter(
+            organization__in=user_orgs
+        )
+
         orchestrations_by_org = {}
+
         for org in user_orgs:
-            orchestrations_by_org[org] = orchestrations.filter(organization=org)
+            orchestrations_by_org[org] = orchestrations.filter(
+                organization=org
+            )
+
         context['orchestrations_by_organization'] = orchestrations_by_org
         logger.info(f"Orchestrations were listed by User: {self.request.user.id}.")
+
         return context

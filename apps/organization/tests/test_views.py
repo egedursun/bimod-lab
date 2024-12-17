@@ -1,5 +1,3 @@
-
-
 #  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
 #
 #  Project: Bimod.io™
@@ -14,10 +12,7 @@
 #  without the prior express written permission of BMD™ Autonomous
 #  Holdings.
 #
-#   For permission inquiries, please contact: admin@Bimod.io.
-#
-#
-#
+#  For permission inquiries, please contact: admin@Bimod.io.
 #
 
 def test_init_organization_test_views():

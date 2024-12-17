@@ -14,35 +14,65 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 import os
 
 import faiss
 import numpy as np
-from django.db.models.signals import pre_delete
+
+from django.db.models.signals import (
+    pre_delete
+)
+
 from django.dispatch import receiver
 
-from apps.leanmod.models import LeanAssistant
-from apps.semantor.models import LeanModVectorData
+from apps.leanmod.models import (
+    LeanAssistant
+)
+
+from apps.semantor.models import (
+    LeanModVectorData
+)
 
 logger = logging.getLogger(__name__)
 
 
 @receiver(pre_delete, sender=LeanAssistant)
-def remove_vector_from_index_on_leanmod_assistant_delete(sender, instance, **kwargs):
+def remove_vector_from_index_on_leanmod_assistant_delete(
+    sender,
+    instance,
+    **kwargs
+):
     try:
-        vector_data_instance = LeanModVectorData.objects.get(leanmod_assistant=instance)
+        vector_data_instance = LeanModVectorData.objects.get(
+            leanmod_assistant=instance
+        )
+
         index_path = vector_data_instance._get_index_path()
+
         if os.path.exists(index_path):
             index = faiss.read_index(index_path)
-            xids = np.array([vector_data_instance.id], dtype=np.int64)
+
+            xids = np.array(
+                [
+                    vector_data_instance.id
+                ],
+                dtype=np.int64
+            )
+
             index.remove_ids(xids)
-            faiss.write_index(index, index_path)
+
+            faiss.write_index(
+                index,
+                index_path
+            )
+
             logger.info(f"Removed LeanModVectorData  for LeanAssistant with ID {instance.id} from index.")
-            print(f"Removed LeanModVectorData for LeanAssistant with ID {instance.id} from index.")
         else:
-            print(f"Index path {index_path} does not exist.")
+            logger.warning(f"Index file not found for LeanAssistant with ID {instance.id}.")
 
         vector_data_instance.delete()
+
     except LeanModVectorData.DoesNotExist:
-        print(f"No LeanModVectorData found for LeanAssistant with ID {instance.id}.")
+        logger.warning(f"LeanModVectorData not found for LeanAssistant with ID {instance.id}.")

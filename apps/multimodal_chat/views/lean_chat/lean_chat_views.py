@@ -19,15 +19,35 @@ import base64
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import redirect, get_object_or_404
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.shortcuts import (
+    redirect,
+    get_object_or_404
+)
+
 from django.views.generic import TemplateView
 
 from apps.assistants.models import Assistant
-from apps.beamguard.models import BeamGuardArtifact
-from apps.beamguard.utils import BeamGuardConfirmationStatusesNames
-from apps.core.media_managers.media_manager_execution_handler import MediaManager
-from apps.core.user_permissions.permission_manager import UserPermissionManager
+
+from apps.beamguard.models import (
+    BeamGuardArtifact
+)
+
+from apps.beamguard.utils import (
+    BeamGuardConfirmationStatusesNames
+)
+
+from apps.core.media_managers.media_manager_execution_handler import (
+    MediaManager
+)
+
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
 
 from apps.leanmod.models import (
     LeanAssistant,
@@ -35,7 +55,9 @@ from apps.leanmod.models import (
     ExpertNetworkAssistantReference
 )
 
-from apps.message_templates.models import MessageTemplate
+from apps.message_templates.models import (
+    MessageTemplate
+)
 
 from apps.multimodal_chat.models import (
     MultimodalLeanChat,
@@ -49,10 +71,19 @@ from apps.multimodal_chat.utils import (
     ChatPostActionSpecifiers
 )
 
-from apps.organization.models import Organization
-from apps.user_permissions.utils import PermissionNames
+from apps.organization.models import (
+    Organization
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
 from config.settings import MEDIA_URL
-from web_project import TemplateLayout, TemplateHelper
+
+from web_project import (
+    TemplateLayout,
+    TemplateHelper
+)
 
 logger = logging.getLogger(__name__)
 
@@ -65,6 +96,7 @@ class ChatView_LeanChat(TemplateView, LoginRequiredMixin):
 
     def get_context_data(self, **kwargs):
         active_chat = None
+
         context_user = self.request.user
 
         if 'chat_id' in self.request.GET:
@@ -89,8 +121,12 @@ class ChatView_LeanChat(TemplateView, LoginRequiredMixin):
 
             for xp_net in xp_nets:
                 xp_net: ExpertNetwork
+
                 current_assistant_refs = xp_net.assistant_references.all()
-                cumulative_assistant_refs.extend(current_assistant_refs)
+
+                cumulative_assistant_refs.extend(
+                    current_assistant_refs
+                )
 
             cumulative_assistant_refs = list(set(cumulative_assistant_refs))
 
@@ -99,9 +135,16 @@ class ChatView_LeanChat(TemplateView, LoginRequiredMixin):
             for ref in cumulative_assistant_refs:
                 ref: ExpertNetworkAssistantReference
                 internal_assistant: Assistant = ref.assistant
-                standard_assistants.append(internal_assistant)
 
-            standard_assistants = list(set(standard_assistants))
+                standard_assistants.append(
+                    internal_assistant
+                )
+
+            standard_assistants = list(
+                set(
+                    standard_assistants
+                )
+            )
 
             standard_assistant_chats = MultimodalChat.objects.filter(
                 assistant__in=standard_assistants
@@ -113,7 +156,11 @@ class ChatView_LeanChat(TemplateView, LoginRequiredMixin):
                 confirmation_status=BeamGuardConfirmationStatusesNames.PENDING,
             ).all()
 
-            artifacts = list(set(artifacts))
+            artifacts = list(
+                set(
+                    artifacts
+                )
+            )
 
         else:
             pass
@@ -135,7 +182,9 @@ class ChatView_LeanChat(TemplateView, LoginRequiredMixin):
 
         active_chat_msgs = active_chat.lean_chat_messages.filter(
             hidden=False
-        ).order_by('sent_at') if active_chat else None
+        ).order_by(
+            'sent_at'
+        ) if active_chat else None
 
         context.update(
             {
@@ -158,9 +207,12 @@ class ChatView_LeanChat(TemplateView, LoginRequiredMixin):
         *args,
         **kwargs
     ):
-        from apps.core.generative_ai.generative_ai_decode_manager import GenerativeAIDecodeController
+        from apps.core.generative_ai.generative_ai_decode_manager import (
+            GenerativeAIDecodeController
+        )
 
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+
         context_user = self.request.user
 
         ##############################
@@ -170,6 +222,7 @@ class ChatView_LeanChat(TemplateView, LoginRequiredMixin):
             operation=PermissionNames.CREATE_AND_USE_LEAN_CHATS
         ):
             messages.error(self.request, "You do not have permission to create and use LeanMod chats.")
+
             return redirect('multimodal_chat:lean_chat')
         ##############################
 
@@ -191,6 +244,7 @@ class ChatView_LeanChat(TemplateView, LoginRequiredMixin):
                 created_by_user=request.user,
                 chat_source=SourcesForMultimodalChatsNames.APP
             )
+
             active_chat = chat
 
         elif ChatPostActionSpecifiers.CHANGE_CHAT_NAME_SPECIFIER in request.POST:
@@ -203,7 +257,9 @@ class ChatView_LeanChat(TemplateView, LoginRequiredMixin):
             )
 
             chat.chat_name = request.POST.get('new_chat_name')
+
             chat.save()
+
             active_chat = chat
 
         else:
@@ -221,10 +277,19 @@ class ChatView_LeanChat(TemplateView, LoginRequiredMixin):
 
             sketch_image_full_uris_list = self._handle_sketch_image(request)
             edit_image_full_uris_list = self._handle_edit_image(request)
-            image_full_uris = self._handle_save_images(attached_images, edit_image_full_uris_list,
-                                                       sketch_image_full_uris_list)
+
+            image_full_uris = self._handle_save_images(
+                attached_images,
+                edit_image_full_uris_list,
+                sketch_image_full_uris_list
+            )
+
             file_full_uris = self._handle_save_files(attached_files)
-            self._handle_record_audio(file_full_uris, request)
+
+            self._handle_record_audio(
+                file_full_uris,
+                request
+            )
 
             user_msg = MultimodalLeanChatMessage.objects.create(
                 multimodal_lean_chat=chat,
@@ -240,7 +305,7 @@ class ChatView_LeanChat(TemplateView, LoginRequiredMixin):
                 multimodal_chat=chat
             )
 
-            response = internal_llm_client_lean.respond(
+            response = internal_llm_client_lean.respond_stream(
                 latest_message=user_msg,
                 image_uris=image_full_uris,
                 file_uris=file_full_uris
@@ -279,22 +344,44 @@ class ChatView_LeanChat(TemplateView, LoginRequiredMixin):
         redirect_string = self.request.path_info + '?chat_id=' + str(active_chat.id)
 
         logger.info(f"LeanMod chat was streamed by User: {context_user.id}.")
-        return redirect(redirect_string, *args, **kwargs)
+
+        return redirect(
+            redirect_string,
+            *args,
+            **kwargs
+        )
 
     @staticmethod
-    def _handle_record_audio(file_full_uris, request):
+    def _handle_record_audio(
+        file_full_uris,
+        request
+    ):
         record_audio = request.POST.get('record_audio')
         audio_full_uri = None
 
         if record_audio:
             audio_base_64 = request.POST.get('record_audio')
-            audio_bytes = base64.b64decode(audio_base_64.split("base64,")[1].encode())
-            audio_full_uri = MediaManager.save_files_and_return_uris([(audio_bytes, 'audio.webm')])[0]
+
+            audio_bytes = base64.b64decode(
+                audio_base_64.split("base64,")[1].encode()
+            )
+
+            audio_full_uri = MediaManager.save_files_and_return_uris(
+                [
+                    (
+                        audio_bytes,
+                        'audio.webm'
+                    )
+                ]
+            )[0]
 
         if audio_full_uri:
-            file_full_uris.append(audio_full_uri)
+            file_full_uris.append(
+                audio_full_uri
+            )
 
         logger.info(f"Audio was recorded successfully.")
+
         return
 
     @staticmethod
@@ -312,9 +399,17 @@ class ChatView_LeanChat(TemplateView, LoginRequiredMixin):
                 logger.error(f"Error while reading file: {file_name}.")
                 continue
 
-            file_bytes_list.append((file_bytes, file_name))
+            file_bytes_list.append(
+                (
+                    file_bytes,
+                    file_name
+                )
+            )
 
-        file_full_uris = MediaManager.save_files_and_return_uris(file_bytes_list)
+        file_full_uris = MediaManager.save_files_and_return_uris(
+            file_bytes_list
+        )
+
         return file_full_uris
 
     @staticmethod
@@ -337,13 +432,19 @@ class ChatView_LeanChat(TemplateView, LoginRequiredMixin):
 
             image_bytes_list.append(image_bytes)
 
-        image_full_uris = MediaManager.save_images_and_return_uris(image_bytes_list)
+        image_full_uris = MediaManager.save_images_and_return_uris(
+            image_bytes_list
+        )
 
         if sketch_image_full_uris_list:
-            image_full_uris.extend(sketch_image_full_uris_list)
+            image_full_uris.extend(
+                sketch_image_full_uris_list
+            )
 
         if edit_image_full_uris_list:
-            image_full_uris.extend(edit_image_full_uris_list)
+            image_full_uris.extend(
+                edit_image_full_uris_list
+            )
 
         return image_full_uris
 
@@ -356,11 +457,16 @@ class ChatView_LeanChat(TemplateView, LoginRequiredMixin):
 
         attached_edit_image = request.FILES.get('edit_image')
         attached_edit_image_mask = request.POST.get('edit_image_mask')
+
         edit_image_full_uris_list = []
 
         try:
             edit_image_bytes = attached_edit_image.read()
-            edit_image_mask_bytes = base64.b64decode(attached_edit_image_mask.split("base64,")[1].encode())
+
+            edit_image_mask_bytes = base64.b64decode(
+                attached_edit_image_mask.split("base64,")[1].encode()
+            )
+
             edit_image_bytes_dict['edit_image'] = edit_image_bytes
             edit_image_bytes_dict['edit_image_mask'] = edit_image_mask_bytes
 
@@ -386,7 +492,10 @@ class ChatView_LeanChat(TemplateView, LoginRequiredMixin):
         sketch_image_full_uris_list = []
 
         try:
-            sketch_image_bytes = base64.b64decode(attached_canvas_image.split("base64,")[1].encode())
+            sketch_image_bytes = base64.b64decode(
+                attached_canvas_image.split("base64,")[1].encode()
+            )
+
             sketch_image['sketch_image'] = sketch_image_bytes
 
             sketch_image_full_uris_list = MediaManager.save_sketch(

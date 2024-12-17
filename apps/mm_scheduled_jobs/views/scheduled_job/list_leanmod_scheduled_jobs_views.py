@@ -18,7 +18,11 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.views.generic import TemplateView
@@ -31,7 +35,10 @@ from apps.mm_scheduled_jobs.models import (
     LeanModScheduledJob
 )
 
-from apps.user_permissions.utils import PermissionNames
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -50,13 +57,17 @@ class ScheduledJobView_LeanModList(LoginRequiredMixin, TemplateView):
             operation=PermissionNames.LIST_LEANMOD_SCHEDULED_JOBS
         ):
             messages.error(self.request, "You do not have permission to list LeanMod scheduled jobs.")
+
             return context
         ##############################
 
         search_query = self.request.GET.get('search', '')
         user_orgs = self.request.user.organizations.all()
 
-        org_orchestrators = user_orgs.values_list('lean_assistants', flat=True)
+        org_orchestrators = user_orgs.values_list(
+            'lean_assistants',
+            flat=True
+        )
 
         scheduled_jobs_list = LeanModScheduledJob.objects.filter(
             leanmod__in=org_orchestrators

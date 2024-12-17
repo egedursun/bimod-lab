@@ -21,7 +21,11 @@
 from django.contrib import admin
 
 from apps.orchestrations.models import Maestro
-from apps.orchestrations.utils import MAESTRO_ADMIN_LIST, MAESTRO_ADMIN_SEARCH
+
+from apps.orchestrations.utils import (
+    MAESTRO_ADMIN_LIST,
+    MAESTRO_ADMIN_SEARCH
+)
 
 
 @admin.register(Maestro)

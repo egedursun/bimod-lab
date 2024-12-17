@@ -18,9 +18,15 @@
 
 from django.contrib import admin
 
-from apps.semantor.models import SemantorConfiguration
-from apps.semantor.utils.constant_utils import SEMANTOR_CONFIGURATION_ADMIN_LIST, SEMANTOR_CONFIGURATION_ADMIN_FILTER, \
+from apps.semantor.models import (
+    SemantorConfiguration
+)
+
+from apps.semantor.utils.constant_utils import (
+    SEMANTOR_CONFIGURATION_ADMIN_LIST,
+    SEMANTOR_CONFIGURATION_ADMIN_FILTER,
     SEMANTOR_CONFIGURATION_ADMIN_SEARCH
+)
 
 
 @admin.register(SemantorConfiguration)
@@ -28,4 +34,5 @@ class SemantorConfigurationAdmin(admin.ModelAdmin):
     list_display = SEMANTOR_CONFIGURATION_ADMIN_LIST
     list_filter = SEMANTOR_CONFIGURATION_ADMIN_FILTER
     search_fields = SEMANTOR_CONFIGURATION_ADMIN_SEARCH
+
     ordering = ['user', 'created_at', 'updated_at']

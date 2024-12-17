@@ -15,9 +15,6 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from .create_organization_views import *
 from .delete_organization_views import *

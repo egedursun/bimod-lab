@@ -23,7 +23,9 @@ from apps.mm_triggered_jobs.utils import (
 
 from django.contrib import admin
 
-from apps.mm_triggered_jobs.models import TriggeredJob
+from apps.mm_triggered_jobs.models import (
+    TriggeredJob
+)
 
 
 @admin.register(TriggeredJob)

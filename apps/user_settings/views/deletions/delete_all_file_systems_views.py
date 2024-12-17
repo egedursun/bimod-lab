@@ -14,17 +14,29 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.shortcuts import redirect
 from django.views import View
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.datasource_file_systems.models import DataSourceFileSystem
-from apps.user_permissions.utils import PermissionNames
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
 
+from apps.datasource_file_systems.models import (
+    DataSourceFileSystem
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
 
 logger = logging.getLogger(__name__)
 
@@ -33,28 +45,40 @@ class SettingsView_DeleteAllFileSystems(View, LoginRequiredMixin):
 
     def post(self, request, *args, **kwargs):
         user = request.user
-        user_file_systems = DataSourceFileSystem.objects.filter(assistant__organization__users__in=[user]).all()
+
+        user_file_systems = DataSourceFileSystem.objects.filter(
+            assistant__organization__users__in=[user]
+        ).all()
+
         confirmation_field = request.POST.get('confirmation', None)
+
         if confirmation_field != 'CONFIRM DELETING ALL FILE SYSTEMS':
             messages.error(request, "Invalid confirmation field. Please confirm the deletion by typing "
                                     "exactly 'CONFIRM DELETING ALL FILE SYSTEMS'.")
             logger.error(f"Invalid confirmation field: {confirmation_field}")
+
             return redirect('user_settings:settings')
 
         ##############################
         # PERMISSION CHECK FOR - DELETE_FILE_SYSTEMS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.DELETE_FILE_SYSTEMS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.DELETE_FILE_SYSTEMS
+        ):
             messages.error(self.request, "You do not have permission to delete file systems.")
+
             return redirect('user_settings:settings')
         ##############################
 
         try:
             for file_system in user_file_systems:
                 file_system.delete()
+
             logger.info(f"All file systems associated with User: {user.id} have been deleted.")
             messages.success(request, "All file systems associated with your account have been deleted.")
+
         except Exception as e:
             logger.error(f"Error deleting file systems: {e}")
             messages.error(request, f"Error deleting file systems: {e}")
+
         return redirect('user_settings:settings')

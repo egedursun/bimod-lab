@@ -16,9 +16,6 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 def test_init_ml_model_store_test_utils():
     assert True

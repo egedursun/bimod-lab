@@ -28,23 +28,69 @@ from apps.user_permissions.views import PermissionView_PermissionCreate, Permiss
 app_name = "user_permissions"
 
 urlpatterns = [
-    path('add/', PermissionView_PermissionCreate.as_view(
-        template_name="user_permissions/permissions/add_permissions.html"), name="add_permissions"),
-    path('list/', PermissionView_PermissionList.as_view(
-        template_name="user_permissions/permissions/list_permissions.html"), name="list_permissions"),
-    path('roles/add/', PermissionView_UserRoleCreate.as_view(
-        template_name="user_permissions/roles/add_user_role.html"), name="add_user_role"),
-    path('roles/list/', PermissionView_UserRoleList.as_view(
-        template_name="user_permissions/roles/list_user_roles.html"), name="list_user_roles"),
-    path('roles/manage/', PermissionView_UserRoleManage.as_view(
-        template_name="user_permissions/roles/manage_user_roles.html"), name="manage_user_roles"),
-    path('roles/delete/<int:pk>/', PermissionView_UserRoleDelete.as_view(
-        template_name="user_permissions/roles/confirm_delete_user_role.html"), name="delete_user_role"),
-    path('roles/update/<int:pk>/', PermissionView_UserRoleUpdate.as_view(
-        template_name="user_permissions/roles/update_user_role.html"), name="update_user_role"),
+    path(
+        'add/',
+        PermissionView_PermissionCreate.as_view(
+            template_name="user_permissions/permissions/add_permissions.html"
+        ),
+        name="add_permissions"
+    ),
+
+    path(
+        'list/',
+        PermissionView_PermissionList.as_view(
+            template_name="user_permissions/permissions/list_permissions.html"
+        ),
+        name="list_permissions"
+    ),
+
+    path(
+        'roles/add/',
+        PermissionView_UserRoleCreate.as_view(
+            template_name="user_permissions/roles/add_user_role.html"
+        ),
+        name="add_user_role"
+    ),
+
+    path(
+        'roles/list/',
+        PermissionView_UserRoleList.as_view(
+            template_name="user_permissions/roles/list_user_roles.html"
+        ),
+        name="list_user_roles"
+    ),
+
+    path(
+        'roles/manage/',
+        PermissionView_UserRoleManage.as_view(
+            template_name="user_permissions/roles/manage_user_roles.html"
+        ),
+        name="manage_user_roles"
+    ),
+
+    path(
+        'roles/delete/<int:pk>/',
+        PermissionView_UserRoleDelete.as_view(
+            template_name="user_permissions/roles/confirm_delete_user_role.html"
+        ),
+        name="delete_user_role"
+    ),
+
+    path(
+        'roles/update/<int:pk>/',
+        PermissionView_UserRoleUpdate.as_view(
+            template_name="user_permissions/roles/update_user_role.html"
+        ),
+        name="update_user_role"
+    ),
 
     #####
 
-    path('roles/integrate/boilerplate/', PermissionView_IntegrateBoilerplateRole.as_view(),
-         name="integrate_boilerplate"),
+    path(
+        'roles/integrate/boilerplate/',
+        PermissionView_IntegrateBoilerplateRole.as_view(
+
+        ),
+        name="integrate_boilerplate"
+    ),
 ]

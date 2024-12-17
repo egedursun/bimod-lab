@@ -18,16 +18,30 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import get_object_or_404, redirect
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.shortcuts import (
+    get_object_or_404,
+    redirect
+)
+
 from django.views.generic import TemplateView
 
 from apps.core.user_permissions.permission_manager import (
     UserPermissionManager
 )
 
-from apps.mm_scheduled_jobs.models import ScheduledJob
-from apps.user_permissions.utils import PermissionNames
+from apps.mm_scheduled_jobs.models import (
+    ScheduledJob
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -36,6 +50,7 @@ logger = logging.getLogger(__name__)
 class ScheduledJobView_Delete(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+
         scheduled_job_id = self.kwargs.get('pk')
 
         scheduled_job = get_object_or_404(
@@ -55,6 +70,7 @@ class ScheduledJobView_Delete(LoginRequiredMixin, TemplateView):
             operation=PermissionNames.DELETE_SCHEDULED_JOBS
         ):
             messages.error(self.request, "You do not have permission to delete scheduled jobs.")
+
             return redirect('mm_scheduled_jobs:list')
         ##############################
 
@@ -70,6 +86,7 @@ class ScheduledJobView_Delete(LoginRequiredMixin, TemplateView):
 
         except Exception as e:
             messages.error(request, "An error occurred while deleting the Scheduled Job: " + str(e))
+
             return redirect("mm_scheduled_jobs:list")
 
         logger.info(f"Scheduled Job was deleted by User: {self.request.user.id}.")

@@ -17,9 +17,15 @@
 
 from django.contrib import admin
 
-from apps.semantor.models import LeanModVectorData
-from apps.semantor.utils.constant_utils import LEANMOD_ASSISTANT_VECTOR_DATA_ADMIN_LIST, \
-    LEANMOD_ASSISTANT_VECTOR_DATA_ADMIN_SEARCH, LEANMOD_ASSISTANT_VECTOR_DATA_ADMIN_FILTER
+from apps.semantor.models import (
+    LeanModVectorData
+)
+
+from apps.semantor.utils.constant_utils import (
+    LEANMOD_ASSISTANT_VECTOR_DATA_ADMIN_LIST,
+    LEANMOD_ASSISTANT_VECTOR_DATA_ADMIN_SEARCH,
+    LEANMOD_ASSISTANT_VECTOR_DATA_ADMIN_FILTER
+)
 
 
 @admin.register(LeanModVectorData)
@@ -27,4 +33,5 @@ class AssistantVectorDataAdmin(admin.ModelAdmin):
     list_display = LEANMOD_ASSISTANT_VECTOR_DATA_ADMIN_LIST
     search_fields = LEANMOD_ASSISTANT_VECTOR_DATA_ADMIN_SEARCH
     list_filter = LEANMOD_ASSISTANT_VECTOR_DATA_ADMIN_FILTER
+
     ordering = ['-created_at']

@@ -19,13 +19,21 @@ from django.db import models
 
 
 class SheetosFolder(models.Model):
-    organization = models.ForeignKey('organization.Organization', on_delete=models.CASCADE)
+    organization = models.ForeignKey(
+        'organization.Organization',
+        on_delete=models.CASCADE
+    )
+
     name = models.CharField(max_length=1000)
     description = models.TextField(blank=True, null=True)
     meta_context_instructions = models.TextField(blank=True, null=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
-    created_by_user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+
+    created_by_user = models.ForeignKey(
+        'auth.User',
+        on_delete=models.CASCADE
+    )
 
     def __str__(self):
         return self.organization.name + ' - ' + self.name
@@ -33,12 +41,19 @@ class SheetosFolder(models.Model):
     class Meta:
         verbose_name = 'Sheetos Folder'
         verbose_name_plural = 'Sheetos Folders'
+
         indexes = [
-            models.Index(fields=['organization']),
-            models.Index(fields=['organization', 'name']),
+            models.Index(
+                fields=['organization']
+            ),
+            models.Index(
+                fields=['organization', 'name']
+            ),
         ]
+
         unique_together = [
-            ['organization', 'name'],
+            [
+                'organization',
+                'name'
+            ],
         ]
-
-

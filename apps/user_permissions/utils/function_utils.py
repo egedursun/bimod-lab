@@ -22,6 +22,7 @@ logger = logging.getLogger(__name__)
 
 def get_permissions_grouped():
     logger.info("Getting permissions grouped")
+
     permissions_grouped = {
         "Organization Permissions": [
             ('add_organizations', 'Add Organizations'),
@@ -151,6 +152,9 @@ def get_permissions_grouped():
             ('update_assistants', 'Update Assistants'),
             ('list_assistants', 'List Assistants'),
             ('delete_assistants', 'Delete Assistants')
+        ],
+        "Sinaptera Permissions": [
+            ('use_sinaptera_configuration', 'Use Sinaptera Configuration'),
         ],
         "Plug & Play Agents": [
             ('integrate_plug_and_play_agents', 'Integrate Plug and Play Agents'),
@@ -568,4 +572,5 @@ def get_permissions_grouped():
             ('delete_internal_notifications', 'Delete Internal Notifications'),
         ],
     }
+
     return permissions_grouped

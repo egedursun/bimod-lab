@@ -20,14 +20,34 @@ import logging
 
 from django.contrib import messages
 from django.contrib.auth.models import User
-from django.shortcuts import get_object_or_404, redirect
+
+from django.shortcuts import (
+    get_object_or_404,
+    redirect
+)
+
 from django.views import View
 
-from apps.core.generative_ai.generative_ai_decode_manager import GenerativeAIDecodeController
-from apps.core.media_managers.media_manager_execution_handler import MediaManager
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.multimodal_chat.models import MultimodalLeanChat, MultimodalLeanChatMessage
-from apps.user_permissions.utils import PermissionNames
+from apps.core.generative_ai.generative_ai_decode_manager import (
+    GenerativeAIDecodeController
+)
+
+from apps.core.media_managers.media_manager_execution_handler import (
+    MediaManager
+)
+
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
+from apps.multimodal_chat.models import (
+    MultimodalLeanChat,
+    MultimodalLeanChatMessage
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
 
 logger = logging.getLogger(__name__)
 
@@ -36,7 +56,11 @@ class ChatView_LeanChatStream(View):
 
     def post(self, request, *args, **kwargs):
         context_user_id = request.POST.get('user_id')
-        context_user = get_object_or_404(User, id=context_user_id)
+
+        context_user = get_object_or_404(
+            User,
+            id=context_user_id
+        )
 
         ##############################
         # PERMISSION CHECK FOR - CREATE_AND_USE_LEAN_CHATS
@@ -45,6 +69,7 @@ class ChatView_LeanChatStream(View):
             operation=PermissionNames.CREATE_AND_USE_LEAN_CHATS
         ):
             messages.error(self.request, "You do not have permission to create and use LeanMod chats.")
+
             return redirect('multimodal_chat:lean_chat')
         ##############################
 
@@ -59,6 +84,7 @@ class ChatView_LeanChatStream(View):
         msg_content = request.POST.get('message_content')
         attached_images = request.FILES.getlist('attached_images[]')
         attached_files = request.FILES.getlist('attached_files[]')
+
         sketch_image_full_uris_list = self._handle_sketch_image(request)
         edit_image_full_uris_list = self._handle_edit_image(request)
 
@@ -68,8 +94,14 @@ class ChatView_LeanChatStream(View):
             sketch_image_full_uris_list
         )
 
-        file_full_uris = self._handle_save_files(attached_files)
-        self._handle_record_audio(file_full_uris, request)
+        file_full_uris = self._handle_save_files(
+            attached_files
+        )
+
+        self._handle_record_audio(
+            file_full_uris,
+            request
+        )
 
         user_msg = MultimodalLeanChatMessage.objects.create(
             multimodal_lean_chat=chat,
@@ -98,22 +130,40 @@ class ChatView_LeanChatStream(View):
         )
 
         logger.info(f"LeanMod Assistant responded to User: {context_user.id}.")
+
         return redirect('multimodal_chat:lean_chat')
 
     @staticmethod
-    def _handle_record_audio(file_full_uris, request):
+    def _handle_record_audio(
+        file_full_uris,
+        request
+    ):
         record_audio = request.POST.get('record_audio')
         audio_full_uri = None
 
         if record_audio:
             audio_base_64 = request.POST.get('record_audio')
-            audio_bytes = base64.b64decode(audio_base_64.split("base64,")[1].encode())
-            audio_full_uri = MediaManager.save_files_and_return_uris([(audio_bytes, 'audio.webm')])[0]
+
+            audio_bytes = base64.b64decode(
+                audio_base_64.split("base64,")[1].encode()
+            )
+
+            audio_full_uri = MediaManager.save_files_and_return_uris(
+                [
+                    (
+                        audio_bytes,
+                        'audio.webm'
+                    )
+                ]
+            )[0]
 
         if audio_full_uri:
-            file_full_uris.append(audio_full_uri)
+            file_full_uris.append(
+                audio_full_uri
+            )
 
         logger.info(f"Audio was saved successfully.")
+
         return
 
     @staticmethod
@@ -131,9 +181,16 @@ class ChatView_LeanChatStream(View):
                 logger.error(f"Error while reading file.")
                 continue
 
-            file_bytes_list.append((file_bytes, file_name))
+            file_bytes_list.append(
+                (
+                    file_bytes,
+                    file_name
+                )
+            )
 
-        file_full_uris = MediaManager.save_files_and_return_uris(file_bytes_list)
+        file_full_uris = MediaManager.save_files_and_return_uris(
+            file_bytes_list
+        )
 
         return file_full_uris
 
@@ -156,15 +213,23 @@ class ChatView_LeanChatStream(View):
                 logger.error(f"Error while reading image.")
                 continue
 
-            image_bytes_list.append(image_bytes)
+            image_bytes_list.append(
+                image_bytes
+            )
 
-        image_full_uris = MediaManager.save_images_and_return_uris(image_bytes_list)
+        image_full_uris = MediaManager.save_images_and_return_uris(
+            image_bytes_list
+        )
 
         if sketch_image_full_uris_list:
-            image_full_uris.extend(sketch_image_full_uris_list)
+            image_full_uris.extend(
+                sketch_image_full_uris_list
+            )
 
         if edit_image_full_uris_list:
-            image_full_uris.extend(edit_image_full_uris_list)
+            image_full_uris.extend(
+                edit_image_full_uris_list
+            )
 
         return image_full_uris
 
@@ -177,11 +242,14 @@ class ChatView_LeanChatStream(View):
 
         attached_edit_image = request.FILES.get('edit_image')
         attached_edit_image_mask = request.POST.get('edit_image_mask')
+
         edit_image_full_uris_list = []
 
         try:
             edit_image_bytes = attached_edit_image.read()
-            edit_image_mask_bytes = base64.b64decode(attached_edit_image_mask.split("base64,")[1].encode())
+            edit_image_mask_bytes = base64.b64decode(
+                attached_edit_image_mask.split("base64,")[1].encode()
+            )
 
             edit_image_bytes_dict['edit_image'] = edit_image_bytes
             edit_image_bytes_dict['edit_image_mask'] = edit_image_mask_bytes
@@ -208,7 +276,10 @@ class ChatView_LeanChatStream(View):
         sketch_image_full_uris_list = []
 
         try:
-            sketch_image_bytes = base64.b64decode(attached_canvas_image.split("base64,")[1].encode())
+            sketch_image_bytes = base64.b64decode(
+                attached_canvas_image.split("base64,")[1].encode()
+            )
+
             sketch_image['sketch_image'] = sketch_image_bytes
 
             sketch_image_full_uris_list = MediaManager.save_sketch(

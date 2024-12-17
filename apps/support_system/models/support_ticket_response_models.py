@@ -17,24 +17,47 @@
 
 from django.db import models
 
-from apps.support_system.models.support_ticket_models import SupportTicket
+from apps.support_system.models.support_ticket_models import (
+    SupportTicket
+)
 
 
 class SupportTicketResponse(models.Model):
-    ticket = models.ForeignKey(SupportTicket, on_delete=models.CASCADE, related_name='responses')
-    user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    ticket = models.ForeignKey(
+        SupportTicket,
+        on_delete=models.CASCADE,
+        related_name='responses'
+    )
+
+    user = models.ForeignKey(
+        'auth.User',
+        on_delete=models.CASCADE
+    )
+
     response = models.TextField()
+
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         ordering = ['created_at']
+
         verbose_name = 'Support Ticket Response'
         verbose_name_plural = 'Support Ticket Responses'
 
         indexes = [
-            models.Index(fields=['ticket', 'created_at']),
-            models.Index(fields=['user', 'created_at']),
-            models.Index(fields=['ticket', 'user', 'created_at']),
+            models.Index(fields=[
+                'ticket',
+                'created_at'
+            ]),
+            models.Index(fields=[
+                'user',
+                'created_at'
+            ]),
+            models.Index(fields=[
+                'ticket',
+                'user',
+                'created_at'
+            ]),
         ]
 
     def __str__(self):

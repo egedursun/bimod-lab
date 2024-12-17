@@ -15,20 +15,21 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-
 from django.db import models
 
 
 class MetaTempoProjectOverallLog(models.Model):
-    metatempo_connection = models.ForeignKey('metatempo.MetaTempoConnection', on_delete=models.CASCADE)
+    metatempo_connection = models.ForeignKey(
+        'metatempo.MetaTempoConnection',
+        on_delete=models.CASCADE
+    )
 
     #################################################################################################################
-    # AI Generated Fields
+
     overall_activity_summary = models.TextField(null=True, blank=True)
     overall_key_insights = models.JSONField(null=True, blank=True)
     overall_work_intensity = models.IntegerField(null=True, blank=True)
     overall_application_usage_stats = models.JSONField(null=True, blank=True)
-    # :-> Mathematical average of individual 'interval logs' in the interval X
 
     datestamp = models.DateField(auto_now_add=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -39,9 +40,17 @@ class MetaTempoProjectOverallLog(models.Model):
     class Meta:
         verbose_name = 'MetaTempo Project Overall Log'
         verbose_name_plural = 'MetaTempo Project Overall Logs'
+
         ordering = ['-created_at']
+
         indexes = [
-            models.Index(fields=['metatempo_connection']),
-            models.Index(fields=['datestamp']),
-            models.Index(fields=['overall_work_intensity']),
+            models.Index(fields=[
+                'metatempo_connection'
+            ]),
+            models.Index(fields=[
+                'datestamp'
+            ]),
+            models.Index(fields=[
+                'overall_work_intensity'
+            ]),
         ]

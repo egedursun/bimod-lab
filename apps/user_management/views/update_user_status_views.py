@@ -14,19 +14,35 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.contrib.auth.models import User
 from django.shortcuts import redirect
-from django.utils.decorators import method_decorator
-from django.views.decorators.http import require_POST
+
+from django.utils.decorators import (
+    method_decorator
+)
+
+from django.views.decorators.http import (
+    require_POST
+)
+
 from django.views.generic import TemplateView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.user_permissions.utils import PermissionNames
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
 
+from apps.user_permissions.utils import (
+    PermissionNames
+)
 
 logger = logging.getLogger(__name__)
 
@@ -39,19 +55,30 @@ class UserManagementView_UserUpdateStatus(LoginRequiredMixin, TemplateView):
 
         ##############################
         # PERMISSION CHECK FOR - UPDATE_USERS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.UPDATE_USERS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.UPDATE_USERS
+        ):
             messages.error(self.request, "You do not have permission to update/modify user accounts.")
+
             return redirect('user_management:list')
         ##############################
 
         try:
-            user = User.objects.get(id=user_id)
+            user = User.objects.get(
+                id=user_id
+            )
+
             user.profile.is_active = is_active
+
             user.profile.save()
+
             logger.info(f"User status was updated by User: {self.request.user.id}.")
+
             return redirect('user_management:list')
+
         except Exception as e:
             logger.error(f"Error updating user status: {e}")
             messages.error(request, f'Error updating user status')
+
             return redirect('user_management:list')

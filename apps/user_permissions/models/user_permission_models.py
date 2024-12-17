@@ -17,7 +17,9 @@
 
 from django.db import models
 
-from apps.user_permissions.utils import PERMISSION_TYPES
+from apps.user_permissions.utils import (
+    PERMISSION_TYPES
+)
 
 
 class ActiveUserPermissionManager(models.Manager):
@@ -26,17 +28,30 @@ class ActiveUserPermissionManager(models.Manager):
 
 
 class UserPermission(models.Model):
-    user = models.ForeignKey("auth.User", on_delete=models.CASCADE, related_name="permissions", null=True)
-    permission_type = models.CharField(max_length=255, choices=PERMISSION_TYPES)
+    user = models.ForeignKey(
+        "auth.User",
+        on_delete=models.CASCADE,
+        related_name="permissions",
+        null=True
+    )
+
+    permission_type = models.CharField(
+        max_length=255,
+        choices=PERMISSION_TYPES
+    )
+
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    objects = models.Manager()  # The default manager.
-    active_permissions = ActiveUserPermissionManager()  # Custom manager for active permissions.
+    objects = models.Manager()
+
+    active_permissions = ActiveUserPermissionManager()
 
     class Meta:
         verbose_name = "User Permission"
         verbose_name_plural = "User Permissions"
+
         ordering = ["-created_at"]
+
         constraints = [
             models.UniqueConstraint(
                 fields=[
@@ -46,27 +61,76 @@ class UserPermission(models.Model):
                 name='unique_user_permission'
             )
         ]
+
         indexes = [
-            models.Index(fields=['user', 'permission_type']),
-            models.Index(fields=['user', 'permission_type', 'is_active']),
-            models.Index(fields=['user', 'is_active']),
-            models.Index(fields=['permission_type', 'is_active']),
-            models.Index(fields=['permission_type']),
-            models.Index(fields=['is_active']),
-            models.Index(fields=['created_at']),
-            models.Index(fields=['user', 'created_at']),
-            models.Index(fields=['permission_type', 'created_at']),
-            models.Index(fields=['user', 'permission_type', 'created_at']),
-            models.Index(fields=['user', 'permission_type', 'is_active', 'created_at']),
-            models.Index(fields=['user', 'is_active', 'created_at']),
-            models.Index(fields=['permission_type', 'is_active', 'created_at']),
+            models.Index(fields=[
+                'user',
+                'permission_type'
+            ]),
+            models.Index(fields=[
+                'user',
+                'permission_type',
+                'is_active'
+            ]),
+            models.Index(fields=[
+                'user',
+                'is_active'
+            ]),
+            models.Index(fields=[
+                'permission_type',
+                'is_active'
+            ]),
+            models.Index(fields=[
+                'permission_type'
+            ]),
+            models.Index(fields=[
+                'is_active'
+            ]),
+            models.Index(fields=[
+                'created_at'
+            ]),
+            models.Index(fields=[
+                'user',
+                'created_at'
+            ]),
+            models.Index(fields=[
+                'permission_type',
+                'created_at'
+            ]),
+            models.Index(fields=[
+                'user',
+                'permission_type',
+                'created_at'
+            ]),
+            models.Index(fields=[
+                'user',
+                'permission_type',
+                'is_active',
+                'created_at'
+            ]),
+            models.Index(fields=[
+                'user',
+                'is_active',
+                'created_at'
+            ]),
+            models.Index(fields=[
+                'permission_type',
+                'is_active',
+                'created_at'
+            ]),
         ]
 
     def get_permission_type_name(self):
         try:
-            permission_type_name = dict(PERMISSION_TYPES)[self.permission_type]
+            permission_type_name = dict(
+                PERMISSION_TYPES
+            )[
+                self.permission_type
+            ]
+
         except KeyError:
             permission_type_name = "Corrupted Permission Type"
+
         return permission_type_name
 
     def get_permission_type_code(self):

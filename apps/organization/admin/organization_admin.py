@@ -19,7 +19,12 @@
 from django.contrib import admin
 
 from apps.organization.models import Organization
-from apps.organization.utils import ORGANIZATION_ADMIN_LIST, ORGANIZATION_ADMIN_FILTER, ORGANIZATION_ADMIN_SEARCH
+
+from apps.organization.utils import (
+    ORGANIZATION_ADMIN_LIST,
+    ORGANIZATION_ADMIN_FILTER,
+    ORGANIZATION_ADMIN_SEARCH
+)
 
 
 @admin.register(Organization)
@@ -27,5 +32,6 @@ class OrganizationAdmin(admin.ModelAdmin):
     list_display = ORGANIZATION_ADMIN_LIST
     list_filter = ORGANIZATION_ADMIN_FILTER
     search_fields = ORGANIZATION_ADMIN_SEARCH
+
     date_hierarchy = "created_at"
     ordering = ["-created_at"]

@@ -14,16 +14,34 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import get_object_or_404, redirect
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.shortcuts import (
+    get_object_or_404,
+    redirect
+)
+
 from django.views.generic import TemplateView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.smart_contracts.models import BlockchainWalletConnection
-from apps.user_permissions.utils import PermissionNames
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
+from apps.smart_contracts.models import (
+    BlockchainWalletConnection
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -32,31 +50,51 @@ logger = logging.getLogger(__name__)
 class SmartContractView_WalletConnectionDelete(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+
         wallet_connection_id = self.kwargs.get('pk')
-        wallet_connection = get_object_or_404(BlockchainWalletConnection, pk=wallet_connection_id)
+
+        wallet_connection = get_object_or_404(
+            BlockchainWalletConnection,
+            pk=wallet_connection_id
+        )
+
         context['wallet_connection'] = wallet_connection
+
         return context
 
     def post(self, request, *args, **kwargs):
 
         ##############################
         # PERMISSION CHECK FOR - DELETE_BLOCKCHAIN_WALLET_CONNECTIONS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.DELETE_BLOCKCHAIN_WALLET_CONNECTIONS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.DELETE_BLOCKCHAIN_WALLET_CONNECTIONS
+        ):
             messages.error(self.request, "You do not have permission to delete Blockchain Wallet Connections.")
+
             return redirect('smart_contracts:wallet_connection_list')
         ##############################
 
         wallet_connection_id = self.kwargs.get('pk')
-        wallet_connection = get_object_or_404(BlockchainWalletConnection, pk=wallet_connection_id)
+
+        wallet_connection = get_object_or_404(
+            BlockchainWalletConnection,
+            pk=wallet_connection_id
+        )
 
         try:
             wallet_connection.delete()
+
         except Exception as e:
             logger.error(f"An error occurred while deleting the wallet connection: {str(e)}")
             messages.error(request, f"An error occurred while deleting the wallet connection: {str(e)}")
-            return redirect('smart_contracts:wallet_connection_detail', pk=wallet_connection_id)
+
+            return redirect(
+                'smart_contracts:wallet_connection_detail',
+                pk=wallet_connection_id
+            )
 
         logger.info(f'Wallet connection deleted. Wallet_connection_id: {wallet_connection_id}')
         messages.success(request, 'Wallet connection deleted successfully.')
+
         return redirect('smart_contracts:wallet_connection_list')

@@ -46,19 +46,19 @@ class LeanModScheduledJob(models.Model):
         max_length=90,
         blank=True,
         null=True
-    )  # e.g., "0,1,2,3,4"
+    )
 
     day_of_month = models.CharField(
         max_length=310,
         blank=True,
         null=True
-    )  # e.g., "1,15,30"
+    )
 
     month_of_year = models.CharField(
         max_length=120,
         blank=True,
         null=True
-    )  # e.g., "1,6,12"
+    )
 
     current_run_count = models.PositiveIntegerField(default=0)
     maximum_runs = models.PositiveIntegerField(default=1000)
@@ -77,14 +77,17 @@ class LeanModScheduledJob(models.Model):
 
     class Meta:
         ordering = ['-created_at']
+
         verbose_name = 'LeanMod Scheduled Job'
         verbose_name_plural = 'LeanMod Scheduled Jobs'
+
         unique_together = [
             [
                 "leanmod",
                 "name"
             ],
         ]
+
         indexes = [
             models.Index(fields=[
                 'name',

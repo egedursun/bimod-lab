@@ -14,16 +14,20 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from django import forms
 
-from apps.support_system.models import SupportTicket
+from apps.support_system.models import (
+    SupportTicket
+)
 
 
 class SupportTicketForm(forms.ModelForm):
     class Meta:
         model = SupportTicket
-        fields = ['title', 'issue_description', 'priority', 'attachment']
+        fields = [
+            'title',
+            'issue_description',
+            'priority',
+            'attachment'
+        ]

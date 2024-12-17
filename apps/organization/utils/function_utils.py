@@ -14,13 +14,14 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 import random
 import string
 
 
 def build_randomized_string_of_length(length=16):
-    return ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(length))
+    return ''.join(
+        random.choice(
+            string.ascii_letters + string.digits
+        ) for _ in range(length)
+    )

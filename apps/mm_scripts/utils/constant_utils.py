@@ -14,15 +14,13 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 
 NUMBER_OF_RANDOM_FEATURED_SCRIPTS = 5
 
 SCRIPT_SOURCES = {
-    "internal": "internal", "external": "external",
+    "internal": "internal",
+    "external": "external",
 }
 
 CUSTOM_SCRIPT_CATEGORIES = [
@@ -62,6 +60,18 @@ CUSTOM_SCRIPT_ADMIN_LIST_FILTER = (
     "is_public",
 )
 
-CUSTOM_SCRIPT_REFERENCE_ADMIN_LIST = ("custom_script", "assistant", "created_by_user", "created_at", "updated_at")
-CUSTOM_SCRIPT_REFERENCE_ADMIN_SEARCH = ("custom_script__name", "assistant__name")
-CUSTOM_SCRIPT_REFERENCE_ADMIN_FILTER = ("assistant", "created_by_user")
+CUSTOM_SCRIPT_REFERENCE_ADMIN_LIST = (
+    "custom_script",
+    "assistant",
+    "created_by_user",
+    "created_at",
+    "updated_at"
+)
+CUSTOM_SCRIPT_REFERENCE_ADMIN_SEARCH = (
+    "custom_script__name",
+    "assistant__name"
+)
+CUSTOM_SCRIPT_REFERENCE_ADMIN_FILTER = (
+    "assistant",
+    "created_by_user"
+)

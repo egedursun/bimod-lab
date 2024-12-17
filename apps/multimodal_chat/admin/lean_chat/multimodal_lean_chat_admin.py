@@ -17,7 +17,9 @@
 
 from django.contrib import admin
 
-from apps.multimodal_chat.models import MultimodalLeanChat
+from apps.multimodal_chat.models import (
+    MultimodalLeanChat
+)
 
 from apps.multimodal_chat.utils import (
     LEAN_CHAT_ADMIN_LIST,
@@ -40,6 +42,8 @@ class MultimodalLeanChatAdmin(admin.ModelAdmin):
     list_per_page = 20
     list_max_show_all = 100
     list_editable = []
+
     list_display_links = ["organization"]
+
     list_select_related = False
     list_display_links_details = False

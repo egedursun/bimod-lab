@@ -14,12 +14,22 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from apps.assistants.models import Assistant
-from apps.datasource_ml_models.models import DataSourceMLModelConnection
-from apps.datasource_ml_models.utils import MLModelItemCategoriesNames
-from apps.quick_setup_helper.utils import generate_random_object_id_string
+
+from apps.datasource_ml_models.models import (
+    DataSourceMLModelConnection
+)
+
+from apps.datasource_ml_models.utils import (
+    MLModelItemCategoriesNames
+)
+
+from apps.quick_setup_helper.utils import (
+    generate_random_object_id_string
+)
 
 logger = logging.getLogger(__name__)
 
@@ -45,7 +55,9 @@ def action__006_ml_model_storages_create(
 
     except Exception as e:
         logger.error(f"Error in action__006_ml_model_storages_create: {str(e)}")
+
         return False
 
     logger.info("action__006_ml_model_storages_create completed successfully.")
+
     return True

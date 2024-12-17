@@ -25,7 +25,12 @@ from apps.multimodal_chat.models import (
 
 
 @receiver(post_save, sender=MultimodalChat)
-def create_chat_created_log(sender, instance, created, **kwargs):
+def create_chat_created_log(
+    sender,
+    instance,
+    created,
+    **kwargs
+):
     if created:
         ChatCreationLog.objects.create(
             organization=instance.assistant.organization

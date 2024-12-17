@@ -469,6 +469,8 @@ class PermissionNames:
     DELETE_BINEXUS_ELITES = 'delete_binexus_elites'
     LIST_BINEXUS_ELITES = 'list_binexus_elites'
 
+    USE_SINAPTERA_CONFIGURATION = 'use_sinaptera_configuration'
+
 
 PERMISSION_TYPES = [
     ('add_organizations', 'Add Organizations'),
@@ -922,6 +924,8 @@ PERMISSION_TYPES = [
 
     ('delete_binexus_elites', 'Delete Binexus Elites'),
     ('list_binexus_elites', 'List Binexus Elites'),
+
+    ('use_sinaptera_configuration', 'Use Sinaptera Configuration'),
 ]
 
 
@@ -1049,6 +1053,7 @@ class PredefinedRolePackages__Functional:
                 ('create_internal_notifications', 'Create Internal Notifications'),
                 ('create_binexus_processes', 'Create Binexus Processes'),
                 ('execute_binexus_processes', 'Execute Binexus Processes'),
+                ('use_sinaptera_configuration', 'Use Sinaptera Configuration'),
             ]
 
     class ModificationAdminRole:
@@ -1174,6 +1179,7 @@ class PredefinedRolePackages__Functional:
                 ('create_internal_notifications', 'Create Internal Notifications'),
                 ('update_binexus_processes', 'Update Binexus Processes'),
                 ('execute_binexus_processes', 'Execute Binexus Processes'),
+                ('use_sinaptera_configuration', 'Use Sinaptera Configuration'),
             ]
 
     class ReadAdminRole:
@@ -1548,6 +1554,7 @@ class PredefinedRolePackages__Contextual:
                 ('execute_binexus_processes', 'Execute Binexus Processes'),
                 ('delete_binexus_elites', 'Delete Binexus Elites'),
                 ('list_binexus_elites', 'List Binexus Elites'),
+                ('use_sinaptera_configuration', 'Use Sinaptera Configuration'),
             ]
 
     class UsersAdmin:
@@ -1608,6 +1615,7 @@ class PredefinedRolePackages__Contextual:
                 ('update_formica_google_apps_connections', 'Update Formica Google Apps Connections'),
                 ('list_formica_google_apps_connections', 'List Formica Google Apps Connections'),
                 ('delete_formica_google_apps_connections', 'Delete Formica Google Apps Connections'),
+                ('use_sinaptera_configuration', 'Use Sinaptera Configuration'),
 
             ]
 
@@ -1930,7 +1938,6 @@ class PredefinedRolePackages__Contextual:
                 ('update_finetuning_model', 'Update Finetuning Model'),
                 ('list_finetuning_model', 'List Finetuning Model'),
                 ('delete_finetuning_model', 'Delete Finetuning Model'),
-
             ]
 
     class ProjectTeamAdmin:

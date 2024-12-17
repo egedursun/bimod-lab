@@ -19,10 +19,20 @@
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 
-from apps.multimodal_chat.models import MultimodalLeanChat, ChatCreationLog
+from apps.multimodal_chat.models import (
+    MultimodalLeanChat,
+    ChatCreationLog
+)
 
 
 @receiver(post_save, sender=MultimodalLeanChat)
-def create_lean_chat_created_log(sender, instance, created, **kwargs):
+def create_lean_chat_created_log(
+    sender,
+    instance,
+    created,
+    **kwargs
+):
     if created:
-        ChatCreationLog.objects.create(organization=instance.lean_assistant.organization)
+        ChatCreationLog.objects.create(
+            organization=instance.lean_assistant.organization
+        )

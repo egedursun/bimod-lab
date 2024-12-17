@@ -15,7 +15,6 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-
 from .metatempo_main_board_views import *
 from .metatempo_purge_logs_views import *
 from .metatempo_manual_analysis_trigger_views import *

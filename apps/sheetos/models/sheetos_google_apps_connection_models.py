@@ -20,8 +20,18 @@ from django.db import models
 
 
 class SheetosGoogleAppsConnection(models.Model):
-    sheetos_assistant = models.ForeignKey('assistants.Assistant', on_delete=models.CASCADE, null=True, blank=True)
-    owner_user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    sheetos_assistant = models.ForeignKey(
+        'assistants.Assistant',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True
+    )
+
+    owner_user = models.ForeignKey(
+        'auth.User',
+        on_delete=models.CASCADE
+    )
+
     connection_api_key = models.CharField(max_length=4000)
 
     created_at = models.DateTimeField(auto_now_add=True)
@@ -33,11 +43,23 @@ class SheetosGoogleAppsConnection(models.Model):
     class Meta:
         verbose_name = 'Sheetos Google Apps Connection'
         verbose_name_plural = 'Sheetos Google Apps Connections'
+
         indexes = [
-            models.Index(fields=['sheetos_assistant']),
-            models.Index(fields=['owner_user']),
-            models.Index(fields=['sheetos_assistant', 'owner_user']),
+            models.Index(fields=[
+                'sheetos_assistant'
+            ]),
+            models.Index(fields=[
+                'owner_user'
+            ]),
+            models.Index(fields=[
+                'sheetos_assistant',
+                'owner_user'
+            ]),
         ]
+
         unique_together = [
-            ['sheetos_assistant', 'owner_user'],
+            [
+                'sheetos_assistant',
+                'owner_user'
+            ],
         ]

@@ -14,16 +14,30 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.shortcuts import get_object_or_404
 from django.views.generic import TemplateView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.orchestrations.models.query import OrchestrationQuery
-from apps.user_permissions.utils import PermissionNames
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
+from apps.orchestrations.models.query import (
+    OrchestrationQuery
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -40,11 +54,17 @@ class OrchestrationView_QueryDetail(LoginRequiredMixin, TemplateView):
             operation=PermissionNames.CREATE_AND_USE_ORCHESTRATION_CHATS
         ):
             messages.error(self.request, "You do not have permission to create and use orchestration queries.")
+
             return context
         ##############################
 
         query_id = self.kwargs.get('query_id')
-        query = get_object_or_404(OrchestrationQuery, id=query_id)
+
+        query = get_object_or_404(
+            OrchestrationQuery,
+            id=query_id
+        )
+
         context['query'] = query
 
         context['logs'] = query.logs.filter(
@@ -54,4 +74,5 @@ class OrchestrationView_QueryDetail(LoginRequiredMixin, TemplateView):
         )
 
         logger.info(f"Orchestration query was viewed by User: {self.request.user.id}.")
+
         return context

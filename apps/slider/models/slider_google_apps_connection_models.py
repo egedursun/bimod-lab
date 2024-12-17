@@ -19,8 +19,18 @@ from django.db import models
 
 
 class SliderGoogleAppsConnection(models.Model):
-    slider_assistant = models.ForeignKey('assistants.Assistant', on_delete=models.CASCADE, null=True, blank=True)
-    owner_user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    slider_assistant = models.ForeignKey(
+        'assistants.Assistant',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True
+    )
+
+    owner_user = models.ForeignKey(
+        'auth.User',
+        on_delete=models.CASCADE
+    )
+
     connection_api_key = models.CharField(max_length=4000)
 
     created_at = models.DateTimeField(auto_now_add=True)
@@ -32,11 +42,23 @@ class SliderGoogleAppsConnection(models.Model):
     class Meta:
         verbose_name = 'Slider Google Apps Connection'
         verbose_name_plural = 'Slider Google Apps Connections'
+
         indexes = [
-            models.Index(fields=['slider_assistant']),
-            models.Index(fields=['owner_user']),
-            models.Index(fields=['slider_assistant', 'owner_user']),
+            models.Index(fields=[
+                'slider_assistant'
+            ]),
+            models.Index(fields=[
+                'owner_user'
+            ]),
+            models.Index(fields=[
+                'slider_assistant',
+                'owner_user'
+            ]),
         ]
+
         unique_together = [
-            ['slider_assistant', 'owner_user'],
+            [
+                'slider_assistant',
+                'owner_user'
+            ],
         ]

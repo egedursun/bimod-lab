@@ -67,14 +67,17 @@ class OrchestrationTriggeredJob(models.Model):
 
     class Meta:
         ordering = ['-created_at']
+
         verbose_name = 'Orchestration Triggered Job'
         verbose_name_plural = 'Orchestration Triggered Jobs'
+
         unique_together = [
             [
                 "trigger_maestro",
                 "name"
             ],
         ]
+
         indexes = [
             models.Index(fields=[
                 'name',
@@ -130,7 +133,8 @@ class OrchestrationTriggeredJob(models.Model):
         )
 
         self.endpoint_url = BASE_URL + '/app/mm_triggered_jobs/orchestration/api/v1/webhook/' + str(
-            self.trigger_maestro.id) + '/' + str(self.id) + '/'
+            self.trigger_maestro.id
+        ) + '/' + str(self.id) + '/'
 
         super().save(
             force_insert,

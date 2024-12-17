@@ -114,13 +114,14 @@
         <div class="flex-shrink-0 avatar avatar-xl">
           <img src="
 
+
             {% if query.maestro.maestro_image %}{{ query.maestro.maestro_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
                alt="{{ query.maestro.name }}" class="rounded">
         </div>
         <div class="flex-grow-1 ms-4">
           <h6 class="card-title mb-2">
             <i class="fa fa-bolt-lightning text-warning me-4"></i>
-            <strong>{{ query.query_text }}</strong>
+            <strong id="query-content">{{ query.query_text|safe|linebreaks }}</strong>
           </h6>
           <small class="text-muted mb-0">
             <i class="fa fa-clock me-4"></i>

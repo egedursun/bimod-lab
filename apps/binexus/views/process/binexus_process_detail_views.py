@@ -15,8 +15,14 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
+import logging
+
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.shortcuts import get_object_or_404
 from django.views.generic import TemplateView
 
@@ -29,8 +35,13 @@ from apps.core.user_permissions.permission_manager import (
     UserPermissionManager
 )
 
-from apps.user_permissions.utils import PermissionNames
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
+
+logger = logging.getLogger(__name__)
 
 
 class BinexusView_ProcessDetail(LoginRequiredMixin, TemplateView):
@@ -44,12 +55,17 @@ class BinexusView_ProcessDetail(LoginRequiredMixin, TemplateView):
             operation=PermissionNames.LIST_BINEXUS_PROCESSES
         ):
             messages.error(self.request, "You do not have permission to list Binexus Processes.")
+
             return context
         ##############################
 
         try:
             process_id = self.kwargs.get('pk')
-            binexus_process = get_object_or_404(BinexusProcess, id=process_id)
+
+            binexus_process = get_object_or_404(
+                BinexusProcess,
+                id=process_id
+            )
 
             elite_agents = BinexusEliteAgent.objects.filter(
                 binexus_process=binexus_process
@@ -64,4 +80,5 @@ class BinexusView_ProcessDetail(LoginRequiredMixin, TemplateView):
             return context
 
         logger.info(f"Binexus Process details listed successfully.")
+
         return context

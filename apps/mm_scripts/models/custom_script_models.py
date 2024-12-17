@@ -21,14 +21,28 @@ from django.db import models
 class CustomScript(models.Model):
     is_public = models.BooleanField(default=False)
     categories = models.JSONField(default=list, blank=True)
+
     name = models.CharField(max_length=10000, unique=True)
+
     description = models.TextField(blank=True)
     script_content = models.TextField(blank=True)
     script_step_guide = models.JSONField(default=list, blank=True)
-    script_picture = models.ImageField(upload_to="custom_scripts/%YYYY/%mm/%dd/", blank=True, null=True)
+
+    script_picture = models.ImageField(
+        upload_to="custom_scripts/%YYYY/%mm/%dd/",
+        blank=True,
+        null=True
+    )
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    created_by_user = models.ForeignKey("auth.User", on_delete=models.SET_NULL, null=True)
+
+    created_by_user = models.ForeignKey(
+        "auth.User",
+        on_delete=models.SET_NULL,
+        null=True
+    )
+
     is_featured = models.BooleanField(default=False)
 
     def __str__(self):
@@ -37,12 +51,28 @@ class CustomScript(models.Model):
     class Meta:
         verbose_name = "Custom Script"
         verbose_name_plural = "Custom Scripts"
+
         indexes = [
-            models.Index(fields=["name"]),
-            models.Index(fields=["created_by_user"]),
-            models.Index(fields=["created_at"]),
-            models.Index(fields=["updated_at"]),
-            models.Index(fields=["is_public"]),
-            models.Index(fields=["is_featured"]),
-            models.Index(fields=["name", "is_public"]),
+            models.Index(fields=[
+                "name"
+            ]),
+            models.Index(fields=[
+                "created_by_user"
+            ]),
+            models.Index(fields=[
+                "created_at"
+            ]),
+            models.Index(fields=[
+                "updated_at"
+            ]),
+            models.Index(fields=[
+                "is_public"
+            ]),
+            models.Index(fields=[
+                "is_featured"
+            ]),
+            models.Index(fields=[
+                "name",
+                "is_public"
+            ]),
         ]

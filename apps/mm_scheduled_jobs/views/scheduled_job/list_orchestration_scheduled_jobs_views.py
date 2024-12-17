@@ -18,7 +18,11 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.views.generic import TemplateView
@@ -27,8 +31,14 @@ from apps.core.user_permissions.permission_manager import (
     UserPermissionManager
 )
 
-from apps.mm_scheduled_jobs.models import OrchestrationScheduledJob
-from apps.user_permissions.utils import PermissionNames
+from apps.mm_scheduled_jobs.models import (
+    OrchestrationScheduledJob
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -47,13 +57,17 @@ class ScheduledJobView_OrchestrationList(LoginRequiredMixin, TemplateView):
             operation=PermissionNames.LIST_ORCHESTRATION_SCHEDULED_JOBS
         ):
             messages.error(self.request, "You do not have permission to list Orchestration scheduled jobs.")
+
             return context
         ##############################
 
         search_query = self.request.GET.get('search', '')
         user_orgs = self.request.user.organizations.all()
 
-        org_orchestrators = user_orgs.values_list('maestros', flat=True)
+        org_orchestrators = user_orgs.values_list(
+            'maestros',
+            flat=True
+        )
 
         scheduled_jobs_list = OrchestrationScheduledJob.objects.filter(
             maestro__in=org_orchestrators
@@ -76,4 +90,5 @@ class ScheduledJobView_OrchestrationList(LoginRequiredMixin, TemplateView):
         context['search_query'] = search_query
 
         logger.info(f"Orchestration Scheduled Jobs list was fetched by User: {self.request.user.id}.")
+
         return context

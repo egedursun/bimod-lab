@@ -21,17 +21,32 @@ from django.db import models
 class CustomFunction(models.Model):
     is_public = models.BooleanField(default=False)
     categories = models.JSONField(default=list, blank=True)
+
     name = models.CharField(max_length=10000, unique=True)
     description = models.TextField()
+
     packages = models.JSONField(default=list, blank=True)
     input_fields = models.JSONField(default=list, blank=True)
     output_fields = models.JSONField(default=list, blank=True)
+
     code_text = models.TextField(default="", blank=True)
     secrets = models.JSONField(default=dict, blank=True)
-    function_picture = models.ImageField(upload_to="custom_functions/%YYYY/%mm/%dd/", blank=True, null=True)
+
+    function_picture = models.ImageField(
+        upload_to="custom_functions/%YYYY/%mm/%dd/",
+        blank=True,
+        null=True
+    )
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    created_by_user = models.ForeignKey("auth.User", on_delete=models.SET_NULL, null=True)
+
+    created_by_user = models.ForeignKey(
+        "auth.User",
+        on_delete=models.SET_NULL,
+        null=True
+    )
+
     is_featured = models.BooleanField(default=False)
 
     def __str__(self):
@@ -40,12 +55,28 @@ class CustomFunction(models.Model):
     class Meta:
         verbose_name = "Custom Function"
         verbose_name_plural = "Custom Functions"
+
         indexes = [
-            models.Index(fields=["name"]),
-            models.Index(fields=["created_by_user"]),
-            models.Index(fields=["created_at"]),
-            models.Index(fields=["updated_at"]),
-            models.Index(fields=["is_public"]),
-            models.Index(fields=["is_featured"]),
-            models.Index(fields=["name", "is_public"]),
+            models.Index(fields=[
+                "name"
+            ]),
+            models.Index(fields=[
+                "created_by_user"
+            ]),
+            models.Index(fields=[
+                "created_at"
+            ]),
+            models.Index(fields=[
+                "updated_at"
+            ]),
+            models.Index(fields=[
+                "is_public"
+            ]),
+            models.Index(fields=[
+                "is_featured"
+            ]),
+            models.Index(fields=[
+                "name",
+                "is_public"
+            ]),
         ]

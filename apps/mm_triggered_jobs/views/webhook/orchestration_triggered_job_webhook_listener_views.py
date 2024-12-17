@@ -19,9 +19,16 @@ import json
 import logging
 
 from django.http import JsonResponse
-from django.utils.decorators import method_decorator
+
+from django.utils.decorators import (
+    method_decorator
+)
+
 from django.views import View
-from django.views.decorators.csrf import csrf_exempt
+
+from django.views.decorators.csrf import (
+    csrf_exempt
+)
 
 from apps.core.generative_ai.utils import (
     GPT_DEFAULT_ENCODING_ENGINE,
@@ -284,6 +291,7 @@ class OrchestrationTriggeredJobWebhookListenerView(View):
             )
 
             query.logs.add(query_log)
+
             query.save()
 
             xc = OrchestrationExecutor(

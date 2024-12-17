@@ -14,9 +14,6 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from .remove_credit_card_views import *
 from .reset_password_user_profile_views import *

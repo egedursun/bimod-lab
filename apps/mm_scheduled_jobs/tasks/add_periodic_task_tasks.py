@@ -18,8 +18,10 @@
 import json
 import logging
 
-from django_celery_beat.models import CrontabSchedule, PeriodicTask
-
+from django_celery_beat.models import (
+    CrontabSchedule,
+    PeriodicTask
+)
 
 logger = logging.getLogger(__name__)
 
@@ -32,13 +34,20 @@ def add_periodic_task(scheduled_job):
         day_of_month=scheduled_job.day_of_month or '*',
         month_of_year=scheduled_job.month_of_year or '*'
     )
+
     PeriodicTask.objects.create(
         crontab=crontab_schedule,
         name=f'ScheduledJob-{scheduled_job.id}',
         task='apps.mm_scheduled_jobs.tasks.execute_scheduled_job',
-        args=json.dumps([scheduled_job.id])
+        args=json.dumps(
+            [
+                scheduled_job.id
+            ]
+        )
     )
+
     logger.info(f"Periodic Task for Scheduled Job: {scheduled_job.id} was added.")
+
     return
 
 
@@ -50,13 +59,20 @@ def add_periodic_task_orchestration(scheduled_job):
         day_of_month=scheduled_job.day_of_month or '*',
         month_of_year=scheduled_job.month_of_year or '*'
     )
+
     PeriodicTask.objects.create(
         crontab=crontab_schedule,
         name=f'OrchestrationScheduledJob-{scheduled_job.id}',
         task='apps.mm_scheduled_jobs.tasks.execute_orchestration_scheduled_job',
-        args=json.dumps([scheduled_job.id])
+        args=json.dumps(
+            [
+                scheduled_job.id
+            ]
+        )
     )
+
     logger.info(f"Periodic Task for Orchestration Scheduled Job: {scheduled_job.id} was added.")
+
     return
 
 
@@ -68,12 +84,18 @@ def add_periodic_task_leanmod(scheduled_job):
         day_of_month=scheduled_job.day_of_month or '*',
         month_of_year=scheduled_job.month_of_year or '*'
     )
+
     PeriodicTask.objects.create(
         crontab=crontab_schedule,
         name=f'LeanModScheduledJob-{scheduled_job.id}',
         task='apps.mm_scheduled_jobs.tasks.execute_leanmod_scheduled_job',
-        args=json.dumps([scheduled_job.id])
+        args=json.dumps(
+            [
+                scheduled_job.id
+            ]
+        )
     )
-    logger.info(f"Periodic Task for LeanMod Scheduled Job: {scheduled_job.id} was added.")
-    return
 
+    logger.info(f"Periodic Task for LeanMod Scheduled Job: {scheduled_job.id} was added.")
+
+    return

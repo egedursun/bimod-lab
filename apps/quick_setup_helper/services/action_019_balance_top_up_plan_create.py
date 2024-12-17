@@ -14,9 +14,13 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
-from apps.llm_transaction.models import AutoBalanceTopUpModel
+from apps.llm_transaction.models import (
+    AutoBalanceTopUpModel
+)
+
 from apps.organization.models import Organization
 
 logger = logging.getLogger(__name__)
@@ -45,6 +49,7 @@ def action__019_balance_top_up_plan_create(
 
             metadata__organization: Organization
             metadata__organization.auto_balance_topup = new_top_up_instance
+
             metadata__organization.save()
 
         except Exception as e:
@@ -65,15 +70,19 @@ def action__019_balance_top_up_plan_create(
 
             metadata__organization: Organization
             metadata__organization.auto_balance_topup = new_top_up_instance
+
             metadata__organization.save()
 
         except Exception as e:
             logger.error(f"Error on action__019_balance_top_up_plan_create [threshold_trigger]: {e}")
+
             return False, None
 
     else:
         logger.error(f"Invalid balance top-up option: {option}")
+
         return False, None
 
     logger.info(f"New balance top-up plan created for user: {metadata__user.username}")
+
     return True, new_top_up_instance

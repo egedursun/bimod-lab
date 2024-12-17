@@ -19,7 +19,12 @@ from django.db import models
 
 
 class SemantorConfiguration(models.Model):
-    user = models.OneToOneField('auth.User', on_delete=models.CASCADE, unique=True)
+    user = models.OneToOneField(
+        'auth.User',
+        on_delete=models.CASCADE,
+        unique=True
+    )
+
     is_local_network_active = models.BooleanField(default=True)
     is_global_network_active = models.BooleanField(default=True)
 
@@ -35,15 +40,33 @@ class SemantorConfiguration(models.Model):
         verbose_name = 'Semantor Configuration'
         verbose_name_plural = 'Semantor Configurations'
         indexes = [
-            models.Index(fields=['user', 'is_local_network_active', 'is_global_network_active']),
-            models.Index(fields=['user', 'is_local_network_active', 'is_global_network_active',
-                                 'maximum_assistant_search_items']),
-            models.Index(fields=['user', 'is_local_network_active', 'is_global_network_active',
-                                 'maximum_integration_search_items']),
-            models.Index(fields=['user', 'is_local_network_active', 'is_global_network_active',
-                                 'maximum_assistant_search_items', 'maximum_integration_search_items']),
+            models.Index(fields=[
+                'user',
+                'is_local_network_active',
+                'is_global_network_active'
+            ]),
+            models.Index(fields=[
+                'user',
+                'is_local_network_active',
+                'is_global_network_active',
+                'maximum_assistant_search_items'
+            ]),
+            models.Index(fields=[
+                'user',
+                'is_local_network_active',
+                'is_global_network_active',
+                'maximum_integration_search_items'
+            ]),
+            models.Index(fields=[
+                'user',
+                'is_local_network_active',
+                'is_global_network_active',
+                'maximum_assistant_search_items',
+                'maximum_integration_search_items'
+            ]),
         ]
 
     def __str__(self):
         return self.user.username + ' - ' + str(self.id) + ' - ' + str(self.is_local_network_active) + ' - ' + str(
-            self.is_global_network_active)
+            self.is_global_network_active
+        )

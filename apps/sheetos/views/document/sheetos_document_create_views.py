@@ -14,16 +14,34 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import redirect, get_object_or_404
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.shortcuts import (
+    redirect,
+    get_object_or_404
+)
+
 from django.views import View
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.sheetos.models import SheetosFolder, SheetosDocument
-from apps.user_permissions.utils import PermissionNames
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
+from apps.sheetos.models import (
+    SheetosFolder,
+    SheetosDocument
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
 
 logger = logging.getLogger(__name__)
 
@@ -34,14 +52,24 @@ class SheetosView_DocumentCreate(LoginRequiredMixin, View):
 
         ##############################
         # PERMISSION CHECK FOR - ADD_SHEETOS_DOCUMENTS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.ADD_SHEETOS_DOCUMENTS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.ADD_SHEETOS_DOCUMENTS
+        ):
             messages.error(self.request, "You do not have permission to add Sheetos Documents.")
-            return redirect('sheetos:documents_list', folder_id=self.kwargs['folder_id'])
+
+            return redirect(
+                'sheetos:documents_list',
+                folder_id=self.kwargs['folder_id']
+            )
         ##############################
 
         folder_id = self.kwargs['folder_id']
-        folder = get_object_or_404(SheetosFolder, id=folder_id)
+
+        folder = get_object_or_404(
+            SheetosFolder,
+            id=folder_id
+        )
 
         try:
             document = SheetosDocument.objects.create(
@@ -55,9 +83,19 @@ class SheetosView_DocumentCreate(LoginRequiredMixin, View):
                 created_by_user=request.user,
                 last_updated_by_user=request.user
             )
+
         except Exception as e:
             messages.error(request, f"An error occurred while creating the Sheetos Document: {str(e)}")
-            return redirect('sheetos:documents_list', folder_id=folder.id)
+
+            return redirect(
+                'sheetos:documents_list',
+                folder_id=folder.id
+            )
 
         logger.info(f"Sheetos Document {document.document_title} was created.")
-        return redirect('sheetos:documents_detail', folder_id=folder.id, document_id=document.id)
+
+        return redirect(
+            'sheetos:documents_detail',
+            folder_id=folder.id,
+            document_id=document.id
+        )

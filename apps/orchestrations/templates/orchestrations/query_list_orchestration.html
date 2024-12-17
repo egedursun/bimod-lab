@@ -146,6 +146,7 @@
                   <a class="dropdown-item" href="#" data-value="{{ maestro.id }}">
                     <img src="
 
+
                       {% if maestro.maestro_image %}{{ maestro.maestro_image.url }}{% else %}{% static 'img/avatars/org-0.png' %}{% endif %}"
                          class="avatar avatar-sm rounded me-4" alt="avatar">
                     <strong>{{ maestro.name }}</strong>
@@ -276,7 +277,7 @@
             <hr>
             {% if query_chats %}
               {% for query in query_chats %}
-                <li class="card card-border-shadow-dark mb-2 p-6">
+                <li class="card bg-body mb-4 p-6 border border-primary rounded border-2">
                   <a href="{% url 'orchestrations:query_detail' maestro.id query.id %}"
                      class="d-flex flex-grow-1 text-decoration-none">
                     <div class="d-flex align-items-center">
@@ -285,15 +286,17 @@
                            alt="avatar">
                       <div class="chat-contact-info flex-grow-1 text-start">
                         <h6
-                          class="chat-contact-name m-0 fw-normal mb-1 bg-label-secondary p-1 rounded border border-white border-1 rounded">
+                          class="chat-contact-name m-0 fw-normal mb- bg-card p-3 rounded border border-primary border-2 rounded">
                           <strong class="me-4">
                             <i class="fa fa-bolt-lightning text-warning ms-4 me-4"></i>
                             {{ query.query_text }}
                           </strong>
                         </h6>
                         <small class="text-muted">
-                          <i class="fa fa-clock ms-5 me-2"></i>
-                          Process initiated on {{ query.created_at|date:"F j, Y, g:i a" }}
+                          <strong>
+                            <i class="fa fa-clock me-2"></i>
+                            Process initiated on {{ query.created_at|date:"F j, Y, g:i a" }}
+                          </strong>
                         </small>
                       </div>
                     </div>
@@ -475,7 +478,7 @@
             console.log('End of processing detected...');
             socket.close(); // Close the WebSocket connection
             // Automatically refresh the page
-            window.location.href = `/app/orchestrations/query/{{ query.maestro.id }}/detail/{{ query.id }}/`;
+            window.location.href = `/app/orchestrations/query/{{ maestro.id }}/list/`;
           } else {
             // Accumulate chunks for the current stream
             accumulatedContent += newChunk;

@@ -18,13 +18,30 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import get_object_or_404, redirect
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.shortcuts import (
+    get_object_or_404,
+    redirect
+)
+
 from django.views.generic import TemplateView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.mm_triggered_jobs.models import LeanModTriggeredJob
-from apps.user_permissions.utils import PermissionNames
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
+from apps.mm_triggered_jobs.models import (
+    LeanModTriggeredJob
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -41,6 +58,7 @@ class TriggeredJobView_LeanModDelete(LoginRequiredMixin, TemplateView):
         )
 
         context['triggered_job'] = triggered_job
+
         return context
 
     def post(self, request, *args, **kwargs):
@@ -51,6 +69,7 @@ class TriggeredJobView_LeanModDelete(LoginRequiredMixin, TemplateView):
             operation=PermissionNames.DELETE_LEANMOD_TRIGGERS
         ):
             messages.error(self.request, "You do not have permission to delete LeanMod triggered jobs.")
+
             return redirect('mm_triggered_jobs:leanmod_list')
         ##############################
 
@@ -66,6 +85,7 @@ class TriggeredJobView_LeanModDelete(LoginRequiredMixin, TemplateView):
 
         except Exception as e:
             messages.error(request, "An error occurred while deleting the LeanMod Triggered Job: " + str(e))
+
             return redirect("mm_triggered_jobs:leanmod_list")
 
         logger.info(f"LeanMod Triggered Job was deleted by User: {self.request.user.id}.")

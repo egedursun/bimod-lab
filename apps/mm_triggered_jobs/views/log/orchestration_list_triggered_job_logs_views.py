@@ -18,10 +18,18 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.core.paginator import Paginator
 from django.db.models import Q
-from django.shortcuts import get_object_or_404
+
+from django.shortcuts import (
+    get_object_or_404
+)
+
 from django.views.generic import TemplateView
 
 from apps.core.user_permissions.permission_manager import (

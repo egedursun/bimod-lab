@@ -47,7 +47,6 @@ from apps.core.generative_ai.gpt_openai_manager import (
 )
 
 from apps.core.generative_ai.utils import (
-    ChatRoles,
     DEFAULT_ERROR_MESSAGE
 )
 
@@ -418,15 +417,15 @@ class SemantorVectorSearchExecutionManager:
 
                 structured_order += "---"
 
-            MultimodalChatMessage.objects.create(
+            structured_order_object = MultimodalChatMessage.objects.create(
                 multimodal_chat=chat,
                 sender_type='USER',
                 message_text_content=structured_order,
                 message_image_contents=image_urls,
                 message_file_contents=file_urls)
 
-            output = llm_client.respond(
-                latest_message=structured_order,
+            output = llm_client.respond_stream(
+                latest_message=structured_order_object,
                 image_uris=image_urls,
                 file_uris=file_urls
             )
@@ -563,7 +562,7 @@ class SemantorVectorSearchExecutionManager:
                 chat_object=chat
             )
 
-            MultimodalChatMessage.objects.create(
+            structured_order_object = MultimodalChatMessage.objects.create(
                 multimodal_chat=chat,
                 sender_type='USER',
                 message_text_content=structured_order,
@@ -572,8 +571,8 @@ class SemantorVectorSearchExecutionManager:
             )
 
             try:
-                final_response = client.respond(
-                    latest_message=structured_order,
+                final_response = client.respond_stream(
+                    latest_message=structured_order_object,
                     file_uris=file_urls,
                     image_uris=image_urls,
                     custom_system_prompt=system_prompt
@@ -726,7 +725,7 @@ class SemantorVectorSearchExecutionManager:
 
             structured_order += "---"
 
-        MultimodalLeanChatMessage.objects.create(
+        structured_order_object = MultimodalLeanChatMessage.objects.create(
             multimodal_lean_chat=chat,
             sender_type='USER',
             message_text_content=structured_order,
@@ -734,8 +733,8 @@ class SemantorVectorSearchExecutionManager:
             message_file_contents=file_urls
         )
 
-        output = llm_client.respond(
-            latest_message=structured_order,
+        output = llm_client.respond_stream(
+            latest_message=structured_order_object,
             image_uris=image_urls,
             file_uris=file_urls
         )
@@ -903,9 +902,9 @@ class SemantorVectorSearchExecutionManager:
                 if kb_recorded_count == 5:
                     break
 
-                if kb.host_url not in kb_recorded_hosts:
+                if kb.name not in kb_recorded_hosts:
                     data_source__knowledge_bases.append(kb)
-                    kb_recorded_hosts.append(kb.host_url)
+                    kb_recorded_hosts.append(kb.name)
                     kb_recorded_count += 1
 
             ######
@@ -924,9 +923,9 @@ class SemantorVectorSearchExecutionManager:
                 if cb_recorded_count == 5:
                     break
 
-                if cb.host_url not in cb_recorded_hosts:
+                if cb.name not in cb_recorded_hosts:
                     data_source__codebases.append(cb)
-                    cb_recorded_hosts.append(cb.host_url)
+                    cb_recorded_hosts.append(cb.name)
                     cb_recorded_count += 1
 
             ######

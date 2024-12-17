@@ -415,7 +415,8 @@ from apps.multimodal_chat.models import (
 )
 
 from apps.multimodal_chat.utils import (
-    transmit_websocket_log
+    transmit_websocket_log,
+    TransmitWebsocketLogSenderType
 )
 
 from apps.voidforger.models import VoidForger
@@ -1422,6 +1423,7 @@ class SystemPromptFactoryBuilder:
         transmit_websocket_log(
             f"""📜 Gathered primary instructions for operations.""",
             chat_id=chat.id,
+            sender_type=TransmitWebsocketLogSenderType.LEANMOD,
             fermion__is_fermion_supervised=fermion__is_fermion_supervised,
             fermion__export_type=fermion__export_type,
             fermion__endpoint=fermion__endpoint
@@ -1443,6 +1445,7 @@ class SystemPromptFactoryBuilder:
         transmit_websocket_log(
             f"""👤 Analyzed user requirements and expectations.""",
             chat_id=chat.id,
+            sender_type=TransmitWebsocketLogSenderType.LEANMOD,
             fermion__is_fermion_supervised=fermion__is_fermion_supervised,
             fermion__export_type=fermion__export_type,
             fermion__endpoint=fermion__endpoint
@@ -1455,6 +1458,7 @@ class SystemPromptFactoryBuilder:
         transmit_websocket_log(
             f"""🌌 Understanding the current spatial configuration and time.""",
             chat_id=chat.id,
+            sender_type=TransmitWebsocketLogSenderType.LEANMOD,
             fermion__is_fermion_supervised=fermion__is_fermion_supervised,
             fermion__export_type=fermion__export_type,
             fermion__endpoint=fermion__endpoint
@@ -1467,6 +1471,7 @@ class SystemPromptFactoryBuilder:
         transmit_websocket_log(
             f"""🌐 Analyzing Semantor network to find information about other assistants.""",
             chat_id=chat.id,
+            sender_type=TransmitWebsocketLogSenderType.LEANMOD,
             fermion__is_fermion_supervised=fermion__is_fermion_supervised,
             fermion__export_type=fermion__export_type,
             fermion__endpoint=fermion__endpoint
@@ -1482,6 +1487,7 @@ class SystemPromptFactoryBuilder:
         transmit_websocket_log(
             f"""⚒️ Thinking for communication strategies for the available tools.""",
             chat_id=chat.id,
+            sender_type=TransmitWebsocketLogSenderType.LEANMOD,
             fermion__is_fermion_supervised=fermion__is_fermion_supervised,
             fermion__export_type=fermion__export_type,
             fermion__endpoint=fermion__endpoint
@@ -1504,6 +1510,7 @@ class SystemPromptFactoryBuilder:
         transmit_websocket_log(
             f"""🔀 Merging and organizing knowledge and capabilities.""",
             chat_id=chat.id,
+            sender_type=TransmitWebsocketLogSenderType.LEANMOD,
             fermion__is_fermion_supervised=fermion__is_fermion_supervised,
             fermion__export_type=fermion__export_type,
             fermion__endpoint=fermion__endpoint
@@ -1584,6 +1591,7 @@ class SystemPromptFactoryBuilder:
         transmit_websocket_log(
             f"""📜 Gathered primary instructions for operations.""",
             chat_id=chat.id,
+            sender_type=TransmitWebsocketLogSenderType.VOIDFORGER,
             fermion__is_fermion_supervised=fermion__is_fermion_supervised,
             fermion__export_type=fermion__export_type,
             fermion__endpoint=fermion__endpoint
@@ -1600,6 +1608,7 @@ class SystemPromptFactoryBuilder:
         transmit_websocket_log(
             f"""👤 Analyzed user requirements and expectations.""",
             chat_id=chat.id,
+            sender_type=TransmitWebsocketLogSenderType.VOIDFORGER,
             fermion__is_fermion_supervised=fermion__is_fermion_supervised,
             fermion__export_type=fermion__export_type,
             fermion__endpoint=fermion__endpoint
@@ -1612,6 +1621,7 @@ class SystemPromptFactoryBuilder:
         transmit_websocket_log(
             f"""🌌 Understanding the current spatial configuration and time.""",
             chat_id=chat.id,
+            sender_type=TransmitWebsocketLogSenderType.VOIDFORGER,
             fermion__is_fermion_supervised=fermion__is_fermion_supervised,
             fermion__export_type=fermion__export_type,
             fermion__endpoint=fermion__endpoint
@@ -1624,6 +1634,7 @@ class SystemPromptFactoryBuilder:
         transmit_websocket_log(
             f"""🫱🏿‍🫲🏻 Meditating about his own character and personality.""",
             chat_id=chat.id,
+            sender_type=TransmitWebsocketLogSenderType.VOIDFORGER,
             fermion__is_fermion_supervised=fermion__is_fermion_supervised,
             fermion__export_type=fermion__export_type,
             fermion__endpoint=fermion__endpoint
@@ -1636,6 +1647,7 @@ class SystemPromptFactoryBuilder:
         transmit_websocket_log(
             f"""🌐 Adjusting the language and communication parameters.""",
             chat_id=chat.id,
+            sender_type=TransmitWebsocketLogSenderType.VOIDFORGER,
             fermion__is_fermion_supervised=fermion__is_fermion_supervised,
             fermion__export_type=fermion__export_type,
             fermion__endpoint=fermion__endpoint
@@ -1646,6 +1658,7 @@ class SystemPromptFactoryBuilder:
         transmit_websocket_log(
             f"""⚒️ Checking available tools and multi-modal capabilities.""",
             chat_id=chat.id,
+            sender_type=TransmitWebsocketLogSenderType.VOIDFORGER,
             fermion__is_fermion_supervised=fermion__is_fermion_supervised,
             fermion__export_type=fermion__export_type,
             fermion__endpoint=fermion__endpoint
@@ -1661,6 +1674,7 @@ class SystemPromptFactoryBuilder:
         transmit_websocket_log(
             f"""⚒️ Thinking for communication strategies for the available tools.""",
             chat_id=chat.id,
+            sender_type=TransmitWebsocketLogSenderType.VOIDFORGER,
             fermion__is_fermion_supervised=fermion__is_fermion_supervised,
             fermion__export_type=fermion__export_type,
             fermion__endpoint=fermion__endpoint
@@ -1683,6 +1697,7 @@ class SystemPromptFactoryBuilder:
         transmit_websocket_log(
             f"""🔀 Merging and organizing knowledge and capabilities.""",
             chat_id=chat.id,
+            sender_type=TransmitWebsocketLogSenderType.LEANMOD,
             fermion__is_fermion_supervised=fermion__is_fermion_supervised,
             fermion__export_type=fermion__export_type,
             fermion__endpoint=fermion__endpoint

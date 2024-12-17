@@ -14,13 +14,20 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import admin
 
-from apps.notifications.models import NotificationItem
-from apps.notifications.utils import (NOTIFICATION_ITEM_ADMIN_LIST, NOTIFICATION_ITEM_ADMIN_FILTER,
-                                      NOTIFICATION_ITEM_ADMIN_SEARCH)
+from apps.notifications.models import (
+    NotificationItem
+)
+
+from apps.notifications.utils import (
+    NOTIFICATION_ITEM_ADMIN_LIST,
+    NOTIFICATION_ITEM_ADMIN_FILTER,
+    NOTIFICATION_ITEM_ADMIN_SEARCH
+)
 
 logger = logging.getLogger(__name__)
 
@@ -30,4 +37,5 @@ class NotificationItemAdmin(admin.ModelAdmin):
     list_display = NOTIFICATION_ITEM_ADMIN_LIST
     list_filter = NOTIFICATION_ITEM_ADMIN_FILTER
     search_fields = NOTIFICATION_ITEM_ADMIN_SEARCH
+
     ordering = ('-created_at',)

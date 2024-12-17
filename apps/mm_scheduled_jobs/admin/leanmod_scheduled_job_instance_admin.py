@@ -17,7 +17,9 @@
 
 from django.contrib import admin
 
-from apps.mm_scheduled_jobs.models import LeanModScheduledJobInstance
+from apps.mm_scheduled_jobs.models import (
+    LeanModScheduledJobInstance
+)
 
 from apps.mm_scheduled_jobs.utils import (
     LEANMOD_SCHEDULED_JOB_INSTANCE_ADMIN_LIST,

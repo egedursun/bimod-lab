@@ -16,12 +16,45 @@
 #
 
 
-PROJECT_ITEM_ADMIN_LIST = ('organization', 'project_name', 'project_department', 'created_at')
-PROJECT_ITEM_ADMIN_FILTER = ('organization', 'project_name', 'project_department', 'created_at')
-PROJECT_ITEM_ADMIN_SEARCH = ('organization', 'project_name', 'project_department', 'created_at')
+PROJECT_ITEM_ADMIN_LIST = (
+    'organization',
+    'project_name',
+    'project_department',
+    'created_at'
+)
+PROJECT_ITEM_ADMIN_FILTER = (
+    'organization',
+    'project_name',
+    'project_department',
+    'created_at'
+)
+PROJECT_ITEM_ADMIN_SEARCH = (
+    'organization',
+    'project_name',
+    'project_department',
+    'created_at'
+)
 
 PROJECT_TEAM_ITEM_ADMIN_LIST = (
-    'project', 'team_name', 'team_description', 'team_lead', 'created_by_user', 'created_at')
-PROJECT_TEAM_ITEM_ADMIN_FILTER = ('project', 'team_name', 'team_lead', 'created_by_user', 'created_at')
+    'project',
+    'team_name',
+    'team_description',
+    'team_lead',
+    'created_by_user',
+    'created_at'
+)
+PROJECT_TEAM_ITEM_ADMIN_FILTER = (
+    'project',
+    'team_name',
+    'team_lead',
+    'created_by_user',
+    'created_at'
+)
 PROJECT_TEAM_ITEM_ADMIN_SEARCH = (
-    'project', 'team_name', 'team_description', 'team_lead', 'created_by_user', 'created_at')
+    'project',
+    'team_name',
+    'team_description',
+    'team_lead',
+    'created_by_user',
+    'created_at'
+)

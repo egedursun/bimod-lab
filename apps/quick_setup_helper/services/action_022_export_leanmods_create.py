@@ -14,9 +14,13 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
-from apps.export_leanmods.models import ExportLeanmodAssistantAPI
+from apps.export_leanmods.models import (
+    ExportLeanmodAssistantAPI
+)
+
 from apps.leanmod.models import LeanAssistant
 
 logger = logging.getLogger(__name__)
@@ -46,7 +50,9 @@ def action__022_export_leanmods_create(
 
     except Exception as e:
         logger.error(f"Error in action__022_export_leanmods_create: {str(e)}")
+
         return False
 
     logger.info("action__022_export_leanmods_create completed successfully.")
+
     return True

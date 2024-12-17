@@ -14,9 +14,6 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from .list_scheduled_jobs_views import *
 from .create_scheduled_job_views import *

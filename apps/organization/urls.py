@@ -14,31 +14,77 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from django.urls import path
-from .views import (OrganizationView_OrganizationCreate, OrganizationView_OrganizationList,
-                    OrganizationView_OrganizationUpdate,
-                    OrganizationView_OrganizationDelete, OrganizationView_AddBalanceCredits,
-                    OrganizationView_TransferBalance,
-                    OrganizationView_AddGiftCredits)
+
+from .views import (
+    OrganizationView_OrganizationCreate,
+    OrganizationView_OrganizationList,
+    OrganizationView_OrganizationUpdate,
+    OrganizationView_OrganizationDelete,
+    OrganizationView_AddBalanceCredits,
+    OrganizationView_TransferBalance,
+    OrganizationView_AddGiftCredits
+)
 
 app_name = "organization"
 
 urlpatterns = [
-    path('create/',
-         OrganizationView_OrganizationCreate.as_view(template_name="organization/create_organization.html"),
-         name="create"),
-    path('list/', OrganizationView_OrganizationList.as_view(template_name="organization/list_organizations.html"),
-         name="list"),
-    path('update/<int:pk>/', OrganizationView_OrganizationUpdate.as_view(
-        template_name="organization/update_organization.html"), name="update"),
-    path('delete/<int:pk>/', OrganizationView_OrganizationDelete.as_view(),
-         name="delete"),
-    path('add_credits/', OrganizationView_AddBalanceCredits.as_view(),
-         name="add_credits"),
-    path('balance_transfer/', OrganizationView_TransferBalance.as_view(), name='balance_transfer'),
-    path('add_gift_credits/', OrganizationView_AddGiftCredits.as_view(), name='add_gift_credits'),
+    path(
+        'create/',
+        OrganizationView_OrganizationCreate.as_view(
+            template_name="organization/create_organization.html"
+        ),
+        name="create"
+    ),
+
+    path(
+        'list/',
+        OrganizationView_OrganizationList.as_view(
+            template_name="organization/list_organizations.html"
+        ),
+        name="list"
+    ),
+
+    path(
+        'update/<int:pk>/',
+        OrganizationView_OrganizationUpdate.as_view(
+            template_name="organization/update_organization.html"
+        ),
+        name="update"
+    ),
+
+    path(
+        'delete/<int:pk>/',
+        OrganizationView_OrganizationDelete.as_view(
+
+        ),
+        name="delete"
+    ),
+
+    #####
+
+    path(
+        'add_credits/',
+        OrganizationView_AddBalanceCredits.as_view(
+
+        ),
+        name="add_credits"
+    ),
+
+    path(
+        'balance_transfer/',
+        OrganizationView_TransferBalance.as_view(
+
+        ),
+        name='balance_transfer'
+    ),
+
+    path(
+        'add_gift_credits/',
+        OrganizationView_AddGiftCredits.as_view(
+
+        ),
+        name='add_gift_credits'
+    ),
 ]

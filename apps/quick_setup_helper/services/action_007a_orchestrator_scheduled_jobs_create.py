@@ -18,9 +18,15 @@
 
 import logging
 
-from apps.mm_scheduled_jobs.models import OrchestrationScheduledJob
+from apps.mm_scheduled_jobs.models import (
+    OrchestrationScheduledJob
+)
+
 from apps.orchestrations.models import Maestro
-from apps.quick_setup_helper.utils import generate_random_object_id_string
+
+from apps.quick_setup_helper.utils import (
+    generate_random_object_id_string
+)
 
 logger = logging.getLogger(__name__)
 
@@ -39,38 +45,45 @@ def action__007a_orchestrator_scheduled_jobs_create(
         interval_specifier_day_of_week = "*"
         interval_specifier_day_of_month = "*"
         interval_specifier_month_of_year = "*"
+
     elif response__scheduled_job_interval == "per_hour":
         interval_specifier_minute = "0"
         interval_specifier_hour = "*"
         interval_specifier_day_of_week = "*"
         interval_specifier_day_of_month = "*"
         interval_specifier_month_of_year = "*"
+
     elif response__scheduled_job_interval == "per_day":
         interval_specifier_minute = "0"
         interval_specifier_hour = "0"
         interval_specifier_day_of_week = "*"
         interval_specifier_day_of_month = "*"
         interval_specifier_month_of_year = "*"
+
     elif response__scheduled_job_interval == "per_week":
         interval_specifier_minute = "0"
         interval_specifier_hour = "0"
         interval_specifier_day_of_week = "1"
         interval_specifier_day_of_month = "*"
         interval_specifier_month_of_year = "*"
+
     elif response__scheduled_job_interval == "per_month":
         interval_specifier_minute = "0"
         interval_specifier_hour = "0"
         interval_specifier_day_of_week = "*"
         interval_specifier_day_of_month = "1"
         interval_specifier_month_of_year = "*"
+
     elif response__scheduled_job_interval == "per_year":
         interval_specifier_minute = "0"
         interval_specifier_hour = "0"
         interval_specifier_day_of_week = "*"
         interval_specifier_day_of_month = "1"
         interval_specifier_month_of_year = "1"
+
     else:
         logger.error(f"Invalid interval specifier: {response__scheduled_job_interval}")
+
         return False
 
     try:
@@ -100,7 +113,9 @@ def action__007a_orchestrator_scheduled_jobs_create(
 
     except Exception as e:
         logger.error(f"Error in action__007a_orchestrator_scheduled_jobs_create: {str(e)}")
+
         return False
 
     logger.info("action__007a_orchestrator_scheduled_jobs_create completed successfully.")
+
     return True

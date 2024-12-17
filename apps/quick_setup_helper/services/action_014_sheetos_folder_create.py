@@ -14,9 +14,13 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
-from apps.quick_setup_helper.utils import generate_random_object_id_string
+from apps.quick_setup_helper.utils import (
+    generate_random_object_id_string
+)
+
 from apps.sheetos.models import SheetosFolder
 
 
@@ -38,7 +42,9 @@ def action__014_sheetos_folder_create(
 
     except Exception as e:
         logger.error(f"Error in action__014_sheetos_folder_create: {e}")
+
         return False, None
 
     logger.info(f"New sheetos folder created successfully: {new_sheetos_folder}")
+
     return True, new_sheetos_folder

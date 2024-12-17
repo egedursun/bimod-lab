@@ -46,7 +46,7 @@ from apps.llm_transaction.utils import (
 logger = logging.getLogger(__name__)
 
 
-def handle_repo_command_public(
+def handle_site_command_public(
     xc,
     command: str,
     content: str

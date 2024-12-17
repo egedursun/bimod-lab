@@ -14,10 +14,15 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
@@ -30,11 +35,20 @@ from apps.leanmod.models import LeanAssistant
 from apps.mm_triggered_jobs.forms import (
     LeanModTriggeredJobForm
 )
-from apps.mm_triggered_jobs.models import LeanModTriggeredJob
+from apps.mm_triggered_jobs.models import (
+    LeanModTriggeredJob
+)
 
 from apps.organization.models import Organization
-from apps.user_permissions.utils import PermissionNames
-from config.settings import MAX_TRIGGERED_JOBS_PER_LEANMOD
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
+from config.settings import (
+    MAX_TRIGGERED_JOBS_PER_LEANMOD
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -43,6 +57,7 @@ logger = logging.getLogger(__name__)
 class TriggeredJobView_LeanModCreate(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+
         context['form'] = LeanModTriggeredJobForm()
 
         user_orgs = Organization.objects.filter(
@@ -66,15 +81,21 @@ class TriggeredJobView_LeanModCreate(LoginRequiredMixin, TemplateView):
             operation=PermissionNames.ADD_LEANMOD_TRIGGERS
         ):
             messages.error(self.request, "You do not have permission to add LeanMod triggered jobs.")
+
             return redirect('mm_triggered_jobs:leanmod_list')
         ##############################
 
         if form.is_valid():
 
-            triggered_job: LeanModTriggeredJob = form.save(commit=False)
+            triggered_job: LeanModTriggeredJob = form.save(
+                commit=False
+            )
 
             leanmod_id = request.POST.get('trigger_leanmod')
-            trigger_leanmod = LeanAssistant.objects.get(id=leanmod_id)
+
+            trigger_leanmod = LeanAssistant.objects.get(
+                id=leanmod_id
+            )
 
             n_triggered_jobs = trigger_leanmod.triggered_jobs.count()
 

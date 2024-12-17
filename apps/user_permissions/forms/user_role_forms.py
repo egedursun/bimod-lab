@@ -14,22 +14,36 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 
 from django import forms
 
-from apps.user_permissions.models import UserRole
-from apps.user_permissions.utils import PERMISSION_TYPES
+from apps.user_permissions.models import (
+    UserRole
+)
+
+from apps.user_permissions.utils import (
+    PERMISSION_TYPES
+)
 
 
 class UserRoleForm(forms.ModelForm):
     role_permissions = forms.MultipleChoiceField(
-        choices=PERMISSION_TYPES, widget=forms.SelectMultiple(attrs={'class': 'form-select', 'multiple': 'multiple'}),
-        required=True)
+        choices=PERMISSION_TYPES,
+        widget=forms.SelectMultiple(
+            attrs={
+                'class': 'form-select',
+                'multiple': 'multiple'
+            }
+        ),
+        required=True
+    )
 
     class Meta:
         model = UserRole
-        fields = ['organization', 'role_name', 'role_description', 'role_permissions']
+        fields = [
+            'organization',
+            'role_name',
+            'role_description',
+            'role_permissions'
+        ]

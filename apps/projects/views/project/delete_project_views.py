@@ -14,14 +14,32 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import get_object_or_404, redirect
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.shortcuts import (
+    get_object_or_404,
+    redirect
+)
+
 from django.views.generic import TemplateView
 
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+
+)
 from apps.projects.models import ProjectItem
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -31,19 +49,41 @@ class ProjectsView_ProjectDelete(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         project_id = self.kwargs.get("pk")
-        context['project'] = get_object_or_404(ProjectItem, pk=project_id)
+
+        context['project'] = get_object_or_404(
+            ProjectItem,
+            pk=project_id
+        )
+
         return context
 
     def post(self, request, *args, **kwargs):
         project_id = self.kwargs.get("pk")
-        project = get_object_or_404(ProjectItem, pk=project_id)
+
+        ##############################
+        # PERMISSION CHECK FOR - DELETE_PROJECTS
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.DELETE_PROJECTS
+        ):
+            messages.error(self.request, "You do not have permission to delete projects.")
+            return redirect('projects:project_list')
+        ##############################
+
+        project = get_object_or_404(
+            ProjectItem,
+            pk=project_id
+        )
 
         try:
             project.delete()
+
         except Exception as e:
             messages.error(request, f"An error occurred while deleting the Project: {str(e)}")
+
             return redirect("projects:project_list")
 
         messages.success(request, f"Project '{project.project_name}' has been deleted successfully.")
         logger.info(f"Project deleted: {project_id}")
+
         return redirect('projects:project_list')

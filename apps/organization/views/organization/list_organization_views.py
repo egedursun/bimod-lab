@@ -14,18 +14,29 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.core.paginator import Paginator
 from django.views.generic import TemplateView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.organization.models import Organization
-from apps.user_permissions.utils import PermissionNames
-from web_project import TemplateLayout
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
 
+from apps.organization.models import Organization
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
+from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
 
@@ -37,17 +48,26 @@ class OrganizationView_OrganizationList(TemplateView, LoginRequiredMixin):
 
         ##############################
         # PERMISSION CHECK FOR - LIST_ORGANIZATIONS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.LIST_ORGANIZATIONS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.LIST_ORGANIZATIONS
+        ):
             messages.error(self.request, "You do not have permission to list organizations.")
+
             return context
         ##############################
 
         context_user = self.request.user
-        orgs = Organization.objects.filter(users__in=[context_user])
+
+        orgs = Organization.objects.filter(
+            users__in=[context_user]
+        )
+
         paginator = Paginator(orgs, 10)
         page_number = self.request.GET.get('page')
         page_obj = paginator.get_page(page_number)
+
         context['page_obj'] = page_obj
         logger.info(f"Organization list was viewed by User: {self.request.user.id}.")
+
         return context

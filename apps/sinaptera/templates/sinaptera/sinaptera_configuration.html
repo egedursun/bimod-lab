@@ -1,0 +1,672 @@
+{% extends layout_path %}
+
+{% load static %}
+{% load i18n %}
+
+{% block title %}Sinaptera Configuration{% endblock %}
+
+{% block vendor_css %}
+  {{ block.super }}
+
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
+  <link rel="stylesheet" href="{% static 'vendor/libs/sweetalert2/sweetalert2.css' %}" />
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+  <script src="{% static 'vendor/libs/sweetalert2/sweetalert2.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-xl mb-6">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h4 class="mb-0"><strong>
+            <i class="fa fa-cogs me-4"></i>
+            Sinaptera Configuration
+          </strong></h4>
+          <div class="btn btn-danger">
+            <a href="{% url 'sinaptera:reset_configuration' %}" class="text-white reset-configuration-button">
+              <strong><i class="fa fa-refresh me-2"></i> Reset Configuration</strong>
+            </a>
+          </div>
+        </div>
+      </div>
+      <hr>
+      <div class="card-body">
+        <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 align-items-center mb-8"
+             role="alert">
+          <img src="{% static 'img/custom-illustrations-v2/i2-60.png' %}" width="25%" style="border-radius:25px;"
+               class="me-4" alt="Illustration for tip">
+          <span class="alert-icon rounded"><i class="ti ti-bookmark"></i></span>
+          <div class="d-flex flex-column ps-1">
+            <h5 class="alert-heading mb-2">Tip</h5>
+            <p class="mb-0">
+              Configure your Sinaptera environment and evaluation parameters here. Enable or disable various network
+              modules like assistants, leanmods, orchestrators, and voidforgers. Adjust the scoring criteria,
+              branching
+              factors, and evaluation depths to fine-tune how Sinaptera operates and assesses responses.
+            </p>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        </div>
+
+        {% if messages %}
+          {% for message in messages %}
+            <div
+              class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-info{% endif %}"
+              role="alert">
+              {{ message }}
+            </div>
+          {% endfor %}
+        {% endif %}
+
+        <hr>
+
+        <form method="post" class="mt-8" id="configurationForm">
+          {% csrf_token %}
+
+          <div class="row mb-8 d-flex align-items-stretch">
+            <div class="col-3 mb-4 d-flex flex-column">
+              <div>
+                <img src="{% static 'img/sinaptera/sinaptera-1.png' %}" width="100%" style="border-radius:50px;"
+                     class="justify-content-end me-8 p-8 image" alt="Sinaptera Module Image">
+              </div>
+              <div class="alert alert-warning p-4 rounded h-100" style="text-align: justify;">
+                <strong>
+                  <i class="fa fa-exclamation-triangle me-2"></i>
+                  Nitro Boost enhances the performance and speed of Sinaptera manager by increasing the processing
+                  power of the algorithm running in the background as well as the Large Language Model (LLM) resources
+                  used for generating responses. Use this with caution since it can lead to increased costs and
+                  resource consumption.
+                </strong>
+              </div>
+              <hr>
+              <label class="form-label" for="nitro_boost">
+                <strong>Nitro Boost</strong>
+              </label>
+              <br>
+              <label class="switch switch-square switch-lg mt-2">
+                <input type="checkbox" class="switch-input" id="nitro_boost"
+                       name="nitro_boost" {% if sinaptera_configuration.nitro_boost %}checked{% endif %}>
+                <span class="switch-toggle-slider">
+                    <span class="switch-on"><i class="ti ti-check"></i></span>
+                    <span class="switch-off"><i class="ti ti-x"></i></span>
+                  </span>
+              </label>
+            </div>
+
+            <div class="col-3 mb-4 d-flex flex-column">
+              <div>
+                <img src="{% static 'img/sinaptera/sinaptera-2.png' %}" width="100%" style="border-radius:50px;"
+                     class="justify-content-end me-8 p-8 image" alt="Assistants Network">
+              </div>
+              <div class="alert alert-warning p-4 rounded h-100" style="text-align: justify;">
+                <strong>
+                  <i class="fa fa-exclamation-triangle me-2"></i>
+                  Enabling Sinaptera for Assistants will allow the assistants to have more autonomy and control over
+                  their actions to increase their accuracy levels and reliability. This can lead to more accurate
+                  tool usage calls as well as more efficient and effective response generation process.
+                </strong>
+              </div>
+              <hr>
+              <label class="form-label" for="is_active_on_assistants">
+                <strong>Active on Assistants</strong>
+              </label>
+              <br>
+              <label class="switch switch-square switch-lg mt-2">
+                <input type="checkbox" class="switch-input" id="is_active_on_assistants"
+                       name="is_active_on_assistants"
+                       {% if sinaptera_configuration.is_active_on_assistants %}checked{% endif %}>
+                <span class="switch-toggle-slider">
+                    <span class="switch-on"><i class="ti ti-check"></i></span>
+                    <span class="switch-off"><i class="ti ti-x"></i></span>
+                  </span>
+              </label>
+            </div>
+
+            <div class="col-3 mb-4 d-flex flex-column">
+              <div>
+                <img src="{% static 'img/sinaptera/sinaptera-3.png' %}" width="100%" style="border-radius:50px;"
+                     class="justify-content-end me-8 p-8 image" alt="Leanmods Network">
+              </div>
+              <div class="alert alert-warning p-4 rounded h-100" style="text-align: justify;">
+                <strong>
+                  <i class="fa fa-exclamation-triangle me-2"></i>
+                  Enabling Sinaptera for LeanMod agents will allow them to have more autonomy and control over their
+                  actions to increase their accuracy levels and reliability. This can lead to more accurate tool
+                  usage calls as well as more efficient and effective response generation process.
+                </strong>
+              </div>
+              <hr>
+              <label class="form-label" for="is_active_on_leanmods">
+                <strong>Active on Leanmods</strong>
+              </label>
+              <br>
+              <label class="switch switch-square switch-lg mt-2">
+                <input type="checkbox" class="switch-input" id="is_active_on_leanmods"
+                       name="is_active_on_leanmods"
+                       {% if sinaptera_configuration.is_active_on_leanmods %}checked{% endif %}>
+                <span class="switch-toggle-slider">
+                    <span class="switch-on"><i class="ti ti-check"></i></span>
+                    <span class="switch-off"><i class="ti ti-x"></i></span>
+                  </span>
+              </label>
+            </div>
+
+            <div class="col-3 mb-4 d-flex flex-column">
+              <div>
+                <img src="{% static 'img/sinaptera/sinaptera-4.png' %}" width="100%" style="border-radius:50px;"
+                     class="justify-content-end me-8 p-8 image" alt="Orchestrators & Voidforgers">
+              </div>
+              <div class="alert alert-warning p-4 rounded h-100" style="text-align: justify;">
+                <strong>
+                  <i class="fa fa-exclamation-triangle me-2"></i>
+                  Enabling Sinaptera for Orchestrators will allow the orchestration assistants to have more diligence
+                  and control over their actions by using internal reasoning processes, while enabling it for
+                  Voidforgers will allow the Voidforgers to have more autonomy and control over their actions
+                  to increase their accuracy levels and reliability.
+                </strong>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-6">
+                  <label class="form-label d-block mb-8">
+                    <strong>Active on Orchestrators</strong>
+                  </label>
+                  <label class="switch switch-square switch-lg mb-0">
+                    <input type="checkbox" class="switch-input" id="is_active_on_orchestrators"
+                           name="is_active_on_orchestrators"
+                           {% if sinaptera_configuration.is_active_on_orchestrators %}checked{% endif %}>
+                    <span class="switch-toggle-slider">
+                    <span class="switch-on"><i class="ti ti-check"></i></span>
+                    <span class="switch-off"><i class="ti ti-x"></i></span>
+                  </span>
+                  </label>
+                </div>
+                <div class="col-6">
+                  <label class="form-label d-block mb-8">
+                    <strong>Active on Voidforgers</strong>
+                  </label>
+                  <label class="switch switch-square switch-lg mb-0">
+                    <input type="checkbox" class="switch-input" id="is_active_on_voidforgers"
+                           name="is_active_on_voidforgers"
+                           {% if sinaptera_configuration.is_active_on_voidforgers %}checked{% endif %}>
+                    <span class="switch-toggle-slider">
+                    <span class="switch-on"><i class="ti ti-check"></i></span>
+                    <span class="switch-off"><i class="ti ti-x"></i></span>
+                  </span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <hr class="mt-8 mb-8">
+
+          <!-- Rubric Weights Section -->
+          <div class="row mb-8">
+            <div class="col-12 mb-4">
+              <h5><strong>
+                <i class="fa fa-balance-scale me-2"></i>
+                Evaluation Rubric Weights
+              </strong></h5>
+
+              <p class="text-muted">
+                Adjust how Sinaptera evaluates the responses of the Large Language Models (LLMs). Each criterion has a
+                weight from 0 to 10, with 10 being the most important. The weights are relative, which means that
+                independent of the total sum, the relative importance of each criterion compared to the others is
+                the primary factor.
+              </p>
+            </div>
+
+            <div class="col-3 mb-12">
+              <label for="rubric_weight_comprehensiveness"
+                     class="form-label"><strong>Comprehensiveness</strong></label>
+              <div class="d-flex align-items-center">
+                <input type="range" class="form-range" id="rubric_weight_comprehensiveness"
+                       name="rubric_weight_comprehensiveness"
+                       value="{{ sinaptera_configuration.rubric_weight_comprehensiveness }}" min="0" max="10"
+                       oninput="document.getElementById('comprehensiveness_value').innerText=this.value;">
+                <span class="ms-2"
+                      id="comprehensiveness_value">{{ sinaptera_configuration.rubric_weight_comprehensiveness }}</span>
+              </div>
+            </div>
+
+            <div class="col-3 mb-12">
+              <label for="rubric_weight_accuracy" class="form-label"><strong>Accuracy</strong></label>
+              <div class="d-flex align-items-center">
+                <input type="range" class="form-range" id="rubric_weight_accuracy"
+                       name="rubric_weight_accuracy" value="{{ sinaptera_configuration.rubric_weight_accuracy }}"
+                       min="0" max="10"
+                       oninput="document.getElementById('accuracy_value').innerText=this.value;">
+                <span class="ms-2" id="accuracy_value">{{ sinaptera_configuration.rubric_weight_accuracy }}</span>
+              </div>
+            </div>
+
+            <div class="col-3 mb-12">
+              <label for="rubric_weight_relevancy" class="form-label"><strong>Relevancy</strong></label>
+              <div class="d-flex align-items-center">
+                <input type="range" class="form-range" id="rubric_weight_relevancy"
+                       name="rubric_weight_relevancy" value="{{ sinaptera_configuration.rubric_weight_relevancy }}"
+                       min="0" max="10"
+                       oninput="document.getElementById('relevancy_value').innerText=this.value;">
+                <span class="ms-2" id="relevancy_value">{{ sinaptera_configuration.rubric_weight_relevancy }}</span>
+              </div>
+            </div>
+
+            <div class="col-3 mb-12">
+              <label for="rubric_weight_cohesiveness" class="form-label"><strong>Cohesiveness</strong></label>
+              <div class="d-flex align-items-center">
+                <input type="range" class="form-range" id="rubric_weight_cohesiveness"
+                       name="rubric_weight_cohesiveness"
+                       value="{{ sinaptera_configuration.rubric_weight_cohesiveness }}"
+                       min="0" max="10"
+                       oninput="document.getElementById('cohesiveness_value').innerText=this.value;">
+                <span class="ms-2"
+                      id="cohesiveness_value">{{ sinaptera_configuration.rubric_weight_cohesiveness }}</span>
+              </div>
+            </div>
+
+            <div class="col-3 mb-12">
+              <label for="rubric_weight_diligence" class="form-label"><strong>Diligence</strong></label>
+              <div class="d-flex align-items-center">
+                <input type="range" class="form-range" id="rubric_weight_diligence"
+                       name="rubric_weight_diligence" value="{{ sinaptera_configuration.rubric_weight_diligence }}"
+                       min="0" max="10"
+                       oninput="document.getElementById('diligence_value').innerText=this.value;">
+                <span class="ms-2" id="diligence_value">{{ sinaptera_configuration.rubric_weight_diligence }}</span>
+              </div>
+            </div>
+
+            <div class="col-3 mb-12">
+              <label for="rubric_weight_grammar" class="form-label"><strong>Grammar</strong></label>
+              <div class="d-flex align-items-center">
+                <input type="range" class="form-range" id="rubric_weight_grammar"
+                       name="rubric_weight_grammar" value="{{ sinaptera_configuration.rubric_weight_grammar }}"
+                       min="0" max="10"
+                       oninput="document.getElementById('grammar_value').innerText=this.value;">
+                <span class="ms-2" id="grammar_value">{{ sinaptera_configuration.rubric_weight_grammar }}</span>
+              </div>
+            </div>
+
+            <div class="col-3 mb-12">
+              <label for="rubric_weight_naturalness" class="form-label"><strong>Naturalness</strong></label>
+              <div class="d-flex align-items-center">
+                <input type="range" class="form-range" id="rubric_weight_naturalness"
+                       name="rubric_weight_naturalness"
+                       value="{{ sinaptera_configuration.rubric_weight_naturalness }}"
+                       min="0" max="10"
+                       oninput="document.getElementById('naturalness_value').innerText=this.value;">
+                <span class="ms-2"
+                      id="naturalness_value">{{ sinaptera_configuration.rubric_weight_naturalness }}</span>
+              </div>
+            </div>
+
+          </div>
+
+
+          <hr class="mt-8 mb-8">
+
+          <div class="row mb-8">
+            <div class="col-4 mb-4">
+              <div>
+                <img src="{% static 'img/sinaptera/sinaptera-4.png' %}" width="100%" style="border-radius:50px;"
+                     class="justify-content-end me-8 p-8 image" alt="Orchestrators & Voidforgers">
+              </div>
+              <label for="branching_factor" class="form-label"><strong>Branching Factor</strong></label>
+              <input type="number" class="form-control" id="branching_factor"
+                     name="branching_factor" value="{{ sinaptera_configuration.branching_factor }}"
+                     min="1" max="10">
+              <hr>
+              <div class="alert alert-warning p-4 rounded mt-4" style="text-align: justify;">
+                <strong>
+                  <i class="fa fa-exclamation-triangle me-2"></i>
+                  Determines the number of variations of completions to generate for each prompt. Higher values
+                  increase the diversity of options and increase the likelihood of finding the best response. However,
+                  it also increases the processing time and costs.
+                </strong>
+              </div>
+            </div>
+
+            <div class="col-4 mb-4">
+              <div>
+                <img src="{% static 'img/sinaptera/sinaptera-4.png' %}" width="100%" style="border-radius:50px;"
+                     class="justify-content-end me-8 p-8 image" alt="Orchestrators & Voidforgers">
+              </div>
+              <label for="branch_keeping_factor" class="form-label"><strong>Branch Keeping Factor</strong></label>
+              <input type="number" class="form-control" id="branch_keeping_factor"
+                     name="branch_keeping_factor" value="{{ sinaptera_configuration.branch_keeping_factor }}"
+                     min="1" max="10">
+              <hr>
+              <div class="alert alert-warning p-4 rounded mt-4" style="text-align: justify;">
+                <strong>
+                  <i class="fa fa-exclamation-triangle me-2"></i>
+                  Determines the number of completions to keep after the evaluation process is completed for each
+                  of the completion variations. Higher values decrease the likelihood of losing the best response
+                  to local optima issues but also increase the processing time and costs.
+                </strong>
+              </div>
+            </div>
+
+            <div class="col-4 mb-4">
+              <div>
+                <img src="{% static 'img/sinaptera/sinaptera-4.png' %}" width="100%" style="border-radius:50px;"
+                     class="justify-content-end me-8 p-8 image" alt="Orchestrators & Voidforgers">
+              </div>
+              <label for="evaluation_depth_factor" class="form-label"><strong>Evaluation Depth Factor</strong></label>
+              <input type="number" class="form-control" id="evaluation_depth_factor"
+                     name="evaluation_depth_factor" value="{{ sinaptera_configuration.evaluation_depth_factor }}"
+                     min="0" max="10">
+              <hr>
+              <div class="alert alert-warning p-4 rounded mt-4" style="text-align: justify;">
+                <strong>
+                  <i class="fa fa-exclamation-triangle me-2"></i>
+                  Determines the number of steps to evaluate and improve the completions generated by the LLMs.
+                  Higher values increase the likelihood of finding the best response but also increase the processing
+                  time and costs.
+                </strong>
+              </div>
+            </div>
+          </div>
+
+          <hr class="mt-8 mb-8">
+
+          <!-- Additional Rubric Criteria (Optional) -->
+          <div class="row mb-8">
+            <div class="col-12 mb-4">
+              <h5><strong>
+                <i class="fa fa-certificate me-2"></i>
+                Additional Rubric Criteria
+              </strong></h5>
+              <p class="text-muted">
+                Define custom criteria for evaluation. Each criterion should have a name, a weight (0-10), and
+                descriptions for each score level. Add or remove criteria as needed. Adjust the weights with
+                discretion, as their weight relative to the primary criteria will be affected by the total sum
+                of the weights.
+              </p>
+            </div>
+            <div class="col-12 mb-4">
+              <table id="additionalCriteriaTable" class="table table-bordered">
+                <thead>
+                <tr>
+                  <th>Criterion Name</th>
+                  <th>Weight (0-10)</th>
+                  <th>Best Score Description</th>
+                  <th>Above Average Score Description</th>
+                  <th>Below Average Score Description</th>
+                  <th>Worst Score Description</th>
+                  <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% if sinaptera_configuration.additional_rubric_criteria and sinaptera_configuration.additional_rubric_criteria|length > 0 %}
+                  {% for criterion in sinaptera_configuration.additional_rubric_criteria %}
+                    <tr>
+                      <td><input type="text" class="form-control" name="criteria_name[]"
+                                 value="{{ criterion.name|default:'' }}" placeholder="Name"></td>
+                      <td><input type="number" class="form-control" name="criteria_weight[]"
+                                 value="{{ criterion.weight|default:'0' }}" min="0" max="10"></td>
+                      <td><input type="text" class="form-control" name="criteria_3x_desc[]"
+                                 value="{{ criterion.score_3x_description|default:'' }}"
+                                 placeholder="Best Score Description">
+                      </td>
+                      <td><input type="text" class="form-control" name="criteria_2x_desc[]"
+                                 value="{{ criterion.score_2x_description|default:'' }}"
+                                 placeholder="Above Average Score Description">
+                      </td>
+                      <td><input type="text" class="form-control" name="criteria_1x_desc[]"
+                                 value="{{ criterion.score_1x_description|default:'' }}"
+                                 placeholder="Below Average Score Description">
+                      </td>
+                      <td><input type="text" class="form-control" name="criteria_0x_desc[]"
+                                 value="{{ criterion.score_0x_description|default:'' }}"
+                                 placeholder="Worst Score Description">
+                      </td>
+                      <td>
+                        <button class="btn bg-label-danger" type="button" onclick="removeCriteriaRow(this)">
+                          <i class="fa fa-remove"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                {% else %}
+                  <!-- If no criteria exist yet, add one blank row -->
+                  <tr>
+                    <td><input type="text" class="form-control" name="criteria_name[]" placeholder="Name"></td>
+                    <td><input type="number" class="form-control" name="criteria_weight[]" min="0" max="10" value="0">
+                    </td>
+                    <td><input type="text" class="form-control" name="criteria_3x_desc[]"
+                               placeholder="Best Score Description"></td>
+                    <td><input type="text" class="form-control" name="criteria_2x_desc[]"
+                               placeholder="Above Average Score Description"></td>
+                    <td><input type="text" class="form-control" name="criteria_1x_desc[]"
+                               placeholder="Below Average Score Description"></td>
+                    <td><input type="text" class="form-control" name="criteria_0x_desc[]"
+                               placeholder="Worst Score Description"></td>
+                    <td>
+                      <button class="btn bg-label-danger" type="button" onclick="removeCriteriaRow(this)">
+                        <i class="fa fa-remove"></i>
+                      </button>
+                    </td>
+                  </tr>
+                {% endif %}
+                </tbody>
+              </table>
+              <button type="button" onclick="addCriteriaRow('additionalCriteriaTable')"
+                      class="btn btn-success d-grid w-25 mt-4">
+                <strong><i class="fa fa-plus me-4"></i>Add New Criterion</strong>
+              </button>
+
+              <!-- Hidden field to store JSON before submission -->
+              <input type="hidden" name="additional_rubric_criteria_json" id="additional_rubric_criteria_json">
+            </div>
+          </div>
+
+          <!-- Estimated Costs Section -->
+          <div class="row mb-8 mt-8">
+            <div class="col-12 mb-4">
+              <h5><strong>
+                <i class="fa fa-dollar-sign me-2"></i>
+                Estimated Costs
+                <span class="badge bg-primary ms-4 p-2 rounded text-white">
+                    <strong>
+                      <i class="fa fa-info-circle me-2"></i>
+                      Save to Update
+                    </strong>
+                  </span>
+              </strong></h5>
+              <p class="text-muted">
+                The estimated costs are calculated based on the current configuration and the expected usage of the
+                Sinaptera environment. The costs are calculated based on the number of completions generated, the
+                number of evaluations performed, and the resources used by the LLMs and other modules. Please note
+                that estimation might not be 100% accurate and the actual costs might vary depending on the usage
+                patterns and the actual resource consumption.
+              </p>
+
+              <hr>
+
+              <div class="row mt-12">
+                <div class="col-4">
+                  <h6>
+                    <strong>
+                      <i class="fa fa-cogs me-2"></i>
+                      Potential Cost Multiplier
+                    </strong>
+                  </h6>
+                  <h4 class="alert alert-dark p-4 rounded mt-4 border border-primary border-2 rounded"
+                      style="text-align: justify;">
+                    <strong>
+                      <i class="fa fa-times me-2"></i>
+                      {{ cost_multiplier.0 }}
+                    </strong>
+                  </h4>
+                  <hr>
+                  <div class="alert alert-dark p-4 rounded mt-4" style="text-align: justify;">
+                    <strong>
+                      <i class="fa fa-info-circle me-2"></i>
+                      The estimated cost compared to standard response generation process. (e.g. 1.0 means no change,
+                      while 3.2 means a transaction normally costing $0,10 is now expected to cost $0,32)
+                    </strong>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <h6>
+                    <strong>
+                      <i class="fa fa-cogs me-2"></i>
+                      Potential Accuracy Gains
+                    </strong>
+                  </h6>
+                  <h4 class="alert alert-dark p-4 rounded mt-4 border border-primary border-2 rounded"
+                      style="text-align: justify;">
+                    <strong>
+                      {{ accuracy_multiplier.1 }}
+                      <i class="fa fa-percent me-2"></i>
+                    </strong>
+                  </h4>
+                  <hr>
+                  <div class="alert alert-dark p-4 rounded mt-4" style="text-align: justify;">
+                    <strong>
+                      <i class="fa fa-info-circle me-2"></i>
+                      The estimated accuracy gains compared to standard response generation process. (e.g. 0% means no
+                      change, while 20% means a 20% potential absolute increase in response accuracy)
+                    </strong>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <h6>
+                    <strong>
+                      <i class="fa fa-cogs me-2"></i>
+                      Potential Processing Speed
+                    </strong>
+                  </h6>
+                  <h4 class="alert alert-dark p-4 rounded mt-4 border border-primary border-2 rounded"
+                      style="text-align: justify;">
+                    <strong>
+                      {{ time_multiplier.1 }}
+                      <i class="fa fa-percent me-2"></i>
+                    </strong>
+                  </h4>
+                  <hr>
+                  <div class="alert alert-dark p-4 rounded mt-4" style="text-align: justify;">
+                    <strong>
+                      <i class="fa fa-info-circle me-2"></i>
+                      The estimated processing speed compared to standard response generation process. (e.g. 100%
+                      means
+                      no change, while 50% means it will take around 2x longer to generate a response)
+                    </strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <hr class="mt-8 mb-8">
+
+          <div class="row">
+            <div class="col-6">
+              <button type="submit" class="btn btn-primary mt-4 mb-4 w-100">
+                <strong><i class="fa fa-save me-2"></i> Save Sinaptera Configuration</strong>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  </div>
+{% endblock %}
+
+{% block page_js %}
+  <script>
+    function addCriteriaRow(tableId) {
+      const tableBody = document.querySelector('#' + tableId + ' tbody');
+      const newRow = `
+      <tr>
+        <td><input type="text" class="form-control" name="criteria_name[]" placeholder="Name"></td>
+        <td><input type="number" class="form-control" name="criteria_weight[]" min="0" max="10" value="0"></td>
+        <td><input type="text" class="form-control" name="criteria_3x_desc[]" placeholder="Best Score Description"></td>
+        <td><input type="text" class="form-control" name="criteria_2x_desc[]" placeholder="Above Average Score Description"></td>
+        <td><input type="text" class="form-control" name="criteria_1x_desc[]" placeholder="Below Average Score Description"></td>
+        <td><input type="text" class="form-control" name="criteria_0x_desc[]" placeholder="Worst Score Description"></td>
+        <td>
+          <button class="btn bg-label-danger" type="button" onclick="removeCriteriaRow(this)"><i class="fa fa-remove"></i></button>
+        </td>
+      </tr>
+    `;
+      tableBody.insertAdjacentHTML('beforeend', newRow);
+    }
+
+    function removeCriteriaRow(button) {
+      const row = button.closest('tr');
+      row.remove();
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const form = document.getElementById('configurationForm');
+      if (form) {
+        form.addEventListener('submit', function() {
+          const criteriaNames = document.getElementsByName('criteria_name[]');
+          const criteriaWeights = document.getElementsByName('criteria_weight[]');
+          const criteria3xDesc = document.getElementsByName('criteria_3x_desc[]');
+          const criteria2xDesc = document.getElementsByName('criteria_2x_desc[]');
+          const criteria1xDesc = document.getElementsByName('criteria_1x_desc[]');
+          const criteria0xDesc = document.getElementsByName('criteria_0x_desc[]');
+
+          let criteriaArray = [];
+          for (let i = 0; i < criteriaNames.length; i++) {
+            let name = criteriaNames[i].value.trim();
+            let weight = parseInt(criteriaWeights[i].value) || 0;
+            let desc3x = criteria3xDesc[i].value.trim();
+            let desc2x = criteria2xDesc[i].value.trim();
+            let desc1x = criteria1xDesc[i].value.trim();
+            let desc0x = criteria0xDesc[i].value.trim();
+
+            criteriaArray.push({
+              'name': name,
+              'weight': weight,
+              'score_3x_description': desc3x,
+              'score_2x_description': desc2x,
+              'score_1x_description': desc1x,
+              'score_0x_description': desc0x
+            });
+          }
+
+          document.getElementById('additional_rubric_criteria_json').value = JSON.stringify(criteriaArray);
+        });
+      } else {
+        console.error('Form with id="configurationForm" not found!');
+      }
+    });
+  </script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const resetLinks = document.querySelectorAll('.reset-configuration-button');
+      resetLinks.forEach(function(link) {
+        link.addEventListener('click', function(event) {
+          event.preventDefault();
+
+          Swal.fire({
+            title: 'Are you sure?',
+            text: 'You won\'t be able to revert this action.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, reset configuration!',
+            cancelButtonText: 'No, cancel!',
+            customClass: {
+              confirmButton: 'btn btn-danger me-2 waves-effect waves-light',
+              cancelButton: 'btn btn-label-secondary waves-effect waves-light'
+            },
+            buttonsStyling: false
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.href = link.href;
+            }
+          });
+        });
+      });
+    });
+  </script>
+{% endblock page_js %}

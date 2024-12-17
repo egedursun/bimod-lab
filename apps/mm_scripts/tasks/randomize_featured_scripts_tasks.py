@@ -14,13 +14,18 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from celery import shared_task
 
-from apps.mm_scripts.models import CustomScript
-from apps.mm_scripts.utils import NUMBER_OF_RANDOM_FEATURED_SCRIPTS
+from apps.mm_scripts.models import (
+    CustomScript
+)
 
+from apps.mm_scripts.utils import (
+    NUMBER_OF_RANDOM_FEATURED_SCRIPTS
+)
 
 logger = logging.getLogger(__name__)
 
@@ -28,11 +33,18 @@ logger = logging.getLogger(__name__)
 @shared_task
 def randomize_featured_scripts():
     all_scripts = CustomScript.objects.all()
+
     for script in all_scripts:
         script.is_featured = False
+
         script.save()
-    featured_scripts = CustomScript.objects.order_by('?')[:NUMBER_OF_RANDOM_FEATURED_SCRIPTS]
+
+    featured_scripts = CustomScript.objects.order_by(
+        '?'
+    )[:NUMBER_OF_RANDOM_FEATURED_SCRIPTS]
+
     for script in featured_scripts:
         script.is_featured = True
         logger.info(f"Randomized Featured Script: {script.id}")
+
         script.save()

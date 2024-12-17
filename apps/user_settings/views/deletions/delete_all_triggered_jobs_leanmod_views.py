@@ -14,16 +14,29 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.shortcuts import redirect
 from django.views import View
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.mm_triggered_jobs.models import LeanModTriggeredJob
-from apps.user_permissions.utils import PermissionNames
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
+from apps.mm_triggered_jobs.models import (
+    LeanModTriggeredJob
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
 
 logger = logging.getLogger(__name__)
 
@@ -57,6 +70,7 @@ class SettingsView_DeleteAllLeanModTriggeredJobs(View, LoginRequiredMixin):
             operation=PermissionNames.DELETE_LEANMOD_TRIGGERS
         ):
             messages.error(self.request, "You do not have permission to delete LeanMod triggered jobs.")
+
             return redirect('user_settings:settings')
         ##############################
 

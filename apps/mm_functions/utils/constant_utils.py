@@ -14,18 +14,20 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 FUNCTION_IO_FIELDS_FORMAT = {
-    "name": "string", "description": "string", "type": "string", "required": "boolean",
+    "name": "string",
+    "description": "string",
+    "type": "string",
+    "required": "boolean",
 }
 FUNCTION_PACKAGES_FORMAT = {
-    "name": "string", "version": "string",
+    "name": "string",
+    "version": "string",
 }
 FUNCTION_SOURCES = {
-    "internal": "internal", "external": "external",
+    "internal": "internal",
+    "external": "external",
 }
 CUSTOM_FUNCTION_CATEGORIES = [
     ("data", "Data"),
@@ -52,10 +54,32 @@ CUSTOM_FUNCTION_CATEGORIES = [
 
 NUMBER_OF_RANDOM_FEATURED_FUNCTIONS = 5
 
-CUSTOM_FUNCTION_ADMIN_LIST = ("name", "is_public", "created_at", "updated_at")
-CUSTOM_FUNCTION_ADMIN_FILTER = ("is_public",)
-CUSTOM_FUNCTION_ADMIN_SEARCH = ("name", "description")
+CUSTOM_FUNCTION_ADMIN_LIST = (
+    "name",
+    "is_public",
+    "created_at",
+    "updated_at"
+)
+CUSTOM_FUNCTION_ADMIN_FILTER = (
+    "is_public",
+)
+CUSTOM_FUNCTION_ADMIN_SEARCH = (
+    "name",
+    "description"
+)
 
-CUSTOM_FUNCTION_REF_ADMIN_LIST = ("custom_function", "assistant", "created_by_user", "created_at", "updated_at")
-CUSTOM_FUNCTION_REF_ADMIN_FILTER = ("assistant", "created_by_user")
-CUSTOM_FUNCTION_REF_ADMIN_SEARCH = ("custom_function__name", "assistant__name")
+CUSTOM_FUNCTION_REF_ADMIN_LIST = (
+    "custom_function",
+    "assistant",
+    "created_by_user",
+    "created_at",
+    "updated_at"
+)
+CUSTOM_FUNCTION_REF_ADMIN_FILTER = (
+    "assistant",
+    "created_by_user"
+)
+CUSTOM_FUNCTION_REF_ADMIN_SEARCH = (
+    "custom_function__name",
+    "assistant__name"
+)

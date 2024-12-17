@@ -14,11 +14,18 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from apps.llm_core.models import LLMCore
-from apps.llm_core.utils import GPTModelNamesNames
-from apps.quick_setup_helper.utils import generate_random_object_id_string
+
+from apps.llm_core.utils import (
+    GPTModelNamesNames
+)
+
+from apps.quick_setup_helper.utils import (
+    generate_random_object_id_string
+)
 
 logger = logging.getLogger(__name__)
 
@@ -41,9 +48,12 @@ def action__002_llm_core_create(
             nickname="General Core Model" + " " + generate_random_object_id_string(),
             description="The primary LLM core model generated for organization " + metadata__organization.name + ".",
         )
+
     except Exception as e:
         logger.error(f"Error in action__002_llm_core_create: {e}")
+
         return False, None
 
     logger.info("action__002_llm_core_create completed successfully.")
+
     return True, new_llm_model

@@ -14,14 +14,27 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.shortcuts import redirect
 from django.views import View
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.metatempo.models import MetaTempoAssistantConnection
-from apps.user_permissions.utils import PermissionNames
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
+from apps.metatempo.models import (
+    MetaTempoAssistantConnection
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
 
 
 class MetaTempoView_AssistantConnectionDelete(LoginRequiredMixin, View):
@@ -34,18 +47,30 @@ class MetaTempoView_AssistantConnectionDelete(LoginRequiredMixin, View):
 
         ##############################
         # PERMISSION CHECK FOR - DISCONNECT_ASSISTANTS_FROM_METATEMPO
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.DISCONNECT_ASSISTANTS_FROM_METATEMPO):
-            messages.error(self.request, "You do not have permission to disconnect an assistant from a MetaTempo tracker.")
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.DISCONNECT_ASSISTANTS_FROM_METATEMPO
+        ):
+            messages.error(
+                self.request,
+                "You do not have permission to disconnect an assistant from a MetaTempo tracker."
+            )
+
             return redirect("metatempo:connect_assistant")
         ##############################
 
         try:
-            connection = MetaTempoAssistantConnection.objects.get(id=connection_id)
+            connection = MetaTempoAssistantConnection.objects.get(
+                id=connection_id
+            )
+
             connection.delete()
+
         except Exception as e:
             messages.error(request, "An error occurred while deleting the connection: " + str(e))
+
             return redirect("metatempo:connect_assistant")
 
         messages.success(request, "Connection deleted successfully.")
+
         return redirect("metatempo:connect_assistant")

@@ -18,7 +18,11 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.shortcuts import redirect
 from django.views import View
 
@@ -66,8 +70,17 @@ logger = logging.getLogger(__name__)
 
 class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
 
-    def get(self, request, *args, **kwargs):
-        return self.post(request, *args, **kwargs)
+    def get(
+        self,
+        request,
+        *args,
+        **kwargs
+    ):
+        return self.post(
+            request,
+            *args,
+            **kwargs
+        )
 
     def post(self, request, *args, **kwargs):
         context_user = request.user
@@ -76,20 +89,35 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
         # STEP 1 (+10%) = 10%
         ############################################################################################################
         # Q1: What is the name of your organization?
-        response__organization_name = request.POST.get('response__organization_name')
 
-        if response__organization_name is None or response__organization_name.strip() == "":
+        response__organization_name = request.POST.get(
+            'response__organization_name'
+        )
+
+        if (
+            response__organization_name is None or
+            response__organization_name.strip() == ""
+        ):
             messages.error(request, f"Organization name is required.")
+
             return redirect("quick_setup_helper:wrapper")
 
         # Q2: Can you please describe your organization and what operations your organization is involved in?
-        response__organization_description = request.POST.get('response__organization_description')
 
-        if response__organization_description is None or response__organization_description.strip() == "":
+        response__organization_description = request.POST.get(
+            'response__organization_description'
+        )
+
+        if (
+            response__organization_description is None or
+            response__organization_description.strip() == ""
+        ):
             messages.error(request, f"Organization description is required.")
+
             return redirect("quick_setup_helper:wrapper")
 
         # Action-001: Create a new organization
+
         success_001, new_organization = action__001_organization_create(
             metadata__user=context_user,
             response__organization_name=response__organization_name,
@@ -100,6 +128,7 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
             print(
                 f"Failed to create a new organization. response__organization_name: {response__organization_name}")
             messages.error(request, f"Failed to create a new organization.")
+
             return redirect("quick_setup_helper:wrapper")
         ############################################################################################################
 
@@ -107,22 +136,39 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
         # STEP 2 (+5%) = 15%
         ############################################################################################################
         # Q3: Please enter your OpenAI API key
-        response__llm_core_openai_api_key = request.POST.get('response__llm_core_openai_api_key')
 
-        if response__llm_core_openai_api_key is None or response__llm_core_openai_api_key.strip() == "":
+        response__llm_core_openai_api_key = request.POST.get(
+            'response__llm_core_openai_api_key'
+        )
+
+        if (
+            response__llm_core_openai_api_key is None or
+            response__llm_core_openai_api_key.strip() == ""
+        ):
             messages.error(request, f"OpenAI API key is required.")
+
             return redirect("quick_setup_helper:wrapper")
 
         # Q4: Which would be more important for your assistants? (Don't worry, you can always change you mind and update later on.)
-        response__openai_temperature = request.POST.get('response__openai_temperature')
 
-        if response__openai_temperature is None or response__openai_temperature.strip() == "":
+        response__openai_temperature = request.POST.get(
+            'response__openai_temperature'
+        )
+
+        if (
+            response__openai_temperature is None or
+            response__openai_temperature.strip() == ""
+        ):
             messages.error(request, f"Assistant behavior specifier field is required.")
+
             return redirect("quick_setup_helper:wrapper")
 
-        response__openai_temperature = float(response__openai_temperature)
+        response__openai_temperature = float(
+            response__openai_temperature
+        )
 
         # Action-002: Create the LLM Core
+
         success_002, new_llm_model = action__002_llm_core_create(
             metadata__user=context_user,
             metadata__organization=new_organization,
@@ -134,6 +180,7 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
             print(
                 f"Failed to create a new LLM Core. response__llm_core_openai_api_key.")
             messages.error(request, f"Failed to create the LLM Core.")
+
             return redirect("quick_setup_helper:wrapper")
 
         ############################################################################################################
@@ -142,27 +189,58 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
         # STEP 3 (+20%) = 35%
         ############################################################################################################
         # Q5: Okay, let's hire your first team for your needs. Can you list the use cases you plan to use your AI agents?
-        response__assistant_use_case_1 = request.POST.get('response__assistant_use_case_1')
-        response__assistant_use_case_2 = request.POST.get('response__assistant_use_case_2')
-        response__assistant_use_case_3 = request.POST.get('response__assistant_use_case_3')
-        response__assistant_use_case_4 = request.POST.get('response__assistant_use_case_4')
-        response__assistant_use_case_5 = request.POST.get('response__assistant_use_case_5')
+
+        response__assistant_use_case_1 = request.POST.get(
+            'response__assistant_use_case_1'
+        )
+
+        response__assistant_use_case_2 = request.POST.get(
+            'response__assistant_use_case_2'
+        )
+
+        response__assistant_use_case_3 = request.POST.get(
+            'response__assistant_use_case_3'
+        )
+
+        response__assistant_use_case_4 = request.POST.get(
+            'response__assistant_use_case_4'
+        )
+
+        response__assistant_use_case_5 = request.POST.get(
+            'response__assistant_use_case_5'
+        )
 
         response__assistant_use_cases_list = []
+
         if response__assistant_use_case_1 and response__assistant_use_case_1.strip() != "":
-            response__assistant_use_cases_list.append(response__assistant_use_case_1)
+            response__assistant_use_cases_list.append(
+                response__assistant_use_case_1
+            )
+
         if response__assistant_use_case_2 and response__assistant_use_case_2.strip() != "":
-            response__assistant_use_cases_list.append(response__assistant_use_case_2)
+            response__assistant_use_cases_list.append(
+                response__assistant_use_case_2
+            )
+
         if response__assistant_use_case_3 and response__assistant_use_case_3.strip() != "":
-            response__assistant_use_cases_list.append(response__assistant_use_case_3)
+            response__assistant_use_cases_list.append(
+                response__assistant_use_case_3
+            )
+
         if response__assistant_use_case_4 and response__assistant_use_case_4.strip() != "":
-            response__assistant_use_cases_list.append(response__assistant_use_case_4)
+            response__assistant_use_cases_list.append(
+                response__assistant_use_case_4
+            )
+
         if response__assistant_use_case_5 and response__assistant_use_case_5.strip() != "":
-            response__assistant_use_cases_list.append(response__assistant_use_case_5)
+            response__assistant_use_cases_list.append(
+                response__assistant_use_case_5
+            )
 
         if len(response__assistant_use_cases_list) != 0:
 
             # Action-003: Create the Meta Integration Teams
+
             success_003, new_assistants, new_leanmods, new_orchestrators = action__003_meta_integration_teams_create(
                 metadata__user=context_user,
                 metadata__organization=new_organization,
@@ -174,27 +252,32 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
                 print(
                     f"Failed to create the Meta Integration Teams. response__assistant_use_cases_list.")
                 messages.error(request, f"Failed to create the Meta Integration Teams.")
+
                 return redirect("quick_setup_helper:wrapper")
 
             if len(new_assistants) == 0:
                 print(
                     f"No assistants were created. response__assistant_use_cases_list.")
                 messages.error(request, f"No assistants were created.")
+
                 return redirect("quick_setup_helper:wrapper")
 
             if len(new_leanmods) == 0:
                 print(
                     f"No leanmods were created. response__assistant_use_cases_list.")
                 messages.error(request, f"No leanmods were created.")
+
                 return redirect("quick_setup_helper:wrapper")
 
             if len(new_orchestrators) == 0:
                 print(
                     f"No orchestrators were created. response__assistant_use_cases_list.")
                 messages.error(request, f"No orchestrators were created.")
+
                 return redirect("quick_setup_helper:wrapper")
 
             # Action-004: Create the Media Storages for Assistants
+
             success_004 = action__004_media_storages_create(
                 metadata__assistants=new_assistants
             )
@@ -205,9 +288,12 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
                 messages.error(request, f"Failed to create the Media Storages for Assistants.")
                 pass
 
-            metadata__maximum__pages_to_index = request.POST.get('response__maximum__pages_to_index')
+            metadata__maximum__pages_to_index = request.POST.get(
+                'response__maximum__pages_to_index'
+            )
 
             # Action-004a: Create the Website Storage for Assistants
+
             success_004a = action__004a_website_storages_create(
                 metadata__user=context_user,
                 metadata__assistants=new_assistants,
@@ -221,27 +307,61 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
                 pass
 
             # Action-004b: Index Websites requested by the User
-            requested_website_url_1 = request.POST.get('response__datasource_website_url_1')
-            requested_website_url_2 = request.POST.get('response__datasource_website_url_2')
-            requested_website_url_3 = request.POST.get('response__datasource_website_url_3')
-            requested_website_url_4 = request.POST.get('response__datasource_website_url_4')
-            requested_website_url_5 = request.POST.get('response__datasource_website_url_5')
+
+            requested_website_url_1 = request.POST.get(
+                'response__datasource_website_url_1'
+            )
+
+            requested_website_url_2 = request.POST.get(
+                'response__datasource_website_url_2'
+            )
+
+            requested_website_url_3 = request.POST.get(
+                'response__datasource_website_url_3'
+            )
+
+            requested_website_url_4 = request.POST.get(
+                'response__datasource_website_url_4'
+            )
+
+            requested_website_url_5 = request.POST.get(
+                'response__datasource_website_url_5'
+            )
 
             requested_website_urls = []
             if requested_website_url_1 and requested_website_url_1.strip() != "":
-                requested_website_urls.append(requested_website_url_1)
+                requested_website_urls.append(
+                    requested_website_url_1
+                )
+
             if requested_website_url_2 and requested_website_url_2.strip() != "":
-                requested_website_urls.append(requested_website_url_2)
+                requested_website_urls.append(
+                    requested_website_url_2
+                )
+
             if requested_website_url_3 and requested_website_url_3.strip() != "":
-                requested_website_urls.append(requested_website_url_3)
+                requested_website_urls.append(
+                    requested_website_url_3
+                )
+
             if requested_website_url_4 and requested_website_url_4.strip() != "":
-                requested_website_urls.append(requested_website_url_4)
+                requested_website_urls.append(
+                    requested_website_url_4
+                )
+
             if requested_website_url_5 and requested_website_url_5.strip() != "":
-                requested_website_urls.append(requested_website_url_5)
+                requested_website_urls.append(
+                    requested_website_url_5
+                )
 
-            response__internal_data_sources_decision = request.POST.get('response__internal_data_sources_decision')
+            response__internal_data_sources_decision = request.POST.get(
+                'response__internal_data_sources_decision'
+            )
 
-            if len(requested_website_urls) != 0 and response__internal_data_sources_decision == 'yes':
+            if (
+                len(requested_website_urls) != 0 and
+                response__internal_data_sources_decision == 'yes'
+            ):
 
                 success_004b = action__004b_website_items_create(
                     metadata__user=context_user,
@@ -268,6 +388,7 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
                 pass
 
             # Action-004c: Create the knowledge base storages for assistants
+
             success_004c = action_004c_knowledge_bases_create(
                 metadata__user=context_user,
                 metadata__assistants=new_assistants,
@@ -277,13 +398,19 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
                 print(
                     f"Failed to create the knowledge base storages for assistants. response__assistant_use_cases_list.")
                 messages.error(request, f"Failed to create the knowledge base storages for assistants.")
+
                 return redirect("quick_setup_helper:wrapper")
 
             # Action-004d: Index the documents in the knowledge bases
 
-            response__documents = request.FILES.getlist('response__knowledge_base_documents')
+            response__documents = request.FILES.getlist(
+                'response__knowledge_base_documents'
+            )
 
-            if len(response__documents) != 0 and response__internal_data_sources_decision == 'yes':
+            if (
+                len(response__documents) != 0 and
+                response__internal_data_sources_decision == 'yes'
+            ):
 
                 success_004b = action_004d_knowledge_base_docs_create(
                     metadata__user=context_user,
@@ -322,6 +449,7 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
                 pass
 
             # Action-004e: Create the code base storages for assistants
+
             success_004e = action_004e_code_bases_create(
                 metadata__user=context_user,
                 metadata__assistants=new_assistants,
@@ -331,29 +459,62 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
                 print(
                     f"Failed to create the code base storages for assistants. response__assistant_use_cases_list.")
                 messages.error(request, f"Failed to create the code base storages for assistants.")
+
                 return redirect("quick_setup_helper:wrapper")
 
             # Action-004f: Index the repositories in the code bases
 
-            requested_repository_url_1 = request.POST.get('response__datasource_repository_url_1')
-            requested_repository_url_2 = request.POST.get('response__datasource_repository_url_2')
-            requested_repository_url_3 = request.POST.get('response__datasource_repository_url_3')
-            requested_repository_url_4 = request.POST.get('response__datasource_repository_url_4')
-            requested_repository_url_5 = request.POST.get('response__datasource_repository_url_5')
+            requested_repository_url_1 = request.POST.get(
+                'response__datasource_repository_url_1'
+            )
+
+            requested_repository_url_2 = request.POST.get(
+                'response__datasource_repository_url_2'
+            )
+
+            requested_repository_url_3 = request.POST.get(
+                'response__datasource_repository_url_3'
+            )
+
+            requested_repository_url_4 = request.POST.get(
+                'response__datasource_repository_url_4'
+            )
+
+            requested_repository_url_5 = request.POST.get(
+                'response__datasource_repository_url_5'
+            )
 
             requested_repository_urls = []
-            if requested_repository_url_1 and requested_repository_url_1.strip() != "":
-                requested_repository_urls.append(requested_repository_url_1)
-            if requested_repository_url_2 and requested_repository_url_2.strip() != "":
-                requested_repository_urls.append(requested_repository_url_2)
-            if requested_repository_url_3 and requested_repository_url_3.strip() != "":
-                requested_repository_urls.append(requested_repository_url_3)
-            if requested_repository_url_4 and requested_repository_url_4.strip() != "":
-                requested_repository_urls.append(requested_repository_url_4)
-            if requested_repository_url_5 and requested_repository_url_5.strip() != "":
-                requested_repository_urls.append(requested_repository_url_5)
 
-            if len(requested_repository_urls) != 0 and response__internal_data_sources_decision == 'yes':
+            if requested_repository_url_1 and requested_repository_url_1.strip() != "":
+                requested_repository_urls.append(
+                    requested_repository_url_1
+                )
+
+            if requested_repository_url_2 and requested_repository_url_2.strip() != "":
+                requested_repository_urls.append(
+                    requested_repository_url_2
+                )
+
+            if requested_repository_url_3 and requested_repository_url_3.strip() != "":
+                requested_repository_urls.append(
+                    requested_repository_url_3
+                )
+
+            if requested_repository_url_4 and requested_repository_url_4.strip() != "":
+                requested_repository_urls.append(
+                    requested_repository_url_4
+                )
+
+            if requested_repository_url_5 and requested_repository_url_5.strip() != "":
+                requested_repository_urls.append(
+                    requested_repository_url_5
+                )
+
+            if (
+                len(requested_repository_urls) != 0 and
+                response__internal_data_sources_decision == 'yes'
+            ):
 
                 success_004f = action__004f_code_base_repos_create(
                     metadata__user=context_user,
@@ -392,6 +553,7 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
                 pass
 
             # Action-005: Create the Web Browsers for Assistants
+
             success_005 = action__005_web_browsers_create(
                 metadata__user=context_user,
                 metadata__assistants=new_assistants
@@ -404,6 +566,7 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
                 pass
 
             # Action-006: Create the ML Model Storages for Assistants
+
             success_006 = action__006_ml_model_storages_create(
                 metadata__assistants=new_assistants
             )
@@ -417,6 +580,7 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
         else:
             print("No assistant use cases were provided.")
             messages.error(request, f"No assistant use cases were provided.")
+
             return redirect("quick_setup_helper:wrapper")
 
         ############################################################################################################
@@ -426,31 +590,62 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
         ############################################################################################################
         # Q6: You can list the notes you want to share with your assistants here.
 
-        response__assistant_notes_decision = request.POST.get('response__assistant_notes_decision')
+        response__assistant_notes_decision = request.POST.get(
+            'response__assistant_notes_decision'
+        )
 
         if response__assistant_notes_decision == 'yes':
 
-            response__assistant_note_1 = request.POST.get('response__assistant_note_1')
-            response__assistant_note_2 = request.POST.get('response__assistant_note_2')
-            response__assistant_note_3 = request.POST.get('response__assistant_note_3')
-            response__assistant_note_4 = request.POST.get('response__assistant_note_4')
-            response__assistant_note_5 = request.POST.get('response__assistant_note_5')
+            response__assistant_note_1 = request.POST.get(
+                'response__assistant_note_1'
+            )
+
+            response__assistant_note_2 = request.POST.get(
+                'response__assistant_note_2'
+            )
+
+            response__assistant_note_3 = request.POST.get(
+                'response__assistant_note_3'
+            )
+
+            response__assistant_note_4 = request.POST.get(
+                'response__assistant_note_4'
+            )
+
+            response__assistant_note_5 = request.POST.get(
+                'response__assistant_note_5'
+            )
 
             response__assistant_notes = []
             if response__assistant_note_1 and response__assistant_note_1.strip() != "":
-                response__assistant_notes.append(response__assistant_note_1)
+                response__assistant_notes.append(
+                    response__assistant_note_1
+                )
+
             if response__assistant_note_2 and response__assistant_note_2.strip() != "":
-                response__assistant_notes.append(response__assistant_note_2)
+                response__assistant_notes.append(
+                    response__assistant_note_2
+                )
+
             if response__assistant_note_3 and response__assistant_note_3.strip() != "":
-                response__assistant_notes.append(response__assistant_note_3)
+                response__assistant_notes.append(
+                    response__assistant_note_3
+                )
+
             if response__assistant_note_4 and response__assistant_note_4.strip() != "":
-                response__assistant_notes.append(response__assistant_note_4)
+                response__assistant_notes.append(
+                    response__assistant_note_4
+                )
+
             if response__assistant_note_5 and response__assistant_note_5.strip() != "":
-                response__assistant_notes.append(response__assistant_note_5)
+                response__assistant_notes.append(
+                    response__assistant_note_5
+                )
 
             if len(response__assistant_notes) != 0:
 
                 # Action-007: Create the memories for the assistants
+
                 success_007 = action__007_memories_create(
                     metadata__user=context_user,
                     metadata__organization=new_organization,
@@ -482,36 +677,74 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
         # STEP 4A
         ############################################################################################################
         # Q6A. Do you want to create automated execution schedules for your assistant teams?
+
         response__orchestration_scheduled_jobs_decision = request.POST.get(
-            'response__assistant_scheduled_jobs_decision')
+            'response__assistant_scheduled_jobs_decision'
+        )
 
         if response__orchestration_scheduled_jobs_decision == 'yes':
 
-            response__scheduled_job_interval = request.POST.get('response__scheduled_job_interval')
-            response__scheduled_job_description = request.POST.get('response__scheduled_job_description')
+            response__scheduled_job_interval = request.POST.get(
+                'response__scheduled_job_interval'
+            )
+
+            response__scheduled_job_description = request.POST.get(
+                'response__scheduled_job_description'
+            )
 
             if (
-                response__scheduled_job_interval and response__scheduled_job_interval.strip() != "" and
-                response__scheduled_job_description and response__scheduled_job_description.strip() != ""
+                response__scheduled_job_interval and
+                response__scheduled_job_interval.strip() != "" and
+                response__scheduled_job_description and
+                response__scheduled_job_description.strip() != ""
             ):
 
-                response__scheduled_job_step_1 = request.POST.get('response__scheduled_job_step_1')
-                response__scheduled_job_step_2 = request.POST.get('response__scheduled_job_step_2')
-                response__scheduled_job_step_3 = request.POST.get('response__scheduled_job_step_3')
-                response__scheduled_job_step_4 = request.POST.get('response__scheduled_job_step_4')
-                response__scheduled_job_step_5 = request.POST.get('response__scheduled_job_step_5')
+                response__scheduled_job_step_1 = request.POST.get(
+                    'response__scheduled_job_step_1'
+                )
+
+                response__scheduled_job_step_2 = request.POST.get(
+                    'response__scheduled_job_step_2'
+                )
+
+                response__scheduled_job_step_3 = request.POST.get(
+                    'response__scheduled_job_step_3'
+                )
+
+                response__scheduled_job_step_4 = request.POST.get(
+                    'response__scheduled_job_step_4'
+                )
+
+                response__scheduled_job_step_5 = request.POST.get(
+                    'response__scheduled_job_step_5'
+                )
 
                 response__scheduled_job_step_guides = []
+
                 if response__scheduled_job_step_1 and response__scheduled_job_step_1.strip() != "":
-                    response__scheduled_job_step_guides.append(response__scheduled_job_step_1)
+                    response__scheduled_job_step_guides.append(
+                        response__scheduled_job_step_1
+                    )
+
                 if response__scheduled_job_step_2 and response__scheduled_job_step_2.strip() != "":
-                    response__scheduled_job_step_guides.append(response__scheduled_job_step_2)
+                    response__scheduled_job_step_guides.append(
+                        response__scheduled_job_step_2
+                    )
+
                 if response__scheduled_job_step_3 and response__scheduled_job_step_3.strip() != "":
-                    response__scheduled_job_step_guides.append(response__scheduled_job_step_3)
+                    response__scheduled_job_step_guides.append(
+                        response__scheduled_job_step_3
+                    )
+
                 if response__scheduled_job_step_4 and response__scheduled_job_step_4.strip() != "":
-                    response__scheduled_job_step_guides.append(response__scheduled_job_step_4)
+                    response__scheduled_job_step_guides.append(
+                        response__scheduled_job_step_4
+                    )
+
                 if response__scheduled_job_step_5 and response__scheduled_job_step_5.strip() != "":
-                    response__scheduled_job_step_guides.append(response__scheduled_job_step_5)
+                    response__scheduled_job_step_guides.append(
+                        response__scheduled_job_step_5
+                    )
 
                 if len(response__scheduled_job_step_guides) != 0:
 
@@ -530,8 +763,11 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
                         pass
 
                 else:
-                    messages.error(request,
-                                   f"Please provide at least '1 (one)' step of process description for the scheduled job, if you are going to create any.")
+                    messages.error(
+                        request,
+                        f"Please provide at least '1 (one)' step of process description for the scheduled job, if you are going to create any."
+                    )
+
                     return redirect("quick_setup_helper:wrapper")
 
             else:
@@ -550,10 +786,15 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
         # STEP 5 (+10%) = 50%
         ############################################################################################################
         # Q7: Do you plan to use BimodLab AI Office tools & applications (e.g. Drafting, Spreadsheets, Slides, Forms, Kanban management, and Tempo Tracking)?
-        response__bimodlab_tools_decision = request.POST.get('response__bimodlab_tools_decision')
+
+        response__bimodlab_tools_decision = request.POST.get(
+            'response__bimodlab_tools_decision'
+        )
+
         if response__bimodlab_tools_decision == 'yes':
 
             # Action-008: Create the General Project Item
+
             success_008, new_project_item = action__008_general_project_item_create(
                 metadata__user=context_user,
                 metadata__organization=new_organization,
@@ -569,6 +810,7 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
             if new_project_item:
 
                 # Action-009: Create the General Team Item
+
                 success_009, new_team_item = action__009_general_team_item_create(
                     metadata__user=context_user,
                     metadata__project_item=new_project_item
@@ -581,6 +823,7 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
                     pass
 
                 # Action-010: Create a MetaKanban Board
+
                 success_010, new_metakanban_board = action__010_metakanban_board_create(
                     metadata__user=context_user,
                     metadata__organization=new_organization,
@@ -598,6 +841,7 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
                 if new_metakanban_board:
 
                     # Action-011: Create a MetaTempo Tracker
+
                     success_011, new_metatempo_item = action__011_metatempo_tracker_create(
                         metadata__user=context_user,
                         metadata__metakanban_board=new_metakanban_board,
@@ -619,6 +863,7 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
                 pass
 
             # Action-012: Create a Drafting Folder
+
             success_012, new_drafting_folder = action__012_drafting_folder_create(
                 metadata__user=context_user,
                 metadata__organization=new_organization
@@ -631,6 +876,7 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
                 pass
 
             # Action-013: Create Google Docs Connections for Each Assistant
+
             success_013 = action__013_google_docs_connections_create(
                 metadata__user=context_user,
                 metadata__assistants=new_assistants
@@ -643,6 +889,7 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
                 pass
 
             # Action-014: Create a Sheetos Folder
+
             success_014, new_sheetos_folder = action__014_sheetos_folder_create(
                 metadata__user=context_user,
                 metadata__organization=new_organization,
@@ -655,6 +902,7 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
                 pass
 
             # Action-015: Create Google Sheets Connections for Each Assistant
+
             success_015 = action__015_google_sheets_connections_create(
                 metadata__user=context_user,
                 metadata__assistants=new_assistants
@@ -667,6 +915,7 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
                 pass
 
             # Action-016: Create Google Slides Connections for Each Assistant
+
             success_016 = action__016_google_slides_connections_create(
                 metadata__user=context_user,
                 metadata__assistants=new_assistants
@@ -679,6 +928,7 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
                 pass
 
             # Action-017: Create Google Forms Connections for Each Assistant
+
             success_017 = action__017_google_forms_connections_create(
                 metadata__user=context_user,
                 metadata__assistants=new_assistants
@@ -697,6 +947,7 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
         else:
             print("User opt out for using BimodLab AI Office tools & applications, skipping.")
             pass
+
         ############################################################################################################
 
         ############################################################################################################
@@ -704,17 +955,32 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
         ############################################################################################################
 
         # Q-i1: Do you want to add a payment method to your account now?
-        if request.POST.get('response__payment_method_decision') == 'yes':
+
+        if request.POST.get(
+            'response__payment_method_decision'
+        ) == 'yes':
 
             # Q8: Please fill in the form here to add a new credit card
-            response__payment_method_credit_card_name = request.POST.get('response__payment_method_credit_card_name')
+
+            response__payment_method_credit_card_name = request.POST.get(
+                'response__payment_method_credit_card_name'
+            )
+
             response__payment_method_credit_card_number = request.POST.get(
-                'response__payment_method_credit_card_number')
+                'response__payment_method_credit_card_number'
+            )
+
             response__payment_method_credit_card_expiration_month = request.POST.get(
-                'response__payment_method_credit_card_expiration_month')
+                'response__payment_method_credit_card_expiration_month'
+            )
+
             response__payment_method_credit_card_expiration_year = request.POST.get(
-                'response__payment_method_credit_card_expiration_year')
-            response__payment_method_credit_card_cvc = request.POST.get('response__payment_method_credit_card_cvc')
+                'response__payment_method_credit_card_expiration_year'
+            )
+
+            response__payment_method_credit_card_cvc = request.POST.get(
+                'response__payment_method_credit_card_cvc'
+            )
 
             required_fields__credit_card = [
                 response__payment_method_credit_card_name,
@@ -725,7 +991,13 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
             ]
 
             # Action-018: Create a new credit card
-            if all(field and field.strip() != "" for field in required_fields__credit_card):
+
+            if (
+                all(
+                    field and
+                    field.strip() != "" for field in required_fields__credit_card
+                )
+            ):
 
                 success_018, new_payment_method = action__018_credit_card_create(
                     metadata__user=context_user,
@@ -760,21 +1032,43 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
         # STEP 7 (+5%) = 60%
         ############################################################################################################
         # Q9: Do you want to create an automated balance top-up plan to prevent any service interruptions?
-        response__balance_top_up_decision = request.POST.get('response__balance_top_up_decision')
+
+        response__balance_top_up_decision = request.POST.get(
+            'response__balance_top_up_decision'
+        )
+
         if response__balance_top_up_decision == 'yes':
 
             # Q10: Which one seem to be a better option for you to top up your balance?
-            response__balance_top_up_option = request.POST.get('response__balance_top_up_option')
-            response__balance_top_up_amount = request.POST.get('response__balance_top_up_amount')
 
-            if response__balance_top_up_option is None or response__balance_top_up_option.strip() == "":
-                messages.error(request,
-                               f"Balance top-up option is required since you opt for automated balance top-up creation.")
+            response__balance_top_up_option = request.POST.get(
+                'response__balance_top_up_option'
+            )
+
+            response__balance_top_up_amount = request.POST.get(
+                'response__balance_top_up_amount'
+            )
+
+            if (
+                response__balance_top_up_option is None or
+                response__balance_top_up_option.strip() == ""
+            ):
+                messages.error(
+                    request,
+                    f"Balance top-up option is required since you opt for automated balance top-up creation."
+                )
+
                 return redirect("quick_setup_helper:wrapper")
 
-            if response__balance_top_up_amount is None or response__balance_top_up_amount.strip() == "":
-                messages.error(request,
-                               f"Balance top-up amount is required since you opt for automated balance top-up creation.")
+            if (
+                response__balance_top_up_amount is None or
+                response__balance_top_up_amount.strip() == ""
+            ):
+                messages.error(
+                    request,
+                    f"Balance top-up amount is required since you opt for automated balance top-up creation."
+                )
+
                 return redirect("quick_setup_helper:wrapper")
 
             response__balance_top_up_interval_days = None
@@ -784,33 +1078,69 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
             if response__balance_top_up_option == 'regular_interval':
 
                 # Q11-A: How often do you want your balance to be topped, and by how much? Also, please set up a monthly top-up hard limit.
-                response__balance_top_up_interval_days = request.POST.get('response__balance_top_up_interval_days')
-                response__balance_top_up_hard_limit = request.POST.get('response__balance_top_up_hard_limit')
 
-                if response__balance_top_up_interval_days is None or response__balance_top_up_interval_days.strip() == "":
-                    messages.error(request,
-                                   f"Balance top-up interval days is required since you opt for automated balance top-up creation.")
+                response__balance_top_up_interval_days = request.POST.get(
+                    'response__balance_top_up_interval_days'
+                )
+
+                response__balance_top_up_hard_limit = request.POST.get(
+                    'response__balance_top_up_hard_limit'
+                )
+
+                if (
+                    response__balance_top_up_interval_days is None or
+                    response__balance_top_up_interval_days.strip() == ""
+                ):
+                    messages.error(
+                        request,
+                        f"Balance top-up interval days is required since you opt for automated balance top-up creation."
+                    )
+
                     return redirect("quick_setup_helper:wrapper")
 
-                if response__balance_top_up_hard_limit is None or response__balance_top_up_hard_limit.strip() == "":
-                    messages.error(request,
-                                   f"Balance top-up hard limit is required since you opt for automated balance top-up creation.")
+                if (
+                    response__balance_top_up_hard_limit is None or
+                    response__balance_top_up_hard_limit.strip() == ""
+                ):
+                    messages.error(
+                        request,
+                        f"Balance top-up hard limit is required since you opt for automated balance top-up creation."
+                    )
+
                     return redirect("quick_setup_helper:wrapper")
 
             elif response__balance_top_up_option == 'threshold_trigger':
 
                 # Q11-B: What should be the balance threshold value to trigger the top-up, and by how much should the balance be topped up? Also, please set up a monthly top-up hard limit.
-                response__balance_top_up_threshold_value = request.POST.get('response__balance_top_up_threshold_value')
-                response__balance_top_up_hard_limit = request.POST.get('response__balance_top_up_hard_limit')
 
-                if response__balance_top_up_threshold_value is None or response__balance_top_up_threshold_value.strip() == "":
-                    messages.error(request,
-                                   f"Balance top-up threshold value is required since you opt for automated balance top-up creation.")
+                response__balance_top_up_threshold_value = request.POST.get(
+                    'response__balance_top_up_threshold_value'
+                )
+
+                response__balance_top_up_hard_limit = request.POST.get(
+                    'response__balance_top_up_hard_limit'
+                )
+
+                if (
+                    response__balance_top_up_threshold_value is None or
+                    response__balance_top_up_threshold_value.strip() == ""
+                ):
+                    messages.error(
+                        request,
+                        f"Balance top-up threshold value is required since you opt for automated balance top-up creation."
+                    )
+
                     return redirect("quick_setup_helper:wrapper")
 
-                if response__balance_top_up_hard_limit is None or response__balance_top_up_hard_limit.strip() == "":
-                    messages.error(request,
-                                   f"Balance top-up hard limit is required since you opt for automated balance top-up creation.")
+                if (
+                    response__balance_top_up_hard_limit is None or
+                    response__balance_top_up_hard_limit.strip() == ""
+                ):
+                    messages.error(
+                        request,
+                        f"Balance top-up hard limit is required since you opt for automated balance top-up creation."
+                    )
+
                     return redirect("quick_setup_helper:wrapper")
 
             else:
@@ -818,6 +1148,7 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
                 pass
 
             # Action-019: Create an automated balance top-up plan
+
             success_019, new_top_up_plan = action__019_balance_top_up_plan_create(
                 metadata__user=context_user,
                 metadata__organization=new_organization,
@@ -841,25 +1172,39 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
         else:
             print("User opt out for creating an automated balance top-up plan, skipping.")
             pass
+
         ############################################################################################################
 
         ############################################################################################################
         # STEP 8 (+5%) = 65%
         ############################################################################################################
         # Q12: Do you want to connect your Blockchain wallet to let your assistants manage & create smart contracts?
-        response__blockchain_wallet_decision = request.POST.get('response__blockchain_wallet_decision')
+
+        response__blockchain_wallet_decision = request.POST.get(
+            'response__blockchain_wallet_decision'
+        )
+
         if response__blockchain_wallet_decision == 'yes':
 
             # Q13: Please enter your Ethereum wallet address and private key below.
-            response__blockchain_wallet_address = request.POST.get('response__blockchain_wallet_address')
-            response__blockchain_wallet_private_key = request.POST.get('response__blockchain_wallet_private_key')
+
+            response__blockchain_wallet_address = request.POST.get(
+                'response__blockchain_wallet_address'
+            )
+
+            response__blockchain_wallet_private_key = request.POST.get(
+                'response__blockchain_wallet_private_key'
+            )
 
             if (
-                response__blockchain_wallet_address and response__blockchain_wallet_address.strip() != "" and
-                response__blockchain_wallet_private_key and response__blockchain_wallet_private_key.strip() != ""
+                response__blockchain_wallet_address and
+                response__blockchain_wallet_address.strip() != "" and
+                response__blockchain_wallet_private_key and
+                response__blockchain_wallet_private_key.strip() != ""
             ):
 
                 # Action-020: Create a new blockchain wallet connection
+
                 success_020, new_wallet_connection = action__020_blockchain_wallet_connection_create(
                     metadata__user=context_user,
                     metadata__organization=new_organization,
@@ -891,11 +1236,15 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
         # STEP 9 (+10%) = 75%
         ############################################################################################################
         # Q14: Do you plan to use your assistants externally (e.g. in your own website, applications, or platforms)?
-        response__external_usage_decision = request.POST.get('response__external_usage_decision')
+
+        response__external_usage_decision = request.POST.get(
+            'response__external_usage_decision'
+        )
 
         if response__external_usage_decision == 'yes':
 
             # Action-021: Create export Assistants for created Assistants
+
             success_021 = action__021_export_assistants_create(
                 metadata__user=context_user,
                 metadata__organization=new_organization,
@@ -909,6 +1258,7 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
                 pass
 
             # Action-022: Create export LeanMods for created LeanMods
+
             success_022 = action__022_export_leanmods_create(
                 metadata__user=context_user,
                 metadata__organization=new_organization,
@@ -922,6 +1272,7 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
                 pass
 
             # Action-023: Create export Orchestrations for created Orchestrations
+
             success_023 = action__023_export_orchestrations_create(
                 metadata__user=context_user,
                 metadata__organization=new_organization,
@@ -935,6 +1286,7 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
                 pass
 
             # Action-023a: Create export VoidForger for the user
+
             success_023a = action__023a_export_voidforger_create(
                 metadata__user=context_user,
                 metadata__organization=new_organization,
@@ -954,33 +1306,46 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
         else:
             print("User opt out for using assistants externally, skipping.")
             pass
+
         ############################################################################################################
 
         ############################################################################################################
         # STEP 10 (+15%) = 90%
         ############################################################################################################
         # Q15: Do you want to integrate your internal data sources (e.g. SQL/NoSQL databases, Text Documents such as pdf, txt, docx, xlsx, etc., GitHub Code Repositories, Website Storages, Servers/Computers) now?
+
         if response__internal_data_sources_decision == 'yes':
 
             # Q16: Please fill in the relevant fields of this form to connect your internal data sources.
 
             #       - (0) For all of them
-            response__internal_data_sources__data_source_is_read_only = request.POST.get(
-                'response__internal_data_sources__data_source_is_read_only')
 
-            if response__internal_data_sources__data_source_is_read_only is None or response__internal_data_sources__data_source_is_read_only.strip() == "":
-                messages.error(request,
-                               f"Data source read-only specifier field is required since you opt for connecting internal data sources.")
+            response__internal_data_sources__data_source_is_read_only = request.POST.get(
+                'response__internal_data_sources__data_source_is_read_only'
+            )
+
+            if (
+                response__internal_data_sources__data_source_is_read_only is None or
+                response__internal_data_sources__data_source_is_read_only.strip() == ""
+            ):
+                messages.error(
+                    request,
+                    f"Data source read-only specifier field is required since you opt for connecting internal data sources."
+                )
+
                 return redirect("quick_setup_helper:wrapper")
 
             if response__internal_data_sources__data_source_is_read_only == 'yes':
                 is_read_only_bool_value = True
+
             elif response__internal_data_sources__data_source_is_read_only == 'no':
                 is_read_only_bool_value = False
+
             else:
                 is_read_only_bool_value = True
 
             #       - (1) Answers for @ SQL
+
             response__internal_data_sources__sql_dbms_type = request.POST.get(
                 'response__internal_data_sources__sql_dbms_type'
             )
@@ -1014,9 +1379,14 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
                 response__internal_data_sources__sql_password,
             ]
 
-            if all(field and field.strip() != "" for field in required_fields__data_sources__sql):
+            if (
+                all(
+                    field and field.strip() != "" for field in required_fields__data_sources__sql
+                )
+            ):
 
                 # Action-024: Create a new SQL connection
+
                 success_024 = action__024_sql_connection_create(
                     metadata__user=context_user,
                     metadata__organization=new_organization,
@@ -1041,6 +1411,7 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
                 pass
 
             #       - (2) Answers for @ NoSQL
+
             response__internal_data_sources__nosql_db_type = request.POST.get(
                 'response__internal_data_sources__nosql_db_type'
             )
@@ -1069,9 +1440,14 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
                 response__internal_data_sources__nosql_password,
             ]
 
-            if all(field and field.strip() != "" for field in required_fields__data_sources__nosql):
+            if (
+                all(
+                    field and field.strip() != "" for field in required_fields__data_sources__nosql
+                )
+            ):
 
                 # Action-025: Create a new NoSQL connection
+
                 success_025 = action__025_nosql_connection_create(
                     metadata__user=context_user,
                     metadata__organization=new_organization,
@@ -1095,15 +1471,24 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
 
             #       - (5) Answers for @ File Base (SSH)
             response__internal_data_sources__file_base_os_type = request.POST.get(
-                'response__internal_data_sources__file_base_os_type')
+                'response__internal_data_sources__file_base_os_type'
+            )
+
             response__internal_data_sources__file_base_host_url = request.POST.get(
-                'response__internal_data_sources__file_base_host_url')
+                'response__internal_data_sources__file_base_host_url'
+            )
+
             response__internal_data_sources__file_base_port = request.POST.get(
-                'response__internal_data_sources__file_base_port')
+                'response__internal_data_sources__file_base_port'
+            )
+
             response__internal_data_sources__file_base_username = request.POST.get(
-                'response__internal_data_sources__file_base_username')
+                'response__internal_data_sources__file_base_username'
+            )
+
             response__internal_data_sources__file_base_password = request.POST.get(
-                'response__internal_data_sources__file_base_password')
+                'response__internal_data_sources__file_base_password'
+            )
 
             required_fields__data_sources__file_base = [
                 response__internal_data_sources__file_base_os_type,
@@ -1113,9 +1498,14 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
                 response__internal_data_sources__file_base_password,
             ]
 
-            if all(field and field.strip() != "" for field in required_fields__data_sources__file_base):
+            if (
+                all(
+                    field and field.strip() != "" for field in required_fields__data_sources__file_base
+                )
+            ):
 
                 # Action-028: Create a new File Base connection
+
                 success_028 = action__028_file_base_connection_create(
                     metadata__user=context_user,
                     metadata__organization=new_organization,
@@ -1145,38 +1535,90 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
         else:
             print("User opt out for connecting internal data sources.")
             pass
+
         ############################################################################################################
 
         ############################################################################################################
         # STEP 11 (+5%) = 95%
         ############################################################################################################
         # Q17: Do you want to invite users to your organization?
-        response__invite_users_decision = request.POST.get('response__invite_users_decision')
+
+        response__invite_users_decision = request.POST.get(
+            'response__invite_users_decision'
+        )
+
         invited_new_users = []
+
         if response__invite_users_decision == 'yes':
 
             # Q18: Please enter the email addresses of the users you want to invite to your organization.
-            response__invite_users_email_address_1 = request.POST.get('response__invite_users_email_address_1')
-            response__invite_users_email_address_2 = request.POST.get('response__invite_users_email_address_2')
-            response__invite_users_email_address_3 = request.POST.get('response__invite_users_email_address_3')
-            response__invite_users_email_address_4 = request.POST.get('response__invite_users_email_address_4')
-            response__invite_users_email_address_5 = request.POST.get('response__invite_users_email_address_5')
+
+            response__invite_users_email_address_1 = request.POST.get(
+                'response__invite_users_email_address_1'
+            )
+
+            response__invite_users_email_address_2 = request.POST.get(
+                'response__invite_users_email_address_2'
+            )
+
+            response__invite_users_email_address_3 = request.POST.get(
+                'response__invite_users_email_address_3'
+            )
+
+            response__invite_users_email_address_4 = request.POST.get(
+                'response__invite_users_email_address_4'
+            )
+
+            response__invite_users_email_address_5 = request.POST.get(
+                'response__invite_users_email_address_5'
+            )
 
             response__invite_users_email_addresses = []
-            if response__invite_users_email_address_1 and response__invite_users_email_address_1.strip() != "":
-                response__invite_users_email_addresses.append(response__invite_users_email_address_1)
-            if response__invite_users_email_address_2 and response__invite_users_email_address_2.strip() != "":
-                response__invite_users_email_addresses.append(response__invite_users_email_address_2)
-            if response__invite_users_email_address_3 and response__invite_users_email_address_3.strip() != "":
-                response__invite_users_email_addresses.append(response__invite_users_email_address_3)
-            if response__invite_users_email_address_4 and response__invite_users_email_address_4.strip() != "":
-                response__invite_users_email_addresses.append(response__invite_users_email_address_4)
-            if response__invite_users_email_address_5 and response__invite_users_email_address_5.strip() != "":
-                response__invite_users_email_addresses.append(response__invite_users_email_address_5)
+
+            if (
+                response__invite_users_email_address_1 and
+                response__invite_users_email_address_1.strip() != ""
+            ):
+                response__invite_users_email_addresses.append(
+                    response__invite_users_email_address_1
+                )
+
+            if (
+                response__invite_users_email_address_2 and
+                response__invite_users_email_address_2.strip() != ""
+            ):
+                response__invite_users_email_addresses.append(
+                    response__invite_users_email_address_2
+                )
+
+            if (
+                response__invite_users_email_address_3 and
+                response__invite_users_email_address_3.strip() != ""
+            ):
+                response__invite_users_email_addresses.append(
+                    response__invite_users_email_address_3
+                )
+
+            if (
+                response__invite_users_email_address_4 and
+                response__invite_users_email_address_4.strip() != ""
+            ):
+                response__invite_users_email_addresses.append(
+                    response__invite_users_email_address_4
+                )
+
+            if (
+                response__invite_users_email_address_5 and
+                response__invite_users_email_address_5.strip() != ""
+            ):
+                response__invite_users_email_addresses.append(
+                    response__invite_users_email_address_5
+                )
 
             if len(response__invite_users_email_addresses) != 0:
 
                 # Action-029: Add users and their profiles to the organization and application
+
                 success_029, invited_new_users = action__029_invite_users_create(
                     metadata__user=context_user,
                     metadata__organization=new_organization,
@@ -1186,8 +1628,10 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
                 if success_029 is False:
                     print(
                         f"Failed to add users and their profiles to the organization and application.")
-                    messages.error(request,
-                                   f"Failed to add users and their profiles to the organization and application.")
+                    messages.error(
+                        request,
+                        f"Failed to add users and their profiles to the organization and application."
+                    )
                     pass
 
             else:
@@ -1201,6 +1645,7 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
         else:
             print("User opt out for inviting users to the organization.")
             pass
+
         ############################################################################################################
 
         ############################################################################################################
@@ -1210,20 +1655,29 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
         if response__invite_users_decision == 'yes' and invited_new_users is not None and len(invited_new_users) > 0:
 
             # Q19: As the final step, do you want to adjust the permissions / user roles for your users?
-            response__user_roles_decision = request.POST.get('response__user_roles_decision')
+
+            response__user_roles_decision = request.POST.get(
+                'response__user_roles_decision'
+            )
 
             if response__user_roles_decision == 'yes':
 
                 # Q20: Which of the following options would work best for your requirements regarding user permissions?
 
-                response__user_roles_option = request.POST.get('response__user_roles_option')
-                if response__user_roles_option and response__user_roles_option in [
+                response__user_roles_option = request.POST.get(
+                    'response__user_roles_option'
+                )
+
+                if (
+                    response__user_roles_option and
+                    response__user_roles_option in [
                     'full_access',
                     'moderation_access',
                     'limited_access'
-                ]:
+                ]):
 
                     # Action-030: Create new user roles
+
                     success_030 = action__030_user_roles_create(
                         metadata__user=context_user,
                         metadata__organization=new_organization,
@@ -1233,8 +1687,12 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
 
                     if success_030 is False:
                         print(
-                            f"Failed to create new user roles.")
-                        messages.error(request, f"Failed to create new user roles.")
+                            f"Failed to create new user roles."
+                        )
+                        messages.error(
+                            request,
+                            f"Failed to create new user roles."
+                        )
                         pass
 
                 else:
@@ -1243,17 +1701,23 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
 
             else:
                 print("User opt out for adjusting the permissions / user roles for the users.")
+
                 return redirect("quick_setup_helper:success")
+
             ############################################################################################################
 
             # Redirect-2: Redirect to the workspace
+
             print("Finished the setup successfully with user role additions. Redirecting to the success page.")
+
             return redirect("quick_setup_helper:success")
 
         else:
 
             # Redirect-2: Redirect to the workspace
+
             print("Finished the setup without user invitations. Redirecting to the success page.")
+
             return redirect("quick_setup_helper:success")
 
         ############################################################################################################

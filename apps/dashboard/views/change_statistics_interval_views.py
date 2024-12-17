@@ -27,7 +27,6 @@ from django.views.decorators.cache import cache_page
 from django.views.generic import TemplateView
 
 from apps.dashboard.utils import (
-    CONST_MINUTES,
     TransactionStatisticsManager,
     build_statistics_for_graph
 )

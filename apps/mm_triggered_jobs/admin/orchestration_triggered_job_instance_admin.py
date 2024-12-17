@@ -17,7 +17,9 @@
 
 from django.contrib import admin
 
-from apps.mm_triggered_jobs.models import OrchestrationTriggeredJobInstance
+from apps.mm_triggered_jobs.models import (
+    OrchestrationTriggeredJobInstance
+)
 
 from apps.mm_triggered_jobs.utils import (
     ORCHESTRATION_TRIGGERED_JOB_INSTANCE_ADMIN_LIST,

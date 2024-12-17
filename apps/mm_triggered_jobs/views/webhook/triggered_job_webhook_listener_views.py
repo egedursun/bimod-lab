@@ -21,9 +21,16 @@ import logging
 
 from django.http import JsonResponse
 from django.utils import timezone
-from django.utils.decorators import method_decorator
+
+from django.utils.decorators import (
+    method_decorator
+)
+
 from django.views import View
-from django.views.decorators.csrf import csrf_exempt
+
+from django.views.decorators.csrf import (
+    csrf_exempt
+)
 
 from apps.core.internal_cost_manager.costs_map import (
     InternalServiceCosts
@@ -34,7 +41,10 @@ from apps.core.generative_ai.generative_ai_decode_manager import (
 )
 
 from apps.assistants.models import Assistant
-from apps.llm_transaction.models import LLMTransaction
+
+from apps.llm_transaction.models import (
+    LLMTransaction
+)
 
 from apps.llm_transaction.utils import (
     LLMTransactionSourcesTypesNames
@@ -154,13 +164,18 @@ class TriggeredJobWebhookListenerView(View):
                 webhook_payload=payload
             )
 
-            job.triggered_job_instances.add(new_instance)
+            job.triggered_job_instances.add(
+                new_instance
+            )
+
             job.save()
 
             job.current_run_count += 1
+
             job.save()
 
             new_instance.execution_index = job.current_run_count
+
             new_instance.save()
 
             self.handle_triggered_job(
@@ -215,6 +230,7 @@ class TriggeredJobWebhookListenerView(View):
             )
 
             instance.status = TriggeredJobInstanceStatusesNames.BUILDING
+
             instance.save()
 
             logger.info(f"Chat created for Triggered Job: {job.id}")
@@ -286,23 +302,27 @@ class TriggeredJobWebhookListenerView(View):
             instance.status = TriggeredJobInstanceStatusesNames.GENERATING
             instance.save()
 
-            response_text = llm_client.respond(
+            response_text = llm_client.respond_stream(
                 latest_message=instruction_feed_message
             )
 
             instance.status = TriggeredJobInstanceStatusesNames.SAVING_LOGS
+
             instance.save()
 
             instance.logs = response_text
+
             instance.save()
 
             instance.status = TriggeredJobInstanceStatusesNames.CLEANING_UP
+
             instance.save()
 
             chat.delete()
 
             instance.status = TriggeredJobInstanceStatusesNames.COMPLETED
             instance.ended_at = timezone.now()
+
             instance.save()
 
             transaction = LLMTransaction(
@@ -316,11 +336,14 @@ class TriggeredJobWebhookListenerView(View):
                 transaction_source=LLMTransactionSourcesTypesNames.TRIGGER_JOB_EXECUTION,
                 is_tool_cost=True
             )
+
             transaction.save()
+
             logger.info(f"Triggered Job completed successfully: {job.id}")
 
         except Exception as e:
             instance.status = TriggeredJobInstanceStatusesNames.FAILED
+
             instance.save()
 
             logger.error(f"Triggered Job failed: {job.id} - {str(e)}")

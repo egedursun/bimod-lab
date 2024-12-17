@@ -24,8 +24,24 @@ from apps.organization.models import Organization
 class OrganizationForm(forms.ModelForm):
     class Meta:
         model = Organization
+
         fields = [
-            'name', 'description', 'mission', 'vision', 'email', 'phone', 'address', 'city', 'country', 'postal_code',
-            'industry', 'organization_image',
+            'name',
+            'description',
+            'mission',
+            'vision',
+            'email',
+            'phone',
+            'address',
+            'city',
+            'country',
+            'postal_code',
+            'industry',
+            'organization_image',
         ]
-        exclude = ['created_by_user', 'last_updated_by_user', 'users']
+
+        exclude = [
+            'created_by_user',
+            'last_updated_by_user',
+            'users'
+        ]

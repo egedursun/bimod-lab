@@ -30,12 +30,30 @@ PRIORITY_CATEGORY_OF_SUPPORT_TICKETS = [
     ('critical', 'Critical'),
 ]
 
-SUPPORT_TICKET_SYSTEM_ADMIN_LIST = ['title', 'status', 'priority', 'created_at']
-SUPPORT_TICKET_SYSTEM_ADMIN_FILTER = ['status', 'priority']
-SUPPORT_TICKET_SYSTEM_ADMIN_SEARCH = ['title', 'issue_description']
+SUPPORT_TICKET_SYSTEM_ADMIN_LIST = [
+    'title',
+    'status',
+    'priority',
+    'created_at'
+]
+SUPPORT_TICKET_SYSTEM_ADMIN_FILTER = [
+    'status',
+    'priority'
+]
+SUPPORT_TICKET_SYSTEM_ADMIN_SEARCH = [
+    'title',
+    'issue_description'
+]
 
-SUPPORT_TICKET_RESPONSE_ADMIN_LIST = ['ticket', 'user', 'created_at']
-SUPPORT_TICKET_RESPONSE_ADMIN_SEARCH = ['ticket__title', 'response']
+SUPPORT_TICKET_RESPONSE_ADMIN_LIST = [
+    'ticket',
+    'user',
+    'created_at'
+]
+SUPPORT_TICKET_RESPONSE_ADMIN_SEARCH = [
+    'ticket__title',
+    'response'
+]
 
 
 class TicketStatusPriorityMapScoreNames:

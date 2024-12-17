@@ -14,16 +14,37 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import get_object_or_404, redirect
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.shortcuts import (
+    get_object_or_404,
+    redirect
+)
+
 from django.views import View
 
 from apps.assistants.models import Assistant
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.sheetos.models import SheetosGoogleAppsConnection
-from apps.sheetos.utils import generate_google_apps_connection_api_key
-from apps.user_permissions.utils import PermissionNames
+
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
+from apps.sheetos.models import (
+    SheetosGoogleAppsConnection
+)
+
+from apps.sheetos.utils import (
+    generate_google_apps_connection_api_key
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
 
 
 class SheetosView_GoogleAppsConnectionUpdate(LoginRequiredMixin, View):
@@ -37,22 +58,37 @@ class SheetosView_GoogleAppsConnectionUpdate(LoginRequiredMixin, View):
 
         ##############################
         # PERMISSION CHECK FOR - UPDATE_SHEETOS_GOOGLE_APPS_CONNECTIONS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.UPDATE_SHEETOS_GOOGLE_APPS_CONNECTIONS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.UPDATE_SHEETOS_GOOGLE_APPS_CONNECTIONS
+        ):
             messages.error(self.request, "You do not have permission to update Sheetos Google Apps Connections.")
+
             return redirect('sheetos:google_apps_connections_list')
         ##############################
 
         try:
-            connection = get_object_or_404(SheetosGoogleAppsConnection, id=connection_id, owner_user=request.user)
+            connection = get_object_or_404(
+                SheetosGoogleAppsConnection,
+                id=connection_id,
+                owner_user=request.user
+            )
+
             connection.connection_api_key = generate_google_apps_connection_api_key()
-            new_assistant = Assistant.objects.get(id=assistant_id)
+
+            new_assistant = Assistant.objects.get(
+                id=assistant_id
+            )
+
             connection.sheetos_assistant = new_assistant
+
             connection.save()
+
         except Exception as e:
             messages.error(request, "An error occurred while updating the API key.")
+
             return redirect('sheetos:google_apps_connections_list')
 
         messages.success(request, "API key successfully updated.")
-        return redirect('sheetos:google_apps_connections_list')
 
+        return redirect('sheetos:google_apps_connections_list')

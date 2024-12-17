@@ -14,11 +14,18 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from apps.assistants.models import Assistant
-from apps.datasource_website.models import DataSourceWebsiteStorageConnection
-from apps.quick_setup_helper.utils import generate_random_object_id_string
+
+from apps.datasource_website.models import (
+    DataSourceWebsiteStorageConnection
+)
+
+from apps.quick_setup_helper.utils import (
+    generate_random_object_id_string
+)
 
 logger = logging.getLogger(__name__)
 
@@ -28,7 +35,6 @@ def action__004a_website_storages_create(
     metadata__assistants,
     metadata__maximum__pages_to_index
 ):
-
     try:
         for assistant in metadata__assistants:
             assistant: Assistant
@@ -53,7 +59,9 @@ def action__004a_website_storages_create(
 
     except Exception as e:
         logger.error(f"Error while creating website storage connection: {e}")
+
         return False
 
     logger.info("action__004a_website_storages_create completed successfully.")
+
     return True

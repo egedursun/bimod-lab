@@ -13,6 +13,18 @@
       "url": "/app/dashboard/dashboard"
     },
     {
+      "name": "Quick Setup Wizard",
+      "icon": "menu-icon tf-icons ti ti-brain",
+      "slug": "quick-setup-helper",
+      "url": "/app/quick_setup_helper"
+    },
+    {
+      "name": "VoidForger Configuration",
+      "icon": "menu-icon tf-icons ti ti-brain",
+      "slug": "voidforger-configuration",
+      "url": "/app/voidforger/configuration"
+    },
+    {
       "name": "VoidForger Action Memory Logs",
       "icon": "menu-icon tf-icons ti ti-brain",
       "slug": "voidforger-action-memory-logs",
@@ -203,6 +215,12 @@
       "icon": "menu-icon tf-icons ti ti-eye",
       "slug": "assistants",
       "url": "/app/assistants/list"
+    },
+    {
+      "name": "Sinaptera™ Configuration",
+      "icon": "menu-icon tf-icons ti ti-puzzle",
+      "slug": "sinaptera-configuration",
+      "url": "/app/sinaptera/configuration"
     },
     {
       "name": "Plug & Play Agents",

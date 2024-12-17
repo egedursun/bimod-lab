@@ -50,6 +50,7 @@ class ScheduledJob(models.Model):
 
     current_run_count = models.PositiveIntegerField(default=0)
     maximum_runs = models.PositiveIntegerField(default=1000)
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -61,18 +62,22 @@ class ScheduledJob(models.Model):
 
     def __str__(self):
         return self.name + ' - ' + self.assistant.name + ' - ' + self.created_by_user.username + ' - ' + self.created_at.strftime(
-            '%Y%m%d%H%M%S')
+            '%Y%m%d%H%M%S'
+        )
 
     class Meta:
         ordering = ['-created_at']
+
         verbose_name = 'Scheduled Job'
         verbose_name_plural = 'Scheduled Jobs'
+
         unique_together = [
             [
                 "assistant",
                 "name"
             ],
         ]
+
         indexes = [
             models.Index(fields=[
                 'name',

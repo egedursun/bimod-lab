@@ -37,7 +37,10 @@ from apps.mm_triggered_jobs.models import (
     TriggeredJobInstance
 )
 
-from apps.user_permissions.utils import PermissionNames
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)

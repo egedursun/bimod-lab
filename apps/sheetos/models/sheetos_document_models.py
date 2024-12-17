@@ -19,10 +19,22 @@ from django.db import models
 
 
 class SheetosDocument(models.Model):
-    organization = models.ForeignKey('organization.Organization', on_delete=models.CASCADE)
-    copilot_assistant = models.ForeignKey('assistants.Assistant', on_delete=models.CASCADE, default=1)
+    organization = models.ForeignKey(
+        'organization.Organization',
+        on_delete=models.CASCADE
+    )
 
-    document_folder = models.ForeignKey('sheetos.SheetosFolder', on_delete=models.CASCADE)
+    copilot_assistant = models.ForeignKey(
+        'assistants.Assistant',
+        on_delete=models.CASCADE,
+        default=1
+    )
+
+    document_folder = models.ForeignKey(
+        'sheetos.SheetosFolder',
+        on_delete=models.CASCADE
+    )
+
     document_title = models.CharField(max_length=4000)
     document_content_json_quill = models.TextField(blank=True, null=True)
     context_instructions = models.TextField(blank=True, null=True)
@@ -31,8 +43,18 @@ class SheetosDocument(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    created_by_user = models.ForeignKey('auth.User', on_delete=models.CASCADE, related_name='sheetos_document_created_by_user')
-    last_updated_by_user = models.ForeignKey('auth.User', on_delete=models.CASCADE, related_name='sheetos_document_last_updated_by_user')
+
+    created_by_user = models.ForeignKey(
+        'auth.User',
+        on_delete=models.CASCADE,
+        related_name='sheetos_document_created_by_user'
+    )
+
+    last_updated_by_user = models.ForeignKey(
+        'auth.User',
+        on_delete=models.CASCADE,
+        related_name='sheetos_document_last_updated_by_user'
+    )
 
     def __str__(self):
         return self.organization.name + ' - ' + self.document_folder.name + ' - ' + self.document_title
@@ -40,16 +62,43 @@ class SheetosDocument(models.Model):
     class Meta:
         verbose_name = 'Sheetos Document'
         verbose_name_plural = 'Sheetos Documents'
+
         unique_together = [
-            ["organization", "document_folder", "document_title"],
+            [
+                "organization",
+                "document_folder",
+                "document_title"
+            ],
         ]
+
         indexes = [
-            models.Index(fields=['organization']),
-            models.Index(fields=['organization', 'document_folder']),
-            models.Index(fields=['organization', 'copilot_assistant']),
-            models.Index(fields=['organization', 'copilot_assistant', 'document_folder']),
-            models.Index(fields=['organization', 'document_folder', 'document_title']),
-            models.Index(fields=['organization', 'copilot_assistant', 'document_folder', 'document_title']),
+            models.Index(fields=[
+                'organization'
+            ]),
+            models.Index(fields=[
+                'organization',
+                'document_folder'
+            ]),
+            models.Index(fields=[
+                'organization',
+                'copilot_assistant'
+            ]),
+            models.Index(fields=[
+                'organization',
+                'copilot_assistant',
+                'document_folder'
+            ]),
+            models.Index(fields=[
+                'organization',
+                'document_folder',
+                'document_title'
+            ]),
+            models.Index(fields=[
+                'organization',
+                'copilot_assistant',
+                'document_folder',
+                'document_title'
+            ]),
         ]
 
 

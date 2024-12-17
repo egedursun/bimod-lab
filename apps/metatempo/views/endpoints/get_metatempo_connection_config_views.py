@@ -14,32 +14,70 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-from django.http import JsonResponse
-from django.utils.decorators import method_decorator
-from django.views import View
-from django.views.decorators.csrf import csrf_exempt
 
-from apps.metatempo.models import MetaTempoConnection
+from django.http import JsonResponse
+
+from django.utils.decorators import (
+    method_decorator
+)
+
+from django.views import View
+
+from django.views.decorators.csrf import (
+    csrf_exempt
+)
+
+from apps.metatempo.models import (
+    MetaTempoConnection
+)
 
 
 @method_decorator(csrf_exempt, name='dispatch')
 class MetaTempoView_GetConnectionConfig(View):
 
-    def get(self, request, *args, **kwargs):
-        return self.post(request, *args, **kwargs)
+    def get(
+        self,
+        request,
+        *args,
+        **kwargs
+    ):
+        return self.post(
+            request,
+            *args,
+            **kwargs
+        )
 
     def post(self, request, *args, **kwargs):
         api_key = request.POST.get('api_key')
+
         if not api_key:
-            return JsonResponse({"success": False, "error": "API key is required."}, status=400)
+            return JsonResponse(
+                {
+                    "success": False,
+                    "error": "API key is required."
+                },
+                status=400
+            )
 
         if "Bearer" in api_key:
-            api_key = api_key.replace("Bearer", "").strip()
+            api_key = api_key.replace(
+                "Bearer",
+                ""
+            ).strip()
 
         try:
-            connection = MetaTempoConnection.objects.get(connection_api_key=api_key)
+            connection = MetaTempoConnection.objects.get(
+                connection_api_key=api_key
+            )
+
         except MetaTempoConnection.DoesNotExist:
-            return JsonResponse({"success": False, "error": "Connection not found."}, status=404)
+            return JsonResponse(
+                {
+                    "success": False,
+                    "error": "Connection not found."
+                },
+                status=404
+            )
 
         connection_data = {
             "board": connection.board.title,
@@ -49,13 +87,25 @@ class MetaTempoView_GetConnectionConfig(View):
             "member_log_intervals": connection.member_log_intervals,
             "tracked_weekdays": connection.tracked_weekdays if connection.tracked_weekdays else [],
             "tracking_start_time": connection.tracking_start_time.strftime(
-                '%H:%M') if connection.tracking_start_time else None,
+                '%H:%M'
+            ) if connection.tracking_start_time else None,
             "tracking_end_time": connection.tracking_end_time.strftime(
-                '%H:%M') if connection.tracking_end_time else None,
+                '%H:%M'
+            ) if connection.tracking_end_time else None,
             "connection_api_key": connection.connection_api_key,
             "created_by_user": connection.created_by_user.username if connection.created_by_user else None,
-            "created_at": connection.created_at.strftime('%Y-%m-%d %H:%M:%S'),
-            "updated_at": connection.updated_at.strftime('%Y-%m-%d %H:%M:%S'),
+            "created_at": connection.created_at.strftime(
+                '%Y-%m-%d %H:%M:%S'
+            ),
+            "updated_at": connection.updated_at.strftime(
+                '%Y-%m-%d %H:%M:%S'
+            ),
         }
 
-        return JsonResponse({"success": True, "data": connection_data}, status=200)
+        return JsonResponse(
+            {
+                "success": True,
+                "data": connection_data
+            },
+            status=200
+        )

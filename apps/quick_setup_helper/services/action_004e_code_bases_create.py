@@ -58,7 +58,9 @@ def action_004e_code_bases_create(
 
     except Exception as e:
         logger.error(f"Error in action__004e_code_bases_create: {str(e)}")
+
         return False
 
     logger.info("action__004e_code_bases_create completed successfully.")
+
     return True

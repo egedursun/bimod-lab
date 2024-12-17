@@ -17,9 +17,15 @@
 
 from django.contrib import admin
 
-from apps.sheetos.models import SheetosDocument
-from apps.sheetos.utils import SHEETOS_DOCUMENT_ADMIN_LIST, SHEETOS_DOCUMENT_ADMIN_LIST_FILTER, \
+from apps.sheetos.models import (
+    SheetosDocument
+)
+
+from apps.sheetos.utils import (
+    SHEETOS_DOCUMENT_ADMIN_LIST,
+    SHEETOS_DOCUMENT_ADMIN_LIST_FILTER,
     SHEETOS_DOCUMENT_ADMIN_SEARCH
+)
 
 
 @admin.register(SheetosDocument)
@@ -27,4 +33,5 @@ class SheetosDocumentAdmin(admin.ModelAdmin):
     list_display = SHEETOS_DOCUMENT_ADMIN_LIST
     list_filter = SHEETOS_DOCUMENT_ADMIN_LIST_FILTER
     search_fields = SHEETOS_DOCUMENT_ADMIN_SEARCH
+
     ordering = ('-created_at',)

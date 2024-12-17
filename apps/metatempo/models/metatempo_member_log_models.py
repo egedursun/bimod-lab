@@ -20,16 +20,33 @@ from django.db import models
 
 class MetaTempoMemberLog(models.Model):
     identifier_uuid = models.UUIDField(null=True, blank=True)
-    metatempo_connection = models.ForeignKey('metatempo.MetaTempoConnection', on_delete=models.CASCADE)
-    user = models.ForeignKey('auth.User', on_delete=models.CASCADE, null=True, blank=True)
-    screenshot_image = models.ImageField(upload_to='metatempo/member_logs/%Y/%m/%d/', null=True, blank=True)
+
+    metatempo_connection = models.ForeignKey(
+        'metatempo.MetaTempoConnection',
+        on_delete=models.CASCADE
+    )
+
+    user = models.ForeignKey(
+        'auth.User',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True
+    )
+
+    screenshot_image = models.ImageField(
+        upload_to='metatempo/member_logs/%Y/%m/%d/',
+        null=True,
+        blank=True
+    )
 
     #################################################################################################################
-    # AI Generated Fields
+
     activity_summary = models.TextField(null=True, blank=True)
     activity_tags = models.JSONField(null=True, blank=True)
-    work_intensity = models.IntegerField(null=True, blank=True)  # Score between 0-100
+
+    work_intensity = models.IntegerField(null=True, blank=True)
     application_usage_stats = models.JSONField(null=True, blank=True)
+
     #################################################################################################################
 
     timestamp = models.DateTimeField()
@@ -40,10 +57,21 @@ class MetaTempoMemberLog(models.Model):
     class Meta:
         verbose_name = 'MetaTempo Member Log'
         verbose_name_plural = 'MetaTempo Member Logs'
+
         ordering = ['-timestamp']
+
         indexes = [
-            models.Index(fields=['metatempo_connection', 'user']),
-            models.Index(fields=['timestamp']),
-            models.Index(fields=['work_intensity']),
-            models.Index(fields=['identifier_uuid']),
+            models.Index(fields=[
+                'metatempo_connection',
+                'user'
+            ]),
+            models.Index(fields=[
+                'timestamp'
+            ]),
+            models.Index(fields=[
+                'work_intensity'
+            ]),
+            models.Index(fields=[
+                'identifier_uuid'
+            ]),
         ]

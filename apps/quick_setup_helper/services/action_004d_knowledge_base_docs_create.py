@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import io
 import logging
 import uuid
@@ -96,6 +97,7 @@ def action_004d_knowledge_base_docs_create(
                         )
 
                         # Save the object item
+
                         new_document = KnowledgeBaseDocument.objects.create(
                             knowledge_base=vector_store,
                             document_type=file_type,
@@ -111,6 +113,7 @@ def action_004d_knowledge_base_docs_create(
                         logger.info(f"Document has been uploaded: {structured_file_name}")
 
                     # Handle document indexing process
+
                     success = load_and_index_document(
                         items=document_items
                     )

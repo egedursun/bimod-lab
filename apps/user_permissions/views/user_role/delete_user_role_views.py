@@ -14,16 +14,34 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import get_object_or_404, redirect
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.shortcuts import (
+    get_object_or_404,
+    redirect
+)
+
 from django.views.generic import TemplateView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.user_permissions.models import UserRole
-from apps.user_permissions.utils import PermissionNames
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
+from apps.user_permissions.models import (
+    UserRole
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -33,31 +51,54 @@ class PermissionView_UserRoleDelete(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+
         role_id = kwargs.get("pk")
-        role = get_object_or_404(UserRole, pk=role_id, organization__users__in=[self.request.user])
-        context.update({"role": role})
+
+        role = get_object_or_404(
+            UserRole,
+            pk=role_id,
+            organization__users__in=[self.request.user]
+        )
+
+        context.update(
+            {
+                "role": role
+            }
+        )
+
         return context
 
     def post(self, request, *args, **kwargs):
 
         ##############################
         # PERMISSION CHECK FOR - DELETE_USER_ROLES
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.DELETE_USER_ROLES):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.DELETE_USER_ROLES
+        ):
             messages.error(self.request, "You do not have permission to delete a user role.")
+
             return redirect('user_permissions:list_user_roles')
         ##############################
 
         role_id = kwargs.get("pk")
-        role = get_object_or_404(UserRole, pk=role_id, created_by_user=request.user)
+
+        role = get_object_or_404(
+            UserRole,
+            pk=role_id,
+            created_by_user=request.user
+        )
 
         try:
             role.delete()
+
         except Exception as e:
             logger.error(f"User role deletion failed. Error: {e}")
             messages.error(request, f'The role "{role.role_name}" could not be deleted.')
+
             return redirect('user_permissions:list_user_roles')
 
         logger.info(f"User role was deleted by User: {self.request.user.id}.")
         messages.success(request, f'The role "{role.role_name}" has been deleted successfully.')
+
         return redirect('user_permissions:list_user_roles')

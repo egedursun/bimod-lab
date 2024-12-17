@@ -14,9 +14,6 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from django import template
 
@@ -32,6 +29,8 @@ def get_item(dictionary, key):
 def get_function_ids(dictionary, key):
     item = dictionary.get(key)
     ids = []
+
     for i in item:
         ids.append(i.custom_function.id)
+
     return ids

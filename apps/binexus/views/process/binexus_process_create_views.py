@@ -18,7 +18,11 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
@@ -30,7 +34,11 @@ from apps.core.user_permissions.permission_manager import (
 
 from apps.llm_core.models import LLMCore
 from apps.organization.models import Organization
-from apps.user_permissions.utils import PermissionNames
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -86,7 +94,10 @@ class BinexusView_ProcessCreate(LoginRequiredMixin, TemplateView):
                 try:
                     gene_name = gene_names[i].strip()
                     raw_values = gene_values[i].strip()
-                    values_list = [v.strip() for v in raw_values.split(',') if v.strip()]
+
+                    values_list = [
+                        v.strip() for v in raw_values.split(',') if v.strip()
+                    ]
 
                     if gene_name and values_list:
                         genes_data[gene_name] = values_list
@@ -122,6 +133,7 @@ class BinexusView_ProcessCreate(LoginRequiredMixin, TemplateView):
                 self_breeding_possible=self_breeding_possible,
                 created_by_user=request.user
             )
+
             binexus_process.save()
 
         except Exception as e:

@@ -18,14 +18,34 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import redirect, get_object_or_404
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.shortcuts import (
+    redirect,
+    get_object_or_404
+)
+
 from django.views.generic import DeleteView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.multimodal_chat.models import MultimodalLeanChat
-from apps.multimodal_chat.utils import SourcesForMultimodalChatsNames
-from apps.user_permissions.utils import PermissionNames
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
+from apps.multimodal_chat.models import (
+    MultimodalLeanChat
+)
+
+from apps.multimodal_chat.utils import (
+    SourcesForMultimodalChatsNames
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -38,7 +58,9 @@ class ChatView_LeanChatDelete(LoginRequiredMixin, DeleteView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         chat = self.get_object()
+
         context['chat'] = chat
+
         return context
 
     def get_queryset(self):
@@ -55,11 +77,18 @@ class ChatView_LeanChatDelete(LoginRequiredMixin, DeleteView):
             operation=PermissionNames.REMOVE_LEAN_CHATS
         ):
             messages.error(self.request, "You do not have permission to remove LeanMod chats.")
+
             return redirect('multimodal_chat:lean_chat')
         ##############################
 
-        chat = get_object_or_404(MultimodalLeanChat, id=self.kwargs['pk'], user=self.request.user)
+        chat = get_object_or_404(
+            MultimodalLeanChat,
+            id=self.kwargs['pk'],
+            user=self.request.user
+        )
+
         chat.delete()
 
         logger.info(f"LeanMod chat was deleted by User: {self.request.user.id}.")
+
         return redirect('multimodal_chat:lean_chat')

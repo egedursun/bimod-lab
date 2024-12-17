@@ -17,9 +17,15 @@
 
 from django.contrib import admin
 
-from apps.support_system.models import SupportTicket
-from apps.support_system.utils import SUPPORT_TICKET_SYSTEM_ADMIN_LIST, SUPPORT_TICKET_SYSTEM_ADMIN_FILTER, \
+from apps.support_system.models import (
+    SupportTicket
+)
+
+from apps.support_system.utils import (
+    SUPPORT_TICKET_SYSTEM_ADMIN_LIST,
+    SUPPORT_TICKET_SYSTEM_ADMIN_FILTER,
     SUPPORT_TICKET_SYSTEM_ADMIN_SEARCH
+)
 
 
 @admin.register(SupportTicket)
@@ -27,4 +33,5 @@ class SupportTicketAdmin(admin.ModelAdmin):
     list_display = SUPPORT_TICKET_SYSTEM_ADMIN_LIST
     list_filter = SUPPORT_TICKET_SYSTEM_ADMIN_FILTER
     search_fields = SUPPORT_TICKET_SYSTEM_ADMIN_SEARCH
+
     date_hierarchy = 'created_at'

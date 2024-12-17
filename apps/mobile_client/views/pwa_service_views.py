@@ -14,10 +14,14 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.http import HttpResponse
-from django.views.decorators.csrf import csrf_exempt
+
+from django.views.decorators.csrf import (
+    csrf_exempt
+)
 
 logger = logging.getLogger(__name__)
 
@@ -25,11 +29,15 @@ logger = logging.getLogger(__name__)
 @csrf_exempt
 def service_worker(request):
     try:
-        with open('src/assets/pwa/service-worker.js', 'r') as f:
+        with open(
+            'src/assets/pwa/service-worker.js',
+            'r'
+        ) as f:
             js_code = f.read()
 
     except FileNotFoundError:
         logger.error("Service Worker not found.")
+
         return HttpResponse(
             "Service Worker not found.",
             status=404
@@ -49,4 +57,5 @@ def service_worker(request):
     )
 
     response['Service-Worker-Allowed'] = '/'
+
     return response

@@ -200,6 +200,7 @@ INSTALLED_APPS = [
     "apps.mobile_client",
     "apps.beamguard",
     "apps.datasource_website",
+    "apps.sinaptera",
 
     "apps.support_system",
     "apps.community_forum",
@@ -1245,7 +1246,7 @@ JAZZMIN_SETTINGS = {
 # FIXTURE DEPLOYMENT ATTEMPTS CONFIGURATIONS
 #####################################################################################################################
 
-ATTEMPT_FIXTURE_DEPLOYMENT = False
+ATTEMPT_FIXTURE_DEPLOYMENT = True
 
 SKIP_FIXTURE_EMBEDDINGS = True
 

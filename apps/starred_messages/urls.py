@@ -18,12 +18,27 @@
 
 from django.urls import path
 
-from apps.starred_messages.views import StarredMessageView_List, StarredMessageView_Delete
+from apps.starred_messages.views import (
+    StarredMessageView_List,
+    StarredMessageView_Delete
+)
 
 app_name = "starred_messages"
 
 urlpatterns = [
-    path("list/", StarredMessageView_List.as_view(template_name="starred_messages/list_starred_messages.html"),
-         name="list"),
-    path("delete/<int:pk>/", StarredMessageView_Delete.as_view(), name="delete"),
+    path(
+        "list/",
+        StarredMessageView_List.as_view(
+            template_name="starred_messages/list_starred_messages.html"
+        ),
+        name="list"
+    ),
+
+    path(
+        "delete/<int:pk>/",
+        StarredMessageView_Delete.as_view(
+
+        ),
+        name="delete"
+    ),
 ]

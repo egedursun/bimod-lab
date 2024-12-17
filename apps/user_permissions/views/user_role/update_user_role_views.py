@@ -14,21 +14,46 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import get_object_or_404
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.shortcuts import (
+    get_object_or_404
+)
+
 from django.contrib import messages
 from django.shortcuts import redirect
-from django.views.generic import TemplateView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.organization.models import Organization
-from apps.user_permissions.forms import UserRoleForm
-from apps.user_permissions.models import UserRole
-from apps.user_permissions.utils import PERMISSION_TYPES, PermissionNames
+from django.views.generic import (
+    TemplateView
+)
+
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
+from apps.organization.models import (
+    Organization
+)
+
+from apps.user_permissions.forms import (
+    UserRoleForm
+)
+
+from apps.user_permissions.models import (
+    UserRole
+)
+
+from apps.user_permissions.utils import (
+    PERMISSION_TYPES,
+    PermissionNames
+)
+
 from web_project import TemplateLayout
-
 
 logger = logging.getLogger(__name__)
 
@@ -38,15 +63,29 @@ class PermissionView_UserRoleUpdate(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         role_id = kwargs.get('pk')
-        role = get_object_or_404(UserRole, pk=role_id)
-        form = UserRoleForm(instance=role)
-        orgs = Organization.objects.filter(users__in=[self.request.user])
+
+        role = get_object_or_404(
+            UserRole,
+            pk=role_id
+        )
+
+        form = UserRoleForm(
+            instance=role
+        )
+
+        orgs = Organization.objects.filter(
+            users__in=[self.request.user]
+        )
+
         available_permissions = PERMISSION_TYPES
         selected_permissions = role.role_permissions
+
         context['role'] = role
         context['form'] = form
+
         context['organizations'] = orgs
         context['available_permissions'] = available_permissions
+
         context['selected_permissions'] = selected_permissions
         return context
 
@@ -54,27 +93,48 @@ class PermissionView_UserRoleUpdate(LoginRequiredMixin, TemplateView):
 
         ##############################
         # PERMISSION CHECK FOR - UPDATE_USER_ROLES
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.UPDATE_USER_ROLES):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.UPDATE_USER_ROLES
+        ):
             messages.error(self.request, "You do not have permission to update user roles.")
+
             return redirect('user_permissions:list_user_roles')
         ##############################
 
         role_id = kwargs.get('pk')
-        role = get_object_or_404(UserRole, pk=role_id)
-        form = UserRoleForm(request.POST, instance=role)
+
+        role = get_object_or_404(
+            UserRole,
+            pk=role_id
+        )
+        form = UserRoleForm(
+            request.POST,
+            instance=role
+        )
 
         if form.is_valid():
-            role = form.save(commit=False)
+            role = form.save(
+                commit=False
+            )
+
             role.organization = form.cleaned_data['organization']
             role.role_name = form.cleaned_data['role_name']
             selected_permissions = form.cleaned_data.get('role_permissions')
+
             role.role_permissions = selected_permissions
+
             role.save()
+
             logger.info(f"User role updated by User: {self.request.user.id}.")
             messages.success(request, f'Role "{role.role_name}" updated successfully.')
+
             return redirect('user_permissions:list_user_roles')
+
         else:
             logger.error(f"Error updating the role. Form errors: {form.errors}")
             messages.error(request, 'Error updating the role.')
-            return self.render_to_response(self.get_context_data(**kwargs))
+
+            return self.render_to_response(
+                self.get_context_data(**kwargs)
+            )

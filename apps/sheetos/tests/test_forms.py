@@ -16,9 +16,6 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 def test_init_sheetos_test_forms():
     assert True

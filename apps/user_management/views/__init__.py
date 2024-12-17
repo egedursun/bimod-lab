@@ -15,9 +15,6 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from .remove_user_from_all_organizations_views import *
 from .remove_user_from_organization_views import *

@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import os
 from django.db import models
 
@@ -32,17 +33,41 @@ logger = logging.getLogger(__name__)
 
 
 class BlockchainSmartContract(models.Model):
-    wallet = models.ForeignKey('smart_contracts.BlockchainWalletConnection', on_delete=models.CASCADE,
-                               related_name='smart_contracts')
-    nickname = models.CharField(max_length=10000, null=True, blank=True)
+    wallet = models.ForeignKey(
+        'smart_contracts.BlockchainWalletConnection',
+        on_delete=models.CASCADE,
+        related_name='smart_contracts'
+    )
+
+    nickname = models.CharField(
+        max_length=10000,
+        null=True,
+        blank=True
+    )
+
     description = models.TextField(blank=True, null=True)
-    category = models.CharField(max_length=100, choices=SMART_CONTRACT_CATEGORIES)
-    contract_template = models.CharField(max_length=100, choices=SMART_CONTRACT_TEMPLATE_CHOICES)
-    contract_template_filepath = models.CharField(max_length=1000, null=True, blank=True)
+
+    category = models.CharField(
+        max_length=100,
+        choices=SMART_CONTRACT_CATEGORIES
+    )
+
+    contract_template = models.CharField(
+        max_length=100,
+        choices=SMART_CONTRACT_TEMPLATE_CHOICES
+    )
+
+    contract_template_filepath = models.CharField(
+        max_length=1000,
+        null=True,
+        blank=True
+    )
+
     offchain_contract_seed = models.TextField(null=True, blank=True)
 
     creation_prompt = models.TextField(blank=True, null=True)
     refinement_iterations_before_evaluation = models.IntegerField(default=3)
+
     generated_solidity_code = models.TextField(null=True, blank=True)
     generated_solidity_code_natural_language = models.TextField(null=True, blank=True)
 
@@ -53,27 +78,66 @@ class BlockchainSmartContract(models.Model):
     # POST-GENERATION METADATA
     ############################################
 
-    post_gen_topic = models.CharField(max_length=1000, null=True, blank=True)
+    post_gen_topic = models.CharField(
+        max_length=1000,
+        null=True,
+        blank=True
+    )
+
     post_gen_protocol_details = models.TextField(null=True, blank=True)
     pot_gen_summary = models.TextField(null=True, blank=True)
-    post_gen_parties = models.JSONField(default=list, null=True, blank=True)
-    post_gen_clauses = models.JSONField(default=list, null=True, blank=True)
-    post_gen_functions = models.JSONField(default=list, null=True, blank=True)
+
+    post_gen_parties = models.JSONField(
+        default=list,
+        null=True,
+        blank=True
+    )
+
+    post_gen_clauses = models.JSONField(
+        default=list,
+        null=True,
+        blank=True
+    )
+
+    post_gen_functions = models.JSONField(
+        default=list,
+        null=True,
+        blank=True
+    )
+
     contract_abi = models.JSONField(default=list, null=True, blank=True)
     contract_args = models.JSONField(default=dict, null=True, blank=True)
 
     ############################################
 
-    tx_hash = models.CharField(max_length=1000, null=True, blank=True)
+    tx_hash = models.CharField(
+        max_length=1000,
+        null=True,
+        blank=True
+    )
+
     tx_receipt_raw = models.TextField(null=True, blank=True)
 
-    deployment_status = models.CharField(max_length=1000, choices=DEPLOYMENT_STATUSES,
-                                         default=DeploymentStatusesNames.NOT_GENERATED)
-    deployed_at = models.DateTimeField(null=True, blank=True)
-    contract_address = models.CharField(max_length=1000, null=True, blank=True)
+    deployment_status = models.CharField(
+        max_length=1000,
+        choices=DEPLOYMENT_STATUSES,
+        default=DeploymentStatusesNames.NOT_GENERATED
+    )
 
-    created_by_user = models.ForeignKey('auth.User', on_delete=models.CASCADE,
-                                        related_name='smart_contracts_created_by_user')
+    deployed_at = models.DateTimeField(null=True, blank=True)
+
+    contract_address = models.CharField(
+        max_length=1000,
+        null=True,
+        blank=True
+    )
+
+    created_by_user = models.ForeignKey(
+        'auth.User',
+        on_delete=models.CASCADE,
+        related_name='smart_contracts_created_by_user'
+    )
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -85,24 +149,61 @@ class BlockchainSmartContract(models.Model):
     class Meta:
         verbose_name = 'Blockchain Smart Contract'
         verbose_name_plural = 'Blockchain Smart Contracts'
+
         unique_together = [
-            ["wallet", "nickname"],
+            [
+                "wallet",
+                "nickname"
+            ],
         ]
+
         indexes = [
-            models.Index(fields=['wallet', 'category', 'contract_template']),
-            models.Index(fields=['contract_address']),
-            models.Index(fields=['created_by_user']),
-            models.Index(fields=['created_at']),
-            models.Index(fields=['updated_at']),
+            models.Index(fields=[
+                'wallet',
+                'category',
+                'contract_template'
+            ]),
+            models.Index(fields=[
+                'contract_address'
+            ]),
+            models.Index(fields=[
+                'created_by_user'
+            ]),
+            models.Index(fields=[
+                'created_at'
+            ]),
+            models.Index(fields=[
+                'updated_at'
+            ]),
         ]
 
     def save(self, *args, **kwargs):
+
         if self.contract_template_filepath is None:
+
             if self.contract_template not in SmartContractTemplateNames.Custom.as_list():
-                file_path = os.path.join(BASE_DIR, "apps", "smart_contracts", "contract_templates",
-                                         self.category, str(self.contract_template + ".sol"))
+
+                file_path = os.path.join(
+                    BASE_DIR,
+                    "apps",
+                    "smart_contracts",
+                    "contract_templates",
+                    self.category,
+                    str(
+                        self.contract_template + ".sol"
+                    )
+                )
+
                 self.contract_template_filepath = file_path
+
             else:
                 logger.info("Custom contract template detected. No file path provided.")
                 pass
-        super(BlockchainSmartContract, self).save(*args, **kwargs)
+
+        super(
+            BlockchainSmartContract,
+            self
+        ).save(
+            *args,
+            **kwargs
+        )

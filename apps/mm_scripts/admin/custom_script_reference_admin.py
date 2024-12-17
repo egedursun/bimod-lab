@@ -14,15 +14,18 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from django.contrib import admin
 
-from apps.mm_scripts.models import CustomScriptReference
-from apps.mm_scripts.utils import CUSTOM_SCRIPT_REFERENCE_ADMIN_LIST, CUSTOM_SCRIPT_REFERENCE_ADMIN_SEARCH, \
+from apps.mm_scripts.models import (
+    CustomScriptReference
+)
+
+from apps.mm_scripts.utils import (
+    CUSTOM_SCRIPT_REFERENCE_ADMIN_LIST,
+    CUSTOM_SCRIPT_REFERENCE_ADMIN_SEARCH,
     CUSTOM_SCRIPT_REFERENCE_ADMIN_FILTER
+)
 
 
 @admin.register(CustomScriptReference)
@@ -30,4 +33,5 @@ class CustomScriptReferenceAdmin(admin.ModelAdmin):
     list_display = CUSTOM_SCRIPT_REFERENCE_ADMIN_LIST
     list_filter = CUSTOM_SCRIPT_REFERENCE_ADMIN_FILTER
     search_fields = CUSTOM_SCRIPT_REFERENCE_ADMIN_SEARCH
+
     ordering = ("-created_at",)

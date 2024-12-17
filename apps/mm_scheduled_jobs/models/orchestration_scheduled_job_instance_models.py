@@ -47,8 +47,10 @@ class OrchestrationScheduledJobInstance(models.Model):
 
     class Meta:
         ordering = ['-started_at']
+
         verbose_name = 'Orchestration Scheduled Job Instance'
         verbose_name_plural = 'Orchestration Scheduled Job Instances'
+
         indexes = [
             models.Index(fields=[
                 'scheduled_job',

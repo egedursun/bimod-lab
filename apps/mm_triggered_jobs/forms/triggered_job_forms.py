@@ -17,7 +17,9 @@
 
 from django import forms
 
-from apps.mm_triggered_jobs.models import TriggeredJob
+from apps.mm_triggered_jobs.models import (
+    TriggeredJob
+)
 
 
 class TriggeredJobForm(forms.ModelForm):
@@ -41,8 +43,10 @@ class TriggeredJobForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(TriggeredJobForm, self).__init__(*args, **kwargs)
+
         self.fields['step_guide'].required = False
 
     def clean(self):
         cleaned_data = super(TriggeredJobForm, self).clean()
+
         return cleaned_data

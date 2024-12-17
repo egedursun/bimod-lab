@@ -85,16 +85,32 @@ class OrganizationView_OrganizationUpdate(TemplateView, LoginRequiredMixin):
             return redirect('organization:list')
         ##############################
 
-        org = get_object_or_404(Organization, users__in=[context_user], id=kwargs['pk'])
-        form = OrganizationForm(request.POST, request.FILES, instance=org)
+        org = get_object_or_404(
+            Organization,
+            users__in=[context_user],
+            id=kwargs['pk']
+        )
+
+        form = OrganizationForm(
+            request.POST,
+            request.FILES,
+            instance=org
+        )
+
         if form.is_valid():
             form.save()
+
             logger.info(f"Organization was updated by User: {self.request.user.id}.")
+
             return redirect('organization:list')
+
         else:
             context = self.get_context_data(**kwargs)
             context['form'] = form
+
             error_msgs = form.errors
             context['error_messages'] = error_msgs
+
             logger.error(f"Organization update failed by User: {self.request.user.id}.")
+
             return self.render_to_response(context)

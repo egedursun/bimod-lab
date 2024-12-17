@@ -14,14 +14,27 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.shortcuts import redirect
 from django.views import View
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.orchestrations.models import OrchestrationReactantAssistantConnection
-from apps.user_permissions.utils import PermissionNames
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
+from apps.orchestrations.models import (
+    OrchestrationReactantAssistantConnection
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
 
 
 class OrchestrationView_AssistantConnectionDelete(LoginRequiredMixin, View):
@@ -34,18 +47,30 @@ class OrchestrationView_AssistantConnectionDelete(LoginRequiredMixin, View):
 
         ##############################
         # PERMISSION CHECK FOR - DISCONNECT_REACTANT_ASSISTANTS_FROM_ORCHESTRATION
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.DISCONNECT_REACTANT_ASSISTANTS_FROM_ORCHESTRATION):
-            messages.error(self.request, "You do not have permission to disconnect reactant assistants from an orchestration.")
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.DISCONNECT_REACTANT_ASSISTANTS_FROM_ORCHESTRATION
+        ):
+            messages.error(
+                self.request,
+                "You do not have permission to disconnect reactant assistants from an orchestration."
+            )
+
             return redirect("orchestrations:connect_assistant")
         ##############################
 
         try:
-            connection = OrchestrationReactantAssistantConnection.objects.get(id=connection_id)
+            connection = OrchestrationReactantAssistantConnection.objects.get(
+                id=connection_id
+            )
+
             connection.delete()
+
         except Exception as e:
             messages.error(request, "An error occurred while deleting the connection: " + str(e))
+
             return redirect("orchestrations:connect_assistant")
 
         messages.success(request, "Connection deleted successfully.")
+
         return redirect("orchestrations:connect_assistant")

@@ -14,17 +14,28 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.shortcuts import redirect
 from django.views import View
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
 from apps.organization.models import Organization
 from apps.sheetos.models import SheetosFolder
-from apps.user_permissions.utils import PermissionNames
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
 
 logger = logging.getLogger(__name__)
 
@@ -34,9 +45,12 @@ class SheetosView_FolderCreate(LoginRequiredMixin, View):
 
         ##############################
         # PERMISSION CHECK FOR - ADD_SHEETOS_FOLDERS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.ADD_SHEETOS_FOLDERS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.ADD_SHEETOS_FOLDERS
+        ):
             messages.error(self.request, "You do not have permission to add Sheetos Folders.")
+
             return redirect('sheetos:folders_list')
         ##############################
 
@@ -47,14 +61,23 @@ class SheetosView_FolderCreate(LoginRequiredMixin, View):
 
         try:
             if organization_id and folder_name:
-                organization = Organization.objects.get(id=organization_id)
-                SheetosFolder.objects.create(
-                    organization=organization, name=folder_name, description=description,
-                    meta_context_instructions=meta_context_instructions, created_by_user=request.user
+                organization = Organization.objects.get(
+                    id=organization_id
                 )
+
+                SheetosFolder.objects.create(
+                    organization=organization,
+                    name=folder_name,
+                    description=description,
+                    meta_context_instructions=meta_context_instructions,
+                    created_by_user=request.user
+                )
+
         except Exception as e:
             messages.error(request, f"An error occurred while creating the Sheetos Folder: {str(e)}")
+
             return redirect('sheetos:folders_list')
 
         logger.info(f"Sheetos Folder was created by User: {request.user.id}.")
+
         return redirect('sheetos:folders_list')

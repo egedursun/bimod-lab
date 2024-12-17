@@ -22,7 +22,10 @@ from apps.assistants.models import Assistant
 from apps.datasource_website.models import (
     DataSourceWebsiteStorageItem
 )
-from apps.datasource_website.tasks import crawl_and_index_website_item
+
+from apps.datasource_website.tasks import (
+    crawl_and_index_website_item
+)
 
 from apps.datasource_website.utils import (
     WebsiteIndexingMethodologyChoicesNames
@@ -52,6 +55,7 @@ def action__004b_website_items_create(
                     )
 
                     # Crawl and index the website item.
+
                     crawl_and_index_website_item(
                         item_id=new_website_item.id,
                         delete_previous=False
@@ -62,7 +66,9 @@ def action__004b_website_items_create(
 
     except Exception as e:
         logger.error(f"Error while creating website items: {e}")
+
         return False
 
     logger.info("action__004b_website_items_create completed successfully.")
+
     return True

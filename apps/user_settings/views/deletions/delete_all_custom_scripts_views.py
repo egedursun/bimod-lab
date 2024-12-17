@@ -14,17 +14,27 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.shortcuts import redirect
 from django.views import View
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.mm_scripts.models import CustomScript
-from apps.user_permissions.utils import PermissionNames
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
 
+from apps.mm_scripts.models import CustomScript
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
 
 logger = logging.getLogger(__name__)
 
@@ -32,18 +42,26 @@ logger = logging.getLogger(__name__)
 class SettingsView_DeleteAllScripts(View, LoginRequiredMixin):
     def post(self, request, *args, **kwargs):
         user = request.user
-        user_scripts = CustomScript.objects.filter(created_by_user=user).all()
+
+        user_scripts = CustomScript.objects.filter(
+            created_by_user=user
+        ).all()
+
         confirmation_field = request.POST.get('confirmation', None)
+
         if confirmation_field != 'CONFIRM DELETING ALL SCRIPTS':
             messages.error(request, "Invalid confirmation field. Please confirm the deletion by typing "
                                     "exactly 'CONFIRM DELETING ALL SCRIPTS'.")
             logger.error(f"Invalid confirmation field: {confirmation_field}")
+
             return redirect('user_settings:settings')
 
         ##############################
         # PERMISSION CHECK FOR - DELETE_SCRIPTS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.DELETE_SCRIPTS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.DELETE_SCRIPTS
+        ):
             messages.error(self.request, "You do not have permission to delete custom Scripts.")
             return redirect('user_settings:settings')
         ##############################
@@ -51,9 +69,12 @@ class SettingsView_DeleteAllScripts(View, LoginRequiredMixin):
         try:
             for script in user_scripts:
                 script.delete()
+
             messages.success(request, "All scripts associated with your account have been deleted.")
             logger.info(f"All scripts associated with User: {user.id} have been deleted.")
+
         except Exception as e:
             messages.error(request, f"Error deleting scripts: {e}")
             logger.error(f"Error deleting scripts: {e}")
+
         return redirect('user_settings:settings')

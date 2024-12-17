@@ -66,14 +66,17 @@ class LeanModTriggeredJob(models.Model):
 
     class Meta:
         ordering = ['-created_at']
+
         verbose_name = 'LeanMod Triggered Job'
         verbose_name_plural = 'LeanMod Triggered Jobs'
+
         unique_together = [
             [
                 "trigger_leanmod",
                 "name"
             ],
         ]
+
         indexes = [
             models.Index(fields=[
                 'name',
@@ -129,7 +132,8 @@ class LeanModTriggeredJob(models.Model):
         )
 
         self.endpoint_url = BASE_URL + '/app/mm_triggered_jobs/leanmod/api/v1/webhook/' + str(
-            self.trigger_leanmod.id) + '/' + str(self.id) + '/'
+            self.trigger_leanmod.id
+        ) + '/' + str(self.id) + '/'
 
         super().save(
             force_insert,

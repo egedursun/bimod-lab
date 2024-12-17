@@ -17,12 +17,15 @@
 
 from django import forms
 
-from apps.mm_scheduled_jobs.models import ScheduledJob
+from apps.mm_scheduled_jobs.models import (
+    ScheduledJob
+)
 
 
 class ScheduledJobForm(forms.ModelForm):
     class Meta:
         model = ScheduledJob
+
         fields = [
             'name',
             'task_description',
@@ -33,6 +36,7 @@ class ScheduledJobForm(forms.ModelForm):
             'month_of_year',
             'maximum_runs'
         ]
+
         widgets = {
             'step_guide': forms.Textarea(
                 attrs={
@@ -48,6 +52,7 @@ class ScheduledJobForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(ScheduledJobForm, self).__init__(*args, **kwargs)
+
         self.fields['step_guide'].required = False
 
 

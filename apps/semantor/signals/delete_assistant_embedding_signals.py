@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 import os
 
@@ -23,26 +24,50 @@ from django.db.models.signals import pre_delete
 from django.dispatch import receiver
 
 from apps.assistants.models import Assistant
-from apps.semantor.models import AssistantVectorData
+
+from apps.semantor.models import (
+    AssistantVectorData
+)
 
 logger = logging.getLogger(__name__)
 
 
 @receiver(pre_delete, sender=Assistant)
-def remove_vector_from_index_on_assistant_delete(sender, instance, **kwargs):
+def remove_vector_from_index_on_assistant_delete(
+    sender,
+    instance,
+    **kwargs
+):
     try:
-        vector_data_instance = AssistantVectorData.objects.get(assistant=instance)
+        vector_data_instance = AssistantVectorData.objects.get(
+            assistant=instance
+        )
+
         index_path = vector_data_instance._get_index_path()
+
         if os.path.exists(index_path):
             index = faiss.read_index(index_path)
-            xids = np.array([vector_data_instance.id], dtype=np.int64)
+
+            xids = np.array(
+                [
+                    vector_data_instance.id
+                ],
+                dtype=np.int64
+            )
+
             index.remove_ids(xids)
-            faiss.write_index(index, index_path)
+
+            faiss.write_index(
+                index,
+                index_path
+            )
+
             logger.info(f"Removed vector data for Assistant with ID {instance.id} from index.")
-            print(f"Removed vector data for Assistant with ID {instance.id} from index.")
+
         else:
-            print(f"Index path {index_path} does not exist.")
+            logger.warning(f"Index file not found for Assistant with ID {instance.id}.")
 
         vector_data_instance.delete()
+
     except AssistantVectorData.DoesNotExist:
-        print(f"No AssistantVectorData found for Assistant with ID {instance.id}.")
+        logger.warning(f"Vector data not found for Assistant with ID {instance.id}.")

@@ -14,9 +14,6 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from django import template
 
@@ -30,8 +27,13 @@ def get_script_item(dictionary, key):
 
 @register.filter
 def get_script_ids(dictionary, key):
-    item = dictionary.get(key)
+    item = dictionary.get(
+        key
+    )
+
     ids = []
+
     for i in item:
         ids.append(i.custom_script.id)
+
     return ids

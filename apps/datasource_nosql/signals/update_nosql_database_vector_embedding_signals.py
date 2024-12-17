@@ -17,7 +17,6 @@
 
 import json
 import logging
-import os
 
 from langchain.text_splitter import (
     RecursiveCharacterTextSplitter

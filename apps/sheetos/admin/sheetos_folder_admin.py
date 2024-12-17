@@ -17,8 +17,15 @@
 
 from django.contrib import admin
 
-from apps.sheetos.models import SheetosFolder
-from apps.sheetos.utils import SHEETOS_FOLDER_ADMIN_LIST, SHEETOS_FOLDER_ADMIN_FILTER, SHEETOS_FOLDER_ADMIN_SEARCH
+from apps.sheetos.models import (
+    SheetosFolder
+)
+
+from apps.sheetos.utils import (
+    SHEETOS_FOLDER_ADMIN_LIST,
+    SHEETOS_FOLDER_ADMIN_FILTER,
+    SHEETOS_FOLDER_ADMIN_SEARCH
+)
 
 
 @admin.register(SheetosFolder)
@@ -26,4 +33,5 @@ class SheetosFolderAdmin(admin.ModelAdmin):
     list_display = SHEETOS_FOLDER_ADMIN_LIST
     list_filter = SHEETOS_FOLDER_ADMIN_FILTER
     search_fields = SHEETOS_FOLDER_ADMIN_SEARCH
+
     ordering = ('-created_at',)

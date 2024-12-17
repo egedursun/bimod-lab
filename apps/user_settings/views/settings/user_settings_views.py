@@ -17,11 +17,13 @@
 
 import logging
 
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.views.generic import TemplateView
 
 from web_project import TemplateLayout
-
 
 logger = logging.getLogger(__name__)
 
@@ -30,4 +32,5 @@ class SettingsView_UserSettings(TemplateView, LoginRequiredMixin):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         logger.info(f"User Settings page was accessed by User: {self.request.user.id}.")
+
         return context

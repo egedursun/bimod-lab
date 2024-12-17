@@ -16,16 +16,9 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 def test_init_user_permissions_test_models():
     assert True
 
-
-from django.contrib.auth import get_user_model
-
-User = get_user_model()
 
 

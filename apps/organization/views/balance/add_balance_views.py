@@ -19,21 +19,49 @@ import decimal
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import redirect, get_object_or_404
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.shortcuts import (
+    redirect,
+    get_object_or_404
+)
+
 from django.views.generic import TemplateView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.llm_transaction.models import TransactionInvoice
-from apps.llm_transaction.utils import InvoiceTypesNames, AcceptedMethodsOfPaymentNames
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
+from apps.llm_transaction.models import (
+    TransactionInvoice
+)
+
+from apps.llm_transaction.utils import (
+    InvoiceTypesNames,
+    AcceptedMethodsOfPaymentNames
+)
+
 from apps.organization.models import Organization
-from apps.user_permissions.utils import PermissionNames
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from auth.models import PromoCode
-from config.settings import BALANCE_ADDITION_BONUS_THRESHOLD__SPECIFIER_1, \
-    BALANCE_ADDITION_BONUS_PERCENTAGE__GTE_1000_LT_5000, BALANCE_ADDITION_BONUS_THRESHOLD__SPECIFIER_2, \
-    BALANCE_ADDITION_BONUS_PERCENTAGE__GTE_5000_LT_10000, BALANCE_ADDITION_BONUS_THRESHOLD__SPECIFIER_3, \
-    BALANCE_ADDITION_BONUS_PERCENTAGE__GTE_10000_LT_50000, BALANCE_ADDITION_BONUS_THRESHOLD__SPECIFIER_4, \
+
+from config.settings import (
+    BALANCE_ADDITION_BONUS_THRESHOLD__SPECIFIER_1,
+    BALANCE_ADDITION_BONUS_PERCENTAGE__GTE_1000_LT_5000,
+    BALANCE_ADDITION_BONUS_THRESHOLD__SPECIFIER_2,
+    BALANCE_ADDITION_BONUS_PERCENTAGE__GTE_5000_LT_10000,
+    BALANCE_ADDITION_BONUS_THRESHOLD__SPECIFIER_3,
+    BALANCE_ADDITION_BONUS_PERCENTAGE__GTE_10000_LT_50000,
+    BALANCE_ADDITION_BONUS_THRESHOLD__SPECIFIER_4,
     BALANCE_ADDITION_BONUS_PERCENTAGE__GTE_50000
+)
 
 logger = logging.getLogger(__name__)
 
@@ -53,6 +81,7 @@ class OrganizationView_AddBalanceCredits(TemplateView, LoginRequiredMixin):
         ##############################
 
         org_id = request.POST.get('org_id')
+
         org = get_object_or_404(
             Organization,
             id=org_id,
@@ -66,40 +95,75 @@ class OrganizationView_AddBalanceCredits(TemplateView, LoginRequiredMixin):
         if float(topup_amount) <= 0:
             logger.error(f"User: {context_user.id} tried to top up with an invalid amount: {topup_amount}")
             messages.error(request, 'Top up amount must be greater than zero.')
+
             return redirect('llm_transaction:list')
 
         # Addition bonuses
+
         bulk_addition_bonus_percentage = 0
+
         if topup_amount >= int(BALANCE_ADDITION_BONUS_THRESHOLD__SPECIFIER_1):
-            bulk_addition_bonus_percentage = int(BALANCE_ADDITION_BONUS_PERCENTAGE__GTE_1000_LT_5000)
+            bulk_addition_bonus_percentage = int(
+                BALANCE_ADDITION_BONUS_PERCENTAGE__GTE_1000_LT_5000
+            )
+
         if topup_amount >= int(BALANCE_ADDITION_BONUS_THRESHOLD__SPECIFIER_2):
-            bulk_addition_bonus_percentage = int(BALANCE_ADDITION_BONUS_PERCENTAGE__GTE_5000_LT_10000)
+            bulk_addition_bonus_percentage = int(
+                BALANCE_ADDITION_BONUS_PERCENTAGE__GTE_5000_LT_10000
+            )
+
         if topup_amount >= int(BALANCE_ADDITION_BONUS_THRESHOLD__SPECIFIER_3):
-            bulk_addition_bonus_percentage = int(BALANCE_ADDITION_BONUS_PERCENTAGE__GTE_10000_LT_50000)
+            bulk_addition_bonus_percentage = int(
+                BALANCE_ADDITION_BONUS_PERCENTAGE__GTE_10000_LT_50000
+            )
+
         if topup_amount >= int(BALANCE_ADDITION_BONUS_THRESHOLD__SPECIFIER_4):
-            bulk_addition_bonus_percentage = int(BALANCE_ADDITION_BONUS_PERCENTAGE__GTE_50000)
+            bulk_addition_bonus_percentage = int(
+                BALANCE_ADDITION_BONUS_PERCENTAGE__GTE_50000
+            )
+
         bulk_addition_bonus = float(float(topup_amount) * (bulk_addition_bonus_percentage) / 100)
-        messages.success(request,
-                         f'You have received a {bulk_addition_bonus_percentage}% (${round(bulk_addition_bonus, 2)}) bonus for adding ${topup_amount} to your account.')
+
+        messages.success(
+            request,
+            f'You have received a {bulk_addition_bonus_percentage}% (${round(bulk_addition_bonus, 2)}) bonus for adding ${topup_amount} to your account.'
+        )
+
         topup_amount += bulk_addition_bonus
 
         bonus_pct_referrer, bonus_pct_referee = 0, 0
-        promo_code = PromoCode.objects.filter(code=promo_code).first()
+
+        promo_code = PromoCode.objects.filter(
+            code=promo_code
+        ).first()
+
         if promo_code is None:
             bonus_pct_referee = 0
+
         else:
             referrer = promo_code.user
             if promo_code.current_referrals + 1 > promo_code.max_referral_limit:
                 promo_code.is_active = False
+
                 promo_code.save()
+
             else:
                 promo_code.current_referrals += 1
                 bonus_pct_referrer = promo_code.bonus_percentage_referrer
                 bonus_pct_referee = promo_code.bonus_percentage_referee
+
                 promo_code.save()
-                referrer_organization = Organization.objects.filter(users__in=[referrer]).first()
+
+                referrer_organization = Organization.objects.filter(
+                    users__in=[referrer]
+                ).first()
+
                 referrer_organization.balance += decimal.Decimal.from_float(
-                    float(float(topup_amount) * ((bonus_pct_referrer) / 100)))
+                    float(
+                        float(topup_amount) * ((bonus_pct_referrer) / 100)
+                    )
+                )
+
                 referrer_organization.save()
 
                 TransactionInvoice.objects.create(
@@ -107,30 +171,49 @@ class OrganizationView_AddBalanceCredits(TemplateView, LoginRequiredMixin):
                     responsible_user=context_user,
                     transaction_type=InvoiceTypesNames.GIFT_CREDITS,
                     amount_added=decimal.Decimal.from_float(
-                        float(float(topup_amount) * ((bonus_pct_referrer) / 100))),
+                        float(
+                            float(topup_amount) * ((bonus_pct_referrer) / 100)
+                        )
+                    ),
                     payment_method=AcceptedMethodsOfPaymentNames.INTERNAL_TRANSFER,
                 )
         try:
             topup_amount = float(topup_amount)
             topup_amount_without_bonus = topup_amount
-            topup_amount += float(float(topup_amount) * (bonus_pct_referee) / 100)
+
+            topup_amount += float(
+                float(topup_amount) * (bonus_pct_referee) / 100
+            )
+
             org.balance += decimal.Decimal.from_float(topup_amount)
             org.balance = round(org.balance, 4)
+
             org.save()
 
             TransactionInvoice.objects.create(
-                organization=org, responsible_user=context_user, transaction_type=InvoiceTypesNames.TOP_UP,
-                amount_added=topup_amount_without_bonus, payment_method=AcceptedMethodsOfPaymentNames.CREDIT_CARD)
+                organization=org,
+                responsible_user=context_user,
+                transaction_type=InvoiceTypesNames.TOP_UP,
+                amount_added=topup_amount_without_bonus,
+                payment_method=AcceptedMethodsOfPaymentNames.CREDIT_CARD
+            )
 
             if topup_amount_without_bonus != topup_amount:
                 TransactionInvoice.objects.create(
-                    organization=org, responsible_user=context_user, transaction_type=InvoiceTypesNames.GIFT_CREDITS,
-                    amount_added=(topup_amount - topup_amount_without_bonus),
+                    organization=org,
+                    responsible_user=context_user,
+                    transaction_type=InvoiceTypesNames.GIFT_CREDITS,
+                    amount_added=(
+                        topup_amount - topup_amount_without_bonus
+                    ),
                     payment_method=AcceptedMethodsOfPaymentNames.INTERNAL_TRANSFER,
                 )
+
             logger.info(f"User: {context_user.id} added ${topup_amount} to Organization: {org.id}.")
             messages.success(request, f'Credits successfully added. New balance: ${org.balance}')
+
         except ValueError:
             logger.error(f"User: {context_user.id} tried to top up with an invalid amount: {topup_amount}")
             messages.error(request, 'Invalid amount entered. Please enter a valid number.')
+
         return redirect('llm_transaction:list')

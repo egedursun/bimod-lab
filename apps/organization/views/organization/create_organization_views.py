@@ -41,7 +41,6 @@ from apps.user_permissions.utils import (
 from auth.utils import COUNTRIES
 from web_project import TemplateLayout
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -58,24 +57,37 @@ class OrganizationView_OrganizationCreate(TemplateView, LoginRequiredMixin):
 
         ##############################
         # PERMISSION CHECK FOR - ADD_ORGANIZATIONS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.ADD_ORGANIZATIONS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.ADD_ORGANIZATIONS
+        ):
             messages.error(self.request, "You do not have permission to add organizations.")
+
             return redirect('organization:list')
         ##############################
 
         if form.is_valid():
             org = form.save(commit=False)
             org.created_by_user = request.user
+
             org.save()
+
             org.users.clear()
-            org.users.add(request.user)
+
+            org.users.add(
+                request.user
+            )
+
             logger.info(f"Organization was created by User: {self.request.user.id}.")
+
             return redirect('organization:list')
+
         else:
             error_msgs = form.errors
             context = self.get_context_data(**kwargs)
+
             context['form'] = form
             context['error_messages'] = error_msgs
             logger.error(f"Organization creation failed by User: {self.request.user.id}.")
+
             return self.render_to_response(context)

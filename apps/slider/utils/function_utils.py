@@ -18,7 +18,9 @@
 import logging
 import secrets
 
-from apps.slider.models import SliderGoogleAppsConnection
+from apps.slider.models import (
+    SliderGoogleAppsConnection
+)
 
 from apps.slider.utils import (
     SLIDER_GOOGLE_APPS_CONNECTION_API_KEY_DEFAULT_LENGTH

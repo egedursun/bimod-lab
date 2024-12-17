@@ -18,12 +18,19 @@
 
 from django.db import models
 
-from apps.ml_model_store.utils import MODEL_CATEGORIES, MLModelIntegrationCategoriesNames
+from apps.ml_model_store.utils import (
+    MODEL_CATEGORIES,
+    MLModelIntegrationCategoriesNames
+)
 
 
 class MLModelIntegration(models.Model):
-    model_category = models.CharField(max_length=255, choices=MODEL_CATEGORIES,
-                                      default=MLModelIntegrationCategoriesNames.MISCELLANEOUS)
+    model_category = models.CharField(
+        max_length=255,
+        choices=MODEL_CATEGORIES,
+        default=MLModelIntegrationCategoriesNames.MISCELLANEOUS
+    )
+
     name = models.CharField(max_length=255)
     description = models.TextField(null=True, blank=True)
 
@@ -39,9 +46,17 @@ class MLModelIntegration(models.Model):
     class Meta:
         verbose_name = "ML Model Integration"
         verbose_name_plural = "ML Model Integrations"
+
         ordering = ["-created_at"]
+
         indexes = [
-            models.Index(fields=["model_category"]),
-            models.Index(fields=["created_at"]),
-            models.Index(fields=["updated_at"])
+            models.Index(fields=[
+                "model_category"
+            ]),
+            models.Index(fields=[
+                "created_at"
+            ]),
+            models.Index(fields=[
+                "updated_at"
+            ])
         ]

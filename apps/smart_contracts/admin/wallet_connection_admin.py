@@ -17,9 +17,15 @@
 
 from django.contrib import admin
 
-from apps.smart_contracts.models import BlockchainWalletConnection
-from apps.smart_contracts.utils import BLOCKCHAIN_WALLET_CONNECTION_ADMIN_LIST, \
-    BLOCKCHAIN_WALLET_CONNECTION_ADMIN_FILTER, BLOCKCHAIN_WALLET_CONNECTION_ADMIN_SEARCH
+from apps.smart_contracts.models import (
+    BlockchainWalletConnection
+)
+
+from apps.smart_contracts.utils import (
+    BLOCKCHAIN_WALLET_CONNECTION_ADMIN_LIST,
+    BLOCKCHAIN_WALLET_CONNECTION_ADMIN_FILTER,
+    BLOCKCHAIN_WALLET_CONNECTION_ADMIN_SEARCH
+)
 
 
 @admin.register(BlockchainWalletConnection)
@@ -27,4 +33,5 @@ class BlockchainWalletConnectionAdmin(admin.ModelAdmin):
     list_display = BLOCKCHAIN_WALLET_CONNECTION_ADMIN_LIST
     list_filter = BLOCKCHAIN_WALLET_CONNECTION_ADMIN_FILTER
     search_fields = BLOCKCHAIN_WALLET_CONNECTION_ADMIN_SEARCH
+
     ordering = ('-created_at',)

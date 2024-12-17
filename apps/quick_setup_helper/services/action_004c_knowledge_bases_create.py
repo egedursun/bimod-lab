@@ -61,7 +61,9 @@ def action_004c_knowledge_bases_create(
 
     except Exception as e:
         logger.error(f"Error in action__004c_knowledge_bases_create: {e}")
+
         return False
 
     logger.info("action__004c_knowledge_bases_create completed successfully.")
+
     return True

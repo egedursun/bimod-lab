@@ -25,7 +25,9 @@ from apps.core.generative_ai.utils import (
     ChatRoles
 )
 
-from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
+from apps.core.internal_cost_manager.costs_map import (
+    InternalServiceCosts
+)
 
 from apps.core.generative_ai.generative_ai_decode_manager import (
     GenerativeAIDecodeController
@@ -85,9 +87,13 @@ def execute_scheduled_job(scheduled_job_id):
 
     from apps.core.generative_ai.utils import ChatRoles
 
-    job = ScheduledJob.objects.get(id=scheduled_job_id)
+    job = ScheduledJob.objects.get(
+        id=scheduled_job_id
+    )
+
     if job.current_run_count > job.maximum_runs:
         job.delete()
+
         return
 
     new_instance = ScheduledJobInstance.objects.create(
@@ -95,8 +101,12 @@ def execute_scheduled_job(scheduled_job_id):
         status=ScheduledJobInstanceStatusesNames.PENDING
     )
 
-    job.scheduled_job_instances.add(new_instance)
+    job.scheduled_job_instances.add(
+        new_instance
+    )
+
     job.save()
+
     logger.info(f"Executing Scheduled Job: {job.id}")
 
     try:
@@ -104,6 +114,7 @@ def execute_scheduled_job(scheduled_job_id):
         job.save()
 
         new_instance.execution_index = job.current_run_count
+
         new_instance.save()
 
         chat = MultimodalChat.objects.create(
@@ -116,6 +127,7 @@ def execute_scheduled_job(scheduled_job_id):
         )
 
         new_instance.status = ScheduledJobInstanceStatusesNames.BUILDING
+
         new_instance.save()
 
         instruction_feed = f"""
@@ -179,6 +191,7 @@ def execute_scheduled_job(scheduled_job_id):
         )
 
         new_instance.status = ScheduledJobInstanceStatusesNames.INITIALIZING_ASSISTANT
+
         new_instance.save()
 
         llm_client = GenerativeAIDecodeController.get(
@@ -187,19 +200,23 @@ def execute_scheduled_job(scheduled_job_id):
         )
 
         new_instance.status = ScheduledJobInstanceStatusesNames.GENERATING
+
         new_instance.save()
 
-        response_text = llm_client.respond(
+        response_text = llm_client.respond_stream(
             latest_message=instruction_feed_message
         )
 
         new_instance.status = ScheduledJobInstanceStatusesNames.SAVING_LOGS
+
         new_instance.save()
 
         new_instance.logs = response_text
+
         new_instance.save()
 
         new_instance.status = ScheduledJobInstanceStatusesNames.CLEANING_UP
+
         new_instance.save()
 
         chat.delete()
@@ -222,12 +239,14 @@ def execute_scheduled_job(scheduled_job_id):
         )
 
         transaction.save()
+
         logger.info(f"Scheduled Job: {job.id} was executed successfully.")
 
     except Exception as e:
         logger.error(f"Error while executing the scheduled job: {e}")
 
         new_instance.status = ScheduledJobInstanceStatusesNames.FAILED
+
         new_instance.save()
 
 
@@ -517,7 +536,7 @@ def execute_leanmod_scheduled_job(scheduled_job_id):
         new_instance.status = ScheduledJobInstanceStatusesNames.GENERATING
         new_instance.save()
 
-        response_text = llm_client.respond(
+        response_text = llm_client.respond_stream(
             latest_message=instruction_feed_message
         )
 

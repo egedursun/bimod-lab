@@ -14,14 +14,26 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 import secrets
 
 from apps.assistants.models import Assistant
-from apps.metakanban.models import MetaKanbanBoard, MetaKanbanAssistantConnection
-from apps.metakanban.utils import META_KANBAN_BOARD_API_KEY_DEFAULT_LENGTH
+
+from apps.metakanban.models import (
+    MetaKanbanBoard,
+    MetaKanbanAssistantConnection
+)
+
+from apps.metakanban.utils import (
+    META_KANBAN_BOARD_API_KEY_DEFAULT_LENGTH
+)
+
 from apps.projects.models import ProjectItem
-from apps.quick_setup_helper.utils import generate_random_object_id_string
+
+from apps.quick_setup_helper.utils import (
+    generate_random_object_id_string
+)
 
 logger = logging.getLogger(__name__)
 
@@ -35,7 +47,10 @@ def action__010_metakanban_board_create(
 ):
     try:
 
-        connection_api_key = secrets.token_urlsafe(META_KANBAN_BOARD_API_KEY_DEFAULT_LENGTH)
+        connection_api_key = secrets.token_urlsafe(
+            META_KANBAN_BOARD_API_KEY_DEFAULT_LENGTH
+        )
+
         new_metakanban_board = MetaKanbanBoard.objects.create(
             project=metadata__project,
             llm_model=metadata__llm_core,
@@ -47,9 +62,11 @@ def action__010_metakanban_board_create(
 
     except Exception as e:
         logger.error(f"Error in action__010_metakanban_board_create: {e}")
+
         return False, None
 
     # Connect MetaKanban board to Assistants
+
     try:
         for assistant in metadata__assistants:
             assistant: Assistant
@@ -62,7 +79,9 @@ def action__010_metakanban_board_create(
 
     except Exception as e:
         logger.error(f"Error while connecting assistants to the new MetaKanban board: {e}")
+
         return False, None
 
     logger.info(f"New MetaKanban board created successfully: {new_metakanban_board}")
+
     return True, new_metakanban_board

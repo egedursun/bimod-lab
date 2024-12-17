@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib.auth.models import User
@@ -45,7 +46,9 @@ def action__018_credit_card_create(
 
     except Exception as e:
         logger.error(f"Error on action__018_credit_card_create: {e}")
+
         return False, None
 
     logger.info(f"New credit card created for user: {metadata__user.username}")
+
     return True, new_payment_method

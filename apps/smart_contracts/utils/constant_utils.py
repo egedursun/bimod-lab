@@ -28,7 +28,9 @@ class BlockchainTypesNames:
 
     @staticmethod
     def as_list():
-        return [BlockchainTypesNames.ETHEREUM]
+        return [
+            BlockchainTypesNames.ETHEREUM
+        ]
 
 
 SMART_CONTRACT_CATEGORIES = [
@@ -108,6 +110,7 @@ class SmartContractCategoriesNames:
 
 SMART_CONTRACT_TEMPLATE_CHOICES = [
     # Crowdsale Contract Templates
+
     ('Crowdsale-Basic', 'Crowdsale-Basic'),
     ('Crowdsale-Refundable', 'Crowdsale-Refundable'),
     ('Crowdsale-Capped', 'Crowdsale-Capped'),
@@ -117,10 +120,13 @@ SMART_CONTRACT_TEMPLATE_CHOICES = [
     ('Crowdsale-TieredPricing', 'Crowdsale-TieredPricing'),
     ('Crowdsale-TokenDistribution', 'Crowdsale-TokenDistribution'),
     ('Crowdsale-Vesting', 'Crowdsale-Vesting'),
+
     ###
+
     ('Crowdsale-Custom', 'Crowdsale-Custom'),
 
     # DAO Contract Templates
+
     ('DAO-ERC20TokenVoting', 'DAO-ERC20TokenVoting'),
     ('DAO-MultiSignature', 'DAO-MultiSignature'),
     ('DAO-TokenCuratedRegistry', 'DAO-TokenCuratedRegistry'),
@@ -131,10 +137,13 @@ SMART_CONTRACT_TEMPLATE_CHOICES = [
     ('DAO-VotingQuadratic', 'DAO-VotingQuadratic'),
     ('DAO-VotingOffChain', 'DAO-VotingOffChain'),
     ('DAO-VotingQuorumMajority', 'DAO-VotingQuorumMajority'),
+
     ###
+
     ('DAO-Custom', 'DAO-Custom'),
 
     # DeFi Protocol Contract Templates
+
     ('DeFi-AutoMarketMaker', 'DeFi-AutoMarketMaker'),
     ('DeFi-FlashLoan', 'DeFi-FlashLoan'),
     ('DeFi-Staking', 'DeFi-Staking'),
@@ -143,10 +152,13 @@ SMART_CONTRACT_TEMPLATE_CHOICES = [
     ('DeFi-Dex', 'DeFi-Dex'),
     ('Defi-InsurancePool', 'Defi-InsurancePool'),
     ('DeFi-YieldFarming', 'DeFi-YieldFarming'),
+
     ###
+
     ('DeFi-Custom', 'DeFi-Custom'),
 
     # Derivatives Contract Templates
+
     ('Derivatives-Options', 'Derivatives-Options'),
     ('Derivatives-Futures', 'Derivatives-Futures'),
     ('Derivatives-CreditDefaultSwap', 'Derivatives-CreditDefaultSwap'),
@@ -155,10 +167,13 @@ SMART_CONTRACT_TEMPLATE_CHOICES = [
     ('Derivatives-InterestRateSwap', 'Derivatives-InterestRateSwap'),
     ('Derivatives-LeveragedToken', 'Derivatives-LeveragedToken'),
     ('Derivatives-VolatilityIndex', 'Derivatives-VolatilityIndex'),
+
     ###
+
     ('Derivatives-Custom', 'Derivatives-Custom'),
 
     # Escrow Contract Templates
+
     ('Escrow-Basic', 'Escrow-Basic'),
     ('Escrow-Conditional', 'Escrow-Conditional'),
     ('Escrow-DisputeResolution', 'Escrow-DisputeResolution'),
@@ -168,10 +183,13 @@ SMART_CONTRACT_TEMPLATE_CHOICES = [
     ('Escrow-Timelock', 'Escrow-Timelock'),
     ('Escrow-Subscription', 'Escrow-Subscription'),
     ('Escrow-Milestone', 'Escrow-Milestone'),
+
     ###
+
     ('Escrow-Custom', 'Escrow-Custom'),
 
     # Governance Contract Templates
+
     ('Governance-MultipleProposal', 'Governance-MultipleProposal'),
     ('Governance-Timelocked', 'Governance-Timelocked'),
     ('Governance-Vesting', 'Governance-Vesting'),
@@ -182,10 +200,13 @@ SMART_CONTRACT_TEMPLATE_CHOICES = [
     ('Governance-VotingOnchain', 'Governance-VotingOnchain'),
     ('Governance-VotingQuadratic', 'Governance-VotingQuadratic'),
     ('Governance-VotingQuorumMajority', 'Governance-VotingQuorumMajority'),
+
     ###
+
     ('Governance-Custom', 'Governance-Custom'),
 
     # Identity Verification Contract Templates
+
     ('ID-AccessControl', 'ID-AccessControl'),
     ('ID-CredentialIssuance', 'ID-CredentialIssuance'),
     ('ID-DecentralizedID', 'ID-DecentralizedID'),
@@ -196,10 +217,13 @@ SMART_CONTRACT_TEMPLATE_CHOICES = [
     ('ID-ReputationSystem', 'ID-ReputationSystem'),
     ('ID-SoulboundTokens', 'ID-SoulboundTokens'),
     ('ID-ZeroKnowledgeProof', 'ID-ZeroKnowledgeProof'),
+
     ###
+
     ('ID-Custom', 'ID-Custom'),
 
     # Insurance Contract Templates
+
     ('Insurance-ClaimAndDisputeResolution', 'Insurance-ClaimAndDisputeResolution'),
     ('Insurance-DecentralizedReinsurance', 'Insurance-DecentralizedReinsurance'),
     ('Insurance-DecentralizedRiskPool', 'Insurance-DecentralizedRiskPool'),
@@ -210,10 +234,13 @@ SMART_CONTRACT_TEMPLATE_CHOICES = [
     ('Insurance-PremiumPaymentAndRefund', 'Insurance-PremiumPaymentAndRefund'),
     ('Insurance-StakingForUnderwriting', 'Insurance-StakingForUnderwriting'),
     ('Insurance-Tokenized', 'Insurance-Tokenized'),
+
     ###
+
     ('Insurance-Custom', 'Insurance-Custom'),
 
     # Lending & Borrowing Contract Templates
+
     ('Lending-CollateralSwap', 'Lending-CollateralSwap'),
     ('Lending-DynamicInterestRateLoan', 'Lending-DynamicInterestRateLoan'),
     ('Lending-FlashLoan', 'Lending-FlashLoan'),
@@ -222,10 +249,13 @@ SMART_CONTRACT_TEMPLATE_CHOICES = [
     ('Lending-P2PMarket', 'Lending-P2PMarket'),
     ('Lending-RevolvingCreditLine', 'Lending-RevolvingCreditLine'),
     ('Lending-Secured', 'Lending-Secured'),
+
     ###
+
     ('Lending-Custom', 'Lending-Custom'),
 
     # Liquidity Pool Contract Templates
+
     ('LiquidityPool-AutoBalancing', 'LiquidityPool-AutoBalancing'),
     ('LiquidityPool-Basic', 'LiquidityPool-Basic'),
     ('LiquidityPool-DynamicFee', 'LiquidityPool-DynamicFee'),
@@ -235,10 +265,13 @@ SMART_CONTRACT_TEMPLATE_CHOICES = [
     ('LiquidityPool-MultiToken', 'LiquidityPool-MultiToken'),
     ('LiquidityPool-Timelocked', 'LiquidityPool-Timelocked'),
     ('LiquidityPool-YieldFarming', 'LiquidityPool-YieldFarming'),
+
     ###
+
     ('LiquidityPool-Custom', 'LiquidityPool-Custom'),
 
     # Lottery Contract Templates
+
     ('Lottery-ChainlinkVRF', 'Lottery-ChainlinkVRF'),
     ('Lottery-CommunityDriven', 'Lottery-CommunityDriven'),
     ('Lottery-DecentralizedPool', 'Lottery-DecentralizedPool'),
@@ -247,10 +280,13 @@ SMART_CONTRACT_TEMPLATE_CHOICES = [
     ('Lottery-RaffleBased', 'Lottery-RaffleBased'),
     ('Lottery-Simple', 'Lottery-Simple'),
     ('Lottery-SubscriptionBased', 'Lottery-SubscriptionBased'),
+
     ###
+
     ('Lottery-Custom', 'Lottery-Custom'),
 
     # Marketplace Contract Templates
+
     ('Marketplace-AuctionBased', 'Marketplace-AuctionBased'),
     ('Marketplace-DecentralizedRental', 'Marketplace-DecentralizedRental'),
     ('Marketplace-ERC20Token', 'Marketplace-ERC20Token'),
@@ -260,10 +296,13 @@ SMART_CONTRACT_TEMPLATE_CHOICES = [
     ('Marketplace-RevenueSharing', 'Marketplace-RevenueSharing'),
     ('Marketplace-Service', 'Marketplace-Service'),
     ('Marketplace-Whitelist', 'Marketplace-Whitelist'),
+
     ###
+
     ('Marketplace-Custom', 'Marketplace-Custom'),
 
     # NFT Contract Templates
+
     ('ERC-721', 'ERC-721'),
     ('ERC-721-BatchMining', 'ERC-721-BatchMining'),
     ('ERC-721-DutchAuction', 'ERC-721-DutchAuction'),
@@ -276,10 +315,13 @@ SMART_CONTRACT_TEMPLATE_CHOICES = [
     ('ERC-721-Wrapped', 'ERC-721-Wrapped'),
     ('ERC-721-MultiToken', 'ERC-721-MultiToken'),
     ('ERC-721-Royalty', 'ERC-721-Royalty'),
+
     ###
+
     ('NFT-Custom', 'NFT-Custom'),
 
     # Oracle Contract Templates
+
     ('Oracle-APIBased', 'Oracle-APIBased'),
     ('Oracle-CustomDataFeed', 'Oracle-CustomDataFeed'),
     ('Oracle-DataSignatureVerification', 'Oracle-DataSignatureVerification'),
@@ -289,10 +331,13 @@ SMART_CONTRACT_TEMPLATE_CHOICES = [
     ('Oracle-Randomness', 'Oracle-Randomness'),
     ('Oracle-TimebasedDataFeed', 'Oracle-TimebasedDataFeed'),
     ('Oracle-Weather', 'Oracle-Weather'),
+
     ###
+
     ('Oracle-Custom', 'Oracle-Custom'),
 
     # Real Estate Tokenization Contract Templates
+
     ('RealEstate-Crowdfunding', 'RealEstate-Crowdfunding'),
     ('RealEstate-DAO', 'RealEstate-DAO'),
     ('RealEstate-FractionalOwnership', 'RealEstate-FractionalOwnership'),
@@ -302,10 +347,13 @@ SMART_CONTRACT_TEMPLATE_CHOICES = [
     ('RealEstate-PropertyLeaseToOwn', 'RealEstate-PropertyLeaseToOwn'),
     ('RealEstate-PropertyTokenization', 'RealEstate-PropertyTokenization'),
     ('RealEstate-RentalAgreement', 'RealEstate-RentalAgreement'),
+
     ###
+
     ('RealEstate-Custom', 'RealEstate-Custom'),
 
     # Royalties Contract Templates
+
     ('Royalties-EscrowBasedPayment', 'Royalties-EscrowBasedPayment'),
     ('Royalties-LicenceBased', 'Royalties-LicenceBased'),
     ('Royalties-NFTRoyaltyDistribution', 'Royalties-NFTRoyaltyDistribution'),
@@ -315,10 +363,13 @@ SMART_CONTRACT_TEMPLATE_CHOICES = [
     ('Royalties-RealTimeSplitting', 'Royalties-RealTimeSplitting'),
     ('Royalties-Streaming', 'Royalties-Streaming'),
     ('Royalties-TieredStructure', 'Royalties-TieredStructure'),
+
     ###
+
     ('Royalties-Custom', 'Royalties-Custom'),
 
     # Staking Contract Templates
+
     ('Staking-AutoCompounding', 'Staking-AutoCompounding'),
     ('Staking-Basic', 'Staking-Basic'),
     ('Staking-EarlyWithdrawalPenalty', 'Staking-EarlyWithdrawalPenalty'),
@@ -329,10 +380,13 @@ SMART_CONTRACT_TEMPLATE_CHOICES = [
     ('Staking-ToAccess', 'Staking-ToAccess'),
     ('Staking-TokenGovernance', 'Staking-TokenGovernance'),
     ('Staking-YieldFarming', 'Staking-YieldFarming'),
+
     ###
+
     ('Staking-Custom', 'Staking-Custom'),
 
     # Supply Chain Contract Templates
+
     ('SupplyChain-AssetTransfer', 'SupplyChain-AssetTransfer'),
     ('SupplyChain-AutomatedPayment', 'SupplyChain-AutomatedPayment'),
     ('SupplyChain-CertificationVerification', 'SupplyChain-CertificationVerification'),
@@ -342,10 +396,13 @@ SMART_CONTRACT_TEMPLATE_CHOICES = [
     ('SupplyChain-ProductTracking', 'SupplyChain-ProductTracking'),
     ('SupplyChain-ShipmentTracking', 'SupplyChain-ShipmentTracking'),
     ('SupplyChain-SupplierVerification', 'SupplyChain-SupplierVerification'),
+
     ###
+
     ('SupplyChain-Custom', 'SupplyChain-Custom'),
 
     # Token Contract Templates
+
     ('ERC-20', 'ERC-20'),
     ('ERC-20-Burnable', 'ERC-20-Burnable'),
     ('ERC-20-Capped', 'ERC-20-Capped'),
@@ -355,10 +412,13 @@ SMART_CONTRACT_TEMPLATE_CHOICES = [
     ('ERC-20-Snapshot', 'ERC-20-Snapshot'),
     ('ERC-20-Taxable', 'ERC-20-Taxable'),
     ('ERC-20-Vesting', 'ERC-20-Vesting'),
+
     ###
+
     ('ERC-20-Custom', 'ERC-20-Custom'),
 
     # Vesting Contract Templates
+
     ('Vesting-AdjustableTerms', 'Vesting-AdjustableTerms'),
     ('Vesting-Cliff', 'Vesting-Cliff'),
     ('Vesting-CustomSchedule', 'Vesting-CustomSchedule'),
@@ -369,10 +429,13 @@ SMART_CONTRACT_TEMPLATE_CHOICES = [
     ('Vesting-TeamBased', 'Vesting-TeamBased'),
     ('Vesting-TimeBased', 'Vesting-TimeBased'),
     ('Vesting-WithRevocation', 'Vesting-WithRevocation'),
+
     ###
+
     ('Vesting-Custom', 'Vesting-Custom'),
 
     # Voting Contract Templates
+
     ('Voting-Anonymous', 'Voting-Anonymous'),
     ('Voting-Delegated', 'Voting-Delegated'),
     ('Voting-LiquidDemocracy', 'Voting-LiquidDemocracy'),
@@ -382,13 +445,16 @@ SMART_CONTRACT_TEMPLATE_CHOICES = [
     ('Voting-TimeWeighted', 'Voting-TimeWeighted'),
     ('Voting-TokenBased', 'Voting-TokenBased'),
     ('Voting-Weighted', 'Voting-Weighted'),
+
     ###
+
     ('Voting-Custom', 'Voting-Custom'),
 ]
 
 
 class SmartContractTemplateNames:
     # Crowdsale Contract Templates
+
     CROWDSALE_BASIC = 'Crowdsale-Basic'
     CROWDSALE_REFUNDABLE = 'Crowdsale-Refundable'
     CROWDSALE_CAPPED = 'Crowdsale-Capped'
@@ -417,6 +483,7 @@ class SmartContractTemplateNames:
             ]
 
     # DAO Contract Templates
+
     DAO_ERC20_TOKEN_VOTING = 'DAO-ERC20TokenVoting'
     DAO_MULTI_SIGNATURE = 'DAO-MultiSignature'
     DAO_TOKEN_CURATED_REGISTRY = 'DAO-TokenCuratedRegistry'
@@ -447,6 +514,7 @@ class SmartContractTemplateNames:
             ]
 
     # DeFi Protocol Contract Templates
+
     DEFI_AUTO_MARKET_MAKER = 'DeFi-AutoMarketMaker'
     DEFI_FLASH_LOAN = 'DeFi-FlashLoan'
     DEFI_STAKING = 'DeFi-Staking'
@@ -473,6 +541,7 @@ class SmartContractTemplateNames:
             ]
 
     # Derivatives Contract Templates
+
     DERIVATIVES_OPTIONS = 'Derivatives-Options'
     DERIVATIVES_FUTURES = 'Derivatives-Futures'
     DERIVATIVES_CREDIT_DEFAULT_SWAP = 'Derivatives-CreditDefaultSwap'
@@ -499,6 +568,7 @@ class SmartContractTemplateNames:
             ]
 
     # Escrow Contract Templates
+
     ESCROW_BASIC = 'Escrow-Basic'
     ESCROW_CONDITIONAL = 'Escrow-Conditional'
     ESCROW_DISPUTE_RESOLUTION = 'Escrow-DisputeResolution'
@@ -527,6 +597,7 @@ class SmartContractTemplateNames:
             ]
 
     # Governance Contract Templates
+
     GOVERNANCE_MULTIPLE_PROPOSAL = 'Governance-MultipleProposal'
     GOVERNANCE_TIMELOCKED = 'Governance-Timelocked'
     GOVERNANCE_VESTING = 'Governance-Vesting'
@@ -557,6 +628,7 @@ class SmartContractTemplateNames:
             ]
 
     # Identity Verification Contract Templates
+
     ID_ACCESS_CONTROL = 'ID-AccessControl'
     ID_CREDENTIAL_ISSUANCE = 'ID-CredentialIssuance'
     ID_DECENTRALIZED_ID = 'ID-DecentralizedID'
@@ -587,6 +659,7 @@ class SmartContractTemplateNames:
             ]
 
     # Insurance Contract Templates
+
     INSURANCE_CLAIM_AND_DISPUTE_RESOLUTION = 'Insurance-ClaimAndDisputeResolution'
     INSURANCE_DECENTRALIZED_REINSURANCE = 'Insurance-DecentralizedReinsurance'
     INSURANCE_DECENTRALIZED_RISK_POOL = 'Insurance-DecentralizedRiskPool'
@@ -617,6 +690,7 @@ class SmartContractTemplateNames:
             ]
 
     # Lending & Borrowing Contract Templates
+
     LENDING_COLLATERAL_SWAP = 'Lending-CollateralSwap'
     LENDING_DYNAMIC_INTEREST_RATE_LOAN = 'Lending-DynamicInterestRateLoan'
     LENDING_FLASH_LOAN = 'Lending-FlashLoan'
@@ -643,6 +717,7 @@ class SmartContractTemplateNames:
             ]
 
     # Liquidity Pool Contract Templates
+
     LIQUIDITY_POOL_AUTO_BALANCING = 'LiquidityPool-AutoBalancing'
     LIQUIDITY_POOL_BASIC = 'LiquidityPool-Basic'
     LIQUIDITY_POOL_DYNAMIC_FEE = 'LiquidityPool-DynamicFee'
@@ -671,6 +746,7 @@ class SmartContractTemplateNames:
             ]
 
     # Lottery Contract Templates
+
     LOTTERY_CHAINLINK_VRF = 'Lottery-ChainlinkVRF'
     LOTTERY_COMMUNITY_DRIVEN = 'Lottery-CommunityDriven'
     LOTTERY_DECENTRALIZED_POOL = 'Lottery-DecentralizedPool'
@@ -697,6 +773,7 @@ class SmartContractTemplateNames:
             ]
 
     # Marketplace Contract Templates
+
     MARKETPLACE_AUCTION_BASED = 'Marketplace-AuctionBased'
     MARKETPLACE_DECENTRALIZED_RENTAL = 'Marketplace-DecentralizedRental'
     MARKETPLACE_ERC20_TOKEN = 'Marketplace-ERC20Token'
@@ -725,6 +802,7 @@ class SmartContractTemplateNames:
             ]
 
     # NFT Contract Templates
+
     ERC_721 = 'ERC-721'
     ERC_721_BATCH_MINING = 'ERC-721-BatchMining'
     ERC_721_DUTCH_AUCTION = 'ERC-721-DutchAuction'
@@ -759,6 +837,7 @@ class SmartContractTemplateNames:
             ]
 
     # Oracle Contract Templates
+
     ORACLE_API_BASED = 'Oracle-APIBased'
     ORACLE_CUSTOM_DATA_FEED = 'Oracle-CustomDataFeed'
     ORACLE_DATA_SIGNATURE_VERIFICATION = 'Oracle-DataSignatureVerification'
@@ -787,6 +866,7 @@ class SmartContractTemplateNames:
             ]
 
     # Real Estate Tokenization Contract Templates
+
     REAL_ESTATE_CROWDFUNDING = 'RealEstate-Crowdfunding'
     REAL_ESTATE_DAO = 'RealEstate-DAO'
     REAL_ESTATE_FRACTIONAL_OWNERSHIP = 'RealEstate-FractionalOwnership'
@@ -815,6 +895,7 @@ class SmartContractTemplateNames:
             ]
 
     # Royalties Contract Templates
+
     ROYALTIES_ESCROW_BASED_PAYMENT = 'Royalties-EscrowBasedPayment'
     ROYALTIES_LICENCE_BASED = 'Royalties-LicenceBased'
     ROYALTIES_NFT_ROYALTY_DISTRIBUTION = 'Royalties-NFTRoyaltyDistribution'
@@ -843,6 +924,7 @@ class SmartContractTemplateNames:
             ]
 
     # Staking Contract Templates
+
     STAKING_AUTO_COMPOUNDING = 'Staking-AutoCompounding'
     STAKING_BASIC = 'Staking-Basic'
     STAKING_EARLY_WITHDRAWAL_PENALTY = 'Staking-EarlyWithdrawalPenalty'
@@ -873,6 +955,7 @@ class SmartContractTemplateNames:
             ]
 
     # Supply Chain Contract Templates
+
     SUPPLY_CHAIN_ASSET_TRANSFER = 'SupplyChain-AssetTransfer'
     SUPPLY_CHAIN_AUTOMATED_PAYMENT = 'SupplyChain-AutomatedPayment'
     SUPPLY_CHAIN_CERTIFICATION_VERIFICATION = 'SupplyChain-CertificationVerification'
@@ -901,6 +984,7 @@ class SmartContractTemplateNames:
             ]
 
     # Token Contract Templates
+
     ERC_20 = 'ERC-20'
     ERC_20_BURNABLE = 'ERC-20-Burnable'
     ERC_20_CAPPED = 'ERC-20-Capped'
@@ -929,6 +1013,7 @@ class SmartContractTemplateNames:
             ]
 
     # Vesting Contract Templates
+
     VESTING_ADJUSTABLE_TERMS = 'Vesting-AdjustableTerms'
     VESTING_CLIFF = 'Vesting-Cliff'
     VESTING_CUSTOM_SCHEDULE = 'Vesting-CustomSchedule'
@@ -959,6 +1044,7 @@ class SmartContractTemplateNames:
             ]
 
     # Voting Contract Templates
+
     VOTING_ANONYMOUS = 'Voting-Anonymous'
     VOTING_DELEGATED = 'Voting-Delegated'
     VOTING_LIQUID_DEMOCRACY = 'Voting-LiquidDemocracy'
@@ -1234,17 +1320,49 @@ class SmartContractTemplateNames:
         ]
 
 
-BLOCKCHAIN_WALLET_CONNECTION_ADMIN_LIST = ('organization', 'blockchain_type', 'nickname', 'wallet_balance',
-                                           'balance_last_synced_at')
-BLOCKCHAIN_WALLET_CONNECTION_ADMIN_FILTER = ('organization', 'blockchain_type', 'created_at', 'updated_at')
-BLOCKCHAIN_WALLET_CONNECTION_ADMIN_SEARCH = ('organization', 'blockchain_type', 'nickname', 'wallet_address')
+BLOCKCHAIN_WALLET_CONNECTION_ADMIN_LIST = (
+    'organization',
+    'blockchain_type',
+    'nickname',
+    'wallet_balance',
+    'balance_last_synced_at'
+)
+BLOCKCHAIN_WALLET_CONNECTION_ADMIN_FILTER = (
+    'organization',
+    'blockchain_type',
+    'created_at',
+    'updated_at'
+)
+BLOCKCHAIN_WALLET_CONNECTION_ADMIN_SEARCH = (
+    'organization',
+    'blockchain_type',
+    'nickname',
+    'wallet_address'
+)
 
-BLOCKCHAIN_SMART_CONTRACT_ADMIN_LIST = ['nickname', 'wallet', 'category', 'contract_template', 'created_at',
-                                        'updated_at']
-BLOCKCHAIN_SMART_CONTRACT_ADMIN_FILTER = ['nickname', 'wallet', 'category', 'contract_template', 'created_at',
-                                          'updated_at']
-BLOCKCHAIN_SMART_CONTRACT_ADMIN_SEARCH = ['nickname', 'wallet', 'category', 'contract_template',
-                                          'contract_template_filepath']
+BLOCKCHAIN_SMART_CONTRACT_ADMIN_LIST = [
+    'nickname',
+    'wallet',
+    'category',
+    'contract_template',
+    'created_at',
+    'updated_at'
+]
+BLOCKCHAIN_SMART_CONTRACT_ADMIN_FILTER = [
+    'nickname',
+    'wallet',
+    'category',
+    'contract_template',
+    'created_at',
+    'updated_at'
+]
+BLOCKCHAIN_SMART_CONTRACT_ADMIN_SEARCH = [
+    'nickname',
+    'wallet',
+    'category',
+    'contract_template',
+    'contract_template_filepath'
+]
 
 DEPLOYMENT_STATUSES = [
     ('not-generated', 'Not Generated'),
@@ -1257,12 +1375,12 @@ DEPLOYMENT_STATUSES = [
 
 
 class DeploymentStatusesNames:
-    NOT_GENERATED = 'not-generated'  #
-    GENERATED_UNSIGNED = 'generated-unsigned'  #
-    TRANSACTION_STAGED = 'transaction-staged'  #
-    WAITING_FOR_MINING = 'waiting-for-mining'  #
-    DEPLOYED = 'deployed'  #
-    FAILED = 'failed' #
+    NOT_GENERATED = 'not-generated'
+    GENERATED_UNSIGNED = 'generated-unsigned'
+    TRANSACTION_STAGED = 'transaction-staged'
+    WAITING_FOR_MINING = 'waiting-for-mining'
+    DEPLOYED = 'deployed'
+    FAILED = 'failed'
 
     @staticmethod
     def as_list():
@@ -1281,6 +1399,24 @@ class GenerateSmartContractViewActionTypes:
     SIGN_AND_DEPLOY_CONTRACT = 'sign_and_deploy_contract'
 
 
-SMART_CONTRACT_ASSISTANT_CONNECTION_ADMIN_LIST = ["smart_contract", "assistant", "created_by_user", "created_at", "updated_at"]
-SMART_CONTRACT_ASSISTANT_CONNECTION_ADMIN_FILTER = ["smart_contract", "assistant", "created_by_user", "created_at", "updated_at"]
-SMART_CONTRACT_ASSISTANT_CONNECTION_ADMIN_SEARCH = ["smart_contract", "assistant", "created_by_user", "created_at", "updated_at"]
+SMART_CONTRACT_ASSISTANT_CONNECTION_ADMIN_LIST = [
+    "smart_contract",
+    "assistant",
+    "created_by_user",
+    "created_at",
+    "updated_at"
+]
+SMART_CONTRACT_ASSISTANT_CONNECTION_ADMIN_FILTER = [
+    "smart_contract",
+    "assistant",
+    "created_by_user",
+    "created_at",
+    "updated_at"
+]
+SMART_CONTRACT_ASSISTANT_CONNECTION_ADMIN_SEARCH = [
+    "smart_contract",
+    "assistant",
+    "created_by_user",
+    "created_at",
+    "updated_at"
+]

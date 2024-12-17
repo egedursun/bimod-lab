@@ -14,20 +14,45 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render, redirect
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.shortcuts import (
+    render,
+    redirect
+)
+
 from django.views.generic import TemplateView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.core.video_generation.utils import VIDEO_GENERATOR_PROVIDER_TYPES
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
+from apps.core.video_generation.utils import (
+    VIDEO_GENERATOR_PROVIDER_TYPES
+)
+
 from apps.assistants.models import Assistant
 from apps.organization.models import Organization
-from apps.user_permissions.utils import PermissionNames
-from apps.video_generations.models import VideoGeneratorConnection
-from config.settings import MAX_VIDEO_GENERATORS_PER_ASSISTANT
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
+from apps.video_generations.models import (
+    VideoGeneratorConnection
+)
+
+from config.settings import (
+    MAX_VIDEO_GENERATORS_PER_ASSISTANT
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -37,17 +62,27 @@ class VideoGeneratorView_Create(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
-        context['organizations'] = Organization.objects.filter(users__in=[self.request.user])
-        context['assistants'] = Assistant.objects.filter(organization__in=context['organizations'])
+
+        context['organizations'] = Organization.objects.filter(
+            users__in=[self.request.user]
+        )
+
+        context['assistants'] = Assistant.objects.filter(
+            organization__in=context['organizations']
+        )
+
         context['provider_choices'] = VIDEO_GENERATOR_PROVIDER_TYPES
+
         return context
 
     def post(self, request, *args, **kwargs):
 
         ##############################
         # PERMISSION CHECK FOR - CREATE_VIDEO_GENERATOR_CONNECTIONS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.CREATE_VIDEO_GENERATOR_CONNECTIONS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.CREATE_VIDEO_GENERATOR_CONNECTIONS
+        ):
             messages.error(self.request, "You do not have permission to create video generator connections.")
             return redirect('video_generations:list')
         ##############################
@@ -81,20 +116,30 @@ class VideoGeneratorView_Create(LoginRequiredMixin, TemplateView):
         if errors:
             context = self.get_context_data()
             context['error_messages'] = errors
+
             logger.error(f"Error creating the Video Generator Connection. Errors: {errors}")
-            return render(request, self.template_name, context)
+
+            return render(
+                request,
+                self.template_name,
+                context
+            )
 
         orgg = None
         agent = None
         try:
-            orgg = Organization.objects.get(id=org_id)
+            orgg = Organization.objects.get(
+                id=org_id
+            )
 
         except Organization.DoesNotExist:
             logger.error(f"Organization with ID {org_id} does not exist.")
             errors['organization'] = 'Selected organization does not exist.'
 
         try:
-            agent = Assistant.objects.get(id=agent_id)
+            agent = Assistant.objects.get(
+                id=agent_id
+            )
 
         except Assistant.DoesNotExist:
             logger.error(f"Assistant with ID {agent_id} does not exist.")
@@ -104,7 +149,12 @@ class VideoGeneratorView_Create(LoginRequiredMixin, TemplateView):
             context = self.get_context_data()
             context['error_messages'] = errors
             logger.error(f"Error creating the Video Generator Connection. Errors: {errors}")
-            return render(request, self.template_name, context)
+
+            return render(
+                request,
+                self.template_name,
+                context
+            )
 
         if orgg is None:
             errors['organization'] = 'Selected organization does not exist.'
@@ -116,16 +166,21 @@ class VideoGeneratorView_Create(LoginRequiredMixin, TemplateView):
             context = self.get_context_data()
             context['error_messages'] = errors
             logger.error(f"Error creating the Video Generator Connection. Errors: {errors}")
-            return render(request, self.template_name, context)
+
+            return render(
+                request,
+                self.template_name,
+                context
+            )
 
         try:
 
-            # check the number of video generator connections assistant has
             n_video_generators = agent.videogeneratorconnection_set.count()
 
             if n_video_generators > MAX_VIDEO_GENERATORS_PER_ASSISTANT:
                 messages.error(request,
                                f'Assistant has reached the maximum number of video generator connections ({MAX_VIDEO_GENERATORS_PER_ASSISTANT}).')
+
                 return redirect('video_generations:create')
 
             video_generator_connection = VideoGeneratorConnection(
@@ -137,13 +192,16 @@ class VideoGeneratorView_Create(LoginRequiredMixin, TemplateView):
                 provider=provider,
                 provider_api_key=provider_api_key
             )
+
             video_generator_connection.save()
 
         except Exception as e:
             logger.error(f"Error creating the Video Generator Connection. Error: {e}")
             messages.error(request, 'Error creating the Video Generator Connection.')
+
             return redirect('video_generations:create')
 
         logger.info(f"Video Generator Connection created by User: {self.request.user.id}.")
         messages.success(request, 'Video Generator Connection created successfully.')
+
         return redirect('video_generations:list')

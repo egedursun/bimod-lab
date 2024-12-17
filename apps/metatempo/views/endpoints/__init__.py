@@ -15,6 +15,5 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-
 from .metatempo_screenshot_delivery_views import *
 from .get_metatempo_connection_config_views import *

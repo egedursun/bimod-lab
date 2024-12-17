@@ -18,9 +18,15 @@
 
 from django.contrib import admin
 
-from apps.metatempo.models import MetaTempoMemberLogDaily
-from apps.metatempo.utils import META_TEMPO_MEMBER_LOG_DAILY_ADMIN_LIST, META_TEMPO_MEMBER_LOG_DAILY_ADMIN_FILTER, \
+from apps.metatempo.models import (
+    MetaTempoMemberLogDaily
+)
+
+from apps.metatempo.utils import (
+    META_TEMPO_MEMBER_LOG_DAILY_ADMIN_LIST,
+    META_TEMPO_MEMBER_LOG_DAILY_ADMIN_FILTER,
     META_TEMPO_MEMBER_LOG_DAILY_ADMIN_SEARCH
+)
 
 
 @admin.register(MetaTempoMemberLogDaily)
@@ -28,4 +34,5 @@ class MetaTempoMemberLogDailyAdmin(admin.ModelAdmin):
     list_display = META_TEMPO_MEMBER_LOG_DAILY_ADMIN_LIST
     list_filter = META_TEMPO_MEMBER_LOG_DAILY_ADMIN_FILTER
     search_fields = META_TEMPO_MEMBER_LOG_DAILY_ADMIN_SEARCH
+
     ordering = ['-created_at']

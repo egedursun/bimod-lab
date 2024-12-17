@@ -14,13 +14,18 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from celery import shared_task
 
-from apps.mm_functions.models import CustomFunction
-from apps.mm_functions.utils import NUMBER_OF_RANDOM_FEATURED_FUNCTIONS
+from apps.mm_functions.models import (
+    CustomFunction
+)
 
+from apps.mm_functions.utils import (
+    NUMBER_OF_RANDOM_FEATURED_FUNCTIONS
+)
 
 logger = logging.getLogger(__name__)
 
@@ -28,11 +33,18 @@ logger = logging.getLogger(__name__)
 @shared_task
 def randomize_featured_functions():
     all_functions = CustomFunction.objects.all()
+
     for function in all_functions:
         function.is_featured = False
         function.save()
-    featured_functions = CustomFunction.objects.order_by('?')[:NUMBER_OF_RANDOM_FEATURED_FUNCTIONS]
+
+    featured_functions = CustomFunction.objects.order_by(
+        '?'
+    )[:NUMBER_OF_RANDOM_FEATURED_FUNCTIONS]
+
     for function in featured_functions:
         function.is_featured = True
+
         logger.info(f"Function: {function.id} is now featured.")
+
         function.save()

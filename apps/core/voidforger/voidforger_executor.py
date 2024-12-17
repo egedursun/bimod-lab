@@ -233,10 +233,11 @@ class VoidForgerExecutionManager:
                         multimodal_chat=chat
                     )
 
-                    response = internal_llm_client_voidforger.respond(
+                    response = internal_llm_client_voidforger.respond_stream(
                         latest_message=user_message,
                         current_mode=VoidForgerModesNames.CHAT,
-                        image_uris=[], file_uris=[]
+                        image_uris=[],
+                        file_uris=[]
                     )
 
                     assistant_message = MultimodalVoidForgerChatMessage.objects.create(

@@ -14,11 +14,18 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from apps.assistants.models import Assistant
-from apps.sheetos.models import SheetosGoogleAppsConnection
-from apps.sheetos.utils import generate_google_apps_connection_api_key
+
+from apps.sheetos.models import (
+    SheetosGoogleAppsConnection
+)
+
+from apps.sheetos.utils import (
+    generate_google_apps_connection_api_key
+)
 
 logger = logging.getLogger(__name__)
 
@@ -45,7 +52,9 @@ def action__015_google_sheets_connections_create(
 
     except Exception as e:
         logger.error(f"Error in action__015_google_sheets_connections_create: {str(e)}")
+
         return False
 
     logger.info("action__015_google_sheets_connections_create completed successfully.")
+
     return True

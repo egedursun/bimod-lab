@@ -14,15 +14,33 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import get_object_or_404, redirect
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.shortcuts import (
+    get_object_or_404,
+    redirect
+)
+
 from django.views.generic import TemplateView
+
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
 
 from apps.organization.models import Organization
 from apps.projects.models import ProjectItem
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -32,14 +50,37 @@ class ProjectsView_ProjectUpdate(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         project_id = self.kwargs.get("pk")
-        project = get_object_or_404(ProjectItem, pk=project_id)
+
+        project = get_object_or_404(
+            ProjectItem,
+            pk=project_id
+        )
+
         context['project'] = project
-        context['organizations'] = Organization.objects.filter(users__in=[self.request.user])
+
+        context['organizations'] = Organization.objects.filter(
+            users__in=[self.request.user]
+        )
+
         return context
 
     def post(self, request, *args, **kwargs):
         project_id = self.kwargs.get("pk")
-        project = get_object_or_404(ProjectItem, pk=project_id)
+
+        ##############################
+        # PERMISSION CHECK FOR - UPDATE_PROJECTS
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.UPDATE_PROJECTS
+        ):
+            messages.error(self.request, "You do not have permission to update projects.")
+            return redirect('projects:project_list')
+        ##############################
+
+        project = get_object_or_404(
+            ProjectItem,
+            pk=project_id
+        )
 
         try:
             project.organization_id = request.POST.get('organization')
@@ -57,10 +98,13 @@ class ProjectsView_ProjectUpdate(LoginRequiredMixin, TemplateView):
             project.project_budget = request.POST.get('project_budget')
 
             project.save()
+
         except Exception as e:
             messages.error(request, f"An error occurred while updating the Project: {str(e)}")
+
             return redirect("projects:project_list")
 
         messages.success(request, "Project updated successfully!")
         logger.info(f"Project updated successfully: {project.id}")
+
         return redirect('projects:project_list')

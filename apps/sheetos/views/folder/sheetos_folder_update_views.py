@@ -14,17 +14,33 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import get_object_or_404, redirect
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.shortcuts import (
+    get_object_or_404,
+    redirect
+)
+
 from django.views.generic import TemplateView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
 from apps.organization.models import Organization
 from apps.sheetos.models import SheetosFolder
-from apps.user_permissions.utils import PermissionNames
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -33,37 +49,60 @@ logger = logging.getLogger(__name__)
 class SheetosView_FolderUpdate(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+
         folder_id = self.kwargs['folder_id']
-        folder = get_object_or_404(SheetosFolder, id=folder_id)
-        organizations = Organization.objects.filter(users__in=[self.request.user])
+
+        folder = get_object_or_404(
+            SheetosFolder,
+            id=folder_id
+        )
+
+        organizations = Organization.objects.filter(
+            users__in=[self.request.user]
+        )
+
         context['folder'] = folder
         context['organizations'] = organizations
+
         return context
 
     def post(self, request, *args, **kwargs):
 
         ##############################
         # PERMISSION CHECK FOR - UPDATE_SHEETOS_FOLDERS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.UPDATE_SHEETOS_FOLDERS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.UPDATE_SHEETOS_FOLDERS
+        ):
             messages.error(self.request, "You do not have permission to update Sheetos Folders.")
+
             return redirect('sheetos:folders_list')
         ##############################
 
         folder_id = self.kwargs['folder_id']
 
         try:
-            folder = get_object_or_404(SheetosFolder, id=folder_id)
+            folder = get_object_or_404(
+                SheetosFolder,
+                id=folder_id
+            )
+
             folder.name = request.POST.get('name')
             folder.description = request.POST.get('description', '')
             folder.meta_context_instructions = request.POST.get('meta_context_instructions', '')
+
             organization_id = request.POST.get('organization')
+
             if organization_id:
                 folder.organization_id = organization_id
+
             folder.save()
+
         except Exception as e:
             messages.error(request, f"An error occurred while updating the Sheetos Folder: {str(e)}")
+
             return redirect('sheetos:folders_list')
 
         logger.info(f"Sheetos Folder was updated by User: {request.user.id}.")
+
         return redirect('sheetos:folders_list')

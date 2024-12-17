@@ -17,7 +17,9 @@
 
 from django import forms
 
-from apps.mm_triggered_jobs.models import LeanModTriggeredJob
+from apps.mm_triggered_jobs.models import (
+    LeanModTriggeredJob
+)
 
 
 class LeanModTriggeredJobForm(forms.ModelForm):
@@ -40,8 +42,10 @@ class LeanModTriggeredJobForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(LeanModTriggeredJobForm, self).__init__(*args, **kwargs)
+
         self.fields['step_guide'].required = False
 
     def clean(self):
         cleaned_data = super(LeanModTriggeredJobForm, self).clean()
+
         return cleaned_data

@@ -18,14 +18,25 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.shortcuts import redirect
 from django.views import View
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.datasource_knowledge_base.models import DocumentKnowledgeBaseConnection
-from apps.user_permissions.utils import PermissionNames
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
 
+from apps.datasource_knowledge_base.models import (
+    DocumentKnowledgeBaseConnection
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
 
 logger = logging.getLogger(__name__)
 
@@ -34,29 +45,40 @@ class SettingsView_DeleteAllVectorStoreManagers(View, LoginRequiredMixin):
 
     def post(self, request, *args, **kwargs):
         user = request.user
+
         user_vector_stores = DocumentKnowledgeBaseConnection.objects.filter(
-            assistant__organization__users__in=[user]).all()
+            assistant__organization__users__in=[user]
+        ).all()
+
         confirmation_field = request.POST.get('confirmation', None)
+
         if confirmation_field != 'CONFIRM DELETING ALL KNOWLEDGE BASES':
             messages.error(request, "Invalid confirmation field. Please confirm the deletion by typing "
                                     "exactly 'CONFIRM DELETING ALL KNOWLEDGE BASES'.")
             logger.error(f"Invalid confirmation field: {confirmation_field}")
+
             return redirect('user_settings:settings')
 
         ##############################
         # PERMISSION CHECK FOR - DELETE_KNOWLEDGE_BASES
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.DELETE_KNOWLEDGE_BASES):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.DELETE_KNOWLEDGE_BASES
+        ):
             messages.error(self.request, "You do not have permission to delete knowledge bases.")
+
             return redirect('user_settings:settings')
         ##############################
 
         try:
             for vector_store in user_vector_stores:
                 vector_store.delete()
+
             logger.info(f"All knowledge bases associated with User: {user.id} have been deleted.")
             messages.success(request, "All knowledge bases associated with your account have been deleted.")
+
         except Exception as e:
             logger.error(f"Error deleting knowledge bases: {e}")
             messages.error(request, f"Error deleting knowledge bases: {e}")
+
         return redirect('user_settings:settings')

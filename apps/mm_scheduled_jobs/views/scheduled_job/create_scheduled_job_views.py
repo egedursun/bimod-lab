@@ -18,7 +18,11 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
@@ -28,10 +32,20 @@ from apps.core.user_permissions.permission_manager import (
     UserPermissionManager
 )
 
-from apps.mm_scheduled_jobs.forms import ScheduledJobForm
+from apps.mm_scheduled_jobs.forms import (
+    ScheduledJobForm
+)
+
 from apps.organization.models import Organization
-from apps.user_permissions.utils import PermissionNames
-from config.settings import MAX_SCHEDULED_JOBS_PER_ASSISTANT
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
+from config.settings import (
+    MAX_SCHEDULED_JOBS_PER_ASSISTANT
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -69,24 +83,33 @@ class ScheduledJobView_Create(LoginRequiredMixin, TemplateView):
         form = ScheduledJobForm(request.POST)
 
         assistant_id = request.POST.get('assistant')
-        assistant = Assistant.objects.get(id=assistant_id)
+
+        assistant = Assistant.objects.get(
+            id=assistant_id
+        )
 
         if form.is_valid():
 
-            # check the number of scheduled jobs assistant has
             n_scheduled_jobs = assistant.scheduled_jobs.count()
+
             if n_scheduled_jobs > MAX_SCHEDULED_JOBS_PER_ASSISTANT:
-                messages.error(request,
-                               f'Assistant has reached the maximum number of connected scheduled jobs ({MAX_SCHEDULED_JOBS_PER_ASSISTANT}).')
+                messages.error(
+                    request,
+                    f'Assistant has reached the maximum number of connected scheduled jobs ({MAX_SCHEDULED_JOBS_PER_ASSISTANT}).'
+                )
 
                 return redirect('mm_scheduled_jobs:list')
 
-            scheduled_job = form.save(commit=False)
+            scheduled_job = form.save(
+                commit=False
+            )
+
             scheduled_job.assistant = assistant
             scheduled_job.created_by_user = request.user
 
             step_guide = request.POST.getlist('step_guide[]')
             scheduled_job.step_guide = step_guide
+
             scheduled_job.save()
 
             logger.info(f"Scheduled Job was created by User: {self.request.user.id}.")

@@ -14,16 +14,29 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.shortcuts import redirect
 from django.views import View
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.datasource_website.models import DataSourceWebsiteStorageItem
-from apps.user_permissions.utils import PermissionNames
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
+from apps.datasource_website.models import (
+    DataSourceWebsiteStorageItem
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
 
 logger = logging.getLogger(__name__)
 
@@ -45,6 +58,7 @@ class SettingsView_DeleteAllWebsiteStorageItems(View, LoginRequiredMixin):
                 "Invalid confirmation field. Please confirm the deletion by typing "
                 "exactly 'CONFIRM DELETING ALL WEBSITE STORAGE ITEMS'."
             )
+
             logger.error(f"Invalid confirmation field: {confirmation_field}")
 
             return redirect('user_settings:settings')
@@ -56,6 +70,7 @@ class SettingsView_DeleteAllWebsiteStorageItems(View, LoginRequiredMixin):
             operation=PermissionNames.DELETE_WEBSITE_ITEMS
         ):
             messages.error(self.request, "You do not have permission to delete website storage items.")
+
             return redirect('user_settings:settings')
         ##############################
 

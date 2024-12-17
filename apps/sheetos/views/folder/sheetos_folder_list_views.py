@@ -14,17 +14,34 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.core.paginator import (
+    Paginator,
+    PageNotAnInteger,
+    EmptyPage
+)
+
 from django.views.generic import TemplateView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
 from apps.organization.models import Organization
 from apps.sheetos.models import SheetosFolder
-from apps.user_permissions.utils import PermissionNames
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -36,32 +53,50 @@ class SheetosView_FolderList(LoginRequiredMixin, TemplateView):
 
         ##############################
         # PERMISSION CHECK FOR - LIST_SHEETOS_FOLDERS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.LIST_SHEETOS_FOLDERS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.LIST_SHEETOS_FOLDERS
+        ):
             messages.error(self.request, "You do not have permission to list Sheetos Folders.")
+
             return context
         ##############################
 
-        user_orgs = Organization.objects.filter(users__in=[self.request.user])
+        user_orgs = Organization.objects.filter(
+            users__in=[self.request.user]
+        )
+
         org_folders = []
+
         for org in user_orgs:
-            folders = SheetosFolder.objects.filter(organization=org)
+            folders = SheetosFolder.objects.filter(
+                organization=org
+            )
+
             paginator = Paginator(folders, 10)
             page = self.request.GET.get(f'page_{org.id}')
+
             try:
                 folders = paginator.page(page)
+
             except PageNotAnInteger:
                 folders = paginator.page(1)
+
             except EmptyPage:
                 folders = paginator.page(paginator.num_pages)
-            org_folders.append({
-                'organization': org,
-                'folders': folders,
-                'paginator': paginator,
-                'page_obj': folders,
-            })
+
+            org_folders.append(
+                {
+                    'organization': org,
+                    'folders': folders,
+                    'paginator': paginator,
+                    'page_obj': folders,
+                }
+            )
 
         context['org_folders'] = org_folders
         context['organizations'] = user_orgs
+
         logger.info(f"Sheetos Folders were listed for User: {self.request.user.id}.")
+
         return context

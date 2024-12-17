@@ -18,13 +18,30 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import get_object_or_404, redirect
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.shortcuts import (
+    get_object_or_404,
+    redirect
+)
+
 from django.views.generic import TemplateView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.multimodal_chat.models import MultimodalLeanChat
-from apps.user_permissions.utils import PermissionNames
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
+from apps.multimodal_chat.models import (
+    MultimodalLeanChat
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -45,13 +62,21 @@ class ChatView_LeanChatArchive(LoginRequiredMixin, TemplateView):
             operation=PermissionNames.ARCHIVE_LEAN_CHATS
         ):
             messages.error(self.request, "You do not have permission to archive LeanMod chats.")
+
             return self.render_to_response(context)
         ##############################
 
         pk = kwargs.get('pk')
-        chat = get_object_or_404(MultimodalLeanChat, id=pk, user=self.request.user)
+        chat = get_object_or_404(
+            MultimodalLeanChat,
+            id=pk,
+            user=self.request.user
+        )
+
         chat.is_archived = True
+
         chat.save()
 
         logger.info(f"LeanMod chat was archived by User: {self.request.user.id}.")
+
         return redirect('multimodal_chat:lean_chat')

@@ -14,15 +14,18 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from django.contrib import admin
 
-from apps.orchestrations.models import OrchestrationQueryLog
-from apps.orchestrations.utils import MAESTRO_QUERY_LOG_ADMIN_LIST, MAESTRO_QUERY_LOG_ADMIN_SEARCH, \
+from apps.orchestrations.models import (
+    OrchestrationQueryLog
+)
+
+from apps.orchestrations.utils import (
+    MAESTRO_QUERY_LOG_ADMIN_LIST,
+    MAESTRO_QUERY_LOG_ADMIN_SEARCH,
     MAESTRO_QUERY_LOG_ADMIN_FILTER
+)
 
 
 @admin.register(OrchestrationQueryLog)

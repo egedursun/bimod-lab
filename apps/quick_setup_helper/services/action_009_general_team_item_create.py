@@ -14,10 +14,16 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
-from apps.projects.models import ProjectTeamItem
-from apps.quick_setup_helper.utils import generate_random_object_id_string
+from apps.projects.models import (
+    ProjectTeamItem
+)
+
+from apps.quick_setup_helper.utils import (
+    generate_random_object_id_string
+)
 
 logger = logging.getLogger(__name__)
 
@@ -35,12 +41,20 @@ def action__009_general_team_item_create(
             team_name=f"Core Team for Project {metadata__project_item.project_name} {generate_random_object_id_string()}",
             team_description=f"The core management team created for generic operations within project {metadata__project_item.project_name}.",
         )
-        new_team_item.team_members.set([metadata__user])
+
+        new_team_item.team_members.set(
+            [
+                metadata__user
+            ]
+        )
+
         new_team_item.save()
 
     except Exception as e:
         logger.error(f"Error in action__009_general_team_item_create: {e}")
+
         return False, None
 
     logger.info(f"New team item created successfully: {new_team_item}")
+
     return True, new_team_item

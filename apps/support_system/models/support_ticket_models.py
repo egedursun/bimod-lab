@@ -17,16 +17,39 @@
 
 from django.db import models
 
-from apps.support_system.utils import STATUSES_FOR_SUPPORT_TICKETS, PRIORITY_CATEGORY_OF_SUPPORT_TICKETS
+from apps.support_system.utils import (
+    STATUSES_FOR_SUPPORT_TICKETS,
+    PRIORITY_CATEGORY_OF_SUPPORT_TICKETS
+)
 
 
 class SupportTicket(models.Model):
-    user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        'auth.User',
+        on_delete=models.CASCADE
+    )
+
     title = models.CharField(max_length=255)
     issue_description = models.TextField()
-    status = models.CharField(max_length=50, choices=STATUSES_FOR_SUPPORT_TICKETS, default='open')
-    priority = models.CharField(max_length=50, choices=PRIORITY_CATEGORY_OF_SUPPORT_TICKETS, default='low')
-    attachment = models.FileField(upload_to='tickets/attachments/%Y/%m/%d/', blank=True, null=True)
+
+    status = models.CharField(
+        max_length=50,
+        choices=STATUSES_FOR_SUPPORT_TICKETS,
+        default='open'
+    )
+
+    priority = models.CharField(
+        max_length=50,
+        choices=PRIORITY_CATEGORY_OF_SUPPORT_TICKETS,
+        default='low'
+    )
+
+    attachment = models.FileField(
+        upload_to='tickets/attachments/%Y/%m/%d/',
+        blank=True,
+        null=True
+    )
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -35,13 +58,31 @@ class SupportTicket(models.Model):
 
     class Meta:
         ordering = ['created_at']
+
         verbose_name = 'Support Ticket'
         verbose_name_plural = 'Support Tickets'
 
         indexes = [
-            models.Index(fields=['status', 'created_at']),
-            models.Index(fields=['status', 'updated_at']),
-            models.Index(fields=['status', 'priority']),
-            models.Index(fields=['status', 'priority', 'created_at']),
-            models.Index(fields=['status', 'priority', 'updated_at']),
+            models.Index(fields=[
+                'status',
+                'created_at'
+            ]),
+            models.Index(fields=[
+                'status',
+                'updated_at'
+            ]),
+            models.Index(fields=[
+                'status',
+                'priority'
+            ]),
+            models.Index(fields=[
+                'status',
+                'priority',
+                'created_at'
+            ]),
+            models.Index(fields=[
+                'status',
+                'priority',
+                'updated_at'
+            ]),
         ]

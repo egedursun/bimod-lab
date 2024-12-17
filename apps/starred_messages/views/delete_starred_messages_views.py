@@ -14,16 +14,34 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import get_object_or_404, redirect
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.shortcuts import (
+    get_object_or_404,
+    redirect
+)
+
 from django.views.generic import DeleteView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.starred_messages.models import StarredMessage
-from apps.user_permissions.utils import PermissionNames
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
+from apps.starred_messages.models import (
+    StarredMessage
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -42,26 +60,39 @@ class StarredMessageView_Delete(LoginRequiredMixin, DeleteView):
 
     def post(self, request, *args, **kwargs):
         context_user = request.user
-        starred_message = get_object_or_404(StarredMessage, id=self.kwargs['pk'])
+
+        starred_message = get_object_or_404(
+            StarredMessage,
+            id=self.kwargs['pk']
+        )
 
         ##############################
         # PERMISSION CHECK FOR - REMOVE_STARRED_MESSAGES
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.REMOVE_STARRED_MESSAGES):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.REMOVE_STARRED_MESSAGES
+        ):
             messages.error(self.request, "You do not have permission to remove starred messages.")
+
             return redirect('starred_messages:list')
         ##############################
 
         try:
             starred_message.delete()
+
             success_message = "Starred message deleted successfully."
+
             starred_message.chat_message.starred = False
+
             starred_message.chat_message.save()
+
         except Exception as e:
             logger.error(f"An error occurred while deleting the starred message: {str(e)}")
             messages.error(request, f"An error occurred while deleting the starred message: {str(e)}")
+
             return redirect('starred_messages:list')
 
         messages.success(request, success_message)
         logger.info(f"Starred message was deleted by User: {context_user.id}.")
+
         return redirect(self.success_url)

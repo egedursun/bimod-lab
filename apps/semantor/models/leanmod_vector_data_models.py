@@ -45,7 +45,13 @@ class LeanModVectorData(models.Model):
     )
 
     raw_data = models.JSONField(blank=True, null=True)
-    raw_data_hash = models.CharField(max_length=255, blank=True, null=True)
+
+    raw_data_hash = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True
+    )
+
     vector_data = models.JSONField(blank=True, null=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
@@ -57,15 +63,26 @@ class LeanModVectorData(models.Model):
     class Meta:
         verbose_name = "LeanMod Assistant Vector Data"
         verbose_name_plural = "LeanMod Assistant Vector Data"
+
         indexes = [
-            models.Index(fields=['leanmod_assistant']),
-            models.Index(fields=['created_at']),
-            models.Index(fields=['updated_at']),
+            models.Index(fields=[
+                'leanmod_assistant'
+            ]),
+            models.Index(fields=[
+                'created_at'
+            ]),
+            models.Index(fields=[
+                'updated_at'
+            ]),
         ]
 
     def _get_index_path(self):
         organization_id = self.leanmod_assistant.organization.id
-        return os.path.join(VECTOR_INDEX_PATH_LEANMOD_ASSISTANTS, f'leanmod_assistants_index_{organization_id}.index')
+
+        return os.path.join(
+            VECTOR_INDEX_PATH_LEANMOD_ASSISTANTS,
+            f'leanmod_assistants_index_{organization_id}.index'
+        )
 
     def save(self, *args, **kwargs):
 
@@ -78,9 +95,11 @@ class LeanModVectorData(models.Model):
         }
 
         expert_networks = self.leanmod_assistant.expert_networks.all()
+
         for xnet in expert_networks:
             xnet: ExpertNetwork
             xnet_name = xnet.name
+
             xnet_description = xnet.meta_description
             xnet_assistant_refs = xnet.assistant_references.all()
 
@@ -91,9 +110,17 @@ class LeanModVectorData(models.Model):
 
             for xnet_assistant_ref in xnet_assistant_refs:
                 xnet_assistant_ref: ExpertNetworkAssistantReference
+
                 xnet_assistant_name = xnet_assistant_ref.assistant.name
                 xnet_assistant_description = xnet_assistant_ref.context_instructions
-                raw_data["data_sources"]["expert_networks"][xnet_name]["network_assistants"][xnet_assistant_name] = {
+
+                raw_data[
+                    "data_sources"
+                ][
+                    "expert_networks"
+                ][xnet_name][
+                    "network_assistants"
+                ][xnet_assistant_name] = {
                     "description": xnet_assistant_description
                 }
 
@@ -107,47 +134,108 @@ class LeanModVectorData(models.Model):
 
         self.raw_data = raw_data
 
-        if self.has_raw_data_changed() or self.vector_data is None or self.vector_data == []:
-            # print("Vector data has changed, generating new embedding...")
+        if (
+            self.has_raw_data_changed() or
+            self.vector_data is None or
+            self.vector_data == []
+        ):
             self._generate_embedding(raw_data)
             self._save_embedding()
 
         else:
-            # print("Vector data has not changed, using existing embedding...")
+            logger.info("Raw data has not changed; skipping embedding generation.")
             pass
 
     def _generate_embedding(self, raw_data):
-        from apps.core.generative_ai.gpt_openai_manager import OpenAIGPTClientManager
-        c = OpenAIGPTClientManager.get_naked_client(llm_model=self.leanmod_assistant.llm_model)
-        raw_data_text = json.dumps(raw_data, indent=2)
+        from apps.core.generative_ai.gpt_openai_manager import (
+            OpenAIGPTClientManager
+        )
+
+        c = OpenAIGPTClientManager.get_naked_client(
+            llm_model=self.leanmod_assistant.llm_model
+        )
+
+        raw_data_text = json.dumps(
+            raw_data,
+            indent=2
+        )
+
         try:
-            response = c.embeddings.create(input=raw_data_text, model=OpenAIEmbeddingModels.TEXT_EMBEDDING_3_LARGE)
+            response = c.embeddings.create(
+                input=raw_data_text,
+                model=OpenAIEmbeddingModels.TEXT_EMBEDDING_3_LARGE
+            )
+
             embedding_vector = response.data[0].embedding
             self.vector_data = embedding_vector
+
         except Exception as e:
             logger.error(f"Error in generating embedding: {e}")
+
             self.vector_data = []
 
     def _save_embedding(self):
         if self.vector_data:
-            x = np.array([self.vector_data], dtype=np.float32).reshape(1, OPEN_AI_DEFAULT_EMBEDDING_VECTOR_DIMENSIONS)
-            xids = np.array([self.id], dtype=np.int64)
+            x = np.array(
+                [
+                    self.vector_data
+                ],
+                dtype=np.float32
+            ).reshape(
+                1,
+                OPEN_AI_DEFAULT_EMBEDDING_VECTOR_DIMENSIONS
+            )
+
+            xids = np.array(
+                [
+                    self.id
+                ],
+                dtype=np.int64
+            )
+
             index_path = self._get_index_path()
+
             if not os.path.exists(index_path):
-                index = faiss.IndexIDMap(faiss.IndexFlatL2(OPEN_AI_DEFAULT_EMBEDDING_VECTOR_DIMENSIONS))
+                index = faiss.IndexIDMap(
+                    faiss.IndexFlatL2(
+                        OPEN_AI_DEFAULT_EMBEDDING_VECTOR_DIMENSIONS
+                    )
+                )
+
             else:
                 index = faiss.read_index(index_path)
-                if not isinstance(index, faiss.IndexIDMap):
+
+                if not isinstance(
+                    index,
+                    faiss.IndexIDMap
+                ):
                     index = faiss.IndexIDMap(index)
+
                 index.remove_ids(xids)
 
-            index.add_with_ids(x, xids)
-            faiss.write_index(index, index_path)
+            index.add_with_ids(
+                x,
+                xids
+            )
+
+            faiss.write_index(
+                index,
+                index_path
+            )
 
     def has_raw_data_changed(self):
-        raw_data_str = json.dumps(self.raw_data, sort_keys=True)
-        new_raw_data_hash = hashlib.sha256(raw_data_str.encode('utf-8')).hexdigest()
+        raw_data_str = json.dumps(
+            self.raw_data,
+            sort_keys=True
+        )
+
+        new_raw_data_hash = hashlib.sha256(
+            raw_data_str.encode('utf-8')
+        ).hexdigest()
+
         if self.raw_data_hash == new_raw_data_hash:
             return False
+
         self.raw_data_hash = new_raw_data_hash
+
         return True

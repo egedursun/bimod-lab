@@ -18,16 +18,30 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import get_object_or_404, redirect
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.shortcuts import (
+    get_object_or_404,
+    redirect
+)
+
 from django.views.generic import TemplateView
 
 from apps.core.user_permissions.permission_manager import (
     UserPermissionManager
 )
 
-from apps.mm_scheduled_jobs.models import OrchestrationScheduledJob
-from apps.user_permissions.utils import PermissionNames
+from apps.mm_scheduled_jobs.models import (
+    OrchestrationScheduledJob
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -56,6 +70,7 @@ class ScheduledJobView_OrchestrationDelete(LoginRequiredMixin, TemplateView):
             operation=PermissionNames.DELETE_ORCHESTRATION_SCHEDULED_JOBS
         ):
             messages.error(self.request, "You do not have permission to delete Orchestration scheduled jobs.")
+
             return redirect('mm_scheduled_jobs:orchestration_list')
         ##############################
 

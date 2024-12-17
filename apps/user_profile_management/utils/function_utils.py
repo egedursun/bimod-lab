@@ -14,21 +14,25 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 import re
-
 
 logger = logging.getLogger(__name__)
 
 
 def infer_credit_card_type(card_number):
     logger.info(f"Inferring credit card type for card number.")
+
     card_types = {
         'visa': r'^4[0-9]{12}(?:[0-9]{3})?$',
         'mastercard': r'^5[1-5][0-9]{14}$',
         'amex': r'^3[47][0-9]{13}$',
     }
+
     for card_type, pattern in card_types.items():
+
         if re.match(pattern, card_number):
             return card_type
+
     return "visa"

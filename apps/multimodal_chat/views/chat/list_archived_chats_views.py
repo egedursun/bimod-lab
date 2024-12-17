@@ -18,17 +18,43 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import get_object_or_404
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.shortcuts import (
+    get_object_or_404
+)
+
 from django.views.generic import TemplateView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
 from apps.assistants.models import Assistant
-from apps.message_templates.models import MessageTemplate
-from apps.multimodal_chat.models import MultimodalChat
-from apps.multimodal_chat.utils import SourcesForMultimodalChatsNames
-from apps.organization.models import Organization
-from apps.user_permissions.utils import PermissionNames
+
+from apps.message_templates.models import (
+    MessageTemplate
+)
+
+from apps.multimodal_chat.models import (
+    MultimodalChat
+)
+
+from apps.multimodal_chat.utils import (
+    SourcesForMultimodalChatsNames
+)
+
+from apps.organization.models import (
+    Organization
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from config.settings import MEDIA_URL
 from web_project import TemplateLayout
 
@@ -48,6 +74,7 @@ class ChatView_ListArchivedChats(LoginRequiredMixin, TemplateView):
             operation=PermissionNames.CREATE_AND_USE_CHATS
         ):
             messages.error(self.request, "You do not have permission to create and use chats.")
+
             return context
         ##############################
 
@@ -85,7 +112,9 @@ class ChatView_ListArchivedChats(LoginRequiredMixin, TemplateView):
 
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
 
-        active_chat_msgs = active_chat.chat_messages.all().order_by('sent_at') if active_chat else None
+        active_chat_msgs = active_chat.chat_messages.all().order_by(
+            'sent_at'
+        ) if active_chat else None
 
         context.update(
             {
@@ -99,4 +128,5 @@ class ChatView_ListArchivedChats(LoginRequiredMixin, TemplateView):
         )
 
         logger.info(f"Archived Chats were listed by User: {self.request.user.id}.")
+
         return context

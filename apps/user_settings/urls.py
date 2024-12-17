@@ -56,7 +56,6 @@ from apps.user_settings.views import (
     SettingsView_DeleteAllBrainstormingSessions,
     SettingsView_DeleteAllDraftingDocuments,
     SettingsView_DeleteAllDraftingFolders,
-    SettingsView_DeleteAllHarmoniqAgents,
     SettingsView_DeleteAllNoSQLDBs,
     SettingsView_DeleteAllDataBackups,
     SettingsView_DeleteAllVideoGeneratorConnections,
@@ -385,14 +384,6 @@ urlpatterns = [
 
         ),
         name='delete_all_sheetos_folders'
-    ),
-
-    path(
-        'delete/all/harmoniq_agents/',
-        SettingsView_DeleteAllHarmoniqAgents.as_view(
-
-        ),
-        name='delete_all_harmoniq_agents'
     ),
 
     path(

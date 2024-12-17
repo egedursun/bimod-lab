@@ -13,20 +13,36 @@
 #  Holdings.
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
-#
-#
-#
-#
 
 from django import forms
 from django.contrib.auth.models import User
 
-from apps.user_permissions.models import UserRole
+from apps.user_permissions.models import (
+    UserRole
+)
 
 
 class AddUserToRoleForm(forms.Form):
-    user = forms.ModelChoiceField(queryset=User.objects.all(), widget=forms.Select(attrs={'class': 'form-select'}))
-    role = forms.ModelChoiceField(queryset=UserRole.objects.all(), widget=forms.Select(attrs={'class': 'form-select'}))
+    user = forms.ModelChoiceField(
+        queryset=User.objects.all(),
+        widget=forms.Select(
+            attrs={
+                'class': 'form-select'
+            }
+        )
+    )
+
+    role = forms.ModelChoiceField(
+        queryset=UserRole.objects.all(),
+        widget=forms.Select(
+            attrs={
+                'class': 'form-select'
+            }
+        )
+    )
 
     class Meta:
-        fields = ['user', 'role']
+        fields = [
+            'user',
+            'role'
+        ]

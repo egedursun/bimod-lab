@@ -123,6 +123,16 @@ class NotificationTitleCategoryChoicesNames:
             ]
 
 
-NOTIFICATION_ITEM_ADMIN_LIST = ('notification_sender_type', 'notification_title_category', 'created_at')
-NOTIFICATION_ITEM_ADMIN_FILTER = ('notification_sender_type', 'notification_title_category')
-NOTIFICATION_ITEM_ADMIN_SEARCH = ('notification_message', 'created_at')
+NOTIFICATION_ITEM_ADMIN_LIST = (
+    'notification_sender_type',
+    'notification_title_category',
+    'created_at'
+)
+NOTIFICATION_ITEM_ADMIN_FILTER = (
+    'notification_sender_type',
+    'notification_title_category'
+)
+NOTIFICATION_ITEM_ADMIN_SEARCH = (
+    'notification_message',
+    'created_at'
+)

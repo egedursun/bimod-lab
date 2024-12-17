@@ -19,17 +19,38 @@ import decimal
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.contrib.auth.models import User
-from django.shortcuts import redirect, get_object_or_404
+
+from django.shortcuts import (
+    redirect,
+    get_object_or_404
+)
+
 from django.views import View
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.llm_transaction.models import TransactionInvoice
-from apps.llm_transaction.utils import InvoiceTypesNames, AcceptedMethodsOfPaymentNames
-from apps.organization.models import Organization
-from apps.user_permissions.utils import PermissionNames
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
 
+from apps.llm_transaction.models import (
+    TransactionInvoice
+)
+
+from apps.llm_transaction.utils import (
+    InvoiceTypesNames,
+    AcceptedMethodsOfPaymentNames
+)
+
+from apps.organization.models import Organization
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
 
 logger = logging.getLogger(__name__)
 
@@ -42,38 +63,65 @@ class OrganizationView_AddGiftCredits(LoginRequiredMixin, View):
 
         ##############################
         # PERMISSION CHECK FOR - ADD_BALANCE_TO_ORGANIZATION
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.ADD_BALANCE_TO_ORGANIZATION):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.ADD_BALANCE_TO_ORGANIZATION
+        ):
             messages.error(self.request, "You do not have permission to add balance to organizations.")
+
             return redirect('llm_transaction:list')
         ##############################
 
         org_id = request.POST.get('org_id')
         user = request.user
-        org = get_object_or_404(Organization, id=org_id, users__in=[request.user])
-        user = User.objects.get(id=user.id)
+
+        org = get_object_or_404(
+            Organization,
+            id=org_id,
+            users__in=[request.user]
+        )
+
+        user = User.objects.get(
+            id=user.id
+        )
+
         try:
             if user.profile.free_credits != 0:
                 free_credits = user.profile.free_credits
                 user.profile.free_credits = 0
+
                 user.profile.save()
+
                 user.save()
-                org.balance += decimal.Decimal.from_float(free_credits)
+
+                org.balance += decimal.Decimal.from_float(
+                    free_credits
+                )
+
                 org.save()
 
                 TransactionInvoice.objects.create(
                     organization=org,
                     responsible_user=request.user,
                     transaction_type=InvoiceTypesNames.GIFT_CREDITS,
-                    amount_added=decimal.Decimal.from_float(round(free_credits, 6)),
+                    amount_added=decimal.Decimal.from_float(
+                        round(
+                            free_credits,
+                            6
+                        )
+                    ),
                     payment_method=AcceptedMethodsOfPaymentNames.INTERNAL_TRANSFER,
                 )
+
                 logger.info(f"Gift credits were added to Organization: {org.id} by User: {user.id}.")
                 messages.success(request, f"Gift credits successfully added to {org.name}.")
+
             else:
                 logger.error(f"User: {user.id} tried to add gift credits but had none available.")
                 messages.error(request, "No gift credits available to add.")
+
         except Exception as e:
             logger.error(f"Error adding gift credits to Organization: {org.id} by User: {user.id}.")
             messages.error(request, f"Error adding gift credits: {str(e)}")
+
         return redirect('llm_transaction:list')

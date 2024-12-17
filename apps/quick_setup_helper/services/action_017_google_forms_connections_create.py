@@ -14,11 +14,18 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from apps.assistants.models import Assistant
-from apps.formica.models import FormicaGoogleAppsConnection
-from apps.formica.utils import generate_google_apps_connection_api_key
+
+from apps.formica.models import (
+    FormicaGoogleAppsConnection
+)
+
+from apps.formica.utils import (
+    generate_google_apps_connection_api_key
+)
 
 
 logger = logging.getLogger(__name__)
@@ -46,7 +53,9 @@ def action__017_google_forms_connections_create(
 
     except Exception as e:
         logger.error(f"Error in action__017_google_forms_connections_create: {str(e)}")
+
         return False
 
     logger.info("action__017_google_forms_connections_create completed successfully.")
+
     return True

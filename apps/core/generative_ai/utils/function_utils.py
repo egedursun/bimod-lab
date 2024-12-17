@@ -105,7 +105,7 @@ def step_back_retry_mechanism(
         apps.core.generative_ai.utils.constant_utils.ACTIVE_RETRY_COUNT += 1
 
         if caller == RetryCallersNames.RESPOND:
-            return client.respond(
+            return client.respond_stream(
                 latest_message=latest_message
             )
 

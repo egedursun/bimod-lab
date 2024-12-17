@@ -18,16 +18,25 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.views.generic import TemplateView
 
 from apps.core.user_permissions.permission_manager import (
     UserPermissionManager
 )
 
-from apps.organization.models import Organization
-from apps.sheetos.models import SheetosDocument
-from apps.user_permissions.utils import PermissionNames
+from apps.sheetos.models import (
+    SheetosDocument
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -47,12 +56,11 @@ class SheetosView_DocumentDetail(TemplateView, LoginRequiredMixin):
             return context
         ##############################
 
-        user_orgs = Organization.objects.filter(
-            users__in=[self.request.user]
-        )
-
         document_id = self.kwargs.get('document_id')
-        document = SheetosDocument.objects.get(id=document_id)
+
+        document = SheetosDocument.objects.get(
+            id=document_id
+        )
 
         context['document'] = document
         context['folder'] = document.document_folder

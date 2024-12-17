@@ -271,7 +271,7 @@ class LeanModTriggeredJobWebhookListenerView(View):
             instance.status = TriggeredJobInstanceStatusesNames.GENERATING
             instance.save()
 
-            response_text = llm_client.respond(
+            response_text = llm_client.respond_stream(
                 latest_message=instruction_feed_message
             )
 

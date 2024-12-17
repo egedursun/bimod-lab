@@ -14,15 +14,18 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
 from django.contrib import admin
 
-from apps.mm_functions.models import CustomFunction
-from apps.mm_functions.utils import CUSTOM_FUNCTION_ADMIN_LIST, CUSTOM_FUNCTION_ADMIN_FILTER, \
+from apps.mm_functions.models import (
+    CustomFunction
+)
+
+from apps.mm_functions.utils import (
+    CUSTOM_FUNCTION_ADMIN_LIST,
+    CUSTOM_FUNCTION_ADMIN_FILTER,
     CUSTOM_FUNCTION_ADMIN_SEARCH
+)
 
 
 @admin.register(CustomFunction)
@@ -30,4 +33,5 @@ class CustomFunctionAdmin(admin.ModelAdmin):
     list_display = CUSTOM_FUNCTION_ADMIN_LIST
     list_filter = CUSTOM_FUNCTION_ADMIN_FILTER
     search_fields = CUSTOM_FUNCTION_ADMIN_SEARCH
+
     ordering = ("-created_at",)

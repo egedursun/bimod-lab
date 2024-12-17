@@ -16,3 +16,4 @@
 #
 
 from .delete_voidforger_chat_views import *
+from .clean_voidforger_chat_history_views import *

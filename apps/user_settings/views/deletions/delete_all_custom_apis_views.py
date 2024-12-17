@@ -14,16 +14,27 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.shortcuts import redirect
 from django.views import View
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
 from apps.mm_apis.models import CustomAPI
-from apps.user_permissions.utils import PermissionNames
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
 
 logger = logging.getLogger(__name__)
 
@@ -31,28 +42,40 @@ logger = logging.getLogger(__name__)
 class SettingsView_DeleteAllAPIs(View, LoginRequiredMixin):
     def post(self, request, *args, **kwargs):
         user = request.user
-        user_apis = CustomAPI.objects.filter(created_by_user=user).all()
+
+        user_apis = CustomAPI.objects.filter(
+            created_by_user=user
+        ).all()
+
         confirmation_field = request.POST.get('confirmation', None)
+
         if confirmation_field != 'CONFIRM DELETING ALL APIS':
             messages.error(request, "Invalid confirmation field. Please confirm the deletion by typing "
                                     "exactly 'CONFIRM DELETING ALL APIS'.")
             logger.error(f"Invalid confirmation field: {confirmation_field}")
+
             return redirect('user_settings:settings')
 
         ##############################
         # PERMISSION CHECK FOR - DELETE_APIS
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.DELETE_APIS):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.DELETE_APIS
+        ):
             messages.error(self.request, "You do not have permission to delete custom APIs.")
+
             return redirect('user_settings:settings')
         ##############################
 
         try:
             for api in user_apis:
                 api.delete()
+
             logger.info(f"All APIs associated with User: {user.id} have been deleted.")
             messages.success(request, "All APIs associated with your account have been deleted.")
+
         except Exception as e:
             logger.error(f"Error deleting APIs: {e}")
             messages.error(request, f"Error deleting APIs: {e}")
+
         return redirect('user_settings:settings')

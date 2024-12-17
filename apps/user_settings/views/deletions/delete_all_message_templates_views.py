@@ -14,17 +14,29 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.shortcuts import redirect
 from django.views import View
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.message_templates.models import MessageTemplate
-from apps.user_permissions.utils import PermissionNames
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
 
+from apps.message_templates.models import (
+    MessageTemplate
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
 
 logger = logging.getLogger(__name__)
 
@@ -32,28 +44,40 @@ logger = logging.getLogger(__name__)
 class SettingsView_DeleteAllMessageTemplates(View, LoginRequiredMixin):
     def post(self, request, *args, **kwargs):
         user = request.user
-        user_message_templates = MessageTemplate.objects.filter(user=user).all()
+
+        user_message_templates = MessageTemplate.objects.filter(
+            user=user
+        ).all()
+
         confirmation_field = request.POST.get('confirmation', None)
+
         if confirmation_field != 'CONFIRM DELETING ALL MESSAGE TEMPLATES':
             messages.error(request, "Invalid confirmation field. Please confirm the deletion by typing "
                                     "exactly 'CONFIRM DELETING ALL MESSAGE TEMPLATES'.")
             logger.error(f"Invalid confirmation field: {confirmation_field}")
+
             return redirect('user_settings:settings')
 
         ##############################
         # PERMISSION CHECK FOR - REMOVE_TEMPLATE_MESSAGES
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.REMOVE_TEMPLATE_MESSAGES):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.REMOVE_TEMPLATE_MESSAGES
+        ):
             messages.error(self.request, "You do not have permission to delete message templates.")
+
             return redirect('user_settings:settings')
         ##############################
 
         try:
             for message_template in user_message_templates:
                 message_template.delete()
+
             messages.success(request, "All message templates associated with your account have been deleted.")
             logger.info(f"All message templates associated with User: {user.id} have been deleted.")
+
         except Exception as e:
             messages.error(request, f"Error deleting message templates: {e}")
             logger.error(f"Error deleting message templates: {e}")
+
         return redirect('user_settings:settings')

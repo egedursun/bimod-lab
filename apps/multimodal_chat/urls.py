@@ -25,16 +25,21 @@ from .views import (
     ChatView_ListArchivedChats,
     ChatView_ChatUnarchive,
     ChatView_ChatStream,
-    LeanChat_MessageNarration,
+    ChatView_ChatCleanHistory,
+
     ChatView_LeanChat,
     ChatView_LeanChatArchive,
     ChatView_LeanChatUnarchive,
     ChatView_LeanChatListArchivedChats,
     ChatView_LeanChatStream,
     ChatView_LeanChatDelete,
+    ChatView_LeanChatCleanHistory,
+
     ChatView_MainWorkspace,
     ChatView_MainWorkspaceStream,
+
     Chat_MessageNarration,
+    LeanChat_MessageNarration,
     VoidForgerChat_MessageNarration
 )
 
@@ -95,6 +100,14 @@ urlpatterns = [
 
         ),
         name='tts_chat_message'
+    ),
+
+    path(
+        'chat/clean_history/<int:pk>/',
+        ChatView_ChatCleanHistory.as_view(
+
+        ),
+        name='clean_history'
     ),
 
     path(
@@ -159,6 +172,14 @@ urlpatterns = [
             template_name="multimodal_chat/archives/archived_lean_chats.html"
         ),
         name='archive_list_lean'
+    ),
+
+    path(
+        'lean_chat/clean_history/<int:pk>/',
+        ChatView_LeanChatCleanHistory.as_view(
+
+        ),
+        name='clean_history_lean'
     ),
 
     path(

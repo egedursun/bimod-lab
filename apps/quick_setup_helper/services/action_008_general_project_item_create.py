@@ -14,11 +14,15 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from apps.assistants.models import Assistant
 from apps.projects.models import ProjectItem
-from apps.quick_setup_helper.utils import generate_random_object_id_string
+
+from apps.quick_setup_helper.utils import (
+    generate_random_object_id_string
+)
 
 logger = logging.getLogger(__name__)
 
@@ -31,6 +35,7 @@ def action__008_general_project_item_create(
     try:
 
         # Create the project item
+
         new_project_item = ProjectItem.objects.create(
             organization=metadata__organization,
             project_name=f"General Project for Organization {metadata__organization.name} {generate_random_object_id_string()}",
@@ -40,20 +45,31 @@ def action__008_general_project_item_create(
         )
 
         # Connect the project to assistants
+
         try:
             for assistant in metadata__assistants:
                 assistant: Assistant
 
-                assistant.project_items.add(new_project_item) if assistant.project_items else assistant.project_items.set([new_project_item])
+                assistant.project_items.add(
+                    new_project_item
+                ) if assistant.project_items else assistant.project_items.set(
+                    [
+                        new_project_item
+                    ]
+                )
+
                 assistant.save()
 
         except Exception as e:
             logger.error(f"Error while connecting assistants to the new project item: {e}")
+
             return False, None
 
     except Exception as e:
         logger.error(f"Error in action__008_general_project_item_create: {e}")
+
         return False, None
 
     logger.info(f"New project item created successfully: {new_project_item}")
+
     return True, new_project_item

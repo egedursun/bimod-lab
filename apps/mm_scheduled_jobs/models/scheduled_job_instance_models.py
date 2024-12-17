@@ -37,6 +37,7 @@ class ScheduledJobInstance(models.Model):
     )
 
     logs = models.JSONField(default=list)
+
     execution_index = models.IntegerField(default=0, null=True)
     started_at = models.DateTimeField(auto_now_add=True)
     ended_at = models.DateTimeField(auto_now=True)
@@ -46,8 +47,10 @@ class ScheduledJobInstance(models.Model):
 
     class Meta:
         ordering = ['-started_at']
+
         verbose_name = 'Scheduled Job Instance'
         verbose_name_plural = 'Scheduled Job Instances'
+
         indexes = [
             models.Index(fields=[
                 'scheduled_job',

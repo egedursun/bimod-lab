@@ -18,11 +18,18 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
 from apps.leanmod.models import LeanAssistant
 
 from apps.mm_scheduled_jobs.forms import (
@@ -30,8 +37,14 @@ from apps.mm_scheduled_jobs.forms import (
 )
 
 from apps.organization.models import Organization
-from apps.user_permissions.utils import PermissionNames
-from config.settings import MAX_SCHEDULED_JOBS_PER_LEANMOD
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
+from config.settings import (
+    MAX_SCHEDULED_JOBS_PER_LEANMOD
+)
 
 from web_project import TemplateLayout
 
@@ -69,22 +82,30 @@ class ScheduledJobView_LeanModCreate(LoginRequiredMixin, TemplateView):
         form = LeanModScheduledJobForm(request.POST)
 
         leanmod_id = request.POST.get('leanmod')
-        leanmod = LeanAssistant.objects.get(id=leanmod_id)
+
+        leanmod = LeanAssistant.objects.get(
+            id=leanmod_id
+        )
 
         if form.is_valid():
 
-            # check the number of scheduled jobs LeanMod assistant has
             n_scheduled_jobs = leanmod.scheduled_jobs.count()
+
             if n_scheduled_jobs > MAX_SCHEDULED_JOBS_PER_LEANMOD:
-                messages.error(request,
-                               f'LeanMod assistant has reached the maximum number of connected scheduled jobs ({MAX_SCHEDULED_JOBS_PER_LEANMOD}).')
+                messages.error(
+                    request,
+                    f'LeanMod assistant has reached the maximum number of connected scheduled jobs ({MAX_SCHEDULED_JOBS_PER_LEANMOD}).'
+                )
 
                 return redirect('mm_scheduled_jobs:leanmod_list')
 
-            scheduled_job = form.save(commit=False)
+            scheduled_job = form.save(
+                commit=False
+            )
 
             scheduled_job.leanmod = leanmod
             scheduled_job.created_by_user = request.user
+
             step_guide = request.POST.getlist('step_guide[]')
             scheduled_job.step_guide = step_guide
 

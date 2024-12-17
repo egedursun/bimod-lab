@@ -14,10 +14,14 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from apps.drafting.models import DraftingFolder
-from apps.quick_setup_helper.utils import generate_random_object_id_string
+
+from apps.quick_setup_helper.utils import (
+    generate_random_object_id_string
+)
 
 logger = logging.getLogger(__name__)
 
@@ -37,7 +41,9 @@ def action__012_drafting_folder_create(
 
     except Exception as e:
         logger.error(f"Error in action__012_drafting_folder_create: {e}")
+
         return False, None
 
     logger.info(f"New drafting folder created successfully: {new_drafting_folder}")
+
     return True, new_drafting_folder

@@ -35,6 +35,13 @@
     "__section": 5
   },
   {
+    "course": "BimodLab - Administrator Authentication",
+    "section_name": "Quick Setup Guide & Setup Wizard",
+    "section_description": "This section covers the quick setup guide & setup wizard for administrators.",
+    "__course": 1,
+    "__section": 6
+  },
+  {
     "course": "BimodLab - Regular User Authentication",
     "section_name": "Accepting an Invitation",
     "section_description": "This section covers the invitation acceptance process for regular users.",
@@ -82,6 +89,13 @@
     "section_description": "This section covers the statistical interpretation assistant on the dashboard.",
     "__course": 4,
     "__section": 2
+  },
+  {
+    "course": "BimodLab - Understanding the Dashboard",
+    "section_name": "Dashboard Landing Page",
+    "section_description": "This section covers the landing page on the dashboard.",
+    "__course": 4,
+    "__section": 3
   },
   {
     "course": "BimodLab - Navigation Elements",
@@ -266,11 +280,25 @@
     "__section": 6
   },
   {
+    "course": "BimodLab - BimodLab Assistants, LeanMod and Expert Networks",
+    "section_name": "Sinaptera",
+    "section_description": "This section covers the Sinaptera and its features.",
+    "__course": 9,
+    "__section": 7
+  },
+  {
     "course": "BimodLab - Data Security & Named Entity Recognition (NER)",
     "section_name": "Named Entity Recognition (NER)",
     "section_description": "This section covers the Named Entity Recognition (NER) features.",
     "__course": 10,
     "__section": 1
+  },
+  {
+    "course": "BimodLab - Data Security & Named Entity Recognition (NER)",
+    "section_name": "BeamGuard Data Guardrail Agent",
+    "section_description": "This section covers the BeamGuard Data Guardrail Agent and its features.",
+    "__course": 10,
+    "__section": 2
   },
   {
     "course": "BimodLab - Understanding and Using Chats & Chat Metadata",
@@ -432,6 +460,20 @@
     "section_description": "This section covers the browsing logs & history and their features.",
     "__course": 21,
     "__section": 2
+  },
+  {
+    "course": "BimodLab - Connecting Web Browsers to Assistants",
+    "section_name": "Website Vector Storages",
+    "section_description": "This section covers the website storages and their features.",
+    "__course": 21,
+    "__section": 3
+  },
+  {
+    "course": "BimodLab - Connecting Web Browsers to Assistants",
+    "section_name": "Indexing Websites",
+    "section_description": "This section covers the indexing websites and their features.",
+    "__course": 21,
+    "__section": 4
   },
   {
     "course": "BimodLab - Connecting SQL & NoSQL Databases to Assistants",
@@ -600,6 +642,20 @@
     "section_description": "This section covers the log management for triggered jobs and their features.",
     "__course": 29,
     "__section": 4
+  },
+  {
+    "course": "BimodLab - Automated AI Workflows: Scheduled and Triggered Job Management",
+    "section_name": "LeanMod Scheduled & Triggered Jobs",
+    "section_description": "This section covers the LeanMod scheduled jobs and their features.",
+    "__course": 29,
+    "__section": 5
+  },
+  {
+    "course": "BimodLab - Automated AI Workflows: Scheduled and Triggered Job Management",
+    "section_name": "Meta Scheduled & Triggered Jobs",
+    "section_description": "This section covers the Meta scheduled jobs and their features.",
+    "__course": 29,
+    "__section": 6
   },
   {
     "course": "Bimod AstroBelt - Bimod & Google Sync: Integrating Google Office with Your Assistants",

@@ -18,7 +18,9 @@
 
 from django.db import models
 
-from apps.multimodal_chat.utils import SOURCES_FOR_MULTIMODAL_CHATS
+from apps.multimodal_chat.utils import (
+    SOURCES_FOR_MULTIMODAL_CHATS
+)
 
 
 class MultimodalChat(models.Model):
@@ -72,264 +74,109 @@ class MultimodalChat(models.Model):
     class Meta:
         verbose_name = "Multimodal Chat"
         verbose_name_plural = "Multimodal Chats"
-        ordering = ["-created_at"]
-        indexes = [
-            models.Index(fields=['id']),
-            models.Index(fields=['organization']),
-            models.Index(fields=['assistant']),
-            models.Index(fields=['user']),
-            models.Index(fields=['chat_source']),
-            models.Index(fields=['is_archived']),
-            models.Index(fields=['created_by_user']),
-            models.Index(fields=['created_at']),
-            models.Index(fields=['updated_at']),
-            models.Index(fields=['id', 'organization']),
-            models.Index(fields=['id', 'assistant']),
-            models.Index(fields=['id', 'user']),
-            models.Index(fields=['id', 'chat_source']),
-            models.Index(fields=['id', 'is_archived']),
-            models.Index(fields=['id', 'created_by_user']),
-            models.Index(fields=['id', 'created_at']),
-            models.Index(fields=['id', 'updated_at']),
-            models.Index(fields=['organization', 'assistant']),
-            models.Index(fields=['organization', 'user']),
-            models.Index(fields=['organization', 'chat_source']),
-            models.Index(fields=['organization', 'is_archived']),
-            models.Index(fields=['organization', 'created_by_user']),
-            models.Index(fields=['organization', 'created_at']),
-            models.Index(fields=['organization', 'updated_at']),
-            models.Index(fields=['assistant', 'user']),
-            models.Index(fields=['assistant', 'chat_source']),
-            models.Index(fields=['assistant', 'is_archived']),
-            models.Index(fields=['assistant', 'created_by_user']),
-            models.Index(fields=['assistant', 'created_at']),
-            models.Index(fields=['assistant', 'updated_at']),
-            models.Index(fields=['user', 'chat_source']),
-            models.Index(fields=['user', 'is_archived']),
-            models.Index(fields=['user', 'created_by_user']),
-            models.Index(fields=['user', 'created_at']),
-            models.Index(fields=['user', 'updated_at']),
-            models.Index(fields=['chat_source', 'is_archived']),
-            models.Index(fields=['chat_source', 'created_by_user']),
-            models.Index(fields=['chat_source', 'created_at']),
-            models.Index(fields=['chat_source', 'updated_at']),
-            models.Index(fields=['is_archived', 'created_by_user']),
-            models.Index(fields=['is_archived', 'created_at']),
-            models.Index(fields=['is_archived', 'updated_at']),
-            models.Index(fields=['created_by_user', 'created_at']),
-            models.Index(fields=['created_by_user', 'updated_at']),
-            models.Index(fields=['created_at', 'updated_at']),
-            models.Index(fields=['id', 'organization', 'assistant']),
-            models.Index(fields=['id', 'organization', 'user']),
-            models.Index(fields=['id', 'organization', 'chat_source']),
-            models.Index(fields=['id', 'organization', 'is_archived']),
-            models.Index(fields=['id', 'organization', 'created_by_user']),
-            models.Index(fields=['id', 'organization', 'created_at']),
-            models.Index(fields=['id', 'organization', 'updated_at']),
-            models.Index(fields=['id', 'assistant', 'user']),
-            models.Index(fields=['id', 'assistant', 'chat_source']),
-            models.Index(fields=['id', 'assistant', 'is_archived']),
-            models.Index(fields=['id', 'assistant', 'created_by_user']),
-            models.Index(fields=['id', 'assistant', 'created_at']),
-            models.Index(fields=['id', 'assistant', 'updated_at']),
-            models.Index(fields=['id', 'user', 'chat_source']),
-            models.Index(fields=['id', 'user', 'is_archived']),
-            models.Index(fields=['id', 'user', 'created_by_user']),
-            models.Index(fields=['id', 'user', 'created_at']),
-            models.Index(fields=['id', 'user', 'updated_at']),
-            models.Index(fields=['id', 'chat_source', 'is_archived']),
-            models.Index(fields=['id', 'chat_source', 'created_by_user']),
-            models.Index(fields=['id', 'chat_source', 'created_at']),
-            models.Index(fields=['id', 'chat_source', 'updated_at']),
-            models.Index(fields=['id', 'is_archived', 'created_by_user']),
-            models.Index(fields=['id', 'is_archived', 'created_at']),
-            models.Index(fields=['id', 'is_archived', 'updated_at']),
-            models.Index(fields=['id', 'created_by_user', 'created_at']),
-            models.Index(fields=['id', 'created_by_user', 'updated_at']),
-            models.Index(fields=['id', 'created_at', 'updated_at']),
-            models.Index(fields=['organization', 'assistant', 'user']),
-            models.Index(fields=['organization', 'assistant', 'chat_source']),
-            models.Index(fields=['organization', 'assistant', 'is_archived']),
-            models.Index(fields=['organization', 'assistant', 'created_by_user']),
-            models.Index(fields=['organization', 'assistant', 'created_at']),
-            models.Index(fields=['organization', 'assistant', 'updated_at']),
-            models.Index(fields=['organization', 'user', 'chat_source']),
-            models.Index(fields=['organization', 'user', 'is_archived']),
-            models.Index(fields=['organization', 'user', 'created_by_user']),
-            models.Index(fields=['organization', 'user', 'created_at']),
-            models.Index(fields=['organization', 'user', 'updated_at']),
-            models.Index(fields=['organization', 'chat_source', 'is_archived']),
-            models.Index(fields=['organization', 'chat_source', 'created_by_user']),
-            models.Index(fields=['organization', 'chat_source', 'created_at']),
-            models.Index(fields=['organization', 'chat_source', 'updated_at']),
-            models.Index(fields=['organization', 'is_archived', 'created_by_user']),
-            models.Index(fields=['organization', 'is_archived', 'created_at']),
-            models.Index(fields=['organization', 'is_archived', 'updated_at']),
-            models.Index(fields=['organization', 'created_by_user', 'created_at']),
-            models.Index(fields=['organization', 'created_by_user', 'updated_at']),
-            models.Index(fields=['organization', 'created_at', 'updated_at']),
-            models.Index(fields=['assistant', 'user', 'chat_source']),
-            models.Index(fields=['assistant', 'user', 'is_archived']),
-            models.Index(fields=['assistant', 'user', 'created_by_user']),
-            models.Index(fields=['assistant', 'user', 'created_at']),
-            models.Index(fields=['assistant', 'user', 'updated_at']),
-            models.Index(fields=['assistant', 'chat_source', 'is_archived']),
-            models.Index(fields=['assistant', 'chat_source', 'created_by_user']),
-            models.Index(fields=['assistant', 'chat_source', 'created_at']),
-            models.Index(fields=['assistant', 'chat_source', 'updated_at']),
-            models.Index(fields=['assistant', 'is_archived', 'created_by_user']),
-            models.Index(fields=['assistant', 'is_archived', 'created_at']),
-            models.Index(fields=['assistant', 'is_archived', 'updated_at']),
-            models.Index(fields=['assistant', 'created_by_user', 'created_at']),
-            models.Index(fields=['assistant', 'created_by_user', 'updated_at']),
-            models.Index(fields=['assistant', 'created_at', 'updated_at']),
-            models.Index(fields=['user', 'chat_source', 'is_archived']),
-            models.Index(fields=['user', 'chat_source', 'created_by_user']),
-            models.Index(fields=['user', 'chat_source', 'created_at']),
-            models.Index(fields=['user', 'chat_source', 'updated_at']),
-            models.Index(fields=['user', 'is_archived', 'created_by_user']),
-            models.Index(fields=['user', 'is_archived', 'created_at']),
-            models.Index(fields=['user', 'is_archived', 'updated_at']),
-            models.Index(fields=['user', 'created_by_user', 'created_at']),
-            models.Index(fields=['user', 'created_by_user', 'updated_at']),
-            models.Index(fields=['user', 'created_at', 'updated_at']),
-            models.Index(fields=['chat_source', 'is_archived', 'created_by_user']),
-            models.Index(fields=['chat_source', 'is_archived', 'created_at']),
-            models.Index(fields=['chat_source', 'is_archived', 'updated_at']),
-            models.Index(fields=['chat_source', 'created_by_user', 'created_at']),
-            models.Index(fields=['chat_source', 'created_by_user', 'updated_at']),
-            models.Index(fields=['chat_source', 'created_at', 'updated_at']),
-            models.Index(fields=['is_archived', 'created_by_user', 'created_at']),
-            models.Index(fields=['is_archived', 'created_by_user', 'updated_at']),
-            models.Index(fields=['is_archived', 'created_at', 'updated_at']),
-            models.Index(fields=['created_by_user', 'created_at', 'updated_at']),
-            models.Index(fields=['id', 'organization', 'assistant', 'user']),
-            models.Index(fields=['id', 'organization', 'assistant', 'chat_source']),
-            models.Index(fields=['id', 'organization', 'assistant', 'is_archived']),
-            models.Index(fields=['id', 'organization', 'assistant', 'created_by_user']),
-            models.Index(fields=['id', 'organization', 'assistant', 'created_at']),
-            models.Index(fields=['id', 'organization', 'assistant', 'updated_at']),
-            models.Index(fields=['id', 'organization', 'user', 'chat_source']),
-            models.Index(fields=['id', 'organization', 'user', 'is_archived']),
-            models.Index(fields=['id', 'organization', 'user', 'created_by_user']),
-            models.Index(fields=['id', 'organization', 'user', 'created_at']),
-            models.Index(fields=['id', 'organization', 'user', 'updated_at']),
-            models.Index(fields=['id', 'organization', 'chat_source', 'is_archived']),
-            models.Index(fields=['id', 'organization', 'chat_source', 'created_by_user']),
-            models.Index(fields=['id', 'organization', 'chat_source', 'created_at']),
-            models.Index(fields=['id', 'organization', 'chat_source', 'updated_at']),
-            models.Index(fields=['id', 'organization', 'is_archived', 'created_by_user']),
-            models.Index(fields=['id', 'organization', 'is_archived', 'created_at']),
-            models.Index(fields=['id', 'organization', 'is_archived', 'updated_at']),
-            models.Index(fields=['id', 'organization', 'created_by_user', 'created_at']),
-            models.Index(fields=['id', 'organization', 'created_by_user', 'updated_at']),
-            models.Index(fields=['id', 'organization', 'created_at', 'updated_at']),
-            models.Index(fields=['id', 'assistant', 'user', 'chat_source']),
-            models.Index(fields=['id', 'assistant', 'user', 'is_archived']),
-            models.Index(fields=['id', 'assistant', 'user', 'created_by_user']),
-            models.Index(fields=['id', 'assistant', 'user', 'created_at']),
-            models.Index(fields=['id', 'assistant', 'user', 'updated_at']),
-            models.Index(fields=['id', 'assistant', 'chat_source', 'is_archived']),
-            models.Index(fields=['id', 'assistant', 'chat_source', 'created_by_user']),
-            models.Index(fields=['id', 'assistant', 'chat_source', 'created_at']),
-            models.Index(fields=['id', 'assistant', 'chat_source', 'updated_at']),
-            models.Index(fields=['id', 'assistant', 'is_archived', 'created_by_user']),
-            models.Index(fields=['id', 'assistant', 'is_archived', 'created_at']),
-            models.Index(fields=['id', 'assistant', 'is_archived', 'updated_at']),
-            models.Index(fields=['id', 'assistant', 'created_by_user', 'created_at']),
-            models.Index(fields=['id', 'assistant', 'created_by_user', 'updated_at']),
-            models.Index(fields=['id', 'assistant', 'created_at', 'updated_at']),
-            models.Index(fields=['id', 'user', 'chat_source', 'is_archived']),
-            models.Index(fields=['id', 'user', 'chat_source', 'created_by_user']),
-            models.Index(fields=['id', 'user', 'chat_source', 'created_at']),
-            models.Index(fields=['id', 'user', 'chat_source', 'updated_at']),
-            models.Index(fields=['id', 'user', 'is_archived', 'created_by_user']),
-            models.Index(fields=['id', 'user', 'is_archived', 'created_at']),
-            models.Index(fields=['id', 'user', 'is_archived', 'updated_at']),
-            models.Index(fields=['id', 'user', 'created_by_user', 'created_at']),
-            models.Index(fields=['id', 'user', 'created_by_user', 'updated_at']),
-            models.Index(fields=['id', 'user', 'created_at', 'updated_at']),
-            models.Index(fields=['id', 'chat_source', 'is_archived', 'created_by_user']),
-            models.Index(fields=['id', 'chat_source', 'is_archived', 'created_at']),
-            models.Index(fields=['id', 'chat_source', 'is_archived', 'updated_at']),
-            models.Index(fields=['id', 'chat_source', 'created_by_user', 'created_at']),
-            models.Index(fields=['id', 'chat_source', 'created_by_user', 'updated_at']),
-            models.Index(fields=['id', 'chat_source', 'created_at', 'updated_at']),
-            models.Index(fields=['id', 'is_archived', 'created_by_user', 'created_at']),
-            models.Index(fields=['id', 'is_archived', 'created_by_user', 'updated_at']),
-            models.Index(fields=['id', 'is_archived', 'created_at', 'updated_at']),
-            models.Index(fields=['id', 'created_by_user', 'created_at', 'updated_at']),
-            models.Index(fields=['organization', 'assistant', 'user', 'chat_source']),
-            models.Index(fields=['organization', 'assistant', 'user', 'is_archived']),
-            models.Index(fields=['organization', 'assistant', 'user', 'created_by_user']),
-            models.Index(fields=['organization', 'assistant', 'user', 'created_at']),
-            models.Index(fields=['organization', 'assistant', 'user', 'updated_at']),
-            models.Index(fields=['organization', 'assistant', 'chat_source', 'is_archived']),
-            models.Index(fields=['organization', 'assistant', 'chat_source', 'created_by_user']),
-            models.Index(fields=['organization', 'assistant', 'chat_source', 'created_at']),
-            models.Index(fields=['organization', 'assistant', 'chat_source', 'updated_at']),
-            models.Index(fields=['organization', 'assistant', 'is_archived', 'created_by_user']),
-            models.Index(fields=['organization', 'assistant', 'is_archived', 'created_at']),
-            models.Index(fields=['organization', 'assistant', 'is_archived', 'updated_at']),
-            models.Index(fields=['organization', 'assistant', 'created_by_user', 'created_at']),
-            models.Index(fields=['organization', 'assistant', 'created_by_user', 'updated_at']),
-            models.Index(fields=['organization', 'assistant', 'created_at', 'updated_at']),
-            models.Index(fields=['organization', 'user', 'chat_source', 'is_archived']),
-            models.Index(fields=['organization', 'user', 'chat_source', 'created_by_user']),
-            models.Index(fields=['organization', 'user', 'chat_source', 'created_at']),
-            models.Index(fields=['organization', 'user', 'chat_source', 'updated_at']),
-            models.Index(fields=['organization', 'user', 'is_archived', 'created_by_user']),
-            models.Index(fields=['organization', 'user', 'is_archived', 'created_at']),
-            models.Index(fields=['organization', 'user', 'is_archived', 'updated_at']),
-            models.Index(fields=['organization', 'user', 'created_by_user', 'created_at']),
-            models.Index(fields=['organization', 'user', 'created_by_user', 'updated_at']),
-            models.Index(fields=['organization', 'user', 'created_at', 'updated_at']),
-            models.Index(fields=['organization', 'chat_source', 'is_archived', 'created_by_user']),
-            models.Index(fields=['organization', 'chat_source', 'is_archived', 'created_at']),
-            models.Index(fields=['organization', 'chat_source', 'is_archived', 'updated_at']),
-            models.Index(fields=['organization', 'chat_source', 'created_by_user', 'created_at']),
-            models.Index(fields=['organization', 'chat_source', 'created_by_user', 'updated_at']),
-            models.Index(fields=['organization', 'chat_source', 'created_at', 'updated_at']),
-            models.Index(fields=['organization', 'is_archived', 'created_by_user', 'created_at']),
-            models.Index(fields=['organization', 'is_archived', 'created_by_user', 'updated_at']),
-            models.Index(fields=['organization', 'is_archived', 'created_at', 'updated_at']),
-            models.Index(fields=['organization', 'created_by_user', 'created_at', 'updated_at']),
-            models.Index(fields=['assistant', 'user', 'chat_source', 'is_archived']),
-            models.Index(fields=['assistant', 'user', 'chat_source', 'created_by_user']),
-            models.Index(fields=['assistant', 'user', 'chat_source', 'created_at']),
-            models.Index(fields=['assistant', 'user', 'chat_source', 'updated_at']),
-            models.Index(fields=['assistant', 'user', 'is_archived', 'created_by_user']),
-            models.Index(fields=['assistant', 'user', 'is_archived', 'created_at']),
-            models.Index(fields=['assistant', 'user', 'is_archived', 'updated_at']),
-            models.Index(fields=['assistant', 'user', 'created_by_user', 'created_at']),
-            models.Index(fields=['assistant', 'user', 'created_by_user', 'updated_at']),
-            models.Index(fields=['assistant', 'user', 'created_at', 'updated_at']),
-            models.Index(fields=['assistant', 'chat_source', 'is_archived', 'created_by_user']),
-            models.Index(fields=['assistant', 'chat_source', 'is_archived', 'created_at']),
-            models.Index(fields=['assistant', 'chat_source', 'is_archived', 'updated_at']),
-            models.Index(fields=['assistant', 'chat_source', 'created_by_user', 'created_at']),
-            models.Index(fields=['assistant', 'chat_source', 'created_by_user', 'updated_at']),
-            models.Index(fields=['assistant', 'chat_source', 'created_at', 'updated_at']),
-            models.Index(fields=['assistant', 'is_archived', 'created_by_user', 'created_at']),
-            models.Index(fields=['assistant', 'is_archived', 'created_by_user', 'updated_at']),
-            models.Index(fields=['assistant', 'is_archived', 'created_at', 'updated_at']),
-            models.Index(fields=['assistant', 'created_by_user', 'created_at', 'updated_at']),
-            models.Index(fields=['user', 'chat_source', 'is_archived', 'created_by_user']),
-            models.Index(fields=['user', 'chat_source', 'is_archived', 'created_at']),
-            models.Index(fields=['user', 'chat_source', 'is_archived', 'updated_at']),
-            models.Index(fields=['user', 'chat_source', 'created_by_user', 'created_at']),
-            models.Index(fields=['user', 'chat_source', 'created_by_user', 'updated_at']),
-            models.Index(fields=['user', 'chat_source', 'created_at', 'updated_at']),
-            models.Index(fields=['user', 'is_archived', 'created_by_user', 'created_at']),
-            models.Index(fields=['user', 'is_archived', 'created_by_user', 'updated_at']),
-            models.Index(fields=['user', 'is_archived', 'created_at', 'updated_at']),
-            models.Index(fields=['user', 'created_by_user', 'created_at', 'updated_at']),
-            models.Index(fields=['chat_source', 'is_archived', 'created_by_user', 'created_at']),
-            models.Index(fields=['chat_source', 'is_archived', 'created_by_user', 'updated_at']),
-            models.Index(fields=['chat_source', 'is_archived', 'created_at', 'updated_at']),
-            models.Index(fields=['chat_source', 'created_by_user', 'created_at', 'updated_at']),
-            models.Index(fields=['is_archived', 'created_by_user', 'created_at', 'updated_at']),
 
+        ordering = ["-created_at"]
+
+        indexes = [
+            models.Index(fields=[
+                'id'
+            ]),
+            models.Index(fields=[
+                'organization'
+            ]),
+            models.Index(fields=[
+                'assistant'
+            ]),
+            models.Index(fields=[
+                'user'
+            ]),
+            models.Index(fields=[
+                'chat_source'
+            ]),
+            models.Index(fields=[
+                'is_archived'
+            ]),
+            models.Index(fields=[
+                'created_by_user'
+            ]),
+            models.Index(fields=[
+                'created_at'
+            ]),
+            models.Index(fields=[
+                'updated_at'
+            ]),
+            models.Index(fields=[
+                'organization',
+                'assistant'
+            ]),
+            models.Index(fields=[
+                'organization',
+                'user'
+            ]),
+            models.Index(fields=[
+                'organization',
+                'chat_source'
+            ]),
+            models.Index(fields=[
+                'organization',
+                'is_archived'
+            ]),
+            models.Index(fields=[
+                'organization',
+                'created_by_user'
+            ]),
+            models.Index(fields=[
+                'organization',
+                'created_at'
+            ]),
+            models.Index(fields=[
+                'organization',
+                'updated_at'
+            ]),
+            models.Index(fields=[
+                'assistant',
+                'user'
+            ]),
+            models.Index(fields=[
+                'assistant',
+                'chat_source'
+            ]),
+            models.Index(fields=[
+                'assistant',
+                'is_archived'
+            ]),
+            models.Index(fields=[
+                'assistant',
+                'created_by_user'
+            ]),
+            models.Index(fields=[
+                'assistant',
+                'created_at'
+            ]),
+            models.Index(fields=[
+                'assistant',
+                'updated_at'
+            ]),
+            models.Index(fields=[
+                'user',
+                'chat_source'
+            ]),
+            models.Index(fields=[
+                'user',
+                'is_archived'
+            ]),
+            models.Index(fields=[
+                'user',
+                'created_by_user'
+            ]),
+            models.Index(fields=[
+                'user',
+                'created_at'
+            ]),
+            models.Index(fields=[
+                'user',
+                'updated_at'
+            ]),
         ]
 
     def save(self, *args, **kwargs):

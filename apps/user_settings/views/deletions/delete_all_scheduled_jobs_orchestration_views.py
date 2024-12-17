@@ -14,16 +14,29 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.shortcuts import redirect
 from django.views import View
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.mm_scheduled_jobs.models import OrchestrationScheduledJob
-from apps.user_permissions.utils import PermissionNames
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
+from apps.mm_scheduled_jobs.models import (
+    OrchestrationScheduledJob
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
 
 logger = logging.getLogger(__name__)
 
@@ -31,6 +44,7 @@ logger = logging.getLogger(__name__)
 class SettingsView_DeleteAllOrchestrationScheduledJobs(View, LoginRequiredMixin):
     def post(self, request, *args, **kwargs):
         user = request.user
+
         user_orchestration_scheduled_jobs = OrchestrationScheduledJob.objects.filter(
             maestro__organization__users__in=[
                 user
@@ -58,6 +72,7 @@ class SettingsView_DeleteAllOrchestrationScheduledJobs(View, LoginRequiredMixin)
         try:
             for orchestration_scheduled_job in user_orchestration_scheduled_jobs:
                 orchestration_scheduled_job.delete()
+
             messages.success(request, "All Orchestration scheduled jobs associated with your account have been deleted.")
             logger.info(f"All Orchestration scheduled jobs associated with User: {user.id} have been deleted.")
 

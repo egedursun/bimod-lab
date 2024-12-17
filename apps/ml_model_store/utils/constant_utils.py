@@ -43,6 +43,20 @@ class MLModelIntegrationCategoriesNames:
         ]
 
 
-ML_MODEL_INTEGRATION_ADMIN_LIST = ["name", "model_category", "created_at", "updated_at"]
-ML_MODEL_INTEGRATION_ADMIN_FILTER = ["model_category", "created_at", "updated_at"]
-ML_MODEL_INTEGRATION_ADMIN_SEARCH = ["name", "model_category", "created_at", "updated_at"]
+ML_MODEL_INTEGRATION_ADMIN_LIST = [
+    "name",
+    "model_category",
+    "created_at",
+    "updated_at"
+]
+ML_MODEL_INTEGRATION_ADMIN_FILTER = [
+    "model_category",
+    "created_at",
+    "updated_at"
+]
+ML_MODEL_INTEGRATION_ADMIN_SEARCH = [
+    "name",
+    "model_category",
+    "created_at",
+    "updated_at"
+]

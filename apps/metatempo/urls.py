@@ -14,50 +14,136 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 from django.urls import path
 
-from apps.metatempo.views import (MetaTempoView_ConnectionRegenerateAPIKey, MetaTempoView_TriggerManualAnalysis,
-                                  MetaTempoView_ConnectionConfirmDelete, MetaTempoView_ConnectionList,
-                                  MetaTempoView_ConnectionCreate, MetaTempoView_ConnectionUpdate,
-                                  MetaTempoView_MainBoard, MetaTempoView_PurgeLogs, MetaTempoView_ScreenshotDelivery,
-                                  MetaTempoView_AgentCommunication, MetaTempoView_GetConnectionConfig,
-                                  MetaTempoView_ConnectAssistantToMetaTempo, MetaTempoView_AssistantConnectionDelete)
+from apps.metatempo.views import (
+    MetaTempoView_ConnectionRegenerateAPIKey,
+    MetaTempoView_TriggerManualAnalysis,
+    MetaTempoView_ConnectionConfirmDelete,
+    MetaTempoView_ConnectionList,
+    MetaTempoView_ConnectionCreate,
+    MetaTempoView_ConnectionUpdate,
+    MetaTempoView_MainBoard,
+    MetaTempoView_PurgeLogs,
+    MetaTempoView_ScreenshotDelivery,
+    MetaTempoView_AgentCommunication,
+    MetaTempoView_GetConnectionConfig,
+    MetaTempoView_ConnectAssistantToMetaTempo,
+    MetaTempoView_AssistantConnectionDelete
+)
 
 app_name = 'metatempo'
 
 urlpatterns = [
-    path("connection/create/", MetaTempoView_ConnectionCreate.as_view(
-        template_name="metatempo/connection/create_metatempo_connection.html"), name="connection_create"),
-    path("connection/list/", MetaTempoView_ConnectionList.as_view(
-        template_name="metatempo/connection/list_metatempo_connections.html"), name="connection_list"),
-    path("connection/update/<int:connection_id>/", MetaTempoView_ConnectionUpdate.as_view(
-        template_name="metatempo/connection/update_metatempo_connection.html"), name="connection_update"),
-    path("connection/confirm_delete/<int:connection_id>/", MetaTempoView_ConnectionConfirmDelete.as_view(
-        template_name="metatempo/connection/confirm_delete_metatempo_connection.html"),
-         name="connection_confirm_delete"),
-    path("connection/regenerate_api_key/<int:connection_id>/", MetaTempoView_ConnectionRegenerateAPIKey.as_view(),
-         name="connection_regenerate_api_key"),
+    path(
+        "connection/create/",
+        MetaTempoView_ConnectionCreate.as_view(
+            template_name="metatempo/connection/create_metatempo_connection.html"
+        ),
+        name="connection_create"
+    ),
 
-    # A.K.A Detail Connection Page :-> is accessible from 'connection/list/' page.
-    path("board/main/<int:connection_id>/", MetaTempoView_MainBoard.as_view(
-        template_name="metatempo/board/metatempo_main_board.html"), name="main_board"),
-    path("board/analysis/overall/trigger/<int:connection_id>/", MetaTempoView_TriggerManualAnalysis.as_view(),
-         name="trigger_manual_analysis"),
-    path("board/logs/purge/<int:connection_id>/", MetaTempoView_PurgeLogs.as_view(), name="purge_logs"),
+    path(
+        "connection/list/",
+        MetaTempoView_ConnectionList.as_view(
+            template_name="metatempo/connection/list_metatempo_connections.html"
+        ),
+        name="connection_list"
+    ),
 
-    # AI Assistant
-    path("agent/communication/", MetaTempoView_AgentCommunication.as_view(
-        template_name="metatempo/agent/agent_communication.html"), name="agent_communication"),
+    path(
+        "connection/update/<int:connection_id>/",
+        MetaTempoView_ConnectionUpdate.as_view(
+            template_name="metatempo/connection/update_metatempo_connection.html"
+        ),
+        name="connection_update"
+    ),
 
-    # Connect Assistant to MetaTempo Tracker
-    path("connect/assistant/", MetaTempoView_ConnectAssistantToMetaTempo.as_view(
-        template_name="metatempo/connect_assistant/connect_assistant_to_metatempo.html"
-    ), name="connect_assistant"),
-    path("disconnect/assistant/<int:pk>/", MetaTempoView_AssistantConnectionDelete.as_view(),
-         name="disconnect_assistant"),
+    path(
+        "connection/confirm_delete/<int:connection_id>/",
+        MetaTempoView_ConnectionConfirmDelete.as_view(
+            template_name="metatempo/connection/confirm_delete_metatempo_connection.html"
+        ),
+        name="connection_confirm_delete"
+    ),
 
-    ##############################################################################################################
+    path(
+        "connection/regenerate_api_key/<int:connection_id>/",
+        MetaTempoView_ConnectionRegenerateAPIKey.as_view(
 
-    path("tempo/screenshot/delivery/", MetaTempoView_ScreenshotDelivery.as_view(), name="screenshot_delivery"),
-    path("tempo/connection/config/", MetaTempoView_GetConnectionConfig.as_view(), name="get_connection_config"),
+        ),
+        name="connection_regenerate_api_key"
+    ),
+
+    #####
+
+    path(
+        "board/main/<int:connection_id>/",
+        MetaTempoView_MainBoard.as_view(
+            template_name="metatempo/board/metatempo_main_board.html"
+        ),
+        name="main_board"
+    ),
+
+    path(
+        "board/analysis/overall/trigger/<int:connection_id>/",
+        MetaTempoView_TriggerManualAnalysis.as_view(
+
+        ),
+        name="trigger_manual_analysis"
+    ),
+
+    path(
+        "board/logs/purge/<int:connection_id>/",
+        MetaTempoView_PurgeLogs.as_view(
+
+        ),
+        name="purge_logs"
+    ),
+
+    #####
+
+    path(
+        "agent/communication/",
+        MetaTempoView_AgentCommunication.as_view(
+            template_name="metatempo/agent/agent_communication.html"
+        ),
+        name="agent_communication"
+    ),
+
+    #####
+
+    path(
+        "connect/assistant/",
+        MetaTempoView_ConnectAssistantToMetaTempo.as_view(
+            template_name="metatempo/connect_assistant/connect_assistant_to_metatempo.html"
+        ),
+        name="connect_assistant"
+    ),
+
+    path(
+        "disconnect/assistant/<int:pk>/",
+        MetaTempoView_AssistantConnectionDelete.as_view(
+
+        ),
+        name="disconnect_assistant"
+    ),
+
+    #####
+
+    path(
+        "tempo/screenshot/delivery/",
+        MetaTempoView_ScreenshotDelivery.as_view(
+
+        ),
+        name="screenshot_delivery"
+    ),
+    path(
+        "tempo/connection/config/",
+        MetaTempoView_GetConnectionConfig.as_view(
+
+        ),
+        name="get_connection_config"
+    ),
 ]

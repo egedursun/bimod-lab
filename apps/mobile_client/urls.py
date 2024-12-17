@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 from django.urls import path
 
 from apps.mobile_client.views import (
@@ -22,7 +23,9 @@ from apps.mobile_client.views import (
     MobileChatView_ChatDetail,
 )
 
-from apps.mobile_client.views.pwa_service_views import service_worker
+from apps.mobile_client.views.pwa_service_views import (
+    service_worker
+)
 
 app_name = 'mobile_client'
 

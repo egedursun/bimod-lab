@@ -14,14 +14,11 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-#
-#
-#
 
-#
 from .chat_views import *
 from .archive_chat_views import *
 from .delete_chat_views import *
 from .stream_chat_views import *
 from .unarchive_chat_views import *
 from .list_archived_chats_views import *
+from .clean_chat_history_views import *

@@ -36,7 +36,7 @@ from apps.multimodal_chat.utils import (
 
 import warnings
 
-from config.consumers import FermionLogConsumer
+from apps.orchestrations.models import OrchestrationQuery
 
 with warnings.catch_warnings():
     warnings.simplefilter("ignore")
@@ -44,16 +44,58 @@ with warnings.catch_warnings():
 logger = logging.getLogger(__name__)
 
 
+class TransmitWebsocketLogSenderType:
+    ASSISTANT = "Assistant"
+    LEANMOD = "LeanMod"
+    ORCHESTRATION = "Orchestration"
+    VOIDFORGER = "VoidForger"
+
+    @staticmethod
+    def as_list():
+        return [
+            TransmitWebsocketLogSenderType.ASSISTANT,
+            TransmitWebsocketLogSenderType.LEANMOD,
+            TransmitWebsocketLogSenderType.ORCHESTRATION,
+            TransmitWebsocketLogSenderType.VOIDFORGER
+        ]
+
+
 def transmit_websocket_log(
     log_message,
     chat_id,
+    sender_type,
     stop_tag=BIMOD_STREAMING_END_TAG,
     fermion__is_fermion_supervised=False,
     fermion__export_type=None,
     fermion__endpoint=None
 ):
     channel_layer = get_channel_layer()
-    group_name = f'logs_{chat_id}'
+
+    generic_group_name = None
+
+    if sender_type == TransmitWebsocketLogSenderType.ASSISTANT:
+        group_name = f'logs_{chat_id}'
+
+    elif sender_type == TransmitWebsocketLogSenderType.LEANMOD:
+        group_name = f'leanmod_logs_{chat_id}'
+
+    elif sender_type == TransmitWebsocketLogSenderType.ORCHESTRATION:
+
+        chat: OrchestrationQuery = OrchestrationQuery.objects.get(
+            id=chat_id
+        )
+
+        maestro_id = chat.maestro.id
+
+        group_name = f'orchestration_logs_{chat_id}'
+        generic_group_name = f'orchestration_generic_logs_{maestro_id}'
+
+    elif sender_type == TransmitWebsocketLogSenderType.VOIDFORGER:
+        group_name = f'voidforger_logs_{chat_id}'
+
+    else:
+        logger.error(f"Invalid sender type: {sender_type}")
+        return
 
     async_to_sync(channel_layer.group_send)(
         group_name,
@@ -62,6 +104,16 @@ def transmit_websocket_log(
             'message': log_message
         }
     )
+
+    if generic_group_name is not None and sender_type == TransmitWebsocketLogSenderType.ORCHESTRATION:
+
+        async_to_sync(channel_layer.group_send)(
+            generic_group_name,
+            {
+                'type': 'send_log',
+                'message': log_message
+            }
+        )
 
     if stop_tag == BIMOD_STREAMING_END_TAG:
 
@@ -73,6 +125,15 @@ def transmit_websocket_log(
             }
         )
 
+        if generic_group_name is not None and sender_type == TransmitWebsocketLogSenderType.ORCHESTRATION:
+            async_to_sync(channel_layer.group_send)(
+                generic_group_name,
+                {
+                    'type': 'send_log',
+                    'message': BIMOD_STREAMING_END_TAG
+                }
+            )
+
     elif stop_tag == BIMOD_PROCESS_END:
 
         async_to_sync(channel_layer.group_send)(
@@ -83,14 +144,25 @@ def transmit_websocket_log(
             }
         )
 
+        if generic_group_name is not None and sender_type == TransmitWebsocketLogSenderType.ORCHESTRATION:
+            async_to_sync(channel_layer.group_send)(
+                generic_group_name,
+                {
+                    'type': 'send_log',
+                    'message': BIMOD_PROCESS_END
+                }
+            )
+
     else:
 
         if stop_tag is None or stop_tag == "" or stop_tag == BIMOD_NO_TAG_PLACEHOLDER:
             logger.info("No stop tag provided.")
+
             pass
 
         else:
             logger.info("Sending stop tag.")
+
             async_to_sync(channel_layer.group_send)(
                 group_name,
                 {
@@ -98,6 +170,15 @@ def transmit_websocket_log(
                     'message': stop_tag
                 }
             )
+
+            if generic_group_name is not None and sender_type == TransmitWebsocketLogSenderType.ORCHESTRATION:
+                async_to_sync(channel_layer.group_send)(
+                    generic_group_name,
+                    {
+                        'type': 'send_log',
+                        'message': stop_tag
+                    }
+                )
 
     ######################################################################
     # FERMION MOBILE COPILOT: Check if interaction is Fermion supervised.

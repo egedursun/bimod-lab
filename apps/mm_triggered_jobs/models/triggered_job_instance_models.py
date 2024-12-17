@@ -17,8 +17,13 @@
 
 from django.db import models
 
-from apps.mm_triggered_jobs.models import TriggeredJob
-from apps.mm_triggered_jobs.utils import TRIGGERED_JOB_INSTANCE_STATUSES
+from apps.mm_triggered_jobs.models import (
+    TriggeredJob
+)
+
+from apps.mm_triggered_jobs.utils import (
+    TRIGGERED_JOB_INSTANCE_STATUSES
+)
 
 
 class TriggeredJobInstance(models.Model):
@@ -47,8 +52,10 @@ class TriggeredJobInstance(models.Model):
 
     class Meta:
         ordering = ['-started_at']
+
         verbose_name = 'Triggered Job Instance'
         verbose_name_plural = 'Triggered Job Instances'
+
         indexes = [
             models.Index(fields=[
                 'triggered_job',

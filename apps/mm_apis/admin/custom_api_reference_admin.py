@@ -17,8 +17,15 @@
 
 from django.contrib import admin
 
-from apps.mm_apis.models import CustomAPIReference
-from apps.mm_apis.utils import CUSTOM_API_REF_ADMIN_LIST, CUSTOM_API_REF_ADMIN_FILTER, CUSTOM_API_REF_ADMIN_SEARCH
+from apps.mm_apis.models import (
+    CustomAPIReference
+)
+
+from apps.mm_apis.utils import (
+    CUSTOM_API_REF_ADMIN_LIST,
+    CUSTOM_API_REF_ADMIN_FILTER,
+    CUSTOM_API_REF_ADMIN_SEARCH
+)
 
 
 @admin.register(CustomAPIReference)

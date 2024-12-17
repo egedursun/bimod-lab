@@ -44,6 +44,12 @@
       ]
     },
     {
+      "name": "Quick Setup",
+      "icon": "menu-icon tf-icons ti ti-settings",
+      "slug": "quick-setup",
+      "url": "quick_setup_helper:wrapper"
+    },
+    {
       "menu_header": "Administration"
     },
     {
@@ -289,6 +295,12 @@
           "url": "assistants:list"
         }
       ]
+    },
+    {
+      "name": "Configure Sinaptera™",
+      "icon": "menu-icon tf-icons ti ti-puzzle",
+      "slug": "sinaptera",
+      "url": "sinaptera:configuration"
     },
     {
       "name": "Plug & Play Agents",

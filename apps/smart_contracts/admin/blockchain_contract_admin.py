@@ -17,7 +17,9 @@
 
 from django.contrib import admin
 
-from apps.smart_contracts.models import BlockchainSmartContract
+from apps.smart_contracts.models import (
+    BlockchainSmartContract
+)
 
 from apps.smart_contracts.utils import (
     BLOCKCHAIN_SMART_CONTRACT_ADMIN_LIST,
@@ -31,4 +33,5 @@ class BlockchainSmartContractAdmin(admin.ModelAdmin):
     list_display = BLOCKCHAIN_SMART_CONTRACT_ADMIN_LIST
     list_filter = BLOCKCHAIN_SMART_CONTRACT_ADMIN_FILTER
     search_fields = BLOCKCHAIN_SMART_CONTRACT_ADMIN_SEARCH
+
     ordering = ['created_at', 'updated_at']

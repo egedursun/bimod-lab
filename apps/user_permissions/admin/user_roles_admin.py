@@ -18,8 +18,15 @@
 
 from django.contrib import admin
 
-from apps.user_permissions.models import UserRole
-from apps.user_permissions.utils import USER_ROLES_ADMIN_LIST, USER_ROLES_ADMIN_FILTER, USER_ROLES_ADMIN_SEARCH
+from apps.user_permissions.models import (
+    UserRole
+)
+
+from apps.user_permissions.utils import (
+    USER_ROLES_ADMIN_LIST,
+    USER_ROLES_ADMIN_FILTER,
+    USER_ROLES_ADMIN_SEARCH
+)
 
 
 @admin.register(UserRole)
@@ -27,5 +34,6 @@ class UserRoleAdmin(admin.ModelAdmin):
     list_display = USER_ROLES_ADMIN_LIST
     list_filter = USER_ROLES_ADMIN_FILTER
     search_fields = USER_ROLES_ADMIN_SEARCH
+
     date_hierarchy = 'created_at'
     ordering = ('-created_at',)

@@ -17,7 +17,9 @@
 
 from django.db import models
 
-from apps.mm_triggered_jobs.utils import TRIGGERED_JOB_INSTANCE_STATUSES
+from apps.mm_triggered_jobs.utils import (
+    TRIGGERED_JOB_INSTANCE_STATUSES
+)
 
 
 class LeanModTriggeredJobInstance(models.Model):
@@ -47,8 +49,10 @@ class LeanModTriggeredJobInstance(models.Model):
 
     class Meta:
         ordering = ['-started_at']
+
         verbose_name = 'LeanMod Triggered Job Instance'
         verbose_name_plural = 'LeanMod Triggered Job Instances'
+
         indexes = [
             models.Index(fields=[
                 'triggered_job',

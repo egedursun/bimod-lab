@@ -18,9 +18,15 @@
 
 from django.contrib import admin
 
-from apps.user_permissions.models import UserPermission
-from apps.user_permissions.utils import USER_PERMISSIONS_ADMIN_LIST, USER_PERMISSIONS_ADMIN_FILTER, \
+from apps.user_permissions.models import (
+    UserPermission
+)
+
+from apps.user_permissions.utils import (
+    USER_PERMISSIONS_ADMIN_LIST,
+    USER_PERMISSIONS_ADMIN_FILTER,
     USER_PERMISSIONS_ADMIN_SEARCH
+)
 
 
 @admin.register(UserPermission)
@@ -28,5 +34,6 @@ class UserPermissionsAdmin(admin.ModelAdmin):
     list_display = USER_PERMISSIONS_ADMIN_LIST
     list_filter = USER_PERMISSIONS_ADMIN_FILTER
     search_fields = USER_PERMISSIONS_ADMIN_SEARCH
+
     date_hierarchy = "created_at"
     ordering = ["-created_at"]

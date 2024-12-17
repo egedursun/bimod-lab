@@ -14,12 +14,15 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from apps.assistants.models import Assistant
 from apps.memories.models import AssistantMemory
-from apps.memories.utils import AgentStandardMemoryTypesNames
-from apps.quick_setup_helper.utils import generate_random_object_id_string
+
+from apps.memories.utils import (
+    AgentStandardMemoryTypesNames
+)
 
 logger = logging.getLogger(__name__)
 
@@ -51,7 +54,9 @@ def action__007_memories_create(
 
     except Exception as e:
         logger.error(f"Error in action__007_memories_create: {str(e)}")
+
         return False
 
     logger.info("action__007_memories_create completed successfully.")
+
     return True

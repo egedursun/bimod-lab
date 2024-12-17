@@ -26,7 +26,8 @@ from apps.voidforger.views import (
     VoidForgerView_PurgeAutoExecutionLogs,
     VoidForgerView_PurgeActionMemoryLogs,
     VoidForgerView_ListActionMemoryLogs,
-    VoidForgerView_Configuration
+    VoidForgerView_Configuration,
+    VoidForgerView_VoidForgerChatCleanHistory,
 )
 
 app_name = 'voidforger'
@@ -88,6 +89,14 @@ urlpatterns = [
         VoidForgerView_PurgeActionMemoryLogs.as_view(
         ),
         name="purge_action_memory_logs"
+    ),
+
+    path(
+        'clean_history/<int:pk>/',
+        VoidForgerView_VoidForgerChatCleanHistory.as_view(
+
+        ),
+        name='clean_history_voidforger'
     ),
 
     #####

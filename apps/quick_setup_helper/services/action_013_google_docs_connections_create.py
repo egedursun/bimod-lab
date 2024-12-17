@@ -14,11 +14,17 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
 from apps.assistants.models import Assistant
-from apps.drafting.models import DraftingGoogleAppsConnection
-from apps.drafting.utils import generate_google_apps_connection_api_key
+
+from apps.drafting.models import (
+    DraftingGoogleAppsConnection
+)
+from apps.drafting.utils import (
+    generate_google_apps_connection_api_key
+)
 
 logger = logging.getLogger(__name__)
 
@@ -40,11 +46,14 @@ def action__013_google_docs_connections_create(
 
             except Exception as e:
                 logger.error(f"Failed to create Drafting Google Apps Connection for assistant {assistant.name}: {str(e)}")
+
                 continue
 
     except Exception as e:
         logger.error(f"Error in action__013_google_docs_connections_create: {str(e)}")
+
         return False
 
     logger.info("action__013_google_docs_connections_create completed successfully.")
+
     return True

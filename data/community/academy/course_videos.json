@@ -60,6 +60,16 @@
     "__video": 2
   },
   {
+    "course": "BimodLab - Administrator Authentication",
+    "course_section": "Quick Setup Guide & Setup Wizard",
+    "video_title": "Setting Up Your Account with the Setup Wizard",
+    "video_description": "This video demonstrates how to set up your account with the setup wizard on BimodLab.",
+    "video_content_url": "www.google.com",
+    "__course": 1,
+    "__section": 6,
+    "__video": 1
+  },
+  {
     "course": "BimodLab - Regular User Authentication",
     "course_section": "Accepting an Invitation",
     "video_title": "Receiving and Accepting an Invitation",
@@ -134,7 +144,7 @@
     "course_section": "Dashboard Statistics",
     "video_title": "Cost Statistics Section",
     "video_description": "This video demonstrates the cost statistics section of the BimodLab dashboard.",
-    "video_content_url": "https://bimod-static-eu.s3.eu-central-1.amazonaws.com/academy/course_videos/understanding-the-dashboard/dashboard-statistics/4-1-1.webm",
+    "video_content_url": "www.google.com",
     "__course": 4,
     "__section": 1,
     "__video": 1
@@ -144,7 +154,7 @@
     "course_section": "Dashboard Statistics",
     "video_title": "Token Statistics Section",
     "video_description": "This video demonstrates the token statistics section of the BimodLab dashboard.",
-    "video_content_url": "https://bimod-static-eu.s3.eu-central-1.amazonaws.com/academy/course_videos/understanding-the-dashboard/dashboard-statistics/4-1-2.webm",
+    "video_content_url": "www.google.com",
     "__course": 4,
     "__section": 1,
     "__video": 2
@@ -154,7 +164,7 @@
     "course_section": "Dashboard Statistics",
     "video_title": "Assistant Communication Statistics Section",
     "video_description": "This video demonstrates the assistant communication statistics section of the BimodLab dashboard.",
-    "video_content_url": "https://bimod-static-eu.s3.eu-central-1.amazonaws.com/academy/course_videos/understanding-the-dashboard/dashboard-statistics/4-1-3.webm",
+    "video_content_url": "www.google.com",
     "__course": 4,
     "__section": 1,
     "__video": 3
@@ -164,7 +174,7 @@
     "course_section": "Dashboard Statistics",
     "video_title": "SQL Operation Statistics Section",
     "video_description": "This video demonstrates the SQL operation statistics section of the BimodLab dashboard.",
-    "video_content_url": "https://bimod-static-eu.s3.eu-central-1.amazonaws.com/academy/course_videos/understanding-the-dashboard/dashboard-statistics/4-1-4.webm",
+    "video_content_url": "www.google.com",
     "__course": 4,
     "__section": 1,
     "__video": 4
@@ -174,7 +184,7 @@
     "course_section": "Dashboard Statistics",
     "video_title": "NoSQL Operation Statistics Section",
     "video_description": "This video demonstrates the SQL operation statistics section of the BimodLab dashboard.",
-    "video_content_url": "https://bimod-static-eu.s3.eu-central-1.amazonaws.com/academy/course_videos/understanding-the-dashboard/dashboard-statistics/4-1-5.webm",
+    "video_content_url": "www.google.com",
     "__course": 4,
     "__section": 1,
     "__video": 5
@@ -184,7 +194,7 @@
     "course_section": "Dashboard Statistics",
     "video_title": "File System, Browsing and ML Model Statistics Section",
     "video_description": "This video demonstrates the file system, browsing and ML model statistics section of the BimodLab dashboard.",
-    "video_content_url": "https://bimod-static-eu.s3.eu-central-1.amazonaws.com/academy/course_videos/understanding-the-dashboard/dashboard-statistics/4-1-6.webm",
+    "video_content_url": "www.google.com",
     "__course": 4,
     "__section": 1,
     "__video": 6
@@ -194,7 +204,7 @@
     "course_section": "Dashboard Statistics",
     "video_title": "Multimedia Management Statistics Section",
     "video_description": "This video demonstrates the multimedia management statistics section of the BimodLab dashboard.",
-    "video_content_url": "https://bimod-static-eu.s3.eu-central-1.amazonaws.com/academy/course_videos/understanding-the-dashboard/dashboard-statistics/4-1-7.webm",
+    "video_content_url": "www.google.com",
     "__course": 4,
     "__section": 1,
     "__video": 7
@@ -204,7 +214,7 @@
     "course_section": "Dashboard Statistics",
     "video_title": "Knowledge Base Statistics Section",
     "video_description": "This video demonstrates the knowledge base statistics section of the BimodLab dashboard.",
-    "video_content_url": "https://bimod-static-eu.s3.eu-central-1.amazonaws.com/academy/course_videos/understanding-the-dashboard/dashboard-statistics/4-1-8.webm",
+    "video_content_url": "www.google.com",
     "__course": 4,
     "__section": 1,
     "__video": 8
@@ -214,7 +224,7 @@
     "course_section": "Dashboard Statistics",
     "video_title": "Assistant Memory Statistics Section",
     "video_description": "This video demonstrates the assistant memory statistics section of the BimodLab dashboard.",
-    "video_content_url": "https://bimod-static-eu.s3.eu-central-1.amazonaws.com/academy/course_videos/understanding-the-dashboard/dashboard-statistics/4-1-9.webm",
+    "video_content_url": "www.google.com",
     "__course": 4,
     "__section": 1,
     "__video": 9
@@ -224,7 +234,7 @@
     "course_section": "Dashboard Statistics",
     "video_title": "Function Execution Statistics Section",
     "video_description": "This video demonstrates the function execution statistics section of the BimodLab dashboard.",
-    "video_content_url": "https://bimod-static-eu.s3.eu-central-1.amazonaws.com/academy/course_videos/understanding-the-dashboard/dashboard-statistics/4-1-10.webm",
+    "video_content_url": "www.google.com",
     "__course": 4,
     "__section": 1,
     "__video": 10
@@ -234,7 +244,7 @@
     "course_section": "Dashboard Statistics",
     "video_title": "API Execution Statistics Section",
     "video_description": "This video demonstrates the API execution statistics section of the BimodLab dashboard.",
-    "video_content_url": "https://bimod-static-eu.s3.eu-central-1.amazonaws.com/academy/course_videos/understanding-the-dashboard/dashboard-statistics/4-1-11.webm",
+    "video_content_url": "www.google.com",
     "__course": 4,
     "__section": 1,
     "__video": 11
@@ -244,7 +254,7 @@
     "course_section": "Dashboard Statistics",
     "video_title": "Script Execution Statistics Section",
     "video_description": "This video demonstrates the script execution statistics section of the BimodLab dashboard.",
-    "video_content_url": "https://bimod-static-eu.s3.eu-central-1.amazonaws.com/academy/course_videos/understanding-the-dashboard/dashboard-statistics/4-1-12.webm",
+    "video_content_url": "www.google.com",
     "__course": 4,
     "__section": 1,
     "__video": 12
@@ -254,7 +264,7 @@
     "course_section": "Dashboard Statistics",
     "video_title": "Scheduled & Triggered Job Statistics Section",
     "video_description": "This video demonstrates the scheduled & triggered job statistics section of the BimodLab dashboard.",
-    "video_content_url": "https://bimod-static-eu.s3.eu-central-1.amazonaws.com/academy/course_videos/understanding-the-dashboard/dashboard-statistics/4-1-13.webm",
+    "video_content_url": "www.google.com",
     "__course": 4,
     "__section": 1,
     "__video": 13
@@ -264,7 +274,7 @@
     "course_section": "Dashboard Statistics",
     "video_title": "Organization User Statistics Section",
     "video_description": "This video demonstrates the organization user statistics section of the BimodLab dashboard.",
-    "video_content_url": "https://bimod-static-eu.s3.eu-central-1.amazonaws.com/academy/course_videos/understanding-the-dashboard/dashboard-statistics/4-1-14.webm",
+    "video_content_url": "www.google.com",
     "__course": 4,
     "__section": 1,
     "__video": 14
@@ -274,9 +284,19 @@
     "course_section": "Statistical Interpretation Assistant",
     "video_title": "Using the Statistical Interpretation Assistant",
     "video_description": "This video demonstrates how to use the statistical interpretation assistant on the BimodLab dashboard.",
-    "video_content_url": "https://bimod-static-eu.s3.eu-central-1.amazonaws.com/academy/course_videos/understanding-the-dashboard/statistical-interpretation-assistant/4-2-1.webm",
+    "video_content_url": "www.google.com",
     "__course": 4,
     "__section": 2,
+    "__video": 1
+  },
+  {
+    "course": "BimodLab - Understanding the Dashboard",
+    "course_section": "Dashboard Landing Page",
+    "video_title": "Navigating the Dashboard Landing Page",
+    "video_description": "This video demonstrates how to navigate the dashboard landing page on BimodLab.",
+    "video_content_url": "www.google.com",
+    "__course": 4,
+    "__section": 3,
     "__video": 1
   },
   {
@@ -1370,6 +1390,26 @@
     "__video": 3
   },
   {
+    "course": "BimodLab - BimodLab Assistants, LeanMod and Expert Networks",
+    "course_section": "Sinaptera",
+    "video_title": "Configuring Sinaptera for Better Accuracy",
+    "video_description": "This video demonstrates how to configure Sinaptera for better accuracy on BimodLab.",
+    "video_content_url": "https://www.google.com",
+    "__course": 9,
+    "__section": 7,
+    "__video": 1
+  },
+  {
+    "course": "BimodLab - BimodLab Assistants, LeanMod and Expert Networks",
+    "course_section": "Sinaptera",
+    "video_title": "Example: Using Sinaptera in AI Conversations",
+    "video_description": "This video demonstrates how to use Sinaptera in AI conversations on BimodLab.",
+    "video_content_url": "https://www.google.com",
+    "__course": 9,
+    "__section": 7,
+    "__video": 2
+  },
+  {
     "course": "BimodLab - Data Security & Named Entity Recognition (NER)",
     "course_section": "Named Entity Recognition (NER)",
     "video_title": "Creating NER Integrations",
@@ -1418,6 +1458,26 @@
     "__course": 10,
     "__section": 1,
     "__video": 5
+  },
+  {
+    "course": "BimodLab - Data Security & Named Entity Recognition (NER)",
+    "course_section": "BeamGuard Data Guardrail Agent",
+    "video_title": "Catching Data Source Modifications & Deletions on the Fly",
+    "video_description": "This video demonstrates how to catch data source modifications and deletions on the fly with BeamGuard on BimodLab.",
+    "video_content_url": "https://www.google.com",
+    "__course": 10,
+    "__section": 2,
+    "__video": 1
+  },
+  {
+    "course": "BimodLab - Data Security & Named Entity Recognition (NER)",
+    "course_section": "BeamGuard Data Guardrail Agent",
+    "video_title": "Handling Guarded Queries Later",
+    "video_description": "This video demonstrates how to handle guarded queries later with BeamGuard Watch on BimodLab.",
+    "video_content_url": "https://www.google.com",
+    "__course": 10,
+    "__section": 2,
+    "__video": 2
   },
   {
     "course": "BimodLab - Understanding and Using Chats & Chat Metadata",
@@ -3290,6 +3350,86 @@
     "__video": 1
   },
   {
+    "course": "BimodLab - Connecting Web Browsers to Assistants",
+    "course_section": "Website Vector Storages",
+    "video_title": "Creating Website Vector Storages",
+    "video_description": "This video demonstrates how to create website vector storages on BimodLab.",
+    "video_content_url": "https://www.google.com",
+    "__course": 21,
+    "__section": 3,
+    "__video": 1
+  },
+  {
+    "course": "BimodLab - Connecting Web Browsers to Assistants",
+    "course_section": "Website Vector Storages",
+    "video_title": "Managing Website Vector Storages",
+    "video_description": "This video demonstrates how to manage website vector storages on BimodLab.",
+    "video_content_url": "https://www.google.com",
+    "__course": 21,
+    "__section": 3,
+    "__video": 2
+  },
+  {
+    "course": "BimodLab - Connecting Web Browsers to Assistants",
+    "course_section": "Website Vector Storages",
+    "video_title": "Updating Website Vector Storages",
+    "video_description": "This video demonstrates how to update website vector storages on BimodLab.",
+    "video_content_url": "https://www.google.com",
+    "__course": 21,
+    "__section": 3,
+    "__video": 3
+  },
+  {
+    "course": "BimodLab - Connecting Web Browsers to Assistants",
+    "course_section": "Website Vector Storages",
+    "video_title": "Deleting Website Vector Storages",
+    "video_description": "This video demonstrates how to delete website vector storages on BimodLab.",
+    "video_content_url": "https://www.google.com",
+    "__course": 21,
+    "__section": 3,
+    "__video": 4
+  },
+  {
+    "course": "BimodLab - Connecting Web Browsers to Assistants",
+    "course_section": "Indexing Websites",
+    "video_title": "Indexing Websites to Crawl Data",
+    "video_description": "This video demonstrates how to index websites to crawl data on BimodLab.",
+    "video_content_url": "https://www.google.com",
+    "__course": 21,
+    "__section": 4,
+    "__video": 1
+  },
+  {
+    "course": "BimodLab - Connecting Web Browsers to Assistants",
+    "course_section": "Indexing Websites",
+    "video_title": "Managing Website Indexes",
+    "video_description": "This video demonstrates how to manage website indexes on BimodLab.",
+    "video_content_url": "https://www.google.com",
+    "__course": 21,
+    "__section": 4,
+    "__video": 2
+  },
+  {
+    "course": "BimodLab - Connecting Web Browsers to Assistants",
+    "course_section": "Indexing Websites",
+    "video_title": "Deleting Website Indexes",
+    "video_description": "This video demonstrates how to delete website indexes on BimodLab.",
+    "video_content_url": "https://www.google.com",
+    "__course": 21,
+    "__section": 4,
+    "__video": 3
+  },
+  {
+    "course": "BimodLab - Connecting Web Browsers to Assistants",
+    "course_section": "Indexing Websites",
+    "video_title": "Example: Asking AI to Interpret Indexed Data",
+    "video_description": "This video demonstrates how to ask AI to interpret indexed website data on BimodLab.",
+    "video_content_url": "https://www.google.com",
+    "__course": 21,
+    "__section": 4,
+    "__video": 4
+  },
+  {
     "course": "BimodLab - Connecting SQL & NoSQL Databases to Assistants",
     "course_section": "SQL Database Connections",
     "video_title": "Creating SQL Database Connections",
@@ -4348,6 +4488,46 @@
     "__course": 29,
     "__section": 4,
     "__video": 1
+  },
+  {
+    "course": "BimodLab - Automated AI Workflows: Scheduled and Triggered Job Management",
+    "course_section": "LeanMod Scheduled & Triggered Jobs",
+    "video_title": "Managing LeanMod Scheduled jobs",
+    "video_description": "This video demonstrates how to manage LeanMod scheduled jobs on BimodLab.",
+    "video_content_url": "https://www.google.com",
+    "__course": 29,
+    "__section": 5,
+    "__video": 1
+  },
+  {
+    "course": "BimodLab - Automated AI Workflows: Scheduled and Triggered Job Management",
+    "course_section": "LeanMod Scheduled & Triggered Jobs",
+    "video_title": "Managing LeanMod Triggered jobs",
+    "video_description": "This video demonstrates how to manage LeanMod triggered jobs on BimodLab.",
+    "video_content_url": "https://www.google.com",
+    "__course": 29,
+    "__section": 5,
+    "__video": 2
+  },
+  {
+    "course": "BimodLab - Automated AI Workflows: Scheduled and Triggered Job Management",
+    "course_section": "Meta Scheduled & Triggered Jobs",
+    "video_title": "Managing Meta Scheduled jobs",
+    "video_description": "This video demonstrates how to manage Meta scheduled jobs on BimodLab.",
+    "video_content_url": "https://www.google.com",
+    "__course": 29,
+    "__section": 6,
+    "__video": 1
+  },
+  {
+    "course": "BimodLab - Automated AI Workflows: Scheduled and Triggered Job Management",
+    "course_section": "Meta Scheduled & Triggered Jobs",
+    "video_title": "Managing Meta Triggered jobs",
+    "video_description": "This video demonstrates how to manage Meta triggered jobs on BimodLab.",
+    "video_content_url": "https://www.google.com",
+    "__course": 29,
+    "__section": 6,
+    "__video": 2
   },
   {
     "course": "Bimod AstroBelt - Bimod & Google Sync: Integrating Google Office with Your Assistants",

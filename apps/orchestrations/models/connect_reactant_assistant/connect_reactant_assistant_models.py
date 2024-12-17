@@ -20,10 +20,21 @@ from django.db import models
 
 
 class OrchestrationReactantAssistantConnection(models.Model):
-    orchestration_maestro = models.ForeignKey("orchestrations.Maestro", on_delete=models.CASCADE)
-    assistant = models.ForeignKey("assistants.Assistant", on_delete=models.CASCADE)
+    orchestration_maestro = models.ForeignKey(
+        "orchestrations.Maestro",
+        on_delete=models.CASCADE
+    )
 
-    created_by_user = models.ForeignKey("auth.User", on_delete=models.CASCADE)
+    assistant = models.ForeignKey(
+        "assistants.Assistant",
+        on_delete=models.CASCADE
+    )
+
+    created_by_user = models.ForeignKey(
+        "auth.User",
+        on_delete=models.CASCADE
+    )
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -32,12 +43,24 @@ class OrchestrationReactantAssistantConnection(models.Model):
 
     class Meta:
         unique_together = [
-            ["orchestration_maestro", "assistant"],
+            [
+                "orchestration_maestro",
+                "assistant"
+            ],
         ]
+
         verbose_name = "Orchestration Reactant Assistant Connection"
         verbose_name_plural = "Orchestration Reactant Assistant Connections"
+
         ordering = ["-created_at"]
+
         indexes = [
-            models.Index(fields=["orchestration_maestro", "assistant"]),
-            models.Index(fields=["assistant", "orchestration_maestro"]),
+            models.Index(fields=[
+                "orchestration_maestro",
+                "assistant"
+            ]),
+            models.Index(fields=[
+                "assistant",
+                "orchestration_maestro"
+            ]),
         ]

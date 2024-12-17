@@ -17,7 +17,10 @@
 
 import logging
 
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.views import View
@@ -31,7 +34,9 @@ from apps.multimodal_chat.models import (
     MultimodalLeanChatMessage
 )
 
-from apps.voidforger.models import MultimodalVoidForgerChatMessage
+from apps.voidforger.models import (
+    MultimodalVoidForgerChatMessage
+)
 
 logger = logging.getLogger(__name__)
 
@@ -55,12 +60,22 @@ class Chat_MessageNarration(LoginRequiredMixin, View):
 
         except Exception as e:
             logger.error(f"Assistant chat message not found. Error: {e}")
-            return JsonResponse({'audio_url': None})
+
+            return JsonResponse(
+                {
+                    'audio_url': None
+                }
+            )
 
         try:
             if msg.message_audio:
                 logger.info(f"Assistant chat message audio found. Returning audio URL.")
-                return JsonResponse({'audio_url': msg.message_audio})
+
+                return JsonResponse(
+                    {
+                        'audio_url': msg.message_audio
+                    }
+                )
 
         except Exception as e:
             logger.error(f"Assistant chat message audio not found. Error: {e}")
@@ -78,7 +93,12 @@ class Chat_MessageNarration(LoginRequiredMixin, View):
 
         except Exception as e:
             logger.error(f"Assistant chat message audio generation failed. Error: {e}")
-            return JsonResponse({'audio_url': None})
+
+            return JsonResponse(
+                {
+                    'audio_url': None
+                }
+            )
 
         try:
             msg.message_audio = output['audio_url']
@@ -91,7 +111,12 @@ class Chat_MessageNarration(LoginRequiredMixin, View):
             pass
 
         logger.info(f"Assistant chat message audio generated. Returning audio URL.")
-        return JsonResponse({'audio_url': output['audio_url']})
+
+        return JsonResponse(
+            {
+                'audio_url': output['audio_url']
+            }
+        )
 
 
 class LeanChat_MessageNarration(LoginRequiredMixin, View):
@@ -113,12 +138,22 @@ class LeanChat_MessageNarration(LoginRequiredMixin, View):
 
         except Exception as e:
             logger.error(f"LeanMod chat message not found. Error: {e}")
-            return JsonResponse({'audio_url': None})
+
+            return JsonResponse(
+                {
+                    'audio_url': None
+                }
+            )
 
         try:
             if msg.message_audio:
                 logger.info(f"LeanMod chat message audio found. Returning audio URL.")
-                return JsonResponse({'audio_url': msg.message_audio})
+
+                return JsonResponse(
+                    {
+                        'audio_url': msg.message_audio
+                    }
+                )
 
         except Exception as e:
             logger.error(f"LeanMod chat message audio not found. Error: {e}")
@@ -136,10 +171,16 @@ class LeanChat_MessageNarration(LoginRequiredMixin, View):
 
         except Exception as e:
             logger.error(f"LeanMod chat message audio generation failed. Error: {e}")
-            return JsonResponse({'audio_url': None})
+
+            return JsonResponse(
+                {
+                    'audio_url': None
+                }
+            )
 
         try:
             msg.message_audio = output['audio_url']
+
             msg.save()
 
             logger.info(f"LeanMod chat message audio generated and saved.")
@@ -149,7 +190,12 @@ class LeanChat_MessageNarration(LoginRequiredMixin, View):
             pass
 
         logger.info(f"LeanMod chat message audio generated. Returning audio URL.")
-        return JsonResponse({'audio_url': output['audio_url']})
+
+        return JsonResponse(
+            {
+                'audio_url': output['audio_url']
+            }
+        )
 
 
 class VoidForgerChat_MessageNarration(LoginRequiredMixin, View):
@@ -171,13 +217,23 @@ class VoidForgerChat_MessageNarration(LoginRequiredMixin, View):
 
         except Exception as e:
             logger.error(f"VoidForger chat message not found. Error: {e}")
-            return JsonResponse({'audio_url': None})
+
+            return JsonResponse(
+                {
+                    'audio_url': None
+                }
+            )
 
         try:
 
             if msg.message_audio:
                 logger.info(f"VoidForger chat message audio found. Returning audio URL.")
-                return JsonResponse({'audio_url': msg.message_audio})
+
+                return JsonResponse(
+                    {
+                        'audio_url': msg.message_audio
+                    }
+                )
 
         except Exception as e:
             logger.error(f"VoidForger chat message audio not found. Error: {e}")
@@ -195,10 +251,16 @@ class VoidForgerChat_MessageNarration(LoginRequiredMixin, View):
 
         except Exception as e:
             logger.error(f"VoidForger chat message audio generation failed. Error: {e}")
-            return JsonResponse({'audio_url': None})
+
+            return JsonResponse(
+                {
+                    'audio_url': None
+                }
+            )
 
         try:
             msg.message_audio = output['audio_url']
+
             msg.save()
 
             logger.info(f"VoidForger chat message audio generated and saved.")
@@ -208,4 +270,9 @@ class VoidForgerChat_MessageNarration(LoginRequiredMixin, View):
             pass
 
         logger.info(f"VoidForger chat message audio generated. Returning audio URL.")
-        return JsonResponse({'audio_url': output['audio_url']})
+
+        return JsonResponse(
+            {
+                'audio_url': output['audio_url']
+            }
+        )

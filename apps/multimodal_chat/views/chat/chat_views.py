@@ -19,16 +19,39 @@ import base64
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import redirect, get_object_or_404
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.shortcuts import (
+    redirect,
+    get_object_or_404
+)
+
 from django.views.generic import TemplateView
 
-from apps.beamguard.models import BeamGuardArtifact
-from apps.beamguard.utils import BeamGuardConfirmationStatusesNames
-from apps.core.media_managers.media_manager_execution_handler import MediaManager
-from apps.core.user_permissions.permission_manager import UserPermissionManager
+from apps.beamguard.models import (
+    BeamGuardArtifact
+)
+
+from apps.beamguard.utils import (
+    BeamGuardConfirmationStatusesNames
+)
+
+from apps.core.media_managers.media_manager_execution_handler import (
+    MediaManager
+)
+
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
 from apps.assistants.models import Assistant
-from apps.message_templates.models import MessageTemplate
+
+from apps.message_templates.models import (
+    MessageTemplate
+)
 
 from apps.multimodal_chat.models import (
     MultimodalChat,
@@ -42,9 +65,17 @@ from apps.multimodal_chat.utils import (
 )
 
 from apps.organization.models import Organization
-from apps.user_permissions.utils import PermissionNames
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from config.settings import MEDIA_URL
-from web_project import TemplateLayout, TemplateHelper
+
+from web_project import (
+    TemplateLayout,
+    TemplateHelper
+)
 
 logger = logging.getLogger(__name__)
 
@@ -52,7 +83,10 @@ logger = logging.getLogger(__name__)
 class ChatView_Chat(LoginRequiredMixin, TemplateView):
     @staticmethod
     def refresh_page(chat_id, user_id):
-        return redirect(f'/chat/?chat_id={chat_id}')
+        return (
+            redirect
+            (f'/chat/?chat_id={chat_id}')
+        )
 
     def get_context_data(self, **kwargs):
         active_chat = None
@@ -119,7 +153,9 @@ class ChatView_Chat(LoginRequiredMixin, TemplateView):
         return context
 
     def post(self, request, *args, **kwargs):
-        from apps.core.generative_ai.generative_ai_decode_manager import GenerativeAIDecodeController
+        from apps.core.generative_ai.generative_ai_decode_manager import (
+            GenerativeAIDecodeController
+        )
 
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context_user = self.request.user
@@ -131,6 +167,7 @@ class ChatView_Chat(LoginRequiredMixin, TemplateView):
             operation=PermissionNames.CREATE_AND_USE_CHATS
         ):
             messages.error(self.request, "You do not have permission to create and use chats.")
+
             return redirect('multimodal_chat:chat')
         ##############################
 
@@ -165,9 +202,11 @@ class ChatView_Chat(LoginRequiredMixin, TemplateView):
             )
 
             chat.chat_name = request.POST.get('new_chat_name')
+
             chat.save()
 
             active_chat = chat
+
             logger.info(f"Chat name was changed by User: {context_user.id}.")
 
         elif ChatPostActionSpecifiers.STARRING_MESSAGE_SPECIFIER in request.POST:
@@ -188,8 +227,11 @@ class ChatView_Chat(LoginRequiredMixin, TemplateView):
             )
 
             msg.starred = not msg.starred
+
             msg.save()
+
             active_chat = chat
+
             logger.info(f"Message was starred by User: {context_user.id}.")
 
         else:
@@ -227,7 +269,7 @@ class ChatView_Chat(LoginRequiredMixin, TemplateView):
                 multimodal_chat=chat
             )
 
-            response = internal_llm_client.respond(
+            response = internal_llm_client.respond_stream(
                 latest_message=user_message,
                 image_uris=image_full_uris,
                 file_uris=file_full_uris
@@ -247,7 +289,9 @@ class ChatView_Chat(LoginRequiredMixin, TemplateView):
             chat_source=SourcesForMultimodalChatsNames.APP
         )
 
-        agents = Assistant.objects.filter(organization__users=request.user)
+        agents = Assistant.objects.filter(
+            organization__users=request.user
+        )
 
         context.update(
             {
@@ -263,11 +307,21 @@ class ChatView_Chat(LoginRequiredMixin, TemplateView):
         )
 
         redirect_string = self.request.path_info + '?chat_id=' + str(active_chat.id)
-        return redirect(redirect_string, *args, **kwargs)
+
+        return redirect(
+            redirect_string,
+            *args,
+            **kwargs
+        )
 
     def _handle_attached_images(self, request):
         chat_id = request.POST.get('chat_id')
-        chat = get_object_or_404(MultimodalChat, id=chat_id, user=request.user)
+
+        chat = get_object_or_404(
+            MultimodalChat,
+            id=chat_id,
+            user=request.user
+        )
 
         msg_content = request.POST.get('message_content')
         attached_imgs = request.FILES.getlist('attached_images[]')
@@ -278,10 +332,14 @@ class ChatView_Chat(LoginRequiredMixin, TemplateView):
         }
 
         attached_canvas_image = request.POST.get('sketch_image')
+
         sketch_image_full_uris_list = []
 
         try:
-            sketch_image_bytes = base64.b64decode(attached_canvas_image.split("base64,")[1].encode())
+            sketch_image_bytes = base64.b64decode(
+                attached_canvas_image.split("base64,")[1].encode()
+            )
+
             sketch_image['sketch_image'] = sketch_image_bytes
 
             sketch_image_full_uris_list = MediaManager.save_sketch(
@@ -304,11 +362,15 @@ class ChatView_Chat(LoginRequiredMixin, TemplateView):
 
         attached_edit_image = request.FILES.get('edit_image')
         attached_edit_image_mask = request.POST.get('edit_image_mask')
+
         edit_image_full_uris_list = []
 
         try:
             edit_image_bytes = attached_edit_image.read()
-            edit_image_mask_bytes = base64.b64decode(attached_edit_image_mask.split("base64,")[1].encode())
+
+            edit_image_mask_bytes = base64.b64decode(
+                attached_edit_image_mask.split("base64,")[1].encode()
+            )
 
             edit_image_bytes_dict['edit_image'] = edit_image_bytes
             edit_image_bytes_dict['edit_image_mask'] = edit_image_mask_bytes
@@ -341,15 +403,23 @@ class ChatView_Chat(LoginRequiredMixin, TemplateView):
                 logger.error(f"Error reading image: {e}")
                 continue
 
-            image_bytes_list.append(image_bytes)
+            image_bytes_list.append(
+                image_bytes
+            )
 
-        image_full_uris = MediaManager.save_images_and_return_uris(image_bytes_list)
+        image_full_uris = MediaManager.save_images_and_return_uris(
+            image_bytes_list
+        )
 
         if sketch_image_full_uris_list:
-            image_full_uris.extend(sketch_image_full_uris_list)
+            image_full_uris.extend(
+                sketch_image_full_uris_list
+            )
 
         if edit_image_full_uris_list:
-            image_full_uris.extend(edit_image_full_uris_list)
+            image_full_uris.extend(
+                edit_image_full_uris_list
+            )
 
         return image_full_uris
 
@@ -368,25 +438,50 @@ class ChatView_Chat(LoginRequiredMixin, TemplateView):
                 logger.error(f"Error reading file: {e}")
                 continue
 
-            file_bytes_list.append((file_bytes, file_name))
+            file_bytes_list.append(
+                (
+                    file_bytes,
+                    file_name
+                )
+            )
 
-        file_full_uris = MediaManager.save_files_and_return_uris(file_bytes_list)
+        file_full_uris = MediaManager.save_files_and_return_uris(
+            file_bytes_list
+        )
 
         return file_full_uris
 
     @staticmethod
-    def _handle_record_audio(file_full_uris, request):
+    def _handle_record_audio(
+        file_full_uris,
+        request
+    ):
 
         record_audio = request.POST.get('record_audio')
+
         audio_full_uri = None
 
         if record_audio:
             audio_base_64 = request.POST.get('record_audio')
-            audio_bytes = base64.b64decode(audio_base_64.split("base64,")[1].encode())
-            audio_full_uri = MediaManager.save_files_and_return_uris([(audio_bytes, 'audio.webm')])[0]
+
+            audio_bytes = base64.b64decode(
+                audio_base_64.split("base64,")[1].encode()
+            )
+
+            audio_full_uri = MediaManager.save_files_and_return_uris(
+                [
+                    (
+                        audio_bytes,
+                        'audio.webm'
+                    )
+                ]
+            )[0]
 
         if audio_full_uri:
-            file_full_uris.append(audio_full_uri)
+            file_full_uris.append(
+                audio_full_uri
+            )
 
         logger.info(f"Audio was saved by User: {request.user.id}.")
+
         return

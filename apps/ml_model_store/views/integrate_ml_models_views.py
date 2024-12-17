@@ -14,13 +14,23 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.shortcuts import redirect
 from django.views import View
 
-from apps.core.user_permissions.permission_manager import UserPermissionManager
-from apps.user_permissions.utils import PermissionNames
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
 
 
 class MLModelStoreView_IntegrateMLModel(LoginRequiredMixin, View):
@@ -29,12 +39,14 @@ class MLModelStoreView_IntegrateMLModel(LoginRequiredMixin, View):
         return self.post(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-
         ##############################
         # PERMISSION CHECK FOR - INTEGRATE_ML_MODEL_FILES
-        if not UserPermissionManager.is_authorized(user=self.request.user,
-                                                   operation=PermissionNames.INTEGRATE_ML_MODEL_FILES):
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.INTEGRATE_ML_MODEL_FILES
+        ):
             messages.error(self.request, "You do not have permission to integrate ML Model files.")
+
             return redirect('ml_model_store:list')
         ##############################
 
@@ -42,4 +54,5 @@ class MLModelStoreView_IntegrateMLModel(LoginRequiredMixin, View):
         # implement the integration view
         # Create and update the boilerplate models JSON
         # Page HTML adjustments (search, buttons, quality, ui/ux, etc)
+
         return None

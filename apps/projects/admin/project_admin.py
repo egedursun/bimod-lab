@@ -18,7 +18,12 @@
 from django.contrib import admin
 
 from apps.projects.models import ProjectItem
-from apps.projects.utils import PROJECT_ITEM_ADMIN_LIST, PROJECT_ITEM_ADMIN_FILTER, PROJECT_ITEM_ADMIN_SEARCH
+
+from apps.projects.utils import (
+    PROJECT_ITEM_ADMIN_LIST,
+    PROJECT_ITEM_ADMIN_FILTER,
+    PROJECT_ITEM_ADMIN_SEARCH
+)
 
 
 @admin.register(ProjectItem)
@@ -26,4 +31,11 @@ class ProjectItemAdmin(admin.ModelAdmin):
     list_display = PROJECT_ITEM_ADMIN_LIST
     list_filter = PROJECT_ITEM_ADMIN_FILTER
     search_fields = PROJECT_ITEM_ADMIN_SEARCH
-    ordering = ('organization', 'project_name', 'project_department', 'created_at')
+
+    ordering = (
+        'organization',
+        'project_name',
+        'project_department',
+        'created_at'
+    )
+

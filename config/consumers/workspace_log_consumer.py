@@ -25,7 +25,7 @@ from channels.generic.websocket import (
 class WorkspaceLogConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         voidforger_chat_id = self.scope['url_route']['kwargs']['voidforger_chat_id']
-        self.group_name = f'logs_{voidforger_chat_id}'
+        self.group_name = f'voidforger_logs_{voidforger_chat_id}'
 
         await self.channel_layer.group_add(
             self.group_name,

@@ -337,7 +337,10 @@ from apps.core.tool_calls.voidforger.input_verifiers import (
 )
 
 from apps.multimodal_chat.models import MultimodalChat
-from apps.multimodal_chat.utils import transmit_websocket_log
+
+from apps.multimodal_chat.utils import (
+    transmit_websocket_log, TransmitWebsocketLogSenderType
+)
 
 from apps.video_generations.models import (
     GeneratedVideo,
@@ -987,6 +990,12 @@ class ToolCallManager:
 
         logger.info("Executing the video generation process.")
 
+        transmit_websocket_log(
+            f"""🧮 Assistant is using the video generation tool.""",
+            chat_id=self.chat.id,
+            sender_type=TransmitWebsocketLogSenderType.ASSISTANT,
+        )
+
         c_id = self.tool_usage_dict.get("parameters").get("connection_id")
         action_type = self.tool_usage_dict.get("parameters").get("action_type")
         query = self.tool_usage_dict.get("parameters").get("query")
@@ -1020,6 +1029,12 @@ class ToolCallManager:
 
         logger.info("Executing the audio processing process.")
 
+        transmit_websocket_log(
+            f"""🧮 Assistant is using the audio processing tool.""",
+            chat_id=self.chat.id,
+            sender_type=TransmitWebsocketLogSenderType.ASSISTANT,
+        )
+
         action = self.tool_usage_dict.get("parameters").get("action")
         audio_file_path = self.tool_usage_dict.get("parameters").get("audio_file_path")
         text_content = self.tool_usage_dict.get("parameters").get("text_content")
@@ -1051,6 +1066,12 @@ class ToolCallManager:
     ):
 
         logger.info("Executing the browsing process.")
+
+        transmit_websocket_log(
+            f"""🧮 Assistant is using the browsing tool.""",
+            chat_id=self.chat.id,
+            sender_type=TransmitWebsocketLogSenderType.ASSISTANT,
+        )
 
         c_id = self.tool_usage_dict.get("parameters").get("browser_connection_id")
         action = self.tool_usage_dict.get("parameters").get("action")
@@ -1092,6 +1113,12 @@ class ToolCallManager:
 
         logger.info("Executing the dream image process.")
 
+        transmit_websocket_log(
+            f"""🧮 Assistant is using the dream image tool.""",
+            chat_id=self.chat.id,
+            sender_type=TransmitWebsocketLogSenderType.ASSISTANT,
+        )
+
         image_uri = self.tool_usage_dict.get("parameters").get("image_uri")
         image_size = self.tool_usage_dict.get("parameters").get("image_size")
 
@@ -1123,6 +1150,12 @@ class ToolCallManager:
     ):
 
         logger.info("Executing the edit image process.")
+
+        transmit_websocket_log(
+            f"""🧮 Assistant is using the edit image tool.""",
+            chat_id=self.chat.id,
+            sender_type=TransmitWebsocketLogSenderType.ASSISTANT,
+        )
 
         prompt = self.tool_usage_dict.get("parameters").get("prompt")
         edit_image_uri = self.tool_usage_dict.get("parameters").get("edit_image_uri")
@@ -1160,6 +1193,12 @@ class ToolCallManager:
 
         logger.info("Executing the generate image process.")
 
+        transmit_websocket_log(
+            f"""🧮 Assistant is using the generate image tool.""",
+            chat_id=self.chat.id,
+            sender_type=TransmitWebsocketLogSenderType.ASSISTANT,
+        )
+
         prompt = self.tool_usage_dict.get("parameters").get("prompt")
         size = self.tool_usage_dict.get("parameters").get("size")
         quality = self.tool_usage_dict.get("parameters").get("quality")
@@ -1193,6 +1232,12 @@ class ToolCallManager:
 
         logger.info("Executing the custom script process.")
 
+        transmit_websocket_log(
+            f"""🧮 Assistant is using the custom script execution tool.""",
+            chat_id=self.chat.id,
+            sender_type=TransmitWebsocketLogSenderType.ASSISTANT,
+        )
+
         custom_script_reference_id = self.tool_usage_dict.get("parameters").get("custom_script_reference_id")
 
         output = run_execute_custom_script(
@@ -1216,6 +1261,12 @@ class ToolCallManager:
     ):
 
         logger.info("Executing the custom API process.")
+
+        transmit_websocket_log(
+            f"""🧮 Assistant is using the custom API execution tool.""",
+            chat_id=self.chat.id,
+            sender_type=TransmitWebsocketLogSenderType.ASSISTANT,
+        )
 
         custom_api_reference_id = self.tool_usage_dict.get("parameters").get("custom_api_reference_id")
         endpoint_name = self.tool_usage_dict.get("parameters").get("endpoint_name")
@@ -1248,6 +1299,13 @@ class ToolCallManager:
     ):
 
         logger.info("Executing the custom function process.")
+
+        transmit_websocket_log(
+            f"""🧮 Assistant is using the custom function execution tool.""",
+            chat_id=self.chat.id,
+            sender_type=TransmitWebsocketLogSenderType.ASSISTANT,
+        )
+
         custom_function_reference_id = self.tool_usage_dict.get("parameters").get("custom_function_reference_id")
         input_data = self.tool_usage_dict.get("parameters").get("input_data")
 
@@ -1273,6 +1331,12 @@ class ToolCallManager:
     ):
 
         logger.info("Executing the reasoning process.")
+
+        transmit_websocket_log(
+            f"""🧮 Assistant is using the multi-step reasoning tool.""",
+            chat_id=self.chat.id,
+            sender_type=TransmitWebsocketLogSenderType.ASSISTANT,
+        )
 
         query_string = self.tool_usage_dict.get("parameters").get("query")
 
@@ -1302,6 +1366,12 @@ class ToolCallManager:
 
         logger.info("Executing the analyze code process.")
 
+        transmit_websocket_log(
+            f"""🧮 Assistant is using the code analysis and interpretation tool.""",
+            chat_id=self.chat.id,
+            sender_type=TransmitWebsocketLogSenderType.ASSISTANT,
+        )
+
         file_paths = self.tool_usage_dict.get("parameters").get("file_paths")
         query_string = self.tool_usage_dict.get("parameters").get("query")
 
@@ -1329,6 +1399,12 @@ class ToolCallManager:
     ):
 
         logger.info("Executing the infer with ML process.")
+
+        transmit_websocket_log(
+            f"""🧮 Assistant is using the ML model inference tool.""",
+            chat_id=self.chat.id,
+            sender_type=TransmitWebsocketLogSenderType.ASSISTANT,
+        )
 
         ml_base_connection_id = self.tool_usage_dict.get("parameters").get("ml_base_connection_id")
         model_path = self.tool_usage_dict.get("parameters").get("model_path")
@@ -1360,6 +1436,13 @@ class ToolCallManager:
     ):
 
         logger.info("Executing the HTTP client retrieval process.")
+
+        transmit_websocket_log(
+            f"""🧮 Assistant is using the HTTP client retrieval tool.""",
+            chat_id=self.chat.id,
+            sender_type=TransmitWebsocketLogSenderType.ASSISTANT,
+        )
+
         c_id = self.tool_usage_dict.get("parameters").get("media_storage_connection_id")
 
         download_url = self.tool_usage_dict.get("parameters").get("url")
@@ -1391,6 +1474,13 @@ class ToolCallManager:
         )
 
         logger.info("Executing the website data search process.")
+
+        transmit_websocket_log(
+            f"""🧮 Assistant is using the website data search tool.""",
+            chat_id=self.chat.id,
+            sender_type=TransmitWebsocketLogSenderType.ASSISTANT,
+        )
+
         c_id = self.tool_usage_dict.get("parameters").get("connection_id")
         website_url = self.tool_usage_dict.get("parameters").get("website_url")
         query = self.tool_usage_dict.get("parameters").get("query")
@@ -1423,6 +1513,13 @@ class ToolCallManager:
         )
 
         logger.info("Executing the media item search process.")
+
+        transmit_websocket_log(
+            f"""🧮 Assistant is using the multimedia item search tool.""",
+            chat_id=self.chat.id,
+            sender_type=TransmitWebsocketLogSenderType.ASSISTANT,
+        )
+
         c_id = self.tool_usage_dict.get("parameters").get("connection_id")
         query = self.tool_usage_dict.get("parameters").get("query")
 
@@ -1455,6 +1552,13 @@ class ToolCallManager:
         )
 
         logger.info("Executing the media manager query process.")
+
+        transmit_websocket_log(
+            f"""🧮 Assistant is using the media manager item and metadata query tool.""",
+            chat_id=self.chat.id,
+            sender_type=TransmitWebsocketLogSenderType.ASSISTANT,
+        )
+
         c_id = self.tool_usage_dict.get("parameters").get("media_storage_connection_id")
         chat_id = self.chat.id
         query = self.tool_usage_dict.get("parameters").get("query")
@@ -1486,6 +1590,13 @@ class ToolCallManager:
     ):
 
         logger.info("Executing the SSH system command process.")
+
+        transmit_websocket_log(
+            f"""🧮 Assistant is using the SSH system command execution tool.""",
+            chat_id=self.chat.id,
+            sender_type=TransmitWebsocketLogSenderType.ASSISTANT,
+        )
+
         c_id = self.tool_usage_dict.get("parameters").get("file_system_connection_id")
         commands = self.tool_usage_dict.get("parameters").get("commands")
 
@@ -1539,6 +1650,12 @@ class ToolCallManager:
 
         logger.info("Executing the SSH File System Directory schema search process.")
 
+        transmit_websocket_log(
+            f"""🧮 Assistant is using the SSH File System Directory schema search tool.""",
+            chat_id=self.chat.id,
+            sender_type=TransmitWebsocketLogSenderType.ASSISTANT,
+        )
+
         c_id = self.tool_usage_dict.get("parameters").get("connection_id")
         query = self.tool_usage_dict.get("parameters").get("query")
 
@@ -1565,6 +1682,12 @@ class ToolCallManager:
 
         logger.info("Executing the intra memory query process.")
 
+        transmit_websocket_log(
+            f"""🧮 Assistant is using the context history memory query tool.""",
+            chat_id=self.chat.id,
+            sender_type=TransmitWebsocketLogSenderType.ASSISTANT,
+        )
+
         query = self.tool_usage_dict.get("parameters").get("query")
 
         output = run_query_intra_memory(
@@ -1589,6 +1712,13 @@ class ToolCallManager:
     ):
 
         logger.info("Executing the code base query process.")
+
+        transmit_websocket_log(
+            f"""🧮 Assistant is using the code base repository query tool.""",
+            chat_id=self.chat.id,
+            sender_type=TransmitWebsocketLogSenderType.ASSISTANT,
+        )
+
         c_id = self.tool_usage_dict.get("parameters").get("connection_id")
         repository_uri = self.tool_usage_dict.get("parameters").get("repository_uri")
         query = self.tool_usage_dict.get("parameters").get("query")
@@ -1617,6 +1747,12 @@ class ToolCallManager:
 
         logger.info("Executing the vector store query process.")
 
+        transmit_websocket_log(
+            f"""🧮 Assistant is using the vector store documents query tool.""",
+            chat_id=self.chat.id,
+            sender_type=TransmitWebsocketLogSenderType.ASSISTANT,
+        )
+
         c_id = self.tool_usage_dict.get("parameters").get("connection_id")
         document_file_name = self.tool_usage_dict.get("parameters").get("document_file_name")
         query = self.tool_usage_dict.get("parameters").get("query")
@@ -1644,6 +1780,12 @@ class ToolCallManager:
     ):
 
         logger.info("Executing the SQL query process.")
+
+        transmit_websocket_log(
+            f"""🧮 Assistant is using the SQL query execution tool.""",
+            chat_id=self.chat.id,
+            sender_type=TransmitWebsocketLogSenderType.ASSISTANT,
+        )
 
         c_id = self.tool_usage_dict.get("parameters").get("database_connection_id")
         query_type = self.tool_usage_dict.get("parameters").get("type")
@@ -1702,6 +1844,13 @@ class ToolCallManager:
     ):
 
         logger.info("Executing the SQL schema search process.")
+
+        transmit_websocket_log(
+            f"""🧮 Assistant is using the SQL database schema search tool.""",
+            chat_id=self.chat.id,
+            sender_type=TransmitWebsocketLogSenderType.ASSISTANT,
+        )
+
         c_id = self.tool_usage_dict.get("parameters").get("connection_id")
         query = self.tool_usage_dict.get("parameters").get("query")
 
@@ -1727,6 +1876,13 @@ class ToolCallManager:
     ):
 
         logger.info("Executing the NoSQL query process.")
+
+        transmit_websocket_log(
+            f"""🧮 Assistant is using the NoSQL query execution tool.""",
+            chat_id=self.chat.id,
+            sender_type=TransmitWebsocketLogSenderType.ASSISTANT,
+        )
+
         c_id = self.tool_usage_dict.get("parameters").get("database_connection_id")
         query_type = self.tool_usage_dict.get("parameters").get("type")
         nosql_query = self.tool_usage_dict.get("parameters").get("nosql_query")
@@ -1781,6 +1937,13 @@ class ToolCallManager:
     ):
 
         logger.info("Executing the NoSQL schema search process.")
+
+        transmit_websocket_log(
+            f"""🧮 Assistant is using the NoSQL database schema search tool.""",
+            chat_id=self.chat.id,
+            sender_type=TransmitWebsocketLogSenderType.ASSISTANT,
+        )
+
         c_id = self.tool_usage_dict.get("parameters").get("connection_id")
         query = self.tool_usage_dict.get("parameters").get("query")
 
@@ -1807,6 +1970,12 @@ class ToolCallManager:
 
         logger.info("Executing the Dashboard Statistics query process.")
 
+        transmit_websocket_log(
+            f"""🧮 Assistant is using the dashboard statistics query tool.""",
+            chat_id=self.chat.id,
+            sender_type=TransmitWebsocketLogSenderType.ASSISTANT,
+        )
+
         user_id = self.chat.user.id
 
         output = run_query_dashboard_statistics(
@@ -1831,6 +2000,13 @@ class ToolCallManager:
     ):
 
         logger.info("Executing the MetaKanban board query process.")
+
+        transmit_websocket_log(
+            f"""🧮 Assistant is using the MetaKanban board query tool.""",
+            chat_id=self.chat.id,
+            sender_type=TransmitWebsocketLogSenderType.ASSISTANT,
+        )
+
         c_id = self.tool_usage_dict.get("parameters").get("connection_id")
         query = self.tool_usage_dict.get("parameters").get("query")
 
@@ -1856,6 +2032,12 @@ class ToolCallManager:
     ):
 
         logger.info("Executing the MetaTempo tracker query process.")
+
+        transmit_websocket_log(
+            f"""🧮 Assistant is using the MetaTempo tracker query tool.""",
+            chat_id=self.chat.id,
+            sender_type=TransmitWebsocketLogSenderType.ASSISTANT,
+        )
 
         c_id = self.tool_usage_dict.get("parameters").get("connection_id")
         query = self.tool_usage_dict.get("parameters").get("query")
@@ -1885,6 +2067,12 @@ class ToolCallManager:
 
         logger.info("Executing the Orchestration trigger process.")
 
+        transmit_websocket_log(
+            f"""🧮 Assistant is using the orchestration trigger tool.""",
+            chat_id=self.chat.id,
+            sender_type=TransmitWebsocketLogSenderType.ASSISTANT,
+        )
+
         user = self.chat.user
         c_id = self.tool_usage_dict.get("parameters").get("connection_id")
         query = self.tool_usage_dict.get("parameters").get("query")
@@ -1913,6 +2101,12 @@ class ToolCallManager:
 
         logger.info("Executing the Scheduled Job Logs query process.")
 
+        transmit_websocket_log(
+            f"""🧮 Assistant is using the scheduled job logs query tool.""",
+            chat_id=self.chat.id,
+            sender_type=TransmitWebsocketLogSenderType.ASSISTANT,
+        )
+
         output = run_query_execute_scheduled_job_logs(
             assistant=self.assistant
         )
@@ -1934,6 +2128,12 @@ class ToolCallManager:
     ):
         logger.info("Executing the Triggered Job Logs query process.")
 
+        transmit_websocket_log(
+            f"""🧮 Assistant is using the triggered job logs query tool.""",
+            chat_id=self.chat.id,
+            sender_type=TransmitWebsocketLogSenderType.ASSISTANT,
+        )
+
         output = run_query_execute_triggered_job_logs(
             assistant=self.assistant
         )
@@ -1954,6 +2154,12 @@ class ToolCallManager:
         output_tool_call
     ):
         logger.info("Executing the Smart Contract generation query process.")
+
+        transmit_websocket_log(
+            f"""🧮 Assistant is using the smart contract generation query tool.""",
+            chat_id=self.chat.id,
+            sender_type=TransmitWebsocketLogSenderType.ASSISTANT,
+        )
 
         user = self.chat.user
 
@@ -1997,6 +2203,12 @@ class ToolCallManager:
     ):
 
         logger.info("Executing the Hadron Node query process.")
+
+        transmit_websocket_log(
+            f"""🧮 Assistant is using the Hadron Node query tool.""",
+            chat_id=self.chat.id,
+            sender_type=TransmitWebsocketLogSenderType.ASSISTANT,
+        )
 
         c_id = self.tool_usage_dict.get("parameters").get("connection_id")
         query = self.tool_usage_dict.get("parameters").get("query")
@@ -2066,6 +2278,12 @@ class ToolCallManager:
 
         if defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_EXPERT_NETWORK_QUERY:
 
+            transmit_websocket_log(
+                f"""🧮 LeanMod Agent is using the expert network query tool.""",
+                chat_id=self.chat.id,
+                sender_type=TransmitWebsocketLogSenderType.LEANMOD,
+            )
+
             error_msg = verify_expert_network_query_content(
                 content=self.tool_usage_dict
             )
@@ -2097,6 +2315,12 @@ class ToolCallManager:
 
         elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_SEMANTOR_SEARCH_QUERY:
 
+            transmit_websocket_log(
+                f"""🧮 LeanMod Agent is using the Semantor search query tool.""",
+                chat_id=self.chat.id,
+                sender_type=TransmitWebsocketLogSenderType.LEANMOD,
+            )
+
             error_msg = verify_semantor_search_query_content(
                 content=self.tool_usage_dict
             )
@@ -2123,6 +2347,12 @@ class ToolCallManager:
             logger.info(f"Semantor query response retrieved.")
 
         elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_SEMANTOR_CONSULTATION_QUERY:
+
+            transmit_websocket_log(
+                f"""🧮 LeanMod Agent is using the Semantor consultation query tool.""",
+                chat_id=self.chat.id,
+                sender_type=TransmitWebsocketLogSenderType.LEANMOD,
+            )
 
             error_msg = verify_semantor_consultation_query_content(
                 content=self.tool_usage_dict
@@ -2156,6 +2386,12 @@ class ToolCallManager:
             logger.info(f"Semantor consultation response retrieved.")
 
         elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_INTRA_MEMORY_QUERY:
+
+            transmit_websocket_log(
+                f"""🧮 LeanMod Agent is using the context history messages memory query tool.""",
+                chat_id=self.chat.id,
+                sender_type=TransmitWebsocketLogSenderType.LEANMOD,
+            )
 
             error_msg = verify_leanmod_memory_query_content(
                 content=self.tool_usage_dict
@@ -2275,6 +2511,7 @@ class ToolCallManager:
             transmit_websocket_log(
                 f"""🧮 VoidForger is searching previous chat messages in his long term memory.""",
                 chat_id=self.chat.id,
+                sender_type=TransmitWebsocketLogSenderType.VOIDFORGER,
                 fermion__is_fermion_supervised=fermion__is_fermion_supervised,
                 fermion__export_type=fermion__export_type,
                 fermion__endpoint=fermion__endpoint
@@ -2288,6 +2525,7 @@ class ToolCallManager:
                 transmit_websocket_log(
                     f"""❌ VoidForger attempted to perform an execution of an invalid or unauthorized tool.""",
                     chat_id=self.chat.id,
+                    sender_type=TransmitWebsocketLogSenderType.VOIDFORGER,
                     fermion__is_fermion_supervised=fermion__is_fermion_supervised,
                     fermion__export_type=fermion__export_type,
                     fermion__endpoint=fermion__endpoint
@@ -2298,6 +2536,7 @@ class ToolCallManager:
             transmit_websocket_log(
                 f"""✅ VoidForger's request for long term memory search has been approved by the system.""",
                 chat_id=self.chat.id,
+                sender_type=TransmitWebsocketLogSenderType.VOIDFORGER,
                 fermion__is_fermion_supervised=fermion__is_fermion_supervised,
                 fermion__export_type=fermion__export_type,
                 fermion__endpoint=fermion__endpoint
@@ -2315,6 +2554,7 @@ class ToolCallManager:
             transmit_websocket_log(
                 f"""🧮 System provided VoidForger with the old messages based on the query attempt.""",
                 chat_id=self.chat.id,
+                sender_type=TransmitWebsocketLogSenderType.VOIDFORGER,
                 fermion__is_fermion_supervised=fermion__is_fermion_supervised,
                 fermion__export_type=fermion__export_type,
                 fermion__endpoint=fermion__endpoint
@@ -2331,6 +2571,7 @@ class ToolCallManager:
             transmit_websocket_log(
                 f"""⛙ Organizing and reporting the outputs for delivering to VoidForger.""",
                 chat_id=self.chat.id,
+                sender_type=TransmitWebsocketLogSenderType.VOIDFORGER,
                 fermion__is_fermion_supervised=fermion__is_fermion_supervised,
                 fermion__export_type=fermion__export_type,
                 fermion__endpoint=fermion__endpoint
@@ -2357,6 +2598,7 @@ class ToolCallManager:
             transmit_websocket_log(
                 f"""🧮 VoidForger is checking his previous actions to find relevant information.""",
                 chat_id=self.chat.id,
+                sender_type=TransmitWebsocketLogSenderType.VOIDFORGER,
                 fermion__is_fermion_supervised=fermion__is_fermion_supervised,
                 fermion__export_type=fermion__export_type,
                 fermion__endpoint=fermion__endpoint
@@ -2370,6 +2612,7 @@ class ToolCallManager:
                 transmit_websocket_log(
                     f"""❌ VoidForger attempted to perform an execution of an invalid or unauthorized tool.""",
                     chat_id=self.chat.id,
+                    sender_type=TransmitWebsocketLogSenderType.VOIDFORGER,
                     fermion__is_fermion_supervised=fermion__is_fermion_supervised,
                     fermion__export_type=fermion__export_type,
                     fermion__endpoint=fermion__endpoint
@@ -2380,6 +2623,7 @@ class ToolCallManager:
             transmit_websocket_log(
                 f"""✅ VoidForger's request for action history search has been approved by the system.""",
                 chat_id=self.chat.id,
+                sender_type=TransmitWebsocketLogSenderType.VOIDFORGER,
                 fermion__is_fermion_supervised=fermion__is_fermion_supervised,
                 fermion__export_type=fermion__export_type,
                 fermion__endpoint=fermion__endpoint
@@ -2396,6 +2640,7 @@ class ToolCallManager:
             transmit_websocket_log(
                 f"""🧮 System provided VoidForger with the action history logs based on the query attempt.""",
                 chat_id=self.chat.id,
+                sender_type=TransmitWebsocketLogSenderType.VOIDFORGER,
                 fermion__is_fermion_supervised=fermion__is_fermion_supervised,
                 fermion__export_type=fermion__export_type,
                 fermion__endpoint=fermion__endpoint
@@ -2412,6 +2657,7 @@ class ToolCallManager:
             transmit_websocket_log(
                 f"""⛙ Organizing and reporting the outputs for delivering to VoidForger.""",
                 chat_id=self.chat.id,
+                sender_type=TransmitWebsocketLogSenderType.VOIDFORGER,
                 fermion__is_fermion_supervised=fermion__is_fermion_supervised,
                 fermion__export_type=fermion__export_type,
                 fermion__endpoint=fermion__endpoint
@@ -2438,6 +2684,7 @@ class ToolCallManager:
             transmit_websocket_log(
                 f"""🧮 VoidForger is searching his auto-execution logs to find relevant information.""",
                 chat_id=self.chat.id,
+                sender_type=TransmitWebsocketLogSenderType.VOIDFORGER,
                 fermion__is_fermion_supervised=fermion__is_fermion_supervised,
                 fermion__export_type=fermion__export_type,
                 fermion__endpoint=fermion__endpoint
@@ -2451,6 +2698,7 @@ class ToolCallManager:
                 transmit_websocket_log(
                     f"""❌ VoidForger attempted to perform an execution of an invalid or unauthorized tool.""",
                     chat_id=self.chat.id,
+                    sender_type=TransmitWebsocketLogSenderType.VOIDFORGER,
                     fermion__is_fermion_supervised=fermion__is_fermion_supervised,
                     fermion__export_type=fermion__export_type,
                     fermion__endpoint=fermion__endpoint
@@ -2461,6 +2709,7 @@ class ToolCallManager:
             transmit_websocket_log(
                 f"""✅ VoidForger's request for auto-execution memory search has been approved by the system.""",
                 chat_id=self.chat.id,
+                sender_type=TransmitWebsocketLogSenderType.VOIDFORGER,
                 fermion__is_fermion_supervised=fermion__is_fermion_supervised,
                 fermion__export_type=fermion__export_type,
                 fermion__endpoint=fermion__endpoint
@@ -2477,6 +2726,7 @@ class ToolCallManager:
             transmit_websocket_log(
                 f"""🧮 System provided VoidForger with the auto-execution memory logs based on the query attempt.""",
                 chat_id=self.chat.id,
+                sender_type=TransmitWebsocketLogSenderType.VOIDFORGER,
                 fermion__is_fermion_supervised=fermion__is_fermion_supervised,
                 fermion__export_type=fermion__export_type,
                 fermion__endpoint=fermion__endpoint
@@ -2491,6 +2741,7 @@ class ToolCallManager:
             transmit_websocket_log(
                 f"""⛙ Organizing and reporting the outputs for delivering to VoidForger.""",
                 chat_id=self.chat.id,
+                sender_type=TransmitWebsocketLogSenderType.VOIDFORGER,
                 fermion__is_fermion_supervised=fermion__is_fermion_supervised,
                 fermion__export_type=fermion__export_type,
                 fermion__endpoint=fermion__endpoint
@@ -2519,6 +2770,7 @@ class ToolCallManager:
             transmit_websocket_log(
                 f"""🧮 VoidForger is using Semantor network to find worker Oracle assistants.""",
                 chat_id=self.chat.id,
+                sender_type=TransmitWebsocketLogSenderType.VOIDFORGER,
                 fermion__is_fermion_supervised=fermion__is_fermion_supervised,
                 fermion__export_type=fermion__export_type,
                 fermion__endpoint=fermion__endpoint
@@ -2532,6 +2784,7 @@ class ToolCallManager:
                 transmit_websocket_log(
                     f"""❌ VoidForger attempted to perform an execution of an invalid or unauthorized tool.""",
                     chat_id=self.chat.id,
+                    sender_type=TransmitWebsocketLogSenderType.VOIDFORGER,
                     fermion__is_fermion_supervised=fermion__is_fermion_supervised,
                     fermion__export_type=fermion__export_type,
                     fermion__endpoint=fermion__endpoint
@@ -2542,6 +2795,7 @@ class ToolCallManager:
             transmit_websocket_log(
                 f"""✅ VoidForger's request for Semantor Oracle assistant search has been approved by the system.""",
                 chat_id=self.chat.id,
+                sender_type=TransmitWebsocketLogSenderType.VOIDFORGER,
                 fermion__is_fermion_supervised=fermion__is_fermion_supervised,
                 fermion__export_type=fermion__export_type,
                 fermion__endpoint=fermion__endpoint
@@ -2558,6 +2812,7 @@ class ToolCallManager:
             transmit_websocket_log(
                 f"""🧮 System provided VoidForger with the Semantor network nodes based on the related Oracle search.""",
                 chat_id=self.chat.id,
+                sender_type=TransmitWebsocketLogSenderType.VOIDFORGER,
                 fermion__is_fermion_supervised=fermion__is_fermion_supervised,
                 fermion__export_type=fermion__export_type,
                 fermion__endpoint=fermion__endpoint
@@ -2574,6 +2829,7 @@ class ToolCallManager:
             transmit_websocket_log(
                 f"""⛙ Organizing and reporting the outputs for delivering to VoidForger.""",
                 chat_id=self.chat.id,
+                sender_type=TransmitWebsocketLogSenderType.VOIDFORGER,
                 fermion__is_fermion_supervised=fermion__is_fermion_supervised,
                 fermion__export_type=fermion__export_type,
                 fermion__endpoint=fermion__endpoint
@@ -2600,6 +2856,7 @@ class ToolCallManager:
             transmit_websocket_log(
                 f"""🧮 VoidForger is ordering an Oracle assistant to perform a task.""",
                 chat_id=self.chat.id,
+                sender_type=TransmitWebsocketLogSenderType.VOIDFORGER,
                 fermion__is_fermion_supervised=fermion__is_fermion_supervised,
                 fermion__export_type=fermion__export_type,
                 fermion__endpoint=fermion__endpoint
@@ -2613,6 +2870,7 @@ class ToolCallManager:
                 transmit_websocket_log(
                     f"""❌ VoidForger attempted to perform an execution of an invalid or unauthorized tool.""",
                     chat_id=self.chat.id,
+                    sender_type=TransmitWebsocketLogSenderType.VOIDFORGER,
                     fermion__is_fermion_supervised=fermion__is_fermion_supervised,
                     fermion__export_type=fermion__export_type,
                     fermion__endpoint=fermion__endpoint
@@ -2623,6 +2881,7 @@ class ToolCallManager:
             transmit_websocket_log(
                 f"""✅ VoidForger's request for ordering invocation of an Oracle assistant has been approved by the system.""",
                 chat_id=self.chat.id,
+                sender_type=TransmitWebsocketLogSenderType.VOIDFORGER,
                 fermion__is_fermion_supervised=fermion__is_fermion_supervised,
                 fermion__export_type=fermion__export_type,
                 fermion__endpoint=fermion__endpoint
@@ -2646,6 +2905,7 @@ class ToolCallManager:
             transmit_websocket_log(
                 f"""🧮 System delivered the order of VoidForger to Oracle assistant successfully through Semantor network.""",
                 chat_id=self.chat.id,
+                sender_type=TransmitWebsocketLogSenderType.VOIDFORGER,
                 fermion__is_fermion_supervised=fermion__is_fermion_supervised,
                 fermion__export_type=fermion__export_type,
                 fermion__endpoint=fermion__endpoint
@@ -2662,6 +2922,7 @@ class ToolCallManager:
             transmit_websocket_log(
                 f"""⛙ Organizing and reporting the outputs for delivering to VoidForger.""",
                 chat_id=self.chat.id,
+                sender_type=TransmitWebsocketLogSenderType.VOIDFORGER,
                 fermion__is_fermion_supervised=fermion__is_fermion_supervised,
                 fermion__export_type=fermion__export_type,
                 fermion__endpoint=fermion__endpoint
@@ -2691,6 +2952,7 @@ class ToolCallManager:
             transmit_websocket_log(
                 f"""❌ VoidForger attempted to perform an execution of an invalid or unauthorized tool.""",
                 chat_id=self.chat.id,
+                sender_type=TransmitWebsocketLogSenderType.VOIDFORGER,
                 fermion__is_fermion_supervised=fermion__is_fermion_supervised,
                 fermion__export_type=fermion__export_type,
                 fermion__endpoint=fermion__endpoint

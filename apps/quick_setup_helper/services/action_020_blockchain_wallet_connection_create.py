@@ -14,11 +14,20 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import logging
 
-from apps.quick_setup_helper.utils import generate_random_object_id_string
-from apps.smart_contracts.models import BlockchainWalletConnection
-from apps.smart_contracts.utils import BlockchainTypesNames
+from apps.quick_setup_helper.utils import (
+    generate_random_object_id_string
+)
+
+from apps.smart_contracts.models import (
+    BlockchainWalletConnection
+)
+
+from apps.smart_contracts.utils import (
+    BlockchainTypesNames
+)
 
 logger = logging.getLogger(__name__)
 
@@ -42,7 +51,9 @@ def action__020_blockchain_wallet_connection_create(
 
     except Exception as e:
         logger.error(f"Error on action__020_blockchain_wallet_connection_create: {e}")
+
         return False, None
 
     logger.info(f"New blockchain wallet connection created for user: {metadata__user.username}")
+
     return True, new_wallet_connection

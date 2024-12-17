@@ -18,7 +18,11 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.shortcuts import redirect
 from django.views import View
 
@@ -26,8 +30,13 @@ from apps.core.user_permissions.permission_manager import (
     UserPermissionManager
 )
 
-from apps.mm_scheduled_jobs.models import LeanModScheduledJob
-from apps.user_permissions.utils import PermissionNames
+from apps.mm_scheduled_jobs.models import (
+    LeanModScheduledJob
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
 
 logger = logging.getLogger(__name__)
 
@@ -52,6 +61,7 @@ class SettingsView_DeleteAllLeanModScheduledJobs(View, LoginRequiredMixin):
             )
 
             logger.error(f"Invalid confirmation field: {confirmation_field}")
+
             return redirect('user_settings:settings')
 
         ##############################
@@ -61,6 +71,7 @@ class SettingsView_DeleteAllLeanModScheduledJobs(View, LoginRequiredMixin):
             operation=PermissionNames.DELETE_LEANMOD_SCHEDULED_JOBS
         ):
             messages.error(self.request, "You do not have permission to delete LeanMod scheduled jobs.")
+
             return redirect('user_settings:settings')
         ##############################
 

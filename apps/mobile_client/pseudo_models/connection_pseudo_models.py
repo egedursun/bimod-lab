@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import uuid
 
 from django.utils import timezone
@@ -35,6 +36,7 @@ class MobileClientConnection__PseudoModel:
                 self.message_text: str = message_text
                 self.message_files: list = message_files
                 self.message_images: list = message_images
+
                 self.sent_at: str = timezone.now().strftime("%Y-%m-%d %H:%M:%S")
 
             @staticmethod
@@ -54,6 +56,7 @@ class MobileClientConnection__PseudoModel:
                 return [
                     MobileClientConnection__PseudoModel.
                     MobileClientConnection__Chat__PseudoModel.
+
                     MobileClientConnection__Chat__Message__PseudoModel.map_to_dict(
                         object_instance
                     ) for object_instance in object_instances
@@ -165,7 +168,9 @@ class MobileClientConnection__PseudoModel:
         self.connection_endpoint: str = connection_endpoint
         self.connection_is_public: bool = connection_is_public
         self.connection_api_key: str = connection_api_key
+
         self.created_at: str = timezone.now().strftime("%Y-%m-%d %H:%M:%S")
+
         self.chats: list[
             MobileClientConnection__PseudoModel
             .MobileClientConnection__Chat__PseudoModel
@@ -194,10 +199,21 @@ class MobileClientConnection__PseudoModel:
     @staticmethod
     def map_to_object(object_dict):
         return MobileClientConnection__PseudoModel(
-            connection_type=object_dict.get('connection_type'),
-            connection_endpoint=object_dict.get('connection_endpoint'),
-            connection_is_public=object_dict.get('connection_is_public'),
-            connection_api_key=object_dict.get('connection_api_key')
+            connection_type=object_dict.get(
+                'connection_type'
+            ),
+
+            connection_endpoint=object_dict.get(
+                'connection_endpoint'
+            ),
+
+            connection_is_public=object_dict.get(
+                'connection_is_public'
+            ),
+
+            connection_api_key=object_dict.get(
+                'connection_api_key'
+            )
         )
 
     @staticmethod
@@ -209,5 +225,8 @@ class MobileClientConnection__PseudoModel:
         ]
 
     def build__universal_instance(self):
-        dict_instance = MobileClientConnection__PseudoModel.map_to_dict(self)
+        dict_instance = MobileClientConnection__PseudoModel.map_to_dict(
+            self
+        )
+
         return dict_instance

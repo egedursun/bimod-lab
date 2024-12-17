@@ -15,24 +15,58 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-#
-
 from django.urls import path
 
-from apps.mm_scripts.views import CustomScriptView_Create, CustomScriptView_List, \
-    CustomScriptView_Connections, CustomScriptView_Delete, CustomScriptView_Store
+from apps.mm_scripts.views import (
+    CustomScriptView_Create,
+    CustomScriptView_List,
+    CustomScriptView_Connections,
+    CustomScriptView_Delete,
+    CustomScriptView_Store
+)
 
 app_name = "mm_scripts"
 
 urlpatterns = [
-    path("create/", CustomScriptView_Create.as_view(
-        template_name="mm_scripts/scripts/create_custom_script.html"), name="create"),
-    path("list/", CustomScriptView_List.as_view(
-        template_name="mm_scripts/scripts/list_custom_scripts.html"), name="list"),
-    path("delete/<int:pk>/", CustomScriptView_Delete.as_view(
-        template_name="mm_scripts/scripts/confirm_delete_custom_script.html"), name="delete"),
-    path("connect/", CustomScriptView_Connections.as_view(
-        template_name="mm_scripts/connections/manage_script_connections.html"), name="connect"),
-    path("store/", CustomScriptView_Store.as_view(
-        template_name="mm_scripts/store/script_store.html"), name="store"),
+    path(
+        "create/",
+        CustomScriptView_Create.as_view(
+            template_name="mm_scripts/scripts/create_custom_script.html"
+        ),
+        name="create"
+    ),
+
+    path(
+        "list/",
+        CustomScriptView_List.as_view(
+            template_name="mm_scripts/scripts/list_custom_scripts.html"
+        ),
+        name="list"
+    ),
+
+    path(
+        "delete/<int:pk>/",
+        CustomScriptView_Delete.as_view(
+            template_name="mm_scripts/scripts/confirm_delete_custom_script.html"
+        ),
+        name="delete"
+    ),
+
+    path(
+        "connect/",
+        CustomScriptView_Connections.as_view(
+            template_name="mm_scripts/connections/manage_script_connections.html"
+        ),
+        name="connect"
+    ),
+
+    #####
+
+    path(
+        "store/",
+        CustomScriptView_Store.as_view(
+            template_name="mm_scripts/store/script_store.html"
+        ),
+        name="store"
+    ),
 ]

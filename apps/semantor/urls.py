@@ -17,11 +17,18 @@
 
 from django.urls import path
 
-from apps.semantor.views import SemantorView_Configure
+from apps.semantor.views import (
+    SemantorView_Configure
+)
 
 app_name = 'semantor'
 
 urlpatterns = [
-    path("configuration/", SemantorView_Configure.as_view(
-        template_name="semantor/semantor_integration_main_page.html"), name="configuration"),
+    path(
+        "configuration/",
+        SemantorView_Configure.as_view(
+            template_name="semantor/semantor_integration_main_page.html"
+        ),
+        name="configuration"
+    ),
 ]

@@ -24,27 +24,86 @@ class Organization(models.Model):
     mission = models.TextField(null=True, blank=True)
     vision = models.TextField(null=True, blank=True)
     email = models.EmailField(null=True, blank=True)
-    phone = models.CharField(max_length=20, blank=True, null=True)
+
+    phone = models.CharField(
+        max_length=20,
+        blank=True,
+        null=True
+    )
+
     address = models.TextField(null=True, blank=True)
-    city = models.CharField(max_length=100, blank=True, null=True)
-    country = models.CharField(max_length=100, blank=True, null=True)
-    postal_code = models.CharField(max_length=100, blank=True, null=True)
-    industry = models.CharField(max_length=255, blank=True, null=True)
+
+    city = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True
+    )
+
+    country = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True
+    )
+
+    postal_code = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True
+    )
+
+    industry = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True
+    )
+
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    created_by_user = models.ForeignKey("auth.User", on_delete=models.CASCADE,
-                                        related_name="organization_created_by_users", blank=True, null=True)
-    last_updated_by_user = models.ForeignKey("auth.User", on_delete=models.CASCADE,
-                                             related_name="organization_last_updated_by_users", blank=True, null=True)
-    balance = models.DecimalField(max_digits=100, decimal_places=6, default=0.000000)
+
+    created_by_user = models.ForeignKey(
+        "auth.User",
+        on_delete=models.CASCADE,
+        related_name="organization_created_by_users",
+        blank=True,
+        null=True
+    )
+
+    last_updated_by_user = models.ForeignKey(
+        "auth.User",
+        on_delete=models.CASCADE,
+        related_name="organization_last_updated_by_users",
+        blank=True,
+        null=True
+    )
+
+    balance = models.DecimalField(
+        max_digits=100,
+        decimal_places=6,
+        default=0.000000
+    )
+
     organization_image_save_path = 'organization_images/%Y/%m/%d/'
-    organization_image = models.ImageField(upload_to=organization_image_save_path, blank=True, max_length=1000,
-                                           null=True)
-    users = models.ManyToManyField("auth.User", related_name="organizations")
-    auto_balance_topup = models.OneToOneField("llm_transaction.AutoBalanceTopUpModel",
-                                              on_delete=models.SET_NULL, blank=True, null=True,
-                                              related_name="organization_auto_balance_topup")
+
+    organization_image = models.ImageField(
+        upload_to=organization_image_save_path,
+        blank=True,
+        max_length=1000,
+        null=True
+    )
+
+    users = models.ManyToManyField(
+        "auth.User",
+        related_name="organizations"
+    )
+
+    auto_balance_topup = models.OneToOneField(
+        "llm_transaction.AutoBalanceTopUpModel",
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        related_name="organization_auto_balance_topup"
+    )
 
     def __str__(self):
         return self.name
@@ -52,16 +111,38 @@ class Organization(models.Model):
     class Meta:
         verbose_name = "Organization"
         verbose_name_plural = "Organizations"
+
         ordering = ["-created_at"]
+
         indexes = [
-            models.Index(fields=["name"]),
-            models.Index(fields=["email"]),
-            models.Index(fields=["phone"]),
-            models.Index(fields=["industry"]),
-            models.Index(fields=["is_active"]),
-            models.Index(fields=["created_at"]),
-            models.Index(fields=["updated_at"]),
-            models.Index(fields=["created_by_user"]),
-            models.Index(fields=["last_updated_by_user"]),
-            models.Index(fields=["balance"]),
+            models.Index(fields=[
+                "name"
+            ]),
+            models.Index(fields=[
+                "email"
+            ]),
+            models.Index(fields=[
+                "phone"
+            ]),
+            models.Index(fields=[
+                "industry"
+            ]),
+            models.Index(fields=[
+                "is_active"
+            ]),
+            models.Index(fields=[
+                "created_at"
+            ]),
+            models.Index(fields=[
+                "updated_at"
+            ]),
+            models.Index(fields=[
+                "created_by_user"
+            ]),
+            models.Index(fields=[
+                "last_updated_by_user"
+            ]),
+            models.Index(fields=[
+                "balance"
+            ]),
         ]

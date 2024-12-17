@@ -67,8 +67,17 @@ CUSTOM_API_ADMIN_LIST = [
     "created_at",
     "updated_at",
 ]
-CUSTOM_API_ADMIN_FILTER = ["categories", "created_at", "updated_at"]
-CUSTOM_API_ADMIN_SEARCH = ["name", "description", "categories", "created_by_user__username"]
+CUSTOM_API_ADMIN_FILTER = [
+    "categories",
+    "created_at",
+    "updated_at"
+]
+CUSTOM_API_ADMIN_SEARCH = [
+    "name",
+    "description",
+    "categories",
+    "created_by_user__username"
+]
 
 CUSTOM_API_REF_ADMIN_LIST = [
     "custom_api",
@@ -78,5 +87,14 @@ CUSTOM_API_REF_ADMIN_LIST = [
     "created_at",
     "updated_at",
 ]
-CUSTOM_API_REF_ADMIN_FILTER = ["api_source", "created_at", "updated_at"]
-CUSTOM_API_REF_ADMIN_SEARCH = ["custom_api__name", "assistant__name", "api_source", "created_by_user__username"]
+CUSTOM_API_REF_ADMIN_FILTER = [
+    "api_source",
+    "created_at",
+    "updated_at"
+]
+CUSTOM_API_REF_ADMIN_SEARCH = [
+    "custom_api__name",
+    "assistant__name",
+    "api_source",
+    "created_by_user__username"
+]

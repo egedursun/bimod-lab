@@ -77,21 +77,97 @@ class MetaTempoMemberLogIntervalsNames:
                 MetaTempoMemberLogIntervalsNames.EVERY_4_HOURS]
 
 
-META_TEMPO_CONNECTION_ADMIN_LIST = ['board', 'is_tracking_active', 'created_at', 'updated_at']
-META_TEMPO_CONNECTION_ADMIN_FILTER = ['board', 'is_tracking_active', 'created_at', 'updated_at']
-META_TEMPO_CONNECTION_ADMIN_SEARCH = ['board', 'is_tracking_active', 'created_at', 'updated_at']
-META_TEMPO_MEMBER_LOG_ADMIN_LIST = ['metatempo_connection', 'user', 'timestamp', 'work_intensity']
-META_TEMPO_MEMBER_LOG_ADMIN_FILTER = ['metatempo_connection', 'user', 'timestamp', 'work_intensity']
-META_TEMPO_MEMBER_LOG_ADMIN_SEARCH = ['metatempo_connection', 'user', 'timestamp', 'work_intensity']
-META_TEMPO_MEMBER_LOG_DAILY_ADMIN_LIST = ['metatempo_connection', 'user', 'datestamp', 'created_at']
-META_TEMPO_MEMBER_LOG_DAILY_ADMIN_FILTER = ['metatempo_connection', 'user', 'datestamp', 'created_at']
-META_TEMPO_MEMBER_LOG_DAILY_ADMIN_SEARCH = ['metatempo_connection', 'user', 'datestamp', 'created_at']
-META_TEMPO_PROJECT_OVERALL_LOG_ADMIN_LIST = ['metatempo_connection', 'overall_work_intensity', 'created_at']
-META_TEMPO_PROJECT_OVERALL_LOG_ADMIN_FILTER = ['metatempo_connection', 'overall_work_intensity', 'created_at']
-META_TEMPO_PROJECT_OVERALL_LOG_ADMIN_SEARCH = ['metatempo_connection', 'overall_work_intensity', 'created_at']
+META_TEMPO_CONNECTION_ADMIN_LIST = [
+    'board',
+    'is_tracking_active',
+    'created_at',
+    'updated_at'
+]
+META_TEMPO_CONNECTION_ADMIN_FILTER = [
+    'board',
+    'is_tracking_active',
+    'created_at',
+    'updated_at'
+]
+META_TEMPO_CONNECTION_ADMIN_SEARCH = [
+    'board', 'is_tracking_active',
+    'created_at',
+    'updated_at'
+]
 
+META_TEMPO_MEMBER_LOG_ADMIN_LIST = [
+    'metatempo_connection',
+    'user',
+    'timestamp',
+    'work_intensity'
+]
+META_TEMPO_MEMBER_LOG_ADMIN_FILTER = [
+    'metatempo_connection',
+    'user',
+    'timestamp',
+    'work_intensity'
+]
+META_TEMPO_MEMBER_LOG_ADMIN_SEARCH = [
+    'metatempo_connection',
+    'user',
+    'timestamp',
+    'work_intensity'
+]
+
+META_TEMPO_MEMBER_LOG_DAILY_ADMIN_LIST = [
+    'metatempo_connection',
+    'user',
+    'datestamp',
+    'created_at'
+]
+META_TEMPO_MEMBER_LOG_DAILY_ADMIN_FILTER = [
+    'metatempo_connection',
+    'user',
+    'datestamp',
+    'created_at'
+]
+META_TEMPO_MEMBER_LOG_DAILY_ADMIN_SEARCH = [
+    'metatempo_connection',
+    'user',
+    'datestamp',
+    'created_at'
+]
+
+META_TEMPO_PROJECT_OVERALL_LOG_ADMIN_LIST = [
+    'metatempo_connection',
+    'overall_work_intensity',
+    'created_at'
+]
+META_TEMPO_PROJECT_OVERALL_LOG_ADMIN_FILTER = [
+    'metatempo_connection',
+    'overall_work_intensity',
+    'created_at'
+]
+META_TEMPO_PROJECT_OVERALL_LOG_ADMIN_SEARCH = [
+    'metatempo_connection',
+    'overall_work_intensity',
+    'created_at'
+]
 
 META_TEMPO_CONNECTION_API_KEY_DEFAULT_LENGTH = 64
-METATEMPO_ASSISTANT_CONNECTION_ADMIN_LIST = ["id", "metatempo_instance", "assistant", "created_by_user", "created_at", "updated_at"]
-METATEMPO_ASSISTANT_CONNECTION_ADMIN_FILTER = ["metatempo_instance", "assistant", "created_by_user", "created_at", "updated_at"]
-METATEMPO_ASSISTANT_CONNECTION_ADMIN_SEARCH = ["metatempo_instance", "assistant", "created_by_user"]
+
+METATEMPO_ASSISTANT_CONNECTION_ADMIN_LIST = [
+    "id",
+    "metatempo_instance",
+    "assistant",
+    "created_by_user",
+    "created_at",
+    "updated_at"
+]
+METATEMPO_ASSISTANT_CONNECTION_ADMIN_FILTER = [
+    "metatempo_instance",
+    "assistant",
+    "created_by_user",
+    "created_at",
+    "updated_at"
+]
+METATEMPO_ASSISTANT_CONNECTION_ADMIN_SEARCH = [
+    "metatempo_instance",
+    "assistant",
+    "created_by_user"
+]

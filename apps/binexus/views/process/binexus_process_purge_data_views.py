@@ -18,7 +18,11 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
 from django.shortcuts import redirect
 from django.views import View
 
@@ -31,7 +35,9 @@ from apps.core.user_permissions.permission_manager import (
     UserPermissionManager
 )
 
-from apps.user_permissions.utils import PermissionNames
+from apps.user_permissions.utils import (
+    PermissionNames
+)
 
 logger = logging.getLogger(__name__)
 
@@ -50,6 +56,7 @@ class BinexusView_ProcessPurgeData(LoginRequiredMixin, View):
             operation=PermissionNames.DELETE_BINEXUS_PROCESSES
         ):
             messages.error(self.request, "You do not have permission to delete Binexus Processes.")
+
             return redirect('binexus:process_list')
         ##############################
 
@@ -85,9 +92,15 @@ class BinexusView_ProcessPurgeData(LoginRequiredMixin, View):
             logger.error(f"Error purging binexus process data: {e}")
             messages.error(request, f"Error purging binexus process data: {e}")
 
-            return redirect('binexus:process_detail', pk=process_id)
+            return redirect(
+                'binexus:process_detail',
+                pk=process_id
+            )
 
         messages.success(request, "Binexus process data purged successfully.")
         logger.info(f"Binexus process data purged successfully.")
 
-        return redirect('binexus:process_detail', pk=process_id)
+        return redirect(
+            'binexus:process_detail',
+            pk=process_id
+        )
