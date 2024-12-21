@@ -110,7 +110,7 @@ class SQLDatabaseView_ManagerCreate(TemplateView, LoginRequiredMixin):
             return redirect('datasource_sql:create')
 
         else:
-            logger.error("Error creating SQL Data Source.")
+            logger.error("Error creating SQL Data Source: ", form.errors)
             messages.error(request, "Error creating SQL Data Source.")
 
             context = self.get_context_data(**kwargs)

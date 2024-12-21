@@ -27,7 +27,6 @@ from apps.core.internal_cost_manager.costs_map import (
 )
 
 from apps.core.nosql.utils import (
-    before_execute_nosql_query,
     can_write_to_database
 )
 
@@ -70,7 +69,8 @@ logger = logging.getLogger(__name__)
 
 class CouchbaseNoSQLExecutor:
     def __init__(self, connection: NoSQLDatabaseConnection):
-        before_execute_nosql_query(connection)
+        # Currently, it's costly to run schema retrieval every time a query is executed.
+        # before_execute_nosql_query(connection)
 
         self.conn_params = {
             'bucket_name': connection.bucket_name,

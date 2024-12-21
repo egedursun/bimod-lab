@@ -18,10 +18,17 @@
 import logging
 
 from apps.core.nosql.nosql_executor import (
-    CouchbaseNoSQLExecutor
+    CouchbaseNoSQLExecutor,
+    ElasticSearchNoSQLExecutor,
+    MongoDBNoSQLExecutor,
+    Neo4JNoSQLExecutor,
+    RedisNoSQLExecutor,
+    WeaviateNoSQLExecutor
 )
 
-from apps.core.nosql.utils import NOSQL_DBMS_PROVIDERS
+from apps.core.nosql.utils import (
+    NOSQL_DBMS_PROVIDERS
+)
 
 from apps.datasource_nosql.models import (
     NoSQLDatabaseConnection
@@ -36,4 +43,41 @@ class InternalNoSQLClient:
         if connection.nosql_db_type == NOSQL_DBMS_PROVIDERS["COUCHBASE"]["code"]:
             logger.info(f"Creating Couchbase NoSQL client for connection: {connection.name}")
 
-            return CouchbaseNoSQLExecutor(connection)
+            return CouchbaseNoSQLExecutor(
+                connection=connection
+            )
+
+        elif connection.nosql_db_type == NOSQL_DBMS_PROVIDERS["ELASTICSEARCH"]["code"]:
+            logger.info(f"Creating ElasticSearch NoSQL client for connection: {connection.name}")
+
+            return ElasticSearchNoSQLExecutor(
+                connection=connection
+            )
+
+        elif connection.nosql_db_type == NOSQL_DBMS_PROVIDERS["MONGODB"]["code"]:
+            logger.info(f"Creating MongoDB NoSQL client for connection: {connection.name}")
+
+            return MongoDBNoSQLExecutor(
+                connection=connection
+            )
+
+        elif connection.nosql_db_type == NOSQL_DBMS_PROVIDERS["NEO4J"]["code"]:
+            logger.info(f"Creating Neo4J NoSQL client for connection: {connection.name}")
+
+            return Neo4JNoSQLExecutor(
+                connection=connection
+            )
+
+        elif connection.nosql_db_type == NOSQL_DBMS_PROVIDERS["REDIS"]["code"]:
+            logger.info(f"Creating Redis NoSQL client for connection: {connection.name}")
+
+            return RedisNoSQLExecutor(
+                connection=connection
+            )
+
+        elif connection.nosql_db_type == NOSQL_DBMS_PROVIDERS["WEAVIATE"]["code"]:
+            logger.info(f"Creating Weaviate NoSQL client for connection: {connection.name}")
+
+            return WeaviateNoSQLExecutor(
+                connection=connection
+            )

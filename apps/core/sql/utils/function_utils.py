@@ -43,6 +43,15 @@ def before_execute_sql_query(
     elif connection.dbms_type == DBMSChoicesNames.MYSQL:
         new_schema = connection.retrieve_mysql_schema()
 
+    elif connection.dbms_type == DBMSChoicesNames.MSSQL:
+        new_schema = connection.retrieve_mssql_schema()
+
+    elif connection.dbms_type == DBMSChoicesNames.ORACLE:
+        new_schema = connection.retrieve_oracle_schema()
+
+    elif connection.dbms_type == DBMSChoicesNames.MARIADB:
+        new_schema = connection.retrieve_mariadb_schema()
+
     if new_schema != old_schema_json:
         connection.schema_data_json = new_schema
 

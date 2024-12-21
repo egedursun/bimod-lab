@@ -228,7 +228,6 @@ class FileSystemsExecutor:
             raw_output = stdout.read().decode().strip()
             directories = raw_output.split("\n")
 
-            # Structure the directories into a dictionary for readability
             directory_dict = {
                 "directories": directories
             }
@@ -256,7 +255,9 @@ class FileSystemsExecutor:
             GPT_DEFAULT_ENCODING_ENGINE
         )
 
-        from apps.core.generative_ai.utils import ChatRoles
+        from apps.core.generative_ai.utils import (
+            ChatRoles
+        )
 
         client = self.connect_c()
 

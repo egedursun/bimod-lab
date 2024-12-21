@@ -40,6 +40,21 @@ def before_execute_nosql_query(
     if connection.nosql_db_type == NoSQLDatabaseChoicesNames.COUCHBASE:
         new_schema = connection.retrieve_couchbase_schema()
 
+    elif connection.nosql_db_type == NoSQLDatabaseChoicesNames.MONGODB:
+        new_schema = connection.retrieve_mongodb_schema()
+
+    elif connection.nosql_db_type == NoSQLDatabaseChoicesNames.REDIS:
+        new_schema = connection.retrieve_redis_schema()
+
+    elif connection.nosql_db_type == NoSQLDatabaseChoicesNames.ELASTICSEARCH:
+        new_schema = connection.retrieve_elasticsearch_schema()
+
+    elif connection.nosql_db_type == NoSQLDatabaseChoicesNames.NEO4J:
+        new_schema = connection.retrieve_neo4j_schema()
+
+    elif connection.nosql_db_type == NoSQLDatabaseChoicesNames.WEAVIATE:
+        new_schema = connection.retrieve_weaviate_schema()
+
     if new_schema != old_schema_json:
         connection.schema_data_json = new_schema
 

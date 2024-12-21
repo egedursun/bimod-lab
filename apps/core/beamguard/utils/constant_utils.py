@@ -36,6 +36,39 @@ POSTGRESQL_GUARDED_KEYWORDS = [
     "REVOKE",
 ]
 
+MSSQL_GUARDED_KEYWORDS = [
+    "UPDATE",
+    "ALTER",
+    "RENAME",
+    "DELETE",
+    "DROP",
+    "TRUNCATE",
+    "REVOKE",
+    "MERGE",
+]
+
+ORACLE_GUARDED_KEYWORDS = [
+    "UPDATE",
+    "ALTER",
+    "RENAME",
+    "DELETE",
+    "DROP",
+    "TRUNCATE",
+    "REVOKE",
+    "MERGE",
+    "FLASHBACK",
+]
+
+MARIADB_GUARDED_KEYWORDS = [
+    "UPDATE",
+    "ALTER",
+    "RENAME",
+    "DELETE",
+    "DROP",
+    "TRUNCATE",
+    "REVOKE",
+]
+
 N1QL_GUARDED_KEYWORDS = [
     "UPDATE",
     "MERGE",
@@ -45,6 +78,51 @@ N1QL_GUARDED_KEYWORDS = [
     "DELETE",
     "UNSET",
     "DROP",
+]
+
+MONGODB_GUARDED_KEYWORDS = [
+    # Every Update Operation is Guarded for MongoDB
+]
+
+REDIS_GUARDED_KEYWORDS = [
+    "SET",
+    "DEL",
+    "FLUSHDB",
+    "FLUSHALL",
+    "RENAMENX",
+    "HSET",
+    "HDEL",
+    "ZADD",
+    "ZREM",
+]
+
+ELASTICSEARCH_GUARDED_KEYWORDS = [
+    "POST",
+    "PUT",
+    "DELETE",
+    "UPDATE",
+    "REINDEX",
+    "DELETE_BY_QUERY",
+]
+
+NEO4J_GUARDED_KEYWORDS = [
+    "CREATE",
+    "DELETE",
+    "DETACH DELETE",
+    "MERGE",
+    "REMOVE",
+    "SET",
+    "DROP",
+    "LOAD CSV"
+]
+
+WEAVIATE_GRAPHQL_GUARDED_KEYWORDS = [
+    "mutation",
+    "create",
+    "update",
+    "delete",
+    "add",
+    "remove"
 ]
 
 UNIX_FILE_SYSTEM_GUARDED_KEYWORDS = [

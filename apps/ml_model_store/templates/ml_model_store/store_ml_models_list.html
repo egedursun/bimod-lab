@@ -41,8 +41,14 @@
         btn.addEventListener('click', function() {
           const modelId = this.getAttribute('data-model-id');
           const modelName = this.getAttribute('data-model-name');
+
           document.getElementById('modalModelName').textContent = modelName;
           document.getElementById('modelIdInput').value = modelId;
+
+          const form = document.querySelector('#integrationModal form');
+          form.setAttribute('action', `{% url 'ml_model_store:integrate' pk=0 %}`.replace('0', modelId));
+
+
           $('#integrationModal').modal('show');
         });
       });
@@ -85,13 +91,34 @@
 
     <hr>
 
-    <input type="search" id="modelSearch" placeholder="Search through models..."
-           class="form-control mb-4 border border-primary border-3 rounded" style="min-height: 60px;">
+    <img src="{% static 'img/machine_learning/ml-1.png' %}" class="rounded" style="width: 100%;"
+                 alt="Illustration for tips">
 
-    <ul class="nav nav-tabs mt-4" id="modelTabs">
+    <hr>
+
+    <label for="modelSearch" class="form-label">
+      <strong>
+        <i class="fa fa-search me-2"></i>
+        Search Models
+      </strong>
+    </label>
+    <input type="search" id="modelSearch" placeholder="Search for models by name or description..."
+           class="form-control mb-4 border border-primary-subtle border-3 rounded" style="min-height: 60px;">
+
+    <hr>
+
+    <h5 class="mb-0 mt-8">
+      <strong>
+        <i class="fa fa-boxes me-2">
+        </i>
+        Model Categories
+      </strong>
+    </h5>
+
+    <ul class="nav nav-tabs mt-4 border border-primary-subtle rounded border-3" id="modelTabs">
       {% for category, models in category_groups.items %}
-        <li class="nav-item">
-          <a class="nav-link {% if forloop.first %}active{% endif %}" data-bs-toggle="tab"
+        <li class="nav-item p-0 text-white rounded">
+          <a class="nav-link p-8 {% if forloop.first %}active{% endif %}" data-bs-toggle="tab"
              href="#{{ category|slugify }}" role="tab">
             <strong>{{ category }}</strong>
           </a>
@@ -106,14 +133,18 @@
           <div class="row">
             {% for model in models %}
               <div class="col-md-3 model-card">
-                <div class="card mt-3 border border-secondary-subtle rounded">
-                  <img src="{{ model.model_image_url }}" class="card-img-top p-4" alt="{{ model.name }}">
+                <div class="card mt-3 border border-2 border-primary-subtle rounded bg-body">
+                  <img src="{{ model.model_image.url }}" class="p-4" style="border-radius: 8%;"
+                       alt="{{ model.name }}">
                   <div class="card-body">
                     <h5 class="card-title">
                       <strong>{{ model.name }}</strong>
                     </h5>
-                    <p class="card-text">{{ model.description }}</p>
-                    <button type="button" class="btn btn-primary integrate-btn w-100" data-model-id="{{ model.id }}"
+                    <p class="card-text"
+                       style="max-height: 150px; min-height: 150px; overflow: auto;">{{ model.description }}</p>
+                    <hr>
+                    <button type="button" class="btn btn-instagram integrate-btn w-100 mt-4"
+                            data-model-id="{{ model.id }}"
                             data-model-name="{{ model.name }}">
                       <strong>
                         <i class="fa fa-plug me-2"></i>
@@ -123,7 +154,19 @@
                   </div>
                 </div>
               </div>
+            {% empty %}
+              <div class="col-md-12">
+                <div class="alert alert-warning border border-warning border-2 rounded p-4 mt-4" role="alert">
+                  <strong>No boilerplate machine learning models found with the specified features.</strong>
+                </div>
+              </div>
             {% endfor %}
+          </div>
+        </div>
+      {% empty %}
+        <div class="col-md-12">
+          <div class="alert alert-warning border border-warning border-2 rounded p-4 mt-4" role="alert">
+            <strong>No boilerplate machine learning models found with the specified features.</strong>
           </div>
         </div>
       {% endfor %}
@@ -141,7 +184,7 @@
           </h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <form action="{% url 'ml_model_store:integrate' %}" method="post">
+        <form action="{% url 'ml_model_store:integrate' pk=0 %}" method="post">
           {% csrf_token %}
           <div class="modal-body">
             <p>Select ML Model Storage Connection</p>

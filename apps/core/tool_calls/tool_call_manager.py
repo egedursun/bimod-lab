@@ -339,7 +339,8 @@ from apps.core.tool_calls.voidforger.input_verifiers import (
 from apps.multimodal_chat.models import MultimodalChat
 
 from apps.multimodal_chat.utils import (
-    transmit_websocket_log, TransmitWebsocketLogSenderType
+    transmit_websocket_log,
+    TransmitWebsocketLogSenderType
 )
 
 from apps.video_generations.models import (
@@ -1893,9 +1894,11 @@ class ToolCallManager:
                     assistant=self.assistant,
                     chat=self.chat
                 )
+
                 artifact = xc_beamguard.guard_nosql_modifications(
                     connection_id=c_id,
-                    raw_query=nosql_query
+                    raw_query=nosql_query,
+                    query_type=query_type
                 )
 
                 if artifact is not None:

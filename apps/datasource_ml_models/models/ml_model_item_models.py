@@ -53,6 +53,14 @@ class DataSourceMLModelItem(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    created_by_user = models.ForeignKey(
+        'auth.User',
+        on_delete=models.SET_NULL,
+        related_name='datasource_ml_model_items_created',
+        null=True,
+        blank=True
+    )
+
     def __str__(self):
         return (self.ml_model_name + ' - ' + slugify(self.full_file_path) + ' - ' +
                 self.created_at.strftime('%Y-%m-%d %H:%M:%S'))
@@ -117,7 +125,7 @@ class DataSourceMLModelItem(models.Model):
             update_fields
         )
 
-        upload_model_to_ml_model_base.delay(
+        upload_model_to_ml_model_base(
             file_bytes=self.file_bytes,
             full_path=self.full_file_path
         )

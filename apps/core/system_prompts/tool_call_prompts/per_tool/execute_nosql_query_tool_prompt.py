@@ -30,18 +30,28 @@ def build_tool_prompt__execute_nosql_query():
 
         - **THE FORMAT / LANGUAGE OF YOUR QUERIES:**
 
-            - [1] All NOSQL queries you are going to be running MUST be in "N1QL" format.
+            - [1] The NOSQL queries you are going to be running MUST depend in the database type you are interacting with:
+                For example:
+                1. For Couchbase: You must use "N1QL" format.
+                2. For MongoDB: You must use "JSON" format.
+                3. For Redis: You must use "Redis Command Sets" format.
+                4. For ElasticSearch: You must use "ElasticSearch Query" format (JSON if needed and/or adequate).
+                5. For Neo4J: You must use "Cypher Query Language" format.
+                6. For Weaviate: You must use "GraphQL" format (JSON if needed and/or adequate).
 
-            - [2] DO NOT use any other query language than "N1QL" for NoSQL queries.
+            - [2] DO NOT use incompatible query languages for the database you are interacting with. If you are not sure
+                about the query language you need to use, please check the database connection object shared with you in
+                your prompt.
 
             - [3] While running queries, you need to make sure you provide the following correctly:
                     - Schema
                     - Scope
-                    - Collection name
-                correctly. If you are not sure about the schema, scope, and collection name, please check the
-                schema of the database by using the Data Source NoSQL definitions in your prompt.
+                    - Collection Name
+                'depending on the NoSQL database you are interacting with' correctly. If you are not sure about the
+                schema, scope, and collection name, please check the schema of the database by using the Data Source
+                NoSQL definitions in your prompt.
 
-                Sample Correct Usage:
+                Sample Correct Usage (for CouchBase Database type):
 
                 '''
                 SELECT * FROM `bucket_name`.`scope_name`.`collection_name` WHERE condition
@@ -53,7 +63,12 @@ def build_tool_prompt__execute_nosql_query():
                 SELECT * FROM `collection_name` WHERE condition
                 '''
 
-            - [4] REMEMBER, this is not SQL, this is 'N1QL'. So, make sure you are using the correct syntax.
+            - [4] REMEMBER, CouchBase does not use SQL, it uses 'N1QL'. So, make sure you are using the correct syntax
+            when interacting with the CouchBase databases.
+
+            - [5] Similarly, MongoDB uses 'MongoDB Query Language (MQL)', Redis uses 'Redis Command Sets', ElasticSearch
+            uses 'ElasticSearch Query DSL', Neo4J uses 'Cypher Query Language', and Weaviate uses
+            'GraphQL'. Make sure you are using the correct syntax for the database you are interacting with.
 
         ---
 

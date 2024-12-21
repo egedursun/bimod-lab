@@ -44,7 +44,8 @@ from apps.datasource_nosql.models import (
 )
 
 from apps.datasource_nosql.utils import (
-    NOSQL_DATABASE_CHOICES
+    NOSQL_DATABASE_CHOICES,
+    NoSQLDatabaseChoicesNames
 )
 
 from apps.user_permissions.utils import (
@@ -113,6 +114,21 @@ class NoSQLDatabaseView_ManagerUpdate(TemplateView, LoginRequiredMixin):
         )
 
         if form.is_valid():
+
+            nosql_db_type = form.cleaned_data['nosql_db_type']
+
+            if nosql_db_type == NoSQLDatabaseChoicesNames.MONGODB:
+                bucket_name = form.cleaned_data['bucket_name']
+                bucket_name_elements = bucket_name.split('.')
+
+                if len(bucket_name_elements) < 2:
+                    messages.error(
+                        request,
+                        "For MongoDB connections, bucket name must be in the following format: 'bucket_name.collection_name'."
+                    )
+
+                    return redirect('datasource_nosql:update', pk=kwargs['pk'])
+
             form.save()
 
             logger.info(f"NoSQL Data Source updated: {conn}")

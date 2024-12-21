@@ -53,9 +53,9 @@ def resize_images_in_directory(directory, max_resolution):
 
 
 if __name__ == "__main__":
-    target_directory = "../src/assets/img"
-    width = 800
-    height = 800
+    target_directory = "../src/assets/img/aws_s3_config/course_thumbnail_images"
+    width = 500
+    height = 500
 
     resize_images_in_directory(
         target_directory,

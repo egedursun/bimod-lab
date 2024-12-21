@@ -28,12 +28,28 @@ class SQLOperationTypesNames:
 DBMS_CHOICES = [
     ('postgresql', 'PostgreSQL'),
     ('mysql', 'MySQL'),
+    ('mssql', 'Microsoft SQL Server'),
+    ('oracle', 'Oracle'),
+    ('mariaDB', 'MariaDB'),
 ]
 
 
 class DBMSChoicesNames:
     POSTGRESQL = 'postgresql'
     MYSQL = 'mysql'
+    MSSQL = 'mssql'
+    ORACLE = 'oracle'
+    MARIADB = 'mariaDB'
+
+    @staticmethod
+    def as_list():
+        return [
+            DBMSChoicesNames.POSTGRESQL,
+            DBMSChoicesNames.MYSQL,
+            DBMSChoicesNames.MSSQL,
+            DBMSChoicesNames.ORACLE,
+            DBMSChoicesNames.MARIADB,
+        ]
 
 
 POSTGRESQL_SCHEMA_RETRIEVAL_QUERY = f"""
@@ -54,6 +70,37 @@ WHERE table_schema NOT IN ('information_schema', 'mysql', 'performance_schema', 
 
 MYSQL_SCHEMA_RETRIEVAL_QUERY_SUPPLY = f"""
 SELECT column_name, data_type FROM information_schema.columns WHERE table_name = %s
+"""
+
+MSSQL_TABLES_QUERY = """
+SELECT TABLE_NAME
+FROM INFORMATION_SCHEMA.TABLES
+WHERE TABLE_TYPE = 'BASE TABLE';
+"""
+
+MSSQL_COLUMNS_QUERY = """
+SELECT COLUMN_NAME, DATA_TYPE
+FROM INFORMATION_SCHEMA.COLUMNS
+WHERE TABLE_NAME = %s;
+"""
+
+ORACLE_SCHEMA_RETRIEVAL_QUERY = """
+SELECT TABLE_NAME
+FROM USER_TABLES
+"""
+
+ORACLE_SCHEMA_RETRIEVAL_QUERY_SUPPLY = """
+SELECT COLUMN_NAME, DATA_TYPE
+FROM USER_TAB_COLUMNS
+WHERE UPPER(TABLE_NAME) = :table_name
+"""
+
+MARIADB_SCHEMA_RETRIEVAL_QUERY = """
+SHOW TABLES;
+"""
+
+MARIADB_SCHEMA_RETRIEVAL_QUERY_SUPPLY = """
+SHOW COLUMNS FROM `%s`;
 """
 
 SQL_DATABASE_ADMIN_LIST = (

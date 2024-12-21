@@ -20,6 +20,9 @@ import logging
 from apps.core.sql.sql_executor import (
     MySQLExecutor,
     PostgresSQLExecutor,
+    MSSQLExecutor,
+    OracleDBExecutor,
+    MariaDBExecutor,
 )
 
 from apps.datasource_sql.models import (
@@ -52,6 +55,21 @@ def run_query_search_sql_database_schema(
 
         elif connection.dbms_type == DBMSChoicesNames.POSTGRESQL:
             xc = PostgresSQLExecutor(
+                connection=connection
+            )
+
+        elif connection.dbms_type == DBMSChoicesNames.MSSQL:
+            xc = MSSQLExecutor(
+                connection=connection
+            )
+
+        elif connection.dbms_type == DBMSChoicesNames.ORACLE:
+            xc = OracleDBExecutor(
+                connection=connection
+            )
+
+        elif connection.dbms_type == DBMSChoicesNames.MARIADB:
+            xc = MariaDBExecutor(
                 connection=connection
             )
 

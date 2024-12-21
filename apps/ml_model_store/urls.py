@@ -33,7 +33,7 @@ urlpatterns = [
     ),
 
     path(
-        "integrate/",
+        "integrate/<int:pk>/",
         MLModelStoreView_IntegrateMLModel.as_view(
 
         ),

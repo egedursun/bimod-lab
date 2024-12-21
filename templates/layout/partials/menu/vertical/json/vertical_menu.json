@@ -1217,6 +1217,12 @@
       "icon": "menu-icon tf-icons ti ti-script",
       "slug": "script-store",
       "url": "mm_scripts:store"
+    },
+    {
+      "name": "ML Model Store",
+      "icon": "menu-icon tf-icons ti ti-box",
+      "slug": "ml-model-store",
+      "url": "ml_model_store:list"
     }
   ]
 }

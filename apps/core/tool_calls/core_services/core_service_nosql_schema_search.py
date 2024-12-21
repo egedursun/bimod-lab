@@ -18,7 +18,12 @@
 import logging
 
 from apps.core.nosql.nosql_executor import (
-    CouchbaseNoSQLExecutor
+    CouchbaseNoSQLExecutor,
+    MongoDBNoSQLExecutor,
+    RedisNoSQLExecutor,
+    ElasticSearchNoSQLExecutor,
+    Neo4JNoSQLExecutor,
+    WeaviateNoSQLExecutor
 )
 
 from apps.datasource_nosql.models import (
@@ -46,6 +51,31 @@ def run_query_search_nosql_database_schema(
 
         if connection.nosql_db_type == NoSQLDatabaseChoicesNames.COUCHBASE:
             xc = CouchbaseNoSQLExecutor(
+                connection=connection
+            )
+
+        elif connection.nosql_db_type == NoSQLDatabaseChoicesNames.MONGODB:
+            xc = MongoDBNoSQLExecutor(
+                connection=connection
+            )
+
+        elif connection.nosql_db_type == NoSQLDatabaseChoicesNames.REDIS:
+            xc = RedisNoSQLExecutor(
+                connection=connection
+            )
+
+        elif connection.nosql_db_type == NoSQLDatabaseChoicesNames.ELASTICSEARCH:
+            xc = ElasticSearchNoSQLExecutor(
+                connection=connection
+            )
+
+        elif connection.nosql_db_type == NoSQLDatabaseChoicesNames.NEO4J:
+            xc = Neo4JNoSQLExecutor(
+                connection=connection
+            )
+
+        elif connection.nosql_db_type == NoSQLDatabaseChoicesNames.WEAVIATE:
+            xc = WeaviateNoSQLExecutor(
                 connection=connection
             )
 

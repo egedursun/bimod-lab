@@ -16,3 +16,8 @@
 #
 
 from .couchbase_executor import *
+from .neo4j_executor import *
+from .redis_executor import *
+from .mongodb_executor import *
+from .elasticsearch_executor import *
+from .weaviate_executor import *

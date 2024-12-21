@@ -799,6 +799,12 @@
       "url": "/app/mm_scripts/store"
     },
     {
+      "name": "Machine Learning Model Store",
+      "icon": "menu-icon tf-icons ti ti-box",
+      "slug": "ml-model-store",
+      "url": "/app/ml_model_store/list"
+    },
+    {
       "name": "Create Scheduled Job",
       "icon": "menu-icon tf-icons ti ti-clock",
       "slug": "scheduled-jobs",

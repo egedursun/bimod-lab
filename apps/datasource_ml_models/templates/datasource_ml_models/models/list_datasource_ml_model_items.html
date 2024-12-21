@@ -212,6 +212,7 @@
                     <img src="
 
 
+
                       {% if organization_data.organization.organization_image %}{{ organization_data.organization.organization_image.url }}{% else %}{% static 'img/avatars/org-0.jpg' %}{% endif %}"
                          class="avatar avatar-lg me-4 rounded" width="60" alt="Avatar">
                     <h4 class="mb-0 mt-4">
@@ -244,6 +245,7 @@
                   <div class="card-header">
                     <div class="d-flex">
                       <img src="
+
 
                         {% if assistant_data.assistant.assistant_image %}{{ assistant_data.assistant.assistant_image.url }}{% else %}{% static 'img/avatars/org-0.jpg' %}{% endif %}"
                            class="avatar avatar-lg me-4 rounded" width="60" alt="Avatar">
@@ -295,8 +297,10 @@
                                     </td>
                                     <td>{{ item_data.id }}</td>
                                     <td><strong>{{ item_data.ml_model_name }}</strong></td>
-                                    <td class="w-50">
-                                      <strong>{{ item_data.description }}</strong>
+                                    <td class="d-flex" style="text-align: justify; max-height: 150px; min-height: 150px; overflow-y: auto;">
+                                      <strong>
+                                        {{ item_data.description }}
+                                      </strong>
                                     </td>
                                     <td>
                                       <strong

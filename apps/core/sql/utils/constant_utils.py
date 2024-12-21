@@ -24,6 +24,18 @@ SQL_DBMS_PROVIDERS = {
         "code": "mysql",
         "name": "MySQL"
     },
+    "MSSQL": {
+        "code": "mssql",
+        "name": "Microsoft SQL Server"
+    },
+    "ORACLE": {
+        "code": "oracle",
+        "name": "Oracle"
+    },
+    "MARIADB": {
+        "code": "mariaDB",
+        "name": "MariaDB"
+    },
 }
 
 

@@ -34,10 +34,11 @@ def build_formica_action__nosql_prompt(user_query: str) -> str:
 
         **YOUR GOAL:** The user has selected the NoSQL Command action. Carefully review the user’s query to understand
         the type of information they need. Based on the query, perform a search on the NoSQL database using the available
-        NoSQL database connections. You may execute read-only NoSQL queries (**ONLY N1QL IS SUPPORTED**) to retrieve
-        the requested information. Use the data found in the database to craft a response that aligns with the user’s
-        query and the form’s context. If the required information is available within your internal knowledge, you may
-        skip the database search, but ensure accuracy in all provided information.
+        NoSQL database connections. You may execute read-only NoSQL queries. However, your query format must fit the
+        database system you are interacting with. (e.g. for CouchBase N1QL, for Redis Command Sets, etc.) Use the data
+        found in the database to craft a response that aligns with the user’s query and the form’s context. If the
+        required information is available within your internal knowledge, you may skip the database search, but ensure
+        accuracy in all provided information.
 
         ---
 

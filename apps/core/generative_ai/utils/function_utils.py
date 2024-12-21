@@ -14,7 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-
+import json
 import logging
 import re
 import uuid
@@ -25,35 +25,46 @@ import apps.core
 logger = logging.getLogger(__name__)
 
 
-def find_tool_call_from_json(
-    response: str,
-    decoder=JSONDecoder()
-):
+def find_tool_call_from_json(response: str):
     logger.info("Finding tool call from JSON response.")
-    response = f"""{response}"""
+
     response = (
-        response.replace("\n", "")
-        .replace("'", '')
-        .replace('```json', '')
+        response.replace('```json', '')
         .replace('```', '')
         .replace('`', '')
     )
 
     json_objects = []
-    pos = 0
 
-    while True:
-        match = response.find('{', pos)
-        if match == -1:
-            break
+    try:
+        parsed_response = json.loads(response)
 
-        try:
-            result, index = decoder.raw_decode(response[match:])
-            json_objects.append(result)
-            pos = match + index
+        if isinstance(parsed_response, list):
+            for item in parsed_response:
 
-        except ValueError:
-            pos = match + 1
+                try:
+                    json_object = json.loads(
+                        item
+                    )
+
+                    json_objects.append(
+                        json_object
+                    )
+
+                except json.JSONDecodeError as e:
+                    logger.warning(f"Failed to decode an item: {e}")
+        else:
+            json_objects.append(
+                json.loads(
+                    response
+                )
+            )
+
+    except json.JSONDecodeError as e:
+        logger.warning(f"Failed to parse response as JSON: {e}")
+
+    except Exception as e:
+        logger.error(f"Unexpected error: {e}")
 
     return json_objects
 

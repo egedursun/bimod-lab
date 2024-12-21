@@ -17,7 +17,11 @@
 
 import logging
 import os
-from typing import List, Dict
+
+from typing import (
+    List,
+    Dict
+)
 
 import faiss
 import mysql

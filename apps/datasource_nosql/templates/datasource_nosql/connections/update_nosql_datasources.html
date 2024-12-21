@@ -127,11 +127,15 @@
                           name="description">{{ connection.description }}</textarea>
               </div>
               <div class="mb-6 col-3">
-                <label class="form-label me-4" for="host">Host</label>
+                <label class="form-label me-4" for="host">Host / Environment</label>
                 <input type="text" class="form-control" id="host" name="host" value="{{ connection.host }}" />
               </div>
               <div class="mb-6 col-3">
-                <label class="form-label" for="bucket_name">Bucket Name</label>
+                <label class="form-label" for="port">Port</label>
+                <input type="text" class="form-control" id="port" name="port" placeholder="Enter port (if applies)" value="{% if connection.port %}{{ connection.port }}{% endif %}" />
+              </div>
+              <div class="mb-6 col-3">
+                <label class="form-label" for="bucket_name">Database / Bucket / Collection Name</label>
                 <input type="text" class="form-control" id="bucket_name" name="bucket_name"
                        value="{{ connection.bucket_name }}" />
               </div>
@@ -141,7 +145,7 @@
                        value="{{ connection.username }}" />
               </div>
               <div class="mb-6 col-3">
-                <label class="form-label" for="password">Password</label>
+                <label class="form-label" for="password">Password / API Key</label>
                 <input type="password" class="form-control" id="password" name="password"
                        value="{{ connection.password }}" />
               </div>

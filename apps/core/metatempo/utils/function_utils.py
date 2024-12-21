@@ -14,7 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-
+import json
 import logging
 from json import JSONDecoder
 
@@ -72,30 +72,48 @@ def save_image_and_provide_full_uri(image_bytes):
     return full_uri
 
 
-def find_tool_call_from_json_single(
-    response: str,
-    decoder=JSONDecoder()
-):
-    logger.info(f"Searching for tool call in response.")
+def find_tool_call_from_json_single(response: str):
+    logger.info("Finding [SINGLE] tool call from JSON response.")
+
     response = (
-        response.replace("\n", "")
-        .replace("'", '')
-        .replace("`", "")
-        .replace('json', '')
+        response.replace('```json', '')
+        .replace('```', '')
+        .replace('`', '')
     )
 
-    pos = 0
+    json_objects = []
 
-    while True:
-        match = response.find('{', pos)
-        if match == -1:
-            break
+    try:
+        parsed_response = json.loads(response)
 
-        try:
-            result, index = decoder.raw_decode(response[match:])
-            return result
+        if isinstance(parsed_response, list):
+            for item in parsed_response:
 
-        except ValueError:
-            pos = match + 1
+                try:
+                    json_object = json.loads(
+                        item
+                    )
 
-    return None
+                    json_objects.append(
+                        json_object
+                    )
+
+                except json.JSONDecodeError as e:
+                    logger.warning(f"Failed to decode an item: {e}")
+        else:
+            json_objects.append(
+                json.loads(
+                    response
+                )
+            )
+
+    except json.JSONDecodeError as e:
+        logger.warning(f"Failed to parse response as JSON: {e}")
+
+    except Exception as e:
+        logger.error(f"Unexpected error: {e}")
+
+    if len(json_objects) > 0:
+        return json_objects[0]
+
+    return json_objects

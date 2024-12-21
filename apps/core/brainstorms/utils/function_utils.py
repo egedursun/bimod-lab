@@ -14,7 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
-
+import json
 import logging
 from json import JSONDecoder
 
@@ -654,30 +654,45 @@ def build_deepen_thought_over_idea_system_prompt(
     return prompt
 
 
-def find_json_presence(
-    response: str,
-    decoder=JSONDecoder()
-):
-    logger.info(f"Finding JSON presence in response: {response}")
+def find_json_presence(response: str):
+    logger.info("Finding tool call from JSON response.")
 
-    response = f"""{response}"""
-    response = response.replace("\n", "").replace("'", '')
+    response = (
+        response.replace('```json', '')
+        .replace('```', '')
+        .replace('`', '')
+    )
 
     json_objects = []
-    pos = 0
 
-    while True:
-        match = response.find('{', pos)
+    try:
+        parsed_response = json.loads(response)
 
-        if match == -1:
-            break
+        if isinstance(parsed_response, list):
+            for item in parsed_response:
 
-        try:
-            result, index = decoder.raw_decode(response[match:])
-            json_objects.append(result)
-            pos = match + index
+                try:
+                    json_object = json.loads(
+                        item
+                    )
 
-        except ValueError:
-            pos = match + 1
+                    json_objects.append(
+                        json_object
+                    )
+
+                except json.JSONDecodeError as e:
+                    logger.warning(f"Failed to decode an item: {e}")
+        else:
+            json_objects.append(
+                json.loads(
+                    response
+                )
+            )
+
+    except json.JSONDecodeError as e:
+        logger.warning(f"Failed to parse response as JSON: {e}")
+
+    except Exception as e:
+        logger.error(f"Unexpected error: {e}")
 
     return json_objects

@@ -20,4 +20,24 @@ NOSQL_DBMS_PROVIDERS = {
         "code": "couchbase",
         "name": "Couchbase"
     },
+    "NEO4J": {
+        "code": "neo4j",
+        "name": "Neo4j"
+    },
+    "REDIS": {
+        "code": "redis",
+        "name": "Redis"
+    },
+    "MONGODB": {
+        "code": "mongoDB",
+        "name": "MongoDB"
+    },
+    "ELASTICSEARCH": {
+        "code": "elasticSearch",
+        "name": "ElasticSearch"
+    },
+    "WEAVIATE": {
+        "code": "weaviate",
+        "name": "Weaviate"
+    }
 }

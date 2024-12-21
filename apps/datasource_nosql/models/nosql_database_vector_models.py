@@ -47,8 +47,7 @@ class NoSQLSchemaChunkVectorData(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.nosql_database.bucket_name + " - " + self.nosql_database.name + " - " + str(
-            self.nosql_database.host)
+        return  self.nosql_database.name + " - " + str(self.nosql_database.host)
 
     class Meta:
         verbose_name = "NoSQL Schema Chunk Vector Data"

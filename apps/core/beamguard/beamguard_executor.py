@@ -15,6 +15,7 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
+import json
 import logging
 
 from django.utils import timezone
@@ -28,17 +29,35 @@ from apps.beamguard.models import (
 from apps.core.beamguard.utils import (
     MYSQL_GUARDED_KEYWORDS,
     POSTGRESQL_GUARDED_KEYWORDS,
+    UNIX_FILE_SYSTEM_GUARDED_KEYWORDS,
+    MSSQL_GUARDED_KEYWORDS,
+    ORACLE_GUARDED_KEYWORDS,
+    MARIADB_GUARDED_KEYWORDS,
+
+    #####
+
     N1QL_GUARDED_KEYWORDS,
-    UNIX_FILE_SYSTEM_GUARDED_KEYWORDS
+    REDIS_GUARDED_KEYWORDS,
+    ELASTICSEARCH_GUARDED_KEYWORDS,
+    NEO4J_GUARDED_KEYWORDS,
+    WEAVIATE_GRAPHQL_GUARDED_KEYWORDS,
 )
 
 from apps.core.nosql.nosql_executor import (
-    CouchbaseNoSQLExecutor
+    CouchbaseNoSQLExecutor,
+    MongoDBNoSQLExecutor,
+    RedisNoSQLExecutor,
+    ElasticSearchNoSQLExecutor,
+    Neo4JNoSQLExecutor,
+    WeaviateNoSQLExecutor
 )
 
 from apps.core.sql.sql_executor import (
     MySQLExecutor,
-    PostgresSQLExecutor
+    PostgresSQLExecutor,
+    MSSQLExecutor,
+    OracleDBExecutor,
+    MariaDBExecutor
 )
 
 from apps.datasource_file_systems.utils import (
@@ -213,6 +232,204 @@ class BeamGuardExecutionManager:
 
             return None
 
+    def _guard_mssql_modifications(
+        self,
+        connection: SQLDatabaseConnection,
+        raw_query: str
+    ):
+        from apps.beamguard.utils import (
+            BeamGuardArtifactTypesNames,
+            BeamGuardConfirmationStatusesNames,
+        )
+
+        unauthorized_keyword_found = False
+        unauthorized_keywords_list = []
+
+        for keyword in MSSQL_GUARDED_KEYWORDS:
+            if keyword in raw_query.upper():
+                unauthorized_keyword_found = True
+                unauthorized_keywords_list.append(keyword)
+
+        if not unauthorized_keyword_found and not unauthorized_keywords_list:
+            return None
+
+        logger.warning(f"Unauthorized keyword found in MSSQL query: {raw_query}")
+
+        try:
+            artifact = BeamGuardArtifact.objects.create(
+                assistant=self.assistant,
+                chat=self.chat,
+                name="Unauthorized Keyword Found",
+                raw_query=raw_query,
+                metadata={
+                    "assistant": {
+                        "assistant_name": self.assistant.name,
+                        "assistant_description": self.assistant.description,
+                    },
+                    "data_source": {
+                        "data_source_type": "SQL",
+                        "dbms_type": connection.dbms_type,
+                        "name": connection.name,
+                        "description": connection.description,
+                        "host": connection.host,
+                        "port": connection.port,
+                        "database_name": connection.database_name,
+                    },
+                    "query": {
+                        "raw_query": raw_query,
+                        "problematic_keywords": unauthorized_keywords_list,
+                    }
+                },
+                confirmation_status=BeamGuardConfirmationStatusesNames.PENDING,
+                type=BeamGuardArtifactTypesNames.SQL,
+                sql_connection_object=connection,
+                # nosql_connection_object=None,
+                # file_system_connection_object=None
+            )
+
+            artifact.save()
+
+            logger.info(f"BeamGuard artifact created: {artifact}")
+
+            return artifact
+
+        except Exception as e:
+            logger.error(f"Failed to create BeamGuard artifact: {e}")
+
+            return None
+
+    def _guard_oracle_modifications(
+        self,
+        connection: SQLDatabaseConnection,
+        raw_query: str
+    ):
+        from apps.beamguard.utils import (
+            BeamGuardArtifactTypesNames,
+            BeamGuardConfirmationStatusesNames,
+        )
+
+        unauthorized_keyword_found = False
+        unauthorized_keywords_list = []
+
+        for keyword in ORACLE_GUARDED_KEYWORDS:
+            if keyword in raw_query.upper():
+                unauthorized_keyword_found = True
+                unauthorized_keywords_list.append(keyword)
+
+        if not unauthorized_keyword_found and not unauthorized_keywords_list:
+            return None
+
+        logger.warning(f"Unauthorized keyword found in Oracle query: {raw_query}")
+
+        try:
+            artifact = BeamGuardArtifact.objects.create(
+                assistant=self.assistant,
+                chat=self.chat,
+                name="Unauthorized Keyword Found",
+                raw_query=raw_query,
+                metadata={
+                    "assistant": {
+                        "assistant_name": self.assistant.name,
+                        "assistant_description": self.assistant.description,
+                    },
+                    "data_source": {
+                        "data_source_type": "SQL",
+                        "dbms_type": connection.dbms_type,
+                        "name": connection.name,
+                        "description": connection.description,
+                        "host": connection.host,
+                        "port": connection.port,
+                        "database_name": connection.database_name,
+                    },
+                    "query": {
+                        "raw_query": raw_query,
+                        "problematic_keywords": unauthorized_keywords_list,
+                    }
+                },
+                confirmation_status=BeamGuardConfirmationStatusesNames.PENDING,
+                type=BeamGuardArtifactTypesNames.SQL,
+                sql_connection_object=connection,
+                # nosql_connection_object=None,
+                # file_system_connection_object=None
+            )
+
+            artifact.save()
+
+            logger.info(f"BeamGuard artifact created: {artifact}")
+
+            return artifact
+
+        except Exception as e:
+            logger.error(f"Failed to create BeamGuard artifact: {e}")
+
+            return None
+
+    def _guard_mariadb_modifications(
+        self,
+        connection: SQLDatabaseConnection,
+        raw_query: str
+    ):
+        from apps.beamguard.utils import (
+            BeamGuardArtifactTypesNames,
+            BeamGuardConfirmationStatusesNames,
+        )
+
+        unauthorized_keyword_found = False
+        unauthorized_keywords_list = []
+
+        for keyword in MARIADB_GUARDED_KEYWORDS:
+            if keyword in raw_query.upper():
+                unauthorized_keyword_found = True
+                unauthorized_keywords_list.append(keyword)
+
+        if not unauthorized_keyword_found and not unauthorized_keywords_list:
+            return None
+
+        logger.warning(f"Unauthorized keyword found in MariaDB query: {raw_query}")
+
+        try:
+            artifact = BeamGuardArtifact.objects.create(
+                assistant=self.assistant,
+                chat=self.chat,
+                name="Unauthorized Keyword Found",
+                raw_query=raw_query,
+                metadata={
+                    "assistant": {
+                        "assistant_name": self.assistant.name,
+                        "assistant_description": self.assistant.description,
+                    },
+                    "data_source": {
+                        "data_source_type": "SQL",
+                        "dbms_type": connection.dbms_type,
+                        "name": connection.name,
+                        "description": connection.description,
+                        "host": connection.host,
+                        "port": connection.port,
+                        "database_name": connection.database_name,
+                    },
+                    "query": {
+                        "raw_query": raw_query,
+                        "problematic_keywords": unauthorized_keywords_list,
+                    }
+                },
+                confirmation_status=BeamGuardConfirmationStatusesNames.PENDING,
+                type=BeamGuardArtifactTypesNames.SQL,
+                sql_connection_object=connection,
+                # nosql_connection_object=None,
+                # file_system_connection_object=None
+            )
+
+            artifact.save()
+
+            logger.info(f"BeamGuard artifact created: {artifact}")
+
+            return artifact
+
+        except Exception as e:
+            logger.error(f"Failed to create BeamGuard artifact: {e}")
+
+            return None
+
     def guard_sql_modifications(
         self,
         connection_id: int,
@@ -232,6 +449,24 @@ class BeamGuardExecutionManager:
 
         elif db_type == DBMSChoicesNames.POSTGRESQL:
             artifact = self._guard_postgresql_modifications(
+                connection=connection,
+                raw_query=raw_query
+            )
+
+        elif db_type == DBMSChoicesNames.MSSQL:
+            artifact = self._guard_mssql_modifications(
+                connection=connection,
+                raw_query=raw_query
+            )
+
+        elif db_type == DBMSChoicesNames.ORACLE:
+            artifact = self._guard_oracle_modifications(
+                connection=connection,
+                raw_query=raw_query
+            )
+
+        elif db_type == DBMSChoicesNames.MARIADB:
+            artifact = self._guard_mariadb_modifications(
                 connection=connection,
                 raw_query=raw_query
             )
@@ -312,10 +547,342 @@ class BeamGuardExecutionManager:
 
             return None
 
+    def _guard_mongodb_modifications(
+        self,
+        connection: NoSQLDatabaseConnection,
+        raw_query: str,
+        query_type: str = None
+    ):
+        from apps.beamguard.utils import (
+            BeamGuardArtifactTypesNames,
+            BeamGuardConfirmationStatusesNames,
+        )
+
+        if query_type.lower() == "read":
+            return None
+
+        try:
+
+            artifact = BeamGuardArtifact.objects.create(
+                assistant=self.assistant,
+                chat=self.chat,
+                name="Unauthorized Keyword Found",
+                raw_query=raw_query,
+                metadata={
+                    "assistant": {
+                        "assistant_name": self.assistant.name,
+                        "assistant_description": self.assistant.description,
+                    },
+                    "data_source": {
+                        "data_source_type": "NoSQL",
+                        "nosql_db_type": connection.nosql_db_type,
+                        "name": connection.name,
+                        "description": connection.description,
+                        "host": connection.host,
+                        "bucket_name": connection.bucket_name,
+                    },
+                    "query": {
+                        "raw_query": raw_query,
+                        "problematic_keywords": "Update Query for MongoDB database collection.",
+                    }
+                },
+                confirmation_status=BeamGuardConfirmationStatusesNames.PENDING,
+                type=BeamGuardArtifactTypesNames.NOSQL,
+                # sql_connection_object=None,
+                nosql_connection_object=connection,
+                # file_system_connection_object=None
+            )
+            artifact.save()
+
+            logger.info(f"BeamGuard artifact created: {artifact}")
+
+            return artifact
+
+        except Exception as e:
+            logger.error(f"Failed to create BeamGuard artifact: {e}")
+
+            return None
+
+    def _guard_redis_modifications(
+        self,
+        connection: NoSQLDatabaseConnection,
+        raw_query: str
+    ):
+        from apps.beamguard.utils import (
+            BeamGuardArtifactTypesNames,
+            BeamGuardConfirmationStatusesNames,
+        )
+
+        unauthorized_keyword_found = False
+        unauthorized_keywords_list = []
+
+        for keyword in REDIS_GUARDED_KEYWORDS:
+            if keyword in raw_query.upper():
+                unauthorized_keyword_found = True
+                unauthorized_keywords_list.append(keyword)
+
+        if not unauthorized_keyword_found and not unauthorized_keywords_list:
+            return None
+
+        logger.warning(f"Unauthorized keyword found in Redis command: {raw_query}")
+
+        try:
+
+            artifact = BeamGuardArtifact.objects.create(
+                assistant=self.assistant,
+                chat=self.chat,
+                name="Unauthorized Keyword Found",
+                raw_query=raw_query,
+                metadata={
+                    "assistant": {
+                        "assistant_name": self.assistant.name,
+                        "assistant_description": self.assistant.description,
+                    },
+                    "data_source": {
+                        "data_source_type": "NoSQL",
+                        "nosql_db_type": connection.nosql_db_type,
+                        "name": connection.name,
+                        "description": connection.description,
+                        "host": connection.host,
+                        "bucket_name": connection.bucket_name,
+                    },
+                    "query": {
+                        "raw_query": raw_query,
+                        "problematic_keywords": unauthorized_keywords_list,
+                    }
+                },
+                confirmation_status=BeamGuardConfirmationStatusesNames.PENDING,
+                type=BeamGuardArtifactTypesNames.NOSQL,
+                nosql_connection_object=connection,
+            )
+
+            artifact.save()
+
+            logger.info(f"BeamGuard artifact created: {artifact}")
+
+            return artifact
+
+        except Exception as e:
+            logger.error(f"Failed to create BeamGuard artifact: {e}")
+
+            return None
+
+    def _guard_elasticsearch_modifications(
+        self,
+        connection: NoSQLDatabaseConnection,
+        raw_query: str
+    ):
+        from apps.beamguard.utils import (
+            BeamGuardArtifactTypesNames,
+            BeamGuardConfirmationStatusesNames,
+        )
+
+        unauthorized_keyword_found = False
+        unauthorized_keywords_list = []
+
+        for keyword in ELASTICSEARCH_GUARDED_KEYWORDS:
+
+            raw_query_string = json.dumps(raw_query)
+
+            if keyword in raw_query_string.upper():
+                unauthorized_keyword_found = True
+
+                unauthorized_keywords_list.append(
+                    keyword
+                )
+
+        if not unauthorized_keyword_found and not unauthorized_keywords_list:
+            return None
+
+        logger.warning(f"Unauthorized keyword found in Elasticsearch query: {raw_query}")
+
+        try:
+
+            artifact = BeamGuardArtifact.objects.create(
+                assistant=self.assistant,
+                chat=self.chat,
+                name="Unauthorized Keyword Found",
+                raw_query=raw_query,
+                metadata={
+                    "assistant": {
+                        "assistant_name": self.assistant.name,
+                        "assistant_description": self.assistant.description,
+                    },
+                    "data_source": {
+                        "data_source_type": "NoSQL",
+                        "nosql_db_type": connection.nosql_db_type,
+                        "name": connection.name,
+                        "description": connection.description,
+                        "host": connection.host,
+                        "bucket_name": connection.bucket_name,
+                    },
+                    "query": {
+                        "raw_query": raw_query,
+                        "problematic_keywords": unauthorized_keywords_list,
+                    }
+                },
+                confirmation_status=BeamGuardConfirmationStatusesNames.PENDING,
+                type=BeamGuardArtifactTypesNames.NOSQL,
+                nosql_connection_object=connection
+            )
+
+            artifact.save()
+
+            logger.info(f"BeamGuard artifact created: {artifact}")
+
+            return artifact
+
+        except Exception as e:
+            logger.error(f"Failed to create BeamGuard artifact: {e}")
+
+            return None
+
+    def _guard_neo4j_modifications(
+        self,
+        connection: NoSQLDatabaseConnection,
+        raw_query: str
+    ):
+        from apps.beamguard.utils import (
+            BeamGuardArtifactTypesNames,
+            BeamGuardConfirmationStatusesNames,
+        )
+
+        unauthorized_keyword_found = False
+        unauthorized_keywords_list = []
+
+        for keyword in NEO4J_GUARDED_KEYWORDS:
+
+            if keyword in raw_query.upper():
+                unauthorized_keyword_found = True
+
+                unauthorized_keywords_list.append(
+                    keyword
+                )
+
+        if (
+            not unauthorized_keyword_found and
+            not unauthorized_keywords_list
+        ):
+            return None
+
+        logger.warning(f"Unauthorized keyword found in Neo4j query: {raw_query}")
+
+        try:
+            artifact = BeamGuardArtifact.objects.create(
+                assistant=self.assistant,
+                chat=self.chat,
+                name="Unauthorized Keyword Found",
+                raw_query=raw_query,
+                metadata={
+                    "assistant": {
+                        "assistant_name": self.assistant.name,
+                        "assistant_description": self.assistant.description,
+                    },
+                    "data_source": {
+                        "data_source_type": "NoSQL",
+                        "nosql_db_type": connection.nosql_db_type,
+                        "name": connection.name,
+                        "description": connection.description,
+                        "host": connection.host,
+                        "port": connection.port,
+                        "database_name": connection.bucket_name,
+                    },
+                    "query": {
+                        "raw_query": raw_query,
+                        "problematic_keywords": unauthorized_keywords_list,
+                    }
+                },
+                confirmation_status=BeamGuardConfirmationStatusesNames.PENDING,
+                type=BeamGuardArtifactTypesNames.NOSQL,
+                nosql_connection_object=connection,
+            )
+
+            artifact.save()
+
+            logger.info(f"BeamGuard artifact created for Neo4j query: {artifact}")
+
+            return artifact
+
+        except Exception as e:
+            logger.error(f"Failed to create BeamGuard artifact for Neo4j: {e}")
+
+            return None
+
+    def _guard_weaviate_modifications(
+        self,
+        connection: NoSQLDatabaseConnection,
+        raw_query: str
+    ):
+        from apps.beamguard.utils import (
+            BeamGuardArtifactTypesNames,
+            BeamGuardConfirmationStatusesNames,
+        )
+
+        unauthorized_keyword_found = False
+        unauthorized_keywords_list = []
+
+        for keyword in WEAVIATE_GRAPHQL_GUARDED_KEYWORDS:
+
+            if keyword.lower() in raw_query.lower():
+                unauthorized_keyword_found = True
+
+                unauthorized_keywords_list.append(
+                    keyword
+                )
+
+        if (
+            not unauthorized_keyword_found and
+            not unauthorized_keywords_list
+        ):
+            return None
+
+        logger.warning(f"Unauthorized keyword found in Weaviate GraphQL query: {raw_query}")
+
+        try:
+            artifact = BeamGuardArtifact.objects.create(
+                assistant=self.assistant,
+                chat=self.chat,
+                name="Unauthorized Keyword Found",
+                raw_query=raw_query,
+                metadata={
+                    "assistant": {
+                        "assistant_name": self.assistant.name,
+                        "assistant_description": self.assistant.description,
+                    },
+                    "data_source": {
+                        "data_source_type": "NoSQL",
+                        "nosql_db_type": connection.nosql_db_type,
+                        "name": connection.name,
+                        "description": connection.description,
+                        "host": connection.host,
+                        "bucket_name": connection.bucket_name,
+                    },
+                    "query": {
+                        "raw_query": raw_query,
+                        "problematic_keywords": unauthorized_keywords_list,
+                    }
+                },
+                confirmation_status=BeamGuardConfirmationStatusesNames.PENDING,
+                type=BeamGuardArtifactTypesNames.NOSQL,
+                nosql_connection_object=connection,
+            )
+
+            artifact.save()
+
+            logger.info(f"BeamGuard artifact created for Weaviate query: {artifact}")
+
+            return artifact
+
+        except Exception as e:
+            logger.error(f"Failed to create BeamGuard artifact for Weaviate: {e}")
+
+            return None
+
     def guard_nosql_modifications(
         self,
         connection_id: int,
-        raw_query: str
+        raw_query: str,
+        query_type: str = None
     ):
         connection = NoSQLDatabaseConnection.objects.get(
             id=connection_id
@@ -326,6 +893,42 @@ class BeamGuardExecutionManager:
         if nosql_db_type == NoSQLDatabaseChoicesNames.COUCHBASE:
 
             artifact = self._guard_couchbase_modifications(
+                connection=connection,
+                raw_query=raw_query
+            )
+
+        elif nosql_db_type == NoSQLDatabaseChoicesNames.MONGODB:
+
+            artifact = self._guard_mongodb_modifications(
+                connection=connection,
+                raw_query=raw_query,
+                query_type=query_type
+            )
+
+        elif nosql_db_type == NoSQLDatabaseChoicesNames.REDIS:
+
+            artifact = self._guard_redis_modifications(
+                connection=connection,
+                raw_query=raw_query
+            )
+
+        elif nosql_db_type == NoSQLDatabaseChoicesNames.ELASTICSEARCH:
+
+            artifact = self._guard_elasticsearch_modifications(
+                connection=connection,
+                raw_query=raw_query
+            )
+
+        elif nosql_db_type == NoSQLDatabaseChoicesNames.NEO4J:
+
+            artifact = self._guard_neo4j_modifications(
+                connection=connection,
+                raw_query=raw_query
+            )
+
+        elif nosql_db_type == NoSQLDatabaseChoicesNames.WEAVIATE:
+
+            artifact = self._guard_weaviate_modifications(
                 connection=connection,
                 raw_query=raw_query
             )
@@ -345,7 +948,9 @@ class BeamGuardExecutionManager:
         connection,
         raw_query: str
     ):
-        from apps.datasource_file_systems.models import DataSourceFileSystem
+        from apps.datasource_file_systems.models import (
+            DataSourceFileSystem
+        )
 
         from apps.beamguard.utils import (
             BeamGuardArtifactTypesNames,
@@ -482,6 +1087,63 @@ class BeamGuardExecutionManager:
 
             return True
 
+        elif artifact.sql_connection_object.dbms_type == DBMSChoicesNames.MSSQL:
+
+            xc_mssql = MSSQLExecutor(
+                connection=artifact.sql_connection_object
+            )
+
+            output = xc_mssql.execute_write(
+                query=artifact.raw_query
+            )
+
+            if output.get("status", False) is False:
+                logger.error(f"Failed to execute MSSQL query: {artifact.raw_query}")
+
+                return False
+
+            logger.info(f"Successfully executed MSSQL query: {artifact.raw_query}")
+
+            return True
+
+        elif artifact.sql_connection_object.dbms_type == DBMSChoicesNames.ORACLE:
+
+            xc_oracle = OracleDBExecutor(
+                connection=artifact.sql_connection_object
+            )
+
+            output = xc_oracle.execute_write(
+                query=artifact.raw_query
+            )
+
+            if output.get("status", False) is False:
+                logger.error(f"Failed to execute Oracle query: {artifact.raw_query}")
+
+                return False
+
+            logger.info(f"Successfully executed Oracle query: {artifact.raw_query}")
+
+            return True
+
+        elif artifact.sql_connection_object.dbms_type == DBMSChoicesNames.MARIADB:
+
+            xc_mariadb = MariaDBExecutor(
+                connection=artifact.sql_connection_object
+            )
+
+            output = xc_mariadb.execute_write(
+                query=artifact.raw_query
+            )
+
+            if output.get("status", False) is False:
+                logger.error(f"Failed to execute MariaDB query: {artifact.raw_query}")
+
+                return False
+
+            logger.info(f"Successfully executed MariaDB query: {artifact.raw_query}")
+
+            return True
+
         else:
             logger.error(f"Unsupported DBMS type: {artifact.sql_connection_object.dbms_type}")
 
@@ -505,6 +1167,101 @@ class BeamGuardExecutionManager:
                 return False
 
             logger.info(f"Successfully executed Couchbase N1QL query: {artifact.raw_query}")
+
+            return True
+
+        elif artifact.nosql_connection_object.nosql_db_type == NoSQLDatabaseChoicesNames.MONGODB:
+
+            xc_mongodb = MongoDBNoSQLExecutor(
+                connection=artifact.nosql_connection_object
+            )
+
+            output = xc_mongodb.execute_write(
+                query=artifact.raw_query
+            )
+
+            if output.get("status", False) is False:
+                logger.error(f"Failed to execute MongoDB query: {artifact.raw_query}")
+
+                return False
+
+            logger.info(f"Successfully executed MongoDB query: {artifact.raw_query}")
+
+            return True
+
+        elif artifact.nosql_connection_object.nosql_db_type == NoSQLDatabaseChoicesNames.REDIS:
+
+            xc_redis = RedisNoSQLExecutor(
+                connection=artifact.nosql_connection_object
+            )
+
+            output = xc_redis.execute_write(
+                query=artifact.raw_query
+            )
+
+            if output.get("status", False) is False:
+                logger.error(f"Failed to execute Redis query: {artifact.raw_query}")
+
+                return False
+
+            logger.info(f"Successfully executed Redis query: {artifact.raw_query}")
+
+            return True
+
+        elif artifact.nosql_connection_object.nosql_db_type == NoSQLDatabaseChoicesNames.ELASTICSEARCH:
+
+            xc_elasticsearch = ElasticSearchNoSQLExecutor(
+                connection=artifact.nosql_connection_object
+            )
+
+            output = xc_elasticsearch.execute_write(
+                query=artifact.raw_query
+            )
+
+            if output.get("status", False) is False:
+                logger.error(f"Failed to execute ElasticSearch query: {artifact.raw_query}")
+
+                return False
+
+            logger.info(f"Successfully executed ElasticSearch query: {artifact.raw_query}")
+
+            return True
+
+        elif artifact.nosql_connection_object.nosql_db_type == NoSQLDatabaseChoicesNames.NEO4J:
+
+            xc_neo4j = Neo4JNoSQLExecutor(
+                connection=artifact.nosql_connection_object
+            )
+
+            output = xc_neo4j.execute_write(
+                query=artifact.raw_query
+            )
+
+            if output.get("status", False) is False:
+                logger.error(f"Failed to execute Neo4j query: {artifact.raw_query}")
+
+                return False
+
+            logger.info(f"Successfully executed Neo4j query: {artifact.raw_query}")
+
+            return True
+
+        elif artifact.nosql_connection_object.nosql_db_type == NoSQLDatabaseChoicesNames.WEAVIATE:
+
+            xc_weaviate = WeaviateNoSQLExecutor(
+                connection=artifact.nosql_connection_object
+            )
+
+            output = xc_weaviate.execute_write(
+                query=artifact.raw_query
+            )
+
+            if output.get("status", False) is False:
+                logger.error(f"Failed to execute Weaviate query: {artifact.raw_query}")
+
+                return False
+
+            logger.info(f"Successfully executed Weaviate query: {artifact.raw_query}")
 
             return True
 

@@ -31,6 +31,7 @@ class NoSQLDatabaseConnectionForm(forms.ModelForm):
             'name',
             'description',
             'host',
+            'port',
             'bucket_name',
             'username',
             'password',
@@ -47,3 +48,6 @@ class NoSQLDatabaseConnectionForm(forms.ModelForm):
         exclude = [
             'schema_data_json'
         ]
+
+        port = forms.CharField(required=False)
+        bucket_name = forms.CharField(required=False)

@@ -22,14 +22,23 @@ from django.db import models
 from apps.datasource_sql.utils import (
     DBMS_CHOICES,
     DBMSChoicesNames,
+
     POSTGRESQL_SCHEMA_RETRIEVAL_QUERY,
     POSTGRESQL_SCHEMA_RETRIEVAL_QUERY_SUPPLY,
     MYSQL_SCHEMA_RETRIEVAL_QUERY,
-    MYSQL_SCHEMA_RETRIEVAL_QUERY_SUPPLY
+    MYSQL_SCHEMA_RETRIEVAL_QUERY_SUPPLY,
+    ORACLE_SCHEMA_RETRIEVAL_QUERY,
+    ORACLE_SCHEMA_RETRIEVAL_QUERY_SUPPLY,
+    MARIADB_SCHEMA_RETRIEVAL_QUERY,
+    MARIADB_SCHEMA_RETRIEVAL_QUERY_SUPPLY,
+    MSSQL_TABLES_QUERY,
+    MSSQL_COLUMNS_QUERY
 )
 
 import psycopg2
 import mysql.connector
+import pytds
+import oracledb
 
 logger = logging.getLogger(__name__)
 
@@ -81,8 +90,6 @@ class SQLDatabaseConnection(models.Model):
         unique_together = [
             [
                 "assistant",
-                "host",
-                "port",
                 "database_name"
             ],
         ]
@@ -133,6 +140,15 @@ class SQLDatabaseConnection(models.Model):
 
         elif self.dbms_type == DBMSChoicesNames.MYSQL:
             schema = self.retrieve_mysql_schema()
+
+        elif self.dbms_type == DBMSChoicesNames.MSSQL:
+            schema = self.retrieve_mssql_schema()
+
+        elif self.dbms_type == DBMSChoicesNames.ORACLE:
+            schema = self.retrieve_oracle_schema()
+
+        elif self.dbms_type == DBMSChoicesNames.MARIADB:
+            schema = self.retrieve_mariadb_schema()
 
         return schema
 
@@ -225,6 +241,159 @@ class SQLDatabaseConnection(models.Model):
 
         except Exception as e:
             logger.error(f"Error occurred while retrieving the schema: {e}")
+
+            return {}
+
+        return schema
+
+    def retrieve_mssql_schema(self):
+        schema = {}
+
+        try:
+
+            with pytds.connect(
+                self.host,
+                user=self.username,
+                password=self.password,
+                database=self.database_name,
+                port=self.port
+            ) as conn:
+                cursor = conn.cursor()
+
+                cursor.execute(MSSQL_TABLES_QUERY)
+
+                tables = cursor.fetchall()
+
+                for table in tables:
+                    table_name = table[0]
+
+                    cursor.execute(
+                        MSSQL_COLUMNS_QUERY,
+                        (table_name,)
+                    )
+
+                    columns = cursor.fetchall()
+
+                    schema[table_name] = [
+                        {
+                            'name': col[0],
+                            'type': col[1]
+                        }
+                        for col in columns
+                    ]
+
+            logger.info(f"Schema retrieved: {schema}")
+
+        except Exception as e:
+            logger.error(f"Error occurred while retrieving the MSSQL schema: {e}")
+
+            return {}
+
+        return schema
+
+    def retrieve_oracle_schema(self):
+        schema = {}
+        try:
+            dsn = oracledb.makedsn(
+                self.host,
+                self.port,
+                service_name=self.database_name,
+            )
+
+            connection = oracledb.connect(
+                user=self.username,
+                password=self.password,
+                dsn=dsn,
+            )
+
+            cursor = connection.cursor()
+
+            cursor.execute(
+                ORACLE_SCHEMA_RETRIEVAL_QUERY,
+                {}
+            )
+
+            tables = cursor.fetchall()
+
+            for table in tables:
+                table_name = table[0]
+
+                cursor.execute(
+                    ORACLE_SCHEMA_RETRIEVAL_QUERY_SUPPLY,
+                    {
+                        'table_name': table_name,
+                    }
+                )
+
+                columns = cursor.fetchall()
+
+                schema[table_name] = [
+                    {
+                        'name': col[0],
+                        'type': col[1]
+                    } for col in columns
+                ]
+
+            cursor.close()
+            connection.close()
+
+            logger.info(f"Schema retrieved: {schema}")
+
+        except oracledb.DatabaseError as e:
+            logger.error(f"Error occurred while retrieving the Oracle schema: {e}")
+
+            return {}
+
+        return schema
+
+    def retrieve_mariadb_schema(self):
+        schema = {}
+
+        try:
+
+            connection = mysql.connector.connect(
+                user=self.username,
+                password=self.password,
+                host=self.host,
+                port=self.port,
+                database=self.database_name,
+                connection_timeout=10
+            )
+            cursor = connection.cursor()
+
+            cursor.execute(MARIADB_SCHEMA_RETRIEVAL_QUERY)
+
+            tables = cursor.fetchall()
+
+            for table in tables:
+
+                table_name = table[0]
+
+                try:
+
+                    cursor.execute(MARIADB_SCHEMA_RETRIEVAL_QUERY_SUPPLY % table_name)
+
+                    columns = cursor.fetchall()
+
+                    schema[table_name] = [
+                        {
+                            'name': col[0],
+                            'type': col[1]
+                        } for col in columns
+                    ]
+
+                except mysql.connector.Error as collation_error:
+
+                    logger.warning(f"Skipping table '{table_name}' due to collation issue: {collation_error}")
+                    continue
+
+            cursor.close()
+            connection.close()
+
+            logger.info(f"Schema retrieved: {schema}")
+
+        except mysql.connector.Error as e:
+            logger.error(f"Error occurred while retrieving the MariaDB schema: {e}")
 
             return {}
 

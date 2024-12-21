@@ -27,17 +27,51 @@ class NoSQLOperationTypesNames:
 
 NOSQL_DATABASE_CHOICES = [
     ('couchbase', 'Couchbase'),
+    ('mongoDB', 'MongoDB'),
+    ('redis', 'Redis'),
+    ('elasticSearch', 'ElasticSearch'),
+    ('neo4j', 'Neo4j'),
+    ('weaviate', 'Weaviate'),
 ]
 
 
 class NoSQLDatabaseChoicesNames:
     COUCHBASE = 'couchbase'
+    MONGODB = 'mongoDB'
+    REDIS = 'redis'
+    ELASTICSEARCH = 'elasticSearch'
+    NEO4J = 'neo4j'
+    WEAVIATE = 'weaviate'
 
     @staticmethod
     def as_list():
         return [
             NoSQLDatabaseChoicesNames.COUCHBASE,
+            NoSQLDatabaseChoicesNames.MONGODB,
+            NoSQLDatabaseChoicesNames.REDIS,
+            NoSQLDatabaseChoicesNames.ELASTICSEARCH,
+            NoSQLDatabaseChoicesNames.NEO4J,
+            NoSQLDatabaseChoicesNames.WEAVIATE,
         ]
+
+
+NEO4J_SESSION_NODE_LABELS_QUERY = "CALL db.labels()"
+
+NEO4J_PROPERTY_RETRIEVAL_QUERY = """
+    MATCH (n:`%s`)
+    UNWIND keys(n) AS prop
+    WITH prop, n[prop] AS value
+    RETURN prop, head(collect(value)) AS sample LIMIT 1
+"""
+
+NEO4J_SESSION_RELATIONSHIP_TYPES_QUERY = "CALL db.relationshipTypes()"
+
+NEO4J_RELATIONSHIP_RETRIEVAL_QUERY = """
+    MATCH ()-[r:`%s`]-()
+    UNWIND keys(r) AS prop
+    WITH prop, r[prop] AS value
+    RETURN prop, head(collect(value)) AS sample LIMIT 1
+"""
 
 
 NOSQL_DATABASE_ADMIN_LIST = (

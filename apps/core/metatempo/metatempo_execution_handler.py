@@ -419,16 +419,34 @@ class MetaTempoExecutionManager:
             return None, error
 
         try:
-            response_json = find_tool_call_from_json_single(response_json_string)
+            response_json = find_tool_call_from_json_single(
+                response=response_json_string
+            )
 
         except Exception as e:
             logger.error(f"Failed to parse response JSON of the AI response: " + str(e))
+
             return None, "Failed to parse response JSON of the AI response: " + str(e)
 
-        activity_summary = response_json.get("activity_summary", None)
-        activity_tags = response_json.get("activity_tags", None)
-        work_intensity = response_json.get("work_intensity", None)
-        application_usage_stats = response_json.get("application_usage_stats", None)
+        activity_summary = response_json.get(
+            "activity_summary",
+            None
+        )
+
+        activity_tags = response_json.get(
+            "activity_tags",
+            None
+        )
+
+        work_intensity = response_json.get(
+            "work_intensity",
+            None
+        )
+
+        application_usage_stats = response_json.get(
+            "application_usage_stats",
+            None
+        )
 
         try:
             log_entry = MetaTempoMemberLog.objects.create(

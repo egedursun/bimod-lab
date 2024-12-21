@@ -30,7 +30,6 @@ from config.settings import MEDIA_URL
 logger = logging.getLogger(__name__)
 
 
-@shared_task
 def upload_model_to_ml_model_base(
     file_bytes: bytes,
     full_path: str

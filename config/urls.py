@@ -538,6 +538,14 @@ urlpatterns = [
         )
     ),
 
+    path(
+        "app/ml_model_store/",
+        include(
+            "apps.ml_model_store.urls",
+            namespace="ml_model_store"
+        )
+    ),
+
     ############################################################
     # WORK IN PROGRESS
     ############################################################

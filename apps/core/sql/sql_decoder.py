@@ -19,7 +19,10 @@ import logging
 
 from apps.core.sql.sql_executor import (
     PostgresSQLExecutor,
-    MySQLExecutor
+    MySQLExecutor,
+    MSSQLExecutor,
+    MariaDBExecutor,
+    OracleDBExecutor,
 )
 
 from apps.core.sql.utils import (
@@ -50,5 +53,26 @@ class InternalSQLClient:
             logger.info(f"Creating MySQLExecutor for connection: {connection.name}")
 
             return MySQLExecutor(
+                connection
+            )
+
+        elif connection.dbms_type == SQL_DBMS_PROVIDERS["MSSQL"]["code"]:
+            logger.info(f"Creating MSSQLExecutor for connection: {connection.name}")
+
+            return MSSQLExecutor(
+                connection
+            )
+
+        elif connection.dbms_type == SQL_DBMS_PROVIDERS["MARIADB"]["code"]:
+            logger.info(f"Creating MariaDBExecutor for connection: {connection.name}")
+
+            return MariaDBExecutor(
+                connection
+            )
+
+        elif connection.dbms_type == SQL_DBMS_PROVIDERS["ORACLE"]["code"]:
+            logger.info(f"Creating OracleDBExecutor for connection: {connection.name}")
+
+            return OracleDBExecutor(
                 connection
             )
