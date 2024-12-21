@@ -45,7 +45,15 @@ echo "          [Deploy / Development] Virtual environment created!"
 echo "          [Deploy / Development] Installing requirements..."
 
 echo "Installing MariaDB development libraries..."
-sudo apt install libmariadb-dev
+sudo apt-get install -y libmariadb-dev
+
+# Check installation status
+if [ $? -eq 0 ]; then
+  echo "Installation completed successfully."
+else
+  echo "Installation failed."
+  exit 1
+fi
 
 # Install requirements
 pip install -r requirements.txt

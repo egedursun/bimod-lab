@@ -43,7 +43,15 @@ source venv/bin/activate
 echo "          [Deploy / Production] Virtual environment created!"
 
 echo "Installing MariaDB development libraries.."
-sudo apt install libmariadb-dev
+sudo apt-get install -y libmariadb-dev
+
+# Check installation status
+if [ $? -eq 0 ]; then
+  echo "Installation completed successfully."
+else
+  echo "Installation failed."
+  exit 1
+fi
 
 echo "          [Deploy / Production] Installing requirements..."
 
