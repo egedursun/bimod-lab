@@ -65,6 +65,9 @@ import solcx
 solcx.install_solc('0.8.0')
 EOF
 
+echo "Installing MariaDB development libraries..."
+sudo apt install libmariadb-dev
+
 echo "          [Deploy / Production] Solidity compiler version 0.8.0 installed."
 
 echo "          [Deploy / Production] SolCX Solidity Compiler installed!"
