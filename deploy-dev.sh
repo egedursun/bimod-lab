@@ -44,6 +44,9 @@ echo "          [Deploy / Development] Virtual environment created!"
 
 echo "          [Deploy / Development] Installing requirements..."
 
+echo "Installing MariaDB development libraries..."
+sudo apt install libmariadb-dev
+
 # Install requirements
 pip install -r requirements.txt
 
@@ -64,9 +67,6 @@ python3 << EOF
 import solcx
 solcx.install_solc('0.8.0')
 EOF
-
-echo "Installing MariaDB development libraries..."
-sudo apt install libmariadb-dev
 
 echo "          [Deploy / Development] Solidity compiler version 0.8.0 installed."
 

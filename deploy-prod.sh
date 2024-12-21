@@ -42,6 +42,9 @@ source venv/bin/activate
 
 echo "          [Deploy / Production] Virtual environment created!"
 
+echo "Installing MariaDB development libraries.."
+sudo apt install libmariadb-dev
+
 echo "          [Deploy / Production] Installing requirements..."
 
 # Install requirements
@@ -64,9 +67,6 @@ python3 << EOF
 import solcx
 solcx.install_solc('0.8.0')
 EOF
-
-echo "Installing MariaDB development libraries.."
-sudo apt install libmariadb-dev
 
 echo "          [Deploy / Production] Solidity compiler version 0.8.0 installed."
 
