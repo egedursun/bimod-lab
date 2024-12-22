@@ -37,6 +37,10 @@ from apps.ml_model_store.models import (
     MLModelIntegration
 )
 
+from apps.ml_model_store.utils import (
+    MODEL_CATEGORIES
+)
+
 from apps.organization.models import Organization
 
 from apps.user_permissions.utils import (
@@ -71,6 +75,12 @@ class MLModelStoreView_StoreMLModelsList(LoginRequiredMixin, TemplateView):
             ].append(
                 ml_integration
             )
+
+        complete_categories = MODEL_CATEGORIES
+
+        for complete_category, category_label in complete_categories:
+            if category_label not in category_groups:
+                category_groups[category_label] = []
 
         user_orgs = Organization.objects.filter(
             users__in=[self.request.user]

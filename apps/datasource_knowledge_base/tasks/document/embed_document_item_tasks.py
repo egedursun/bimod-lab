@@ -167,10 +167,9 @@ def handle_embedding_task(
 def load_and_index_document(
     items: List[KnowledgeBaseDocument]
 ) -> bool:
-
     if not items or len(items) == 0:
-        print("No items to index, exiting the process.")
         logger.error("No items to index, exiting the process.")
+
         return False
 
     for item in items:
@@ -184,7 +183,9 @@ def load_and_index_document(
             )
 
             if not extracted_document_content:
-                return False
+                logger.error(f"An error occurred while extracting document content for Document with ID {item.id}.")
+
+                continue
 
             extracted_document_content_str = json.dumps(
                 extracted_document_content,
@@ -234,6 +235,7 @@ def load_and_index_document(
                         print("Chunk ", i + 1, " has been indexed & embedded successfully.")
 
                     except Exception as e:
+
                         logger.error(f"An error occurred while embedding chunk {i + 1}/{len(chunks)}: {e}")
 
                         continue

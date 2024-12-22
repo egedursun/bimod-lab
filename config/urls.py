@@ -546,6 +546,14 @@ urlpatterns = [
         )
     ),
 
+    path(
+        "app/knowledge_base_store/",
+        include(
+            "apps.knowledge_base_store.urls",
+            namespace="knowledge_base_store"
+        )
+    ),
+
     ############################################################
     # WORK IN PROGRESS
     ############################################################

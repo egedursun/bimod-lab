@@ -1219,6 +1219,12 @@
       "url": "mm_scripts:store"
     },
     {
+      "name": "Knowledge Base Store",
+      "icon": "menu-icon tf-icons ti ti-book",
+      "slug": "knowledge-base-store",
+      "url": "knowledge_base_store:list"
+    },
+    {
       "name": "ML Model Store",
       "icon": "menu-icon tf-icons ti ti-box",
       "slug": "ml-model-store",

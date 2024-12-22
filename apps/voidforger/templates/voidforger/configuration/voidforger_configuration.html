@@ -173,9 +173,23 @@
 
 
                 <hr>
+
+                <h5>
+                  <strong>
+                    <i class="fa fa-cogs me-4"></i>
+                    Automated Runner Current Status
+                  </strong>
+                </h5>
+                <p>
+                  The current status of the <strong>VoidForger Automated Runner</strong> is displayed below. If the
+                  runner is paused, you can activate it. If it is active, you can pause it. If it is working, you cannot
+                  pause it until it finishes its current cycle. This is to protect the integrity of the system and
+                  your internal data. If you encounter any issues, please contact support team to resolve the issue.
+                </p>
+
                 {% if config.runtime_status == "paused" %}
-                  <h5 class="badge card p-12 text-dark mt-4 mb-4 w-100 border border-primary border-4 rounded">
-                            <span class="btn-danger p-4 rounded w-75">
+                  <h5 class="badge card p-12 text-dark mt-4 mb-4 w-100 border border-primary-subtle border-4 rounded">
+                            <span class="btn-danger p-4 py-8 rounded w-75">
                               <i class="fa fa-pause-circle me-2"></i>
                               <strong class="text-white">VOIDFORGER IS CURRENTLY PAUSED</strong>
                             </span>
@@ -191,8 +205,8 @@
                     </a>
                   {% endif %}
                 {% elif config.runtime_status == "active" %}
-                  <h5 class="badge card text-dark p-12 mt-4 mb-4 w-100 border border-primary border-4 rounded">
-                            <span class="btn-success p-4 rounded w-75">
+                  <h5 class="badge card text-dark p-12 mt-4 mb-4 w-100 border border-primary-subtle border-4 rounded">
+                            <span class="btn-success p-4 py-8 rounded w-75">
                               <i class="fa fa-play-circle me-2"></i>
                               <strong class="text-white">VOIDFORGER IS CURRENTLY ACTIVE</strong>
                             </span>
@@ -202,8 +216,8 @@
                     <i class="fa fa-pause-circle me-2"></i><strong>Pause</strong>
                   </a>
                 {% elif config.runtime_status == "working" %}
-                  <h5 class="badge card text-dark p-12 mt-4 mb-4 w-100 border border-primary border-4 rounded">
-                            <span class="btn-info p-4 rounded w-75">
+                  <h5 class="badge card text-dark p-12 mt-4 mb-4 w-100 border border-primary-subtle border-4 rounded">
+                            <span class="btn-info p-4 py-8 rounded w-75">
                               <i class="fa fa-cog fa-spin me-2"></i>
                               <strong class="text-white">VOIDFORGER IS CURRENTLY WORKING...</strong>
                             </span>
@@ -242,13 +256,13 @@
             </div>
             <div class="col-6">
               {% if config %}
-              <a href="{% url 'voidforger:manual_run' config.id %}" class="btn btn-warning w-100">
-                <i class="fa fa-bolt me-2"></i><strong>Manual Trigger</strong>
-              </a>
+                <a href="{% url 'voidforger:manual_run' config.id %}" class="btn btn-warning w-100">
+                  <i class="fa fa-bolt me-2"></i><strong>Manual Trigger</strong>
+                </a>
               {% else %}
-              <a href="#" class="btn btn-warning w-50 mt-4 disabled">
-                <i class="fa fa-bolt me-2"></i> Manual Trigger
-              </a>
+                <a href="#" class="btn btn-warning w-50 mt-4 disabled">
+                  <i class="fa fa-bolt me-2"></i> Manual Trigger
+                </a>
               {% endif %}
             </div>
           </div>

@@ -40484,7 +40484,7 @@
         "kind": 6,
         "importPath": "apps.core.brainstorms.brainstorms_executor",
         "description": "apps.core.brainstorms.brainstorms_executor",
-        "peekOfCode": "class BrainstormsExecutor:\n    from apps.brainstorms.models import BrainstormingSession\n    def __init__(self, session: BrainstormingSession):\n        self.session = session\n        self.client = OpenAI(api_key=self.session.llm_model.api_key)\n    def _generate_llm_response(self, system_prompt: str):\n        from apps.core.generative_ai.utils import ChatRoles\n        system_message = {\"role\": ChatRoles.SYSTEM.lower(), \"content\": system_prompt}\n        LLMTransaction.objects.create(\n            organization=self.session.organization, model=self.session.llm_model,",
+        "peekOfCode": "class BrainstormsExecutor:\n    from apps.brainstorms.models import BrainstormingSession\n    def __init__(self, session: BrainstormingSession):\n        self.session = session\n        self.client = OpenAI(api_key=self.session.llm_model.api_key)\n    def _generate_llm_response(self, system_prompt: str):\n        from apps.core.generative_ai.utils import ChatRoles\n        system_message = {\"role\": ChatRoles.DEVELOPER.lower(), \"content\": system_prompt}\n        LLMTransaction.objects.create(\n            organization=self.session.organization, model=self.session.llm_model,",
         "detail": "apps.core.brainstorms.brainstorms_executor",
         "documentation": {}
     },

@@ -432,6 +432,10 @@ def get_permissions_grouped():
             ('list_knowledge_base_docs', 'List Knowledge Base Docs'),
             ('delete_knowledge_base_docs', 'Delete Knowledge Base Docs'),
         ],
+        "Knowledge Base Integration Permissions": [
+            ('integrate_knowledge_base_files', 'Integrate Knowledge Base Files'),
+            ('list_knowledge_base_integrations', 'List Knowledge Base Integrations'),
+        ],
         "Code Base Permissions": [
             ('add_code_base', 'Add Code Base'),
             ('update_code_base', 'Update Code Base'),

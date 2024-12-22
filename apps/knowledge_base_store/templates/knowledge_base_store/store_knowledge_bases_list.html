@@ -1,0 +1,216 @@
+{% extends layout_path %}
+{% load custom_filters %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}BMD™ Autonomous Holdings - Knowledge Base Integrations{% endblock %}
+
+{% block vendor_css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+  {{ block.super }}
+  <script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block page_js %}
+  {{ block.super }}
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Initialize select2 components
+      $('.select').select2();
+
+      // Search functionality
+      document.getElementById('knowledgeBaseSearch').addEventListener('input', function() {
+        const searchValue = this.value.toLowerCase();
+        document.querySelectorAll('.knowledge-base-card').forEach(card => {
+          const title = card.querySelector('.card-title').textContent.toLowerCase();
+          const description = card.querySelector('.card-text').textContent.toLowerCase();
+          if (title.includes(searchValue) || description.includes(searchValue)) {
+            card.style.display = 'block';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+
+      // Modal trigger functionality
+      document.querySelectorAll('.integrate-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const knowledgeBaseId = this.getAttribute('data-knowledge-base-id');
+          const knowledgeBaseName = this.getAttribute('data-knowledge-base-name');
+
+          document.getElementById('modalKnowledgeBaseName').textContent = knowledgeBaseName;
+          document.getElementById('knowledgeBaseIdInput').value = knowledgeBaseId;
+
+          const form = document.querySelector('#integrationModal form');
+          form.setAttribute('action', `{% url 'knowledge_base_store:integrate' pk=0 %}`.replace('0', knowledgeBaseId));
+
+
+          $('#integrationModal').modal('show');
+        });
+      });
+    });
+  </script>
+{% endblock page_js %}
+
+{% block content %}
+  <div class="app-integration-knowledge_bases">
+    <h2><strong><i class="fa fa-plug me-4"></i>Knowlege Base Integrations</strong></h2>
+    <hr>
+
+    <div class="tips-section alert alert-secondary alert-dismissible d-flex col-lg-12 mt-4 align-items-center"
+         role="alert">
+      <img src="{% static 'img/custom-illustrations-v2/i2-87.png' %}" width="25%" style="border-radius:25px;"
+           class="justify-content-end me-8" alt="Illustration for tip">
+      <span class="alert-icon rounded">
+      <i class="ti ti-bookmark"></i>
+    </span>
+      <div class="d-flex flex-column ps-1">
+        <h5 class="alert-heading mb-2">Tip</h5>
+        <p class="mb-0">
+          You can integrate your Knowledge Bases with the Knowledge Base Store to make them available for use in your applications.
+          The Knowledge Base Store provides a centralized location to store, manage, and deploy Knowledge Bases, without the
+          need to manage the infrastructure.
+        </p>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    </div>
+
+    {% if messages %}
+      {% for message in messages %}
+        <div
+          class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% else %}alert-danger{% endif %}"
+          role="alert">
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endif %}
+
+    <hr>
+
+    <img src="{% static 'img/knowledge_base_store/kbs-1.png' %}" class="rounded" style="width: 100%;"
+                 alt="Illustration for tips">
+
+    <hr>
+
+    <label for="knowledgeBaseSearch" class="form-label">
+      <strong>
+        <i class="fa fa-search me-2"></i>
+        Search Knowledge Bases
+      </strong>
+    </label>
+    <input type="search" id="knowledgeBaseSearch" placeholder="Search for knowledge bases by name or description..."
+           class="form-control mb-4 border border-primary-subtle border-3 rounded" style="min-height: 60px;">
+
+    <hr>
+
+    <h5 class="mb-0 mt-8">
+      <strong>
+        <i class="fa fa-boxes me-2">
+        </i>
+        Knowledge Base Categories
+      </strong>
+    </h5>
+
+    <ul class="nav nav-tabs mt-4 border border-primary-subtle rounded border-3" id="knowledgeBaseTabs">
+      {% for category, knowledge_bases in category_groups.items %}
+        <li class="nav-item p-0 text-white rounded">
+          <a class="nav-link p-8 {% if forloop.first %}active{% endif %}" data-bs-toggle="tab"
+             href="#{{ category|slugify }}" role="tab">
+            <strong>{{ category }}</strong>
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+
+    <div class="tab-content card bg-card rounded mt-4 mb-4">
+      {% for category, knowledge_bases in category_groups.items %}
+        <div class="tab-pane fade {% if forloop.first %}show active{% endif %}" id="{{ category|slugify }}"
+             role="tabpanel">
+          <div class="row">
+            {% for knowledge_base in knowledge_bases %}
+              <div class="col-md-3 knowledge-base-card">
+                <div class="card mt-3 border border-2 border-primary-subtle rounded bg-body">
+                  <img src="{{ knowledge_base.knowledge_base_image.url }}" class="p-4" style="border-radius: 8%;"
+                       alt="{{ knowledge_base.name }}">
+                  <div class="card-body">
+                    <h5 class="card-title">
+                      <strong>{{ knowledge_base.name }}</strong>
+                    </h5>
+                    <p class="card-text"
+                       style="max-height: 150px; min-height: 150px; overflow: auto;">{{ knowledge_base.description }}</p>
+                    <hr>
+                    <button type="button" class="btn btn-instagram integrate-btn w-100 mt-4"
+                            data-knowledge-base-id="{{ knowledge_base.id }}"
+                            data-knowledge-base-name="{{ knowledge_base.name }}">
+                      <strong>
+                        <i class="fa fa-plug me-2"></i>
+                        Integrate
+                      </strong>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            {% empty %}
+              <div class="col-md-12">
+                <div class="alert alert-warning border border-warning border-2 rounded p-4 mt-4" role="alert">
+                  <strong>No boilerplate knowledge bases found with the specified features.</strong>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      {% empty %}
+        <div class="col-md-12">
+          <div class="alert alert-warning border border-warning border-2 rounded p-4 mt-4" role="alert">
+            <strong>No boilerplate knowledge bases found with the specified features.</strong>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Modal for Integration -->
+  <div class="modal fade" id="integrationModal" tabindex="-1" aria-labelledby="integrationModalLabel"
+       aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header btn-primary">
+          <h5 class="modal-title mb-4" id="integrationModalLabel">
+            <strong class="text-white">Integrate Knowledge Base: <span id="modalKnowledgeBaseName"></span></strong>
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form action="{% url 'knowledge_base_store:integrate' pk=0 %}" method="post">
+          {% csrf_token %}
+          <div class="modal-body">
+            <p>Select Knowledge Base Storage Connection</p>
+            <select name="connection_id" class="form-control select" required>
+              {% for connection in knowledge_base_store_connections %}
+                <option value="{{ connection.id }}">{{ connection.name }}</option>
+              {% endfor %}
+            </select>
+            <input type="hidden" id="knowledgeBaseIdInput" name="knowledge_base_id">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+              <strong>
+                <i class="fa fa-times me-2"></i>
+                Close
+              </strong>
+            </button>
+            <button type="submit" class="btn btn-primary">
+              <strong>
+                <i class="fa fa-plug me-2"></i>
+                Integrate Now
+              </strong>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}

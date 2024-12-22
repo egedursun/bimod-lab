@@ -15,7 +15,29 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
+from django.urls import path
+
+from apps.knowledge_base_store.views import (
+    KnowledgeBaseStoreView_StoreKnowledgeBaseList,
+    KnowledgeBaseStoreView_IntegrateKnowledgeBase
+)
 
 app_name = 'knowledge_base_store'
 
-urlpatterns = []
+urlpatterns = [
+    path(
+        'list/',
+        KnowledgeBaseStoreView_StoreKnowledgeBaseList.as_view(
+            template_name='knowledge_base_store/store_knowledge_bases_list.html'
+        ),
+        name='list'
+    ),
+
+    path(
+        "integrate/<int:pk>/",
+        KnowledgeBaseStoreView_IntegrateKnowledgeBase.as_view(
+
+        ),
+        name="integrate"
+    ),
+]

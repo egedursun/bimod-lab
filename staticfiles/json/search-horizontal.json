@@ -799,6 +799,12 @@
       "url": "/app/mm_scripts/store"
     },
     {
+      "name": "Knowledge Base Store",
+      "icon": "menu-icon tf-icons ti ti-book",
+      "slug": "knowledge-base-store",
+      "url": "/app/knowledge_base_store/list"
+    },
+    {
       "name": "Machine Learning Model Store",
       "icon": "menu-icon tf-icons ti ti-box",
       "slug": "ml-model-store",

@@ -297,6 +297,9 @@ class PermissionNames:
     INTEGRATE_ML_MODEL_FILES = 'integrate_ml_model_files'
     LIST_ML_MODEL_INTEGRATIONS = 'list_ml_model_integrations'
 
+    INTEGRATE_KNOWLEDGE_BASE_FILES = 'integrate_knowledge_base_files'
+    LIST_KNOWLEDGE_BASE_INTEGRATIONS = 'list_knowledge_base_integrations'
+
     ADD_CUSTOM_SQL_QUERIES = 'add_custom_sql_queries'
     UPDATE_CUSTOM_SQL_QUERIES = 'update_custom_sql_queries'
     LIST_CUSTOM_SQL_QUERIES = 'list_custom_sql_queries'
@@ -753,6 +756,9 @@ PERMISSION_TYPES = [
     ('integrate_ml_model_files', 'Integrate ML Model Files'),
     ('list_ml_model_integrations', 'List ML Model Integrations'),
 
+    ('integrate_knowledge_base_files', 'Integrate Knowledge Base Files'),
+    ('list_knowledge_base_integrations', 'List Knowledge Base Integrations'),
+
     ('add_custom_sql_queries', 'Add Custom SQL Queries'),
     ('update_custom_sql_queries', 'Update Custom SQL Queries'),
     ('list_custom_sql_queries', 'List Custom SQL Queries'),
@@ -1009,6 +1015,7 @@ class PredefinedRolePackages__Functional:
                 ('add_storage_files', 'Add Storage Files'),
                 ('add_ml_model_files', 'Add ML Model Files'),
                 ('integrate_ml_model_files', 'Integrate ML Model Files'),
+                ('integrate_knowledge_base_files', 'Integrate Knowledge Base Files'),
                 ('add_custom_sql_queries', 'Add Custom SQL Queries'),
                 ('add_export_leanmod', 'Add Export LeanMod'),
                 ('add_expert_networks', 'Add Expert Networks'),
@@ -1132,6 +1139,7 @@ class PredefinedRolePackages__Functional:
                 ('update_storage_files', 'Update Storage Files'),
                 ('update_ml_model_files', 'Update ML Model Files'),
                 ('integrate_ml_model_files', 'Integrate ML Model Files'),
+                ('integrate_knowledge_base_files', 'Integrate Knowledge Base Files'),
                 ('update_custom_sql_queries', 'Update Custom SQL Queries'),
                 ('update_export_leanmod', 'Update Export LeanMod'),
                 ('update_expert_networks', 'Update Expert Networks'),
@@ -1245,6 +1253,7 @@ class PredefinedRolePackages__Functional:
                 ('list_storage_files', 'List Storage Files'),
                 ('list_ml_model_files', 'List ML Model Files'),
                 ('list_ml_model_integrations', 'List ML Model Integrations'),
+                ('list_knowledge_base_integrations', 'List Knowledge Base Integrations'),
                 ('list_custom_sql_queries', 'List Custom SQL Queries'),
                 ('list_export_leanmod', 'List Export LeanMod'),
                 ('list_expert_networks', 'List Expert Networks'),
@@ -1732,6 +1741,8 @@ class PredefinedRolePackages__Contextual:
                 ('delete_ml_model_files', 'Delete ML Model Files'),
                 ('integrate_ml_model_files', 'Integrate ML Model Files'),
                 ('list_ml_model_integrations', 'List ML Model Integrations'),
+                ('integrate_knowledge_base_files', 'Integrate Knowledge Base Files'),
+                ('list_knowledge_base_integrations', 'List Knowledge Base Integrations'),
                 ('add_custom_sql_queries', 'Add Custom SQL Queries'),
                 ('update_custom_sql_queries', 'Update Custom SQL Queries'),
                 ('list_custom_sql_queries', 'List Custom SQL Queries'),

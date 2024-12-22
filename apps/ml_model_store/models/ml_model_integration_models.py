@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import os
 import uuid
 
@@ -100,6 +101,46 @@ class MLModelIntegration(models.Model):
             elif self.model_category == MLModelIntegrationCategoriesNames.MISCELLANEOUS:
 
                 img_file_name = "miscellaneous.png"
+
+            elif self.model_category == MLModelIntegrationCategoriesNames.TIME_SERIES_ANALYSIS:
+
+                img_file_name = "time-series-analysis.png"
+
+            elif self.model_category == MLModelIntegrationCategoriesNames.REINFORCEMENT_LEARNING:
+
+                img_file_name = "reinforcement-learning.png"
+
+            elif self.model_category == MLModelIntegrationCategoriesNames.AUDIO_PROCESSING:
+
+                img_file_name = "audio-processing.png"
+
+            elif self.model_category == MLModelIntegrationCategoriesNames.RECOMMENDATION_SYSTEMS:
+
+                img_file_name = "recommendation-systems.png"
+
+            elif self.model_category == MLModelIntegrationCategoriesNames.TABULAR_DATA_LEARNING:
+
+                img_file_name = "tabular-data-learning.png"
+
+            elif self.model_category == MLModelIntegrationCategoriesNames.THREE_D_DATA_PROCESSING:
+
+                img_file_name = "3d-data-processing.png"
+
+            elif self.model_category == MLModelIntegrationCategoriesNames.ROBOTICS_AND_CONTROL:
+
+                img_file_name = "robotics-and-control.png"
+
+            elif self.model_category == MLModelIntegrationCategoriesNames.MULTIMODAL_LEARNING:
+
+                img_file_name = "multimodal-learning.png"
+
+            elif self.model_category == MLModelIntegrationCategoriesNames.BIOMEDICAL_APPLICATIONS:
+
+                img_file_name = "biomedical-applications.png"
+
+            elif self.model_category == MLModelIntegrationCategoriesNames.ANOMALY_DETECTION:
+
+                img_file_name = "anomaly-detection.png"
 
             else:
 

@@ -21,7 +21,19 @@ MODEL_CATEGORIES = [
     ("generative_ai", "Generative AI"),
     ("graph_machine_learning", "Graph Machine Learning"),
     ("natural_language_processing", "Natural Language Processing"),
-    ("miscellaneous", "Miscellaneous")
+    ("time_series_analysis", "Time Series Analysis"),
+
+    ("reinforcement_learning", "Reinforcement Learning"),
+    ("audio_processing", "Audio Processing"),
+    ("recommendation_systems", "Recommendation Systems"),
+    ("tabular_data_learning", "Tabular Data Learning"),
+    ("3d_data_processing", "3D Data Processing"),
+
+    ("robotics_and_control", "Robotics and Control"),
+    ("multimodal_learning", "Multimodal Learning"),
+    ("biomedical_applications", "Biomedical Applications"),
+    ("anomaly_detection", "Anomaly Detection"),
+    ("miscellaneous", "Miscellaneous"),
 ]
 
 
@@ -30,6 +42,18 @@ class MLModelIntegrationCategoriesNames:
     GENERATIVE_AI = "generative_ai"
     GRAPH_MACHINE_LEARNING = "graph_machine_learning"
     NATURAL_LANGUAGE_PROCESSING = "natural_language_processing"
+    TIME_SERIES_ANALYSIS = "time_series_analysis"
+
+    REINFORCEMENT_LEARNING = "reinforcement_learning"
+    AUDIO_PROCESSING = "audio_processing"
+    RECOMMENDATION_SYSTEMS = "recommendation_systems"
+    TABULAR_DATA_LEARNING = "tabular_data_learning"
+    THREE_D_DATA_PROCESSING = "3d_data_processing"
+
+    ROBOTICS_AND_CONTROL = "robotics_and_control"
+    MULTIMODAL_LEARNING = "multimodal_learning"
+    BIOMEDICAL_APPLICATIONS = "biomedical_applications"
+    ANOMALY_DETECTION = "anomaly_detection"
     MISCELLANEOUS = "miscellaneous"
 
     @staticmethod
@@ -39,7 +63,19 @@ class MLModelIntegrationCategoriesNames:
             MLModelIntegrationCategoriesNames.GENERATIVE_AI,
             MLModelIntegrationCategoriesNames.GRAPH_MACHINE_LEARNING,
             MLModelIntegrationCategoriesNames.NATURAL_LANGUAGE_PROCESSING,
-            MLModelIntegrationCategoriesNames.MISCELLANEOUS
+            MLModelIntegrationCategoriesNames.TIME_SERIES_ANALYSIS,
+
+            MLModelIntegrationCategoriesNames.REINFORCEMENT_LEARNING,
+            MLModelIntegrationCategoriesNames.AUDIO_PROCESSING,
+            MLModelIntegrationCategoriesNames.RECOMMENDATION_SYSTEMS,
+            MLModelIntegrationCategoriesNames.TABULAR_DATA_LEARNING,
+            MLModelIntegrationCategoriesNames.THREE_D_DATA_PROCESSING,
+
+            MLModelIntegrationCategoriesNames.ROBOTICS_AND_CONTROL,
+            MLModelIntegrationCategoriesNames.MULTIMODAL_LEARNING,
+            MLModelIntegrationCategoriesNames.BIOMEDICAL_APPLICATIONS,
+            MLModelIntegrationCategoriesNames.ANOMALY_DETECTION,
+            MLModelIntegrationCategoriesNames.MISCELLANEOUS,
         ]
 
 
