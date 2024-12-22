@@ -101,7 +101,10 @@ def handle_ai_command(xc, command: str) -> str:
         pass
 
     try:
-        structured_system_prompt = {"content": system_prompt, "role": "system"}
+        structured_system_prompt = {
+            "content": system_prompt,
+            "role": ChatRoles.SYSTEM,
+        }
 
         llm_response = client.chat.completions.create(
             model=xc.copilot_llm.model_name,

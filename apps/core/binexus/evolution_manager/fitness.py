@@ -72,7 +72,7 @@ class FitnessEvaluationManager:
 
         structured_messages = [
             {
-                "role": "system",
+                "role": ChatRoles.SYSTEM,
                 "content": system_prompt
             }
         ]

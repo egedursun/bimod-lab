@@ -18,7 +18,6 @@
 import logging
 
 import boto3
-from celery import shared_task
 
 from apps.datasource_ml_models.utils import (
     ML_MODEL_ITEM_CATEGORIES

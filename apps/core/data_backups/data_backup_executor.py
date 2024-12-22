@@ -27,8 +27,8 @@ from apps.mm_apis.models import CustomAPI
 from apps.mm_functions.models import CustomFunction
 from apps.mm_scripts.models import CustomScript
 
-
 logger = logging.getLogger(__name__)
+
 
 class DataBackupExecutor:
     class BackupLLMModel:
@@ -117,7 +117,8 @@ class DataBackupExecutor:
                 logger.info(f"[DataBackupExecutor.BackupNERInstance.backup_ner_instances] Backed up NER instances.")
 
             except Exception as e:
-                logger.error(f"[DataBackupExecutor.BackupNERInstance.backup_ner_instances] Error backing up NER instances: {e}")
+                logger.error(
+                    f"[DataBackupExecutor.BackupNERInstance.backup_ner_instances] Error backing up NER instances: {e}")
 
                 return "An error occurred while backing up the data."
 
@@ -170,7 +171,8 @@ class DataBackupExecutor:
                 logger.info(f"[DataBackupExecutor.BackupAssistant.backup_assistants] Backed up assistants.")
 
             except Exception as e:
-                logger.error(f"[DataBackupExecutor.BackupAssistant.backup_assistants] Error backing up assistants: {e}")
+                logger.error(
+                    f"[DataBackupExecutor.BackupAssistant.backup_assistants] Error backing up assistants: {e}")
 
                 return "An error occurred while backing up the data."
 
@@ -216,10 +218,12 @@ class DataBackupExecutor:
                     encryption_password=password
                 )
 
-                logger.info(f"[DataBackupExecutor.BackupCustomFunction.backup_custom_functions] Backed up custom functions.")
+                logger.info(
+                    f"[DataBackupExecutor.BackupCustomFunction.backup_custom_functions] Backed up custom functions.")
 
             except Exception as e:
-                logger.error(f"[DataBackupExecutor.BackupCustomFunction.backup_custom_functions] Error backing up custom functions: {e}")
+                logger.error(
+                    f"[DataBackupExecutor.BackupCustomFunction.backup_custom_functions] Error backing up custom functions: {e}")
 
                 return "An error occurred while backing up the data."
 
@@ -268,7 +272,8 @@ class DataBackupExecutor:
                 logger.info(f"[DataBackupExecutor.BackupCustomAPI.backup_custom_apis] Backed up custom APIs.")
 
             except Exception as e:
-                logger.error(f"[DataBackupExecutor.BackupCustomAPI.backup_custom_apis] Error backing up custom APIs: {e}")
+                logger.error(
+                    f"[DataBackupExecutor.BackupCustomAPI.backup_custom_apis] Error backing up custom APIs: {e}")
 
                 return "An error occurred while backing up the data."
 
@@ -317,7 +322,8 @@ class DataBackupExecutor:
                 logger.info(f"[DataBackupExecutor.BackupCustomScript.backup_custom_scripts] Backed up custom scripts.")
 
             except Exception as e:
-                logger.error(f"[DataBackupExecutor.BackupCustomScript.backup_custom_scripts] Error backing up custom scripts: {e}")
+                logger.error(
+                    f"[DataBackupExecutor.BackupCustomScript.backup_custom_scripts] Error backing up custom scripts: {e}")
 
                 return "An error occurred while backing up the data."
 

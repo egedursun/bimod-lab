@@ -21,7 +21,8 @@ from django.utils import timezone
 
 from apps.core.generative_ai.utils import (
     GPT_DEFAULT_ENCODING_ENGINE,
-    ChatRoles
+    ChatRoles,
+    find_tool_call_from_json,
 )
 
 from apps.core.internal_cost_manager.costs_map import (
@@ -41,7 +42,6 @@ from apps.core.metakanban.tools.metakanban_command_query_verifier import (
 )
 
 from apps.core.metakanban.utils import (
-    find_tool_call_from_json,
     METAKANBAN_TOOL_COMMAND_MAXIMUM_ATTEMPTS
 )
 
@@ -105,11 +105,11 @@ class MetaKanbanExecutionManager:
         context_messages = [
             {
                 "content": system_prompt,
-                "role": "system"
+                "role": ChatRoles.SYSTEM,
             },
             {
                 "content": query,
-                "role": "user"
+                "role": ChatRoles.USER,
             }
         ]
 
@@ -230,7 +230,7 @@ class MetaKanbanExecutionManager:
 
                 -----
             """,
-                    "role": "system"
+                    "role": ChatRoles.SYSTEM,
                 }
             )
 
@@ -283,7 +283,7 @@ class MetaKanbanExecutionManager:
         context_messages.append(
             {
                 "content": choice_message_content,
-                "role": "assistant"
+                "role": ChatRoles.ASSISTANT,
             }
         )
 
@@ -323,7 +323,7 @@ class MetaKanbanExecutionManager:
                     context_messages.append(
                         {
                             "content": output_tool_call,
-                            "role": "system"
+                            "role": ChatRoles.SYSTEM,
                         }
                     )
 

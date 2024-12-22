@@ -20,6 +20,10 @@ import logging
 
 from django.contrib.auth.models import User
 
+from apps.core.generative_ai.utils import (
+    ChatRoles
+)
+
 from apps.core.system_prompts.agent_configuration.agent_related_project_items_prompt_manager import (
     build_agent_related_project_items_prompt
 )
@@ -1128,7 +1132,7 @@ class SystemPromptFactoryBuilder:
         merged_prompt += do_smart_contract_gen
 
         prompt = {
-            "role": "system",
+            "role": ChatRoles.SYSTEM,
             "content": merged_prompt
         }
 
@@ -1337,7 +1341,7 @@ class SystemPromptFactoryBuilder:
         merged_prompt += do_smart_contract_gen
 
         prompt = {
-            "role": "system",
+            "role": ChatRoles.SYSTEM,
             "content": merged_prompt
         }
 

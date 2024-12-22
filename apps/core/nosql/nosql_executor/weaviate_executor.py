@@ -21,10 +21,8 @@ import os
 from typing import (
     List,
     Dict,
-    Any
 )
 
-import redis
 import faiss
 import numpy as np
 import requests

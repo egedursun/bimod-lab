@@ -20,8 +20,10 @@ import logging
 
 from apps.core.generative_ai.utils import (
     GPT_DEFAULT_ENCODING_ENGINE,
-    ChatRoles
+    ChatRoles,
+    find_tool_call_from_json,
 )
+
 from apps.core.hadron_prime.parsers import (
     make_request_from_curl
 )
@@ -35,7 +37,6 @@ from apps.core.hadron_prime.prompts import (
 )
 
 from apps.core.hadron_prime.utils import (
-    find_tool_call_from_json,
     HADRON_PRIME_TOOL_CALL_MAXIMUM_ATTEMPTS
 )
 
@@ -93,7 +94,7 @@ def consult_ai(
     )
 
     structured_system_prompt = {
-        "role": "system",
+        "role": ChatRoles.SYSTEM,
         "content": str(system_prompt)
     }
 
@@ -218,7 +219,7 @@ def consult_ai(
                 context_messages.append(
                     {
                         "content": str(output_tool_call),
-                        "role": "system"
+                        "role": ChatRoles.SYSTEM,
                     }
                 )
 
@@ -296,7 +297,7 @@ def consult_ai(
 
                     - DO NOT PASS "A FEW SENTENCES AT MOST".
             """,
-            "role": "assistant"
+            "role": ChatRoles.ASSISTANT,
         }
     )
 

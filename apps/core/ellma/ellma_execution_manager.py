@@ -67,11 +67,11 @@ class EllmaExecutionManager:
 
         context_message_history = [
             {
-                "role": "system",
+                "role": ChatRoles.SYSTEM,
                 "content": str(structured_system_prompt)
             },
             {
-                "role": "user",
+                "role": ChatRoles.USER,
                 "content": f"""
                 ########################################
                 # CONVERT THIS CODE

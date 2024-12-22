@@ -24,7 +24,8 @@ from apps.core.browsers.utils import (
 
 from apps.core.generative_ai.utils import (
     GPT_DEFAULT_ENCODING_ENGINE,
-    ChatRoles
+    ChatRoles,
+    find_tool_call_from_json,
 )
 
 from apps.core.internal_cost_manager.costs_map import (
@@ -32,7 +33,6 @@ from apps.core.internal_cost_manager.costs_map import (
 )
 
 from apps.core.sheetos.utils import (
-    find_tool_call_from_json,
     SHEETOS_TOOL_CALL_MAXIMUM_ATTEMPTS
 )
 
@@ -122,7 +122,7 @@ def handle_web_command(xc, command: str) -> str:
     try:
         structured_system_prompt = {
             "content": system_prompt,
-            "role": "system"
+            "role": ChatRoles.SYSTEM,
         }
 
         llm_response = client.chat.completions.create(
@@ -213,7 +213,7 @@ def handle_web_command(xc, command: str) -> str:
                 context_messages.append(
                     {
                         "content": output_tool_call,
-                        "role": "system"
+                        "role": ChatRoles.SYSTEM,
                     }
                 )
 

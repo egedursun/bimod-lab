@@ -17,13 +17,10 @@
 
 import logging
 
-from apps.core.formica.utils import (
-    find_tool_call_from_json
-)
-
 from apps.core.generative_ai.utils import (
     ChatRoles,
-    GPT_DEFAULT_ENCODING_ENGINE
+    GPT_DEFAULT_ENCODING_ENGINE,
+    find_tool_call_from_json
 )
 
 from apps.core.internal_cost_manager.costs_map import (
@@ -113,7 +110,7 @@ def handle_ai_command_public(
     try:
         structured_system_prompt = {
             "content": system_prompt,
-            "role": "system"
+            "role": ChatRoles.SYSTEM,
         }
 
         llm_response = client.chat.completions.create(

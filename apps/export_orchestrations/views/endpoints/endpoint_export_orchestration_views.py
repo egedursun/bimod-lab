@@ -32,6 +32,10 @@ from django.views.decorators.csrf import (
     csrf_exempt
 )
 
+from apps.core.generative_ai.utils import (
+    ChatRoles
+)
+
 from apps.core.orchestration.orchestration_executor import (
     OrchestrationExecutor
 )
@@ -237,9 +241,9 @@ class ExportOrchestrationAPIView(View):
                                  "be 'system', 'assistant' or 'user'.")
 
             if chat_history[0]["role"] not in [
-                "system",
-                "assistant",
-                "user"
+                ChatRoles.SYSTEM,
+                ChatRoles.ASSISTANT,
+                ChatRoles.USER
             ]:
                 logger.error(
                     "Invalid chat history: The 'role' key in the first element of the chat history must be either 'system',"
@@ -374,7 +378,7 @@ class ExportOrchestrationAPIView(View):
                 "message": {
                     "assistant_name": export_assistant.orchestrator.name,
                     "content": final_output,
-                    "role": "assistant",
+                    "role": ChatRoles.ASSISTANT,
                     "media": {
                         "files": [],
                         "images": []

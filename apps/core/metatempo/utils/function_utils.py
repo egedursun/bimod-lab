@@ -16,12 +16,13 @@
 #
 import json
 import logging
-from json import JSONDecoder
 
 import boto3
 import filetype
 
-from apps.core.code_analyst.utils import BIN_FILE_FORMAT
+from apps.core.code_analyst.utils import (
+    BIN_FILE_FORMAT
+)
 
 from apps.export_assistants.utils import (
     generate_save_name
@@ -82,6 +83,24 @@ def find_tool_call_from_json_single(response: str):
     )
 
     json_objects = []
+
+    if response is None or response == "":
+        return json_objects
+
+    if "{" and "}" not in response:
+        return json_objects
+
+    c = response[0]
+
+    while c != "{":
+        response = response[1:]
+        c = response[0]
+
+    cb = response[-1]
+
+    while cb != "}":
+        response = response[:-1]
+        cb = response[-1]
 
     try:
         parsed_response = json.loads(response)

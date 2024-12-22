@@ -23,6 +23,10 @@ from io import BytesIO
 
 from asgiref.sync import async_to_sync
 
+from apps.core.generative_ai.utils import (
+    ChatRoles
+)
+
 from apps.core.harmoniq.harmoniq_prompt_builder import (
     build_harmoniq_system_prompt
 )
@@ -132,7 +136,7 @@ class OpenAIRealtimeAPIClient:
             "type": "conversation.item.create",
             "item": {
                 "type": "message",
-                "role": "user",
+                "role": ChatRoles.USER,
                 "content": [
                     {"type": "input_text",
                      "text": formal_message

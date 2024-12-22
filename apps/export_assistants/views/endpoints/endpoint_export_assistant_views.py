@@ -31,7 +31,13 @@ from django.views.decorators.csrf import (
     csrf_exempt
 )
 
-from apps.assistants.models import Assistant
+from apps.assistants.models import (
+    Assistant
+)
+
+from apps.core.generative_ai.utils import (
+    ChatRoles
+)
 
 from apps.export_assistants.models import (
     ExportAssistantAPI,
@@ -303,9 +309,9 @@ class ExportAssistantAPIView(View):
                                  "be 'system', 'assistant' or 'user'.")
 
             if chat_history[0]["role"] not in [
-                "system",
-                "assistant",
-                "user"
+                ChatRoles.SYSTEM,
+                ChatRoles.ASSISTANT,
+                ChatRoles.USER
             ]:
                 logger.error(f"Invalid chat history provided for endpoint, invalid role error: {endpoint}")
 
@@ -438,7 +444,7 @@ class ExportAssistantAPIView(View):
                 "message": {
                     "assistant_name": export_assistant.assistant.name,
                     "content": llm_response_text,
-                    "role": "assistant",
+                    "role": ChatRoles.ASSISTANT,
                     "media": {
                         "files": f_uris,
                         "images": img_uris

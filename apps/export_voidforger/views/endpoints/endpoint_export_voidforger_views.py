@@ -35,6 +35,10 @@ from apps.core.generative_ai.generative_ai_decode_manager import (
     GenerativeAIDecodeController
 )
 
+from apps.core.generative_ai.utils import (
+    ChatRoles
+)
+
 from apps.export_voidforger.models import (
     ExportVoidForgerAPI,
     VoidForgerRequestLog
@@ -820,7 +824,7 @@ class ExportVoidForgerAPIView(View):
                 "message": {
                     "assistant_name": "VoidForger",
                     "content": llm_response_text,
-                    "role": "assistant",
+                    "role": ChatRoles.SYSTEM,
                     "media": {
                         "files": [],
                         "images": []

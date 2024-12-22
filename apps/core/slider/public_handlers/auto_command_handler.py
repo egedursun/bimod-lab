@@ -82,7 +82,7 @@ def handle_auto_command_public(xc, content: str) -> str:
     try:
         structured_system_prompt = {
             "content": system_prompt,
-            "role": "system"
+            "role": ChatRoles.SYSTEM,
         }
 
         llm_response = client.chat.completions.create(

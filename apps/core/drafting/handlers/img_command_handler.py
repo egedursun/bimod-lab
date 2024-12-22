@@ -19,12 +19,12 @@ import logging
 
 from apps.core.drafting.utils import (
     DRAFTING_TOOL_CALL_MAXIMUM_ATTEMPTS,
-    find_tool_call_from_json
 )
 
 from apps.core.generative_ai.utils import (
     GPT_DEFAULT_ENCODING_ENGINE,
-    ChatRoles
+    ChatRoles,
+    find_tool_call_from_json,
 )
 
 from apps.core.internal_cost_manager.costs_map import (
@@ -127,7 +127,7 @@ def handle_img_command(xc, command: str) -> str:
     try:
         structured_system_prompt = {
             "content": system_prompt,
-            "role": "system"
+            "role": ChatRoles.SYSTEM,
         }
 
         llm_response = client.chat.completions.create(
@@ -208,7 +208,7 @@ def handle_img_command(xc, command: str) -> str:
                 context_messages.append(
                     {
                         "content": image_uri,
-                        "role": "system"
+                        "role": ChatRoles.SYSTEM,
                     }
                 )
 

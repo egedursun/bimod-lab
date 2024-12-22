@@ -32,7 +32,8 @@ from apps.core.generative_ai.utils import (
     DEFAULT_STATISTICS_ASSISTANT_TONE,
     DEFAULT_STATISTICS_ASSISTANT_CHAT_NAME,
     DEFAULT_STATISTICS_TEMPERATURE,
-    DEFAULT_STATISTICS_ANALYSIS_MAX_TOKENS
+    DEFAULT_STATISTICS_ANALYSIS_MAX_TOKENS,
+    ChatRoles
 )
 
 from apps.core.system_prompts.system_prompt_factory_builder import (
@@ -71,7 +72,7 @@ def provide_analysis(
             model=llm_model.model_name,
             messages=[
                 {
-                    "role": "system",
+                    "role": ChatRoles.SYSTEM,
                     "content": json.dumps(
                         lean_prompt,
                         indent=4,
@@ -80,7 +81,7 @@ def provide_analysis(
                     )
                 },
                 {
-                    "role": "system",
+                    "role": ChatRoles.SYSTEM,
                     "content": """
                         ===========================
                         # **VERY IMPORTANT NOTE:**

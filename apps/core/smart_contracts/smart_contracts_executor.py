@@ -26,7 +26,8 @@ from web3.exceptions import TimeExhausted
 
 from apps.core.generative_ai.utils import (
     GPT_DEFAULT_ENCODING_ENGINE,
-    ChatRoles
+    ChatRoles,
+    find_tool_call_from_json,
 )
 
 from apps.core.internal_cost_manager.costs_map import (
@@ -61,7 +62,6 @@ from apps.smart_contracts.models import (
 
 from apps.smart_contracts.utils import (
     DeploymentStatusesNames,
-    find_json_presence
 )
 
 from config import settings
@@ -135,7 +135,7 @@ class SmartContractsExecutionManager:
         contract_explanation_data = self.contract_obj.generated_solidity_code_natural_language
 
         try:
-            json_object = find_json_presence(contract_explanation_data)
+            json_object = find_tool_call_from_json(contract_explanation_data)
 
         except Exception as e:
             logger.error(f"Smart Contract JSON Response Parsing Failed: {e}")
@@ -206,7 +206,7 @@ class SmartContractsExecutionManager:
 
             structured_messages = [
                 {
-                    "role": "system",
+                    "role": ChatRoles.SYSTEM,
                     "content": system_prompt
                 }
             ]
@@ -266,7 +266,7 @@ class SmartContractsExecutionManager:
 
             messages.append(
                 {
-                    "role": "assistant",
+                    "role": ChatRoles.ASSISTANT,
                     "content": str(assistant_response)
                 }
             )
@@ -316,7 +316,7 @@ class SmartContractsExecutionManager:
 
                 messages.append(
                     {
-                        "role": "user",
+                        "role": ChatRoles.USER,
                         "content": refinement_prompt
                     }
                 )
@@ -413,7 +413,7 @@ class SmartContractsExecutionManager:
 
                 structured_messages = [
                     {
-                        "role": "system",
+                        "role": ChatRoles.SYSTEM,
                         "content": nlp_feed_prompt
                     }
                 ]

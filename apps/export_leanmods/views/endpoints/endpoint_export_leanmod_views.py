@@ -36,6 +36,9 @@ from django.views.decorators.csrf import (
 from apps.core.generative_ai.generative_ai_decode_manager import (
     GenerativeAIDecodeController
 )
+from apps.core.generative_ai.utils import (
+    ChatRoles
+)
 
 from apps.export_leanmods.models import (
     ExportLeanmodAssistantAPI,
@@ -336,7 +339,7 @@ class ExportLeanmodAssistantAPIView(View):
                 "message": {
                     "assistant_name": exp_agent.lean_assistant.name,
                     "content": llm_response_text,
-                    "role": "assistant",
+                    "role": ChatRoles.ASSISTANT,
                     "media": {
                         "files": file_uris,
                         "images": image_uris

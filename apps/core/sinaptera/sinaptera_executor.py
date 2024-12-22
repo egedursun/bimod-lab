@@ -20,6 +20,10 @@ import logging
 import openai
 from django.contrib.auth.models import User
 
+from apps.core.generative_ai.utils import (
+    ChatRoles
+)
+
 from apps.core.sinaptera.prompts import (
     get_evaluation_system_prompt,
     get_evaluation_user_prompt_template,
@@ -133,11 +137,11 @@ class SinapteraBoosterManager:
                 model=model_name,
                 messages=[
                     {
-                        "role": "system",
+                        "role": ChatRoles.SYSTEM,
                         "content": structured_conversation_history[0].get("content")
                     },
                     {
-                        "role": "user",
+                        "role": ChatRoles.USER,
                         "content": structured_conversation_history[1].get("content")
                     }
                 ],
@@ -229,11 +233,11 @@ class SinapteraBoosterManager:
 
             structured_evaluation_conversation_history = [
                 {
-                    "role": "system",
+                    "role": ChatRoles.SYSTEM,
                     "content": system_prompt
                 },
                 {
-                    "role": "user",
+                    "role": ChatRoles.USER,
                     "content": evaluation_user_prompt_built
                 }
             ]
@@ -387,11 +391,11 @@ class SinapteraBoosterManager:
 
             structured_improvement_conversation_history = [
                 {
-                    "role": "system",
+                    "role": ChatRoles.SYSTEM,
                     "content": self.improvement_system_prompt
                 },
                 {
-                    "role": "user",
+                    "role": ChatRoles.USER,
                     "content": improvement_user_prompt_built
                 }
             ]

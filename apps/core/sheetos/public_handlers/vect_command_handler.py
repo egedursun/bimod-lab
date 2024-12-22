@@ -20,7 +20,8 @@ import logging
 
 from apps.core.generative_ai.utils import (
     GPT_DEFAULT_ENCODING_ENGINE,
-    ChatRoles
+    ChatRoles,
+    find_tool_call_from_json,
 )
 
 from apps.core.internal_cost_manager.costs_map import (
@@ -29,7 +30,6 @@ from apps.core.internal_cost_manager.costs_map import (
 
 from apps.core.sheetos.utils import (
     SHEETOS_TOOL_CALL_MAXIMUM_ATTEMPTS,
-    find_tool_call_from_json
 )
 
 from apps.core.tool_calls.core_services.core_service_vector_store_query import (
@@ -124,7 +124,7 @@ def handle_vect_command_public(
     try:
         structured_system_prompt = {
             "content": system_prompt,
-            "role": "system"
+            "role": ChatRoles.SYSTEM,
         }
 
         llm_response = client.chat.completions.create(
@@ -222,7 +222,7 @@ def handle_vect_command_public(
                 context_messages.append(
                     {
                         "content": output_tool_call,
-                        "role": "system"
+                        "role": ChatRoles.SYSTEM,
                     }
                 )
 

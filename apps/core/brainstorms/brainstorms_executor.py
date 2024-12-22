@@ -21,7 +21,6 @@ from openai import OpenAI
 
 from apps.core.brainstorms.utils import (
     build_from_scratch_brainstorms_system_prompt,
-    find_json_presence,
     build_from_previous_level_brainstorms_system_prompt,
     build_synthesis_from_level_system_prompt,
     build_synthesis_from_all_levels_system_prompt,
@@ -29,7 +28,8 @@ from apps.core.brainstorms.utils import (
 )
 
 from apps.core.generative_ai.utils import (
-    GPT_DEFAULT_ENCODING_ENGINE
+    GPT_DEFAULT_ENCODING_ENGINE,
+    find_tool_call_from_json,
 )
 
 from apps.brainstorms.models import BrainstormingIdea
@@ -121,7 +121,7 @@ class BrainstormsExecutor:
         elements = []
 
         try:
-            elements = find_json_presence(
+            elements = find_tool_call_from_json(
                 response=llm_response
             )
 
@@ -166,7 +166,7 @@ class BrainstormsExecutor:
         elements = []
         try:
 
-            elements = find_json_presence(
+            elements = find_tool_call_from_json(
                 response=llm_response
             )
 
@@ -213,7 +213,7 @@ class BrainstormsExecutor:
 
         try:
 
-            element = find_json_presence(
+            element = find_tool_call_from_json(
                 response=llm_response
             )[0]
 
@@ -255,7 +255,7 @@ class BrainstormsExecutor:
         )
 
         try:
-            element = find_json_presence(
+            element = find_tool_call_from_json(
                 response=llm_response
             )[0]
             logger.info(f"Creating complete synthesis object with LLM response: {llm_response}")

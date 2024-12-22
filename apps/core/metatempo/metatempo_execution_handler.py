@@ -30,7 +30,8 @@ from django.utils import timezone
 
 from apps.core.generative_ai.utils import (
     GPT_DEFAULT_ENCODING_ENGINE,
-    ChatRoles
+    ChatRoles,
+    find_tool_call_from_json
 )
 
 from apps.core.internal_cost_manager.costs_map import (
@@ -124,7 +125,7 @@ class MetaTempoExecutionManager:
 
             context_messages_history.append(
                 {
-                    "role": "system",
+                    "role": ChatRoles.SYSTEM,
                     "content": action_specific_system_prompt
                 }
             )
@@ -164,7 +165,7 @@ class MetaTempoExecutionManager:
 
             context_messages_history.append(
                 {
-                    "role": "user",
+                    "role": ChatRoles.USER,
                     "content": [
                         {
                             "type": "text",
@@ -213,7 +214,7 @@ class MetaTempoExecutionManager:
 
             context_messages_history.append(
                 {
-                    "role": "system",
+                    "role": ChatRoles.SYSTEM,
                     "content": action_specific_system_prompt
                 }
             )
@@ -251,7 +252,7 @@ class MetaTempoExecutionManager:
 
             context_messages_history.append(
                 {
-                    "role": "system",
+                    "role": ChatRoles.SYSTEM,
                     "content": action_specific_system_prompt
                 }
             )
@@ -265,7 +266,7 @@ class MetaTempoExecutionManager:
 
             context_messages_history.append(
                 {
-                    "role": "system",
+                    "role": ChatRoles.SYSTEM,
                     "content": action_specific_system_prompt
                 }
             )
@@ -325,7 +326,7 @@ class MetaTempoExecutionManager:
 
             context_messages_history.append(
                 {
-                    "role": "user",
+                    "role": ChatRoles.USER,
                     "content": interpretation_query
                 }
             )
@@ -419,9 +420,12 @@ class MetaTempoExecutionManager:
             return None, error
 
         try:
-            response_json = find_tool_call_from_json_single(
+            response_json = find_tool_call_from_json(
                 response=response_json_string
             )
+
+            if response_json > 0:
+                response_json = response_json[0]
 
         except Exception as e:
             logger.error(f"Failed to parse response JSON of the AI response: " + str(e))

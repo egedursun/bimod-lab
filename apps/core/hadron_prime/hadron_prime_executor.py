@@ -815,13 +815,13 @@ class HadronPrimeExecutor:
         )
 
         structured_system_prompt = {
-            "role": "system",
+            "role": ChatRoles.SYSTEM,
             "content": str(system_prompt)
         }
 
         context_messages = [
             structured_system_prompt, {
-                "role": "user",
+                "role": ChatRoles.USER,
                 "content": user_query_text
             }
         ]

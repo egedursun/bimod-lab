@@ -33,6 +33,10 @@ from django.views.decorators.csrf import (
 
 from django.views.generic import TemplateView
 
+from apps.core.generative_ai.utils import (
+    find_tool_call_from_json
+)
+
 from apps.core.harmoniq.harmoniq_executor import (
     OpenAIRealtimeAPIClient,
     sync_request_communication
@@ -43,7 +47,6 @@ from apps.core.harmoniq.harmoniq_tool_manager import (
 )
 
 from apps.core.harmoniq.utils import (
-    find_tool_call_from_json,
     MAX_ATTEMPTS_TOOL_CALL
 )
 

@@ -18,7 +18,6 @@ import json
 import logging
 import re
 import uuid
-from json import JSONDecoder
 
 import apps.core
 
@@ -27,7 +26,6 @@ logger = logging.getLogger(__name__)
 
 def find_tool_call_from_json(response: str):
     logger.info("Finding tool call from JSON response.")
-
     response = (
         response.replace('```json', '')
         .replace('```', '')
@@ -35,6 +33,24 @@ def find_tool_call_from_json(response: str):
     )
 
     json_objects = []
+
+    if response is None or response == "":
+        return json_objects
+
+    if "{" and "}" not in response:
+        return json_objects
+
+    c = response[0]
+
+    while c != "{":
+        response = response[1:]
+        c = response[0]
+
+    cb = response[-1]
+
+    while cb != "}":
+        response = response[:-1]
+        cb = response[-1]
 
     try:
         parsed_response = json.loads(response)
