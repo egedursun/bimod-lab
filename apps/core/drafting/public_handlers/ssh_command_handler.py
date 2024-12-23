@@ -125,11 +125,11 @@ def handle_ssh_command_public(xc, command: str, content: str) -> str:
         llm_response = client.chat.completions.create(
             model=xc.copilot_llm.model_name,
             messages=[structured_system_prompt],
-            temperature=float(xc.copilot_llm.temperature),
-            frequency_penalty=float(xc.copilot_llm.frequency_penalty),
-            presence_penalty=float(xc.copilot_llm.presence_penalty),
-            max_tokens=int(xc.copilot_llm.maximum_tokens),
-            top_p=float(xc.copilot_llm.top_p)
+            # temperature=float(xc.copilot_llm.temperature),
+            # frequency_penalty=float(xc.copilot_llm.frequency_penalty),
+            # presence_penalty=float(xc.copilot_llm.presence_penalty),
+            # max_tokens=int(xc.copilot_llm.maximum_tokens),
+            # top_p=float(xc.copilot_llm.top_p)
         )
 
         choices = llm_response.choices
@@ -218,11 +218,11 @@ def handle_ssh_command_public(xc, command: str, content: str) -> str:
             llm_response = client.chat.completions.create(
                 model=xc.copilot_llm.model_name,
                 messages=context_messages,
-                temperature=float(xc.copilot_llm.temperature),
-                frequency_penalty=float(xc.copilot_llm.frequency_penalty),
-                presence_penalty=float(xc.copilot_llm.presence_penalty),
-                max_tokens=int(xc.copilot_llm.maximum_tokens),
-                top_p=float(xc.copilot_llm.top_p)
+                # temperature=float(xc.copilot_llm.temperature),
+                # frequency_penalty=float(xc.copilot_llm.frequency_penalty),
+                # presence_penalty=float(xc.copilot_llm.presence_penalty),
+                # max_tokens=int(xc.copilot_llm.maximum_tokens),
+                # top_p=float(xc.copilot_llm.top_p)
             )
 
             choices = llm_response.choices

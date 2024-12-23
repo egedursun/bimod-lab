@@ -340,8 +340,8 @@ class MetaTempoExecutionManager:
             llm_output = self.c.chat.completions.create(
                 model=self.llm_model.model_name,
                 messages=context_messages_history,
-                temperature=int(self.llm_model.temperature),
-                max_tokens=int(self.llm_model.maximum_tokens)
+                # temperature=int(self.llm_model.temperature),
+                # max_tokens=int(self.llm_model.maximum_tokens)
 
             )
             logger.info(f"Retrieved image interpretation content.")

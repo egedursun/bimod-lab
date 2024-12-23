@@ -322,11 +322,11 @@ class OpenAIGPTLeanClientManager:
                     resp = c.chat.completions.create(
                         model=self.lean_assistant.llm_model.model_name,
                         messages=system_prompt_msgs,
-                        temperature=float(self.lean_assistant.llm_model.temperature),
-                        frequency_penalty=float(self.lean_assistant.llm_model.frequency_penalty),
-                        presence_penalty=float(self.lean_assistant.llm_model.presence_penalty),
-                        max_tokens=int(self.lean_assistant.llm_model.maximum_tokens),
-                        top_p=float(self.lean_assistant.llm_model.top_p)
+                        # temperature=float(self.lean_assistant.llm_model.temperature),
+                        # frequency_penalty=float(self.lean_assistant.llm_model.frequency_penalty),
+                        # presence_penalty=float(self.lean_assistant.llm_model.presence_penalty),
+                        # max_tokens=int(self.lean_assistant.llm_model.maximum_tokens),
+                        # top_p=float(self.lean_assistant.llm_model.top_p)
                     )
 
             except Exception as e:

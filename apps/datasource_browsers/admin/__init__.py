@@ -16,4 +16,4 @@
 #
 
 from .browsing_log_admin import *
-from .browsing_log_admin import *
+from .browser_connection_admin import *

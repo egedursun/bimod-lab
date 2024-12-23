@@ -60,7 +60,13 @@ from apps.core.generative_ai.utils import (
     GPT_DEFAULT_ENCODING_ENGINE
 )
 
-from apps.llm_transaction.models import LLMTransaction
+from apps.llm_core.utils import (
+    GPTModelNamesNames
+)
+
+from apps.llm_transaction.models import (
+    LLMTransaction
+)
 
 from apps.llm_transaction.utils import (
     LLMTransactionSourcesTypesNames
@@ -159,7 +165,7 @@ class AuxiliaryLLMMachineLearningClient:
             agent = c.beta.assistants.create(
                 name=HELPER_SYSTEM_INSTRUCTIONS["ml_model_predictor"]["name"],
                 description=HELPER_SYSTEM_INSTRUCTIONS["ml_model_predictor"]["description"],
-                model="gpt-4o",
+                model=GPTModelNamesNames.GPT_4O,
                 tools=[
                     {
                         "type": "code_interpreter"
@@ -172,7 +178,7 @@ class AuxiliaryLLMMachineLearningClient:
                         ]
                     }
                 },
-                temperature=interpretation_temperature,
+                # temperature=interpretation_temperature,
             )
 
             logger.info(f"Created new assistant for ML model prediction.")

@@ -158,8 +158,8 @@ class AuxiliaryLLMVisionClient:
             llm_output = c.chat.completions.create(
                 model=HELPER_SYSTEM_INSTRUCTIONS["image_interpreter"]["model"],
                 messages=msgs,
-                temperature=interpretation_temperature,
-                max_tokens=interpretation_maximum_tokens
+                # temperature=interpretation_temperature,
+                # max_tokens=interpretation_maximum_tokens
             )
 
             logger.info(f"Retrieved image interpretation content.")

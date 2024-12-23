@@ -120,19 +120,19 @@ def consult_ai(
         llm_response = c.chat.completions.create(
             model=node.llm_model.model_name,
             messages=[structured_system_prompt],
-            temperature=float(node.llm_model.temperature),
-            frequency_penalty=float(
-                node.llm_model.frequency_penalty
-            ),
-            presence_penalty=float(
-                node.llm_model.presence_penalty
-            ),
-            max_tokens=int(
-                node.llm_model.maximum_tokens
-            ),
-            top_p=float(
-                node.llm_model.top_p
-            )
+            # temperature=float(node.llm_model.temperature),
+            # frequency_penalty=float(
+            #     node.llm_model.frequency_penalty
+            # ),
+            # presence_penalty=float(
+            #     node.llm_model.presence_penalty
+            # ),
+            # max_tokens=int(
+            #     node.llm_model.maximum_tokens
+            # ),
+            # top_p=float(
+            #     node.llm_model.top_p
+            # )
         )
 
         choices = llm_response.choices
@@ -227,11 +227,11 @@ def consult_ai(
             llm_response = c.chat.completions.create(
                 model=node.llm_model.model_name,
                 messages=context_messages,
-                temperature=float(node.llm_model.temperature),
-                frequency_penalty=float(node.llm_model.frequency_penalty),
-                presence_penalty=float(node.llm_model.presence_penalty),
-                max_tokens=int(node.llm_model.maximum_tokens),
-                top_p=float(node.llm_model.top_p)
+                # temperature=float(node.llm_model.temperature),
+                # frequency_penalty=float(node.llm_model.frequency_penalty),
+                # presence_penalty=float(node.llm_model.presence_penalty),
+                # max_tokens=int(node.llm_model.maximum_tokens),
+                # top_p=float(node.llm_model.top_p)
             )
 
             choices = llm_response.choices
@@ -305,11 +305,11 @@ def consult_ai(
         command_response = c.chat.completions.create(
             model=node.llm_model.model_name,
             messages=context_messages,
-            temperature=float(node.llm_model.temperature),
-            frequency_penalty=float(node.llm_model.frequency_penalty),
-            presence_penalty=float(node.llm_model.presence_penalty),
-            max_tokens=int(node.llm_model.maximum_tokens),
-            top_p=float(node.llm_model.top_p)
+            # temperature=float(node.llm_model.temperature),
+            # frequency_penalty=float(node.llm_model.frequency_penalty),
+            # presence_penalty=float(node.llm_model.presence_penalty),
+            # max_tokens=int(node.llm_model.maximum_tokens),
+            # top_p=float(node.llm_model.top_p)
         )
 
         choices = command_response.choices

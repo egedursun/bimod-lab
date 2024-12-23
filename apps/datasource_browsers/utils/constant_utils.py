@@ -19,12 +19,14 @@ BROWSER_TYPES = [
     ("google", "Google"),
 ]
 
+
 class BrowserTypesNames:
     GOOGLE = "google"
 
     @staticmethod
     def as_list():
         return [BrowserTypesNames.GOOGLE]
+
 
 BROWSER_READING_ABILITIES = [
     ("javascript", "JavaScript"),

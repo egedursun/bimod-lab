@@ -41,7 +41,7 @@ class LLMCore(models.Model):
 
     model_name = models.CharField(
         max_length=1000,
-        default=GPTModelNamesNames.GPT_4O,
+        default=GPTModelNamesNames.O1_PREVIEW,
         null=False,
         blank=False
     )

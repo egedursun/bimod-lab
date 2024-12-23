@@ -119,6 +119,11 @@ class WebsiteExecutionManager:
             total_vectors
         )
 
+        if k == 0:
+            logger.error("[search_within_website_item_chunks] FAISS index is empty yet, no results can be found.")
+
+            return []
+
         query_vector = np.array(
             [
                 self._generate_query_embedding(query)

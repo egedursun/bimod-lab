@@ -232,11 +232,11 @@ class OrchestrationExecutor:
                 resp = c.chat.completions.create(
                     model=self.maestro.llm_model.model_name,
                     messages=prompt_msgs,
-                    temperature=float(self.maestro.llm_model.temperature),
-                    frequency_penalty=float(self.maestro.llm_model.frequency_penalty),
-                    presence_penalty=float(self.maestro.llm_model.presence_penalty),
-                    max_tokens=int(self.maestro.llm_model.maximum_tokens),
-                    top_p=float(self.maestro.llm_model.top_p)
+                    # temperature=float(self.maestro.llm_model.temperature),
+                    # frequency_penalty=float(self.maestro.llm_model.frequency_penalty),
+                    # presence_penalty=float(self.maestro.llm_model.presence_penalty),
+                    # max_tokens=int(self.maestro.llm_model.maximum_tokens),
+                    # top_p=float(self.maestro.llm_model.top_p)
                 )
 
         except Exception as e:

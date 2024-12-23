@@ -118,11 +118,12 @@ def handle_ai_command_public(
             messages=[
                 structured_system_prompt
             ],
-            temperature=float(xc.copilot_llm.temperature),
-            frequency_penalty=float(xc.copilot_llm.frequency_penalty),
-            presence_penalty=float(xc.copilot_llm.presence_penalty),
-            max_tokens=int(xc.copilot_llm.maximum_tokens),
-            top_p=float(xc.copilot_llm.top_p))
+            # temperature=float(xc.copilot_llm.temperature),
+            # frequency_penalty=float(xc.copilot_llm.frequency_penalty),
+            # presence_penalty=float(xc.copilot_llm.presence_penalty),
+            # max_tokens=int(xc.copilot_llm.maximum_tokens),
+            # top_p=float(xc.copilot_llm.top_p)
+        )
 
         choices = llm_response.choices
         first_choice = choices[0]

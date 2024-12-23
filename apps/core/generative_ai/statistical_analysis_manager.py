@@ -95,8 +95,8 @@ def provide_analysis(
                     """
                 }
             ],
-            temperature=DEFAULT_STATISTICS_TEMPERATURE,
-            max_tokens=DEFAULT_STATISTICS_ANALYSIS_MAX_TOKENS
+            # temperature=DEFAULT_STATISTICS_TEMPERATURE,
+            # max_tokens=DEFAULT_STATISTICS_ANALYSIS_MAX_TOKENS
         )
 
         choices = output.choices

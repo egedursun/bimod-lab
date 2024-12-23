@@ -152,11 +152,11 @@ class SinapteraBoosterManager:
             response = openai.chat.completions.create(
                 model=model_name,
                 messages=structured_conversation_history,
-                temperature=float(self.llm_core.temperature),
-                frequency_penalty=float(self.llm_core.frequency_penalty),
-                presence_penalty=float(self.llm_core.presence_penalty),
-                max_tokens=int(self.llm_core.maximum_tokens),
-                top_p=float(self.llm_core.top_p),
+                # temperature=float(self.llm_core.temperature),
+                # frequency_penalty=float(self.llm_core.frequency_penalty),
+                # presence_penalty=float(self.llm_core.presence_penalty),
+                # max_tokens=int(self.llm_core.maximum_tokens),
+                # top_p=float(self.llm_core.top_p),
             )
 
         return (

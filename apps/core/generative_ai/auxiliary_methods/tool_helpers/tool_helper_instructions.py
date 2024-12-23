@@ -15,6 +15,10 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
+from apps.llm_core.utils import (
+    GPTModelNamesNames
+)
+
 HELPER_SYSTEM_INSTRUCTIONS = {
     "code_interpreter": {
         "name": "Code Interpreter Assistant",
@@ -45,7 +49,7 @@ HELPER_SYSTEM_INSTRUCTIONS = {
             detailed information.
 
         """,
-        "model": "gpt-4o",
+        "model": GPTModelNamesNames.GPT_4O,
     },
     #################################################################################################################
     "image_interpreter": {
@@ -61,7 +65,7 @@ HELPER_SYSTEM_INSTRUCTIONS = {
             detailed information.
 
         """,
-        "model": "gpt-4o",
+        "model": GPTModelNamesNames.GPT_4O,
     },
     #################################################################################################################
     "ml_model_predictor": {
@@ -77,7 +81,7 @@ HELPER_SYSTEM_INSTRUCTIONS = {
             detailed information.
 
         """,
-        "model": "gpt-4o",
+        "model": GPTModelNamesNames.GPT_4O,
     },
 }
 

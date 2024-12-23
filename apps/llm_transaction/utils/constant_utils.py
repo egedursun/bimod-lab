@@ -271,17 +271,21 @@ MAXIMUM_PAGES_POSSIBLE_TO_SHOW = 500
 class LLMCostsPerMillionTokens:
     OPENAI_GPT_COSTS = {
         "gpt-4o": {
-            "input": 5.00,
-            "output": 15.00
+            "input": 2.50,
+            "output": 10.00,
         },
-        "gpt-4-turbo": {
-            "input": 10.00,
-            "output": 30.00
+        "o1-mini": {
+            "input": 3.00,
+            "output": 12.00,
         },
-        "gpt-4": {
-            "input": 30.00,
-            "output": 60.00
+        "o1-preview": {
+            "input": 15.00,
+            "output": 60.00,
         },
+        "o1": {
+            "input": 15.00,
+            "output": 60.00,
+        }
     }
 
 

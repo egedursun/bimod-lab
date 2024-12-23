@@ -121,7 +121,8 @@
                 <div class="form-text"></div>
               </div>
               <div class="col-6 mb-3">
-                <label class="form-label" for="provider">Choose Model Provider<span class="text-danger">&nbsp;*</span></label>
+                <label class="form-label" for="provider">Choose Model Provider<span
+                  class="text-danger">&nbsp;*</span></label>
                 <select class="form-select" id="provider" name="provider">
                   {% for key, value in provider_choices %}
                     <option value="{{ key }}">{{ value }}</option>
@@ -138,7 +139,11 @@
                 <label class="form-label" for="model_name">Model Name<span class="text-danger">&nbsp;*</span></label>
                 <select class="form-select" id="model_name" name="model_name">
                   {% for key, value in model_name_choices %}
-                    <option value="{{ key }}">{{ value }}</option>
+                    {% if key == 'o1-preview' %}
+                      <option value="{{ key }}" selected>{{ value }}</option>
+                    {% else %}
+                      <option value="{{ key }}">{{ value }}</option>
+                    {% endif %}
                   {% endfor %}
                 </select>
                 <div class="form-text"></div>
@@ -164,7 +169,7 @@
               <div class="col-3 mb-6">
                 <label class="form-label" for="maximum_tokens">Maximum Response Tokens</label>
                 <input type="number" class="form-control" id="maximum_tokens" name="maximum_tokens"
-                       min="256" max="4032" step="64" placeholder="Enter maximum tokens" value="4032" />
+                       min="256" max="4096" placeholder="Enter maximum tokens" value="4032" />
                 <div class="form-text"></div>
               </div>
               <div class="col-3 mb-6">

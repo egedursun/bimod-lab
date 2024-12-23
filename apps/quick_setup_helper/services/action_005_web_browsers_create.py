@@ -48,7 +48,21 @@ def action__005_web_browsers_create(
                     name=f"{assistant.name}'s Browser Connection {generate_random_object_id_string()}",
                     description=f"Primary Browser connection for assistant {assistant.name}",
                     browser_type=BrowserTypesNames.GOOGLE,
-                    created_by_user=metadata__user
+                    created_by_user=metadata__user,
+                    reading_abilities={
+                        "javascript": True,
+                        "style": True,
+                        "inline_style": True,
+                        "comments": True,
+                        "links": True,
+                        "meta": True,
+                        "page_structure": True,
+                        "processing_instructions": True,
+                        "embedded": True,
+                        "frames": True,
+                        "forms": True,
+                        "remove_tags": True
+                    },
                 )
 
             except Exception as e:

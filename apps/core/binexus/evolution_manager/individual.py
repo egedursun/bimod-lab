@@ -150,11 +150,12 @@ class Individual:
             llm_response = self.c.chat.completions.create(
                 model=self.llm_model.model_name,
                 messages=structured_messages,
-                temperature=agent_temperature_value,
-                frequency_penalty=float(self.llm_model.frequency_penalty),
-                presence_penalty=float(self.llm_model.presence_penalty),
-                max_tokens=int(self.llm_model.maximum_tokens),
-                top_p=float(self.llm_model.top_p))
+                # temperature=agent_temperature_value,
+                # frequency_penalty=float(self.llm_model.frequency_penalty),
+                # presence_penalty=float(self.llm_model.presence_penalty),
+                # max_tokens=int(self.llm_model.maximum_tokens),
+                # top_p=float(self.llm_model.top_p)
+            )
 
             choices = llm_response.choices
             first_choice = choices[0]

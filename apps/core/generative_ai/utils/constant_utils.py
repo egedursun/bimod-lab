@@ -16,7 +16,7 @@
 #
 
 class ChatRoles:
-    SYSTEM = "system"
+    SYSTEM = "assistant"
     USER = "user"
     ASSISTANT = "assistant"
 

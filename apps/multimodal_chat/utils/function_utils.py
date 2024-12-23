@@ -47,7 +47,7 @@ logger = logging.getLogger(__name__)
 class TransmitWebsocketLogSenderType:
     ASSISTANT = "Assistant"
     LEANMOD = "LeanMod"
-    ORCHESTRATION = "Orchestration"
+    ORCHESTRATION = "Orchestrator"
     VOIDFORGER = "VoidForger"
 
     @staticmethod

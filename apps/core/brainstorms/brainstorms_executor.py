@@ -90,11 +90,11 @@ class BrainstormsExecutor:
             llm_response = self.client.chat.completions.create(
                 model=self.session.llm_model.model_name,
                 messages=[system_message],
-                temperature=float(self.session.llm_model.temperature),
-                frequency_penalty=float(self.session.llm_model.frequency_penalty),
-                presence_penalty=float(self.session.llm_model.presence_penalty),
-                max_tokens=int(self.session.llm_model.maximum_tokens),
-                top_p=float(self.session.llm_model.top_p),
+                # temperature=float(self.session.llm_model.temperature),
+                # frequency_penalty=float(self.session.llm_model.frequency_penalty),
+                # presence_penalty=float(self.session.llm_model.presence_penalty),
+                # max_tokens=int(self.session.llm_model.maximum_tokens),
+                # top_p=float(self.session.llm_model.top_p),
             )
 
             choices = llm_response.choices

@@ -57,8 +57,7 @@ class AutoBalanceTopUpModel(models.Model):
     calendar_month_total_auto_addition_value = models.DecimalField(
         max_digits=12,
         decimal_places=6,
-        null=True,
-        blank=True
+        default=0,
     )
 
     monthly_hard_limit_auto_addition_amount = models.DecimalField(

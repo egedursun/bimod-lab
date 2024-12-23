@@ -216,11 +216,11 @@ class SmartContractsExecutionManager:
             llm_response = self.c.chat.completions.create(
                 model=self.llm_model.model_name,
                 messages=conversation_messages,
-                temperature=float(self.llm_model.temperature),
-                frequency_penalty=float(self.llm_model.frequency_penalty),
-                presence_penalty=float(self.llm_model.presence_penalty),
-                max_tokens=int(self.llm_model.maximum_tokens),
-                top_p=float(self.llm_model.top_p)
+                # temperature=float(self.llm_model.temperature),
+                # frequency_penalty=float(self.llm_model.frequency_penalty),
+                # presence_penalty=float(self.llm_model.presence_penalty),
+                # max_tokens=int(self.llm_model.maximum_tokens),
+                # top_p=float(self.llm_model.top_p)
             )
 
             choices = llm_response.choices
@@ -421,11 +421,11 @@ class SmartContractsExecutionManager:
                 contract_description_llm_response = self.c.chat.completions.create(
                     model=self.llm_model.model_name,
                     messages=structured_messages,
-                    temperature=float(self.llm_model.temperature),
-                    frequency_penalty=float(self.llm_model.frequency_penalty),
-                    presence_penalty=float(self.llm_model.presence_penalty),
-                    max_tokens=int(self.llm_model.maximum_tokens),
-                    top_p=float(self.llm_model.top_p)
+                    # temperature=float(self.llm_model.temperature),
+                    # frequency_penalty=float(self.llm_model.frequency_penalty),
+                    # presence_penalty=float(self.llm_model.presence_penalty),
+                    # max_tokens=int(self.llm_model.maximum_tokens),
+                    # top_p=float(self.llm_model.top_p)
                 )
 
                 tx = LLMTransaction.objects.create(
