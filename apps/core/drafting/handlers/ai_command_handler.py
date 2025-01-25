@@ -18,8 +18,10 @@
 import logging
 
 from apps.core.generative_ai.utils import (
+    GPT_DEFAULT_ENCODING_ENGINE,
+    Office_ChatRoles,
     ChatRoles,
-    GPT_DEFAULT_ENCODING_ENGINE
+    Office_Models,
 )
 
 from apps.core.internal_cost_manager.costs_map import (
@@ -57,7 +59,7 @@ def handle_ai_command(xc, command: str) -> str:
             tax_cost=0,
             total_cost=0,
             total_billable_cost=0,
-            transaction_type=ChatRoles.USER,
+            transaction_type=Office_ChatRoles.USER,
             transaction_source=LLMTransactionSourcesTypesNames.DRAFTING
         )
 
@@ -103,11 +105,12 @@ def handle_ai_command(xc, command: str) -> str:
     try:
         structured_system_prompt = {
             "content": system_prompt,
-            "role": ChatRoles.SYSTEM,
+            "role": Office_ChatRoles.SYSTEM,
         }
 
         llm_response = client.chat.completions.create(
-            model=xc.copilot_llm.model_name,
+            model=Office_Models.GPT4O,
+            # model=xc.copilot_llm.model_name,
             messages=[structured_system_prompt],
             # temperature=float(xc.copilot_llm.temperature),
             # frequency_penalty=float(xc.copilot_llm.frequency_penalty),

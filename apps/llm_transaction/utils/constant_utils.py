@@ -71,6 +71,7 @@ SOURCES_OF_LLM_TRANSACTION = [
     ("sheetos", "Sheetos"),
     ("formica", "Formica"),
     ("slider", "Slider"),
+    ("browser-extension", "Browser Extension"),
     ("hadron-prime", "Hadron Prime"),
     ("smart-contract-creation", "Smart Contract Creation"),
     ("binexus", "Binexus"),
@@ -129,6 +130,7 @@ class LLMTransactionSourcesTypesNames:
     SHEETOS = "sheetos"
     FORMICA = "formica"
     SLIDER = "slider"
+    BROWSER_EXTENSION = "browser-extension"
     HADRON_PRIME = "hadron-prime"
     SMART_CONTRACT_CREATION = "smart-contract-creation"
     BINEXUS = "binexus"
@@ -180,6 +182,7 @@ class LLMTransactionSourcesTypesNames:
             LLMTransactionSourcesTypesNames.SHEETOS,
             LLMTransactionSourcesTypesNames.FORMICA,
             LLMTransactionSourcesTypesNames.SLIDER,
+            LLMTransactionSourcesTypesNames.BROWSER_EXTENSION,
             LLMTransactionSourcesTypesNames.HADRON_PRIME,
             LLMTransactionSourcesTypesNames.SMART_CONTRACT_CREATION,
             LLMTransactionSourcesTypesNames.BINEXUS,

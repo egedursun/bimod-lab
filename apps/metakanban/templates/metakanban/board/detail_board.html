@@ -93,6 +93,7 @@
 
     function showTaskDetailModal(taskId) {
       const taskData = JSON.parse(document.getElementById(`task-data-${taskId}`).textContent);
+
       $('#task_detail_task_id').val(taskData.id);
       $('#task_description').val(taskData.description);
       $('#task_priority').val(taskData.priority);
@@ -268,7 +269,7 @@
             <div class="card-body" style="min-height: 1000px;" id="column-{{ column.id }}">
               {% for task in tasks %}
                 {% if task.status_column_id == column.id %}
-                  <div class="card mb-2 border border-primary border-1 rounded">
+                  <div class="card mb-2 border bg-body border-primary border-3 rounded">
                     <div class="card-body">
                       <p class="card-text font-weight-bold">
                         <i class="fa fa-tasks me-2"></i>
@@ -308,20 +309,18 @@
                       </p>
                       <div id="task-data-{{ task.id }}" style="display: none;">
                         {
-                        "id": "{{ task.id }}",
+                        "id": "{{ task.id|escapejs|default_if_none:"" }}",
                         "description": "{{ task.description|escapejs|default_if_none:"" }}",
-                        "priority": "{{ task.priority }}",
-                        "due_date": "{{ task.due_date|date:'Y-m-d' }}",
-                        "task_url": "{{ task.task_url|escapejs }}",
-                        "file_url": "{% if task.task_file %}{{ task.task_file.url }}{% else %}
-                        {{ task.task_file }}{% endif %}",
-                        "image_url": "{% if task.task_image %}{{ task.task_image.url }}{% else %}
-                        {{ task.task_image }}{% endif %}",
+                        "priority": "{{ task.priority|escapejs|default_if_none:"" }}",
+                        "due_date": "{{ task.due_date|date:'Y-m-d'|default_if_none:"" }}",
+                        "task_url": "{{ task.task_url|escapejs|default_if_none:"" }}",
+                        "file_url": "{% if task.task_file %}{{ task.task_file.url }}{% else %}{{ task.task_file }}{% endif %}",
+                        "image_url": "{% if task.task_image %}{{ task.task_image.url }}{% else %}{{ task.task_image }}{% endif %}",
                         "labels": [
                         {% for label in task.labels.all %}
                           {
                           "id": "{{ label.id }}",
-                          "name": "{{ label.label_name|escapejs }}"
+                          "name": "{{ label.label_name|escapejs|default_if_none:"" }}"
                           }{% if not forloop.last %},{% endif %}
                         {% endfor %}
                         ],
@@ -329,7 +328,7 @@
                         {% for assignee in task.assignees.all %}
                           {
                           "id": "{{ assignee.id }}",
-                          "name": "{{ assignee.profile.first_name }} {{ assignee.profile.last_name|escapejs }}"
+                          "name": "{{ assignee.profile.first_name|escapejs|default_if_none:"" }} {{ assignee.profile.last_name|escapejs|default_if_none:"" }}"
                           }{% if not forloop.last %},{% endif %}
                         {% endfor %}
                         ]

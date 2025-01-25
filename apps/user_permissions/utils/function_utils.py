@@ -301,6 +301,12 @@ def get_permissions_grouped():
             ('list_formica_google_apps_connections', 'List Formica Google Apps Connections'),
             ('delete_formica_google_apps_connections', 'Delete Formica Google Apps Connections'),
         ],
+        "Browser Extension Permissions": [
+            ('add_browser_extension_google_apps_connections', 'Add Browser Extension Google Apps Connections'),
+            ('update_browser_extension_google_apps_connections', 'Update Browser Extension Google Apps Connections'),
+            ('list_browser_extension_google_apps_connections', 'List Browser Extension Google Apps Connections'),
+            ('delete_browser_extension_google_apps_connections', 'Delete Browser Extension Google Apps Connections'),
+        ],
         "Brainstorming Permissions": [
             ('create_brainstorming_sessions', 'Create Brainstorming Sessions'),
             ('list_brainstorming_sessions', 'List Brainstorming Sessions'),

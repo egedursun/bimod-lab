@@ -57,6 +57,7 @@ class InternalServiceCosts:
             InternalServiceCosts.Sheetos.COST,
             InternalServiceCosts.Formica.COST,
             InternalServiceCosts.Slider.COST,
+            InternalServiceCosts.BrowserExtension.COST,
             InternalServiceCosts.HadronPrime.COST,
             InternalServiceCosts.SmartContractCreation.COST,
             InternalServiceCosts.Binexus.COST,
@@ -172,6 +173,9 @@ class InternalServiceCosts:
     class Slider:
         COST = COSTS_MAP["SLIDER"]
 
+    class BrowserExtension:
+        COST = COSTS_MAP["BROWSER_EXTENSION"]
+
     class HadronPrime:
         COST = COSTS_MAP["HADRON_PRIME"]
 
@@ -230,6 +234,7 @@ TOOL_NAME_TO_COST_MAP = {
     "sheetos": InternalServiceCosts.Sheetos.COST,
     "formica": InternalServiceCosts.Formica.COST,
     "slider": InternalServiceCosts.Slider.COST,
+    "browser-extension": InternalServiceCosts.BrowserExtension.COST,
     "hadron-prime": InternalServiceCosts.HadronPrime.COST,
     "smart-contract-creation": InternalServiceCosts.SmartContractCreation.COST,
     "binexus": InternalServiceCosts.Binexus.COST,

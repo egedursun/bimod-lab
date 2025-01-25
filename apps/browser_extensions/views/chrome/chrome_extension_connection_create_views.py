@@ -1,0 +1,99 @@
+#  Copyright (c) 2024 BMD™ Autonomous Holdings. All rights reserved.
+#
+#  Project: Bimod.io™
+#  File: chrome_extension_connection_create_views.py
+#  Last Modified: 2024-12-23 09:53:36
+#  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
+#  Created: 2024-12-23 09:53:36
+#
+#  This software is proprietary and confidential. Unauthorized copying,
+#  distribution, modification, or use of this software, whether for
+#  commercial, academic, or any other purpose, is strictly prohibited
+#  without the prior express written permission of BMD™ Autonomous
+#  Holdings.
+#
+#   For permission inquiries, please contact: admin@Bimod.io.
+#
+from django.contrib import messages
+
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin
+)
+
+from django.shortcuts import (
+    redirect,
+    get_object_or_404
+)
+
+from django.views import View
+
+from apps.assistants.models import Assistant
+
+from apps.browser_extensions.models import (
+    ChromeExtensionConnection
+)
+
+from apps.browser_extensions.utils import (
+    generate_chrome_extension_connection_api_key
+)
+
+from apps.core.user_permissions.permission_manager import (
+    UserPermissionManager
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
+
+class BrowserExtensionsView_ChromeExtensionConnectionCreate(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        return self.post(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+
+        ##############################
+        # PERMISSION CHECK FOR - ADD_BROWSER_EXTENSION_GOOGLE_APPS_CONNECTIONS
+        if not UserPermissionManager.is_authorized(
+            user=self.request.user,
+            operation=PermissionNames.ADD_BROWSER_EXTENSION_GOOGLE_APPS_CONNECTIONS
+        ):
+            messages.error(
+                self.request,
+                "You do not have permission to add Browser Extension Google Chrome Connections."
+            )
+            return redirect('browser_extensions:google_apps_connections_list')
+        ##############################
+
+        assistant_id = request.POST.get('assistant')
+
+        if not assistant_id:
+            messages.error(request, "Assistant field is required.")
+            return redirect('browser_extensions:google_apps_connections_list')
+
+        try:
+            assistant = get_object_or_404(
+                Assistant,
+                id=assistant_id
+            )
+
+            connection, created = ChromeExtensionConnection.objects.get_or_create(
+                owner_user=request.user,
+                chrome_assistant=assistant,
+                defaults={
+                    'connection_api_key': generate_chrome_extension_connection_api_key()
+                }
+            )
+
+            if not created:
+                messages.warning(request, "A connection for this model already exists. Please renew if necessary.")
+
+            else:
+                messages.success(request, "Connection successfully created.")
+
+        except Exception as e:
+            messages.error(request, "An error occurred while creating connection: " + str(e))
+
+            return redirect('browser_extensions:google_apps_connections_list')
+
+        return redirect('browser_extensions:google_apps_connections_list')

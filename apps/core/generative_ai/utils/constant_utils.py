@@ -16,9 +16,19 @@
 #
 
 class ChatRoles:
-    SYSTEM = "assistant"
+    SYSTEM = "developer"
     USER = "user"
     ASSISTANT = "assistant"
+
+
+class Office_ChatRoles:
+    SYSTEM = "system"
+    USER = "user"
+    ASSISTANT = "assistant"
+
+
+class Office_Models:
+    GPT4O = "gpt-4o"
 
 
 ACTIVE_RETRY_COUNT = 0

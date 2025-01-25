@@ -26,6 +26,8 @@ from apps.core.generative_ai.utils import (
     GPT_DEFAULT_ENCODING_ENGINE,
     ChatRoles,
     find_tool_call_from_json,
+    Office_Models,
+    Office_ChatRoles,
 )
 
 from apps.core.internal_cost_manager.costs_map import (
@@ -121,11 +123,12 @@ def handle_vect_command_public(xc, command: str, content: str) -> str:
 
         structured_system_prompt = {
             "content": system_prompt,
-            "role": ChatRoles.SYSTEM,
+            "role": Office_ChatRoles.SYSTEM,
         }
 
         llm_response = client.chat.completions.create(
-            model=xc.copilot_llm.model_name,
+            model=Office_Models.GPT4O,
+            # model=xc.copilot_llm.model_name,
             messages=[structured_system_prompt],
             # temperature=float(xc.copilot_llm.temperature),
             # frequency_penalty=float(xc.copilot_llm.frequency_penalty),

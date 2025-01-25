@@ -424,6 +424,11 @@ class PermissionNames:
     LIST_FORMICA_GOOGLE_APPS_CONNECTIONS = 'list_formica_google_apps_connections'
     DELETE_FORMICA_GOOGLE_APPS_CONNECTIONS = 'delete_formica_google_apps_connections'
 
+    ADD_BROWSER_EXTENSION_GOOGLE_APPS_CONNECTIONS = 'add_browser_extension_google_apps_connections'
+    UPDATE_BROWSER_EXTENSION_GOOGLE_APPS_CONNECTIONS = 'update_browser_extension_google_apps_connections'
+    LIST_BROWSER_EXTENSION_GOOGLE_APPS_CONNECTIONS = 'list_browser_extension_google_apps_connections'
+    DELETE_BROWSER_EXTENSION_GOOGLE_APPS_CONNECTIONS = 'delete_browser_extension_google_apps_connections'
+
     CREATE_HADRON_SYSTEMS = 'create_hadron_systems'
     LIST_HADRON_SYSTEMS = 'list_hadron_systems'
     UPDATE_HADRON_SYSTEMS = 'update_hadron_systems'
@@ -883,6 +888,11 @@ PERMISSION_TYPES = [
     ('list_formica_google_apps_connections', 'List Formica Google Apps Connections'),
     ('delete_formica_google_apps_connections', 'Delete Formica Google Apps Connections'),
 
+    ('add_browser_extension_google_apps_connections', 'Add Browser Extension Google Apps Connections'),
+    ('update_browser_extension_google_apps_connections', 'Update Browser Extension Google Apps Connections'),
+    ('list_browser_extension_google_apps_connections', 'List Browser Extension Google Apps Connections'),
+    ('delete_browser_extension_google_apps_connections', 'Delete Browser Extension Google Apps Connections'),
+
     ('create_hadron_systems', 'Create Hadron Systems'),
     ('list_hadron_systems', 'List Hadron Systems'),
     ('update_hadron_systems', 'Update Hadron Systems'),
@@ -1050,6 +1060,7 @@ class PredefinedRolePackages__Functional:
                 ('add_slider_documents', 'Add Slider Documents'),
                 ('add_slider_google_apps_connections', 'Add Slider Google Apps Connections'),
                 ('add_formica_google_apps_connections', 'Add Formica Google Apps Connections'),
+                ('add_browser_extension_google_apps_connections', 'Add Browser Extension Google Apps Connections'),
                 ('create_hadron_systems', 'Create Hadron Systems'),
                 ('create_hadron_nodes', 'Create Hadron Nodes'),
                 ('create_hadron_topics', 'Create Hadron Topics'),
@@ -1175,6 +1186,7 @@ class PredefinedRolePackages__Functional:
                 ('update_slider_documents', 'Update Slider Documents'),
                 ('update_slider_google_apps_connections', 'Update Slider Google Apps Connections'),
                 ('update_formica_google_apps_connections', 'Update Formica Google Apps Connections'),
+                ('update_browser_extension_google_apps_connections', 'Update Browser Extension Google Apps Connections'),
                 ('update_hadron_systems', 'Update Hadron Systems'),
                 ('update_hadron_nodes', 'Update Hadron Nodes'),
                 ('update_hadron_topics', 'Update Hadron Topics'),
@@ -1284,6 +1296,7 @@ class PredefinedRolePackages__Functional:
                 ('list_slider_documents', 'List Slider Documents'),
                 ('list_slider_google_apps_connections', 'List Slider Google Apps Connections'),
                 ('list_formica_google_apps_connections', 'List Formica Google Apps Connections'),
+                ('list_browser_extension_google_apps_connections', 'List Browser Extension Google Apps Connections'),
                 ('list_hadron_systems', 'List Hadron Systems'),
                 ('list_hadron_nodes', 'List Hadron Nodes'),
                 ('list_hadron_topics', 'List Hadron Topics'),
@@ -1318,8 +1331,7 @@ class PredefinedRolePackages__Functional:
                 ('delete_assistant_memories', 'Delete Assistant Memories'),
                 ('delete_export_assistant', 'Delete Export Assistant'),
                 ('delete_orchestrations', 'Delete Orchestrations'),
-                ('disconnect_reactant_assistants_from_orchestration',
-                 'Disconnect Reactant Assistants from Orchestration'),
+                ('disconnect_reactant_assistants_from_orchestration', 'Disconnect Reactant Assistants from Orchestration'),
                 ('delete_file_systems', 'Delete File Systems'),
                 ('delete_web_browsers', 'Delete Web Browsers'),
                 ('delete_sql_databases', 'Delete SQL Databases'),
@@ -1375,6 +1387,7 @@ class PredefinedRolePackages__Functional:
                 ('delete_slider_documents', 'Delete Slider Documents'),
                 ('delete_slider_google_apps_connections', 'Delete Slider Google Apps Connections'),
                 ('delete_formica_google_apps_connections', 'Delete Formica Google Apps Connections'),
+                ('delete_browser_extension_google_apps_connections', 'Delete Browser Extension Google Apps Connections'),
                 ('delete_hadron_systems', 'Delete Hadron Systems'),
                 ('delete_hadron_nodes', 'Delete Hadron Nodes'),
                 ('delete_hadron_topics', 'Delete Hadron Topics'),
@@ -1624,6 +1637,10 @@ class PredefinedRolePackages__Contextual:
                 ('update_formica_google_apps_connections', 'Update Formica Google Apps Connections'),
                 ('list_formica_google_apps_connections', 'List Formica Google Apps Connections'),
                 ('delete_formica_google_apps_connections', 'Delete Formica Google Apps Connections'),
+                ('add_browser_extension_google_apps_connections', 'Add Browser Extension Google Apps Connections'),
+                ('update_browser_extension_google_apps_connections', 'Update Browser Extension Google Apps Connections'),
+                ('list_browser_extension_google_apps_connections', 'List Browser Extension Google Apps Connections'),
+                ('delete_browser_extension_google_apps_connections', 'Delete Browser Extension Google Apps Connections'),
                 ('use_sinaptera_configuration', 'Use Sinaptera Configuration'),
 
             ]
@@ -1649,8 +1666,7 @@ class PredefinedRolePackages__Contextual:
                 ('list_orchestrations', 'List Orchestrations'),
                 ('delete_orchestrations', 'Delete Orchestrations'),
                 ('connect_reactant_assistants_to_orchestration', 'Connect Reactant Assistants to Orchestration'),
-                ('disconnect_reactant_assistants_from_orchestration',
-                 'Disconnect Reactant Assistants from Orchestration'),
+                ('disconnect_reactant_assistants_from_orchestration', 'Disconnect Reactant Assistants from Orchestration'),
                 ('add_file_systems', 'Add File Systems'),
                 ('update_file_systems', 'Update File Systems'),
                 ('list_file_systems', 'List File Systems'),
@@ -1932,6 +1948,10 @@ class PredefinedRolePackages__Contextual:
                 ('update_formica_google_apps_connections', 'Update Formica Google Apps Connections'),
                 ('list_formica_google_apps_connections', 'List Formica Google Apps Connections'),
                 ('delete_formica_google_apps_connections', 'Delete Formica Google Apps Connections'),
+                ('add_browser_extension_google_apps_connections', 'Add Browser Extension Google Apps Connections'),
+                ('update_browser_extension_google_apps_connections', 'Update Browser Extension Google Apps Connections'),
+                ('list_browser_extension_google_apps_connections', 'List Browser Extension Google Apps Connections'),
+                ('delete_browser_extension_google_apps_connections', 'Delete Browser Extension Google Apps Connections'),
             ]
 
     class PromptEngineerUser:
@@ -2041,6 +2061,10 @@ class PredefinedRolePackages__Contextual:
                 ('update_formica_google_apps_connections', 'Update Formica Google Apps Connections'),
                 ('list_formica_google_apps_connections', 'List Formica Google Apps Connections'),
                 ('delete_formica_google_apps_connections', 'Delete Formica Google Apps Connections'),
+                ('add_browser_extension_google_apps_connections', 'Add Browser Extension Google Apps Connections'),
+                ('update_browser_extension_google_apps_connections', 'Update Browser Extension Google Apps Connections'),
+                ('list_browser_extension_google_apps_connections', 'List Browser Extension Google Apps Connections'),
+                ('delete_browser_extension_google_apps_connections', 'Delete Browser Extension Google Apps Connections'),
                 ('create_internal_notifications', 'Create Internal Notifications'),
                 ('delete_internal_notifications', 'Delete Internal Notifications'),
             ]

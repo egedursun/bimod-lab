@@ -69,6 +69,8 @@ class AppendSlashMiddleware:
 
             and not request.path.startswith('/app/slider/public')
 
+            and not request.path.startswith('/app/browser_extensions/public')
+
             and not request.path.startswith('/app/blog_app')
 
             and not request.path.startswith('/app/mobile_client')

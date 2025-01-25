@@ -385,6 +385,12 @@
       "url": "/app/formica/google_apps/connections/list"
     },
     {
+      "name": "Google Chrome Extension Authentication",
+      "icon": "menu-icon tf-icons ti ti-hammer",
+      "slug": "google-chrome-extension",
+      "url": "/app/browser_extensions/google_apps/connections/list"
+    },
+    {
       "name": "Create Brainstorming Session",
       "icon": "menu-icon tf-icons ti ti-brain",
       "slug": "brainstorming",

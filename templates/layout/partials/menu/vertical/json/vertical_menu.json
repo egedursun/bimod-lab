@@ -451,6 +451,12 @@
       "url": "ellma:manage-scripts"
     },
     {
+      "name": "Chrome Extension",
+      "icon": "menu-icon tf-icons ti ti-hammer",
+      "slug": "chrome-extensions",
+      "url": "browser_extensions:google_apps_connections_list"
+    },
+    {
       "name": "Bimod Office",
       "icon": "menu-icon tf-icons ti ti-ruler",
       "slug": "bimod-office",

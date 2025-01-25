@@ -27,6 +27,8 @@ from apps.core.generative_ai.utils import (
     GPT_DEFAULT_ENCODING_ENGINE,
     ChatRoles,
     find_tool_call_from_json,
+    Office_ChatRoles,
+    Office_Models,
 )
 
 from apps.core.internal_cost_manager.costs_map import (
@@ -120,11 +122,12 @@ def handle_nosql_command_public(xc, command: str, content: str) -> str:
     try:
         structured_system_prompt = {
             "content": system_prompt,
-            "role": ChatRoles.SYSTEM,
+            "role": Office_ChatRoles.SYSTEM,
         }
 
         llm_response = client.chat.completions.create(
-            model=xc.copilot_llm.model_name,
+            model=Office_Models.GPT4O,
+            # model=xc.copilot_llm.model_name,
             messages=[
                 structured_system_prompt
             ],

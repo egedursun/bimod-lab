@@ -139,7 +139,7 @@
                 <label class="form-label" for="model_name">Model Name<span class="text-danger">&nbsp;*</span></label>
                 <select class="form-select" id="model_name" name="model_name">
                   {% for key, value in model_name_choices %}
-                    {% if key == 'o1-preview' %}
+                    {% if key == 'o1' %}
                       <option value="{{ key }}" selected>{{ value }}</option>
                     {% else %}
                       <option value="{{ key }}">{{ value }}</option>

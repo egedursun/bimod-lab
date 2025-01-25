@@ -206,14 +206,14 @@
             <li class="chat-contact-list-item chat-contact-list-item-title mt-0">
               <h5 class="mb-0"><strong>Assistants</strong></h5>
             </li>
-            <div class="tips-section alert alert-secondary alert-dismissible d-flex align-items-center ms-3 me-3"
+            <div class="tips-section alert alert-secondary border border-primary border-2 rounded alert-dismissible d-flex align-items-center ms-3 me-3"
                  role="alert">
             <span class="alert-icon rounded">
               <i class="ti ti-brain"></i>
             </span>
               <div class="d-flex flex-column ps-1">
                 <small class="mb-0">
-                  Click on any of the assistants to start a new chat with them.
+                  <strong>Click on any of the assistants to start a new chat with them.</strong>
                 </small>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
                 </button>
@@ -289,14 +289,14 @@
             <li class="chat-contact-list-item chat-list-item-0 d-none">
               <h6 class="text-muted mb-0"><strong>No Chats Found</strong></h6>
             </li>
-            <div class="tips-section alert alert-secondary alert-dismissible d-flex align-items-center ms-3 me-3"
+            <div class="tips-section alert alert-secondary border border-primary border-2 rounded alert-dismissible d-flex align-items-center ms-3 me-3"
                  role="alert">
             <span class="alert-icon rounded">
               <i class="ti ti-brain"></i>
             </span>
               <div class="d-flex flex-column ps-1">
                 <small class="mb-0">
-                  Click on any of your existing chats to start chatting with the assistants.
+                  <strong>Click on any of your existing chats to start chatting with the assistants.</strong>
                 </small>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
                 </button>
@@ -647,19 +647,12 @@
               style="max-height: 300px;">
               <button class="btn d-flex ms-auto p-1 mb-1" style="float: right;"
                       onclick="if(this.parentElement.style.maxHeight === '300px') {this.parentElement.style.maxHeight = '40px'; this.parentElement.classList.add('overflow-hidden'); this.parentElement.classList.remove('overflow-auto');} else {this.parentElement.style.maxHeight = '300px'; this.parentElement.classList.add('overflow-auto'); this.parentElement.classList.remove('overflow-hidden');}">
-                <i class="fa fa-dot-circle text-white"></i>
+                <i class="fa fa-dot-circle text-dark"></i>
               </button>
-              <small class="text-white p-1 mb-1"><strong>
+              <small class="text-dark p-1 mb-1"><strong>
                 <i class="fa fa-bolt-lightning me-2"></i>
                 Response Streamer
               </strong></small>
-              <small class="mb-2 text-dark ms-6">
-                <i class="fa fa-info-circle me-2"></i>
-                This is the response streamer. It will show the response from the assistant in real-time so that you
-                can track the progress of the assistant. The streamer is an effective tool for debugging the distinct
-                steps of the response processes; yet please note that it is still in an experimental stage, and it
-                might cause slower response times.
-              </small>
               <div id="non-tool-markdown-content"
                    class="bg-white text-black p-4 markdown-content border border-primary border-4 rounded">
               </div>
@@ -1727,7 +1720,7 @@
                           <div class="badge bg-warning d-flex align-items-center my-2">
                               <strong>MOD <i class="fa fa-bolt-lightning me-4"></i></strong>
                               <img src="${imageUrl}" alt="${fileExtension}" width="50" class="me-2">
-                              <span class="h6 mb-0 text-white"><strong>${filename_root}.${filename_extension}</strong> (${fileSize})</span>
+                              <span class="h6 mb-0 text-dark"><strong>${filename_root}.${filename_extension}</strong> (${fileSize})</span>
                               <button id="btn-close-image-${index}" type="button" class="btn-close ms-auto" aria-label="Remove" data-index="${index}"></button>
                           </div>
                       `;
@@ -1811,7 +1804,7 @@
           let newChunk = data.log;
           if (newChunk.includes('<[bimod_streaming_end]>')) {
             // Wrap the accumulated content in a new div with the 'bg-label-primary' class
-            element.innerHTML += `<div class="bg-label-primary rounded m-2 p-4"><strong class="text-white">${accumulatedContent}</strong></div>`;
+            element.innerHTML += `<div class="bg-label-primary rounded m-2 p-4"><strong class="text-dark">${accumulatedContent}</strong></div>`;
             element.scrollTo({
               top: element.scrollHeight + 1000,
               behavior: 'smooth'

@@ -75,8 +75,10 @@ class SessionTimeoutMiddleware(MiddlewareMixin):
                         return redirect('landing:not_accredited')
 
             except Exception as e:
-                messages.error(request,
-                               "This account is corrupted for an unknown reason. Please contact the system administrator.")
+                messages.error(
+                    request,
+                    "This account is corrupted for an unknown reason. Please contact the system administrator."
+                )
 
                 # de-authenticate the user
 

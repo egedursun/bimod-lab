@@ -554,6 +554,14 @@ urlpatterns = [
         )
     ),
 
+    path(
+        "app/browser_extensions/",
+        include(
+            "apps.browser_extensions.urls",
+            namespace="browser_extensions"
+        )
+    ),
+
     ############################################################
     # WORK IN PROGRESS
     ############################################################

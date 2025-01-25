@@ -201,6 +201,7 @@ INSTALLED_APPS = [
     "apps.beamguard",
     "apps.datasource_website",
     "apps.sinaptera",
+    "apps.browser_extensions",
 
     "apps.support_system",
     "apps.community_forum",
@@ -792,6 +793,11 @@ SLIDER = os.environ.get(
     default="0"
 )
 
+BROWSER_EXTENSION = os.environ.get(
+    "BROWSER_EXTENSION",
+    default="0"
+)
+
 HADRON_PRIME = os.environ.get(
     "HADRON_PRIME",
     default="0"
@@ -873,6 +879,7 @@ COSTS_MAP = {
 
     "FORMICA": float(FORMICA),
     "SLIDER": float(SLIDER),
+    "BROWSER_EXTENSION": float(BROWSER_EXTENSION),
     "HADRON_PRIME": float(HADRON_PRIME),
     "SMART_CONTRACT_CREATION": float(SMART_CONTRACT_CREATION),
     "BINEXUS": float(BINEXUS),
@@ -1049,6 +1056,7 @@ EXCLUDED_PAGES = [
 
     "/app/formica/public/*",
     "/app/slider/public/*",
+    "/app/browser_extensions/public/*",
     "/app/mm_triggered_jobs/api/v1/webhook/*",
 
     "/app/mm_triggered_jobs/orchestration/api/v1/webhook/*",
