@@ -108,6 +108,79 @@ class MongoDBNoSQLExecutor:
                 self.nosql_database_schemas_index_path
             )
 
+    @staticmethod
+    def execute_read__headless(
+        assistant,
+        connection_params,
+        query,
+        parameters=None
+    ):
+
+        headless_database_name = connection_params["database_name"].split(".")[0]
+        headless_collection_name = connection_params["database_name"].split(".")[1]
+
+        headless_conn_uri = f"mongodb+srv://{connection_params["username"]}:{connection_params["password"]}@{connection_params["host"]}/{headless_database_name}"
+
+        output = {
+            "status": True,
+            "error": ""
+        }
+
+        try:
+            if isinstance(query, str):
+                query = json.loads(query)
+
+        except Exception as e:
+            output["status"] = False
+            output["error"] = f"Error parsing query: {e}"
+
+            return output
+
+        try:
+            client = MongoClient(headless_conn_uri)
+            db = client[connection_params["database_name"]]
+
+            if isinstance(
+                query,
+                list
+            ):
+                result = db.command(
+                    {
+                        "aggregate": headless_collection_name,
+                        "pipeline": query,
+                    }
+                )
+
+            else:
+                result = db.command(query)
+
+            output["result"] = result
+            logger.info(f"Query executed successfully.")
+
+        except PyMongoError as e:
+            logger.error(f"Error occurred while executing query: {e}")
+
+            output["status"] = False
+            output["error"] = str(e)
+
+        new_tx = LLMTransaction(
+            organization=assistant.organization,
+            model=assistant.llm_model,
+            responsible_user=None,
+            responsible_assistant=assistant,
+            encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
+            llm_cost=InternalServiceCosts.NoSQLReadExecutor.COST,
+            transaction_type=ChatRoles.SYSTEM,
+            transaction_source=LLMTransactionSourcesTypesNames.NOSQL_READ,
+            is_tool_cost=True
+        )
+
+        new_tx.save()
+
+        logger.info(f"Transaction saved successfully.")
+
+        return output
+
     def execute_read(self, query):
         output = {
             "status": True,

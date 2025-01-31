@@ -599,6 +599,14 @@ urlpatterns = [
     ),
 
     path(
+        'bimod_lite/',
+        include(
+            "apps.bimod_lite.urls",
+            namespace="bimod_lite"
+        )
+    ),
+
+    path(
         'sentry/test/',
         trigger_error
     ),

@@ -16,6 +16,7 @@
 #
 
 import logging
+import secrets
 
 from django.contrib import messages
 
@@ -29,6 +30,7 @@ from django.views.generic import (
     TemplateView
 )
 
+from apps.metatempo.utils import USER_API_KEY_DEFAULT_LENGTH
 from apps.user_profile_management.forms import (
     ProfileUpdateForm,
     CreditCardForm
@@ -50,6 +52,18 @@ logger = logging.getLogger(__name__)
 class UserProfileView_List(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+
+        # If no User API Key exists, create it
+        context_user = self.request.user
+        if (
+            context_user.profile.user_api_key is None or
+            context_user.profile.user_api_key == ''
+        ):
+            context_user.profile.user_api_key = secrets.token_urlsafe(
+                USER_API_KEY_DEFAULT_LENGTH
+            )
+
+            context_user.profile.save()
 
         context['countries'] = COUNTRIES
 

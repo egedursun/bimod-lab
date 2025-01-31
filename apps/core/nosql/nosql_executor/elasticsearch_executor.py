@@ -83,20 +83,20 @@ class ElasticSearchNoSQLExecutor:
         )
 
         self.client = Elasticsearch(
-                hosts=[
-                    {
-                        "host": self.connection_object.host,
-                        "port": self.connection_object.port,
-                        "scheme": (
-                            "http" if settings.ENVIRONMENT == 'local' else "https"
-                        ),
-                    }
-                ],
-                basic_auth=(
-                    self.connection_object.username,
-                    self.connection_object.password
-                )
+            hosts=[
+                {
+                    "host": self.connection_object.host,
+                    "port": self.connection_object.port,
+                    "scheme": (
+                        "http" if settings.ENVIRONMENT == 'local' else "https"
+                    ),
+                }
+            ],
+            basic_auth=(
+                self.connection_object.username,
+                self.connection_object.password
             )
+        )
 
         if os.path.exists(self.nosql_database_schemas_index_path):
             self.nosql_database_schemas_index = faiss.read_index(
@@ -114,6 +114,74 @@ class ElasticSearchNoSQLExecutor:
                 self.nosql_database_schemas_index,
                 self.nosql_database_schemas_index_path
             )
+
+    @staticmethod
+    def execute_read__headless(
+        assistant,
+        connection_params,
+        query,
+        parameters=None
+    ):
+
+        headless_client = Elasticsearch(
+            hosts=[
+                {
+                    "host": connection_params['host'],
+                    "port": connection_params['port'],
+                    "scheme": (
+                        "http" if settings.ENVIRONMENT == 'local' else "https"
+                    ),
+                }
+            ],
+            basic_auth=(
+                connection_params['username'],
+                connection_params['password']
+            )
+        )
+
+        output = {
+            "status": True,
+            "error": ""
+        }
+
+        try:
+            if isinstance(query, list):
+                result = headless_client.msearch(
+                    body=query
+                )
+
+            else:
+                result = headless_client.search(
+                    index=connection_params['bucket_name'],
+                    body=query
+                )
+
+            output["result"] = result
+            logger.info("Query executed successfully.")
+
+        except Exception as e:
+            logger.error(f"Error occurred while executing query: {e}")
+
+            output["status"] = False
+            output["error"] = str(e)
+
+        new_tx = LLMTransaction(
+            organization=assistant.organization,
+            model=assistant.llm_model,
+            responsible_user=None,
+            responsible_assistant=assistant,
+            encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
+            llm_cost=InternalServiceCosts.NoSQLReadExecutor.COST,
+            transaction_type=ChatRoles.SYSTEM,
+            transaction_source=LLMTransactionSourcesTypesNames.NOSQL_READ,
+            is_tool_cost=True
+        )
+
+        new_tx.save()
+
+        logger.info("Transaction saved successfully.")
+
+        return output
 
     def execute_read(self, query):
         output = {

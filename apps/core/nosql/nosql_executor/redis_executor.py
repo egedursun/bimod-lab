@@ -107,6 +107,72 @@ class RedisNoSQLExecutor:
             **connection_params
         )
 
+    @staticmethod
+    def execute_read__headless(
+        assistant,
+        connection_params,
+        query,
+        parameters=None
+    ):
+        headless_connection_params = {
+            'host': connection_params['host'],
+            'port': connection_params['port'],
+            'socket_timeout': 10
+        }
+
+        if connection_params["password"] and connection_params["password"] != "":
+            headless_connection_params['password'] = connection_params['password']
+
+        if connection_params["username"] and connection_params["username"] != "":
+            headless_connection_params['username'] = connection_params['username']
+
+        headless_redis_client = redis.StrictRedis(
+            **headless_connection_params
+        )
+
+        output = {
+            "status": True,
+            "error": ""
+        }
+
+        try:
+            logger.info(f"Executing query: {query}")
+
+            result = headless_redis_client.execute_command(
+                query,
+                *parameters
+            ) if parameters else headless_redis_client.execute_command(
+                query
+            )
+
+            output["result"] = result
+
+            logger.info(f"Query executed successfully.")
+
+        except Exception as e:
+            logger.error(f"Error occurred while executing query: {e}")
+
+            output["status"] = False
+            output["error"] = str(e)
+
+        new_tx = LLMTransaction(
+            organization=assistant.organization,
+            model=assistant.llm_model,
+            responsible_user=None,
+            responsible_assistant=assistant,
+            encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
+            llm_cost=InternalServiceCosts.NoSQLReadExecutor.COST,
+            transaction_type=ChatRoles.SYSTEM,
+            transaction_source=LLMTransactionSourcesTypesNames.NOSQL_READ,
+            is_tool_cost=True
+        )
+
+        new_tx.save()
+
+        logger.info(f"Transaction saved successfully.")
+
+        return output
+
     def execute_read(self, query: str, parameters: Any = None):
         output = {
             "status": True,

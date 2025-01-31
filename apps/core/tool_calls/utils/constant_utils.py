@@ -61,6 +61,7 @@ class ToolCallDescriptorNames:
     EXECUTE_TRIGGERED_JOB_LOGS_QUERY = 'Triggered Job Logs Query Execution'
     EXECUTE_SMART_CONTRACT_GENERATION_QUERY = 'Smart Contract Generation Query'
     EXECUTE_WEBSITE_DATA_SEARCH_QUERY = 'Website Storage Item Data Search'
+    EXECUTE_INSTANT_CONNECTION_QUERY = 'Instant Connection Query Execution'
 
     #####
 

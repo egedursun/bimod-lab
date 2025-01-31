@@ -14,16 +14,25 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import secrets
 
-from django.contrib.auth.models import User
+from django.contrib.auth.models import (
+    User
+)
+
 from django.db import models
-from django.db.models.signals import post_save
+
+from django.db.models.signals import (
+    post_save
+)
+
 from django.dispatch import receiver
 from django.utils import timezone
 
 from apps.metatempo.utils import (
-    META_TEMPO_CONNECTION_API_KEY_DEFAULT_LENGTH
+    META_TEMPO_CONNECTION_API_KEY_DEFAULT_LENGTH,
+    USER_API_KEY_DEFAULT_LENGTH
 )
 
 from apps.user_permissions.models import (
@@ -192,6 +201,12 @@ class Profile(models.Model):
         null=True
     )
 
+    user_api_key = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True
+    )
+
     def add_points(self, action):
         points = POINT_REWARDS.get(action, 0)
 
@@ -307,6 +322,13 @@ class Profile(models.Model):
         if instance.profile.metatempo_tracking_auth_key is None:
             instance.profile.metatempo_tracking_auth_key = secrets.token_urlsafe(
                 META_TEMPO_CONNECTION_API_KEY_DEFAULT_LENGTH
+            )
+
+            instance.profile.save()
+
+        if instance.profile.user_api_key is None or instance.profile.user_api_key == '':
+            instance.profile.user_api_key = secrets.token_urlsafe(
+                USER_API_KEY_DEFAULT_LENGTH
             )
 
             instance.profile.save()

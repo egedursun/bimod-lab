@@ -246,6 +246,120 @@ class FileSystemsExecutor:
 
         return directory_dict
 
+    @staticmethod
+    def execute_file_system_command_set__headless(
+        assistant,
+        connection_params,
+        commands: list[str]
+    ):
+
+        headless_client = None
+
+        try:
+            ssh_connection_host = connection_params['host']
+            ssh_port = connection_params['port']
+            ssh_username = connection_params['username']
+            ssh_password = connection_params['password']
+
+            ssh = SSHClient()
+
+            ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+
+            ssh.connect(
+                ssh_connection_host,
+                port=ssh_port,
+                username=ssh_username,
+                password=ssh_password,
+                banner_timeout=DEFAULT_BANNER_TIMEOUT
+            )
+
+            headless_client = ssh
+
+            logger.info(f"Connected to the remote host: {ssh_connection_host}")
+
+        except Exception as e:
+            logger.error(f"Failed to connect to the remote host: {e}")
+            pass
+
+        if headless_client is None:
+            return {
+                "status": False,
+                "stdins": [],
+                "stdouts": [],
+                "stderrs": [],
+                "schema_before_execution": "",
+                "updated_schema": ""
+            }
+
+        from apps.core.generative_ai.utils import (
+            GPT_DEFAULT_ENCODING_ENGINE
+        )
+
+        from apps.core.generative_ai.utils import (
+            ChatRoles
+        )
+
+        results = {
+            "status": True,
+            "stdins": [],
+            "stdouts": [],
+            "stderrs": [],
+            "schema_before_execution": "",
+            "updated_schema": ""
+        }
+
+        for i, command in enumerate(commands):
+
+            try:
+                stdin, stdout, stderr = headless_client.exec_command(command)
+                results["stdins"].append(command)
+                results["stdouts"].append(stdout.read().decode())
+                results["stderrs"].append(stderr.read().decode())
+
+                logger.info(f"Executed the command: {command}")
+
+            except Exception as e:
+                results["status"] = False
+                results["stdins"].append(command)
+                results["stdouts"].append(f"Error executing the command: {str(e)}")
+                results["stderrs"].append("")
+
+                logger.error(f"Failed to execute the command: {command}")
+
+        try:
+            results["updated_schema"] = ""
+
+            # Close the client
+            logger.info(f"Closing the connection to the remote host.")
+            pass
+
+        except Exception as e:
+            logger.error(f"Failed to update the file tree schema: {e}")
+            pass
+
+        try:
+            tx = LLMTransaction(
+                organization=assistant.organization,
+                model=assistant.llm_model,
+                responsible_user=None,
+                responsible_assistant=assistant,
+                encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
+                llm_cost=InternalServiceCosts.FileSystemsExecutor.COST,
+                transaction_type=ChatRoles.SYSTEM,
+                transaction_source=LLMTransactionSourcesTypesNames.FILE_SYSTEM_COMMANDS,
+                is_tool_cost=True
+            )
+
+            tx.save()
+
+            logger.info(f"Created a new LLM transaction for the file system command execution: {tx}")
+
+        except Exception as e:
+            logger.error(f"Failed to create a new LLM transaction for the file system command execution: {e}")
+            pass
+
+        return results
+
     def execute_file_system_command_set(
         self,
         commands: list[str]

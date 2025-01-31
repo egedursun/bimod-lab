@@ -59,6 +59,63 @@ class Neo4JNoSQLExecutor:
             )
         )
 
+    @staticmethod
+    def execute_read__headless(
+        assistant,
+        connection_params,
+        query,
+        parameters=None
+    ):
+
+        headless_driver = GraphDatabase.driver(
+            uri=f"bolt://{connection_params["host"]}:{connection_params["port"]}",
+            auth=(
+                connection_params["username"],
+                connection_params["password"]
+            )
+        )
+
+        output = {
+            "status": True,
+            "error": ""
+        }
+
+        try:
+            with headless_driver.session() as session:
+                result = session.run(
+                    query
+                )
+
+                output["result"] = [
+                    record.data() for record in result
+                ]
+
+                logger.info("Read query executed successfully.")
+
+        except Exception as e:
+            logger.error(f"Error occurred while executing read query: {e}")
+
+            output["status"] = False
+            output["error"] = str(e)
+
+        new_tx = LLMTransaction(
+            organization=assistant.organization,
+            model=assistant.llm_model,
+            responsible_user=None,
+            responsible_assistant=assistant,
+            encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
+            llm_cost=InternalServiceCosts.NoSQLReadExecutor.COST,
+            transaction_type=ChatRoles.SYSTEM,
+            transaction_source=LLMTransactionSourcesTypesNames.NOSQL_READ,
+            is_tool_cost=True
+        )
+
+        new_tx.save()
+
+        logger.info("Transaction saved successfully.")
+
+        return output
+
     def execute_read(self, query: str):
         output = {
             "status": True,

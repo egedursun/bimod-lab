@@ -251,6 +251,8 @@ from apps.core.system_prompts.tool_call_prompts.per_tool.execute_file_system_dir
 from apps.core.system_prompts.tool_call_prompts.per_tool.execute_hadron_prime_node_query_tool_prompt import (
     build_tool_prompt__execute_hadron_prime_node_query
 )
+from apps.core.system_prompts.tool_call_prompts.per_tool.execute_instant_connection_query_prompt import \
+    build_tool_prompt__execute_instant_connection_query
 from apps.core.system_prompts.tool_call_prompts.per_tool.execute_media_item_search_tool_prompt import (
     build_tool_prompt__media_item_search
 )
@@ -538,7 +540,8 @@ class SystemPromptFactoryBuilder:
             orchestration_trigger,
             scheduled_job_logs,
             triggered_job_logs,
-            smart_contract_gen
+            smart_contract_gen,
+            instant_connection,
         ) = (
             SystemPromptFactoryBuilder._build_tool_call_instructions_prompts(
                 assistant=assistant
@@ -614,7 +617,8 @@ class SystemPromptFactoryBuilder:
             hadron_prime_node_feed=hadron_prime_node_feed,
             metakanban_feed=metakanban_feed,
             metatempo_feed=metatempo_feed,
-            orchestration_trigger_feed=orchestration_trigger_feed
+            orchestration_trigger_feed=orchestration_trigger_feed,
+            instant_connection=instant_connection,
         )
 
         prompt = {
@@ -707,7 +711,8 @@ class SystemPromptFactoryBuilder:
         hadron_prime_node_feed,
         metakanban_feed,
         metatempo_feed,
-        orchestration_trigger_feed
+        orchestration_trigger_feed,
+        instant_connection,
     ):
         combined_system_instructions = foundation
         combined_system_instructions += agent_nickname
@@ -776,6 +781,7 @@ class SystemPromptFactoryBuilder:
         combined_system_instructions += scheduled_job_logs
         combined_system_instructions += triggered_job_logs
         combined_system_instructions += smart_contract_gen
+        combined_system_instructions += instant_connection
 
         return combined_system_instructions
 
@@ -826,6 +832,7 @@ class SystemPromptFactoryBuilder:
         scheduled_job_logs = build_tool_prompt__execute_scheduled_job_logs_query()
         triggered_job_logs = build_tool_prompt__execute_triggered_job_logs_query()
         smart_contract_gen = build_tool_prompt__execute_smart_contract_generation_query()
+        instant_connection = build_tool_prompt__execute_instant_connection_query()
 
         return (
             process_audio,
@@ -862,7 +869,8 @@ class SystemPromptFactoryBuilder:
             orchestration_trigger,
             scheduled_job_logs,
             triggered_job_logs,
-            smart_contract_gen
+            smart_contract_gen,
+            instant_connection,
         )
 
     @staticmethod

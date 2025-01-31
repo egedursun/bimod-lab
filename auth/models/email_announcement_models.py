@@ -20,11 +20,19 @@ from django.db import models
 
 
 class BimodEmailAnnouncement(models.Model):
-    email_subject_raw = models.CharField(max_length=255)
-    title_raw = models.CharField(max_length=255)
+    email_subject_raw = models.CharField(
+        max_length=255
+    )
+
+    title_raw = models.CharField(
+        max_length=255
+    )
+
     body_raw = models.TextField()
 
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(
+        auto_now_add=True
+    )
 
     def __str__(self):
         return self.email_subject_raw + ' - ' + self.title_raw + ' - ' + self.created_at.strftime('%Y-%m-%d %H:%M:%S')

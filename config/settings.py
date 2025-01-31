@@ -206,6 +206,7 @@ INSTALLED_APPS = [
     "apps.support_system",
     "apps.community_forum",
     "apps.blog_app",
+    "apps.bimod_lite",
 ]
 
 MIDDLEWARE = [

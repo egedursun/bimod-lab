@@ -18,13 +18,17 @@
 import json
 import logging
 
-from django.contrib.auth.models import User
+from django.contrib.auth.models import (
+    User
+)
 
 from apps.core.beamguard.beamguard_executor import (
     BeamGuardExecutionManager
 )
 
-from apps.core.browsers.utils import BrowserActionsNames
+from apps.core.browsers.utils import (
+    BrowserActionsNames
+)
 
 from apps.core.generative_ai.auxiliary_methods.errors.error_log_prompts import (
     get_json_decode_error_log
@@ -32,6 +36,10 @@ from apps.core.generative_ai.auxiliary_methods.errors.error_log_prompts import (
 
 from apps.core.tool_calls.core_services.core_service_dashboard_statistics_query import (
     run_query_dashboard_statistics
+)
+
+from apps.core.tool_calls.core_services.core_service_execute_instant_connection_query import (
+    run_instant_connection_query
 )
 
 from apps.core.tool_calls.core_services.core_service_execute_metakanban_query import (
@@ -91,6 +99,10 @@ from apps.core.tool_calls.input_verifiers.verify_file_system_schema_search impor
 
 from apps.core.tool_calls.input_verifiers.verify_hadron_node_query import (
     verify_hadron_node_query_content
+)
+
+from apps.core.tool_calls.input_verifiers.verify_instant_connection_query import (
+    verify_run_instant_connection_query_content
 )
 
 from apps.core.tool_calls.input_verifiers.verify_media_item_search import (
@@ -260,7 +272,8 @@ from apps.core.tool_calls.core_services.core_service_code_base_query import (
 )
 
 from apps.core.tool_calls.core_services.core_service_analyze_code import (
-    run_analyze_code)
+    run_analyze_code
+)
 
 from apps.core.tool_calls.core_services.core_service_execute_custom_api import (
     run_execute_custom_api
@@ -837,7 +850,9 @@ class ToolCallManager:
             )
 
             if error:
-                logger.error(f"Error occurred while verifying the dashboard statistics query content: {error}")
+                logger.error(
+                    f"Error occurred while verifying the dashboard statistics query content: {error}"
+                )
 
                 return error, None, None, None
 
@@ -851,7 +866,9 @@ class ToolCallManager:
             )
 
             if error:
-                logger.error(f"Error occurred while verifying the Hadron Prime Node query content: {error}")
+                logger.error(
+                    f"Error occurred while verifying the Hadron Prime Node query content: {error}"
+                )
 
                 return error, None, None, None
 
@@ -866,7 +883,9 @@ class ToolCallManager:
             )
 
             if error:
-                logger.error(f"Error occurred while verifying the MetaKanban board query content: {error}")
+                logger.error(
+                    f"Error occurred while verifying the MetaKanban board query content: {error}"
+                )
 
                 return error, None, None, None
 
@@ -881,7 +900,9 @@ class ToolCallManager:
             )
 
             if error:
-                logger.error(f"Error occurred while verifying the MetaTempo tracker query content: {error}")
+                logger.error(
+                    f"Error occurred while verifying the MetaTempo tracker query content: {error}"
+                )
 
                 return error, None, None, None
 
@@ -896,7 +917,9 @@ class ToolCallManager:
             )
 
             if error:
-                logger.error(f"Error occurred while verifying the Orchestration trigger content: {error}")
+                logger.error(
+                    f"Error occurred while verifying the Orchestration trigger content: {error}"
+                )
 
                 return error, None, None, None
 
@@ -911,7 +934,9 @@ class ToolCallManager:
             )
 
             if error:
-                logger.error(f"Error occurred while verifying the scheduled job logs query content: {error}")
+                logger.error(
+                    f"Error occurred while verifying the scheduled job logs query content: {error}"
+                )
 
                 return error, None, None, None
 
@@ -926,7 +951,9 @@ class ToolCallManager:
             )
 
             if error:
-                logger.error(f"Error occurred while verifying the triggered job logs query content: {error}")
+                logger.error(
+                    f"Error occurred while verifying the triggered job logs query content: {error}"
+                )
 
                 return error, None, None, None
 
@@ -942,11 +969,29 @@ class ToolCallManager:
 
             if error:
                 logger.error(
-                    f"Error occurred while verifying the Smart Contract Generation query tool content: {error}")
+                    f"Error occurred while verifying the Smart Contract Generation query tool content: {error}"
+                )
 
                 return error, None, None, None
 
             output_tool_call = self._handle_tool_smart_contract_gen_query(
+                output_tool_call
+            )
+
+        elif defined_tool_descriptor == ToolCallDescriptorNames.EXECUTE_INSTANT_CONNECTION_QUERY:
+
+            error = verify_run_instant_connection_query_content(
+                content=self.tool_usage_dict
+            )
+
+            if error:
+                logger.error(
+                    f"Error occurred while verifying the Instant Connection Query Execution tool content: {error}"
+                )
+
+                return error, None, None, None
+
+            output_tool_call = self._handle_tool_instant_connection_query(
                 output_tool_call
             )
 
@@ -2199,6 +2244,41 @@ class ToolCallManager:
         logger.info(f"Smart contract generation query process response retrieved.")
 
         return output_tool_call
+
+    def _handle_tool_instant_connection_query(
+        self,
+        output_tool_call
+    ):
+
+        logger.info("Executing the Instant Connection query process.")
+
+        transmit_websocket_log(
+            f"""🧮 Assistant is using the instant connection query tool.""",
+            chat_id=self.chat.id,
+            sender_type=TransmitWebsocketLogSenderType.ASSISTANT,
+        )
+
+        assistant = self.chat.assistant
+        connection_string = self.tool_usage_dict.get("parameters").get("connection_string")
+        query_command = self.tool_usage_dict.get("parameters").get("query_command")
+
+        output = run_instant_connection_query(
+            assistant=assistant,
+            connection_string=connection_string,
+            query_command=query_command
+        )
+
+        output_str = json.dumps(
+            output,
+            sort_keys=True,
+            default=str
+        )
+
+        output_tool_call += output_str
+        logger.info(f"Instant Connection query process response retrieved.")
+
+        return output_tool_call
+
 
     def _handle_tool_hadron_node_query(
         self,

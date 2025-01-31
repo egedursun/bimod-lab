@@ -126,6 +126,84 @@ class WeaviateNoSQLExecutor:
                 "errors": [str(e)]
             }
 
+    @staticmethod
+    def execute_read__headless(
+        assistant,
+        connection_params,
+        query,
+        parameters=None
+    ):
+
+        headless_headers = {
+            "Authorization": f"Bearer {connection_params['password']}",
+            "Content-Type": "application/json"
+        }
+
+        output = {
+            "status": True,
+            "error": ""
+        }
+
+        try:
+            try:
+                logger.info(f"Executing GraphQL query: {query}")
+
+                response = requests.post(
+                    url=f"{connection_params["host"]}/v1/graphql",
+                    headers=headless_headers,
+                    json={
+                        "query": query,
+                        "variables": {}
+                    }
+                )
+
+                response.raise_for_status()
+
+                result = response.json()
+
+            except requests.RequestException as e:
+                logger.error(f"GraphQL query failed: {e}")
+
+                return {
+                    "errors": [str(e)]
+                }
+
+            if "errors" in result:
+                logger.error(f"GraphQL query errors: {result['errors']}")
+
+                output["status"] = False
+                output["error"] = result["errors"]
+
+            else:
+                output["result"] = result["data"]
+
+                logger.info(f"Query executed successfully.")
+
+        except Exception as e:
+            logger.error(f"Error occurred while executing query: {e}")
+
+            output["status"] = False
+            output["error"] = str(e)
+
+        new_tx = LLMTransaction(
+            organization=assistant.organization,
+            model=assistant.llm_model,
+            responsible_user=None,
+            responsible_assistant=assistant,
+            encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
+            llm_cost=InternalServiceCosts.NoSQLReadExecutor.COST,
+            transaction_type=ChatRoles.SYSTEM,
+            transaction_source=LLMTransactionSourcesTypesNames.NOSQL_READ,
+            is_tool_cost=True
+        )
+
+        new_tx.save()
+
+        logger.info(f"Transaction saved successfully.")
+
+        return output
+
+
     def execute_read(self, query: str) -> dict:
         output = {
             "status": True,

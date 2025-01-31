@@ -83,15 +83,98 @@ class CouchbaseNoSQLExecutor:
 
         self.nosql_database_schemas_index_path = os.path.join(
             VECTOR_INDEX_PATH_NOSQL_SCHEMAS,
-            f'nosql_schemas_index_{self.connection_object.id}.index')
+            f'nosql_schemas_index_{self.connection_object.id}.index'
+        )
 
         if os.path.exists(self.nosql_database_schemas_index_path):
-            self.nosql_database_schemas_index = faiss.read_index(self.nosql_database_schemas_index_path)
+            self.nosql_database_schemas_index = faiss.read_index(
+                self.nosql_database_schemas_index_path
+            )
 
         else:
             self.nosql_database_schemas_index = faiss.IndexIDMap(
-                faiss.IndexFlatL2(OPEN_AI_DEFAULT_EMBEDDING_VECTOR_DIMENSIONS))
-            faiss.write_index(self.nosql_database_schemas_index, self.nosql_database_schemas_index_path)
+                faiss.IndexFlatL2(
+                    OPEN_AI_DEFAULT_EMBEDDING_VECTOR_DIMENSIONS
+                )
+            )
+
+            faiss.write_index(
+                self.nosql_database_schemas_index,
+                self.nosql_database_schemas_index_path
+            )
+
+    @staticmethod
+    def execute_read__headless(
+        assistant,
+        connection_params,
+        query,
+        parameters=None
+    ):
+        headless_conn_params = {
+            'bucket_name': connection_params['database_name'],
+            'user': connection_params['username'],
+            'password': connection_params['password'],
+            'host': connection_params['host']
+        }
+
+        output = {
+            "status": True,
+            "error": ""
+        }
+
+        try:
+            cluster = Cluster(
+                f"couchbase://{headless_conn_params['host']}",
+                ClusterOptions(
+                    PasswordAuthenticator(
+                        headless_conn_params['user'],
+                        headless_conn_params['password']
+                    )
+                )
+            )
+
+            logger.info(f"Executing query: {query}")
+
+            if parameters:
+                result = cluster.query(
+                    query,
+                    QueryOptions(
+                        named_parameters=parameters
+                    )
+                )
+
+            else:
+                result = cluster.query(query)
+
+            output['result'] = [
+                row for row in result
+            ]
+
+            logger.info(f"Query executed successfully.")
+
+        except CouchbaseException as e:
+            logger.error(f"Error occurred while executing query: {e}")
+            output["status"] = False
+            output["error"] = str(e)
+
+        new_tx = LLMTransaction(
+            organization=assistant.organization,
+            model=assistant.llm_model,
+            responsible_user=None,
+            responsible_assistant=assistant,
+            encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
+            llm_cost=InternalServiceCosts.NoSQLReadExecutor.COST,
+            transaction_type=ChatRoles.SYSTEM,
+            transaction_source=LLMTransactionSourcesTypesNames.NOSQL_READ,
+            is_tool_cost=True
+        )
+
+        new_tx.save()
+
+        logger.info(f"Transaction saved successfully.")
+
+        return output
+
 
     def execute_read(
         self,

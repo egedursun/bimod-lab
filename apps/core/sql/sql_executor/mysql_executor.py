@@ -103,6 +103,72 @@ class MySQLExecutor:
                 self.sql_database_schemas_index_path
             )
 
+    @staticmethod
+    def execute_read__headless(
+        assistant,
+        connection_params,
+        query,
+        parameters=None
+    ):
+        headless_connection_params = {
+            'user': connection_params['username'],
+            'password': connection_params['password'],
+            'host': connection_params['host'],
+            'database': connection_params['database_name'],
+            'port': connection_params['port']
+        }
+
+        from apps.core.generative_ai.utils import (
+            GPT_DEFAULT_ENCODING_ENGINE
+        )
+
+        from apps.core.generative_ai.utils import ChatRoles
+
+        output = {
+            "status": True,
+            "error": ""
+        }
+
+        try:
+            with mysql.connector.connect(**headless_connection_params) as conn:
+
+                with conn.cursor(
+                    cursor_class=cursor_cext.CMySQLCursorDict,
+                    buffered=True
+                ) as cursor:
+                    cursor.execute(
+                        query,
+                        parameters
+                    )
+
+                    output = cursor.fetchall()
+
+            logger.info(f"Query executed successfully.")
+
+        except Exception as e:
+            output["status"] = False
+            output["error"] = str(e)
+
+            logger.error(f"Error occurred while executing query: {e}")
+
+        new_tx = LLMTransaction(
+            organization=assistant.organization,
+            model=assistant.llm_model,
+            responsible_user=None,
+            responsible_assistant=assistant,
+            encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
+            llm_cost=InternalServiceCosts.SQLReadExecutor.COST,
+            transaction_type=ChatRoles.SYSTEM,
+            transaction_source=LLMTransactionSourcesTypesNames.SQL_READ,
+            is_tool_cost=True
+        )
+
+        new_tx.save()
+
+        logger.info(f"Transaction saved successfully.")
+
+        return output
+
     def execute_read(
         self,
         query,

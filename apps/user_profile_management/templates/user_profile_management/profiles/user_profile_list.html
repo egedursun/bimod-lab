@@ -188,12 +188,35 @@
                     <small><strong>{{ request.user.profile.referral_code.bonus_percentage_referee }}% Bonus to Referee</strong></small>
                   </span>
                   </div>
+                  <hr>
+                  <div class="mb-4 col-md-12 mt-4">
+                    <h5>
+                      <strong>
+                        <i class="fa fa-key me-2"></i>
+                        Personal Access Key
+                      </strong>
+                    </h5>
+                    <div class="alert alert-warning rounded border border-warning border-2 rounded p-2">
+                      <i class="fa fa-exclamation-triangle me-2"></i>
+                      <strong>
+                        Never share your personal Access key with anyone. This key can be used to manage your internal
+                        data and settings. If you suspect that your API key has been compromised, please contact our
+                        support team immediately.
+                      </strong>
+                    </div>
+                    <label for="referral_code" class="form-label">User API Key</label>
+                    <span
+                      class="form-control bg-dark text-lightest border border-warning border-3 rounded p-2"><strong>{{ request.user.profile.user_api_key }}</strong>
+                    </span>
+                  </div>
                 </div>
                 <div class="mt-2">
-                  <button type="submit" class="btn btn-primary me-3"><strong>
-                    <i class="fa fa-save me-4"></i>
-                    Save Changes
-                  </strong></button>
+                  <button type="submit" class="btn btn-primary me-3">
+                    <strong>
+                      <i class="fa fa-save me-4"></i>
+                      Save Changes
+                    </strong>
+                  </button>
                   <button type="reset" class="btn btn-label-secondary"><strong>
                     <i class="fa fa-refresh me-4"></i>
                     Reset Changes
