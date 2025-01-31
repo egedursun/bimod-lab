@@ -32,6 +32,7 @@ from apps.core.generative_ai.auxiliary_methods.errors.error_log_prompts import (
     get_technical_error_log,
     get_json_decode_error_log
 )
+from apps.core.generative_ai.magroute.deepseek_r1 import DeepSeekR1
 
 from apps.core.generative_ai.utils import (
     find_tool_call_from_json,
@@ -314,6 +315,26 @@ class OpenAIGPTVoidForgerClientManager:
 
                 else:
 
+                    resp = DeepSeekR1.chat.completions.create(
+                        chat_id=self.chat.id,
+                        messages=system_prompt_msgs,
+                        temperature=float(self.voidforger.llm_model.temperature),
+                        max_tokens=int(self.voidforger.llm_model.maximum_tokens),
+                        top_p=float(self.voidforger.llm_model.top_p),
+                        frequency_penalty=float(self.voidforger.llm_model.frequency_penalty),
+                        presence_penalty=float(self.voidforger.llm_model.presence_penalty),
+                        socket_type=TransmitWebsocketLogSenderType.VOIDFORGER,
+                        fermion__is_fermion_supervised=fermion__is_fermion_supervised,
+                        fermion__export_type=fermion__export_type,
+                        fermion__endpoint=fermion__endpoint
+                    )
+
+                    """
+                    Vanilla OpenAI Client Integration
+                    Commented out by @egedursun for: DeepSeekR1 Integration
+                    """
+
+                    """
                     resp = c.chat.completions.create(
                         model=self.voidforger.llm_model.model_name,
                         messages=system_prompt_msgs,
@@ -323,6 +344,7 @@ class OpenAIGPTVoidForgerClientManager:
                         # max_tokens=int(self.voidforger.llm_model.maximum_tokens),
                         # top_p=float(self.voidforger.llm_model.top_p)
                     )
+                    """
 
             except Exception as e:
                 logger.error(f"Error occurred while retrieving the response from the language model: {str(e)}")

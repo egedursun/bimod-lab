@@ -323,14 +323,6 @@ urlpatterns = [
     ),
 
     path(
-        "app/finetuning/",
-        include(
-            "apps.finetuning.urls",
-            namespace="finetuning"
-        )
-    ),
-
-    path(
         "app/data_security/",
         include(
             "apps.data_security.urls",

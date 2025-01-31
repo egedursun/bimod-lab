@@ -2,9 +2,9 @@
 #
 #  Project: Bimod.io™
 #  File: mtest_deepseek_r1.py
-#  Last Modified: 2025-01-29 21:25:17
+#  Last Modified: 2025-01-31 17:08:42
 #  Author: Ege Dogan Dursun (Co-Founder & Chief Executive Officer / CEO @ BMD™ Autonomous Holdings)
-#  Created: 2025-01-29 21:25:18
+#  Created: 2025-01-31 18:00:49
 #
 #  This software is proprietary and confidential. Unauthorized copying,
 #  distribution, modification, or use of this software, whether for
@@ -15,28 +15,210 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-import os
 import replicate
+from typing import List
+import os
 
-REPLICATE_API_TOKEN = "r8_1NjgYRB9XLQ0yI7XMllU6fV5wkxQTb82WymoU"
+from apps.core.generative_ai.magroute import (
+    DEEPSEEK_MODEL_NAME
+)
 
-os.environ["REPLICATE_API_TOKEN"] = REPLICATE_API_TOKEN
+from apps.core.generative_ai.utils import (
+    ChatRoles
+)
 
-prompt = [
-    {
-        "role": "system",
-        "content": "You are a financial data analyst at a large bank."
-    },
-    {
-        "role": "user",
-        "content": "What are the most common financial analysis techniques?"
-    }
-]
 
-for event in replicate.stream(
-    "deepseek-ai/deepseek-r1",
-    input={
-        "prompt": str(prompt)
-    }
-):
-    print(event, end="")
+class DeepSeekR1:
+    class ModeSpecifiers:
+        THINK_START = "<think>"
+        THINK_END = "</think>"
+
+    class SentenceTerminals:
+        PERIOD = ". "
+        EXCLAMATION = "! "
+        QUESTION = "? "
+
+    class chat:
+        class completions:
+            @staticmethod
+            def _build_prompt(
+                structured_list: List[dict]
+            ) -> str:
+                open_source_prompt = """
+                    **Prompts & Conversation History:**
+
+                    - Do NOT provide your response in the form of prompts, simply deliver your answer without any
+                    formatting regarding role/content key specifications.
+
+                    ---
+                """
+                for i, prompt in enumerate(structured_list):
+                    role = prompt["role"]
+                    content = prompt["content"]
+
+                    open_source_prompt += f"""
+                    [{i}] {role}: {content}
+                    """
+
+                return open_source_prompt
+
+            @staticmethod
+            def create(
+                chat_id: str,
+                messages: List[dict],
+                socket_type: str,
+                max_tokens: float = 1_000_000,
+                temperature: float = 0.1,
+                top_p: float = 1.0,
+                frequency_penalty: float = 0.0,
+                presence_penalty: float = 0.0,
+                fermion__is_fermion_supervised: bool = False,
+                fermion__export_type: str = "",
+                fermion__endpoint: str = ""
+            ):
+                os.environ["REPLICATE_API_TOKEN"] = "r8_1NjgYRB9XLQ0yI7XMllU6fV5wkxQTb82WymoU"
+                os.environ["NEBIUS_API_TOKEN"] = "eyJhbGciOiJIUzI1NiIsImtpZCI6IlV6SXJWd1h0dnprLVRvdzlLZWstc0M1akptWXBvX1VaVkxUZlpnMDRlOFUiLCJ0eXAiOiJKV1QifQ.eyJzdWIiOiJnb29nbGUtb2F1dGgyfDEwMTExNzE5NTAyMzQyODg3MTQxMSIsInNjb3BlIjoib3BlbmlkIG9mZmxpbmVfYWNjZXNzIiwiaXNzIjoiYXBpX2tleV9pc3N1ZXIiLCJhdWQiOlsiaHR0cHM6Ly9uZWJpdXMtaW5mZXJlbmNlLmV1LmF1dGgwLmNvbS9hcGkvdjIvIl0sImV4cCI6MTg5NjAxNTMyMCwidXVpZCI6ImJmNmMwZWMxLTlkNmUtNGI2NS1hZjdiLTEyMzY2NTQ1MTA4YiIsIm5hbWUiOiJiaW1vZCIsImV4cGlyZXNfYXQiOiIyMDMwLTAxLTMwVDE0OjU1OjIwKzAwMDAifQ.P4XZWLc_tUvwyI7djZpxU44X3nmoGfZ3UleersNZwk4"
+
+                prompt = DeepSeekR1.chat.completions._build_prompt(
+                    structured_list=messages
+                )
+
+                current_thought_accumulation, response = "", ""
+                think_mode = False
+
+                for event in replicate.stream(
+                    DEEPSEEK_MODEL_NAME,
+                    input={
+                        "prompt": str(prompt),
+                        "max_tokens": max_tokens,
+                        "temperature": temperature,
+                        "top_p": top_p,
+                        "frequency_penalty": frequency_penalty,
+                        "presence_penalty": presence_penalty
+                    }
+                ):
+
+                    event_chunk = str(event)
+
+                    if DeepSeekR1.ModeSpecifiers.THINK_START in str(event):
+                        event_chunk = event_chunk.replace(
+                            DeepSeekR1.ModeSpecifiers.THINK_START,
+                            ""
+                        )
+                        think_mode = True
+
+                    if DeepSeekR1.ModeSpecifiers.THINK_END in str(event):
+                        think_parts = event_chunk.split(
+                            DeepSeekR1.ModeSpecifiers.THINK_END
+                        )
+                        if len(think_parts) > 1:
+                            event_chunk = think_parts[1]
+                        else:
+                            event_chunk = ""
+
+                        think_mode = False
+
+                    if think_mode is True:
+
+                        if (
+                            DeepSeekR1.SentenceTerminals.PERIOD in event_chunk or
+                            DeepSeekR1.SentenceTerminals.QUESTION in event_chunk or
+                            DeepSeekR1.SentenceTerminals.EXCLAMATION in event_chunk
+                        ):
+
+                            if DeepSeekR1.SentenceTerminals.PERIOD in event_chunk:
+                                current_thought_accumulation += event_chunk.split(
+                                    DeepSeekR1.SentenceTerminals.PERIOD
+                                )[0] + DeepSeekR1.SentenceTerminals.PERIOD
+
+                            elif DeepSeekR1.SentenceTerminals.EXCLAMATION in event_chunk:
+                                current_thought_accumulation += event_chunk.split(
+                                    DeepSeekR1.SentenceTerminals.EXCLAMATION
+                                )[0] + DeepSeekR1.SentenceTerminals.EXCLAMATION
+
+                            elif DeepSeekR1.SentenceTerminals.QUESTION in event_chunk:
+                                current_thought_accumulation += event_chunk.split(
+                                    DeepSeekR1.SentenceTerminals.QUESTION
+                                )[0] + DeepSeekR1.SentenceTerminals.QUESTION
+
+                            ############################
+                            # Stream the socket message
+                            ############################
+                            print("[WEBSOCKET LOG]: " + current_thought_accumulation)
+                            ############################
+
+                            ############################
+                            # Reset the buffer
+                            ############################
+                            current_thought_accumulation = ""
+                            if DeepSeekR1.SentenceTerminals.PERIOD in event_chunk:
+                                if len(event_chunk.split(DeepSeekR1.SentenceTerminals.PERIOD)) > 1:
+                                    current_thought_accumulation += event_chunk.split(
+                                        DeepSeekR1.SentenceTerminals.PERIOD
+                                    )[1]
+
+                            elif DeepSeekR1.SentenceTerminals.EXCLAMATION in event_chunk:
+                                if len(event_chunk.split(DeepSeekR1.SentenceTerminals.EXCLAMATION)) > 1:
+                                    current_thought_accumulation += event_chunk.split(
+                                        DeepSeekR1.SentenceTerminals.EXCLAMATION
+                                    )[1]
+
+                            elif DeepSeekR1.SentenceTerminals.QUESTION in event_chunk:
+                                if len(event_chunk.split(DeepSeekR1.SentenceTerminals.QUESTION)) > 1:
+                                    current_thought_accumulation += event_chunk.split(
+                                        DeepSeekR1.SentenceTerminals.QUESTION
+                                    )[1]
+
+                        else:
+                            ############################
+                            # Get the final response
+                            ############################
+                            current_thought_accumulation += event_chunk
+
+                    else:
+                        response += event_chunk
+
+                #################################
+                # Mock client response structure
+                #################################
+
+                class MockMessage:
+                    def __init__(self, role: str, content: str):
+                        self.role = role
+                        self.content = content
+
+                class MockMessageWrapper:
+                    def __init__(self, message: MockMessage):
+                        self.message = message
+
+                class MockResponse:
+                    def __init__(self, choices: List[MockMessageWrapper]):
+                        self.choices = choices
+
+                response = MockResponse(
+                    choices=[
+                        MockMessageWrapper(
+                            message=MockMessage(
+                                role=ChatRoles.ASSISTANT,
+                                content=response
+                            )
+                        )
+                    ]
+                )
+
+                return response
+
+
+if __name__ == "__main__":
+    response = DeepSeekR1.chat.completions.create(
+        chat_id="123",
+        messages=[
+            {
+                "role": ChatRoles.USER,
+                "content": "Hello, how are you?"
+            },
+        ],
+        socket_type="websocket"
+    )
+
+    print(response.choices[0].message.content)

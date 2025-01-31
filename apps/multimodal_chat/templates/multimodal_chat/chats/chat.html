@@ -256,7 +256,7 @@
                           class="d-block text-dark text-truncate text-sm ps-2 pe-2 pb-1 rounded mt-1">
                           <strong>
                             <i class="fa fa-bolt-lightning me-2"></i>
-                            {{ assistant.llm_model.model_name }}
+                            {{ bimod_model }}
                           </strong>
                         </small>
                       </div>
@@ -449,7 +449,6 @@
                         <strong>
                           {{ active_chat.assistant.organization }} / {{ active_chat.assistant.name }}
                           / {{ active_chat.assistant.llm_model.nickname }}
-                          / {{ active_chat.assistant.llm_model.model_name }}
                         </strong>
                       </small>
                     </h6>

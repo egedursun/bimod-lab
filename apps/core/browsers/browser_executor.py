@@ -151,7 +151,10 @@ class BrowsingExecutor:
                     context_content=search_output,
                     log_content=f"Search query: {kwargs['query']} for the {kwargs['page']}th page of the {self.engine}"
                                 f"search engine.",
-                    screenshot=ContentFile(image_bytes, name=f"{uuid.uuid4()}.png")
+                    screenshot=ContentFile(
+                        image_bytes,
+                        name=f"{uuid.uuid4()}.png"
+                    )
                 )
 
                 new_log_instance.save()
@@ -593,10 +596,16 @@ class BrowsingExecutor:
         try:
             text = cleaner.clean_html(text)
 
-            text = (text.replace("<div>", "").replace("</div>", "").replace("\n", "")
-                    .replace("\t", ""))
+            text = (
+                text.replace("<div>", "")
+                .replace("</div>", "")
+                .replace("\n", "")
+                .replace("\t", "")
+            )
 
             text = " ".join(text.split())
+
+            print("[HTML PAGE CONTENT] \n =========== \n", text, "\n =========== \n\n")
 
             logger.info(f"Cleaned the page content.")
 

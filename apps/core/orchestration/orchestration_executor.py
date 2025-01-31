@@ -17,6 +17,7 @@
 import json
 import logging
 
+from apps.core.generative_ai.magroute.deepseek_r1 import DeepSeekR1
 from apps.core.generative_ai.utils import (
     find_tool_call_from_json,
     ChatRoles
@@ -229,6 +230,23 @@ class OrchestrationExecutor:
 
             else:
 
+                resp = DeepSeekR1.chat.completions.create(
+                    chat_id=self.maestro.id,
+                    messages=prompt_msgs,
+                    temperature=float(self.maestro.llm_model.temperature),
+                    frequency_penalty=float(self.maestro.llm_model.frequency_penalty),
+                    presence_penalty=float(self.maestro.llm_model.presence_penalty),
+                    max_tokens=int(self.maestro.llm_model.maximum_tokens),
+                    top_p=float(self.maestro.llm_model.top_p),
+                    socket_type=TransmitWebsocketLogSenderType.ORCHESTRATION,
+                )
+
+                """
+                Vanilla OpenAI Client Integration
+                Commented out by @egedursun for: DeepSeekR1 Integration
+                """
+
+                """
                 resp = c.chat.completions.create(
                     model=self.maestro.llm_model.model_name,
                     messages=prompt_msgs,
@@ -238,6 +256,7 @@ class OrchestrationExecutor:
                     # max_tokens=int(self.maestro.llm_model.maximum_tokens),
                     # top_p=float(self.maestro.llm_model.top_p)
                 )
+                """
 
         except Exception as e:
             logger.error(f"Error occurred while retrieving the response from the language model: {str(e)}")

@@ -120,34 +120,6 @@
                        placeholder="Enter a nickname for your new LLM model" />
                 <div class="form-text"></div>
               </div>
-              <div class="col-6 mb-3">
-                <label class="form-label" for="provider">Choose Model Provider<span
-                  class="text-danger">&nbsp;*</span></label>
-                <select class="form-select" id="provider" name="provider">
-                  {% for key, value in provider_choices %}
-                    <option value="{{ key }}">{{ value }}</option>
-                  {% endfor %}
-                </select>
-                <div class="form-text"></div>
-              </div>
-              <div class="col-6 mb-3">
-                <label class="form-label" for="api_key">Provider API Key<span class="text-danger">&nbsp;*</span></label>
-                <input type="text" class="form-control" id="api_key" name="api_key" placeholder="Enter API key" />
-                <div class="form-text"></div>
-              </div>
-              <div class="col-3 mb-3">
-                <label class="form-label" for="model_name">Model Name<span class="text-danger">&nbsp;*</span></label>
-                <select class="form-select" id="model_name" name="model_name">
-                  {% for key, value in model_name_choices %}
-                    {% if key == 'o1' %}
-                      <option value="{{ key }}" selected>{{ value }}</option>
-                    {% else %}
-                      <option value="{{ key }}">{{ value }}</option>
-                    {% endif %}
-                  {% endfor %}
-                </select>
-                <div class="form-text"></div>
-              </div>
               <h5 class="bg-body p-8 my-8 rounded border border-primary-subtle rounded">
                 <strong>
                   <i class="fa fa-cogs me-4"></i>

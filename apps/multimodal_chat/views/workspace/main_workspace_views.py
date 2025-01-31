@@ -72,7 +72,11 @@ from apps.voidforger.models import (
     VoidForger
 )
 
-from config.settings import MEDIA_URL
+from config.settings import (
+    MEDIA_URL,
+    INTERNAL_LLM_MODEL_NAME
+)
+
 from web_project import TemplateLayout, TemplateHelper
 
 logger = logging.getLogger(__name__)
@@ -186,6 +190,7 @@ class ChatView_MainWorkspace(TemplateView, LoginRequiredMixin):
                 "message_templates": msg_templates,
                 "base_url": MEDIA_URL,
                 "artifacts": artifacts,
+                "bimod_model": INTERNAL_LLM_MODEL_NAME,
             }
         )
 

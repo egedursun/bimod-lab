@@ -116,8 +116,6 @@
           <tr>
             <th style="min-width: 200px; max-width: 200px;">Nickname</th>
             <th style="min-width: 400px; max-width: 400px;">Description</th>
-            <th style="min-width: 150px; max-width: 150px;">Provider</th>
-            <th style="min-width: 150px; max-width: 150px;">Model Name</th>
             <th style="min-width: 100px; max-width: 100px;">Temperature</th>
             <th style="min-width: 150px; max-width: 150px;">Max Tokens</th>
             <th style="min-width: 120px; max-width: 120px;">Top P</th>
@@ -134,8 +132,6 @@
               <td>
                 <p class="overflow-auto" style="max-height: 250px;">{{ llm_core.description }}</p>
               </td>
-              <td><strong>{{ llm_core.get_provider_name }}</strong></td>
-              <td><strong>{{ llm_core.model_name }}</strong></td>
               <td>{{ llm_core.temperature }}</td>
               <td>{{ llm_core.maximum_tokens }}</td>
               <td>{{ llm_core.top_p }}</td>

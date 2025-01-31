@@ -122,29 +122,6 @@
                           placeholder="Enter description">{{ llm_core.description }}</textarea>
                 <div class="form-text"></div>
               </div>
-              <div class="col-6 mb-6">
-                <label class="form-label" for="provider">Edit Model Provider</label>
-                <select class="form-control" id="provider" name="provider">
-                  {% for key, value in provider_choices %}
-                    <option value="{{ key }}" {% if llm_core.provider == key %}selected{% endif %}>{{ value }}</option>
-                  {% endfor %}
-                </select>
-              </div>
-              <div class="col-6 mb-6">
-                <label class="form-label" for="api_key">Edit Provider API Key</label>
-                <input type="text" class="form-control" id="api_key" name="api_key" placeholder="Enter API Key"
-                       value="{{ llm_core.api_key }}" />
-                <div class="form-text"></div>
-              </div>
-              <div class="col-3 mb-6">
-                <label class="form-label" for="model_name">Edit Model Name</label>
-                <select class="form-control" id="model_name" name="model_name">
-                  {% for key, value in model_name_choices %}
-                    <option value="{{ key }}"
-                            {% if llm_core.model_name == key %}selected{% endif %}>{{ value }}</option>
-                  {% endfor %}
-                </select>
-              </div>
               <div class="col-3 mb-6">
                 <label class="form-label" for="temperature">Edit Temperature</label>
                 <input type="number" class="form-control" id="temperature" name="temperature"

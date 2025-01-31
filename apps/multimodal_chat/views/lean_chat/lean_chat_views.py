@@ -78,7 +78,11 @@ from apps.organization.models import (
 from apps.user_permissions.utils import (
     PermissionNames
 )
-from config.settings import MEDIA_URL
+
+from config.settings import (
+    MEDIA_URL,
+    INTERNAL_LLM_MODEL_NAME
+)
 
 from web_project import (
     TemplateLayout,
@@ -196,6 +200,7 @@ class ChatView_LeanChat(TemplateView, LoginRequiredMixin):
                 "message_templates": msg_templates,
                 "base_url": MEDIA_URL,
                 "artifacts": artifacts,
+                "bimod_model": INTERNAL_LLM_MODEL_NAME,
             }
         )
 

@@ -70,7 +70,10 @@ from apps.user_permissions.utils import (
     PermissionNames
 )
 
-from config.settings import MEDIA_URL
+from config.settings import (
+    MEDIA_URL,
+    INTERNAL_LLM_MODEL_NAME
+)
 
 from web_project import (
     TemplateLayout,
@@ -146,7 +149,8 @@ class ChatView_Chat(LoginRequiredMixin, TemplateView):
                 "chat_messages": active_chat_msgs,
                 "message_templates": msg_tmpls,
                 "base_url": MEDIA_URL,
-                "artifacts": artifacts
+                "artifacts": artifacts,
+                "bimod_model": INTERNAL_LLM_MODEL_NAME,
             }
         )
 

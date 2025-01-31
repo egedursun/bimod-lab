@@ -26,9 +26,6 @@ class LLMCoreForm(forms.ModelForm):
         fields = [
             'nickname',
             'description',
-            'provider',
-            'api_key',
-            'model_name',
             'temperature',
             'maximum_tokens',
             'stop_sequences',

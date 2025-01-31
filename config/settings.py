@@ -171,7 +171,6 @@ INSTALLED_APPS = [
     "apps.mm_scheduled_jobs",
     "apps.mm_triggered_jobs",
     "apps.orchestrations",
-    "apps.finetuning",
     "apps.data_security",
     "apps.data_backups",
     "apps.brainstorms",
@@ -1263,6 +1262,16 @@ VOSK_MODEL_PATH = os.environ.get(
 
 INTERNAL_OPENAI_API_KEY = os.environ.get(
     "INTERNAL_OPENAI_API_KEY",
+    default=""
+)
+
+INTERNAL_REPLICATE_API_KEY = os.environ.get(
+    "INTERNAL_REPLICATE_API_KEY",
+    default=""
+)
+
+INTERNAL_LLM_MODEL_NAME = os.environ.get(
+    "INTERNAL_LLM_MODEL_NAME",
     default=""
 )
 

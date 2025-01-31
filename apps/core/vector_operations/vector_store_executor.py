@@ -122,6 +122,10 @@ class VectorStoreExecutor:
             total_vectors
         )
 
+        if k == 0:
+            logger.info("[search_within_document_chunks] No document chunks found in the database.")
+            return []
+
         query_vector = np.array(
             [
                 self._generate_query_embedding(query)

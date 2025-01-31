@@ -17,10 +17,6 @@
 
 from django.db import models
 
-from apps.finetuning.models import (
-    FineTunedModelConnection
-)
-
 from apps.llm_core.utils import (
     LARGE_LANGUAGE_MODEL_PROVIDERS,
     GPT_MODEL_NAMES,
@@ -176,26 +172,9 @@ class LLMCore(models.Model):
         update_fields=None
     ):
 
-        fine_tuned_models = FineTunedModelConnection.objects.filter(
-            organization__in=[self.organization]
-        ).all()
-
-        for model in fine_tuned_models:
-
-            if model.model_name not in [
-                m[0] for m in GPT_MODEL_NAMES
-            ]:
-                GPT_MODEL_NAMES.append(
-                    (
-                        model.model_name,
-                        model.nickname
-                    )
-                )
-
         for model in GPT_MODEL_NAMES:
             if (
-                model[0] not in [m[0] for m in GPT_MODEL_NAMES] and
-                model[0] not in [m[0] for m in fine_tuned_models]
+                model[0] not in [m[0] for m in GPT_MODEL_NAMES]
             ):
                 GPT_MODEL_NAMES.remove(model)
 

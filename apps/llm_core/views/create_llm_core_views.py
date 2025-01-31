@@ -30,16 +30,12 @@ from apps.core.user_permissions.permission_manager import (
     UserPermissionManager
 )
 
-from apps.finetuning.models import (
-    FineTunedModelConnection
-)
-
 from apps.llm_core.forms import LLMCoreForm
 from apps.llm_core.models import LLMCore
 
 from apps.llm_core.utils import (
-    LARGE_LANGUAGE_MODEL_PROVIDERS,
-    GPT_MODEL_NAMES
+    LargeLanguageModelProvidersNames,
+    GPTModelNamesNames
 )
 
 from apps.organization.models import Organization
@@ -47,6 +43,7 @@ from apps.organization.models import Organization
 from apps.user_permissions.utils import (
     PermissionNames
 )
+from config import settings
 
 from web_project import TemplateLayout
 
@@ -60,23 +57,6 @@ class LLMView_Create(TemplateView, LoginRequiredMixin):
 
         context['user'] = user
         context['organizations'] = user.organizations.all()
-        context['provider_choices'] = LARGE_LANGUAGE_MODEL_PROVIDERS
-        context['model_name_choices'] = GPT_MODEL_NAMES
-
-        tuned_llms = FineTunedModelConnection.objects.filter(
-            organization__in=context['organizations']
-        ).all()
-
-        for model in tuned_llms:
-            if model.model_name not in [m[0] for m in context['model_name_choices']]:
-                context['model_name_choices'].append((model.model_name, model.nickname))
-
-        for model in context['model_name_choices']:
-            if (
-                model[0] not in [m[0] for m in GPT_MODEL_NAMES] and
-                model[0] not in [m[0] for m in tuned_llms]
-            ):
-                context['model_name_choices'].remove(model)
 
         return context
 
@@ -97,6 +77,9 @@ class LLMView_Create(TemplateView, LoginRequiredMixin):
 
         form.instance.created_by_user = user
         form.instance.last_updated_by_user = user
+        form.instance.provider = "OA"
+        form.instance.model_name = GPTModelNamesNames.O1
+        form.instance.api_key = settings.INTERNAL_OPENAI_API_KEY
 
         try:
             if form.is_valid():

@@ -136,18 +136,7 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
         # STEP 2 (+5%) = 15%
         ############################################################################################################
         # Q3: Please enter your OpenAI API key
-
-        response__llm_core_openai_api_key = request.POST.get(
-            'response__llm_core_openai_api_key'
-        )
-
-        if (
-            response__llm_core_openai_api_key is None or
-            response__llm_core_openai_api_key.strip() == ""
-        ):
-            messages.error(request, f"OpenAI API key is required.")
-
-            return redirect("quick_setup_helper:wrapper")
+        # pass this
 
         # Q4: Which would be more important for your assistants? (Don't worry, you can always change you mind and update later on.)
 
@@ -172,7 +161,6 @@ class QuickSetupHelperView_QuickSetupManager(LoginRequiredMixin, View):
         success_002, new_llm_model = action__002_llm_core_create(
             metadata__user=context_user,
             metadata__organization=new_organization,
-            response__llm_core_openai_api_key=response__llm_core_openai_api_key,
             response__openai_temperature=response__openai_temperature
         )
 

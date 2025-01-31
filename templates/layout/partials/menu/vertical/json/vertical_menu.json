@@ -704,12 +704,6 @@
       "menu_header": "Custom LLM Models"
     },
     {
-      "name": "Fine Tuning",
-      "icon": "menu-icon tf-icons ti ti-settings",
-      "slug": "fine-tuning",
-      "url": "finetuning:list"
-    },
-    {
       "menu_header": "Remote Sources"
     },
     {

@@ -27,13 +27,14 @@ from apps.quick_setup_helper.utils import (
     generate_random_object_id_string
 )
 
+from config import settings
+
 logger = logging.getLogger(__name__)
 
 
 def action__002_llm_core_create(
     metadata__user,
     metadata__organization,
-    response__llm_core_openai_api_key,
     response__openai_temperature
 ):
     try:
@@ -42,7 +43,7 @@ def action__002_llm_core_create(
             created_by_user=metadata__user,
             last_updated_by_user=metadata__user,
             provider="OA",
-            api_key=response__llm_core_openai_api_key,
+            api_key=settings.INTERNAL_OPENAI_API_KEY,
             temperature=response__openai_temperature,
             model_name=GPTModelNamesNames.O1_PREVIEW,
             nickname="General Core Model" + " " + generate_random_object_id_string(),
