@@ -37,10 +37,14 @@ from apps.ellma.utils import (
 )
 
 from apps.llm_core.models import LLMCore
-from apps.llm_transaction.models import LLMTransaction
+
+from apps.llm_transaction.models import (
+    LLMTransaction
+)
 
 from apps.llm_transaction.utils import (
-    LLMTransactionSourcesTypesNames
+    LLMTransactionSourcesTypesNames,
+    LLMTokenTypesNames
 )
 
 logger = logging.getLogger(__name__)
@@ -92,13 +96,9 @@ class EllmaExecutionManager:
                 responsible_assistant=None,
                 encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
                 transaction_context_content=str(structured_system_prompt),
-                llm_cost=0,
-                internal_service_cost=0,
-                tax_cost=0,
-                total_cost=0,
-                total_billable_cost=0,
                 transaction_type=ChatRoles.SYSTEM,
-                transaction_source=LLMTransactionSourcesTypesNames.ELLMA_SCRIPTING
+                transaction_source=LLMTransactionSourcesTypesNames.ELLMA_SCRIPTING,
+                llm_token_type=LLMTokenTypesNames.INPUT,
             )
 
             logger.info(f"[_transcribe_via_ai] Created eLLMa scripting transcription for system prompt.")
@@ -116,13 +116,9 @@ class EllmaExecutionManager:
                 responsible_assistant=None,
                 encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
                 transaction_context_content=str(raw_code),
-                llm_cost=0,
-                internal_service_cost=0,
-                tax_cost=0,
-                total_cost=0,
-                total_billable_cost=0,
                 transaction_type=ChatRoles.USER,
-                transaction_source=LLMTransactionSourcesTypesNames.ELLMA_SCRIPTING
+                transaction_source=LLMTransactionSourcesTypesNames.ELLMA_SCRIPTING,
+                llm_token_type=LLMTokenTypesNames.INPUT,
             )
 
             logger.info(f"[_transcribe_via_ai] Created eLLMa scripting transcription for user prompt.")
@@ -174,13 +170,9 @@ class EllmaExecutionManager:
                 responsible_assistant=None,
                 encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
                 transaction_context_content=str(choice_message_content),
-                llm_cost=0,
-                internal_service_cost=0,
-                tax_cost=0,
-                total_cost=0,
-                total_billable_cost=0,
                 transaction_type=ChatRoles.ASSISTANT,
-                transaction_source=LLMTransactionSourcesTypesNames.ELLMA_SCRIPTING
+                transaction_source=LLMTransactionSourcesTypesNames.ELLMA_SCRIPTING,
+                llm_token_type=LLMTokenTypesNames.OUTPUT,
             )
 
             logger.info(

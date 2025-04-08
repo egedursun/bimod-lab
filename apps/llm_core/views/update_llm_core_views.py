@@ -98,7 +98,7 @@ class LLMView_Update(TemplateView, LoginRequiredMixin):
         )
 
         form.instance.provider = "OA"
-        form.instance.model_name = GPTModelNamesNames.O1
+        form.instance.model_name = GPTModelNamesNames.O3_MINI
         form.instance.api_key = settings.INTERNAL_OPENAI_API_KEY
 
         try:

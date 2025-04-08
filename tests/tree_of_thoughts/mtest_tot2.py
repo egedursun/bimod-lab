@@ -303,7 +303,7 @@ class SinapteraBoosterManager:
     def __init__(
         self,
         api_key: str,
-        model_name: str = "o1-mini",
+        model_name: str = "o3-mini",
         M: int = 2,
         N: int = 4,
         D: int = 2,
@@ -567,7 +567,7 @@ if __name__ == "__main__":
     # Small Test:
     engine = SinapteraBoosterManager(
         api_key=api_key,
-        model_name="o1-mini",
+        model_name="o3-mini",
         M=1,
         N=2,
         D=1

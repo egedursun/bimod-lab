@@ -15,8 +15,6 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-import decimal
-
 from django.contrib import admin
 
 from apps.llm_transaction.models import (
@@ -24,12 +22,6 @@ from apps.llm_transaction.models import (
 )
 
 from apps.llm_transaction.utils import (
-    process_and_calculate_number_of_billable_tokens,
-    calculate_total_llm_model_costs,
-    calculate_service_costs_of_platform,
-    calculate_value_added_tax,
-    calculate_final_billable_cost,
-    calculate_final_cost_total,
     TRANSACTION_ADMIN_LIST,
     TRANSACTION_ADMIN_FILTER,
     TRANSACTION_ADMIN_SEARCH
@@ -43,52 +35,3 @@ class TransactionAdmin(admin.ModelAdmin):
     search_fields = TRANSACTION_ADMIN_SEARCH
 
     ordering = ["-created_at"]
-
-    def save_model(
-        self,
-        request,
-        obj,
-        form,
-        change
-    ):
-        if obj.transaction_context_content:
-            obj.number_of_tokens = process_and_calculate_number_of_billable_tokens(
-                obj.encoding_engine,
-                obj.transaction_context_content
-            )
-
-            obj.llm_cost = calculate_total_llm_model_costs(
-                obj.model.model_name,
-                obj.number_of_tokens
-            )
-
-            obj.internal_service_cost = calculate_service_costs_of_platform(
-                obj.llm_cost
-            )
-
-            obj.tax_cost = calculate_value_added_tax(
-                obj.internal_service_cost
-            )
-
-            obj.total_billable_cost = calculate_final_billable_cost(
-                obj.internal_service_cost,
-                obj.tax_cost
-            )
-
-            obj.total_cost = calculate_final_cost_total(
-                obj.llm_cost,
-                obj.total_billable_cost
-            )
-
-        obj.organization.balance -= decimal.Decimal.from_float(
-            obj.total_billable_cost
-        )
-
-        obj.organization.save()
-
-        super().save_model(
-            request,
-            obj,
-            form,
-            change
-        )

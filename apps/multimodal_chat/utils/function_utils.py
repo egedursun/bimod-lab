@@ -17,16 +17,9 @@
 
 import logging
 
-import tiktoken
 import wonderwords
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
-
-from apps.llm_transaction.utils import (
-    LLMCostsPerMillionTokens,
-    INTERNAL_PROFIT_MARGIN_FOR_LLM,
-    VALUE_ADDED_TAX_PERCENTAGE
-)
 
 from apps.multimodal_chat.utils import (
     BIMOD_STREAMING_END_TAG,
@@ -36,7 +29,9 @@ from apps.multimodal_chat.utils import (
 
 import warnings
 
-from apps.orchestrations.models import OrchestrationQuery
+from apps.orchestrations.models import (
+    OrchestrationQuery
+)
 
 with warnings.catch_warnings():
     warnings.simplefilter("ignore")
@@ -236,52 +231,6 @@ def transmit_websocket_log(
         logger.info("Interaction is not Fermion supervised, standard web socket communication rules are attempted.")
         pass
 
-
-def calculate_number_of_tokens(
-    encoding_engine,
-    text
-):
-    encoding = tiktoken.get_encoding(encoding_engine)
-    tokens = encoding.encode(str(text))
-
-    return len(tokens)
-
-
-def calculate_llm_cost(
-    model,
-    number_of_tokens
-):
-    costs = LLMCostsPerMillionTokens.OPENAI_GPT_COSTS[model]
-    tokens_divided_by_million = number_of_tokens / 1_000_000
-
-    apx_input_cost = (tokens_divided_by_million / 2) * costs["input"]
-    apx_output_cost = (tokens_divided_by_million / 2) * costs["output"]
-
-    llm_cost = (apx_input_cost + apx_output_cost)
-    return llm_cost
-
-
-def calculate_internal_service_cost(llm_cost):
-    return llm_cost * INTERNAL_PROFIT_MARGIN_FOR_LLM
-
-
-def calculate_tax_cost(internal_service_cost):
-    tax_cost = internal_service_cost * VALUE_ADDED_TAX_PERCENTAGE
-    return tax_cost
-
-
-def calculate_billable_cost(internal_service_cost, tax_cost):
-    return internal_service_cost + tax_cost
-
-
-def calculate_billable_cost_from_raw(encoding_engine, model, text):
-    number_of_tokens = calculate_number_of_tokens(encoding_engine, text)
-
-    llm_cost = calculate_llm_cost(model, number_of_tokens)
-    internal_service_cost = calculate_internal_service_cost(llm_cost)
-
-    tax_cost = calculate_tax_cost(internal_service_cost)
-    return calculate_billable_cost(internal_service_cost, tax_cost)
 
 
 def generate_chat_name():

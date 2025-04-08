@@ -33,7 +33,8 @@ from apps.core.generative_ai.utils import (
     DEFAULT_STATISTICS_ASSISTANT_CHAT_NAME,
     DEFAULT_STATISTICS_TEMPERATURE,
     DEFAULT_STATISTICS_ANALYSIS_MAX_TOKENS,
-    ChatRoles
+    ChatRoles,
+    GPT_DEFAULT_ENCODING_ENGINE
 )
 
 from apps.core.system_prompts.system_prompt_factory_builder import (
@@ -42,6 +43,15 @@ from apps.core.system_prompts.system_prompt_factory_builder import (
 
 from apps.core.system_prompts.dashboard_analysis.dashboard_statistics_prompt import (
     build_dashboard_statistics_prompt
+)
+
+from apps.llm_transaction.models import (
+    LLMTransaction
+)
+
+from apps.llm_transaction.utils import (
+    LLMTransactionSourcesTypesNames,
+    LLMTokenTypesNames
 )
 
 logger = logging.getLogger(__name__)
@@ -62,6 +72,18 @@ def provide_analysis(
             audience=DEFAULT_STATISTICS_ASSISTANT_AUDIENCE,
             tone=DEFAULT_STATISTICS_ASSISTANT_TONE,
             chat_name=DEFAULT_STATISTICS_ASSISTANT_CHAT_NAME
+        )
+
+        LLMTransaction.objects.create(
+            organization=llm_model.organization,
+            model=llm_model,
+            responsible_user=None,
+            responsible_assistant=None,
+            encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
+            transaction_context_content=lean_prompt,
+            transaction_type=ChatRoles.SYSTEM,
+            transaction_source=LLMTransactionSourcesTypesNames.APP,
+            llm_token_type=LLMTokenTypesNames.INPUT
         )
 
         c = OpenAIGPTClientManager.get_naked_client(
@@ -105,7 +127,20 @@ def provide_analysis(
         choice_message = first_choice.message
         choice_message_content = choice_message.content
 
+        LLMTransaction.objects.create(
+            organization=llm_model.organization,
+            model=llm_model,
+            responsible_user=None,
+            responsible_assistant=None,
+            encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
+            transaction_context_content=choice_message_content,
+            transaction_type=ChatRoles.ASSISTANT,
+            transaction_source=LLMTransactionSourcesTypesNames.APP,
+            llm_token_type=LLMTokenTypesNames.OUTPUT,
+        )
+
         output = choice_message_content
+
         logger.info("Analysis has been provided successfully by the system.")
 
     except Exception as e:

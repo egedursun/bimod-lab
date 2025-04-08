@@ -33,6 +33,7 @@ class LargeLanguageModelProvidersNames:
 
 GPT_MODEL_NAMES = [
     ("gpt-4o", "gpt-4o"),
+    ("o3-mini", "o3-mini"),
     ("o1", "o1"),
     ("o1-preview", "o1-preview"),
     ("o1-mini", "o1-mini"),
@@ -41,6 +42,7 @@ GPT_MODEL_NAMES = [
 
 class GPTModelNamesNames:
     GPT_4O = "gpt-4o"
+    O3_MINI = "o3-mini"
     O1 = "o1"
     O1_PREVIEW = "o1-preview"
     O1_MINI = "o1-mini"
@@ -49,6 +51,7 @@ class GPTModelNamesNames:
     def as_list():
         return [
             GPTModelNamesNames.GPT_4O,
+            GPTModelNamesNames.O3_MINI,
             GPTModelNamesNames.O1,
             GPTModelNamesNames.O1_PREVIEW,
             GPTModelNamesNames.O1_MINI,

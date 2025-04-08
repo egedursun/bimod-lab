@@ -25,10 +25,6 @@ from apps.core.generative_ai.utils import (
     find_tool_call_from_json,
 )
 
-from apps.core.internal_cost_manager.costs_map import (
-    InternalServiceCosts
-)
-
 from apps.core.metakanban.builders import (
     build_metakanban_agent_prompts
 )
@@ -48,7 +44,8 @@ from apps.core.metakanban.utils import (
 from apps.llm_transaction.models import LLMTransaction
 
 from apps.llm_transaction.utils import (
-    LLMTransactionSourcesTypesNames
+    LLMTransactionSourcesTypesNames,
+    LLMTokenTypesNames
 )
 
 from apps.metakanban.models import MetaKanbanBoard
@@ -121,13 +118,9 @@ class MetaKanbanExecutionManager:
                 responsible_assistant=None,
                 encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
                 transaction_context_content=str(system_prompt),
-                llm_cost=0,
-                internal_service_cost=0,
-                tax_cost=0,
-                total_cost=0,
-                total_billable_cost=0,
                 transaction_type=ChatRoles.SYSTEM,
-                transaction_source=LLMTransactionSourcesTypesNames.METAKANBAN
+                transaction_source=LLMTransactionSourcesTypesNames.METAKANBAN,
+                llm_token_type=LLMTokenTypesNames.INPUT,
             )
 
             logger.info(f"[handle_metakanban_operation_command] Created LLMTransaction for system prompt.")
@@ -145,13 +138,9 @@ class MetaKanbanExecutionManager:
                 responsible_assistant=None,
                 encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
                 transaction_context_content=str(query),
-                llm_cost=0,
-                internal_service_cost=0,
-                tax_cost=0,
-                total_cost=0,
-                total_billable_cost=0,
                 transaction_type=ChatRoles.USER,
-                transaction_source=LLMTransactionSourcesTypesNames.METAKANBAN
+                transaction_source=LLMTransactionSourcesTypesNames.METAKANBAN,
+                llm_token_type=LLMTokenTypesNames.OUTPUT,
             )
 
             logger.info(f"[handle_metakanban_operation_command] Created LLMTransaction for user prompt.")
@@ -188,13 +177,9 @@ class MetaKanbanExecutionManager:
                     responsible_assistant=None,
                     encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
                     transaction_context_content=str(choice_message_content),
-                    llm_cost=0,
-                    internal_service_cost=0,
-                    tax_cost=0,
-                    total_cost=0,
-                    total_billable_cost=0,
                     transaction_type=ChatRoles.ASSISTANT,
-                    transaction_source=LLMTransactionSourcesTypesNames.METAKANBAN
+                    transaction_source=LLMTransactionSourcesTypesNames.METAKANBAN,
+                    llm_token_type=LLMTokenTypesNames.OUTPUT,
                 )
 
                 logger.info(
@@ -260,13 +245,9 @@ class MetaKanbanExecutionManager:
                     responsible_assistant=None,
                     encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
                     transaction_context_content=str(choice_message_content),
-                    llm_cost=0,
-                    internal_service_cost=0,
-                    tax_cost=0,
-                    total_cost=0,
-                    total_billable_cost=0,
                     transaction_type=ChatRoles.ASSISTANT,
-                    transaction_source=LLMTransactionSourcesTypesNames.METAKANBAN
+                    transaction_source=LLMTransactionSourcesTypesNames.METAKANBAN,
+                    llm_token_type=LLMTokenTypesNames.OUTPUT,
                 )
 
                 logger.info(
@@ -355,13 +336,9 @@ class MetaKanbanExecutionManager:
                         responsible_assistant=None,
                         encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
                         transaction_context_content=str(choice_message_content),
-                        llm_cost=0,
-                        internal_service_cost=0,
-                        tax_cost=0,
-                        total_cost=0,
-                        total_billable_cost=0,
                         transaction_type=ChatRoles.ASSISTANT,
-                        transaction_source=LLMTransactionSourcesTypesNames.METAKANBAN
+                        transaction_source=LLMTransactionSourcesTypesNames.METAKANBAN,
+                        llm_token_type=LLMTokenTypesNames.OUTPUT,
                     )
 
                     logger.info(
@@ -396,10 +373,10 @@ class MetaKanbanExecutionManager:
                 responsible_user=self.board.created_by_user,
                 responsible_assistant=None,
                 encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
-                llm_cost=InternalServiceCosts.MetaKanban.COST,
                 transaction_type=ChatRoles.SYSTEM,
                 transaction_source=LLMTransactionSourcesTypesNames.METAKANBAN,
-                is_tool_cost=True
+                is_tool_cost=True,
+                llm_token_type=LLMTokenTypesNames.OUTPUT,
             )
 
             tx.save()

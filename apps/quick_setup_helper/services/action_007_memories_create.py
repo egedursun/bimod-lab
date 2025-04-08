@@ -50,6 +50,7 @@ def action__007_memories_create(
 
             except Exception as e:
                 logger.error(f"Failed to create memory notes for for assistant {assistant.name}: {str(e)}")
+
                 continue
 
     except Exception as e:

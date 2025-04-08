@@ -69,7 +69,8 @@ from apps.llm_transaction.models import (
 )
 
 from apps.llm_transaction.utils import (
-    LLMTransactionSourcesTypesNames
+    LLMTransactionSourcesTypesNames,
+    LLMTokenTypesNames
 )
 
 logger = logging.getLogger(__name__)
@@ -342,13 +343,9 @@ class AuxiliaryLLMMachineLearningClient:
             responsible_assistant=self.assistant,
             encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
             transaction_context_content=txts,
-            llm_cost=0,
-            internal_service_cost=0,
-            tax_cost=0,
-            total_cost=0,
-            total_billable_cost=0,
             transaction_type=ChatRoles.ASSISTANT,
-            transaction_source=LLMTransactionSourcesTypesNames.GENERATION
+            transaction_source=LLMTransactionSourcesTypesNames.GENERATION,
+            llm_token_type=LLMTokenTypesNames.OUTPUT,
         )
 
         logger.info(f"Created new LLM transaction for ML model prediction.")

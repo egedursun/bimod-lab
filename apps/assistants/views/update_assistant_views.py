@@ -182,10 +182,16 @@ class AssistantView_Update(LoginRequiredMixin, TemplateView):
             logger.error(f"Error while updating the agent information: {e}")
             messages.error(request, "Agent information is required.")
 
-            return redirect('assistants:update', pk=agent_id)
+            return redirect(
+                'assistants:update',
+                pk=agent_id
+            )
 
         logger.info(f"Assistant has been updated. ")
 
         messages.success(request, "Assistant has been updated successfully.")
 
-        return redirect('assistants:update', pk=agent_id)
+        return redirect(
+            'assistants:update',
+            pk=agent_id
+        )

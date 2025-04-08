@@ -39,8 +39,13 @@ from apps.core.user_permissions.permission_manager import (
     UserPermissionManager
 )
 
-from apps.brainstorms.models import BrainstormingSession
-from apps.user_permissions.utils import PermissionNames
+from apps.brainstorms.models import (
+    BrainstormingSession
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
 
 logger = logging.getLogger(__name__)
 
@@ -61,11 +66,21 @@ class BrainstormingView_PerformCompleteSynthesis(LoginRequiredMixin, View):
             user=self.request.user,
             operation=PermissionNames.CREATE_BRAINSTORMING_SYNTHESES
         ):
-            messages.error(self.request, "You do not have permission to create brainstorming syntheses.")
-            return redirect('brainstorms:detail_session', session_id=session.id)
+            messages.error(
+                self.request,
+                "You do not have permission to create brainstorming syntheses."
+            )
+
+            return redirect(
+                'brainstorms:detail_session',
+                session_id=session.id
+            )
         ##############################
 
-        xc = BrainstormsExecutor(session=session)
+        xc = BrainstormsExecutor(
+            session=session
+        )
+
         xc.generate_complete_synthesis()
 
         messages.success(request, 'Complete synthesis for the entire session generated successfully.')

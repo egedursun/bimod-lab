@@ -61,14 +61,25 @@ class BrainstormingView_LevelSynthesis(LoginRequiredMixin, View):
             user=self.request.user,
             operation=PermissionNames.CREATE_BRAINSTORMING_SYNTHESES
         ):
-            messages.error(self.request, "You do not have permission to create brainstorming syntheses.")
-            return redirect('brainstorms:detail_session', session_id=session.id)
+            messages.error(
+                self.request,
+                "You do not have permission to create brainstorming syntheses."
+            )
+
+            return redirect(
+                'brainstorms:detail_session',
+                session_id=session.id
+            )
         ##############################
 
-        xc = BrainstormsExecutor(session=session)
+        xc = BrainstormsExecutor(
+            session=session
+        )
 
         xc.generate_level_synthesis(
-            depth_level=int(depth_level)
+            depth_level=int(
+                depth_level
+            )
         )
 
         messages.success(request, f'Level synthesis for level {depth_level} generated successfully.')

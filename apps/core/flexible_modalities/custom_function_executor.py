@@ -17,14 +17,11 @@
 
 import logging
 
-from apps.core.internal_cost_manager.costs_map import (
-    InternalServiceCosts
-)
-
 from apps.llm_transaction.models import LLMTransaction
 
 from apps.llm_transaction.utils import (
-    LLMTransactionSourcesTypesNames
+    LLMTransactionSourcesTypesNames,
+    LLMTokenTypesNames
 )
 
 from apps.mm_functions.tasks import mm_function_execution_task
@@ -66,12 +63,11 @@ class CustomFunctionExecutor:
             responsible_user=None,
             responsible_assistant=None,
             encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
-            llm_cost=InternalServiceCosts.ExternalCustomFunctionExecutor.COST
-            if self.function.is_public else InternalServiceCosts.InternalCustomFunctionExecutor.COST,
             transaction_type=ChatRoles.SYSTEM,
             transaction_source=LLMTransactionSourcesTypesNames.EXTERNAL_FUNCTION_EXECUTION
             if self.function.is_public else LLMTransactionSourcesTypesNames.INTERNAL_FUNCTION_EXECUTION,
-            is_tool_cost=True
+            is_tool_cost=True,
+            llm_token_type=LLMTokenTypesNames.OUTPUT,
         )
 
         tx.save()

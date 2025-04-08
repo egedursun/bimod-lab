@@ -34,10 +34,6 @@ from apps.core.generative_ai.utils import (
     ChatRoles
 )
 
-from apps.core.internal_cost_manager.costs_map import (
-    InternalServiceCosts
-)
-
 from apps.core.transcriber.transcriber_executor import (
     TranscriberExecutionManager
 )
@@ -45,7 +41,8 @@ from apps.core.transcriber.transcriber_executor import (
 from apps.llm_transaction.models import LLMTransaction
 
 from apps.llm_transaction.utils import (
-    LLMTransactionSourcesTypesNames
+    LLMTransactionSourcesTypesNames,
+    LLMTokenTypesNames
 )
 
 from apps.metakanban.models import (
@@ -159,10 +156,10 @@ class MetaKanbanView_MeetingRecordingAudioAIDelivery(View):
                 responsible_user=board.created_by_user,
                 responsible_assistant=None,
                 encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
-                llm_cost=InternalServiceCosts.MeetingTranscription.COST,
                 transaction_type=ChatRoles.SYSTEM,
                 transaction_source=LLMTransactionSourcesTypesNames.MEETING_TRANSCRIPTION,
-                is_tool_cost=True
+                is_tool_cost=True,
+                llm_token_type=LLMTokenTypesNames.OUTPUT,
             )
 
             tx.save()

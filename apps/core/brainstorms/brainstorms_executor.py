@@ -36,7 +36,8 @@ from apps.brainstorms.models import BrainstormingIdea
 from apps.llm_transaction.models import LLMTransaction
 
 from apps.llm_transaction.utils import (
-    LLMTransactionSourcesTypesNames
+    LLMTransactionSourcesTypesNames,
+    LLMTokenTypesNames
 )
 
 logger = logging.getLogger(__name__)
@@ -74,14 +75,11 @@ class BrainstormsExecutor:
             responsible_assistant=None,
             encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
             transaction_context_content=system_prompt,
-            llm_cost=0,
-            internal_service_cost=0,
-            tax_cost=0,
-            total_cost=0,
-            total_billable_cost=0,
             transaction_type=ChatRoles.SYSTEM,
             transaction_source=LLMTransactionSourcesTypesNames.BRAINSTORMING,
+            llm_token_type=LLMTokenTypesNames.INPUT,
         )
+
         logger.info(f"Generating LLM response for system prompt: {system_prompt}")
 
         choice_message_content = None
@@ -102,6 +100,20 @@ class BrainstormsExecutor:
 
             choice_message = first_choice.message
             choice_message_content = choice_message.content
+            logger.info(f"LLM response generated successfully.")
+
+            LLMTransaction.objects.create(
+                organization=self.session.organization,
+                model=self.session.llm_model,
+                responsible_user=self.session.created_by_user,
+                responsible_assistant=None,
+                encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
+                transaction_context_content=str(choice_message_content),
+                transaction_type=ChatRoles.SYSTEM,
+                transaction_source=LLMTransactionSourcesTypesNames.BRAINSTORMING,
+                llm_token_type=LLMTokenTypesNames.OUTPUT,
+            )
+
             logger.info(f"LLM response generated successfully.")
 
         except Exception as e:

@@ -23,13 +23,20 @@ from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 
-from apps.core.generative_ai.generative_ai_decode_manager import GenerativeAIDecodeController
-from apps.core.internal_cost_manager.costs_map import InternalServiceCosts
+from apps.core.generative_ai.generative_ai_decode_manager import (
+    GenerativeAIDecodeController
+)
+
 from apps.leanmod.models import (
     LeanAssistant,
 )
+
 from apps.llm_transaction.models import LLMTransaction
-from apps.llm_transaction.utils import LLMTransactionSourcesTypesNames
+
+from apps.llm_transaction.utils import (
+    LLMTransactionSourcesTypesNames,
+    LLMTokenTypesNames
+)
 
 from apps.mm_triggered_jobs.models import (
     LeanModTriggeredJob,
@@ -37,10 +44,17 @@ from apps.mm_triggered_jobs.models import (
 )
 
 from apps.mm_triggered_jobs.utils import (
-    TriggeredJobInstanceStatusesNames, generate_triggered_job_chat_name,
+    TriggeredJobInstanceStatusesNames,
+    generate_triggered_job_chat_name,
 )
-from apps.multimodal_chat.models import MultimodalLeanChat, MultimodalLeanChatMessage
-from apps.multimodal_chat.utils import SourcesForMultimodalChatsNames
+from apps.multimodal_chat.models import (
+    MultimodalLeanChat,
+    MultimodalLeanChatMessage
+)
+
+from apps.multimodal_chat.utils import (
+    SourcesForMultimodalChatsNames
+)
 
 logger = logging.getLogger(__name__)
 
@@ -296,10 +310,10 @@ class LeanModTriggeredJobWebhookListenerView(View):
                 responsible_user=None,
                 responsible_assistant=job.trigger_leanmod,
                 encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
-                llm_cost=InternalServiceCosts.TriggeredJobExecutor.COST,
                 transaction_type=ChatRoles.SYSTEM,
                 transaction_source=LLMTransactionSourcesTypesNames.TRIGGER_JOB_EXECUTION,
-                is_tool_cost=True
+                is_tool_cost=True,
+                llm_token_type=LLMTokenTypesNames.OUTPUT,
             )
             transaction.save()
             logger.info(f"Triggered Job completed successfully: {job.id}")

@@ -17,12 +17,9 @@
 
 import logging
 
-from apps.core.internal_cost_manager.costs_map import (
-    InternalServiceCosts
-)
-
 from apps.llm_transaction.utils import (
-    LLMTransactionSourcesTypesNames
+    LLMTransactionSourcesTypesNames,
+    LLMTokenTypesNames
 )
 
 logger = logging.getLogger(__name__)
@@ -63,10 +60,10 @@ class AudioProcessingExecutor:
                 responsible_user=self.chat.user,
                 responsible_assistant=self.chat.assistant,
                 encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
-                llm_cost=InternalServiceCosts.AudioProcessingSTT.COST,
                 transaction_type=ChatRoles.SYSTEM,
                 transaction_source=LLMTransactionSourcesTypesNames.AUDIO_PROCESSING_STT,
-                is_tool_cost=True
+                is_tool_cost=True,
+                llm_token_type=LLMTokenTypesNames.OUTPUT,
             )
             tx.save()
 
@@ -98,10 +95,10 @@ class AudioProcessingExecutor:
                 responsible_user=self.chat.user,
                 responsible_assistant=self.chat.assistant,
                 encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
-                llm_cost=InternalServiceCosts.AudioProcessingTTS.COST,
                 transaction_type=ChatRoles.SYSTEM,
                 transaction_source=LLMTransactionSourcesTypesNames.AUDIO_PROCESSING_TTS,
-                is_tool_cost=True
+                is_tool_cost=True,
+                llm_token_type=LLMTokenTypesNames.OUTPUT,
             )
             tx.save()
 
@@ -136,10 +133,10 @@ class AudioProcessingExecutor:
                 responsible_user=self.chat.user,
                 responsible_assistant=self.chat.assistant,
                 encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
-                llm_cost=InternalServiceCosts.AudioProcessingTTS.COST,
                 transaction_type=ChatRoles.SYSTEM,
                 transaction_source=LLMTransactionSourcesTypesNames.AUDIO_PROCESSING_TTS,
-                is_tool_cost=True
+                is_tool_cost=True,
+                llm_token_type=LLMTokenTypesNames.OUTPUT,
             )
             tx.save()
 

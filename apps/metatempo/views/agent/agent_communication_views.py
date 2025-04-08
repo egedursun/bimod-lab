@@ -45,7 +45,8 @@ from apps.core.user_permissions.permission_manager import (
 from apps.llm_transaction.models import LLMTransaction
 
 from apps.llm_transaction.utils import (
-    LLMTransactionSourcesTypesNames
+    LLMTransactionSourcesTypesNames,
+    LLMTokenTypesNames
 )
 
 from apps.metakanban.models import MetaKanbanBoard
@@ -130,10 +131,10 @@ class MetaTempoView_AgentCommunication(LoginRequiredMixin, TemplateView):
                 responsible_user=connection.board.created_by_user,
                 responsible_assistant=None,
                 encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
-                llm_cost=InternalServiceCosts.MetaTempo.COST,
                 transaction_type=ChatRoles.SYSTEM,
                 transaction_source=LLMTransactionSourcesTypesNames.METATEMPO,
-                is_tool_cost=True
+                is_tool_cost=True,
+                llm_token_type=LLMTokenTypesNames.OUTPUT,
             )
 
             tx.save()

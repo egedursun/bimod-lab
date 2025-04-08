@@ -118,26 +118,52 @@ class BrainstormingView_SessionDetail(LoginRequiredMixin, TemplateView):
         )
 
         action = request.POST.get('action')
-        xc = BrainstormsExecutor(session=session)
+
+        xc = BrainstormsExecutor(
+            session=session
+        )
 
         if action == BrainstormingActionTypeNames.CREATE_FIRST_LAYER:
-            xc.produce_ideas(depth_level=1)
-            messages.success(request, "First layer of ideas created successfully.")
+            xc.produce_ideas(
+                depth_level=1
+            )
+            messages.success(
+                request,
+                "First layer of ideas created successfully."
+            )
 
         elif action == BrainstormingActionTypeNames.CREATE_DEEPER_LAYER:
-            depth_level = int(request.POST.get('depth_level', 1))
-            xc.produce_ideas(depth_level=depth_level)
+            depth_level = int(
+                request.POST.get(
+                    'depth_level',
+                    1
+                )
+            )
+            xc.produce_ideas(
+                depth_level=depth_level
+            )
             messages.success(request, f"Layer {depth_level + 1} of ideas created successfully.")
 
         elif action == BrainstormingActionTypeNames.GENERATE_LEVEL_SYNTHESIS:
-            depth_level = int(request.POST.get('depth_level', 1))
-            xc.generate_level_synthesis(depth_level=depth_level)
+            depth_level = int(
+                request.POST.get(
+                    'depth_level',
+                    1
+                )
+            )
+            xc.generate_level_synthesis(
+                depth_level=depth_level
+            )
             messages.success(request, f"Level synthesis for layer {depth_level} generated successfully.")
 
         elif action == BrainstormingActionTypeNames.GENERATE_COMPLETE_SYNTHESIS:
             xc.generate_complete_synthesis()
+
             messages.success(request, "Complete synthesis generated successfully.")
 
         logger.info(f"Action {action} performed successfully. Session ID: {session.id}")
 
-        return redirect('brainstorms:detail_session', session_id=session.id)
+        return redirect(
+            'brainstorms:detail_session',
+            session_id=session.id
+        )

@@ -31,10 +31,6 @@ from apps.core.generative_ai.utils import (
     GPT_DEFAULT_ENCODING_ENGINE
 )
 
-from apps.core.internal_cost_manager.costs_map import (
-    InternalServiceCosts
-)
-
 from apps.core.metatempo.metatempo_execution_handler import (
     MetaTempoExecutionManager
 )
@@ -48,7 +44,8 @@ from apps.llm_transaction.models import (
 )
 
 from apps.llm_transaction.utils import (
-    LLMTransactionSourcesTypesNames
+    LLMTransactionSourcesTypesNames,
+    LLMTokenTypesNames
 )
 
 from apps.metatempo.models import (
@@ -118,10 +115,10 @@ class MetaTempoView_TriggerManualAnalysis(LoginRequiredMixin, View):
                 responsible_user=connection.board.created_by_user,
                 responsible_assistant=None,
                 encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
-                llm_cost=InternalServiceCosts.MetaTempo.COST,
                 transaction_type=ChatRoles.SYSTEM,
                 transaction_source=LLMTransactionSourcesTypesNames.METATEMPO,
-                is_tool_cost=True
+                is_tool_cost=True,
+                llm_token_type=LLMTokenTypesNames.OUTPUT,
             )
 
             tx.save()

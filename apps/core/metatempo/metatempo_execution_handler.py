@@ -34,10 +34,6 @@ from apps.core.generative_ai.utils import (
     find_tool_call_from_json
 )
 
-from apps.core.internal_cost_manager.costs_map import (
-    InternalServiceCosts
-)
-
 from apps.core.metatempo.builders import (
     build_log_snapshot_interpretation_prompt,
     build_daily_logs_interpretation_prompt,
@@ -53,7 +49,8 @@ from apps.core.metatempo.utils import (
 from apps.llm_transaction.models import LLMTransaction
 
 from apps.llm_transaction.utils import (
-    LLMTransactionSourcesTypesNames
+    LLMTransactionSourcesTypesNames,
+    LLMTokenTypesNames
 )
 
 from apps.metatempo.models import (
@@ -138,13 +135,9 @@ class MetaTempoExecutionManager:
                     responsible_assistant=None,
                     encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
                     transaction_context_content=str(action_specific_system_prompt),
-                    llm_cost=0,
-                    internal_service_cost=0,
-                    tax_cost=0,
-                    total_cost=0,
-                    total_billable_cost=0,
                     transaction_type=ChatRoles.SYSTEM,
-                    transaction_source=LLMTransactionSourcesTypesNames.METATEMPO
+                    transaction_source=LLMTransactionSourcesTypesNames.METATEMPO,
+                    llm_token_type=LLMTokenTypesNames.INPUT,
                 )
 
                 logger.info(f"[handle_metatempo_operation_command] Created LLMTransaction for system prompt.")
@@ -196,13 +189,9 @@ class MetaTempoExecutionManager:
                     responsible_assistant=None,
                     encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
                     transaction_context_content=str(action_specific_system_prompt),
-                    llm_cost=0,
-                    internal_service_cost=0,
-                    tax_cost=0,
-                    total_cost=0,
-                    total_billable_cost=0,
                     transaction_type=ChatRoles.SYSTEM,
-                    transaction_source=LLMTransactionSourcesTypesNames.METATEMPO
+                    transaction_source=LLMTransactionSourcesTypesNames.METATEMPO,
+                    llm_token_type=LLMTokenTypesNames.INPUT,
                 )
 
                 logger.info(f"[handle_metatempo_operation_command] Created LLMTransaction for system prompt.")
@@ -234,13 +223,9 @@ class MetaTempoExecutionManager:
                     responsible_assistant=None,
                     encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
                     transaction_context_content=str(action_specific_system_prompt),
-                    llm_cost=0,
-                    internal_service_cost=0,
-                    tax_cost=0,
-                    total_cost=0,
-                    total_billable_cost=0,
                     transaction_type=ChatRoles.SYSTEM,
-                    transaction_source=LLMTransactionSourcesTypesNames.METATEMPO
+                    transaction_source=LLMTransactionSourcesTypesNames.METATEMPO,
+                    llm_token_type=LLMTokenTypesNames.INPUT,
                 )
 
                 logger.info(f"[handle_metatempo_operation_command] Created LLMTransaction for system prompt.")
@@ -279,13 +264,9 @@ class MetaTempoExecutionManager:
                     responsible_assistant=None,
                     encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
                     transaction_context_content=str(action_specific_system_prompt),
-                    llm_cost=0,
-                    internal_service_cost=0,
-                    tax_cost=0,
-                    total_cost=0,
-                    total_billable_cost=0,
                     transaction_type=ChatRoles.SYSTEM,
-                    transaction_source=LLMTransactionSourcesTypesNames.METATEMPO
+                    transaction_source=LLMTransactionSourcesTypesNames.METATEMPO,
+                    llm_token_type=LLMTokenTypesNames.INPUT,
                 )
 
                 logger.info(f"[handle_metatempo_operation_command] Created LLMTransaction for system prompt.")
@@ -308,13 +289,9 @@ class MetaTempoExecutionManager:
                     responsible_assistant=None,
                     encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
                     transaction_context_content=str(interpretation_query),
-                    llm_cost=0,
-                    internal_service_cost=0,
-                    tax_cost=0,
-                    total_cost=0,
-                    total_billable_cost=0,
                     transaction_type=ChatRoles.USER,
-                    transaction_source=LLMTransactionSourcesTypesNames.METATEMPO
+                    transaction_source=LLMTransactionSourcesTypesNames.METATEMPO,
+                    llm_token_type=LLMTokenTypesNames.INPUT,
                 )
 
                 logger.info(f"[handle_metatempo_operation_command] Created LLMTransaction for user prompt.")
@@ -372,13 +349,9 @@ class MetaTempoExecutionManager:
                 responsible_assistant=None,
                 encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
                 transaction_context_content=str(choice_message_content),
-                llm_cost=0,
-                internal_service_cost=0,
-                tax_cost=0,
-                total_cost=0,
-                total_billable_cost=0,
                 transaction_type=ChatRoles.ASSISTANT,
-                transaction_source=LLMTransactionSourcesTypesNames.METATEMPO
+                transaction_source=LLMTransactionSourcesTypesNames.METATEMPO,
+                llm_token_type=LLMTokenTypesNames.OUTPUT,
             )
 
             logger.info(
@@ -511,10 +484,10 @@ class MetaTempoExecutionManager:
                         responsible_user=self.metatempo_connection.board.created_by_user,
                         responsible_assistant=None,
                         encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
-                        llm_cost=InternalServiceCosts.MetaTempo.COST,
                         transaction_type=ChatRoles.SYSTEM,
                         transaction_source=LLMTransactionSourcesTypesNames.METATEMPO,
-                        is_tool_cost=True
+                        is_tool_cost=True,
+                        llm_token_type=LLMTokenTypesNames.OUTPUT,
                     )
 
                     tx.save()

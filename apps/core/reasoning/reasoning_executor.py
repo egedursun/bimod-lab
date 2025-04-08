@@ -25,10 +25,6 @@ from apps.core.code_analyst.utils import (
     BIN_FILE_FORMAT
 )
 
-from apps.core.internal_cost_manager.costs_map import (
-    InternalServiceCosts
-)
-
 from apps.core.media_managers.utils import (
     GENERATED_IMAGES_ROOT_MEDIA_PATH,
     GENERATED_FILES_ROOT_MEDIA_PATH
@@ -39,7 +35,8 @@ from apps.llm_transaction.models import (
 )
 
 from apps.llm_transaction.utils import (
-    LLMTransactionSourcesTypesNames
+    LLMTransactionSourcesTypesNames,
+    LLMTokenTypesNames
 )
 
 from config import settings
@@ -112,10 +109,10 @@ class ReasoningExecutor:
                 responsible_user=self.chat.user,
                 responsible_assistant=self.chat.assistant,
                 encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
-                llm_cost=InternalServiceCosts.Reasoning.COST,
                 transaction_type=ChatRoles.SYSTEM,
                 transaction_source=LLMTransactionSourcesTypesNames.REASONING,
-                is_tool_cost=True
+                is_tool_cost=True,
+                llm_token_type=LLMTokenTypesNames.OUTPUT,
             )
 
             tx.save()

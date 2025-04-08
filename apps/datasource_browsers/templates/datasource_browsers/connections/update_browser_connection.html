@@ -104,16 +104,6 @@
                  alt="Illustration for tips">
             <div class="row p-8">
               <div class="mb-6 col-6">
-                <label class="form-label" for="browser_type">Browser Type</label>
-                <select class="form-select" id="browser_type" name="browser_type">
-                  <option value="" disabled>Select Browser Type</option>
-                  {% for key, value in browser_types %}
-                    <option value="{{ key }}"
-                            {% if key == browser_connection.browser_type %}selected{% endif %}>{{ value }}</option>
-                  {% endfor %}
-                </select>
-              </div>
-              <div class="mb-6 col-6">
                 <label class="form-label" for="assistant">Assistant</label>
                 <select class="form-select" id="assistant" name="assistant">
                   {% for assistant in assistants %}

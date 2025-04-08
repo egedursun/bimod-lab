@@ -79,8 +79,6 @@ class ExportAssistantAPIHealthCheckView(View):
         match = re.match(pattern, endpoint)
 
         if match:
-            organization_id = int(match.group('organization_id'))
-            assistant_id = int(match.group('assistant_id'))
             export_id = int(match.group('export_id'))
 
         else:
@@ -278,7 +276,10 @@ class ExportAssistantAPIView(View):
         try:
             chat_history = body.get('chat_history', [])
 
-            options = body.get('options', {})
+            options = body.get(
+                'options',
+                {}
+            )
 
             process_log_streaming_enabled = False
             if "streaming_options" in options:
@@ -363,13 +364,24 @@ class ExportAssistantAPIView(View):
                 img_uris = []
 
                 if "file_uris" in msg and msg["file_uris"] != "":
-                    f_uris = msg.get("file_uris", "").split(",") if msg.get("file_uris") else []
+                    f_uris = msg.get(
+                        "file_uris",
+                        ""
+                    ).split(",") if msg.get("file_uris") else []
 
                 if "image_uris" in msg and msg["image_uris"] != "":
-                    img_uris = msg.get("image_uris", "").split(",") if msg.get("image_uris") else []
+                    img_uris = msg.get(
+                        "image_uris",
+                        ""
+                    ).split(",") if msg.get("image_uris") else []
 
-                f_uris = [uri.strip() for uri in f_uris if uri.strip()] if f_uris else []
-                img_uris = [uri.strip() for uri in img_uris if uri.strip()]
+                f_uris = [
+                    uri.strip() for uri in f_uris if uri.strip()
+                ] if f_uris else []
+
+                img_uris = [
+                    uri.strip() for uri in img_uris if uri.strip()
+                ]
 
                 user_msg = api_chat.chat_messages.create(
                     multimodal_chat=api_chat,
@@ -385,8 +397,10 @@ class ExportAssistantAPIView(View):
             return JsonResponse(
                 {
                     "message": "Internal server error: " + str(e),
-                    "data": {}, "status": ExportAPIStatusCodes.INTERNAL_SERVER_ERROR
-                }, status=ExportAPIStatusCodes.INTERNAL_SERVER_ERROR
+                    "data": {},
+                    "status": ExportAPIStatusCodes.INTERNAL_SERVER_ERROR
+                },
+                status=ExportAPIStatusCodes.INTERNAL_SERVER_ERROR
             )
 
         try:
@@ -453,7 +467,9 @@ class ExportAssistantAPIView(View):
             }
         }
 
-        logger.info(f"Export Assistant API response: {resp_data}")
+        logger.info(
+            f"Export Assistant API response: {resp_data}"
+        )
 
         return JsonResponse(
             resp_data,

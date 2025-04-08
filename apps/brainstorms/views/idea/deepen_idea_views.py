@@ -68,7 +68,10 @@ class BrainstormingView_IdeaDeepen(LoginRequiredMixin, View):
             operation=PermissionNames.CREATE_BRAINSTORMING_IDEAS
         ):
             messages.error(self.request, "You do not have permission to create brainstorming ideas.")
-            return redirect('brainstorms:detail_session', session_id=session.id)
+            return redirect(
+                'brainstorms:detail_session',
+                session_id=session.id
+            )
         ##############################
 
         session = get_object_or_404(
@@ -77,8 +80,13 @@ class BrainstormingView_IdeaDeepen(LoginRequiredMixin, View):
             created_by_user=request.user
         )
 
-        xc = BrainstormsExecutor(session=session)
-        xc.deepen_thought_over_idea(idea=idea)
+        xc = BrainstormsExecutor(
+            session=session
+        )
+
+        xc.deepen_thought_over_idea(
+            idea=idea
+        )
 
         messages.success(request, f'Idea {idea.id} deepened successfully.')
         logger.info(f'Idea {idea.id} deepened successfully.')

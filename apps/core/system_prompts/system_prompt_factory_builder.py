@@ -415,6 +415,10 @@ from apps.llm_transaction.models import (
     LLMTransaction
 )
 
+from apps.llm_transaction.utils import (
+    LLMTokenTypesNames
+)
+
 from apps.multimodal_chat.models import (
     MultimodalChat,
     MultimodalLeanChat
@@ -633,12 +637,9 @@ class SystemPromptFactoryBuilder:
             responsible_assistant=assistant,
             encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
             transaction_context_content=merged_prompt,
-            llm_cost=0, internal_service_cost=0,
-            tax_cost=0,
-            total_cost=0,
-            total_billable_cost=0,
             transaction_type=ChatRoles.SYSTEM,
-            transaction_source=chat.chat_source
+            transaction_source=chat.chat_source,
+            llm_token_type=LLMTokenTypesNames.INPUT,
         )
 
         chat.transactions.add(tx)
@@ -1397,13 +1398,9 @@ class SystemPromptFactoryBuilder:
                     transaction_context_content=json.dumps(
                         combined_system_instructions
                     ),
-                    llm_cost=0,
-                    internal_service_cost=0,
-                    tax_cost=0,
-                    total_cost=0,
-                    total_billable_cost=0,
                     transaction_type=ChatRoles.SYSTEM,
-                    transaction_source=chat.chat_source
+                    transaction_source=chat.chat_source,
+                    llm_token_type=LLMTokenTypesNames.INPUT,
                 )
 
                 chat.transactions.add(tx)
@@ -1570,13 +1567,9 @@ class SystemPromptFactoryBuilder:
             responsible_assistant=None,
             encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
             transaction_context_content=combined_system_instructions,
-            llm_cost=0,
-            internal_service_cost=0,
-            tax_cost=0,
-            total_cost=0,
-            total_billable_cost=0,
             transaction_type=ChatRoles.SYSTEM,
-            transaction_source=chat.chat_source
+            transaction_source=chat.chat_source,
+            llm_token_type=LLMTokenTypesNames.INPUT,
         )
 
         chat.transactions.add(tx)

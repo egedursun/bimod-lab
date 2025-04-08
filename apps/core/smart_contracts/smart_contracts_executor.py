@@ -30,10 +30,6 @@ from apps.core.generative_ai.utils import (
     find_tool_call_from_json,
 )
 
-from apps.core.internal_cost_manager.costs_map import (
-    InternalServiceCosts
-)
-
 from apps.core.smart_contracts.builders import (
     build_smart_contract_generation_prompt,
     build_smart_contract_refinement_prompt
@@ -52,7 +48,8 @@ from apps.llm_core.models import LLMCore
 from apps.llm_transaction.models import LLMTransaction
 
 from apps.llm_transaction.utils import (
-    LLMTransactionSourcesTypesNames
+    LLMTransactionSourcesTypesNames,
+    LLMTokenTypesNames
 )
 
 from apps.smart_contracts.models import (
@@ -191,13 +188,9 @@ class SmartContractsExecutionManager:
                 responsible_assistant=None,
                 encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
                 transaction_context_content=str(system_prompt),
-                llm_cost=0,
-                internal_service_cost=0,
-                tax_cost=0,
-                total_cost=0,
-                total_billable_cost=0,
                 transaction_type=ChatRoles.SYSTEM,
-                transaction_source=LLMTransactionSourcesTypesNames.SMART_CONTRACT_CREATION
+                transaction_source=LLMTransactionSourcesTypesNames.SMART_CONTRACT_CREATION,
+                llm_token_type=LLMTokenTypesNames.INPUT,
             )
 
             tx.save()
@@ -278,13 +271,9 @@ class SmartContractsExecutionManager:
                 responsible_assistant=None,
                 encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
                 transaction_context_content=str(assistant_response),
-                llm_cost=0,
-                internal_service_cost=0,
-                tax_cost=0,
-                total_cost=0,
-                total_billable_cost=0,
                 transaction_type=ChatRoles.ASSISTANT,
-                transaction_source=LLMTransactionSourcesTypesNames.SMART_CONTRACT_CREATION
+                transaction_source=LLMTransactionSourcesTypesNames.SMART_CONTRACT_CREATION,
+                llm_token_type=LLMTokenTypesNames.OUTPUT,
             )
 
             tx.save()
@@ -297,10 +286,10 @@ class SmartContractsExecutionManager:
                 responsible_user=self.wallet.created_by_user,
                 responsible_assistant=None,
                 encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
-                llm_cost=InternalServiceCosts.SmartContractCreation.COST,
                 transaction_type=ChatRoles.SYSTEM,
                 transaction_source=LLMTransactionSourcesTypesNames.SMART_CONTRACT_CREATION,
-                is_tool_cost=True
+                is_tool_cost=True,
+                llm_token_type=LLMTokenTypesNames.OUTPUT,
             )
 
             tx.save()
@@ -351,13 +340,9 @@ class SmartContractsExecutionManager:
                     responsible_assistant=None,
                     encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
                     transaction_context_content=str(refinement_prompt),
-                    llm_cost=0,
-                    internal_service_cost=0,
-                    tax_cost=0,
-                    total_cost=0,
-                    total_billable_cost=0,
                     transaction_type=ChatRoles.USER,
-                    transaction_source=LLMTransactionSourcesTypesNames.SMART_CONTRACT_CREATION
+                    transaction_source=LLMTransactionSourcesTypesNames.SMART_CONTRACT_CREATION,
+                    llm_token_type=LLMTokenTypesNames.INPUT,
                 )
 
                 tx.save()
@@ -398,13 +383,9 @@ class SmartContractsExecutionManager:
                     responsible_assistant=None,
                     encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
                     transaction_context_content=str(nlp_feed_prompt),
-                    llm_cost=0,
-                    internal_service_cost=0,
-                    tax_cost=0,
-                    total_cost=0,
-                    total_billable_cost=0,
                     transaction_type=ChatRoles.SYSTEM,
-                    transaction_source=LLMTransactionSourcesTypesNames.SMART_CONTRACT_CREATION
+                    transaction_source=LLMTransactionSourcesTypesNames.SMART_CONTRACT_CREATION,
+                    llm_token_type=LLMTokenTypesNames.INPUT,
                 )
 
                 tx.save()
@@ -435,13 +416,9 @@ class SmartContractsExecutionManager:
                     responsible_assistant=None,
                     encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
                     transaction_context_content=str(contract_description_llm_response),
-                    llm_cost=0,
-                    internal_service_cost=0,
-                    tax_cost=0,
-                    total_cost=0,
-                    total_billable_cost=0,
                     transaction_type=ChatRoles.ASSISTANT,
-                    transaction_source=LLMTransactionSourcesTypesNames.SMART_CONTRACT_CREATION
+                    transaction_source=LLMTransactionSourcesTypesNames.SMART_CONTRACT_CREATION,
+                    llm_token_type=LLMTokenTypesNames.OUTPUT,
                 )
 
                 tx.save()

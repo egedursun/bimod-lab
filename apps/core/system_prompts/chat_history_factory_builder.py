@@ -28,7 +28,13 @@ from apps.core.data_security.ner.ner_executor import (
     NERExecutor
 )
 
-from apps.llm_transaction.models import LLMTransaction
+from apps.llm_transaction.models import (
+    LLMTransaction
+)
+
+from apps.llm_transaction.utils import (
+    LLMTokenTypesNames
+)
 
 from apps.multimodal_chat.models import (
     MultimodalChat,
@@ -166,13 +172,9 @@ class HistoryBuilder:
                 responsible_assistant=chat.assistant,
                 encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
                 transaction_context_content=message_text_content,
-                llm_cost=0,
-                internal_service_cost=0,
-                tax_cost=0,
-                total_cost=0,
-                total_billable_cost=0,
                 transaction_type=src_type.lower(),
-                transaction_source=chat.chat_source
+                transaction_source=chat.chat_source,
+                llm_token_type=LLMTokenTypesNames.INPUT,
             )
 
             logger.info(f"Chat Transaction: {tx}")
@@ -268,13 +270,9 @@ class HistoryBuilder:
                 responsible_assistant=None,
                 encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
                 transaction_context_content=txt_content,
-                llm_cost=0,
-                internal_service_cost=0,
-                tax_cost=0,
-                total_cost=0,
-                total_billable_cost=0,
                 transaction_type=source_type.lower(),
-                transaction_source=lean_chat.chat_source
+                transaction_source=lean_chat.chat_source,
+                llm_token_type=LLMTokenTypesNames.INPUT,
             )
 
             lean_chat.transactions.add(tx)
@@ -379,13 +377,9 @@ class HistoryBuilder:
                 responsible_assistant=None,
                 encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
                 transaction_context_content=txt_content,
-                llm_cost=0,
-                internal_service_cost=0,
-                tax_cost=0,
-                total_cost=0,
-                total_billable_cost=0,
                 transaction_type=source_type.lower(),
-                transaction_source=voidforger_chat.chat_source
+                transaction_source=voidforger_chat.chat_source,
+                llm_token_type=LLMTokenTypesNames.INPUT,
             )
 
             voidforger_chat.transactions.add(tx)

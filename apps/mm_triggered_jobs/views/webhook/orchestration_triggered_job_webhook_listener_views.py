@@ -35,10 +35,6 @@ from apps.core.generative_ai.utils import (
     ChatRoles
 )
 
-from apps.core.internal_cost_manager.costs_map import (
-    InternalServiceCosts
-)
-
 from apps.core.orchestration.orchestration_executor import (
     OrchestrationExecutor
 )
@@ -46,7 +42,8 @@ from apps.core.orchestration.orchestration_executor import (
 from apps.llm_transaction.models import LLMTransaction
 
 from apps.llm_transaction.utils import (
-    LLMTransactionSourcesTypesNames
+    LLMTransactionSourcesTypesNames,
+    LLMTokenTypesNames
 )
 
 from apps.mm_triggered_jobs.models import (
@@ -310,10 +307,10 @@ class OrchestrationTriggeredJobWebhookListenerView(View):
                 responsible_user=None,
                 responsible_assistant=None,
                 encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
-                llm_cost=InternalServiceCosts.TriggeredJobExecutor.COST,
                 transaction_type=ChatRoles.SYSTEM,
                 transaction_source=LLMTransactionSourcesTypesNames.TRIGGER_JOB_EXECUTION,
-                is_tool_cost=True
+                is_tool_cost=True,
+                llm_token_type=LLMTokenTypesNames.OUTPUT,
             )
 
             transaction.save()

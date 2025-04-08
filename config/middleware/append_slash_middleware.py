@@ -74,6 +74,8 @@ class AppendSlashMiddleware:
             and not request.path.startswith('/app/blog_app')
 
             and not request.path.startswith('/app/mobile_client')
+
+            and not request.path.startswith('/api')
         ):
             return HttpResponsePermanentRedirect(request.path + '/')
 

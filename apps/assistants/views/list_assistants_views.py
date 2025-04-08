@@ -55,7 +55,10 @@ class AssistantView_List(LoginRequiredMixin, TemplateView):
                 users__in=[user]
             )
 
-            org_assistants = {org: org.assistants.all() for org in organizations}
+            org_assistants = {
+                org: org.assistants.all() for org in organizations
+            }
+
             context['org_assistants'] = org_assistants
 
         except Exception as e:

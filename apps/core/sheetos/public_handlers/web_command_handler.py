@@ -30,10 +30,6 @@ from apps.core.generative_ai.utils import (
     Office_Models,
 )
 
-from apps.core.internal_cost_manager.costs_map import (
-    InternalServiceCosts
-)
-
 from apps.core.sheetos.utils import (
     SHEETOS_TOOL_CALL_MAXIMUM_ATTEMPTS,
 )
@@ -49,7 +45,8 @@ from apps.core.tool_calls.input_verifiers.verify_browser_query import (
 from apps.llm_transaction.models import LLMTransaction
 
 from apps.llm_transaction.utils import (
-    LLMTransactionSourcesTypesNames
+    LLMTransactionSourcesTypesNames,
+    LLMTokenTypesNames
 )
 
 logger = logging.getLogger(__name__)
@@ -78,13 +75,9 @@ def handle_web_command_public(
             responsible_assistant=xc.copilot,
             encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
             transaction_context_content=command,
-            llm_cost=0,
-            internal_service_cost=0,
-            tax_cost=0,
-            total_cost=0,
-            total_billable_cost=0,
             transaction_type=ChatRoles.USER,
-            transaction_source=LLMTransactionSourcesTypesNames.SHEETOS
+            transaction_source=LLMTransactionSourcesTypesNames.SHEETOS,
+            llm_token_type=LLMTokenTypesNames.INPUT,
         )
 
         logger.info(f"[handle_ai_command] Created LLMTransaction for user command: {command}")
@@ -111,13 +104,9 @@ def handle_web_command_public(
             responsible_assistant=xc.copilot,
             encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
             transaction_context_content=system_prompt,
-            llm_cost=0,
-            internal_service_cost=0,
-            tax_cost=0,
-            total_cost=0,
-            total_billable_cost=0,
             transaction_type=ChatRoles.SYSTEM,
-            transaction_source=LLMTransactionSourcesTypesNames.SHEETOS
+            transaction_source=LLMTransactionSourcesTypesNames.SHEETOS,
+            llm_token_type=LLMTokenTypesNames.INPUT,
         )
 
         logger.info(f"[handle_ai_command] Created LLMTransaction for system prompt.")
@@ -159,13 +148,9 @@ def handle_web_command_public(
                 responsible_assistant=xc.copilot,
                 encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
                 transaction_context_content=choice_message_content,
-                llm_cost=0,
-                internal_service_cost=0,
-                tax_cost=0,
-                total_cost=0,
-                total_billable_cost=0,
                 transaction_type=ChatRoles.ASSISTANT,
-                transaction_source=LLMTransactionSourcesTypesNames.SHEETOS
+                transaction_source=LLMTransactionSourcesTypesNames.SHEETOS,
+                llm_token_type=LLMTokenTypesNames.OUTPUT,
             )
 
             logger.info(f"[handle_ai_command] Created LLMTransaction for AI response.")
@@ -256,13 +241,9 @@ def handle_web_command_public(
                     responsible_assistant=xc.copilot,
                     encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
                     transaction_context_content=choice_message_content,
-                    llm_cost=0,
-                    internal_service_cost=0,
-                    tax_cost=0,
-                    total_cost=0,
-                    total_billable_cost=0,
                     transaction_type=ChatRoles.ASSISTANT,
-                    transaction_source=LLMTransactionSourcesTypesNames.SHEETOS
+                    transaction_source=LLMTransactionSourcesTypesNames.SHEETOS,
+                    llm_token_type=LLMTokenTypesNames.OUTPUT,
                 )
 
                 logger.info(f"[handle_ai_command] Created LLMTransaction for AI response.")
@@ -292,10 +273,10 @@ def handle_web_command_public(
             responsible_user=xc.document_connection.owner_user,
             responsible_assistant=xc.copilot,
             encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
-            llm_cost=InternalServiceCosts.Sheetos.COST,
             transaction_type=ChatRoles.SYSTEM,
             transaction_source=LLMTransactionSourcesTypesNames.SHEETOS,
-            is_tool_cost=True
+            is_tool_cost=True,
+            llm_token_type=LLMTokenTypesNames.OUTPUT,
         )
 
         tx.save()

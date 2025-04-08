@@ -135,6 +135,7 @@ class AssistantView_Create(LoginRequiredMixin, TemplateView):
 
             intra_memory_strategy = request.POST.get('context_overflow_strategy')
             max_msgs_context = request.POST.get('max_context_messages')
+
             logger.info(f"Agent information is received.")
 
             if intra_memory_strategy == ContextManagementStrategyNames.FORGET:
@@ -176,12 +177,20 @@ class AssistantView_Create(LoginRequiredMixin, TemplateView):
             return redirect('assistants:create')
 
         try:
-            org = Organization.objects.get(id=org_id)
-            llm_core = LLMCore.objects.get(id=llm_id)
+            org = Organization.objects.get(
+                id=org_id
+            )
+
+            llm_core = LLMCore.objects.get(
+                id=llm_id
+            )
+
             ner_integration = None
 
             if ner_id:
-                ner_integration = NERIntegration.objects.get(id=ner_id)
+                ner_integration = NERIntegration.objects.get(
+                    id=ner_id
+                )
 
             agent = Assistant.objects.create(
                 organization=org,
@@ -216,8 +225,10 @@ class AssistantView_Create(LoginRequiredMixin, TemplateView):
             project_items = request.POST.getlist('project_items[]', [])
 
             if project_items and len(project_items) > MAX_PROJECTS_PER_ASSISTANT:
-                messages.error(request,
-                               f"Maximum related project count is {MAX_PROJECTS_PER_ASSISTANT} per assistant.")
+                messages.error(
+                    request,
+                    f"Maximum related project count is {MAX_PROJECTS_PER_ASSISTANT} per assistant."
+                )
 
                 project_items = project_items[:MAX_PROJECTS_PER_ASSISTANT]
 

@@ -37,7 +37,7 @@ class LLMCore(models.Model):
 
     model_name = models.CharField(
         max_length=1000,
-        default=GPTModelNamesNames.O1,
+        default=GPTModelNamesNames.O3_MINI,
         null=False,
         blank=False
     )

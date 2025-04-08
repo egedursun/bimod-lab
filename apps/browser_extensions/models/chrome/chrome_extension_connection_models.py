@@ -31,10 +31,17 @@ class ChromeExtensionConnection(models.Model):
         on_delete=models.CASCADE
     )
 
-    connection_api_key = models.CharField(max_length=4000)
+    connection_api_key = models.CharField(
+        max_length=4000
+    )
 
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    updated_at = models.DateTimeField(
+        auto_now=True
+    )
 
     def __str__(self):
         return self.chrome_assistant.name + ' - ' + self.owner_user.username + ' - ' + self.connection_api_key

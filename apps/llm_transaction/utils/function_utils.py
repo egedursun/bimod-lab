@@ -30,10 +30,20 @@ from django.template.loader import (
     render_to_string
 )
 
+from apps.core.internal_cost_manager.costs_map import (
+    TOOL_NAME_TO_COST_MAP
+)
+
+from config.settings import (
+    SERVICE_COST_INPUT_PER_MILLION,
+    SERVICE_COST_OUTPUT_PER_MILLION,
+    SERVICE_TAX_RATE
+)
+
 logger = logging.getLogger(__name__)
 
 
-def process_and_calculate_number_of_billable_tokens(
+def calculate_total_tokens(
     encoding_engine,
     text
 ):
@@ -50,108 +60,66 @@ def process_and_calculate_number_of_billable_tokens(
     return len(tokens)
 
 
-def calculate_total_llm_model_costs(
-    model,
-    number_of_tokens
+def calculate_tool_cost(
+    transaction_source
 ):
-    try:
+    tool_cost = float(
+        TOOL_NAME_TO_COST_MAP[transaction_source]
+    ) or 0.000000
 
-        from apps.llm_transaction.utils import (
-            LLMCostsPerMillionTokens
-        )
-
-        costs = LLMCostsPerMillionTokens.OPENAI_GPT_COSTS[model]
-        tokens_divided_by_million = number_of_tokens / 1_000_000
-
-        apx_input_cost = (tokens_divided_by_million / 2) * costs["input"]
-        apx_output_cost = (tokens_divided_by_million / 2) * costs["output"]
-
-        llm_cost = (apx_input_cost + apx_output_cost)
-
-    except Exception as e:
-        raise ValueError(f"Error occurred while calculating the LLM model costs: {str(e)}")
-
-    return llm_cost
+    tool_cost_after_tax = ((tool_cost * SERVICE_TAX_RATE) + tool_cost)
+    return tool_cost_after_tax
 
 
-def calculate_service_costs_of_platform(
-    llm_cost,
-    tool_service_fee_absolute_rate=0.000000
+def calculate_billable_cost_from_raw(
+    text,
+    token_type,
 ):
-    try:
-        from apps.llm_transaction.utils import (
-            INTERNAL_PROFIT_MARGIN_FOR_LLM
-        )
+    total_tokens = calculate_total_tokens(
+        encoding_engine="cl100k_base",
+        text=text
+    )
 
-        bare_amount = llm_cost * INTERNAL_PROFIT_MARGIN_FOR_LLM
-        bare_amount += tool_service_fee_absolute_rate
-
-    except Exception as e:
-        raise ValueError(f"Error occurred while calculating the service costs of the platform: {str(e)}")
-
-    return bare_amount
+    return calculate_billable_cost(
+        total_tokens=total_tokens,
+        token_type=token_type
+    )
 
 
-def calculate_value_added_tax(internal_service_cost):
-    try:
-        from apps.llm_transaction.utils import (
-            VALUE_ADDED_TAX_PERCENTAGE
-        )
-
-        tax_cost = internal_service_cost * VALUE_ADDED_TAX_PERCENTAGE
-
-    except Exception as e:
-        raise ValueError(f"Error occurred while calculating the value added tax: {str(e)}")
-
-    return tax_cost
-
-
-def calculate_final_billable_cost(
-    internal_service_cost,
-    tax_cost
+def calculate_billable_cost(
+    total_tokens,
+    token_type,
 ):
-    try:
-        result = internal_service_cost + tax_cost
+    from apps.llm_transaction.utils import (
+        LLMTokenTypesNames
+    )
 
-    except Exception as e:
+    service_cost_input = SERVICE_COST_INPUT_PER_MILLION
+    service_cost_output = SERVICE_COST_OUTPUT_PER_MILLION
+    M_TOKENS = 1_000_000
 
-        raise ValueError(f"Error occurred while calculating the final billable cost: {str(e)}")
+    if token_type == LLMTokenTypesNames.INPUT:
+        cost_per_token = service_cost_input
 
-    return result
+    elif token_type == LLMTokenTypesNames.OUTPUT:
+        cost_per_token = service_cost_output
 
+    else:
+        cost_per_token = service_cost_output
 
-def calculate_final_cost_total(
-    llm_cost,
-    billable_cost
-):
-    try:
-        result = llm_cost + billable_cost
+    total_cost = ((total_tokens / M_TOKENS) * cost_per_token)
+    total_cost_with_tax = ((total_cost * SERVICE_TAX_RATE) + total_cost)
 
-    except Exception as e:
-        raise ValueError(f"Error occurred while calculating the final total cost: {str(e)}")
-
-    return result
+    return total_cost_with_tax
 
 
 def sum_costs(transactions):
-    llm_cost = 0
-    internal_service_cost = 0
-    tax_cost = 0
-    total_cost = 0
     billable_cost = 0
 
     for transaction in transactions:
-        llm_cost += transaction.llm_cost
-        internal_service_cost += transaction.internal_service_cost
-        tax_cost += transaction.tax_cost
-        total_cost += transaction.total_cost
         billable_cost += transaction.total_billable_cost
 
     return {
-        "llm_cost": llm_cost,
-        "internal_service_cost": internal_service_cost,
-        "tax_cost": tax_cost,
-        "total_cost": total_cost,
         "total_billable_cost": billable_cost,
     }
 

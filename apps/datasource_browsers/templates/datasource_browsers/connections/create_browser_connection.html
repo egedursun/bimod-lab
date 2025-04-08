@@ -111,15 +111,6 @@
                 </strong>
               </h5>
               <div class="mb-6 col-6">
-                <label class="form-label" for="browser_type">Browser Type<span class="text-danger">&nbsp;*</span></label>
-                <select class="form-select" id="browser_type" name="browser_type">
-                  <option value="" disabled selected>Select Browser Type</option>
-                  {% for key, value in browser_types %}
-                    <option value="{{ key }}">{{ value }}</option>
-                  {% endfor %}
-                </select>
-              </div>
-              <div class="mb-6 col-6">
                 <label class="form-label" for="assistant">Assistant<span class="text-danger">&nbsp;*</span></label>
                 <select class="form-select" id="assistant" name="assistant">
                   {% for assistant in assistants %}

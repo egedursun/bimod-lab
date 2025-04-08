@@ -34,14 +34,23 @@ from apps.core.user_permissions.permission_manager import (
     UserPermissionManager
 )
 
-from apps.brainstorms.models import BrainstormingSession
-from apps.user_permissions.utils import PermissionNames
+from apps.brainstorms.models import (
+    BrainstormingSession
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
 
 
-class BrainstormingView_SessionConfirmDelete(LoginRequiredMixin, TemplateView):
+class BrainstormingView_SessionConfirmDelete(
+    LoginRequiredMixin,
+    TemplateView
+):
 
     def get_context_data(self, **kwargs):
         ss_id = self.kwargs.get('session_id')
@@ -54,6 +63,7 @@ class BrainstormingView_SessionConfirmDelete(LoginRequiredMixin, TemplateView):
 
         context = TemplateLayout.init(self, super().get_context_data(**kwargs))
         context['session'] = session
+
         return context
 
     def post(self, request, *args, **kwargs):

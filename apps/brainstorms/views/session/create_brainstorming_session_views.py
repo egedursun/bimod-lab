@@ -30,10 +30,17 @@ from apps.core.user_permissions.permission_manager import (
     UserPermissionManager
 )
 
-from apps.brainstorms.models import BrainstormingSession
+from apps.brainstorms.models import (
+    BrainstormingSession
+)
+
 from apps.llm_core.models import LLMCore
 from apps.organization.models import Organization
-from apps.user_permissions.utils import PermissionNames
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)
@@ -41,7 +48,11 @@ logger = logging.getLogger(__name__)
 
 class BrainstormingView_SessionCreate(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
-        context = TemplateLayout.init(self, super().get_context_data(**kwargs))
+        context = TemplateLayout.init(
+            self,
+            super().get_context_data(**kwargs)
+        )
+
         user = self.request.user
 
         context['organizations'] = Organization.objects.filter(
@@ -72,10 +83,20 @@ class BrainstormingView_SessionCreate(LoginRequiredMixin, TemplateView):
         topic_definition = request.POST.get('topic_definition')
         constraints = request.POST.get('constraints')
 
-        if org_id and llm_core_id and session_name and topic_definition:
+        if (
+            org_id and
+            llm_core_id and
+            session_name and
+            topic_definition
+        ):
             try:
-                organization = Organization.objects.get(id=org_id)
-                llm_model = LLMCore.objects.get(id=llm_core_id)
+                organization = Organization.objects.get(
+                    id=org_id
+                )
+
+                llm_model = LLMCore.objects.get(
+                    id=llm_core_id
+                )
 
                 session = BrainstormingSession.objects.create(
                     organization=organization,
@@ -98,4 +119,8 @@ class BrainstormingView_SessionCreate(LoginRequiredMixin, TemplateView):
         else:
             messages.error(request, "All fields are required.")
 
-        return self.get(request, *args, **kwargs)
+        return self.get(
+            request,
+            *args,
+            **kwargs
+        )

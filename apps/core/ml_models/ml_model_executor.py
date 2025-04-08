@@ -21,10 +21,6 @@ from uuid import uuid4
 import boto3
 import filetype
 
-from apps.core.internal_cost_manager.costs_map import (
-    InternalServiceCosts
-)
-
 from apps.core.ml_models.utils import (
     GENERATED_FILES_ROOT_PATH,
     GENERATED_IMAGES_ROOT_PATH,
@@ -38,7 +34,8 @@ from apps.datasource_ml_models.models import (
 from apps.llm_transaction.models import LLMTransaction
 
 from apps.llm_transaction.utils import (
-    LLMTransactionSourcesTypesNames
+    LLMTransactionSourcesTypesNames,
+    LLMTokenTypesNames
 )
 
 from config import settings
@@ -239,10 +236,10 @@ class MLModelExecutor:
             responsible_user=None,
             responsible_assistant=self.connection_object.assistant,
             encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
-            llm_cost=InternalServiceCosts.MLModelExecutor.COST,
             transaction_type=ChatRoles.SYSTEM,
             transaction_source=LLMTransactionSourcesTypesNames.ML_MODEL_PREDICTION,
-            is_tool_cost=True
+            is_tool_cost=True,
+            llm_token_type=LLMTokenTypesNames.OUTPUT,
         )
 
         tx.save()

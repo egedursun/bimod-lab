@@ -21,7 +21,8 @@ import openai
 from django.contrib.auth.models import User
 
 from apps.core.generative_ai.utils import (
-    ChatRoles
+    ChatRoles,
+    GPT_DEFAULT_ENCODING_ENGINE
 )
 
 from apps.core.sinaptera.prompts import (
@@ -40,6 +41,12 @@ from apps.core.sinaptera.utils import (
 
 from apps.llm_core.models import (
     LLMCore
+)
+from apps.llm_transaction.models import LLMTransaction
+
+from apps.llm_transaction.utils import (
+    LLMTransactionSourcesTypesNames,
+    LLMTokenTypesNames
 )
 
 from apps.multimodal_chat.utils import (
@@ -131,20 +138,34 @@ class SinapteraBoosterManager:
         structured_conversation_history: list,
     ):
 
+        context_messages = [
+            {
+                "role": ChatRoles.SYSTEM,
+                "content": structured_conversation_history[0].get("content")
+            },
+            {
+                "role": ChatRoles.USER,
+                "content": structured_conversation_history[1].get("content")
+            }
+        ],
+
+        LLMTransaction.objects.create(
+            organization=self.llm_core.organization,
+            model=self.llm_core,
+            responsible_user=None,
+            responsible_assistant=None,
+            encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
+            transaction_context_content=structured_conversation_history,
+            transaction_type=ChatRoles.SYSTEM,
+            transaction_source=LLMTransactionSourcesTypesNames.APP,
+            llm_token_type=LLMTokenTypesNames.INPUT
+        )
+
         # Evaluation or improvement rounds: Reasoning based generation
         if model_name in SinapteraEvaluationImprovementNitroBoostModels.as_list():
             response = openai.chat.completions.create(
                 model=model_name,
-                messages=[
-                    {
-                        "role": ChatRoles.SYSTEM,
-                        "content": structured_conversation_history[0].get("content")
-                    },
-                    {
-                        "role": ChatRoles.USER,
-                        "content": structured_conversation_history[1].get("content")
-                    }
-                ],
+                messages=context_messages,
             )
 
         # Generation rounds: Standard model based generation
@@ -159,13 +180,23 @@ class SinapteraBoosterManager:
                 # top_p=float(self.llm_core.top_p),
             )
 
-        return (
-            response
-            .choices[0]
-            .message
-            .content
-            .strip()
+        final_content = response.choices[0].message.content.strip()
+
+        LLMTransaction.objects.create(
+            organization=self.llm_core.organization,
+            model=self.llm_core,
+            responsible_user=None,
+            responsible_assistant=None,
+            encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
+            transaction_context_content=str(final_content),
+            transaction_type=ChatRoles.ASSISTANT,
+            transaction_source=LLMTransactionSourcesTypesNames.APP,
+            llm_token_type=LLMTokenTypesNames.OUTPUT
         )
+
+        return final_content
+
+
 
     def generate_initial_completions(
         self,

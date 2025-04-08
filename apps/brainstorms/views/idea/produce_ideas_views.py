@@ -58,8 +58,15 @@ class BrainstormingView_IdeasGenerate(LoginRequiredMixin, View):
             created_by_user=request.user
         )
 
-        xc = BrainstormsExecutor(session=session)
-        xc.produce_ideas(depth_level=int(depth_level))
+        xc = BrainstormsExecutor(
+            session=session
+        )
+
+        xc.produce_ideas(
+            depth_level=int(
+                depth_level
+            )
+        )
 
         messages.success(request, f'Ideas for level {depth_level} generated successfully.')
         logger.info(f'Ideas for level {depth_level} generated successfully. Session ID: {session.id}')

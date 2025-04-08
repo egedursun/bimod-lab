@@ -38,8 +38,13 @@ from apps.core.user_permissions.permission_manager import (
     UserPermissionManager
 )
 
-from apps.brainstorms.models import BrainstormingIdea
-from apps.user_permissions.utils import PermissionNames
+from apps.brainstorms.models import (
+    BrainstormingIdea
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
 
 logger = logging.getLogger(__name__)
 

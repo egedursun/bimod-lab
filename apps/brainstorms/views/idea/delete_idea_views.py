@@ -34,8 +34,13 @@ from apps.core.user_permissions.permission_manager import (
     UserPermissionManager
 )
 
-from apps.brainstorms.models import BrainstormingIdea
-from apps.user_permissions.utils import PermissionNames
+from apps.brainstorms.models import (
+    BrainstormingIdea
+)
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
 
 logger = logging.getLogger(__name__)
 
@@ -56,7 +61,10 @@ class BrainstormingView_IdeaDelete(LoginRequiredMixin, View):
             operation=PermissionNames.DELETE_BRAINSTORMING_IDEAS
         ):
             messages.error(self.request, "You do not have permission to delete ideas.")
-            return redirect('brainstorms:detail_session', session_id=idea.brainstorming_session.id)
+            return redirect(
+                'brainstorms:detail_session',
+                session_id=idea.brainstorming_session.id
+            )
         ##############################
 
         ss_id = idea.brainstorming_session.id

@@ -37,7 +37,8 @@ from apps.datasource_browsers.models import (
 )
 
 from apps.datasource_browsers.utils import (
-    BROWSER_TYPES
+    BROWSER_TYPES,
+    BrowserTypesNames
 )
 
 from apps.user_permissions.utils import (
@@ -67,7 +68,6 @@ class BrowserView_BrowserCreate(LoginRequiredMixin, TemplateView):
                 organization__in=orgs
             )
 
-            context['browser_types'] = BROWSER_TYPES
             context['user'] = context_user
 
         except Exception as e:
@@ -91,7 +91,7 @@ class BrowserView_BrowserCreate(LoginRequiredMixin, TemplateView):
 
         browser_name = request.POST.get('name')
         description = request.POST.get('description')
-        browser_type = request.POST.get('browser_type')
+        browser_type = BrowserTypesNames.GOOGLE
         agent_id = request.POST.get('assistant')
 
         browser_selectivity = request.POST.get('data_selectivity', 0.5)

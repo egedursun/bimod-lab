@@ -91,6 +91,7 @@ BASE_URL = os.environ.get(
 
 INSTALLED_APPS = [
     "jazzmin",
+    "rest_framework",
 
     "config.apps.MainAppConfig",
     "django.contrib.admin",
@@ -610,17 +611,10 @@ MAX_TRIGGERED_JOBS_PER_MAESTRO = int(
 # SERVICE PROFIT MARGINS
 ############################################################################################################
 
-__SERVICE_PROFIT_MARGIN = float(
-    os.environ.get(
-        "SERVICE_PROFIT_MARGIN",
-        default="2.00"
-    )
-)
-
-__SERVICE_TAX_RATE = float(
+SERVICE_TAX_RATE = float(
     os.environ.get(
         "SERVICE_TAX_RATE",
-        default="0.18"
+        default="0.25"
     )
 )
 
@@ -1007,6 +1001,7 @@ SUFFIX_ANY = "*"
 
 EXCLUDED_PAGES = [
     "/",
+    "/api/*",
     "/admin/*",
     "/app/login/*",
     "/app/logout/*",
@@ -1270,10 +1265,25 @@ INTERNAL_REPLICATE_API_KEY = os.environ.get(
     default=""
 )
 
+INTERNAL_NEBIUS_API_KEY = os.environ.get(
+    "INTERNAL_NEBIUS_API_KEY",
+    default=""
+)
+
 INTERNAL_LLM_MODEL_NAME = os.environ.get(
     "INTERNAL_LLM_MODEL_NAME",
     default=""
 )
+
+SERVICE_COST_INPUT_PER_MILLION = float(os.environ.get(
+    "SERVICE_COST_INPUT_PER_MILLION",
+    default="23.00"
+))
+
+SERVICE_COST_OUTPUT_PER_MILLION = float(os.environ.get(
+    "SERVICE_COST_OUTPUT_PER_MILLION",
+    default="90.00"
+))
 
 ############################################################################################################
 # ADMIN PANEL CONFIGURATIONS
@@ -1307,5 +1317,11 @@ if SKIP_FIXTURE_EMBEDDINGS is True:
 
 else:
     print("[settings.py] [V] Attempting to deploy the database vector embeddings...")
+
+#####################################################################################################################
+# BIMOD REST API CONFIG
+#####################################################################################################################
+
+BIMOD_REST_API_VERSION = "1"
 
 #####################################################################################################################

@@ -27,7 +27,11 @@ from apps.core.user_permissions.permission_manager import (
 )
 
 from apps.assistants.models import Assistant
-from apps.user_permissions.utils import PermissionNames
+
+from apps.user_permissions.utils import (
+    PermissionNames
+)
+
 from web_project import TemplateLayout
 
 logger = logging.getLogger(__name__)

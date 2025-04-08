@@ -25,10 +25,6 @@ from apps.core.http_client.utils import (
     get_transaction_could_not_saved_error_message
 )
 
-from apps.core.internal_cost_manager.costs_map import (
-    InternalServiceCosts
-)
-
 from apps.datasource_media_storages.models import (
     DataSourceMediaStorageConnection,
     DataSourceMediaStorageItem
@@ -40,7 +36,8 @@ import filetype
 from apps.llm_transaction.models import LLMTransaction
 
 from apps.llm_transaction.utils import (
-    LLMTransactionSourcesTypesNames
+    LLMTransactionSourcesTypesNames,
+    LLMTokenTypesNames
 )
 
 logger = logging.getLogger(__name__)
@@ -131,10 +128,10 @@ class HTTPClientDownloadExecutor:
                 responsible_user=None,
                 responsible_assistant=self.storage.assistant,
                 encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
-                llm_cost=InternalServiceCosts.DownloadExecutor.COST,
                 transaction_type=ChatRoles.SYSTEM,
                 transaction_source=LLMTransactionSourcesTypesNames.DOWNLOAD_FILE,
-                is_tool_cost=True
+                is_tool_cost=True,
+                llm_token_type=LLMTokenTypesNames.INPUT,
             )
 
             tx.save()

@@ -61,7 +61,8 @@ from apps.core.hadron_prime.handlers import (
 from apps.llm_transaction.models import LLMTransaction
 
 from apps.llm_transaction.utils import (
-    LLMTransactionSourcesTypesNames
+    LLMTransactionSourcesTypesNames,
+    LLMTokenTypesNames
 )
 
 logger = logging.getLogger(__name__)
@@ -837,13 +838,9 @@ class HadronPrimeExecutor:
             responsible_assistant=None,
             encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
             transaction_context_content=system_prompt,
-            llm_cost=0,
-            internal_service_cost=0,
-            tax_cost=0,
-            total_cost=0,
-            total_billable_cost=0,
             transaction_type=ChatRoles.SYSTEM,
-            transaction_source=LLMTransactionSourcesTypesNames.HADRON_PRIME
+            transaction_source=LLMTransactionSourcesTypesNames.HADRON_PRIME,
+            llm_token_type=LLMTokenTypesNames.INPUT,
         )
 
         logger.info(f"[generate_node_speech] Created LLMTransaction for system prompt: {system_prompt}")
@@ -855,13 +852,9 @@ class HadronPrimeExecutor:
             responsible_assistant=None,
             encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
             transaction_context_content=user_query_text,
-            llm_cost=0,
-            internal_service_cost=0,
-            tax_cost=0,
-            total_cost=0,
-            total_billable_cost=0,
             transaction_type=ChatRoles.USER,
-            transaction_source=LLMTransactionSourcesTypesNames.HADRON_PRIME
+            transaction_source=LLMTransactionSourcesTypesNames.HADRON_PRIME,
+            llm_token_type=LLMTokenTypesNames.INPUT,
         )
 
         logger.info(f"[generate_node_speech] Created LLMTransaction for user prompt: {system_prompt}")
@@ -904,13 +897,9 @@ class HadronPrimeExecutor:
                 responsible_assistant=None,
                 encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
                 transaction_context_content=final_speech_output,
-                llm_cost=0,
-                internal_service_cost=0,
-                tax_cost=0,
-                total_cost=0,
-                total_billable_cost=0,
                 transaction_type=ChatRoles.ASSISTANT,
-                transaction_source=LLMTransactionSourcesTypesNames.HADRON_PRIME
+                transaction_source=LLMTransactionSourcesTypesNames.HADRON_PRIME,
+                llm_token_type=LLMTokenTypesNames.OUTPUT,
             )
 
             logger.info(f"[generate_node_speech] Created LLMTransaction for user prompt: {system_prompt}")

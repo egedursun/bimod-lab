@@ -64,7 +64,7 @@ class ReasoningAuxiliaryLLMManager:
             return final_output
 
         if self.assistant.multi_step_reasoning_capability_choice == MultiStepReasoningCapabilityChoicesNames.HIGH_PERFORMANCE:
-            model_name = MultiStepReasoningCapabilityModelNames.O1_PREVIEW
+            model_name = MultiStepReasoningCapabilityModelNames.O3_MINI
 
         elif self.assistant.multi_step_reasoning_capability_choice == MultiStepReasoningCapabilityChoicesNames.COST_EFFECTIVE:
             model_name = MultiStepReasoningCapabilityModelNames.O1_MINI

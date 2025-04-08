@@ -31,10 +31,6 @@ from apps.core.generative_ai.gpt_openai_manager import (
     OpenAIGPTClientManager
 )
 
-from apps.core.internal_cost_manager.costs_map import (
-    InternalServiceCosts
-)
-
 from apps.core.media_managers.helpers import (
     MediaStorageCopyClient__AWSS3Bucket,
     MediaStorageCopyClient__GCSBucket,
@@ -63,7 +59,8 @@ from apps.datasource_media_storages.models import (
 from apps.llm_transaction.models import LLMTransaction
 
 from apps.llm_transaction.utils import (
-    LLMTransactionSourcesTypesNames
+    LLMTransactionSourcesTypesNames,
+    LLMTokenTypesNames
 )
 
 from config import settings
@@ -419,10 +416,10 @@ class MediaManager:
             responsible_user=None,
             responsible_assistant=self.connection_object.assistant,
             encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
-            llm_cost=InternalServiceCosts.FileInterpreter.COST,
             transaction_type=ChatRoles.SYSTEM,
             transaction_source=LLMTransactionSourcesTypesNames.INTERPRET_FILE,
-            is_tool_cost=True
+            is_tool_cost=True,
+            llm_token_type=LLMTokenTypesNames.INPUT,
         )
 
         tx.save()
@@ -472,10 +469,10 @@ class MediaManager:
             responsible_user=None,
             responsible_assistant=self.connection_object.assistant,
             encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
-            llm_cost=InternalServiceCosts.ImageInterpreter.COST,
             transaction_type=ChatRoles.SYSTEM,
             transaction_source=LLMTransactionSourcesTypesNames.INTERPRET_IMAGE,
-            is_tool_cost=True
+            is_tool_cost=True,
+            llm_token_type=LLMTokenTypesNames.OUTPUT,
         )
 
         tx.save()

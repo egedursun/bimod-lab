@@ -125,8 +125,10 @@ class MultiStepReasoningCapabilityChoicesNames:
 
 
 class MultiStepReasoningCapabilityModelNames:
+    O3_MINI = "o3-mini"
     O1_PREVIEW = "o1-preview"
     O1_MINI = "o1-mini"
+    O1 = "o1"
 
 
 AGENT_ADMIN_DISPLAY_FIELDS = (

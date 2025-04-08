@@ -15,9 +15,6 @@
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
 
-
-from config import settings
-
 TOKENIZATION_ENCODING_ENGINES = [
     ("cl100k_base", "cl100k_base"),
     ("p50k_base", "p50k_base"),
@@ -29,6 +26,24 @@ LLM_TRANSACTION_ROLES_FOR_TYPE = [
     ("assistant", "Assistant"),
     ("system", "System"),
 ]
+
+LLM_TOKEN_TYPES = [
+    ("input", "Input"),
+    ("output", "Output"),
+]
+
+
+class LLMTokenTypesNames:
+    INPUT = "input"
+    OUTPUT = "output"
+
+    @staticmethod
+    def as_list():
+        return [
+            LLMTokenTypesNames.INPUT,
+            LLMTokenTypesNames.OUTPUT,
+        ]
+
 
 SOURCES_OF_LLM_TRANSACTION = [
     ("app", "Application"),
@@ -277,6 +292,10 @@ class LLMCostsPerMillionTokens:
             "input": 2.50,
             "output": 10.00,
         },
+        "o3-mini": {
+            "input": 1.10,
+            "output": 4.40,
+        },
         "o1-mini": {
             "input": 3.00,
             "output": 12.00,
@@ -291,9 +310,6 @@ class LLMCostsPerMillionTokens:
         }
     }
 
-
-INTERNAL_PROFIT_MARGIN_FOR_LLM = settings.__SERVICE_PROFIT_MARGIN
-VALUE_ADDED_TAX_PERCENTAGE = settings.__SERVICE_TAX_RATE
 
 AUTO_TOP_UP_ADMIN_LIST = [
     "organization",
@@ -321,7 +337,7 @@ TRANSACTION_ADMIN_LIST = [
     "organization",
     "model",
     "transaction_source",
-    "total_cost",
+    "total_billable_cost",
     "created_at"
 ]
 TRANSACTION_ADMIN_FILTER = [

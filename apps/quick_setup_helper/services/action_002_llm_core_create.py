@@ -45,7 +45,7 @@ def action__002_llm_core_create(
             provider="OA",
             api_key=settings.INTERNAL_OPENAI_API_KEY,
             temperature=response__openai_temperature,
-            model_name=GPTModelNamesNames.O1_PREVIEW,
+            model_name=GPTModelNamesNames.O3_MINI,
             nickname="General Core Model" + " " + generate_random_object_id_string(),
             description="The primary LLM core model generated for organization " + metadata__organization.name + ".",
         )

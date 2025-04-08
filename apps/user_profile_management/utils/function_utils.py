@@ -17,6 +17,11 @@
 
 import logging
 import re
+import secrets
+
+from apps.metatempo.utils import (
+    USER_API_KEY_DEFAULT_LENGTH
+)
 
 logger = logging.getLogger(__name__)
 

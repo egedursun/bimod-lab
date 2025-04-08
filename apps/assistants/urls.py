@@ -17,12 +17,13 @@
 
 
 from django.urls import path
+from rest_framework import routers
 
 from apps.assistants.views import (
     AssistantView_Create,
     AssistantView_List,
     AssistantView_Update,
-    AssistantView_Delete
+    AssistantView_Delete,
 )
 
 app_name = "assistants"

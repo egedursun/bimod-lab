@@ -16,3 +16,4 @@
 #
 
 DEEPSEEK_MODEL_NAME = "deepseek-ai/deepseek-r1"
+DEEPSEEK_MODEL_NAME__NEBIUS = "deepseek-ai/DeepSeek-R1"

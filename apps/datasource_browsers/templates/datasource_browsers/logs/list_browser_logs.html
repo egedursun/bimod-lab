@@ -131,7 +131,6 @@
         <thead class="border-top">
         <tr>
           <th><strong>Action</strong></th>
-          <th>Screenshot</th>
           <th>Context URL</th>
           <th>HTML Content</th>
           <th>Context Content</th>
@@ -149,26 +148,13 @@
                 <strong>{{ log.action|field_name_to_label }}</strong>
               </div>
             </td>
-            <td style="min-width: 200px;">
-              {% if log.screenshot %}
-                <a href="{{ log.screenshot.url }}" target="_blank">
-                  <img src="{{ log.screenshot.url }}" class="img-fluid rounded border border-2 border-primary rounded"
-                       style="max-height: 200px;" alt="Log Screenshot Image">
-                </a>
-              {% else %}
-                <p class="bg-label-warning p-4 m-2 rounded">
-                  <i class="bi bi-info-circle me-4"></i>
-                  <small>No screenshot available</small>
-                </p>
-              {% endif %}
-            </td>
             <td style="min-width: 300px; max-width: 300px;">
               {% if log.context_url %}
                 <p class="bg-label-info p-4 m-2 rounded" style="font-size: 11px;">
                   <strong><a href="{{ log.context_url }}" target="_blank">{{ log.context_url }}</a></strong>
                 </p>
               {% else %}
-                <p class="bg-label-warning p-4 m-2 rounded">
+                <p class="bg-label-warning p-4 m-2 border border-warning border-2 rounded">
                   <i class="bi bi-info-circle me-4"></i>
                   <small>No context URL available</small>
                 </p>
@@ -181,7 +167,7 @@
                   {{ log.html_content|linebreaks }}
                 </div>
               {% else %}
-                <div class="bg-label-warning rounded p-2 m-2">
+                <div class="bg-label-warning rounded border border-warning rounded p-4 m-2">
                   <i class="bi bi-info-circle me-4"></i>
                   <small>No HTML content available</small>
                 </div>

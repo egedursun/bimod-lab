@@ -17,7 +17,7 @@
 import json
 import logging
 
-from apps.core.generative_ai.magroute.deepseek_r1 import DeepSeekR1
+from apps.core.generative_ai.magroute.deepseek_r1_nebius import DeepSeekR1
 from apps.core.generative_ai.utils import (
     find_tool_call_from_json,
     ChatRoles

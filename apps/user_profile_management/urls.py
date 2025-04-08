@@ -21,7 +21,8 @@ from django.urls import path
 from apps.user_profile_management.views import (
     UserProfileView_List,
     UserProfileView_CreditCardRemove,
-    UserProfileView_ResetPassword
+    UserProfileView_ResetPassword,
+    UserProfileView_ResetAPIKey
 )
 
 app_name = "user_profile_management"
@@ -57,5 +58,13 @@ urlpatterns = [
 
         ),
         name='remove_card'
+    ),
+
+    path(
+        "reset_access_key/",
+        UserProfileView_ResetAPIKey.as_view(
+
+        ),
+        name="regenerate_api_key"
     ),
 ]

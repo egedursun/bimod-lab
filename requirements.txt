@@ -116,3 +116,5 @@ pymssql~=2.3.2
 python-tds~=1.16.0
 mariadb~=1.1.11
 replicate~=1.0.4
+djangorestframework~=3.15.2
+pydantic~=2.10.2

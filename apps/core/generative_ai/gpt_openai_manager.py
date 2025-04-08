@@ -14,6 +14,7 @@
 #
 #   For permission inquiries, please contact: admin@Bimod.io.
 #
+
 import json
 import logging
 
@@ -40,7 +41,7 @@ from apps.core.generative_ai.auxiliary_methods.errors.error_log_prompts import (
     get_json_decode_error_log
 )
 
-from apps.core.generative_ai.magroute.deepseek_r1 import (
+from apps.core.generative_ai.magroute.deepseek_r1_nebius import (
     DeepSeekR1
 )
 
@@ -75,8 +76,12 @@ from apps.core.tool_calls.tool_call_manager import (
     ToolCallManager
 )
 
-from apps.multimodal_chat.utils import (
+from apps.llm_transaction.utils import (
     calculate_billable_cost_from_raw,
+    LLMTokenTypesNames
+)
+
+from apps.multimodal_chat.utils import (
     transmit_websocket_log,
     BIMOD_NO_TAG_PLACEHOLDER,
     TransmitWebsocketLogSenderType,
@@ -250,9 +255,8 @@ class OpenAIGPTClientManager:
                 )
 
                 latest_msg_billable_cost = calculate_billable_cost_from_raw(
-                    encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
-                    model=self.chat.assistant.llm_model.model_name,
-                    text=latest_message.message_text_content
+                    text=latest_message.message_text_content,
+                    token_type=LLMTokenTypesNames.INPUT,
                 )
 
             except Exception as e:
@@ -291,13 +295,9 @@ class OpenAIGPTClientManager:
                     responsible_assistant=self.chat.assistant,
                     encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
                     transaction_context_content=response,
-                    llm_cost=0,
-                    internal_service_cost=0,
-                    tax_cost=0,
-                    total_cost=0,
-                    total_billable_cost=0,
                     transaction_type=ChatRoles.ASSISTANT,
-                    transaction_source=self.chat.chat_source
+                    transaction_source=self.chat.chat_source,
+                    llm_token_type=LLMTokenTypesNames.INPUT,
                 )
 
                 self.chat.transactions.add(failure_tx)
@@ -511,13 +511,9 @@ class OpenAIGPTClientManager:
                     responsible_assistant=self.chat.assistant,
                     encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
                     transaction_context_content=acc_resp,
-                    llm_cost=0,
-                    internal_service_cost=0,
-                    tax_cost=0,
-                    total_cost=0,
-                    total_billable_cost=0,
                     transaction_type=ChatRoles.ASSISTANT,
-                    transaction_source=self.chat.chat_source
+                    transaction_source=self.chat.chat_source,
+                    llm_token_type=LLMTokenTypesNames.OUTPUT,
                 )
 
             except Exception as e:
@@ -607,13 +603,9 @@ class OpenAIGPTClientManager:
                         responsible_assistant=self.chat.assistant,
                         encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
                         transaction_context_content=idle_tx_msg,
-                        llm_cost=0,
-                        internal_service_cost=0,
-                        tax_cost=0,
-                        total_cost=0,
-                        total_billable_cost=0,
                         transaction_type=ChatRoles.ASSISTANT,
-                        transaction_source=self.chat.chat_source
+                        transaction_source=self.chat.chat_source,
+                        llm_token_type=LLMTokenTypesNames.OUTPUT,
                     )
 
                     self.chat.transactions.add(failure_tx)
@@ -661,13 +653,9 @@ class OpenAIGPTClientManager:
                         responsible_assistant=self.chat.assistant,
                         encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
                         transaction_context_content=idle_tx_msg,
-                        llm_cost=0,
-                        internal_service_cost=0,
-                        tax_cost=0,
-                        total_cost=0,
-                        total_billable_cost=0,
                         transaction_type=ChatRoles.ASSISTANT,
-                        transaction_source=self.chat.chat_source
+                        transaction_source=self.chat.chat_source,
+                        llm_token_type=LLMTokenTypesNames.OUTPUT,
                     )
 
                     self.chat.transactions.add(failure_tx)
@@ -984,13 +972,9 @@ class OpenAIGPTClientManager:
                     responsible_assistant=self.chat.assistant,
                     encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
                     transaction_context_content=str(tool_resp_list),
-                    llm_cost=0,
-                    internal_service_cost=0,
-                    tax_cost=0,
-                    total_cost=0,
-                    total_billable_cost=0,
                     transaction_type=ChatRoles.ASSISTANT,
-                    transaction_source=self.chat.chat_source
+                    transaction_source=self.chat.chat_source,
+                    llm_token_type=LLMTokenTypesNames.OUTPUT,
                 )
 
             except Exception as e:

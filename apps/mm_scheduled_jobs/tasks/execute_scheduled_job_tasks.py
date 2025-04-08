@@ -38,7 +38,8 @@ from apps.core.orchestration.orchestration_executor import (
 )
 
 from apps.llm_transaction.utils import (
-    LLMTransactionSourcesTypesNames
+    LLMTransactionSourcesTypesNames,
+    LLMTokenTypesNames
 )
 
 from apps.llm_transaction.models import LLMTransaction
@@ -232,10 +233,10 @@ def execute_scheduled_job(scheduled_job_id):
             responsible_user=None,
             responsible_assistant=job.assistant,
             encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
-            llm_cost=InternalServiceCosts.ScheduledJobExecutor.COST,
             transaction_type=ChatRoles.SYSTEM,
             transaction_source=LLMTransactionSourcesTypesNames.SCHEDULED_JOB_EXECUTION,
-            is_tool_cost=True
+            is_tool_cost=True,
+            llm_token_type=LLMTokenTypesNames.OUTPUT,
         )
 
         transaction.save()
@@ -390,10 +391,10 @@ def execute_orchestration_scheduled_job(scheduled_job_id):
             responsible_user=None,
             responsible_assistant=job.maestro,
             encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
-            llm_cost=InternalServiceCosts.ScheduledJobExecutor.COST,
             transaction_type=ChatRoles.SYSTEM,
             transaction_source=LLMTransactionSourcesTypesNames.SCHEDULED_JOB_EXECUTION,
-            is_tool_cost=True
+            is_tool_cost=True,
+            llm_token_type=LLMTokenTypesNames.OUTPUT,
         )
         transaction.save()
 
@@ -561,10 +562,10 @@ def execute_leanmod_scheduled_job(scheduled_job_id):
             responsible_user=None,
             responsible_assistant=job.leanmod,
             encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
-            llm_cost=InternalServiceCosts.ScheduledJobExecutor.COST,
             transaction_type=ChatRoles.SYSTEM,
             transaction_source=LLMTransactionSourcesTypesNames.SCHEDULED_JOB_EXECUTION,
-            is_tool_cost=True
+            is_tool_cost=True,
+            llm_token_type=LLMTokenTypesNames.OUTPUT,
         )
         transaction.save()
 

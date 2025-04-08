@@ -50,7 +50,8 @@ from apps.llm_core.models import LLMCore
 from apps.llm_transaction.models import LLMTransaction
 
 from apps.llm_transaction.utils import (
-    LLMTransactionSourcesTypesNames
+    LLMTransactionSourcesTypesNames,
+    LLMTokenTypesNames
 )
 
 logger = logging.getLogger(__name__)
@@ -129,13 +130,9 @@ class Individual:
                 responsible_assistant=None,
                 encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
                 transaction_context_content=str(system_prompt),
-                llm_cost=0,
-                internal_service_cost=0,
-                tax_cost=0,
-                total_cost=0,
-                total_billable_cost=0,
                 transaction_type=ChatRoles.SYSTEM,
-                transaction_source=LLMTransactionSourcesTypesNames.BINEXUS
+                transaction_source=LLMTransactionSourcesTypesNames.BINEXUS,
+                llm_token_type=LLMTokenTypesNames.INPUT,
             )
 
             tx.save()
@@ -171,13 +168,9 @@ class Individual:
                 responsible_assistant=None,
                 encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
                 transaction_context_content=str(final_response),
-                llm_cost=0,
-                internal_service_cost=0,
-                tax_cost=0,
-                total_cost=0,
-                total_billable_cost=0,
                 transaction_type=ChatRoles.SYSTEM,
-                transaction_source=LLMTransactionSourcesTypesNames.BINEXUS
+                transaction_source=LLMTransactionSourcesTypesNames.BINEXUS,
+                llm_token_type=LLMTokenTypesNames.INPUT,
             )
 
             tx.save()

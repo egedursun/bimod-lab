@@ -40,10 +40,6 @@ from apps.core.hadron_prime.utils import (
     HADRON_PRIME_TOOL_CALL_MAXIMUM_ATTEMPTS
 )
 
-from apps.core.internal_cost_manager.costs_map import (
-    InternalServiceCosts
-)
-
 from apps.core.tool_calls.leanmod.core_services.core_service_query_expert_network import (
     execute_expert_network_query
 )
@@ -52,7 +48,8 @@ from apps.hadron_prime.models import HadronNode
 from apps.llm_transaction.models import LLMTransaction
 
 from apps.llm_transaction.utils import (
-    LLMTransactionSourcesTypesNames
+    LLMTransactionSourcesTypesNames,
+    LLMTokenTypesNames
 )
 
 logger = logging.getLogger(__name__)
@@ -106,13 +103,9 @@ def consult_ai(
             responsible_assistant=None,
             encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
             transaction_context_content=system_prompt,
-            llm_cost=0,
-            internal_service_cost=0,
-            tax_cost=0,
-            total_cost=0,
-            total_billable_cost=0,
             transaction_type=ChatRoles.SYSTEM,
-            transaction_source=LLMTransactionSourcesTypesNames.HADRON_PRIME
+            transaction_source=LLMTransactionSourcesTypesNames.HADRON_PRIME,
+            llm_token_type=LLMTokenTypesNames.INPUT,
         )
 
         logger.info(f"[consult_ai] Created LLMTransaction for system prompt: {system_prompt}")
@@ -148,13 +141,9 @@ def consult_ai(
             responsible_assistant=None,
             encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
             transaction_context_content=choice_message_content,
-            llm_cost=0,
-            internal_service_cost=0,
-            tax_cost=0,
-            total_cost=0,
-            total_billable_cost=0,
             transaction_type=ChatRoles.ASSISTANT,
-            transaction_source=LLMTransactionSourcesTypesNames.HADRON_PRIME
+            transaction_source=LLMTransactionSourcesTypesNames.HADRON_PRIME,
+            llm_token_type=LLMTokenTypesNames.OUTPUT,
         )
 
         logger.info(f"[consult_ai] Created LLMTransaction for AI response.")
@@ -251,13 +240,9 @@ def consult_ai(
                     responsible_assistant=None,
                     encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
                     transaction_context_content=choice_message_content,
-                    llm_cost=0,
-                    internal_service_cost=0,
-                    tax_cost=0,
-                    total_cost=0,
-                    total_billable_cost=0,
                     transaction_type=ChatRoles.ASSISTANT,
-                    transaction_source=LLMTransactionSourcesTypesNames.HADRON_PRIME
+                    transaction_source=LLMTransactionSourcesTypesNames.HADRON_PRIME,
+                    llm_token_type=LLMTokenTypesNames.OUTPUT,
                 )
 
                 logger.info(f"[consult_ai] Created LLMTransaction for AI response.")
@@ -333,10 +318,10 @@ def consult_ai(
             responsible_user=node.created_by_user,
             responsible_assistant=None,
             encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
-            llm_cost=InternalServiceCosts.HadronPrime.COST,
             transaction_type=ChatRoles.SYSTEM,
             transaction_source=LLMTransactionSourcesTypesNames.HADRON_PRIME,
-            is_tool_cost=True
+            is_tool_cost=True,
+            llm_token_type=LLMTokenTypesNames.OUTPUT,
         )
 
         tx.save()

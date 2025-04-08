@@ -27,10 +27,6 @@ import faiss
 import numpy as np
 import oracledb
 
-from apps.core.internal_cost_manager.costs_map import (
-    InternalServiceCosts
-)
-
 from apps.core.sql.utils import (
     before_execute_sql_query,
     can_write_to_database
@@ -51,7 +47,8 @@ from apps.datasource_sql.utils import (
 from apps.llm_transaction.models import LLMTransaction
 
 from apps.llm_transaction.utils import (
-    LLMTransactionSourcesTypesNames
+    LLMTransactionSourcesTypesNames,
+    LLMTokenTypesNames
 )
 
 logger = logging.getLogger(__name__)
@@ -135,10 +132,10 @@ class OracleDBExecutor:
             responsible_user=None,
             responsible_assistant=assistant,
             encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
-            llm_cost=InternalServiceCosts.SQLReadExecutor.COST,
             transaction_type=ChatRoles.SYSTEM,
             transaction_source=LLMTransactionSourcesTypesNames.SQL_READ,
-            is_tool_cost=True
+            is_tool_cost=True,
+            llm_token_type=LLMTokenTypesNames.OUTPUT,
         )
 
         new_tx.save()
@@ -177,10 +174,10 @@ class OracleDBExecutor:
             responsible_user=None,
             responsible_assistant=self.connection_object.assistant,
             encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
-            llm_cost=InternalServiceCosts.SQLReadExecutor.COST,
             transaction_type=ChatRoles.SYSTEM,
             transaction_source=LLMTransactionSourcesTypesNames.SQL_READ,
-            is_tool_cost=True
+            is_tool_cost=True,
+            llm_token_type=LLMTokenTypesNames.OUTPUT,
         )
 
         new_tx.save()
@@ -234,10 +231,10 @@ class OracleDBExecutor:
             responsible_user=None,
             responsible_assistant=self.connection_object.assistant,
             encoding_engine=GPT_DEFAULT_ENCODING_ENGINE,
-            llm_cost=InternalServiceCosts.SQLWriteExecutor.COST,
             transaction_type=ChatRoles.SYSTEM,
             transaction_source=LLMTransactionSourcesTypesNames.SQL_WRITE,
-            is_tool_cost=True
+            is_tool_cost=True,
+            llm_token_type=LLMTokenTypesNames.OUTPUT,
         )
 
         new_tx.save()

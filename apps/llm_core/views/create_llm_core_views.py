@@ -78,7 +78,7 @@ class LLMView_Create(TemplateView, LoginRequiredMixin):
         form.instance.created_by_user = user
         form.instance.last_updated_by_user = user
         form.instance.provider = "OA"
-        form.instance.model_name = GPTModelNamesNames.O1
+        form.instance.model_name = GPTModelNamesNames.O3_MINI
         form.instance.api_key = settings.INTERNAL_OPENAI_API_KEY
 
         try:
